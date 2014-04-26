@@ -1,0 +1,104 @@
+/*-----Typography-----*/
+.navbar-text {
+	font-weight: bold;
+	text-align: right;
+	margin: 0;
+}
+/*----Navbar ----*/
+.navbar {
+	background: lightgrey;
+}
+/*-----Logos&Icons-----*/
+.maintext {
+	color: blue;
+	font-size: 3rem;
+	
+}
+
+body {
+	background: -webkit-linear-gradient(#D3D3D3, #B2BEB5, #D3D3D3); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(#D3D3D3, #B2BEB5, #D3D3D3); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(#D3D3D3, #B2BEB5, #D3D3D3); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(#6E7F80, #B2BEB5, #6E7F80); /* Standard syntax (must be last) */
+}
+.container-fluid {
+ margin: 2px 3%;
+}
+.img-logo {
+	padding: .3% 3%; 
+/*border-bottom: #B2BEB5 3px groove; */
+}
+.rightPane,
+.leftPane {
+	border: 5px ridge;
+	height: 43rem; 
+	
+
+
+
+}
+.rightPane {
+	background-color: black;
+
+}
+.leftPane {
+	background-color: lightgrey;
+
+	padding:1px;
+	text-align: center;
+	
+}
+.nav-tabs {
+	background-color: green;
+	
+	
+}
+ul.nav-stacked li {
+	  list-style:none;
+    margin:0;
+    padding:0;
+    height: 7rem;
+
+    
+}
+.rightPane h4,
+ul.nav-stacked li a {
+	  background-image:url('../img/logo2.png');
+    background-repeat: no-repeat;
+    background-size: 3rem 2rem;
+		background-position: center .8rem;
+}
+.rightPane a {
+	display: inline-block;
+}
+.rightPane h4 {
+	background-image:url('../img/future.png');
+	width: 15rem;
+	height: 6rem;
+	position: relative;
+	background-size: 5rem 3rem;
+	margin: 2rem;
+	
+}
+.rightPane h4:hover {
+	-ms-transform:scale(1.2); /* IE 9 */
+	-webkit-transform:scale(1.2); /* Chrome, Safari, Opera */
+	transform:scale(1.2); /* Standard syntax */
+}
+h4 span {
+	position: absolute;
+	bottom: 0;
+	left: .6rem;
+}
+
+
+.footer {
+   position:fixed;
+   right: 3px;
+   left: 3px;
+   bottom:0;
+   border: #B2BEB5 3px groove;
+   height: 3rem;
+   background:#999;
+}
+
