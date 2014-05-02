@@ -38,7 +38,14 @@ body {
 
 }
 .rightPane {
-	background-color: black;
+	background: #3e4146; /* Old browsers */
+	background: -moz-linear-gradient(top,  #3e4146 0%, #000000 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#3e4146), color-stop(100%,#000000)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #3e4146 0%,#000000 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #3e4146 0%,#000000 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #3e4146 0%,#000000 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #3e4146 0%,#000000 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3e4146', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
 
 }
 .leftPane {
@@ -61,18 +68,34 @@ ul.nav-stacked li {
 
     
 }
-.rightPane h4,
+
 ul.nav-stacked li a {
-	  background-image:url('../img/logo2.png');
+	background-image:url('../img/accounts2.png');
     background-repeat: no-repeat;
     background-size: 3rem 2rem;
-		background-position: center .8rem;
+	background-position: center .8rem;
+	text-align: center;
+}
+ul.nav-stacked li:nth-child(2) a{
+	background-image:url('../img/status.png');
+}
+ul.nav-stacked li:nth-child(3) a{
+	background-image:url('../img/protocol.png');
+}
+ul.nav-stacked li:nth-child(4) a{
+	background-image:url('../img/replication.png');
+}
+ul.nav-stacked li:nth-child(5) a{
+	background-image:url('../img/help.png');
+}
+ul.nav-stacked li:nth-child(6) a{
+	background-image:url('../img/configuration.png');
 }
 .rightPane a {
 	display: inline-block;
 }
 .rightPane h4 {
-	background-image:url('../img/future.png');
+/*	background-image:url('../img/future.png'); */
 	width: 15rem;
 	height: 6rem;
 	position: relative;
@@ -80,18 +103,75 @@ ul.nav-stacked li a {
 	margin: 2rem;
 	
 }
-.rightPane h4:hover {
-	-ms-transform:scale(1.2); /* IE 9 */
-	-webkit-transform:scale(1.2); /* Chrome, Safari, Opera */
-	transform:scale(1.2); /* Standard syntax */
-}
+
 h4 span {
 	position: absolute;
 	bottom: 0;
 	left: .6rem;
 }
+.rightPane ul li {
+	display: inline;
+}
+.rightPane ul li a{
+    background-repeat: no-repeat;
+    background-size: 4rem 4rem;
+	background-position: center .8rem;
+}
+.rightPane ul li a:hover {
+	-ms-transform:scale(1.2); /* IE 9 */
+	-webkit-transform:scale(1.2); /* Chrome, Safari, Opera */
+	transform:scale(1.2); /* Standard syntax */
+}
 
+.rightPane ul li:nth-child(1) a{
+	background-image:url('../img/AD.png');
+}
+.rightPane ul li:nth-child(2) a{
+	background-image:url('../img/linux.png');
+}
+.rightPane ul li:nth-child(3) a{
+	background-image:url('../img/future.png');
+}
+.modal {
+	position: relative;
+	left : -10%;
+	top: -10%;
+	overflow:hidden;
 
+}	
+.box {
+	
+	border : #B2BEB5 3px solid;
+/*	
+	background-image:url('../img/future.png');
+	background-repeat:no-repeat;
+	background-position:left top;
+	background-size: 4rem 4rem;
+*/	background: #797e86;
+	padding: 2px;
+	margin: 0;
+	
+}
+h2 {
+	margin:0 0 1rem 0;
+	background-image:url('../img/future.png');
+	background-repeat:no-repeat;
+	background-position:1.2rem top;
+	background-size: 4rem 4rem;
+	color: purple;
+
+	
+}
+.form-control {background-color: lightgrey;}
+.submitb {
+		margin-top: 4.7rem;
+}
+.finish {
+	margin-top: .44rem;
+}
+.configTitle {
+	text-align: center;
+}
 .footer {
    position:fixed;
    right: 3px;
