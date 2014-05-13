@@ -106,8 +106,10 @@ ul.nav-stacked li:nth-child(6) a{
 
 h4 span {
 	position: absolute;
+	width: 100%;
 	bottom: 0;
-	left: .6rem;
+	
+	text-align: center;
 }
 .rightPane ul li {
 	display: inline;
@@ -123,15 +125,24 @@ h4 span {
 	transform:scale(1.2); /* Standard syntax */
 }
 
-.rightPane ul li:nth-child(1) a{
+.ADa {
 	background-image:url('../img/AD.png');
 }
-.rightPane ul li:nth-child(2) a{
+.UnLina {
 	background-image:url('../img/linux.png');
 }
-.rightPane ul li:nth-child(3) a{
+.Futurea {
 	background-image:url('../img/future.png');
 }
+.SSa {
+	background-image:url('../img/SS.png');
+}
+.Logsa {
+	background-image:url('../img/logs.png');
+	
+	
+}
+
 .modal {
 	position: relative;
 	left : -10%;
@@ -153,7 +164,7 @@ h4 span {
 	
 }
 h2 {
-	margin:0 0 1rem 0;
+	margin:0 0 1.5rem 0;
 	background-image:url('../img/future.png');
 	background-repeat:no-repeat;
 	background-position:1.2rem top;
@@ -162,6 +173,7 @@ h2 {
 
 	
 }
+
 .form-control {background-color: lightgrey;}
 .submitb {
 		margin-top: 4.7rem;
@@ -171,6 +183,18 @@ h2 {
 }
 .configTitle {
 	text-align: center;
+	height: 4rem;
+}
+.boxoffields { 
+	
+	border : white 1px solid;
+}
+.boxoffields span {
+	position: absolute;
+
+	margin: -1.2rem 0 0 0 ;
+	background: #797e86;
+	
 }
 .footer {
    position:fixed;
@@ -181,4 +205,46 @@ h2 {
    height: 3rem;
    background:#999;
 }
+
+.demo-container {
+	box-sizing: border-box;
+	
+	width: 15em;
+	height: 16rem;
+/*	width: 850px;
+	height: 450px;
+	padding: 20px 15px 15px 15px;
+	margin: 15px auto 30px auto;
+	border: 1px solid #ddd;
+	background: #fff;
+	background: linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -o-linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -ms-linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -moz-linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -webkit-linear-gradient(#f6f6f6 0, #fff 50px);
+	box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+	-o-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-ms-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	*/
+}
+
+.demo-placeholder {
+
+	width: 300%; 
+	height: 12rem;
+	font-size: 14px;
+	line-height: 1.2em;
+	margin: 1em ;
+}
+.logswrapper {
+	padding:0;
+}
+#logsarea {
+	height: 10rem;
+	width: 100%;
+	margin: 1rem -1rem 0 0 ;
+}
+
 
