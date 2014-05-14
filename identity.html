@@ -30,22 +30,22 @@
 				<div class="">
 					<div class=" col-sm-1 leftPane">
 						<ul class="nav nav-pills nav-stacked">
-							<li class="active" ><a href="accounts.html"  data-toggle="tab"><br>Accounts</a></li>
-							<li><a href="status.html" data-toggle="tab"><br>Status</a></li>
-							<li><a href="identity.html" data-toggle="tab"><br>Identity</a></li>
-							<li><a href="replication.html" data-toggle="tab"><br>replication</a></li>
-							<li><a href="help.html" data-toggle="tab"><br>help</a></li>
-							<li><a href="config.html" data-toggle="tab"><br>config</a></li>
+							<li><a href="accounts.html" ><br>Accounts</a></li>
+							<li><a href="status.html"  ><br>Status</a></li>
+							<li class="active"><a href="identity.html" ><br>Identity</a></li>
+							<li><a href="replication.html" ><br>replication</a></li>
+							<li><a href="help.html"  ><br>help</a></li>
+							<li><a href="config.html"  ><br>config</a></li>
 						</ul>
 					</div>
 					<div class="col-sm-11 rightPane">
 						<ul>
-							<li><a href="#" disabled="disabled"><h4 id="AD"><span>Active Directory</span></h4></a></li>
-							<li><a href="#"><h4 id="UnLin"><span>Unix/Linux users</span></h4></a></li>
-							<li><a href="#"><h4 id="Future"><span> .........Future</span></h4></a></li>
+							<li><a href="#" class="CIFSa"><h4 id="CIFS"><span>CIFS</span></h4></a></li>
+							<li><a href="#" class="NFSa"><h4 id="NFS"><span>NFS</span></h4></a></li>
+							<li><a href="#" class="ISCSIa"><h4 id="ISCSI"><span>ISCSI</span></h4></a></li>
 						</ul>
 
-						<div class="row AD">
+						<div class="row CIFS">
 							<div class=" col-sm-offset-1 col-sm-10">
 								
 									<div class="box ">
@@ -110,7 +110,7 @@
 							</div>
 						</div>
 						
-						<div class="row UnLin">
+						<div class="row NFS">
 							<div class=" col-sm-offset-1 col-sm-10">
 								
 									<div class="box ">
@@ -169,7 +169,7 @@
 							</div>
 						</div>
 						
-						<div class="row Future">
+						<div class="row ISCSI">
 							<div class=" col-sm-offset-1 col-sm-10">
 								
 									<div class="box ">
@@ -244,12 +244,12 @@
 		<script src="../Bootstrap/js/bootstrap.min.js"></script>
 		<script>
 			var config = 1;
-			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();
-			$("#AD").click(function (){ 
-				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".AD").show(); };});
-			$("#UnLin").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".UnLin").show();};});
-			$("#Future").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/future.png')").text("Future"); $(".Future").show();};});
-			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
+			$(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();
+			$("#CIFS").click(function (){ 
+				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".CIFS").show(); };});
+			$("#NFS").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/nfs.png')").text("NFS"); $(".NFS").show();};});
+			$("#ISCSI").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ISCSI").show();};});
+			$(".finish").click(function (){ config = 1; $(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();});
 			
 		</script>
 

@@ -142,6 +142,15 @@ h4 span {
 	
 	
 }
+.CIFSa {
+	background-image:url('../img/cifs.png');
+}
+.NFSa {
+	background-image:url('../img/nfs.png');
+}
+.ISCSIa {
+	background-image:url('../img/iscsi2.png');
+}
 
 .modal {
 	position: relative;
