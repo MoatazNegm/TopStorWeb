@@ -86,7 +86,7 @@ ul.nav-stacked li:nth-child(4) a{
 	background-image:url('../img/replication.png');
 }
 ul.nav-stacked li:nth-child(5) a{
-	background-image:url('../img/help.png');
+	background-image:url('../img/diskconfig.png');
 }
 ul.nav-stacked li:nth-child(6) a{
 	background-image:url('../img/configuration.png');
@@ -172,6 +172,14 @@ h4 span {
 	margin: 0;
 	
 }
+.box2 {
+	
+	margin-top:-5rem;
+	margin-left: -1rem;
+	margin-bottom: -5rem;
+	height: 25rem; 
+	padding: 0;
+}
 h2 {
 	margin:0 0 1.5rem 0;
 	background-image:url('../img/future.png');
@@ -256,4 +264,12 @@ h2 {
 	margin: 1rem -1rem 0 0 ;
 }
 
-
+.labels {
+	text-align: right;
+}
+.addiqn, .remiqn {
+	margin-left:-2rem;
+}
+.addclient, .remclient {
+	margin-left:-.5rem;
+}
