@@ -174,7 +174,7 @@ h4 span {
 }
 .box2 {
 	
-	margin-top:-5rem;
+	margin-top:-4rem;
 	margin-left: -1rem;
 	margin-bottom: -5rem;
 	height: 25rem; 
@@ -272,4 +272,7 @@ h2 {
 }
 .addclient, .remclient {
 	margin-left:-.5rem;
+}
+.middlemargin {
+		margin-top: 2rem;
 }
