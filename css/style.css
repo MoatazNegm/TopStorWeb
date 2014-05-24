@@ -139,8 +139,6 @@ h4 span {
 }
 .Logsa {
 	background-image:url('../img/logs.png');
-	
-	
 }
 .CIFSa {
 	background-image:url('../img/cifs.png');
@@ -151,7 +149,12 @@ h4 span {
 .ISCSIa {
 	background-image:url('../img/iscsi2.png');
 }
-
+.DiskGroupa {
+	background-image:url('../img/diskconfigs.png');
+}
+.SnapShotsa {
+	background-image:url('../img/snapshot.png');
+}
 .modal {
 	position: relative;
 	left : -10%;
@@ -169,8 +172,7 @@ h4 span {
 	background-size: 4rem 4rem;
 */	background: #797e86;
 	padding: 2px;
-	margin: 0;
-	
+	margin: -5rem;
 }
 .box2 {
 	
@@ -275,4 +277,30 @@ h2 {
 }
 .middlemargin {
 		margin-top: 2rem;
+}
+#runningdik1{
+	background-image:url('../img/disks.png');
+	background-repeat: no-repeat;
+  background-size: 4rem 9rem;
+	background-position: center .8rem;
+	text-align: center;
+	height: 9rem;
+}
+
+
+#raidtabl td, #raidtabl tr {
+
+	margin: 0.03rem;
+	vertical-align:middle;
+	
+}
+.radiocontrol, .table {
+	margin: 0.01rem;
+	padding: 0;
+}
+#emptydiv {
+	height: 4.32rem;
+}
+.separator {
+	margin-left: 2rem;
 }
