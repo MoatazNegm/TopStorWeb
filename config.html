@@ -7,6 +7,7 @@
 		<link  rel="stylesheet" href="css/normalize.css" type="text/css">
 		<link rel="stylesheet" href="../Bootstrap/css/bootstrap.min.css" type="text/css">
 		<link rel="stylesheet" href="../Bootstrap/css/bootstrap-theme.min.css" type="text/css">
+		<link rel="stylesheet" href="../jquery/jquery.minicolors.css">
 		<link rel="stylesheet" href="css/style.css" type="text/css">
 	</head>
 	<body>
@@ -30,19 +31,19 @@
 				<div class="">
 					<div class=" col-sm-1 leftPane">
 						<ul class="nav nav-pills nav-stacked">
-							<li class="active" ><a href="accounts.html"  data-toggle="tab"><br>Accounts</a></li>
-							<li><a href="status.html" data-toggle="tab"><br>Status</a></li>
-							<li><a href="Protocol.html" data-toggle="tab"><br>Protocol</a></li>
-							<li><a href="replication.html" data-toggle="tab"><br>replication</a></li>
-							<li><a href="Pools.html" data-toggle="tab"><br>Pools</a></li>
-							<li><a href="config.html" data-toggle="tab"><br>config</a></li>
+							<li  ><a href="accounts.html" ><br>Accounts</a></li>
+							<li><a href="status.html"  ><br>Status</a></li>
+							<li><a href="Protocol.html" ><br>Protocol</a></li>
+							<li><a href="replication.html" ><br>replication</a></li>
+							<li><a href="Pools.html"  ><br>Pools</a></li>
+							<li class="active"><a href="config.html"  ><br>config</a></li>
 						</ul>
 					</div>
 					<div class="col-sm-11 rightPane">
 						<ul>
-							<li><a href="#" disabled="disabled"><h4 id="AD"><span>Active Directory</span></h4></a></li>
-							<li><a href="#"><h4 id="UnLin"><span>Unix/Linux users</span></h4></a></li>
-							<li><a href="#"><h4 id="Future"><span> .........Future</span></h4></a></li>
+							<li><a href="#" class="ADa"><h4 id="AD"><span>Active Directory</span></h4></a></li>
+							<li><a href="#" class="UnLina"><h4 id="UnLin"><span>Unix/Linux users</span></h4></a></li>
+							<li><a href="#" class="Futurea"><h4 id="Future"><span> .........Future</span></h4></a></li>
 						</ul>
 
 						<div class="row AD">
@@ -58,7 +59,7 @@
 													<div class=" form-group row">
 														<label  for="DomWork" class="col-sm-5 control-label">Domain/Workgroup</label>
 														<div class=" col-sm-6">
-															<input type="text" id="DomWork" class="form-control " placeholder="Dom/workgroup">
+															<input type="text" id="DomWork" class="form-control  "  >
 														</div>
 													</div>
 													<div class=" form-group row ">
@@ -129,7 +130,7 @@
 													<div class=" form-group row ">
 														<label  for="UserList" class="col-sm-5 control-label"></label>
 														<div class=" col-sm-6">
-															<textarea rows="3" id="UserList" class="form-control " ></textarea>
+															<select multiple size""3"" id="UserList" class="form-control " ><option>user1</option><option>user2</option><option>user3</option>
 														</div>
 													</div>
 													<div class=" form-group row ">
@@ -238,21 +239,105 @@
 			<footer class="footer"> Errors
 			</footer>
 		</div>
+		<div id="modalcontainer" >
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<form class="form-horizontal " role="form">
+											<div class="row">
+												<div class="   ">
+													<div class=" form-group row">
+														<label  for="textcolor" class="col-sm-5 control-label">Text</label>
+														<div class=" col-sm-6">
+															<input type="hidden" id="textcolor" class="form-control minicolors2 demo " data-inline="false" value="#4fc8db">
+														</div>
+													</div>
+													<div class=" form-group row ">
+														<label  for="backcolor" class="col-sm-5 control-label">Background</label>
+														<div class=" col-sm-6">
+															<input type="hidden" id="backcolor" class="form-control minicolors2 demo" placeholder="Admin name">
+														</div>
+													</div>
+													<div class=" form-group row ">
+														<label  for="frame" class="col-sm-5 control-label">frame</label>
+														<div class=" col-sm-6">
+															<input type="hidden" id="frame" class="form-control minicolors2 demo" placeholder="Admin password">
+														</div>
+													</div>
+												</div>
+											</div>
+											
+											
+										 
+										</form>
 
-		<script src="../Bootstrap/js/jquery.js"></script>
-		<script src="../Bootstrap/js/jquery-ui.js"></script>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary">Save changes</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="../jquery/jquery.js"></script>
+		<script src="../jquery-ui/jquery-ui.js"></script>
+		<script src="../jquery/jquery.datetimepicker.js"></script>
 		<script src="../Bootstrap/js/bootstrap.min.js"></script>
+		<script src="../jquery/jquery.minicolors.js"></script>
+		
+	
 		<script>
 			var config = 1;
+			$('.demo').each( function() {
+                //
+                // Dear reader, it's actually very easy to initialize MiniColors. For example:
+                //
+                //  $(selector).minicolors();
+                //
+                // The way I've done it below is just for the demo, so don't get confused
+                // by it. Also, data- attributes aren't supported at this time...they're
+                // only used for this demo.
+                //
+				$(this).minicolors({
+					control: $(this).attr('data-control') || 'hue',
+					defaultValue: $(this).attr('data-defaultValue') || '',
+					inline: $(this).attr('data-inline') === 'true',
+					letterCase: $(this).attr('data-letterCase') || 'lowercase',
+					opacity: $(this).attr('data-opacity'),
+					position: $(this).attr('data-position') || 'bottom left',
+					change: function(hex, opacity) {
+						if( !hex ) return;
+						if( opacity ) hex += ', ' + opacity;
+						try {
+							console.log(hex);
+						} catch(e) {}
+					},
+					theme: 'bootstrap'
+				});
+
+            });
+			$(".minicolors2").minicolors();
 			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();
 			$("#AD").click(function (){ 
 				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".AD").show(); };});
 			$("#UnLin").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".UnLin").show();};});
 			$("#Future").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/future.png')").text("Future"); $(".Future").show();};});
 			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
+			$("input").click(function () {
+				var title = $(this).attr("id");
+				$("#myModalLabel").text(title);
+				$("#myModal").modal("show");
+			});
 			
+			$("#modalcontainer").draggable();
 		</script>
-
 	</body>
 
 </html>

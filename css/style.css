@@ -304,3 +304,9 @@ h2 {
 .separator {
 	margin-left: 2rem;
 }
+.NNmodal-dialog, #modalcontainer {
+			position: fixed;
+			left: 50%;
+			top : -2% ;
+			width: 20	rem ;
+} 
