@@ -30,8 +30,8 @@
 			<div class="row">
 				<div class="">
 					<div class=" col-sm-1 leftPane">
-						<ul class="nav nav-pills nav-stacked">
-							<li  ><a href="accounts.html" ><br>Accounts</a></li>
+						<ul class="nav nav-pills nav-stacked ">
+							<li ><a href="accounts.html" ><br>Accounts</a></li>
 							<li><a href="status.html"  ><br>Status</a></li>
 							<li><a href="Protocol.html" ><br>Protocol</a></li>
 							<li><a href="replication.html" ><br>replication</a></li>
@@ -39,8 +39,8 @@
 							<li class="active"><a href="config.html"  ><br>config</a></li>
 						</ul>
 					</div>
-					<div class="col-sm-11 rightPane">
-						<ul>
+					<div class="col-sm-11 rightPane ">
+						<ul class="">
 							<li><a href="#" class="ADa"><h4 id="AD"><span>Active Directory</span></h4></a></li>
 							<li><a href="#" class="UnLina"><h4 id="UnLin"><span>Unix/Linux users</span></h4></a></li>
 							<li><a href="#" class="Futurea"><h4 id="Future"><span> .........Future</span></h4></a></li>
@@ -51,27 +51,27 @@
 								
 									<div class="box ">
 										<div class="row">
-											<h2 class="configTitle">Active Directory</h2>
+											<h2 class="configTitle ">Active Directory</h2>
 										</div>									
 										<form class="form-horizontal " role="form">
 											<div class="row">
 												<div class="  col-sm-4 ">
 													<div class=" form-group row">
-														<label  for="DomWork" class="col-sm-5 control-label">Domain/Workgroup</label>
+														<label   class="col-sm-5 control-label config">Domain/Workgroup</label>
 														<div class=" col-sm-6">
-															<input type="text" id="DomWork" class="form-control  "  >
+															<input type="text" id="DomWork" class="form-control config " value="sample"  >
 														</div>
 													</div>
 													<div class=" form-group row ">
-														<label  for="Admin" class="col-sm-5 control-label">Administrator</label>
+														<label  class="col-sm-5 control-label config">Administrator</label>
 														<div class=" col-sm-6">
-															<input type="text" id="Admin" class="form-control " placeholder="Admin name">
+															<input type="text" id="Admin" class="form-control config" value="sample" >
 														</div>
 													</div>
 													<div class=" form-group row ">
-														<label  for="Pass" class="col-sm-5 control-label">Passwored</label>
+														<label   class="col-sm-5 control-label config"  >Passwored</label>
 														<div class=" col-sm-6">
-															<input type="password" id="Pass" class="form-control " placeholder="Admin password">
+															<input type="password" id="Pass" class="form-control config" value="****">
 														</div>
 													</div>
 												</div>
@@ -251,27 +251,30 @@
 							<form class="form-horizontal " role="form">
 											<div class="row">
 												<div class="   ">
-													<div class=" form-group row">
-														<label  for="textcolor" class="col-sm-5 control-label">Text</label>
-														<div class=" col-sm-6">
-															<input type="hidden" id="textcolor" class="form-control minicolors2 demo " data-inline="false" value="#4fc8db">
+													<div id="minicolor" class="  ">
+														<div class=" col-sm-4">
+															<label  for="textcolor" class=" control-label">Text</label>
+															<input type="hidden" id="textcolor" class="form-control minicolors2  " data-inline="false" value="#4fc8db">
 														</div>
 													</div>
-													<div class=" form-group row ">
-														<label  for="backcolor" class="col-sm-5 control-label">Background</label>
-														<div class=" col-sm-6">
-															<input type="hidden" id="backcolor" class="form-control minicolors2 demo" placeholder="Admin name">
+													<div class="   ">
+														<div class=" col-sm-4">
+															<label  for="background" class=" control-label">Background color</label>
+															<input type="hidden" id="background" class="form-control minicolors2  " data-inline="false" value="#4fc8db">
 														</div>
 													</div>
-													<div class=" form-group row ">
-														<label  for="frame" class="col-sm-5 control-label">frame</label>
-														<div class=" col-sm-6">
-															<input type="hidden" id="frame" class="form-control minicolors2 demo" placeholder="Admin password">
+													<div class="  ">
+														<div class=" col-sm-4">
+															<label  for="frame" class=" control-label">frame</label>
+															<input type="hidden" id="frame" class="form-control minicolors2 " placeholder="Admin password">
 														</div>
 													</div>
 												</div>
 											</div>
 											
+											<div class="row">
+											<div id="samplebox"> sample box</div>
+											</div>
 											
 										 
 										</form>
@@ -291,9 +294,27 @@
 		<script src="jquery/jquery.datetimepicker.js"></script>
 		<script src="Bootstrap/js/bootstrap.min.js"></script>
 		<script src="jquery/jquery.minicolors.js"></script>
+		<script src="jquery/Colour.js"></script>
 		
 	
 		<script>
+			
+			function colorToHex(color) {
+				if (color==null) { return '#ffffff';}
+				if (!color.match(/rgb/g)) { return "#ffffff"; }
+				if (color.substr(0, 1) === '#') {
+						return color;
+				}
+				
+				var digits = /(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color);
+				
+				var red = parseInt(digits[2]);
+				var green = parseInt(digits[3]);
+				var blue = parseInt(digits[4]);
+
+				var rgb = blue | (green << 8) | (red << 16);
+				return digits[1] + '#' + rgb.toString(16);
+			};
 			var config = 1;
 			$('.demo').each( function() {
                 //
@@ -312,31 +333,77 @@
 					letterCase: $(this).attr('data-letterCase') || 'lowercase',
 					opacity: $(this).attr('data-opacity'),
 					position: $(this).attr('data-position') || 'bottom left',
-					change: function(hex, opacity) {
-						if( !hex ) return;
-						if( opacity ) hex += ', ' + opacity;
-						try {
-							console.log(hex);
-						} catch(e) {}
-					},
+	//				change: function(hex, opacity) {
+	//					if( !hex ) return;
+	//					if( opacity ) hex += ', ' + opacity;
+	//					try {
+	//						console.log(hex);
+	//					} catch(e) {}
+	//				},
 					theme: 'bootstrap'
 				});
 
-            });
-			$(".minicolors2").minicolors();
+      });
+	//		$(".minicolors2").minicolors({ theme: 'bootstrap'});
 			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();
 			$("#AD").click(function (){ 
 				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".AD").show(); };});
 			$("#UnLin").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".UnLin").show();};});
 			$("#Future").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/future.png')").text("Future"); $(".Future").show();};});
 			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
-			$("input").click(function () {
+			
+			
+			$(".config").click(function () {
 				var title = $(this).attr("id");
 				$("#myModalLabel").text(title);
+				$("#samplebox").css("color", $(this).css("color"));
+				$("#samplebox").css("background-color", $(this).css("background-color"));
+				$("#samplebox").css("border-color", $(this).css("border-color"));
+			//	console.log("B=" + $(this).css("background-color") +";" + colorToHex($(this).css("background-color").match(/rgb/g))+ ", F:" + $(this).css("color") + ", bor=" + $(this).css("border-color")+";" + colorToHex($(this).css("background-color").match(/rgb/g)));
+				$("#textcolor").minicolors("value", colorToHex($(this).css("color")) ); 
+				$("#background").minicolors("value", colorToHex($(this).css("background-color")) );
+				
+				$("#frame").attr("value", colorToHex($(this).css("border-color")) );
+	
 				$("#myModal").modal("show");
 			});
 			
 			$("#modalcontainer").draggable();
+			$("#textcolor.minicolors2").minicolors({
+				theme: 'bootstrap',
+				change: function(hex, opacity) {
+				 
+				 $("#samplebox").css("color", hex);
+				 var title = $("#myModalLabel").text();
+				 $("#"+title).css("color", hex);
+	//			console.log($("#samplebox").css("color"));
+	//			console.log("...."+hex + "....." + opacity);
+				}
+				 
+			});
+			$("#background.minicolors2").minicolors({
+				theme: 'bootstrap',
+				change: function(hex, opacity) {
+				 $("#samplebox").css("background-color", hex);
+				 var title = $("#myModalLabel").text();
+				 $("#"+title).css("background-color", hex);
+	//			console.log($("#samplebox").css("color"));
+	//			console.log("...."+hex + "....." + opacity);
+				}
+				 
+			});
+			$("#frame.minicolors2").minicolors({
+				theme: 'bootstrap',
+				change: function(hex, opacity) {
+				 $("#samplebox").css("border-color", hex);
+				 var title = $("#myModalLabel").text();
+				 $("#"+title).css("border-color", hex);
+	//			console.log($("#samplebox").css("color"));
+	//			console.log("...."+hex + "....." + opacity);
+				}
+				 
+			});
+			
 		</script>
 	</body>
 

@@ -310,3 +310,17 @@ h2 {
 			top : -2% ;
 			width: 20	rem ;
 } 
+#samplebox {
+	position: relative;
+	left: 38%;
+	margin-top: 2rem;
+	width : 15rem;
+	height: 3rem;
+	border: solid 2px;
+	color: red;
+	background-color: green;
+	}
+.modal-backdrop.in {
+  filter: alpha(opacity=0);
+  opacity: 0;
+}
