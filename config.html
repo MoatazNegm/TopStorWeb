@@ -10,11 +10,11 @@
 		<link rel="stylesheet" href="jquery/jquery.minicolors.css">
 		<link rel="stylesheet" href="css/style.css" type="text/css">
 	</head>
-	<body>
+	<body class=" ">
 	
-		
+	<div class="config_body">
 <!------------  NAV Bar --------------->
-		<div class="container-fluid " id="container">
+		<div class="container-fluid ">
 			<div class="row">
 				<div class="img-logo ">
 					<div class="col-sm-3">
@@ -239,7 +239,8 @@
 			<footer class="footer"> Errors
 			</footer>
 		</div>
-		
+	</div>
+	</div>	
 		<div id="modalcontainer" >
 			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
@@ -354,7 +355,8 @@
 			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
 			
 			
-			$("[class*='config']").click(function () {
+			$("[class*='config']").click(function (e) {
+				e.stopPropagation();
 				var title = $(this).attr("class").split(' ').pop();
 				$("#myModalLabel").text(title);
 				
