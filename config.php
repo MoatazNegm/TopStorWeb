@@ -1,16 +1,7 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<meta name="author" content="Mezobuntu1310" />
-		<title>QuickStor(disks)</title>
-		<link  rel="stylesheet" href="css/normalize.css" type="text/css">
-		<link rel="stylesheet" href="Bootstrap/css/bootstrap.min.css" type="text/css">
-		<link rel="stylesheet" href="Bootstrap/css/bootstrap-theme.min.css" type="text/css">
-		<link rel="stylesheet" href="jquery/jquery.minicolors.css">
-		<link rel="stylesheet" href="css/style.css" type="text/css">
-	</head>
-	<body class=" ">
+	<?php include "header.html"; ?>
+		<body class=" ">
 
 	<div class="config_body">
 <!------------  NAV Bar --------------->
@@ -23,22 +14,14 @@
 						</a>
 					</div>
 					<div class="col-sm-6">
-						<h1 class="text-center maintext config_logo_no_background_no_border" ><strong>	<?php eho "PHP Flex Storage"; ?></strong></h1>
+						<h1 class="text-center maintext config_logo_no_background_no_border" ><strong>	<?php echo "PHP Flex Storage"; ?></strong></h1>
 					</div>
 				</div>
 			</div>
+			
 			<div class="row">
 				<div class="">
-					<div class=" col-sm-1 leftPane">
-						<ul class="nav nav-pills nav-stacked config_leftPane_no_textcolor" >
-							<li ><a href="accounts.html" ><br>Accounts</a></li>
-							<li><a href="status.html"  ><br>Status</a></li>
-							<li><a href="Protocol.html" ><br>Protocol</a></li>
-							<li><a href="replication.html" ><br>replication</a></li>
-							<li><a href="Pools.html"  ><br>Pools</a></li>
-							<li class="active"><a href="config.html"  ><br>config</a></li>
-						</ul>
-					</div>
+					<?php $men = 6; include "menu.php"; ?> 
 					<div class="col-sm-11 rightPane ">
 						<ul class="">
 							<li><a href="#" class="ADa"><h4 id="AD"><span>Active Directory</span></h4></a></li>

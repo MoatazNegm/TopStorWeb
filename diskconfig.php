@@ -20,16 +20,7 @@
 			</div>
 			<div class="row">
 				<div class="">
-					<div class=" col-sm-1 leftPane">
-						<ul class="nav nav-pills nav-stacked">
-							<li class="active" ><a href="accounts.html"  data-toggle="tab"><br>Accounts</a></li>
-							<li><a href="status.html" data-toggle="tab"><br>Status</a></li>
-							<li><a href="Protocol.html" data-toggle="tab"><br>Protocol</a></li>
-							<li><a href="replication.html" data-toggle="tab"><br>replication</a></li>
-							<li><a href="Pools.html" data-toggle="tab"><br>Pools</a></li>
-							<li><a href="config.html" data-toggle="tab"><br>config</a></li>
-						</ul>
-					</div>
+					<?php $men = 4; include "menu.php"; ?>
 					<div class="col-sm-11 rightPane">
 						<ul>
 							<li><a href="#" disabled="disabled"><h4 id="AD"><span>Active Directory</span></h4></a></li>

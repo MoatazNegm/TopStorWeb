@@ -1,7 +1,10 @@
-<!DOCTYPE html>
+<?php header('Content-type: text/html; charset=utf-8'); ?>
+<?php phpinfo(); ?>
 <html>
+	
 	<head>
-		<meta charset="utf-8" />
+		
+		
 		<meta name="author" content="Mezobuntu1310" />
 		<title>QuickStor(disks)</title>
 		<link  rel="stylesheet" href="css/normalize.css" type="text/css">
@@ -23,7 +26,7 @@
 						</a>
 					</div>
 					<div class="col-sm-6">
-						<h1 class="text-center maintext config_logo_no_background_no_border" ><strong>	<?php eho "PHP Flex Storage"; ?></strong></h1>
+						<h1 class="text-center maintext config_logo_no_background_no_border" ><strong>	<?php echo "PHP Flex Storage"; ?></strong></h1>
 					</div>
 				</div>
 			</div>
