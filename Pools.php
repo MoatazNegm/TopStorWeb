@@ -28,7 +28,6 @@
 						</ul>
 						<?php include "DiskGroups.php"; ?>
 						<?php include "SnapShots.php" ; ?>
-						
 					</div>
 				</div>
 			</div>

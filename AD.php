@@ -1,9 +1,9 @@
-<div class="row AD">
+<div class="row AD ">
 							<div class=" col-sm-offset-1 col-sm-10">
 								
-									<div class="box ">
+									<div class="box colorize" id="Popup" Data-textcolor="yes" Data-background="yes" Data-border="yes">
 										<div class="row">
-											<h2 class="configTitle">Active Directory</h2>
+											<h2 class="configTitle colorize" id="SubTitle" Data-textcolor="yes" Data-background="no" Data-border="no">Active Directory</h2>
 										</div>									
 										<form class="form-horizontal " role="form">
 											<div class="row">
@@ -11,13 +11,13 @@
 													<div class=" form-group row">
 														<label  for="DomWork" class="col-sm-5 control-label">Domain/Workgroup</label>
 														<div class=" col-sm-6">
-															<input type="text" id="DomWork" class="form-control " placeholder="Dom/workgroup">
+															<input type="text" id="DomWork" class="form-control colorize" id="SubTitle" Data-textcolor="yes" Data-background="yes" Data-border="yes"  value="Sampel type">
 														</div>
 													</div>
 													<div class=" form-group row ">
 														<label  for="Admin" class="col-sm-5 control-label">Administrator</label>
 														<div class=" col-sm-6">
-															<input type="text" id="Admin" class="form-control " placeholder="Admin name">
+															<input type="text" id="Admin" class="form-control " value="sample input">
 														</div>
 													</div>
 													<div class=" form-group row ">
