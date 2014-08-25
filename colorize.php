@@ -60,9 +60,9 @@
 		var ElementtoColor;	
 		$('#noback').change(function() {
 			if($(this).prop("checked")) { 
-				$('#'+ElementtoColor).css("background", "rgba(200,54,54,0)"); console.log("opacitytrans:"+$('#'+ElementtoColor).css("background-color"));
+				$('#'+ElementtoColor).css("background-color", "rgba(200,54,54,0)"); console.log("opacitytrans:"+$('#'+ElementtoColor).css("background-color"));
 			} else {
-				$('#'+ElementtoColor).css("background", "rgba(200,54,54,1)"); console.log("opacitysolid:"+$('#'+ElementtoColor).css("background-color"));
+				$('#'+ElementtoColor).css("background-color", "rgba(200,54,54,1)"); console.log("opacitysolid:"+$('#'+ElementtoColor).css("background-color"));
 				$('#'+ElementtoColor).css("background-color",$("#samplebox").css("background-color"));
 			};
 				

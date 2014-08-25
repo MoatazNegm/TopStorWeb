@@ -3,10 +3,10 @@
 	<?php include "header.html"; ?>
 		<body class="" >
 
-	<div class="colorize" id="body" Data-textcolor="No" Data-background="yes" Data-border="No" >
+	<div class="colorize" id="body" Data-id="body" Data-textcolor="No" Data-background="yes" Data-border="No" >
 <!------------  NAV Bar --------------->
 		<div class="container-fluid ">
-			<div class="row colorize" id="caption" Data-textcolor="no" Data-background="yes" Data-border="no">
+			<div class="row colorize" id="caption" Data-id="caption" Data-textcolor="no" Data-background="yes" Data-border="no">
 				<div class="img-logo ">
 					<div class="col-sm-3">
 						<a class="pull-left logoimg " href="#">
@@ -14,7 +14,7 @@
 						</a>
 					</div>
 					<div class="col-sm-6">
-						<h1 class="text-center maintext colorize" id="Title" Data-textcolor="yes" Data-background="no" Data-border="no" ><strong>	<?php echo " Flex Storage"; ?></strong></h1>
+						<h1 class="text-center maintext colorize" id="Title" Data-id="Title" Data-textcolor="yes" Data-background="no" Data-border="no" ><strong>	<?php echo " Flex Storage"; ?></strong></h1>
 					</div>
 				</div>
 			</div>
@@ -26,13 +26,14 @@
 					<div class="col-sm-11 rightPane " id="rightPane" >
 					
 						<ul class="" >
+							<li><a href="#" ><h4 id="List" class="colorize" Data-id="List" Data-textcolor="yes" Data-background="yes" Data-border="yes"id="Future"><span> Colorize List</span></h4></a></li>
 							<li><a href="#" class="ADa "><h4 id="AD"><span>Active Directory</span></h4></a></li>
 							<li><a   href="#" class="UnLina"><h4 id="UnLin"><span>Unix/Linux users</span></h4></a></li>
 							<li><a href="#" class="Futurea"><h4 id="Future"><span> .........Future</span></h4></a></li>
-							<li><a href="#" id="List" class="colorize" Data-id="List" Data-textcolor="yes" Data-background="yes" Data-border="yes"><h4 id="Future"><span> Colorize List</span></h4></a></li>
 						</ul>
-						<ul class="colorize " Data-id="rightPane" Data-textcolor="no" Data-background="yes" Data-border="no" > 
-							<li><a href="#" class=" "><h4 id="AD"><span>Colorize RightPane</span></h4></a></li>
+						<ul  > 
+							<li ><a class="colorize " Data-id="rightPane" Data-textcolor="no" Data-background="yes" Data-border="no" href="#" ><h4 id="AD"><span>Colorize RightPane</span></h4></a></li>
+							
 						</ul>
 					
 						<?php include "AD.php"; ?>
