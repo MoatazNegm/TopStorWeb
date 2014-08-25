@@ -60,9 +60,9 @@
 		var ElementtoColor;	
 		$('#noback').change(function() {
 			if($(this).prop("checked")) { 
-				$('#'+ElementtoColor).css("opacity", 0); console.log("no to background");
+				$('#'+ElementtoColor).css("background", "rgba(200,54,54,0)"); console.log("opacitytrans:"+$('#'+ElementtoColor).css("background-color"));
 			} else {
-				$('#'+ElementtoColor).css("opacity", 1); console.log("return to background");
+				$('#'+ElementtoColor).css("background", "rgba(200,54,54,1)"); console.log("opacitysolid:"+$('#'+ElementtoColor).css("background-color"));
 				$('#'+ElementtoColor).css("background-color",$("#samplebox").css("background-color"));
 			};
 				
@@ -88,7 +88,7 @@
 
 	$(".colorize").click(function (e) {
 				e.stopPropagation();
-				ElementtoColor = $(this).attr("id");
+				ElementtoColor = $(this).attr("Data-id");
 				var title = $(this).attr("class").split(' ').pop();
 				$("#myModalLabel").text(ElementtoColor);
 				
@@ -132,8 +132,16 @@
 				
 				if($(this).attr("Data-background") == "yes") { 
 					$(".background").show();
-					$("#samplebox").css("background-color", $(this).css("background-color"));
-					$("#background").minicolors("value", colorToHex($(this).css("background-color")) ); 
+					$("#samplebox").css("background-color", $('#'+ElementtoColor).css("background-color"));
+					$("#background").minicolors("value", colorToHex($('#'+ElementtoColor).css("background-color")) );
+					if($('#'+ElementtoColor).css("background-color") == "transparent") {
+						$("#noback").prop("checked",true); console.log("found transparent"+$('#'+ElementtoColor).css("background-color"));
+						$('#'+ElementtoColor).css("background-color","transparent"); 
+						
+					} else {
+						$("#noback").prop("checked",false);console.log("found not transparent"+$('#'+ElementtoColor).css("background-color"));
+						
+					}
 					//console.log("back is disabled");
 					//$("#background").minicolors("value", "#ffffff");
 				} else { 
@@ -142,8 +150,8 @@
 				};
 				if($(this).attr("Data-textcolor") == "yes") { 
 					$(".textcolor").show();
-					$("#samplebox").css("color", $(this).css("color"));
-					$("#textcolor").minicolors("value", colorToHex($(this).css("color")) );
+					$("#samplebox").css("color", $('#'+ElementtoColor).css("color"));
+					$("#textcolor").minicolors("value", colorToHex($('#'+ElementtoColor).css("color")) );
 					//console.log("textcolor enabled");
 					//$("#background").minicolors("value", "#ffffff");
 				} else { 
@@ -152,8 +160,8 @@
 				};
 				if($(this).attr("Data-border") == "yes") { 
 					$(".frame").show();
-					$("#samplebox").css("border-color", $(this).css("border-color"));
-					$("#frame").minicolors("value", colorToHex($(this).css("border-color")) ); 
+					$("#samplebox").css("border-color", $('#'+ElementtoColor).css("border-color"));
+					$("#frame").minicolors("value", colorToHex($('#'+ElementtoColor).css("border-color")) ); 
 					//$("#background").minicolors("value", "#ffffff");
 				} else { 
 					$(".frame").hide();
@@ -183,7 +191,7 @@
 		change: function(hex, opacity) {
 			var title = $("#myModalLabel").text();
 				$("#samplebox").css("background-color", hex);
-				$("#"+ElementtoColor).css("background-color", hex);
+				if(!$("#noback").prop("checked")){ $("#"+ElementtoColor).css("background-color", hex); }
 			
 //			console.log($("#myModalLabel").text().match(/back/g));
 //			console.log("...."+hex + "....." + opacity);

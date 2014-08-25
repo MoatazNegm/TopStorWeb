@@ -23,13 +23,18 @@
 				<div class="" >
 					<div ><?php $men = 6; include "menu.php"; ?> </div>	
 					
-					<div class="col-sm-11 rightPane colorize" id="rightPane" Data-textcolor="no" Data-background="yes" Data-border="no">
+					<div class="col-sm-11 rightPane " id="rightPane" >
 					
-						<ul class="">
+						<ul class="" >
 							<li><a href="#" class="ADa "><h4 id="AD"><span>Active Directory</span></h4></a></li>
 							<li><a   href="#" class="UnLina"><h4 id="UnLin"><span>Unix/Linux users</span></h4></a></li>
 							<li><a href="#" class="Futurea"><h4 id="Future"><span> .........Future</span></h4></a></li>
+							<li><a href="#" id="List" class="colorize" Data-id="List" Data-textcolor="yes" Data-background="yes" Data-border="yes"><h4 id="Future"><span> Colorize List</span></h4></a></li>
 						</ul>
+						<ul class="colorize " Data-id="rightPane" Data-textcolor="no" Data-background="yes" Data-border="no" > 
+							<li><a href="#" class=" "><h4 id="AD"><span>Colorize RightPane</span></h4></a></li>
+						</ul>
+					
 						<?php include "AD.php"; ?>
 						<?php include "UnLin.php"; ?>
 					</div>
