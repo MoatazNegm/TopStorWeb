@@ -71,6 +71,8 @@
 			
 		</script>
 		 <?php include "colorize.php"; ?>
+		 <?php include "InitColor.php";?>
+		 <script> console.log("$('"+"dkdk"+"').css('background-color',"+"'dslks'"+");");</script>
 			
 	</body>
 

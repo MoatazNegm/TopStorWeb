@@ -8,9 +8,13 @@ function background($CArr){
 	print_r($CArr);
 	
 	}
-	foreach ($ColorizeArr["background"] as $k => $val ) {
+	
 		
-		background($val);
-		background($k);
+		foreach ($ColorizeArr["background"] as $k => $val ) {
+		
+//		echo $k+'{ background-color : ' + $val+' }';
+//echo "<script> $('".$k."').css('background-color',".$val.");</script>";
+	echo "<script> console.log(\"$('".$k."').css('background-color',".$val.");\");</script>";	
 		}
+		
 	
