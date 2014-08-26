@@ -3,7 +3,7 @@
 								
 									<div id="Popup" class="box colorize " Data-id="Popup" Data-textcolor="yes" Data-background="yes" Data-border="yes">
 										<div class="row">
-											<h2 class="configTitle colorize" id="SubTitle" Data-textcolor="yes" Data-background="no" Data-border="no">Active Directory</h2>
+											<h2 class="configTitle colorize" id="SubTitle" Data-id="SubTitle" Data-textcolor="yes" Data-background="no" Data-border="no">Active Directory</h2>
 										</div>									
 										<form class="form-horizontal " role="form">
 											<div class="row">
@@ -11,7 +11,7 @@
 													<div class=" form-group row">
 														<label  for="DomWork" class="col-sm-5 control-label">Domain/Workgroup</label>
 														<div class=" col-sm-6">
-															<input type="text" id="DomWork" class="form-control colorize" id="SubTitle" Data-textcolor="yes" Data-background="yes" Data-border="yes"  value="Sampel type">
+															<input type="text"  class="form-control colorize" id="inputs" Data-id="inputs" Data-textcolor="yes" Data-background="yes" Data-border="yes"  value="Sampel type">
 														</div>
 													</div>
 													<div class=" form-group row ">
@@ -39,17 +39,17 @@
 													</div>
 													<div class="form-group row">
 														<div class="row">
-															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-7 submitb" data-toggle="tooltip" data-placement="top" title="submit values">Submit</button>
+															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-7 submitb colorize" id="Buttons" Data-id="Buttons" Data-textcolor="yes" Data-background="yes" Data-border="yes" data-toggle="tooltip" data-placement="top" title="submit values">Submit</button>
 														</div>
 													</div>
 												</div>
 												<div class=" col-sm-6">
 													<div class=" form-group row">
 														<div class=" col-sm-12">
-															<textarea class="form-control" rows="3"></textarea>
+															<textarea class="form-control colorize" id="status" Data-id="status" Data-textcolor="yes" Data-background="no" Data-border="yes" rows="3"> sample status Data </textarea>
 														</div>
 														<div class="row">
-															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-7 finish" data-toggle="tooltip" data-placement="bottom" title="close window">Finish</button>
+															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-7 finish  data-toggle="tooltip" data-placement="bottom" title="close window">Finish</button>
 														</div>
 													</div>
 												</div>
