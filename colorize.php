@@ -36,7 +36,7 @@
 											<div class="row">
 											<div id="samplebox"> sample box</div>
 											</div>
-											<div class="row col-sm-offset-1 checkbox">
+											<div class="row col-sm-offset-1 checkbox noback">
 														<label>
 														<input type="checkbox" id="noback" value="background is transparent"> Background is transparent
 														</label>
@@ -131,7 +131,7 @@
 				
 				
 				if($(this).attr("Data-background") == "yes") { 
-					$(".background").show();
+					$(".background").show(); $(".noback").show();
 					$("#samplebox").css("background-color", $('#'+ElementtoColor).css("background-color"));
 					$("#background").minicolors("value", colorToHex($('#'+ElementtoColor).css("background-color")) );
 					if($('#'+ElementtoColor).css("background-color") == "transparent") {
@@ -146,6 +146,7 @@
 					//$("#background").minicolors("value", "#ffffff");
 				} else { 
 					$(".background").hide();
+					$(".noback").hide();
 					
 				};
 				if($(this).attr("Data-textcolor") == "yes") { 

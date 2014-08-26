@@ -1,7 +1,7 @@
 <div class="row AD ">
 							<div class=" col-sm-offset-1 col-sm-10">
 								
-									<div class="box colorize" id="Popup" Data-textcolor="yes" Data-background="yes" Data-border="yes">
+									<div id="Popup" class="box colorize " Data-id="Popup" Data-textcolor="yes" Data-background="yes" Data-border="yes">
 										<div class="row">
 											<h2 class="configTitle colorize" id="SubTitle" Data-textcolor="yes" Data-background="no" Data-border="no">Active Directory</h2>
 										</div>									
