@@ -59,7 +59,7 @@
 		}]);
 
 	
-		<?php include "InitColor.php"; ?>	
+
 		</script>
  
 	</body>

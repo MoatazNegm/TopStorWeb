@@ -60,12 +60,13 @@
 
 <script>
 		var ElementtoColor;	
+		var Elementid;
 		$('#noback').change(function() {
 			if($(this).prop("checked")) { 
-				$('#'+ElementtoColor).css("background-color", "rgba(200,54,54,0)"); console.log("opacitytrans:"+$('#'+ElementtoColor).css("background-color"));
+				$(ElementtoColor).css("background-color", "rgba(200,54,54,0)"); console.log("opacitytrans:"+$('#'+Elementid).css("background-color"));
 			} else {
-				$('#'+ElementtoColor).css("background-color", "rgba(200,54,54,1)"); console.log("opacitysolid:"+$('#'+ElementtoColor).css("background-color"));
-				$('#'+ElementtoColor).css("background-color",$("#samplebox").css("background-color"));
+				$(ElementtoColor).css("background-color", "rgba(200,54,54,1)"); console.log("opacitysolid:"+$('#'+Elementid).css("background-color"));
+				$(ElementtoColor).css("background-color",$("#samplebox").css("background-color"));
 			};
 				
 		});
@@ -90,9 +91,10 @@
 
 	$(".colorize").click(function (e) {
 				e.stopPropagation();
-				ElementtoColor = $(this).attr("Data-id");
+				ElementtoColor = $(this).attr("Data-tag");
+				Elementid=  $(this).attr("Data-id");
 				var title = $(this).attr("class").split(' ').pop();
-				$("#myModalLabel").text(ElementtoColor);
+				$("#myModalLabel").text(Elementid);
 				
 				
 				
@@ -134,14 +136,14 @@
 				
 				if($(this).attr("Data-background") == "yes") { 
 					$(".background").show(); $(".noback").show();
-					$("#samplebox").css("background-color", $('#'+ElementtoColor).css("background-color"));
-					$("#background").minicolors("value", colorToHex($('#'+ElementtoColor).css("background-color")) );
-					if($('#'+ElementtoColor).css("background-color") == "transparent") {
-						$("#noback").prop("checked",true); console.log("found transparent"+$('#'+ElementtoColor).css("background-color"));
-						$('#'+ElementtoColor).css("background-color","transparent"); 
+					$("#samplebox").css("background-color", $("#"+Elementid).css("background-color"));
+					$("#background").minicolors("value", colorToHex($("#"+Elementid).css("background-color")) );
+					if($("#"+Elementid).css("background-color") == "transparent") {
+						$("#noback").prop("checked",true); console.log("found transparent"+$("#"+Elementid).css("background-color"));
+						$(ElementtoColor).css("background-color","transparent"); 
 						
 					} else {
-						$("#noback").prop("checked",false);console.log("found not transparent"+$('#'+ElementtoColor).css("background-color"));
+						$("#noback").prop("checked",false);console.log("found not transparent"+$('#'+Elementid).css("background-color"));
 						
 					}
 					//console.log("back is disabled");
@@ -153,8 +155,8 @@
 				};
 				if($(this).attr("Data-textcolor") == "yes") { 
 					$(".textcolor").show();
-					$("#samplebox").css("color", $('#'+ElementtoColor).css("color"));
-					$("#textcolor").minicolors("value", colorToHex($('#'+ElementtoColor).css("color")) );
+					$("#samplebox").css("color", $('#'+Elementid).css("color"));
+					$("#textcolor").minicolors("value", colorToHex($('#'+Elementid).css("color")) );
 					//console.log("textcolor enabled");
 					//$("#background").minicolors("value", "#ffffff");
 				} else { 
@@ -163,8 +165,8 @@
 				};
 				if($(this).attr("Data-border") == "yes") { 
 					$(".frame").show();
-					$("#samplebox").css("border-color", $('#'+ElementtoColor).css("border-color"));
-					$("#frame").minicolors("value", colorToHex($('#'+ElementtoColor).css("border-color")) ); 
+					$("#samplebox").css("border-color", $('#'+Elementid).css("border-color"));
+					$("#frame").minicolors("value", colorToHex($('#'+Elementid).css("border-color")) ); 
 					//$("#background").minicolors("value", "#ffffff");
 				} else { 
 					$(".frame").hide();
@@ -182,9 +184,9 @@
 		 
 		 $("#samplebox").css("color", hex);
 		 var title = $("#myModalLabel").text();
-		 $("#"+ElementtoColor).css("color", hex);
+		 $(ElementtoColor).css("color", hex);
 		console.log($("#samplebox").css("color"), " for " + ElementtoColor);
-		console.log($("#"+ElementtoColor).css("color"));
+		console.log($(ElementtoColor).css("color"));
 		}
 		 
 	});
@@ -194,7 +196,7 @@
 		change: function(hex, opacity) {
 			var title = $("#myModalLabel").text();
 				$("#samplebox").css("background-color", hex);
-				if(!$("#noback").prop("checked")){ $("#"+ElementtoColor).css("background-color", hex); }
+				if(!$("#noback").prop("checked")){ $(ElementtoColor).css("background-color", hex); }
 			
 //			console.log($("#myModalLabel").text().match(/back/g));
 //			console.log("...."+hex + "....." + opacity);
@@ -207,13 +209,17 @@
 		change: function(hex, opacity) {
 		 $("#samplebox").css("border-color", hex);
 		 var title = $("#myModalLabel").text();
-		 $("#"+ElementtoColor).css("border-color", hex);
+		 $(ElementtoColor).css("border-color", hex);
 //			console.log($("#samplebox").css("color"));
 //			console.log("...."+hex + "....." + opacity);
 		}
 		 
 	});
 	
-	
+	$(".colorize").each(function(index){
+		
+		console.log(index + ":" + $(this).attr("Data-id") + ":" + $(this).attr("Data-tag"));
+		
+		});
 </script>
 	
