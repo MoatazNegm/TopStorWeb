@@ -1,5 +1,6 @@
 <script src="jquery/Colour.js"></script>
 <script src="jquery/jquery.minicolors.js"></script>
+<script src="InitColor.js"></script>
 <div id="modalcontainer" >
 			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
@@ -50,7 +51,7 @@
 							<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 							<button type="button" class="btn btn-default" >Restore defaults</button>
 							<button type="button" class="btn btn-default" >Restore last settings</button>
-							<button type="button" class="btn btn-default">Save changes</button>
+							<button type="button" id="Savechanges" class="btn btn-default">Save changes</button>
 						</div>
 					</div>
 				</div>
@@ -61,12 +62,17 @@
 <script>
 		var ElementtoColor;	
 		var Elementid;
+		init(".colorize");
 		$('#noback').change(function() {
 			if($(this).prop("checked")) { 
-				$(ElementtoColor).css("background-color", "rgba(200,54,54,0)"); console.log("opacitytrans:"+$('#'+Elementid).css("background-color"));
+				$(ElementtoColor).css("background-color", "rgba(200,54,54,0)");
+				$("#"+Elementid).data("Data-backtrans",true);
+				//console.log("opacitytrans:"+$('#'+Elementid).css("background-color"));
 			} else {
-				$(ElementtoColor).css("background-color", "rgba(200,54,54,1)"); console.log("opacitysolid:"+$('#'+Elementid).css("background-color"));
+				$(ElementtoColor).css("background-color", "rgba(200,54,54,1)");
+				// console.log("opacitysolid:"+$('#'+Elementid).css("background-color"));
 				$(ElementtoColor).css("background-color",$("#samplebox").css("background-color"));
+				$("#"+Elementid).data("Data-backtrans",false); $("#"+Elementid).data("background-color",$("#samplebox").css("background-color"));
 			};
 				
 		});
@@ -102,49 +108,24 @@
 			//	console.log($(this).attr("class"));
 			//	console.log("B=" + $(this).css("background-color") +";" + colorToHex($(this).css("background-color").match(/rgb/g))+ ", F:" + $(this).css("color") + ", bor=" + $(this).css("border-color")+";" + colorToHex($(this).css("background-color").match(/rgb/g)));
 			//	$("#textcolor").minicolors("value", colorToHex($(this).css("color")) ); 
-			$('.demo').each( function() {
-								//
-								// Dear reader, it's actually very easy to initialize MiniColors. For example:
-								//
-								//  $(selector).minicolors();
-								//
-								// The way I've done it below is just for the demo, so don't get confused
-								// by it. Also, data- attributes aren't supported at this time...they're
-								// only used for this demo.
-								//
-				$(this).minicolors({
-					control: $(this).attr('data-control') || 'hue',
-					defaultValue: $(this).attr('data-defaultValue') || '',
-					inline: $(this).attr('data-inline') === 'true',
-					letterCase: $(this).attr('data-letterCase') || 'lowercase',
-					opacity: $(this).attr('data-opacity'),
-					position: $(this).attr('data-position') || 'bottom left',
-	//				change: function(hex, opacity) {
-	//					if( !hex ) return;
-	//					if( opacity ) hex += ', ' + opacity;
-	//					try {
-	//						console.log(hex);
-	//					} catch(e) {}
-	//				},
-					theme: 'bootstrap'
-				});
-
-			});
+		
 	//		$(".minicolors2").minicolors({ theme: 'bootstrap'});
 
-				
+			
 				
 				if($(this).attr("Data-background") == "yes") { 
 					$(".background").show(); $(".noback").show();
 					$("#samplebox").css("background-color", $("#"+Elementid).css("background-color"));
 					$("#background").minicolors("value", colorToHex($("#"+Elementid).css("background-color")) );
 					if($("#"+Elementid).css("background-color") == "transparent") {
-						$("#noback").prop("checked",true); console.log("found transparent"+$("#"+Elementid).css("background-color"));
+						$("#noback").prop("checked",true); //console.log("found transparent"+$("#"+Elementid).css("background-color"));
 						$(ElementtoColor).css("background-color","transparent"); 
+						//$("#"+Elementid).data("Data-backtrans",true); 
 						
 					} else {
-						$("#noback").prop("checked",false);console.log("found not transparent"+$('#'+Elementid).css("background-color"));
-						
+						$("#noback").prop("checked",false);//console.log("found not transparent"+$('#'+Elementid).css("background-color"));
+					//	$("#"+Elementid).data("Data-backtrans",false);
+						 
 					}
 					//console.log("back is disabled");
 					//$("#background").minicolors("value", "#ffffff");
@@ -185,8 +166,10 @@
 		 $("#samplebox").css("color", hex);
 		 var title = $("#myModalLabel").text();
 		 $(ElementtoColor).css("color", hex);
-		console.log($("#samplebox").css("color"), " for " + ElementtoColor);
-		console.log($(ElementtoColor).css("color"));
+		 $("#"+Elementid).data("color",hex);
+		 ColorCurrentupdate(ElementtoColor,"color",hex);
+//		console.log($("#samplebox").css("color"), " for " + ElementtoColor);
+//		console.log($(ElementtoColor).css("color"));
 		}
 		 
 	});
@@ -196,8 +179,10 @@
 		change: function(hex, opacity) {
 			var title = $("#myModalLabel").text();
 				$("#samplebox").css("background-color", hex);
-				if(!$("#noback").prop("checked")){ $(ElementtoColor).css("background-color", hex); }
-			
+				if(!$("#noback").prop("checked")){ $(ElementtoColor).css("background-color", hex); $("#"+Elementid).data("background-color",hex);
+																						ColorCurrentupdate(ElementtoColor,"background-color",hex);
+																				}
+				
 //			console.log($("#myModalLabel").text().match(/back/g));
 //			console.log("...."+hex + "....." + opacity);
 		}
@@ -210,16 +195,23 @@
 		 $("#samplebox").css("border-color", hex);
 		 var title = $("#myModalLabel").text();
 		 $(ElementtoColor).css("border-color", hex);
+		 $("#"+Elementid).data("Data-bordercolor",hex);
+		 ColorCurrentupdate(ElementtoColor,"border-color",hex);
 //			console.log($("#samplebox").css("color"));
 //			console.log("...."+hex + "....." + opacity);
 		}
 		 
 	});
 	
-	$(".colorize").each(function(index){
+/*	$(".colorize").each(function(index){
 		
 		console.log(index + ":" + $(this).attr("Data-id") + ":" + $(this).attr("Data-tag"));
 		
 		});
+*/
+$("#Savechanges").click(function(){
+	
+	Savecurrent();
+	});	
 </script>
 	
