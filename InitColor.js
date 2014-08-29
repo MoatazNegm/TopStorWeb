@@ -1,6 +1,7 @@
 
 
 var Elementinit = new Object(); var Elementcurrent = new Object(); var Elementsaved = new Object();
+var b;
 
 function init(colorclass) {
 	
@@ -17,6 +18,7 @@ function init(colorclass) {
 	Elementcurrent = $.extend(true,{},Elementinit);
 	//ElementObject["saved"]=ElementObject["init"]; // just for time being till we get them from files
 //	console.log(ElementObject);
+ 
 	$.post("InitColor.php", Elementinit);
 	
 }
@@ -54,8 +56,9 @@ function GetInitialColors(Ele) {
 
 	}
 function ColorCurrentupdate(Ele,loc,colr) {
-	Elementcurrent[Ele][loc]= colr;
 	console.log ("current: " + Ele + loc + colr);
+	Elementcurrent[Ele][loc]= colr;
+	
 	}
 	
 function Savecurrent() {
@@ -65,3 +68,26 @@ function Savecurrent() {
 	$.post("InitColorSaved.php", Elementsaved);
 	
 	};
+function RestoreLastSettings() {
+	
+	 $.getJSON("./Data/InitcolorSaved.ini", function(data) { Elementsaved = $.extend(true,{},data); });   
+	
+	$.extend(Elementcurrent,Elementsaved);
+	}
+function ApplySetting() {
+	var Ele = $.extend(true,{},Elementcurrent);
+	for(var loc in Ele) {
+		 if(loc.hasOwnProperty("color")) {
+			 $(loc).css("color",loc["color"]);
+		 }
+		 if(loc.hasOwnProperty("border-color")) {
+			 $(loc).css("border-color",loc["border-color"]);
+		 }
+		 if(loc.hasOwnProperty("background-color")) {
+			 $(loc).css("background-color",loc["background-color"]);
+		 }
+		 if(loc.hasOwnProperty("Data-backtrans")) {
+			 if(loc["Data-backtrans"]) { $(loc).css("background-color","rgba(200,54,54,0)"); }
+		 }
+	}
+}

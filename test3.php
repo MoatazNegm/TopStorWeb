@@ -1,9 +1,8 @@
+<script src="jquery/jquery.js"></script>
+<script src="jquery-ui/jquery-ui.js"></script>
+
 <script>
-var ElementObject= new Object();
-ElementObject["init"]= new Object();
-ElementObject.init.second="mezo";
+ var b=	$.getJSON("./Data/InitcolorSaved.ini");
 
-
-console.log(ElementObject);
 
 </script>
