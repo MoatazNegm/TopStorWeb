@@ -1,29 +1,9 @@
 <!DOCTYPE html>
 <html>
-	<?php include "header.html"; ?>
-	<body>
-			
-<!------------  NAV Bar --------------->
-		<div class="container-fluid">
-			<div class="row">
-				<div class="img-logo ">
-					<div class="col-sm-3">
-						<a class="pull-left logoimg" href="#">
-							<img src="img/logo2.png" height="200" width="200" class="img-responsive"> 
-						</a>
-					</div>
-					<div class="col-sm-6">
-						<h1 class="text-center maintext"><strong>Flex Storage</strong></h1>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="">
-					<?php $men = 2; include "menu.php"; ?>
-					<div class="col-sm-11 rightPane">
-						<ul>
-							<li><a href="#" class="SSa"><h4 id="SS"><span>Services Status</span></h4></a></li>
-							<li><a href="#" class="Logsa"><h4 id="Logs"><span>Logs</span></h4></a></li>
+	<?php $men=2; include "header.html"; ?>
+	
+							<li><a href="#" class="SSa rightli"><h4 id="SS"><span>Services Status</span></h4></a></li>
+							<li><a href="#" class="Logsa rightli"><h4 id="Logs"><span>Logs</span></h4></a></li>
 						</ul>
 						<?php include "SS.php" ?>
 						<?php include "Logs.php" ?>
@@ -35,7 +15,8 @@
 			<footer class="footer"> Errors
 			</footer>
 		</div>
-
+	</div>
+	</div>
 		<script src="jquery/jquery.js"></script>
 		<script src="jquery-ui/jquery-ui.js"></script>
 		<script src="jquery/jquery.datetimepicker.js"></script>

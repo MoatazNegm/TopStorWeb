@@ -1,9 +1,9 @@
 <div class="row ISCSI">
 							
 							<div class=" col-sm-offset-1 col-sm-10">
-								<div class="box ">
+								<div class="box " id="Popup">
 									<div class="row">
-										<h2 class="configTitle">Active Directory</h2>
+										<h2 class="configTitle" id="SubTitle">Active Directory</h2>
 									</div>									
 									<form class="form-horizontal " role="form">
 										<div class="row">

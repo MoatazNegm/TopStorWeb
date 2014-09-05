@@ -1,31 +1,10 @@
 <!DOCTYPE html>
 <html>
-	<?php include "header.html"; ?>
-	<body>
-
-		
-<!------------  NAV Bar --------------->
-		<div class="container-fluid">
-			<div class="row">
-				<div class="img-logo ">
-					<div class="col-sm-3">
-						<a class="pull-left logoimg" href="#">
-							<img src="img/logo2.png" height="200" width="200" class="img-responsive"> 
-						</a>
-					</div>
-					<div class="col-sm-6">
-						<h1 class="text-center maintext"><strong>Flex Storage</strong></h1>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="">
-					<?php $men = 3; include "menu.php"; ?>
-					<div class="col-sm-11 rightPane">
-						<ul>
-							<li><a href="#" class="CIFSa"><h4 id="CIFS"><span>CIFS</span></h4></a></li>
-							<li><a href="#" class="NFSa"><h4 id="NFS"><span>NFS</span></h4></a></li>
-							<li><a href="#" class="ISCSIa"><h4 id="ISCSI"><span>ISCSI</span></h4></a></li>
+	<?php $men=3;  include "header.html"; ?>
+	
+							<li><a href="#" class="CIFSa rightli"><h4 id="CIFS"><span>CIFS</span></h4></a></li>
+							<li><a href="#" class="NFSa rightli"><h4 id="NFS"><span>NFS</span></h4></a></li>
+							<li><a href="#" class="ISCSIa rightli"><h4 id="ISCSI"><span>ISCSI</span></h4></a></li>
 						</ul>
 						<?php include "CIFS.php"; ?>
 						<?php include "NFS.php"; ?>
@@ -40,7 +19,7 @@
 			<footer class="footer"> Errors
 			</footer>
 		</div>
-
+  </div>
 
 
 			<!-- Don't touch this! -->

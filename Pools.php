@@ -1,30 +1,9 @@
 <!DOCTYPE html>
 <html>
-	<?php include "header.html"; ?>
-	<body>
-
-		
-<!------------  NAV Bar --------------->
-		<div class="container-fluid">
-			<div class="row">
-				<div class="img-logo ">
-					<div class="col-sm-3">
-						<a class="pull-left logoimg" href="#">
-							<img src="img/logo2.png" height="200" width="200" class="img-responsive"> 
-						</a>
-					</div>
-					<div class="col-sm-6">
-						<h1 class="text-center maintext"><strong>Flex Storage</strong></h1>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="">
-					<?php $men = 5; include "menu.php"; ?>
-					<div class="col-sm-11 rightPane">
-						<ul>
-							<li><a href="#" class="DiskGroupa"><h4 id="DiskGroups"><span>Disk Groups</span></h4></a></li>
-							<li><a href="#" class="SnapShotsa"><h4 id="SnapShots"><span>SnapShots</span></h4></a></li>
+	<?php $men= 5; include "header.html"; ?>
+	
+							<li><a href="#" class="DiskGroupa rightli"><h4 id="DiskGroups"><span>Disk Groups</span></h4></a></li>
+							<li><a href="#" class="SnapShotsa rightli"><h4 id="SnapShots"><span>SnapShots</span></h4></a></li>
 						</ul>
 						<?php include "DiskGroups.php"; ?>
 						<?php include "SnapShots.php" ; ?>

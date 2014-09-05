@@ -1,8 +1,8 @@
 <div class="row Logs">
 							<div class=" col-sm-offset-1 col-sm-10">
-								<div class="box ">
+								<div class="box " id="Popup">
 									<div class="row">
-										<h2 class="configTitle"></h2>
+										<h2 class="configTitle" id="SubTitle"></h2>
 									</div>									
 									<div class="row">
 										<form class="form " role="form">

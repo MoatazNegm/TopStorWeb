@@ -1,9 +1,9 @@
 <div class="row UnLin">
 							<div class=" col-sm-offset-1 col-sm-10">
 								
-								<div class="box ">
+								<div class="box " id="Popup">
 										<div class="row">
-											<h2 class="configTitle"></h2>
+											<h2 class="configTitle" id="SubTitle"></h2>
 										</div>									
 										<form class="form-horizontal " role="form">
 											<div class="row">

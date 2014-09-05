@@ -19,21 +19,21 @@ function init(colorclass) {
 	//ElementObject["saved"]=ElementObject["init"]; // just for time being till we get them from files
 //	console.log(ElementObject);
  
-	$.post("InitColor.php", Elementinit);
+//	$.post("InitColor.php", Elementinit);
 	
 }
 
 function GetInitialColors(Ele) {
 				Elementid = Ele["Data-id"];
-				ElementtoColor= Ele;
+				
 				if(Ele["Data-background"] == "yes") { 
 					if($("#"+Elementid).css("background-color") == "transparent") {
 						Ele["Data-backtrans"]=true; Ele["background-color"]="transparent";
 						$("#"+Elementid).data("Data-backtrans",true); $("#"+Elementid).data("background-color","transparent");
 						
 					} else {
-						Ele["Data-backtrans"]=false; Ele["background-color"]= $("#"+Elementid).css("background-color");
-						$("#"+Elementid).data("Data-backtrans",false);$("#"+Elementid).data("background-color",$("#"+Elementid).css("background-color"));
+						Ele["Data-backtrans"]=false; Ele["background-color"]= colorToHex($("#"+Elementid).css("background-color"));
+						$("#"+Elementid).data("Data-backtrans",false);$("#"+Elementid).data("background-color",colorToHex($("#"+Elementid).css("background-color")));
 						 
 					}
 					//console.log("back is disabled");
@@ -56,7 +56,7 @@ function GetInitialColors(Ele) {
 
 	}
 function ColorCurrentupdate(Ele,loc,colr) {
-	console.log ("current: " + Ele + loc + colr);
+	console.log ("Ele: " + Ele +",loc:"+ loc + ",colr:"+colr);
 	Elementcurrent[Ele][loc]= colr;
 	
 	}
@@ -68,26 +68,86 @@ function Savecurrent() {
 	$.post("InitColorSaved.php", Elementsaved);
 	
 	};
+
+function ApplySetting() {
+	
+	var Ele = new Object();
+	Ele = $.extend(true,{},Elementcurrent);
+/*	for(var locc in Elementcurrent) {
+		Ele[locc]=$.extend(true,{},Elementcurrent[locc]);
+	}
+*/	console.log("Ele: "+Ele["#rightPane"]["background-color"]);
+	for(var loc in Ele) {
+		 
+		 if(Ele[loc].hasOwnProperty("color")== true) {
+			 $(loc).css("color",Ele[loc]["color"]);
+//			 console.log(loc+" "+ Ele[loc]["background-color"]);
+		 }
+		 if(Ele[loc].hasOwnProperty("border-color") == true ) {
+			 $(loc).css("border-color",Ele[loc]["border-color"]);
+		 }
+		 
+		 if(Ele[loc].hasOwnProperty("Data-backtrans") == true) {
+			  //console.log("backtrans: "+ Ele["rightPane"]["Data-backtrans"]);
+			 if(Ele[loc]["Data-backtrans"] == true) { 
+				 $(loc).css("background-color","rgba(200,54,54,0)");
+//				 console.log("found true :"+loc) ;
+				 } else {
+					if(Ele[loc].hasOwnProperty("background-color") == true) {
+					
+			 
+					$(loc).css("background-color",Ele[loc]["background-color"]);
+				
+					}
+			 }
+			}
+		 }
+		}
+		
+
+	
 function RestoreLastSettings() {
 	
-	 $.getJSON("./Data/InitcolorSaved.ini", function(data) { Elementsaved = $.extend(true,{},data); });   
+	 $.getJSON("./Data/InitcolorSaved.ini", function(data) { 
+		 
+		 for(var loc in data) {
+			 Elementsaved[data[loc]["Data-tag"]] = $.extend(true,{},data[loc]);
+			 Elementcurrent[data[loc]["Data-tag"]] = $.extend(true,{},data[loc]);
+			 console.log( Elementsaved[data[loc]["Data-tag"]]["Data-tag"] + Elementsaved[data[loc]["Data-tag"]]["background-color"]);
+			 
+//		
+			};
+			
+			console.log("data "+data["#rightPane"]["background-color"]);
+
+			console.log("Eleme"+Elementcurrent["#rightPane"]["background-color"]); 
+			ApplySetting(); 
+			
+		});
+		
+	 
+	 
+	}	
+
+function RestoreInitSettings() {
 	
-	$.extend(Elementcurrent,Elementsaved);
-	}
-function ApplySetting() {
-	var Ele = $.extend(true,{},Elementcurrent);
-	for(var loc in Ele) {
-		 if(loc.hasOwnProperty("color")) {
-			 $(loc).css("color",loc["color"]);
-		 }
-		 if(loc.hasOwnProperty("border-color")) {
-			 $(loc).css("border-color",loc["border-color"]);
-		 }
-		 if(loc.hasOwnProperty("background-color")) {
-			 $(loc).css("background-color",loc["background-color"]);
-		 }
-		 if(loc.hasOwnProperty("Data-backtrans")) {
-			 if(loc["Data-backtrans"]) { $(loc).css("background-color","rgba(200,54,54,0)"); }
-		 }
-	}
-}
+	 $.getJSON("./Data/Initcolor.ini", function(data) { 
+		 
+		 for(var loc in data) {
+			 Elementsaved[data[loc]["Data-tag"]] = $.extend(true,{},data[loc]);
+			 Elementcurrent[data[loc]["Data-tag"]] = $.extend(true,{},data[loc]);
+			 console.log( Elementsaved[data[loc]["Data-tag"]]["Data-tag"] + Elementsaved[data[loc]["Data-tag"]]["background-color"]);
+			 
+//		
+			};
+			
+			console.log("data "+data["#rightPane"]["background-color"]);
+
+			console.log("Eleme"+Elementcurrent["#rightPane"]["background-color"]); 
+			ApplySetting(); 
+			
+		});
+		
+	 
+	 
+	}	

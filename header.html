@@ -1,3 +1,14 @@
+<script src="jquery/jquery.js"></script>
+<script src="jquery-ui/jquery-ui.js"></script>
+<script src="jquery/jquery.datetimepicker.js"></script>
+<script src="Bootstrap/js/bootstrap.min.js"></script>
+<script src="InitColor.js"></script>
+	<script>
+$(document).ready(function() {
+	RestoreLastSettings();
+});
+</script>
+
 <head>
 		
 		<meta Content="text/html"; charset="utf-8" >
@@ -10,3 +21,26 @@
 		<link rel="stylesheet" href="jquery/jquery.minicolors.css">
 		<link rel="stylesheet" href="css/style.css" type="text/css">
 	</head>
+<body >
+	<div class="colorize" id="body" Data-tag="#body,html,#caption" Data-id="body" Data-textcolor="no" Data-background="yes" Data-border="no" >
+
+<!------------  NAV Bar --------------->
+		<div class="container-fluid">
+			<div class="row " id="caption" Data-tag="#caption" Data-id="caption" Data-textcolor="no" Data-background="yes" Data-border="no">
+				<div class="img-logo ">
+					<div class="col-sm-3">
+						<a class="pull-left logoimg" href="#">
+							<img src="img/logo2.png" height="200" width="200" class="img-responsive"> 
+						</a>
+					</div>
+					<div class="col-sm-6">
+						<h1 class="text-center maintext colorize" id="Title" Data-tag="#Title" Data-id="Title" Data-textcolor="yes" Data-background="no" Data-border="no" ><strong>Flex Storage</strong></h1>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="">
+					<?php  include "menu.php"; ?> 
+					<div class="col-sm-11 rightPane" id="rightPane" Data-tag="#rightPane" Data-id="rightPane" Data-textcolor="yes" Data-background="yes" Data-border="yes">
+						<ul>
+

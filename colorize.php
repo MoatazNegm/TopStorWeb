@@ -49,7 +49,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-default" >Restore defaults</button>
+							<button type="button" id="RestIntstng"class="btn btn-default" >Restore defaults</button>
 							<button type="button" id="Restlststng"class="btn btn-default" >Restore last settings</button>
 							<button type="button" id="Savechanges" class="btn btn-default">Save changes</button>
 						</div>
@@ -63,6 +63,7 @@
 		var ElementtoColor;	
 		var Elementid;
 		init(".colorize");
+		
 		$('#noback').change(function() {
 			if($(this).prop("checked")) { 
 				$(ElementtoColor).css("background-color", "rgba(200,54,54,0)");
@@ -167,7 +168,7 @@
 		 var title = $("#myModalLabel").text();
 		 $(ElementtoColor).css("color", hex);
 		 $("#"+Elementid).data("color",hex);
-		 ColorCurrentupdate(ElementtoColor,"color",hex);
+			 ColorCurrentupdate(ElementtoColor,"color",hex);
 //		console.log($("#samplebox").css("color"), " for " + ElementtoColor);
 //		console.log($(ElementtoColor).css("color"));
 		}
@@ -216,7 +217,17 @@ $("#Savechanges").click(function(){
 $("#Restlststng").click(function(){
 	
 	RestoreLastSettings();
-	ApplySetting();
+	
+	
+	//ApplySetting();
+	});	
+	
+$("#RestIntstng").click(function(){
+	
+	RestoreInitSettings();
+	
+	
+	//ApplySetting();
 	});	
 
 </script>

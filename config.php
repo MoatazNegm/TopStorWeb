@@ -1,39 +1,18 @@
 <!DOCTYPE html>
 <html>
-	<?php include "header.html"; ?>
-		<body class="" >
 
-	<div class="colorize" id="body" Data-tag="#body" Data-id="body" Data-textcolor="No" Data-background="yes" Data-border="No" >
-<!------------  NAV Bar --------------->
-		<div class="container-fluid ">
-			<div class="row colorize" id="caption" Data-tag="#caption" Data-id="caption" Data-textcolor="no" Data-background="yes" Data-border="no">
-				<div class="img-logo ">
-					<div class="col-sm-3">
-						<a class="pull-left logoimg " href="#">
-							<img src="img/logo2.png" height="200" width="200" class="img-responsive"> 
-						</a>
-					</div>
-					<div class="col-sm-6">
-						<h1 class="text-center maintext colorize" id="Title" Data-tag="#Title" Data-id="Title" Data-textcolor="yes" Data-background="no" Data-border="no" ><strong>	<?php echo " Flex Storage"; ?></strong></h1>
-					</div>
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="" >
-					<div ><?php $men = 6; include "menu.php"; ?> 
-					</div>	
-					
-					<div class="col-sm-11 rightPane " id="rightPane" >
-					
-						<ul class=""  >
-							<li><a id="List" href="#" ><h4  class="rightli colorize" Data-tag="li.rightli" Data-id="List" Data-textcolor="yes" Data-background="no" Data-border="no" id="colorizethis"><span> Colorize List</span></h4></a></li>
+	<?php $men=6;include "header.html"; ?>
+
+							
 							<li><a href="#" class="rightli ADa "><h4 id="AD"><span>Active Directory</span></h4></a></li>
 							<li><a   href="#" class="rightli UnLina"><h4 id="UnLin"><span>Unix/Linux users</span></h4></a></li>
 							<li><a href="#" class="rightli Futurea"><h4 id="Future"><span> .........Future</span></h4></a></li>
 						</ul>
 						<ul  > 
+							<li><a id="List" href="#" ><h4  class=" colorize" Data-tag=".rightli" Data-id="List" Data-textcolor="yes" Data-background="no" Data-border="no" id="colorizethis"><span> Colorize List</span></h4></a></li>
 							<li ><a class="colorize " Data-tag="#rightPane" Data-id="rightPane" Data-textcolor="no" Data-background="yes" Data-border="no" href="#" ><h4 id="AD"><span>Colorize RightPane</span></h4></a></li>
+							
+							
 							
 						</ul>
 					
@@ -43,15 +22,16 @@
 					
 				</div>
 			
-			</div>
+		
 			
-			<div class="row">
-				<footer class="footer"> Errors
+					</div>
+	</div>
+	<div class=" prefooter colorize"  id="prefooter" Data-tag=".prefooter" Data-id="prefooter" Data-textcolor="yes" Data-background="yes" Data-border="yes">
+				<footer class="footer colorize" id="footer" Data-tag=".footer" Data-id="footer" Data-textcolor="yes" Data-background="yes" Data-border="yes"> Errors
 				</footer>
 			</div>
-		</div>
+	
 	</div>	
-		
 		<script src="jquery/jquery.js"></script>
 		<script src="jquery-ui/jquery-ui.js"></script>
 		<script src="jquery/jquery.datetimepicker.js"></script>
@@ -71,7 +51,7 @@
 			$(".AD").draggable();
 			
 		</script>
-		 <?php include "colorize.php"; ?>
+ <?php include "colorize.php"; ?> 
 	
 		 <script> console.log("$('"+"dkdk"+"').css('background-color',"+"'dslks'"+");");</script>
 			
