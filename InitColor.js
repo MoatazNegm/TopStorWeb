@@ -14,10 +14,10 @@ function init(colorclass) {
 			Elementinit[$(this).attr("Data-tag")]["Data-border"]= $(this).attr("Data-border");
 			GetInitialColors(Elementinit[$(this).attr("Data-tag")]);
 	});
-	console.log("init is running");
+//	console.log("init is running");
 	Elementcurrent = $.extend(true,{},Elementinit);
 	//ElementObject["saved"]=ElementObject["init"]; // just for time being till we get them from files
-//	console.log(ElementObject);
+	//console.log(ElementObject);
  
 //	$.post("InitColor.php", Elementinit);
 	
@@ -65,7 +65,7 @@ function Savecurrent() {
 		Elementsaved = $.extend(true,{},Elementcurrent);
 	//ElementObject["saved"]=ElementObject["init"]; // just for time being till we get them from files
 //	console.log(ElementObject);
-	$.post("InitColorSaved.php", Elementsaved);
+	$.post("./InitColorSaved.php", Elementsaved);
 	
 	};
 
