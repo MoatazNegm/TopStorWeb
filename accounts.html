@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<meta name="author" content="Mezobuntu1310" />
-		<title>QuickStor(disks)</title>
-		<link  rel="stylesheet" href="css/normalize.css" type="text/css">
-		<link rel="stylesheet" href="../Bootstrap/css/bootstrap.min.css" type="text/css">
-		<link rel="stylesheet" href="../Bootstrap/css/bootstrap-theme.min.css" type="text/css">
-		<link rel="stylesheet" href="css/style.css?dkslsksd" type="text/css">
-	</head>
+	<?php include "header.html"; ?>
 	<body>
 
 		
@@ -28,21 +20,13 @@
 			</div>
 			<div class="row">
 				<div class="">
-					<div class=" col-sm-1 leftPane">
-						<ul class="nav nav-pills nav-stacked">
-							<li class="active" ><a href="accounts.html"  data-toggle="tab"><br>Accounts</a></li>
-							<li><a href="status.html" data-toggle="tab"><br>Status</a></li>
-							<li><a href="identity.html" data-toggle="tab"><br>Identity</a></li>
-							<li><a href="replication.html" data-toggle="tab"><br>replication</a></li>
-							<li><a href="help.html" data-toggle="tab"><br>help</a></li>
-							<li><a href="config.html" data-toggle="tab"><br>config</a></li>
-						</ul>
+					<div ><?php $men = 1; include "menu.php"; ?> 
 					</div>
 					<div class="col-sm-11 rightPane">
 						<ul>
-							<li><a href="#" disabled="disabled"><h4 id="AD"><span>Active Directory</span></h4></a></li>
-							<li><a href="#"><h4 id="UnLin"><span>Unix/Linux users</span></h4></a></li>
-							<li><a href="#"><h4 id="Future"><span> .........Future</span></h4></a></li>
+							<li><a href="#" class="ADa"><h4 id="AD"><span>Active Directory</span></h4></a></li>
+							<li><a href="#" class="UnLina"><h4 id="UnLin"><span>Unix/Linux users</span></h4></a></li>
+							<li><a href="#" class="Futurea"><h4 id="Future"><span> .........Future</span></h4></a></li>
 						</ul>
 
 						<div class="row AD">
@@ -129,7 +113,7 @@
 													<div class=" form-group row ">
 														<label  for="UserList" class="col-sm-5 control-label"></label>
 														<div class=" col-sm-6">
-															<textarea rows="3" id="UserList" class="form-control " ></textarea>
+															<select multiple size""3"" id="UserList" class="form-control " ><option>user1</option><option>user2</option><option>user3</option>
 														</div>
 													</div>
 													<div class=" form-group row ">
@@ -239,9 +223,10 @@
 			</footer>
 		</div>
 
-		<script src="../Bootstrap/js/jquery.js"></script>
-		<script src="../Bootstrap/js/jquery-ui.js"></script>
-		<script src="../Bootstrap/js/bootstrap.min.js"></script>
+		<script src="jquery/jquery.js"></script>
+		<script src="jquery-ui/jquery-ui.js"></script>
+		<script src="jquery/jquery.datetimepicker.js"></script>
+		<script src="Bootstrap/js/bootstrap.min.js"></script>
 		<script>
 			var config = 1;
 			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();

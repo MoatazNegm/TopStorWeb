@@ -20,6 +20,7 @@ body {
 	background: -o-linear-gradient(#D3D3D3, #B2BEB5, #D3D3D3); /* For Opera 11.1 to 12.0 */
 	background: -moz-linear-gradient(#D3D3D3, #B2BEB5, #D3D3D3); /* For Firefox 3.6 to 15 */
 	background: linear-gradient(#6E7F80, #B2BEB5, #6E7F80); /* Standard syntax (must be last) */
+	z-index: -100;
 }
 .container-fluid {
  margin: 2px 3%;
@@ -38,14 +39,8 @@ body {
 
 }
 .rightPane {
-	background: #3e4146; /* Old browsers */
-	background: -moz-linear-gradient(top,  #3e4146 0%, #000000 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#3e4146), color-stop(100%,#000000)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #3e4146 0%,#000000 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #3e4146 0%,#000000 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #3e4146 0%,#000000 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  #3e4146 0%,#000000 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3e4146', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
+	background-color: #3e4146; /* Old browsers */
+	
 
 }
 .leftPane {
@@ -86,13 +81,14 @@ ul.nav-stacked li:nth-child(4) a{
 	background-image:url('../img/replication.png');
 }
 ul.nav-stacked li:nth-child(5) a{
-	background-image:url('../img/help.png');
+	background-image:url('../img/diskconfig.png');
 }
 ul.nav-stacked li:nth-child(6) a{
 	background-image:url('../img/configuration.png');
 }
 .rightPane a {
 	display: inline-block;
+	
 }
 .rightPane h4 {
 /*	background-image:url('../img/future.png'); */
@@ -106,8 +102,10 @@ ul.nav-stacked li:nth-child(6) a{
 
 h4 span {
 	position: absolute;
+	width: 100%;
 	bottom: 0;
-	left: .6rem;
+	
+	text-align: center;
 }
 .rightPane ul li {
 	display: inline;
@@ -123,14 +121,35 @@ h4 span {
 	transform:scale(1.2); /* Standard syntax */
 }
 
-.rightPane ul li:nth-child(1) a{
+.ADa {
 	background-image:url('../img/AD.png');
 }
-.rightPane ul li:nth-child(2) a{
+.UnLina {
 	background-image:url('../img/linux.png');
 }
-.rightPane ul li:nth-child(3) a{
+.Futurea {
 	background-image:url('../img/future.png');
+}
+.SSa {
+	background-image:url('../img/SS.png');
+}
+.Logsa {
+	background-image:url('../img/logs.png');
+}
+.CIFSa {
+	background-image:url('../img/cifs.png');
+}
+.NFSa {
+	background-image:url('../img/nfs.png');
+}
+.ISCSIa {
+	background-image:url('../img/iscsi2.png');
+}
+.DiskGroupa {
+	background-image:url('../img/diskconfigs.png');
+}
+.SnapShotsa {
+	background-image:url('../img/snapshot.png');
 }
 .modal {
 	position: relative;
@@ -149,19 +168,27 @@ h4 span {
 	background-size: 4rem 4rem;
 */	background: #797e86;
 	padding: 2px;
-	margin: 0;
+	margin: -5rem;
+}
+.box2 {
 	
+	margin-top:-4rem;
+	margin-left: -1rem;
+	margin-bottom: -5rem;
+	height: 25rem; 
+	padding: 0;
 }
 h2 {
-	margin:0 0 1rem 0;
+	margin:0 0 1.5rem 0;
 	background-image:url('../img/future.png');
 	background-repeat:no-repeat;
 	background-position:1.2rem top;
 	background-size: 4rem 4rem;
-	color: purple;
+	color: #145014;
 
 	
 }
+
 .form-control {background-color: lightgrey;}
 .submitb {
 		margin-top: 4.7rem;
@@ -171,6 +198,18 @@ h2 {
 }
 .configTitle {
 	text-align: center;
+	height: 4rem;
+}
+.boxoffields { 
+	
+	border : white 1px solid;
+}
+.boxoffields span {
+	position: absolute;
+
+	margin: -1.2rem 0 0 0 ;
+	background: #797e86;
+	
 }
 .footer {
    position:fixed;
@@ -182,3 +221,104 @@ h2 {
    background:#999;
 }
 
+.demo-container {
+	box-sizing: border-box;
+	
+	width: 15em;
+	height: 16rem;
+/*	width: 850px;
+	height: 450px;
+	padding: 20px 15px 15px 15px;
+	margin: 15px auto 30px auto;
+	border: 1px solid #ddd;
+	background: #fff;
+	background: linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -o-linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -ms-linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -moz-linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -webkit-linear-gradient(#f6f6f6 0, #fff 50px);
+	box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+	-o-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-ms-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	*/
+}
+
+.demo-placeholder {
+
+	width: 300%; 
+	height: 12rem;
+	font-size: 14px;
+	line-height: 1.2em;
+	margin: 1em ;
+}
+.logswrapper {
+	padding:0;
+}
+#logsarea {
+	height: 10rem;
+	width: 100%;
+	margin: 1rem -1rem 0 0 ;
+}
+
+.labels {
+	text-align: right;
+}
+.addiqn, .remiqn {
+	margin-left:-2rem;
+}
+.addclient, .remclient {
+	margin-left:-.5rem;
+}
+.middlemargin {
+		margin-top: 2rem;
+}
+#runningdik1{
+	background-image:url('../img/disks.png');
+	background-repeat: no-repeat;
+  background-size: 4rem 9rem;
+	background-position: center .8rem;
+	text-align: center;
+	height: 9rem;
+}
+
+
+#raidtabl td, #raidtabl tr {
+
+	margin: 0.03rem;
+	vertical-align:middle;
+	
+}
+.radiocontrol, .table {
+	margin: 0.01rem;
+	padding: 0;
+}
+#emptydiv {
+	height: 4.32rem;
+}
+.separator {
+	margin-left: 2rem;
+}
+.NNmodal-dialog, #modalcontainer {
+			position: fixed;
+			left: 50%;
+			top : -2% ;
+			width: 20	rem ;
+} 
+#samplebox {
+	position: relative;
+	left: 38%;
+	margin-top: 2rem;
+	width : 15rem;
+	height: 3rem;
+	border: solid 2px;
+	color: red;
+	background-color: green;
+	}
+.modal-backdrop.in {
+  filter: alpha(opacity=0);
+  opacity: 0;
+}
+.config_body { z-index:98;}
+.config_continer { z-index:-96;}
