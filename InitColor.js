@@ -12,6 +12,7 @@ function init(colorclass) {
 			Elementinit[$(this).attr("Data-tag")]["Data-textcolor"]= $(this).attr("Data-textcolor");
 			Elementinit[$(this).attr("Data-tag")]["Data-background"]= $(this).attr("Data-background");
 			Elementinit[$(this).attr("Data-tag")]["Data-border"]= $(this).attr("Data-border");
+			Elementinit[$(this).attr("Data-tag")]["Data-backtrans"]= $(this).attr("Data-backtrans");
 			GetInitialColors(Elementinit[$(this).attr("Data-tag")]);
 	});
 //	console.log("init is running");
@@ -25,10 +26,10 @@ function init(colorclass) {
 
 function GetInitialColors(Ele) {
 				Elementid = Ele["Data-id"];
-				
+		//		console.log(Elementid + " " +Ele["Data-background"] + " "+Ele["Data-backtrans"] + " "  +Ele["Data-backtrans"] == true);
 				if(Ele["Data-background"] == "yes") { 
-					if($("#"+Elementid).css("background-color") == "transparent") {
-						Ele["Data-backtrans"]=true; Ele["background-color"]="transparent";
+					if(Ele["Data-backtrans"] == "true") {
+						Ele["Data-backtrans"]=true; Ele["background-color"]="transparent"; 
 						$("#"+Elementid).data("Data-backtrans",true); $("#"+Elementid).data("background-color","transparent");
 						
 					} else {
@@ -56,7 +57,7 @@ function GetInitialColors(Ele) {
 
 	}
 function ColorCurrentupdate(Ele,loc,colr) {
-	console.log ("Ele: " + Ele +",loc:"+ loc + ",colr:"+colr);
+	//console.log ("Ele: " + Ele +",loc:"+ loc + ",colr:"+colr);
 	Elementcurrent[Ele][loc]= colr;
 	
 	}
@@ -76,7 +77,7 @@ function ApplySetting() {
 /*	for(var locc in Elementcurrent) {
 		Ele[locc]=$.extend(true,{},Elementcurrent[locc]);
 	}
-*/	console.log("Ele: "+Ele["#rightPane"]["background-color"]);
+*///	console.log("Ele: "+Ele["#rightPane"]["background-color"]);
 	for(var loc in Ele) {
 		 
 		 if(Ele[loc].hasOwnProperty("color")== true) {
@@ -86,19 +87,18 @@ function ApplySetting() {
 		 if(Ele[loc].hasOwnProperty("border-color") == true ) {
 			 $(loc).css("border-color",Ele[loc]["border-color"]);
 		 }
-		 
+	//	 console.log(Ele[loc].hasOwnProperty("Data-backtrans") + loc);
 		 if(Ele[loc].hasOwnProperty("Data-backtrans") == true) {
-			  //console.log("backtrans: "+ Ele["rightPane"]["Data-backtrans"]);
-			 if(Ele[loc]["Data-backtrans"] == true) { 
+			  
+			 if(Ele[loc]["Data-backtrans"] == "true") { 
+				 console.log(loc+ " : "+ Ele[loc]["Data-backtrans"]);
 				 $(loc).css("background-color","rgba(200,54,54,0)");
-//				 console.log("found true :"+loc) ;
+		//	 console.log("found true :"+loc) ;
 				 } else {
-					if(Ele[loc].hasOwnProperty("background-color") == true) {
 					
-			 
-					$(loc).css("background-color",Ele[loc]["background-color"]);
+						$(loc).css("background-color",Ele[loc]["background-color"]);
 				
-					}
+					
 			 }
 			}
 		 }
@@ -113,14 +113,14 @@ function RestoreLastSettings() {
 		 for(var loc in data) {
 			 Elementsaved[data[loc]["Data-tag"]] = $.extend(true,{},data[loc]);
 			 Elementcurrent[data[loc]["Data-tag"]] = $.extend(true,{},data[loc]);
-			 console.log( Elementsaved[data[loc]["Data-tag"]]["Data-tag"] + Elementsaved[data[loc]["Data-tag"]]["background-color"]);
+		//	 console.log( Elementsaved[data[loc]["Data-tag"]]["Data-tag"] + Elementsaved[data[loc]["Data-tag"]]["background-color"]);
 			 
 //		
 			};
 			
-			console.log("data "+data["#rightPane"]["background-color"]);
+	//		console.log("data "+data["#rightPane"]["background-color"]);
 
-			console.log("Eleme"+Elementcurrent["#rightPane"]["background-color"]); 
+		//	console.log("Eleme"+Elementcurrent["#rightPane"]["background-color"]); 
 			ApplySetting(); 
 			
 		});
@@ -136,14 +136,14 @@ function RestoreInitSettings() {
 		 for(var loc in data) {
 			 Elementsaved[data[loc]["Data-tag"]] = $.extend(true,{},data[loc]);
 			 Elementcurrent[data[loc]["Data-tag"]] = $.extend(true,{},data[loc]);
-			 console.log( Elementsaved[data[loc]["Data-tag"]]["Data-tag"] + Elementsaved[data[loc]["Data-tag"]]["background-color"]);
+	//		 console.log( Elementsaved[data[loc]["Data-tag"]]["Data-tag"] + Elementsaved[data[loc]["Data-tag"]]["background-color"]);
 			 
 //		
 			};
 			
-			console.log("data "+data["#rightPane"]["background-color"]);
+	//		console.log("data "+data["#rightPane"]["background-color"]);
 
-			console.log("Eleme"+Elementcurrent["#rightPane"]["background-color"]); 
+	//		console.log("Eleme"+Elementcurrent["#rightPane"]["background-color"]); 
 			ApplySetting(); 
 			
 		});
