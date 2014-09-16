@@ -29,11 +29,11 @@
 												</div>
 												<div class="  col-sm-2">
 													<div class="form-group row">
-														<button type="submit" class="btn btn-default  col-sm-10 adduser"  data-toggle="tooltip" data-placement="top" title="add user">Add User</button>
+														<button id="UnixAddUser" type="submit" class="btn btn-default  col-sm-10 adduser"  data-toggle="tooltip" data-placement="top" title="add user">Add User</button>
 													</div>
 													<div class="form-group row">
 														<div class="row">
-															<button type="submit" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="remove user">Remove User</button>
+															<button id="UnixDelUser" type="submit" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="remove user">Remove User</button>
 														</div>
 													</div>
 												</div>
