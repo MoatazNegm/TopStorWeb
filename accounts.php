@@ -47,7 +47,7 @@
 				});
 			};
 			setInterval('refresh()', 1000); // Loop every 1000 milliseconds (i.e. 1 second)
-			setInterval('refreshUserList()', 30000); // Loop every 10000 milliseconds (i.e. 1 second)
+			setInterval('refreshUserList()', 5000); // Loop every 10000 milliseconds (i.e. 1 second)
 			refreshUserList();
 			var config = 1;
 			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();
