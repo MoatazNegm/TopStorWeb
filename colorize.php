@@ -68,14 +68,15 @@
 			if($(this).prop("checked")) { 
 				$(ElementtoColor).css("background-color", "rgba(200,54,54,0)");
 				$("#"+Elementid).data("Data-backtrans",true);
-				//console.log("opacitytrans:"+$('#'+Elementid).css("background-color"));
+				
+				console.log("opacitytrans:"+$('#'+Elementid).css("background-color"));
 			} else {
 				$(ElementtoColor).css("background-color", "rgba(200,54,54,1)");
-				// console.log("opacitysolid:"+$('#'+Elementid).css("background-color"));
+				 console.log("opacitysolid:"+$('#'+Elementid).css("background-color"));
 				$(ElementtoColor).css("background-color",$("#samplebox").css("background-color"));
 				$("#"+Elementid).data("Data-backtrans",false); $("#"+Elementid).data("background-color",$("#samplebox").css("background-color"));
 			};
-				
+			ColorCurrentupdate(ElementtoColor,"Data-backtrans",$("#"+Elementid).data("Data-backtrans"));	
 		});
 	function colorToHex(color) {
 		if (color==null) { return '#ffffff';}
