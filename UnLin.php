@@ -17,7 +17,7 @@
 													<div class=" form-group row ">
 														<label  for="UserList" class="col-sm-5 control-label"></label>
 														<div class=" col-sm-6">
-															<select multiple size""3"" id="UserList" class="form-control " ><option>user1</option><option>user2</option><option>user3</option>
+															<select  multiple size""3" id="UserList" class="form-control " ><option>user1</option><option>user2</option><option>user3</option>
 														</div>
 													</div>
 													<div class=" form-group row ">
@@ -40,7 +40,7 @@
 												<div class=" col-sm-6">
 													<div class=" form-group row">
 														<div class=" col-sm-12">
-															<textarea class="form-control" rows="3"></textarea>
+															<textarea id="statusarea" class="form-control" rows="3"></textarea>
 														</div>
 														<div class="row">
 															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-7 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>

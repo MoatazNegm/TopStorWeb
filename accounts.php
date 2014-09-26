@@ -27,6 +27,15 @@
 		<script src="Bootstrap/js/bootstrap.min.js"></script>
 		<script src="InitColor.js"></script>
 		<script>
+			function refresh() {
+				
+				$.get("statuslog.php", { file: 'Data/status.log' }, function(data){
+					$("#statusarea").val(data);
+					});
+			}	
+
+			setInterval('refresh()', 1000); // Loop every 1000 milliseconds (i.e. 1 second)
+			
 			var config = 1;
 			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();
 			$("#AD").click(function (){ 
@@ -34,7 +43,8 @@
 			$("#UnLin").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".UnLin").show();};});
 			$("#Future").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/future.png')").text("Future"); $(".Future").show();};});
 			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
-			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:"mezo", passwd:"123"});  });
+			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val(), passwd:$("#UserPass").val() });  });
+			$("#UnixDelUser").click( function (){ $.post("./pump.php", { req:"UnixDelUser", name:$("#UserList option:selected").val() }); });
 			
 		</script>
 			 <?php  include "footer.php"; ?>

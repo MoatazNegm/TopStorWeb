@@ -1,1 +1,1 @@
-UnixAddUser mezo 123
+UnixDelUser user1
