@@ -34,10 +34,10 @@
 			$("#UnLin").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".UnLin").show();};});
 			$("#Future").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/future.png')").text("Future"); $(".Future").show();};});
 			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
-			
+			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:"mezo", passwd:"123"});  });
 			
 		</script>
-			 <?php include "footer.php"; ?>
+			 <?php  include "footer.php"; ?>
 	</body>
 
 </html>
