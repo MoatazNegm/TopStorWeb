@@ -34,13 +34,15 @@
 					});
 			}	;
 			function refreshUserList() {
-				$('#UserList option').remove();
-				$.get("statuslog.php", { file: 'Data/listusers.txt' }, function(data){
-					var jdata = jQuery.parseJSON(data);
-					
-					$.each(jdata, function(i,v) {
-					//	console.log(i,k);
-						$('#UserList').append($('<option>').text(v).val(v));
+				$.post("./pump.php", { req:"UnixListUsers", name:$("NA").val() }, function (data1){
+					$('#UserList option').remove();
+					$.get("statuslog.php", { file: 'Data/listusers.txt' }, function(data){
+						var jdata = jQuery.parseJSON(data);
+						
+						$.each(jdata, function(i,v) {
+						//	console.log(i,k);
+							$('#UserList').append($('<option>').text(i).val(i));
+						});
 					});
 				});
 			};
