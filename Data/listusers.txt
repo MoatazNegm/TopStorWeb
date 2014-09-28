@@ -1,7 +1,1 @@
-mezo
-mezo2
-mezo3
-mezo4
-mezo7
-mezo8
-mez1
+{"U1":"mezo","U2":"mezo2","U4":"mezo3","U5":"mezo7"}

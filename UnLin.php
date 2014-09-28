@@ -17,7 +17,7 @@
 													<div class=" form-group row ">
 														<label  for="UserList" class="col-sm-5 control-label"></label>
 														<div class=" col-sm-6">
-															<select   size="3" id="UserList" class="form-control " ><option>user1</option><option>user2</option><option>user3</option>
+															<select   size="3" id="UserList" class="form-control " >
 														</div>
 													</div>
 													<div class=" form-group row ">
