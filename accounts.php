@@ -34,7 +34,7 @@
 					});
 			}	;
 			function refreshUserList() {
-				$.post("./pump.php", { req:"UnixListUsers", name:$("NA").val() }, function (data1){
+				$.post("./pump.php", { req:"UnixListUsers", name:"a" }, function (data1){
 					$('#UserList option').remove();
 					$.get("statuslog.php", { file: 'Data/listusers.txt' }, function(data){
 						var jdata = jQuery.parseJSON(data);
