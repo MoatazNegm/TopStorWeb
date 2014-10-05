@@ -58,7 +58,7 @@
 				$("#Weeklyset").show();
 			})
 		function diskgetsize(no,spanid,fileloc) {
-			$.post("./pump.php", { req:"DiskSize", name: no }, function(data1){
+			$.post("./pump.php", { req:"DiskSize", name: no, passwd:fileloc }, function(data1){
 				$.get("statuslog.php", { file: fileloc }, function(data){
 					var jdata = jQuery.parseJSON(data);
 					
