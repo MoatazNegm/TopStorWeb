@@ -20,7 +20,13 @@
 		<script src="jquery/jquery.datetimepicker.js"></script>
 		<script src="Bootstrap/js/bootstrap.min.js"></script>
 		<script>
-		
+			function refresh2() {
+				
+				$.get("statuslog.php", { file: 'Data/status.log' }, function(data){
+					$("#statusarea2").val(data);
+					});
+			}	;
+			setInterval('refresh2()', 1000); // Loop every 1000 milliseconds (i.e. 1 second)
 			var config = 1;
 			$("[class*='xdsoft']").hide();
 			$(".DiskGroups").hide(); $(".SnapShots").hide(); 
@@ -51,6 +57,40 @@
 				$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();
 				$("#Weeklyset").show();
 			})
+		function diskgetsize(no,spanid,fileloc) {
+			$.post("./pump.php", { req:"DiskSize", name: no }, function(data1){
+				$.get("statuslog.php", { file: fileloc }, function(data){
+					var jdata = jQuery.parseJSON(data);
+					
+					$.each(jdata, function(i,v) {
+					//console.log(i,v);
+						$(spanid).text(i);
+					});
+				});
+					
+			});
+		};
+		function disksraidzsize(spanid,fileloc) {
+			$.post("./pump.php", { req:"DiskraidzSize", name:"a" }, function(data1){
+				$.get("statuslog.php", { file: fileloc }, function(data){
+					var jdata = jQuery.parseJSON(data);
+					
+					$.each(jdata, function(i,v) {
+					//console.log(i,v);
+						$(spanid+i).text(v);
+					});
+				});
+					
+			});
+		};
+		diskgetsize("1","#onedisk",'Data/disksize.txt');
+		diskgetsize("5","#alldisks",'Data/disksizeall.txt');
+		disksraidzsize("#Raidz",'Data/diskraidz.txt');
+		$("#submitdiskgroup").click( function (){ $.post("./pump.php", { req:"DGsetPool", name:$('input[name=Raidselect]:checked').val() }, function (data){
+				 refresh2(); 
+				 });
+			});
+		
 			
 		</script>
 
