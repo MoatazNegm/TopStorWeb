@@ -20,15 +20,16 @@
 		<script src="jquery/jquery.datetimepicker.js"></script>
 		<script src="Bootstrap/js/bootstrap.min.js"></script>
 		<script>
-			function refreshSnapList() {
-				$.post("./pump.php", { req:"refreshSnapList", name:"a" }, function (data1){
-					$('#Snaplist option').remove();
-					$.get("statuslog.php", { file: 'Data/listsnaps.txt' }, function(data){
+			function refreshList(req,listid,fileloc,show) {
+				$.post("./pump.php", { req: req, name:"a" }, function (data1){
+					$(listid+' option').remove();
+					$.get("statuslog.php", { file: fileloc }, function(data){
 						var jdata = jQuery.parseJSON(data);
 						
 						$.each(jdata, function(i,v) {
 						//	console.log(i,k);
-							$('#Snaplist').append($('<option>').text(i+":"+v).val(v));
+							if(show < 2) { $(listid).append($('<option>').text(i+":"+v).val(v));}
+							else { $(listid).append($('<option>').text(v).val(v)); }
 						});
 					});
 				});
@@ -41,7 +42,7 @@
 			}	;
 			setInterval('refresh2("#statusarea2")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
 			setInterval('refresh2("#statusarea3")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
-			setInterval('refreshSnapList()', 10000); // Loop every 1000 milliseconds (i.e. 1 second)
+			setInterval('refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt",1)', 10000); // Loop every 1000 milliseconds (i.e. 1 second)
 			var config = 1;
 			$("[class*='xdsoft']").hide();
 			$(".DiskGroups").hide(); $(".SnapShots").hide(); 
@@ -101,6 +102,8 @@
 		
 		diskgetsize("1","#onedisk",'Data/disksize.txt');
 		diskgetsize("5","#alldisks",'Data/disksizeall.txt');
+		refreshList("GetPoollist","#Pool","Data/Poollist.txt",3);
+		refreshList("GetPoolVollist","#Vol","Data/Vollist.txt",3);
 		disksraidzsize("#Raidz",'Data/diskraidz.txt');
 		$("#submitdiskgroup").click( function (){ $.post("./pump.php", { req:"DGsetPool", name:$('input[name=Raidselect]:checked').val() }, function (data){
 				 refresh2("#statusarea2"); 
@@ -110,7 +113,21 @@
 				 refresh2("#statusarea3"); 
 				 });
 			});
-			
+		$("#SnapshotCreate").click( function (){ 
+				var period=$('input[name=Period]:checked').val();
+				console.log(period);
+				var oper="";
+				switch(period) {
+					case "Once" : oper = $("#DTime").val(); break;
+					case "Hourly": oper = $("#STime").val()+" "+$("#Hour").val(); break;
+					case "Minutely": oper = $("#SMinute").val()+" "+$("#Minute").val(); break;
+					case "Weekly" : oper = $("#SWeek").val()+" "+$("#Week").val(); break;
+				}
+				console.log(oper);
+				$.post("./pump.php", { req:"SnapshotCreate"+period, name: oper }, function (data){
+				 refresh2("#statusarea3"); 
+				 });
+			});	
 		</script>
 
 	</body>

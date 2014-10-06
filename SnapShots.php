@@ -134,7 +134,7 @@
 									<div class=" row">
 										<div class=" col-sm-6">
 											<div class=" form-group row">
-												<button type="submit" class="btn btn-default col-sm-offset-5 col-sm-6 " data-toggle="tooltip" data-placement="bottom" title="close window">submit</button>
+												<button type="submit" class="btn btn-default col-sm-offset-5 col-sm-6 " id="SnapshotCreate" data-toggle="tooltip" data-placement="bottom" title="close window">submit</button>
 											</div>
 										</div>
 										

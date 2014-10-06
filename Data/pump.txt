@@ -1,1 +1,1 @@
-refreshSnapList a
+GetSnaplist a
