@@ -138,9 +138,9 @@
 				var oper="";
 				switch(period) {
 					case "Once" : oper = $("#DTime").val(); break;
-					case "Hourly": oper = $("#STime").val()+" "+$("#Hour").val(); break;
-					case "Minutely": oper = $("#SMinute").val()+" "+$("#Minute").val(); break;
-					case "Weekly" : oper = $("#SWeek").val()+" "+$("#Week").val(); break;
+					case "Hourly": oper = $("#STime").val()+" "+$("#Hour").val()+" "+$("#KeepHourly").val(); break;
+					case "Minutely": oper = $("#SMinute").val()+" "+$("#Minute").val()+" "+$("#KeepMinutely").val(); break;
+					case "Weekly" : oper = $("#SWeek").val()+" "+$("#Week").val()+" "+$("#KeepWeekly").val(); break;
 				}
 				console.log(oper);
 				$.post("./pump.php", { req:"SnapshotCreate"+period, name: oper }, function (data){

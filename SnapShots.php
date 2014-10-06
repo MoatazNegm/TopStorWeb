@@ -20,12 +20,7 @@
 														<option>Vol1</option><option>Vol2</option>
 													</select>
 												</div>
-											<label  for="Enabled" class="col-sm-offset-1 col-sm-1 control-label">Enabled</label>
-												<div class=" col-sm-2">
-													<select  id="Enabled" class="form-control ">
-														<option>Yes</option><option>No</option>
-													</select>
-												</div>
+											
 
 											</div>
 											<div class=" form-group row"></div>
@@ -67,13 +62,18 @@
 													<div id="Hourlyset">
 														<div class=" form-group row ">
 															<div class="col-sm-4">
-																<label  for="Hour" class=" col-sm-offset-1 control-label"> Start from: </label>
+																<label  for="Hour" class=" col-sm-offset- control-label">Start from: </label>
 																<input  id="STime" class="  form-control ">
 																</input>
 															</div>
 															<div class="col-sm-3">
-																<label  for="STime" class=" col-sm-offset-2 control-label"> Every...hours</label>
+																<label  for="STime" class=" col-sm-offset- control-label">Every..hrs</label>
 																<input  id="Hour" class="  form-control ">
+																</input>
+															</div>
+															<div class=" col-sm-3">
+																<label  for="KeepHourly" class=" col-sm-offset- control-label"> keep: </label>
+																<input  id="KeepHourly" class="  form-control ">
 																</input>
 															</div>
 														</div>
@@ -89,13 +89,18 @@
 													<div id="Minutelyset">
 														<div class=" form-group row ">
 															<div class="col-sm-4">
-																<label  for="SMinute" class=" col-sm-offset-1 control-label"> Start from: </label>
+																<label  for="SMinute" class=" col-sm-offset- control-label">Start from: </label>
 																<input  id="SMinute" class="  form-control ">
 																</input>
 															</div>
 															<div class="col-sm-3">
-																<label  for="Minute" class=" col-sm-offset-2 control-label"> Every..Min</label>
+																<label  for="Minute" class=" col-sm-offset- control-label">Every..Min</label>
 																<input  id="Minute" class="  form-control ">
+																</input>
+															</div>
+															<div class=" col-sm-3">
+																<label  for="KeepMinutely" class=" col-sm-offset- control-label"> keep: </label>
+																<input  id="KeepMinutely" class="  form-control ">
 																</input>
 															</div>
 														</div>
@@ -111,15 +116,20 @@
 													<div id="Weeklyset">
 														<div class=" form-group row ">
 															<div class="col-sm-4">
-																<label  for="SWeek" class=" col-sm-offset-1 control-label"> Start from: </label>
+																<label  for="SWeek" class=" col-sm-offset- control-label">Start from: </label>
 																<input  id="SWeek" class="  form-control ">
 																</input>
 															</div>
 															<div class="col-sm-4">
-																<label  for="Week" class=" col-sm-offset-2 control-label"> Every..Wday</label>
+																<label  for="Week" class=" col-sm-offset- control-label">Every..Wday</label>
 																<select  id="Week" class="  form-control ">
 																	<option>Sunday</option><option>Saturday</option>
 																</select>
+															</div>
+															<div class=" col-sm-3">
+																<label  for="KeepWeekly" class=" col-sm-offset- control-label"> keep: </label>
+																<input  id="KeepWeekly" class="  form-control ">
+																</input>
 															</div>
 														</div>
 														<div class="row ">
