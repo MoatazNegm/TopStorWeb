@@ -1,1 +1,1 @@
-DGsetPool raidz2
+DiskraidzSize Data/diskraidz.txt
