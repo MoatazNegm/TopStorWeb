@@ -43,6 +43,10 @@
 			setInterval('refresh2("#statusarea2")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
 			setInterval('refresh2("#statusarea3")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
 			setInterval('refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt",1)', 10000); // Loop every 1000 milliseconds (i.e. 1 second)
+			setInterval('refreshList("GetPoolHourlylist","#Hourlylist","Data/Hourlylist.txt")', 10000); // Loop every 1 second
+			setInterval('refreshList("GetPoolMinutelylist","#Minutelylist","Data/Minutelylist.txt")', 10000); // Loop every 1 second
+			setInterval('refreshList("GetPoolWeeklylist","#Weeklylist","Data/Weeklylist.txt")', 10000); // Loop every 1 second
+			
 			var config = 1;
 			$("[class*='xdsoft']").hide();
 			$(".DiskGroups").hide(); $(".SnapShots").hide(); 
@@ -104,12 +108,27 @@
 		diskgetsize("5","#alldisks",'Data/disksizeall.txt');
 		refreshList("GetPoollist","#Pool","Data/Poollist.txt",3);
 		refreshList("GetPoolVollist","#Vol","Data/Vollist.txt",3);
+		
+		
+		
 		disksraidzsize("#Raidz",'Data/diskraidz.txt');
 		$("#submitdiskgroup").click( function (){ $.post("./pump.php", { req:"DGsetPool", name:$('input[name=Raidselect]:checked').val() }, function (data){
 				 refresh2("#statusarea2"); 
 				 });
 			});
 		$("#DeleteSnapshot").click( function (){ $.post("./pump.php", { req:"SnapShotDelete", name:$("#Snaplist option:selected").val() }, function (data){
+				 refresh2("#statusarea3"); 
+				 });
+			});
+		$("#DeleteHourly").click( function (){ $.post("./pump.php", { req:"SnapShotHourlyDelete", name:$("#Hourlylist option:selected").val() }, function (data){
+				 refresh2("#statusarea3"); 
+				 });
+			});
+		$("#DeleteMinutely").click( function (){ $.post("./pump.php", { req:"SnapShotMinutelyDelete", name:$("#Minutelylist option:selected").val() }, function (data){
+				 refresh2("#statusarea3"); 
+				 });
+			});
+		$("#DeleteWeekly").click( function (){ $.post("./pump.php", { req:"SnapShotWeeklyDelete", name:$("#Weeklylist option:selected").val() }, function (data){
 				 refresh2("#statusarea3"); 
 				 });
 			});

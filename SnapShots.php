@@ -63,7 +63,6 @@
 																</input>
 															</div>
 														</div>
-														
 													</div>
 													<div id="Hourlyset">
 														<div class=" form-group row ">
@@ -78,6 +77,14 @@
 																</input>
 															</div>
 														</div>
+														<div class="row ">
+															<div class="  col-sm-8">
+																<select   size="3" id="Hourlylist" class="  separatortop form-control col-sm-4  " ></select>
+															</div>
+															<button type="submit" class="btn btn-default col-sm-offset- col-sm-2 " id="DeleteHourly" data-toggle="tooltip" data-placement="bottom" title="DeleteHourly">Delete
+																</button>
+														</div>
+													
 													</div>
 													<div id="Minutelyset">
 														<div class=" form-group row ">
@@ -92,6 +99,14 @@
 																</input>
 															</div>
 														</div>
+														<div class="row ">
+															<div class="  col-sm-8">
+																<select   size="3" id="Minutelylist" class="  separatortop form-control col-sm-4  " ></select>
+															</div>
+															<button type="submit" class="btn btn-default col-sm-offset- col-sm-2 " id="DeleteMinutely" data-toggle="tooltip" data-placement="bottom" title="DeleteMinutely">Delete
+																</button>
+														</div>
+													
 													</div>
 													<div id="Weeklyset">
 														<div class=" form-group row ">
@@ -107,6 +122,14 @@
 																</select>
 															</div>
 														</div>
+														<div class="row ">
+															<div class="  col-sm-8">
+																<select   size="3" id="Weeklylist" class="  separatortop form-control col-sm-4  " ></select>
+															</div>
+															<button type="submit" class="btn btn-default col-sm-offset- col-sm-2 " id="DeleteWeekly" data-toggle="tooltip" data-placement="bottom" title="DeleteWeekly">Delete
+																</button>
+														</div>
+													
 													</div>
 												</div>
 											</div>
