@@ -1,1 +1,1 @@
-DiskraidzSize Data/diskraidz.txt
+refreshSnapList a

@@ -300,6 +300,9 @@ h2 {
 .separator {
 	margin-left: 2rem;
 }
+.separatortop {
+	margin-top: .5rem;
+}
 .NNmodal-dialog, #modalcontainer {
 			position: fixed;
 			left: 50%;

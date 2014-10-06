@@ -20,13 +20,28 @@
 		<script src="jquery/jquery.datetimepicker.js"></script>
 		<script src="Bootstrap/js/bootstrap.min.js"></script>
 		<script>
-			function refresh2() {
+			function refreshSnapList() {
+				$.post("./pump.php", { req:"refreshSnapList", name:"a" }, function (data1){
+					$('#Snaplist option').remove();
+					$.get("statuslog.php", { file: 'Data/listsnaps.txt' }, function(data){
+						var jdata = jQuery.parseJSON(data);
+						
+						$.each(jdata, function(i,v) {
+						//	console.log(i,k);
+							$('#Snaplist').append($('<option>').text(i+":"+v).val(v));
+						});
+					});
+				});
+			};
+			function refresh2(textareaid) {
 				
 				$.get("statuslog.php", { file: 'Data/status.log' }, function(data){
-					$("#statusarea2").val(data);
+					$(textareaid).val(data);
 					});
 			}	;
-			setInterval('refresh2()', 1000); // Loop every 1000 milliseconds (i.e. 1 second)
+			setInterval('refresh2("#statusarea2")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
+			setInterval('refresh2("#statusarea3")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
+			setInterval('refreshSnapList()', 10000); // Loop every 1000 milliseconds (i.e. 1 second)
 			var config = 1;
 			$("[class*='xdsoft']").hide();
 			$(".DiskGroups").hide(); $(".SnapShots").hide(); 
@@ -83,14 +98,18 @@
 					
 			});
 		};
+		
 		diskgetsize("1","#onedisk",'Data/disksize.txt');
 		diskgetsize("5","#alldisks",'Data/disksizeall.txt');
 		disksraidzsize("#Raidz",'Data/diskraidz.txt');
 		$("#submitdiskgroup").click( function (){ $.post("./pump.php", { req:"DGsetPool", name:$('input[name=Raidselect]:checked').val() }, function (data){
-				 refresh2(); 
+				 refresh2("#statusarea2"); 
 				 });
 			});
-		
+		$("#DeleteSnapshot").click( function (){ $.post("./pump.php", { req:"SnapShotDelete", name:$("#Snaplist option:selected").val() }, function (data){
+				 refresh2("#statusarea3"); 
+				 });
+			});
 			
 		</script>
 
