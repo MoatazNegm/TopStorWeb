@@ -28,7 +28,7 @@
 						
 						$.each(jdata, function(i,v) {
 						//	console.log(i,k);
-							if(show < 2) { $(listid).append($('<option>').text(i+":"+v).val(v));}
+							if(show < 2) { $(listid).append($('<option>').text(i).val(v));}
 							else { $(listid).append($('<option>').text(v).val(v)); }
 						});
 					});
@@ -142,6 +142,7 @@
 					case "Minutely": oper = $("#SMinute").val()+" "+$("#Minute").val()+" "+$("#KeepMinutely").val(); break;
 					case "Weekly" : oper = $("#SWeek").val()+" "+$("#Week").val()+" "+$("#KeepWeekly").val(); break;
 				}
+				oper =oper+" "+$("#Pool option:selected").val()+" "+$("#Vol option:selected").val();
 				console.log(oper);
 				$.post("./pump.php", { req:"SnapshotCreate"+period, name: oper }, function (data){
 				 refresh2("#statusarea3"); 
