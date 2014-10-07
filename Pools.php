@@ -29,7 +29,8 @@
 						$.each(jdata, function(i,v) {
 						//	console.log(i,k);
 							if(show < 2) { $(listid).append($('<option>').text(i).val(v));}
-							else { $(listid).append($('<option>').text(v).val(v)); }
+							else if(show < 10 ){ $(listid).append($('<option>').text(v).val(v)); }
+							else { $(listid).append($('<option>').text(i).val(i));
 						});
 					});
 				});
@@ -43,9 +44,9 @@
 			setInterval('refresh2("#statusarea2")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
 			setInterval('refresh2("#statusarea3")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
 			setInterval('refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt",1)', 10000); // Loop every 1000 milliseconds (i.e. 1 second)
-			setInterval('refreshList("GetPoolHourlylist","#Hourlylist","Data/Hourlylist.txt")', 10000); // Loop every 1 second
-			setInterval('refreshList("GetPoolMinutelylist","#Minutelylist","Data/Minutelylist.txt")', 10000); // Loop every 1 second
-			setInterval('refreshList("GetPoolWeeklylist","#Weeklylist","Data/Weeklylist.txt")', 10000); // Loop every 1 second
+			setInterval('refreshList("GetPoolHourlylist","#Hourlylist","Data/Hourlylist.txt",15)', 10000); // Loop every 1 second
+			setInterval('refreshList("GetPoolMinutelylist","#Minutelylist","Data/Minutelylist.txt",15)', 10000); // Loop every 1 second
+			setInterval('refreshList("GetPoolWeeklylist","#Weeklylist","Data/Weeklylist.txt",15)', 10000); // Loop every 1 second
 			
 			var config = 1;
 			$("[class*='xdsoft']").hide();
