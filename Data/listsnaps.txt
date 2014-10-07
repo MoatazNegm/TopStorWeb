@@ -1,1 +1,1 @@
-{"Daily":"monday_3:29pm","weekly":"Friday_3:33","minutely":"12:33am"}
+{"Homes@Once34":"o","Homes@Once00":"o"}

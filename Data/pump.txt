@@ -1,1 +1,1 @@
-GetPoolWeeklylist a
+GetPoolMinutelylist a
