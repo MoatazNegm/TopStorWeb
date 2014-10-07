@@ -30,7 +30,7 @@
 						//	console.log(i,k);
 							if(show < 2) { $(listid).append($('<option>').text(i).val(v));}
 							else if(show < 10 ){ $(listid).append($('<option>').text(v).val(v)); }
-							else { $(listid).append($('<option>').text(i).val(i));
+							else { $(listid).append($('<option>').text(i).val(i)); }
 						});
 					});
 				});
