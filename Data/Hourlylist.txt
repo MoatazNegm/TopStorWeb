@@ -1,1 +1,1 @@
-{"Data/Homes@hourly.14.14.30_keep=100":"o"}
+{"Data/NFS@hourly.06.18.45_keep=5":"o","Data/NFS@hourly.10.19.45_keep=5":"o"}
