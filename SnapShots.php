@@ -61,11 +61,6 @@
 													</div>
 													<div id="Hourlyset">
 														<div class=" form-group row ">
-															<div class="col-sm-4">
-																<label  for="Hour" class=" col-sm-offset- control-label">Start from: </label>
-																<input  id="STime" class="  form-control ">
-																</input>
-															</div>
 															<div class="col-sm-3">
 																<label  for="STime" class=" col-sm-offset- control-label">Every..hrs</label>
 																<input  id="Hour" class="  form-control ">
@@ -88,11 +83,6 @@
 													</div>
 													<div id="Minutelyset">
 														<div class=" form-group row ">
-															<div class="col-sm-4">
-																<label  for="SMinute" class=" col-sm-offset- control-label">Start from: </label>
-																<input  id="SMinute" class="  form-control ">
-																</input>
-															</div>
 															<div class="col-sm-3">
 																<label  for="Minute" class=" col-sm-offset- control-label">Every..Min</label>
 																<input  id="Minute" class="  form-control ">
@@ -116,14 +106,9 @@
 													<div id="Weeklyset">
 														<div class=" form-group row ">
 															<div class="col-sm-4">
-																<label  for="SWeek" class=" col-sm-offset- control-label">Start from: </label>
-																<input  id="SWeek" class="  form-control ">
-																</input>
-															</div>
-															<div class="col-sm-4">
 																<label  for="Week" class=" col-sm-offset- control-label">Every..Wday</label>
 																<select  id="Week" class="  form-control ">
-																	<option>Sunday</option><option>Saturday</option>
+																	<option>Sat</option><option>Sun</option><option>Mon</option><option>Tue</option><option>Wed</option><option>Thu</option><option>Fri</option>
 																</select>
 															</div>
 															<div class=" col-sm-3">
