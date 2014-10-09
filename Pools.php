@@ -116,7 +116,7 @@
 				 refresh2("#statusarea2"); 
 				 });
 			});
-		$("#DeleteSnapshot").click( function (){ $.post("./pump.php", { req:"SnapShotDelete", name:$("#Snaplist option:selected").val() }, function (data){
+		$("#DeleteSnapshot").click( function (){ $.post("./pump.php", { req:"SnapShotDelete", name:$("#Pool option:selected").val()+"/"+$("#Snaplist option:selected").val() }, function (data){
 				 refresh2("#statusarea3"); 
 				 });
 			});
