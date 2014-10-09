@@ -138,9 +138,9 @@
 				var oper="";
 				switch(period) {
 					case "Once" : oper = "OnceNow"; break;
-					case "Hourly": oper = $("#Hour").val()+" "+$("#KeepHourly").val(); break;
+					case "Hourly": oper = $("#Sminute").val()+" "+$("#Hour").val()+" "+$("#KeepHourly").val(); break;
 					case "Minutely": oper = $("#Minute").val()+" "+$("#KeepMinutely").val(); break;
-					case "Weekly" : oper = $("#Week").val()+" "+$("#KeepWeekly").val(); break;
+					case "Weekly" : oper = $("#Stime").val()+" "+$("#Week").val()+" "+$("#KeepWeekly").val(); break;
 				}
 				oper =oper+" "+$("#Pool option:selected").val()+" "+$("#Vol option:selected").val();
 				console.log(oper);
