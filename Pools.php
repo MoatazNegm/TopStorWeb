@@ -45,7 +45,7 @@
 			}	;
 			setInterval('refresh2("#statusarea2")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
 			setInterval('refresh2("#statusarea3")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
-			setInterval('refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt",5)', 10000); // Loop every 1000 milliseconds (i.e. 1 second)
+			setInterval('refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt",15)', 10000); // Loop every 1000 milliseconds (i.e. 1 second)
 			setInterval('refreshList("GetPoolHourlylist","#Hourlylist","Data/Hourlylist.txt",15)', 10000); // Loop every 1 second
 			setInterval('refreshList("GetPoolMinutelylist","#Minutelylist","Data/Minutelylist.txt",15)', 10000); // Loop every 1 second
 			setInterval('refreshList("GetPoolWeeklylist","#Weeklylist","Data/Weeklylist.txt",15)', 10000); // Loop every 1 second
