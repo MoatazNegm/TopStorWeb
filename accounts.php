@@ -21,11 +21,7 @@
 		</div>
 		</div>
 	</div>
-		<script src="jquery/jquery.js"></script>
-		<script src="jquery-ui/jquery-ui.js"></script>
-		<script src="jquery/jquery.datetimepicker.js"></script>
-		<script src="Bootstrap/js/bootstrap.min.js"></script>
-		<script src="InitColor.js"></script>
+		
 		<script>
 			function refresh() {
 				
