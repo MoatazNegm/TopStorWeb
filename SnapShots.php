@@ -52,7 +52,7 @@
 												<div class= "col-sm-offset-1 col-sm-8">
 													<div class=" form-group row " id="Onceset">
 														<div class="col-sm-5">
-															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-8 " id="OnceNow" data-toggle="tooltip" data-placement="bottom" title="Now"><Strong>Take It Now</Strong>
+															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-8 SnapshotCreate" id="OnceNow" data-toggle="tooltip" data-placement="bottom" title="Now"><Strong>Take It Now</Strong>
 															</button>
 														</div>
 													</div>
@@ -162,7 +162,7 @@
 									<div class=" row">
 										<div class=" col-sm-6">
 											<div class=" form-group row">
-												<button type="submit" class="btn btn-default col-sm-offset-5 col-sm-6 " id="SnapshotCreate" data-toggle="tooltip" data-placement="bottom" title="close window">submit</button>
+												<button type="submit" class="btn btn-default col-sm-offset-5 col-sm-6 SnapshotCreate " id="SnapshotCreate" data-toggle="tooltip" data-placement="bottom" title="close window">submit</button>
 											</div>
 										</div>
 										
