@@ -132,12 +132,12 @@
 				 refresh2("#statusarea3"); 
 				 });
 			});
-		$("#SnapshotCreate").click( function (){ 
+		$(".SnapshotCreate").click( function (){ 
 				var period=$('input[name=Period]:checked').val();
 				console.log(period);
 				var oper="";
 				switch(period) {
-					case "Once" : oper = $("#DTime").val(); break;
+					case "Once" : oper = "OnceNow"; break;
 					case "Hourly": oper = $("#Hour").val()+" "+$("#KeepHourly").val(); break;
 					case "Minutely": oper = $("#Minute").val()+" "+$("#KeepMinutely").val(); break;
 					case "Weekly" : oper = $("#Week").val()+" "+$("#KeepWeekly").val(); break;
