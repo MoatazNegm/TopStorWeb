@@ -1,5 +1,5 @@
-<script src="jquery/Colour.js"></script>
-<script src="jquery/jquery.minicolors.js"></script>
+<script src="js/Colour.js"></script>
+<script src="js/jquery.minicolors.js"></script>
 <script src="InitColor.js"></script>
 <div id="modalcontainer" >
 			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
