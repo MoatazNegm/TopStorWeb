@@ -51,24 +51,27 @@
 												</div>
 												<div class= "col-sm-offset-1 col-sm-8">
 													<div class=" form-group row " id="Onceset">
-														<label  for="DTime" class=" control-label"> Date and Time</label>
-														<div class="row">
-															<div class="col-sm-5">
-																<input  id="DTime" class=" col-sm-2 form-control ">
-																</input>
-															</div>
+														<div class="col-sm-5">
+															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-8 " id="OnceNow" data-toggle="tooltip" data-placement="bottom" title="Now"><Strong>Take It Now</Strong>
+															</button>
 														</div>
 													</div>
-													<div id="Hourlyset">
+													<form role="form" id="Hourlyset">
 														<div class=" form-group row ">
-															<div class="col-sm-3">
-																<label  for="STime" class=" col-sm-offset- control-label">Every..hrs</label>
-																<input  id="Hour" class="  form-control ">
-																</input>
-															</div>
 															<div class=" col-sm-3">
-																<label  for="KeepHourly" class=" col-sm-offset- control-label"> keep: </label>
-																<input  id="KeepHourly" class="  form-control ">
+																<label  for="Sminute" class=" col-sm-offset- control-label">Snap.min</label>
+																<input type="number" min="0" max="59" id="Sminute" class="  form-control ">
+																
+															</div>
+															
+															<div class=" col-sm-3">
+																<label  for="Hour" class=" col-sm-offset-2 control-label">Every..hrs</label>
+																<input  type="number" min="1" max="23" id="Hour" class="  form-control ">
+																
+															</div>
+															<div class="  col-sm-3">
+																<label  for="KeepHourly" class="  control-label">keep:</label>
+																<input  type="number" min="1" id="KeepHourly" class="  form-control ">
 																</input>
 															</div>
 														</div>
@@ -80,17 +83,17 @@
 																</button>
 														</div>
 													
-													</div>
-													<div id="Minutelyset">
+													</form>
+													<form role="form" id="Minutelyset">
 														<div class=" form-group row ">
 															<div class="col-sm-3">
 																<label  for="Minute" class=" col-sm-offset- control-label">Every..Min</label>
-																<input  id="Minute" class="  form-control ">
+																<input  type="number" min="1" max="59" id="Minute" class="  form-control ">
 																</input>
 															</div>
 															<div class=" col-sm-3">
 																<label  for="KeepMinutely" class=" col-sm-offset- control-label"> keep: </label>
-																<input  id="KeepMinutely" class="  form-control ">
+																<input  type="number" min="1" id="KeepMinutely" class="  form-control ">
 																</input>
 															</div>
 														</div>
@@ -102,18 +105,25 @@
 																</button>
 														</div>
 													
-													</div>
-													<div id="Weeklyset">
+													</form>
+													<form role="form" id="Weeklyset">
 														<div class=" form-group row ">
-															<div class="col-sm-4">
+															<div class="col-sm-4  ">
+																<label  for="Stime" class=" col-sm-offset- control-label">Snap time:</label>
+																<div class="input-group bootstrap-timepicker">
+																	<input   type="text" id="Stime" class="  form-control "><span class="input-group-addon add-on"><i class="glyphicon glyphicon-time"></i></span>
+																	</input>
+																</div>
+															</div>
+															<div class="col-sm-3">
 																<label  for="Week" class=" col-sm-offset- control-label">Every..Wday</label>
-																<select  id="Week" class="  form-control ">
+																<select   id="Week" class="  form-control ">
 																	<option>Sat</option><option>Sun</option><option>Mon</option><option>Tue</option><option>Wed</option><option>Thu</option><option>Fri</option>
 																</select>
 															</div>
 															<div class=" col-sm-3">
 																<label  for="KeepWeekly" class=" col-sm-offset- control-label"> keep: </label>
-																<input  id="KeepWeekly" class="  form-control ">
+																<input   type="number" min="1" max="25" id="KeepWeekly" class="  form-control ">
 																</input>
 															</div>
 														</div>
@@ -125,7 +135,7 @@
 																</button>
 														</div>
 													
-													</div>
+													</form>
 												</div>
 											</div>
 										</div>

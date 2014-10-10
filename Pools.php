@@ -15,11 +15,13 @@
 			<footer class="footer"> Errors
 			</footer>
 		</div>
-		<script src="jquery/jquery.js"></script>
-		<script src="jquery-ui/jquery-ui.js"></script>
-		<script src="jquery/jquery.datetimepicker.js"></script>
-		<script src="Bootstrap/js/bootstrap.min.js"></script>
+			
+		
+		<script src="js/bootstrap-timepicker.js"></script>
+		
 		<script>
+			
+			
 			function refreshList(req,listid,fileloc,show) {
 				$.post("./pump.php", { req: req, name:"a" }, function (data1){
 					$(listid+' option').remove();
@@ -56,10 +58,7 @@
 			$("#SnapShots").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/snapshot.png')").text("SnapShots"); $(".SnapShots").show();};});
 			$(".finish").click(function (){ config = 1; $(".DiskGroups").hide(); $(".SnapShots").hide();});
 			
-			$("#DTime").datetimepicker({step: 15});
-			$("#STime").datetimepicker({step: 15});$("#Hour").datetimepicker({ datepicker: false, format:'H'});
-			$("#SMinute").datetimepicker({step: 15});$("#Minute").datetimepicker({ datepicker: false, format:'i', step:2});
-			$("#SWeek").datetimepicker({step: 15});
+			
 			
 			$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();
 			$("#Once").change(function() {
@@ -67,11 +66,11 @@
 				$("#Onceset").show();
 			});
 			$("#Hourly").change(function() {
-				$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();$("#SWeek").datetimepicker("hide");
+				$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();
 				$("#Hourlyset").show();
 			});
 			$("#Minutely").change(function() {
-				$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();$("#SWeek").datetimepicker("hide");
+				$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();
 				$("#Minutelyset").show();
 			});
 			$("#Weekly").change(function() {
@@ -149,6 +148,13 @@
 				 refresh2("#statusarea3"); 
 				 });
 			});	
+			
+			$("#Stime").timepicker({
+								appendWidgetTo: 'body',
+                minuteStep: 1,
+								showMeridian: false,
+
+            });
 		</script>
 
 	</body>
