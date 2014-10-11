@@ -1,1 +1,1 @@
-GetSnaplist a
+GetPoolWeeklylist a
