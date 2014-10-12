@@ -20,6 +20,18 @@
 		<script src="js/bootstrap-timepicker.js"></script>
 		
 		<script>
+			function snaponce(txtin,but,altbut){
+				
+						var chars=$(txtin).val().length;
+						//console.log(txtin, but, altbut, chars);
+						if ( chars < 3 ) {  $(but).show();
+												 $(altbut).hide();
+						} else 					{	$(but).hide();
+												 $(altbut).show();
+						};
+			};
+			
+				
 			
 			
 			function refreshList(req,listid,fileloc,show) {
@@ -64,7 +76,7 @@
 			$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();
 			$("#Once").change(function() {
 				$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();
-				$("#Onceset").show();
+				$("#Onceset").show(); snaponce("#Oncename","#disableddiv","#OnceNowdiv");
 			});
 			$("#Hourly").change(function() {
 				$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();
@@ -138,7 +150,7 @@
 				console.log(period);
 				var oper="";
 				switch(period) {
-					case "Once" : oper = "OnceNow"; break;
+					case "Once" : oper = $("#Oncename").val();  break;
 					case "Hourly": oper = $("#Sminute").val()+" "+$("#Hour").val()+" "+$("#KeepHourly").val(); break;
 					case "Minutely": oper = $("#Minute").val()+" "+$("#KeepMinutely").val(); break;
 					case "Weekly" : oper = $("#Stime").val()+" "+$("#Week").val()+" "+$("#KeepWeekly").val(); break;
@@ -148,7 +160,10 @@
 				$.post("./pump.php", { req:"SnapshotCreate"+period, name: oper }, function (data){
 				 refresh2("#statusarea3"); 
 				 });
-			});	
+			});
+		$("#Oncename").keyup(function(){
+				snaponce("#Oncename","#disableddiv","#OnceNowdiv");
+		});
 			
 			$("#Stime").timepicker({
 								appendWidgetTo: 'body',

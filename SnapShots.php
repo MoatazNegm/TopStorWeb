@@ -7,22 +7,20 @@
 									<div class="row">
 										
 										<div class="  col-sm-7 ">
-											<div class=" form-group row">
-												<label  for="Pool" class=" col-sm-1 control-label">Pool</label>
-												<div class=" col-sm-2">
-													<select  id="Pool" class="form-control ">
+											<form class=" form-inline row">
+												<div class="form-group col-sm-offset-3">
+													<label  for="Pool" class="control-label">Pool</label>
+													<select  id="Pool" class="  form-control ">
 														<option>High</option><option>Low</option>
 													</select>
 												</div>
-											<label  for="Vol" class="col-sm-offset-1 col-sm-1 control-label">Volume</label>
-												<div class=" col-sm-3">
-													<select  id="Vol" class="form-control ">
+												<div class="form-group col-sm-offset-2">
+													<label  for="Vol" class=" control-label">Volume</label>
+													<select  id="Vol" class=" form-control ">
 														<option>Vol1</option><option>Vol2</option>
 													</select>
 												</div>
-											
-
-											</div>
+											</form>
 											<div class=" form-group row"></div>
 											<div class="form-group row">
 												<div class=" boxoffields col-sm-offset-1 col-sm-2">
@@ -49,13 +47,25 @@
 													</div>
 
 												</div>
-												<div class= "col-sm-offset-1 col-sm-8">
-													<div class=" form-group row " id="Onceset">
-														<div class="col-sm-5">
-															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-8 SnapshotCreate" id="OnceNow" data-toggle="tooltip" data-placement="bottom" title="Now"><Strong>Take It Now</Strong>
+												<div class= " col-sm-offset-1 col-sm-8" >
+													<form class="form-horizontal row " id="Onceset"role="form">
+														<div class="form-group">
+															<div class="input-group col-sm-offset-2 col-sm-5">
+																<label  for="Oncename" class="  control-label ">Snap name </label>
+																
+																<input type="text"  id="Oncename" class=" form-control ">
+															</div>
+														</div>
+														<div class=" col-sm-offset-3" id="disableddiv">
+															<button type="button" class="btn btn-default btn-xs   " id="disabled" data-toggle="tooltip" data-placement="bottom" title="right" disabled >right snap name
 															</button>
 														</div>
-													</div>
+														<div class=" col-sm-offset-2 notnow" id="OnceNowdiv">
+															<button type="button" class="btn btn-default" id="OnceNow" data-toggle="tooltip" data-placement="bottom" title="Now"  >Take Snapshot Now
+															</button>
+														</div>
+														
+												</form>
 													<form role="form" id="Hourlyset">
 														<div class=" form-group row ">
 															<div class=" col-sm-3">
@@ -140,18 +150,19 @@
 											</div>
 										</div>
 										<div class=" col-sm-5 " >
-											<div class="row ">
-												<div class=" col-sm-11">
-													<select   size="5" id="Snaplist" class="form-control col-sm-4 fonting" ></select>
-													
+											<form role="form">
+												<div class="form-group col-sm-11 ">
+													<div class=" ">
+														<select   size="5" id="Snaplist" class="form-control  fonting" ></select>
+														
+													</div>
 												</div>
-											</div>
-											<div class="row ">
-												<button type="submit" class="btn btn-default col-sm-offset- col-sm-3 margins" id="DeleteSnapshot" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot">Delete
-												</button>
-												<button type="submit" class="btn btn-danger col-sm-offset-8 col-sm-4 margins" id="DeleteSnapshot" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot"> Revert to Snapshot
-												</button>
-												
+												<div class="form-group col-sm-offset-1">
+													<button type="submit" class="btn btn-default " id="DeleteSnapshot" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot">Delete
+													</button>
+													<button type="submit" class="btn btn-danger col-sm-offset-3 " id="DeleteSnapshot" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot"> Revert to Snapshot
+													</button>
+												</form>
 											</div>
 												
 											
