@@ -141,11 +141,15 @@
 										</div>
 										<div class=" col-sm-5 " >
 											<div class="row ">
-												<div class=" col-sm-8">
-													<select   size="3" id="Snaplist" class="form-control col-sm-4 " ></select>
+												<div class=" col-sm-11">
+													<select   size="5" id="Snaplist" class="form-control col-sm-4 fonting" ></select>
 													
 												</div>
-												<button type="submit" class="btn btn-default col-sm-offset- col-sm-3 " id="DeleteSnapshot" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot">Delete
+											</div>
+											<div class="row ">
+												<button type="submit" class="btn btn-default col-sm-offset- col-sm-3 margins" id="DeleteSnapshot" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot">Delete
+												</button>
+												<button type="submit" class="btn btn-danger col-sm-offset-8 col-sm-4 margins" id="DeleteSnapshot" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot"> Revert to Snapshot
 												</button>
 												
 											</div>

@@ -328,3 +328,11 @@ h2 {
 input, select { padding: -5;   margin: -5; }
 .dropdown-menu { min-width: 100px; max-height: 100px}
 .bootstrap-timepicker-widget table td a { padding : 1px 0;}
+.fonting { 
+	font-size: 1.2rem;
+	margin-bottom: .4rem;
+
+	}
+.margins {
+margin-left: 1.4rem;
+}
