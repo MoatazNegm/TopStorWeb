@@ -120,7 +120,7 @@
 		diskgetsize("1","#onedisk",'Data/disksize.txt');
 		diskgetsize("5","#alldisks",'Data/disksizeall.txt');
 		refreshList("GetPoollist","#Pool","Data/Poollist.txt",3);
-		refreshList("GetPoolVollist","#Vol","Data/Vollist.txt",15);
+		refreshList("GetPoolVollist","#Vol","Data/Vollist.txt",5);
 		
 		
 		

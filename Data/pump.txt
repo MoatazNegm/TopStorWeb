@@ -1,1 +1,1 @@
-GetPoolHourlylist a
+GetSnaplist a
