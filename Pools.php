@@ -147,7 +147,7 @@
 			});
 		$(".SnapshotCreate").click( function (){ 
 				var period=$('input[name=Period]:checked').val();
-				console.log(period);
+				
 				var oper="";
 				switch(period) {
 					case "Once" : oper = $("#Oncename").val();  break;
@@ -156,8 +156,13 @@
 					case "Weekly" : oper = $("#Stime").val()+" "+$("#Week").val()+" "+$("#KeepWeekly").val(); break;
 				}
 				oper =oper+" "+$("#Pool option:selected").val()+" "+$("#Vol option:selected").val();
-				console.log(oper);
+				
 				$.post("./pump.php", { req:"SnapshotCreate"+period, name: oper }, function (data){
+				 refresh2("#statusarea3"); 
+				 });
+			});
+		$("#OnceNow").click( function (){ 
+				$.post("./pump.php", { req:"SnapshotCreateOnce", name: $("Oncename").val() }, function (data){
 				 refresh2("#statusarea3"); 
 				 });
 			});
