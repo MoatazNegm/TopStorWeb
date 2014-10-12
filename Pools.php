@@ -150,7 +150,7 @@
 				
 				var oper="";
 				switch(period) {
-					case "Once" : oper = $("#Oncename").val();  return;
+					case "Once" : oper = $("#Oncename").val();  break;
 					case "Hourly": oper = $("#Sminute").val()+" "+$("#Hour").val()+" "+$("#KeepHourly").val(); break;
 					case "Minutely": oper = $("#Minute").val()+" "+$("#KeepMinutely").val(); break;
 					case "Weekly" : oper = $("#Stime").val()+" "+$("#Week").val()+" "+$("#KeepWeekly").val(); break;

@@ -48,9 +48,9 @@
 
 												</div>
 												<div class= " col-sm-offset-1 col-sm-8" >
-													<form class="form-horizontal row " id="Onceset"role="form">
+													<form class="form-horizontal row spacer" id="Onceset"role="form">
 														<div class="form-group">
-															<div class="input-group col-sm-offset-2 col-sm-5">
+															<div class="input-group col-sm-offset-2 col-sm-5 ">
 																<label  for="Oncename" class="  control-label ">Snap name </label>
 																
 																<input type="text"  id="Oncename" class=" form-control ">
@@ -60,12 +60,7 @@
 															<button type="button" class="btn btn-default btn-xs   " id="disabled" data-toggle="tooltip" data-placement="bottom" title="TypeSnap" disabled >type snap name
 															</button>
 														</div>
-														<div class=" col-sm-offset-2 notnow" id="OnceNowdiv">
-															<button type="button" class="btn btn-default" id="OnceNow" data-toggle="tooltip" data-placement="bottom" title="Now"  >Take Snapshot Now
-															</button>
-														</div>
-														
-												</form>
+													</form>
 													<form role="form" id="Hourlyset">
 														<div class=" form-group row ">
 															<div class=" col-sm-3">
