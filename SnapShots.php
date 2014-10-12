@@ -57,7 +57,7 @@
 															</div>
 														</div>
 														<div class=" col-sm-offset-3" id="disableddiv">
-															<button type="button" class="btn btn-default btn-xs   " id="disabled" data-toggle="tooltip" data-placement="bottom" title="right" disabled >right snap name
+															<button type="button" class="btn btn-default btn-xs   " id="disabled" data-toggle="tooltip" data-placement="bottom" title="TypeSnap" disabled >type snap name
 															</button>
 														</div>
 														<div class=" col-sm-offset-2 notnow" id="OnceNowdiv">
@@ -176,7 +176,7 @@
 										
 									<div class=" row">
 										<div class=" col-sm-6">
-											<div class=" form-group row">
+											<div class=" form-group row" id="SnapshotCreatediv">
 												<button type="submit" class="btn btn-default col-sm-offset-5 col-sm-6 SnapshotCreate " id="SnapshotCreate" data-toggle="tooltip" data-placement="bottom" title="close window">submit</button>
 											</div>
 										</div>

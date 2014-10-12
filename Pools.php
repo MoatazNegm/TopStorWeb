@@ -76,19 +76,19 @@
 			$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();
 			$("#Once").change(function() {
 				$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();
-				$("#Onceset").show(); snaponce("#Oncename","#disableddiv","#OnceNowdiv");
+				$("#Onceset").show(); snaponce("#Oncename","#disableddiv","#SnapshotCreatediv");
 			});
 			$("#Hourly").change(function() {
 				$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();
-				$("#Hourlyset").show();
+				$("#Hourlyset").show();$("#SnapshotCreatediv").show();
 			});
 			$("#Minutely").change(function() {
 				$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();
-				$("#Minutelyset").show();
+				$("#Minutelyset").show();$("#SnapshotCreatediv").show();
 			});
 			$("#Weekly").change(function() {
 				$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();
-				$("#Weeklyset").show();
+				$("#Weeklyset").show();$("#SnapshotCreatediv").show();
 			})
 		function diskgetsize(no,spanid,fileloc) {
 			$.post("./pump.php", { req:"DiskSize", name: no, passwd:fileloc }, function(data1){
@@ -145,12 +145,12 @@
 				 refresh2("#statusarea3"); 
 				 });
 			});
-		$(".SnapshotCreate").click( function (){ 
+		$("#SnapshotCreate").click( function (){ 
 				var period=$('input[name=Period]:checked').val();
 				
 				var oper="";
 				switch(period) {
-					case "Once" : oper = $("#Oncename").val();  break;
+					case "Once" : oper = $("#Oncename").val();  return;
 					case "Hourly": oper = $("#Sminute").val()+" "+$("#Hour").val()+" "+$("#KeepHourly").val(); break;
 					case "Minutely": oper = $("#Minute").val()+" "+$("#KeepMinutely").val(); break;
 					case "Weekly" : oper = $("#Stime").val()+" "+$("#Week").val()+" "+$("#KeepWeekly").val(); break;
@@ -161,13 +161,9 @@
 				 refresh2("#statusarea3"); 
 				 });
 			});
-		$("#OnceNow").click( function (){ 
-				$.post("./pump.php", { req:"SnapshotCreateOnce", name: $("Oncename").val() }, function (data){
-				 refresh2("#statusarea3"); 
-				 });
-			});
+		
 		$("#Oncename").keyup(function(){
-				snaponce("#Oncename","#disableddiv","#OnceNowdiv");
+				snaponce("#Oncename","#disableddiv","#SnapshotCreatediv");
 		});
 			
 			$("#Stime").timepicker({
