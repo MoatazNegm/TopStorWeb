@@ -24,10 +24,7 @@
 
 			<!-- Don't touch this! -->
 
-		<script src="jquery/jquery.js"></script>
-		<script src="jquery-ui/jquery-ui.js"></script>
-		<script src="jquery/jquery.datetimepicker.js"></script>
-		<script src="Bootstrap/js/bootstrap.min.js"></script>
+		
     <script class="include" type="text/javascript" src="jqplot/jquery.jqplot.min.js"></script>
 <!-- End Don't touch this! -->
 
@@ -38,6 +35,11 @@
 
 <!-- End additional plugins -->
 		<script>
+			function rowisclicked(x) {
+				//alert("Row index is: " + x.rowIndex);
+				$(x).toggleClass("success");
+				$(function(){ var a=0; var b=0; $("tr.success").each(function(){ a+=parseFloat($(this).children("td:nth-child(4)").text()); b+=parseFloat($(this).children("td:nth-child(3)").text()) ; }); console.log(b);});
+				}
 			function plotchart(chart){
 				var data = [
 					['Heavy Industry', 12],['Retail', 9], ['Light Industry', 14], 
@@ -61,6 +63,7 @@
 			}
 			
 			var config = 1;
+			$("#createvol").hide();
 			$(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();
 			$("#CIFS").click(function (){ 
 				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".CIFS").show(); plotchart('chartCIFS'); };});

@@ -340,3 +340,18 @@ margin-left: 1.4rem;
 }
 .spacer { margin-top : 3.5rem;}
 .notnow { display: none;}
+.boxize { border : #B2BEB5 3px solid; }
+
+#vollist { 
+	background-color: white;
+ }
+#hi { color: red;}
+.spacer-sm { margin-top : .5rem;}
+.narrowtble {  width : 22rem;}
+.scrolled { 
+		width: 10rem ;
+    height: 3rem;
+    overflow: scroll;
+}
+
+.highlight { background-color: blue; }
