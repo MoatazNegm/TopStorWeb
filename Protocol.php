@@ -35,11 +35,11 @@
 
 <!-- End additional plugins -->
 		<script>
-			function refresh2(textareaid) {
+			function refresh3(textareaid) {
 				
 				$.get("statuslog.php", { file: 'Data/status.log' }, function(data){
 					$(textareaid).val(data);
-					});
+				});
 			}	;
 			function volumetable(i,v) {
 				var res = i.split("_");
@@ -49,7 +49,7 @@
 				var res = i.split("_");
 				$("#Volumedetails > tbody").append('<tr onclick="rowisclicked(this)"><td>'+res[0]+'</td><td>'+res[1]+'</td><td>'+res[2]+'</td><td>'+res[3]+'</td><td>'+res[4]+'</td><td>'+res[5]+'</td><td>'+res[6]+'</td><td>'+res[7]+'</td></tr>');
 			};
-			function refreshList(req,listid,fileloc,show) {
+			function refreshList2(req,listid,fileloc,show) {
 				$.post("./pump.php", { req: req, name:"a" }, function (data1){
 					$(listid+' option').remove();
 					$.get("statuslog.php", { file: fileloc }, function(data){
@@ -60,9 +60,9 @@
 							$(listid).append($('<option class=" small" >').text("<<new>>").val("newoption")); $(listid).append($('<option class=" small">').text("<<ALL>>").val("alloption")); 
 						 };
 						$.each(jdata, function(i,v) {
-						//	console.log(i,k);
+							//console.log(fileloc,i,v);
 							if(show < 2) { $(listid).append($('<option>').text(i).val(v));}
-							else if(show < 10 ){ if (show == 5.5) {  volumetable(i,v);} $(listid).append($('<option>').text(v).val(v)); }
+							else if(show < 10 ){ if (show == 5.5) {  volumetable(i,v);}; console.log(fileloc,i,v,listid); $(listid).append($('<option>').text(v).val(v)); }
 							else if(show < 13) { $(listid).append($('<option>').text(i+":"+v).val(i)); }
 							else { $(listid).append($('<option>').text(i).val(i)); }
 						});
@@ -71,8 +71,8 @@
 			};
 			function SelectPanelNFS(s) {
 				var selection = s;
-				if (selection == "o") { selection = $("#Vol option:selected").val(); };
-				console.log(selection);
+				if (selection == "o") { selection = $("#Vol2 option:selected").val(); };
+				//console.log(selection);
 				$(".Paneloption").hide();
 				switch(selection) {
 				case "newoption" :  $("#createvol").show(); break;
@@ -92,7 +92,8 @@
 				};
 			};
 			
-			refreshList("GetPoolVollist","#Vol","Data/Vollist.txt",5.5);
+			refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
+			refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);
 			function rowisclicked(x) {
 				//alert("Row index is: " + x.rowIndex);
 				$(x).toggleClass("success");
@@ -131,17 +132,17 @@
 			$("#NFS").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/nfs.png')").text("NFS"); $(".NFS").show(); plotchart('chartNFS');};});
 			$("#ISCSI").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ISCSI").show(); plotchart('chartISCSI');};});
 			$(".finish").click(function (){ config = 1; $(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();});
-			$( "#Vol" ).change(function() {
-				var selection=$("#Vol option:selected").val();
+			$( "#Vol2" ).change(function() {
+				var selection=$("#Vol2 option:selected").val();
 				SelectPanelNFS(selection);
 			});
 			SelectPanelNFS("o");
 			$("#Voldelete").click( function (){ $.post("./pump.php", { req:"VolumeDelete", name:$("tr.success").val() }, function (data){
-				 refresh2("#statusarea2"); 
+				 refresh3("#statusarea4"); 
 				 });
 			});
 			$("#Createvol").click( function (){ $.post("./pump.php", { req:"VolumeCreate", name:$("Volname").val()+" "+$("volsize").val() }, function (data){
-				 refresh2("#statusarea2"); 
+				 refresh3("#statusarea3"); 
 				 });
 			});
 		</script>

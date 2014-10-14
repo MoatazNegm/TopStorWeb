@@ -7,14 +7,14 @@
 			</div>									
 			<form class="form-inline">
 				<div class="form-group col-sm-offset-2">
-					<label  for="Pool" class="control-label">Pool</label>
-					<select  id="Pool" class="  form-control ">
+					<label  for="Pool2" class="control-label">Pool</label>
+					<select  id="Pool2" class="  form-control ">
 						<option>High</option><option>Low</option>
 					</select>
 				</div>
 				<div class="form-group col-sm-offset-2">
-					<label  for="Vol" class=" control-label">Volumes</label>
-					<select  id="Vol" class=" form-control ">
+					<label  for="Vol2" class=" control-label">Volumes</label>
+					<select  id="Vol2" class=" form-control ">
 						<option class=" small" value="newoption" ><<New>></New></option><option class=" small" value="alloption"><<ALL>></option>
 					</select>
 				</div>
@@ -79,7 +79,7 @@
 											
 										</div>
 									<div class=" col-sm-4">
-										<textarea class="form-control" id="statusarea2" rows="1"></textarea>
+										<textarea class="form-control" id="statusarea4" rows="1"></textarea>
 									</div>
 								</div>
 								<div class="row">
