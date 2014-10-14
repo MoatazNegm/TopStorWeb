@@ -347,11 +347,20 @@ margin-left: 1.4rem;
  }
 #hi { color: red;}
 .spacer-sm { margin-top : .5rem;}
-.narrowtble {  width : 22rem;}
+.table { table-layout:fixed;  text-align: center;}
+.table th { text-align: center;}
+.table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  }
+
 .scrolled { 
-		width: 10rem ;
-    height: 3rem;
-    overflow: scroll;
+		
+    height: 20rem;
+    overflow-y: scroll;
 }
 
 .highlight { background-color: blue; }
+
+

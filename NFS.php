@@ -61,13 +61,30 @@
 						<div class="panel-body">
 							<form role="form">
 								<div class="row">
-									<div id="k"; class="col-sm-8 scrolled2">
+									<div class="col-sm-4">
 										<table class="table table-hover table-condensed narrowtble ">
 											<thead >
 												<tr class="info">
-													<th>Name</th><th>Size..GB</th><th>actual size..GB</th><th>#snapshots</th>
+													<th>Name</th><th>Size..GB</th><th>actual<br>size..GB</th><th>#snaps</th>
 												</tr>
 											</thead>
+												
+										</table>
+									</div>
+									<div id="y"; class="col-sm-4">
+											<table class="table  table-condensed table-bordered narrowtble  ">
+												<thead >
+													<tr class=" info">
+														<th class="col-sm-4" >Total<br>&nbsp;Size</th><th class="col-sm-4">Actual<br>&nbsp;&nbsp;Size</th><th class="col-sm-4">Total<br>Snaps</th>
+													</tr>
+												</thead>
+											</table>
+											
+										</div>
+								</div>
+								<div class="row">
+									<div id="k"; class="col-sm-4 scrolled">
+										<table class="table table-hover table-condensed narrowtble ">
 											<tbody class="">
 												<tr onclick="rowisclicked(this)">
 													<td>Homes</td><td>5000</td><td>3500</td><td>5</td>
@@ -96,10 +113,21 @@
 											</tbody>
 										</table>
 								</div>
+									<div id="y"; class="col-sm-4 ">
+										<div>
+											<table class="table table-condensed table-bordered narrowtble  ">
+												<tbody>
+												 	<tr  id="totals">
+														<td class="col-sm-4" id="TSize">0</td><td class="col-sm-4"  id="ASize">000</td><td class="col-sm-4" id="TSnap">00000</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
 								</div>
 								<div class="row">
-									<div class="col-sm-offset-2 spacer-sm">
-										<button type="submit" class="btn btn-default col-sm-offset- col-sm-2 " id="Voldelete" data-toggle="tooltip" data-placement="bottom" title="DeleteHourly">Delete Vol
+									<div class="col-sm-offset-1 spacer-sm">
+										<button type="submit" class="btn btn-default  col-sm-2 " id="Voldelete" data-toggle="tooltip" data-placement="bottom" title="DeleteVol">Delete Vol
 										</button>
 									</div>
 								</div>
