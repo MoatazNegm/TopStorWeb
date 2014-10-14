@@ -35,9 +35,19 @@
 
 <!-- End additional plugins -->
 		<script>
+			function refresh2(textareaid) {
+				
+				$.get("statuslog.php", { file: 'Data/status.log' }, function(data){
+					$(textareaid).val(data);
+					});
+			}	;
 			function volumetable(i,v) {
 				var res = i.split("_");
 				$("#Volumetable").append('<tr onclick="rowisclicked(this)"><td>'+v+'</td><td>'+res[0]+'</td><td>'+res[1]+'</td><td>'+res[2]+'</td></tr>');
+			};
+			function volumetabledetails(i,v) {
+				var res = i.split("_");
+				$("#Volumedetails > tbody").append('<tr onclick="rowisclicked(this)"><td>'+res[0]+'</td><td>'+res[1]+'</td><td>'+res[2]+'</td><td>'+res[3]+'</td><td>'+res[4]+'</td><td>'+res[5]+'</td><td>'+res[6]+'</td><td>'+res[7]+'</td></tr>');
 			};
 			function refreshList(req,listid,fileloc,show) {
 				$.post("./pump.php", { req: req, name:"a" }, function (data1){
@@ -67,6 +77,18 @@
 				switch(selection) {
 				case "newoption" :  $("#createvol").show(); break;
 				case "alloption" : $("#Vollist").show(); break;
+				default: var fileloc= "Data/Vollist.txt";
+						$.get("statuslog.php", { file: fileloc }, function(data){
+						var jdata = jQuery.parseJSON(data);
+						$("#Volumedetails > tbody tr").remove();
+						$.each(jdata, function(i,v) {
+						//	console.log(i,k);
+							if( selection == v ) { volumetabledetails(i,v); };
+							
+						});
+						$("#Volumnamedetails").text(selection+" details");
+						$("#Voldetails").show();
+					});
 				};
 			};
 			
@@ -74,7 +96,10 @@
 			function rowisclicked(x) {
 				//alert("Row index is: " + x.rowIndex);
 				$(x).toggleClass("success");
-				$(function(){ var a=0; var b=0; var c=0; $("tr.success").each(function(){ a+=parseFloat($(this).children("td:nth-child(2)").text()); b+=parseFloat($(this).children("td:nth-child(3)").text());  c+=parseFloat($(this).children("td:nth-child(4)").text());}); console.log(b); $("#a").text(a.toFixed(2));$("#b").text(b.toFixed(2));$("#c").text(c.toFixed(2));});
+				$(function(){ var a=0; var b=0; var c=0; var counter=0; $("tr.success").each(function(){ 
+					counter=+1;
+					if (counter > 1) { $("#Voldelete").hide(); } else { $("#Voldelete").show(); };
+					a+=parseFloat($(this).children("td:nth-child(2)").text()); b+=parseFloat($(this).children("td:nth-child(3)").text());  c+=parseFloat($(this).children("td:nth-child(4)").text());}); console.log(b); $("#a").text(a.toFixed(2));$("#b").text(b.toFixed(2));$("#c").text(c.toFixed(2));});
 				}
 			function plotchart(chart){
 				var data = [
@@ -111,6 +136,14 @@
 				SelectPanelNFS(selection);
 			});
 			SelectPanelNFS("o");
+			$("#Voldelete").click( function (){ $.post("./pump.php", { req:"VolumeDelete", name:$("tr.success").val() }, function (data){
+				 refresh2("#statusarea2"); 
+				 });
+			});
+			$("#Createvol").click( function (){ $.post("./pump.php", { req:"VolumeCreate", name:$("Volname").val()+" "+$("volsize").val() }, function (data){
+				 refresh2("#statusarea2"); 
+				 });
+			});
 		</script>
 	
 

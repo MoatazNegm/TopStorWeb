@@ -339,13 +339,14 @@ input, select { padding: -5;   margin: -5; }
 margin-left: 1.4rem;
 }
 .spacer { margin-top : 3.5rem;}
+.spacer2 { margin-top : 0.5rem;}
 .notnow { display: none;}
 .boxize { border : #B2BEB5 3px solid; }
 
 #vollist { 
 	background-color: white;
  }
-#hi { color: red;}
+
 .spacer-sm { margin-top : .5rem;}
 .table { table-layout:fixed;  text-align: center;}
 .table th { text-align: center;}

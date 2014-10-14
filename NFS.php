@@ -19,6 +19,7 @@
 					</select>
 				</div>
 			</form>
+			</form>
 			<div id="createvol" class=" row Paneloption">
 				<div class="col-sm-10">
 					<form  class="form">
@@ -30,16 +31,19 @@
 											<label  for="Volname" class="  control-label ">Vol name </label>
 											<input type="text"  id="Volname" class=" form-control ">
 										</div>
-									<div class="col-sm-4">
-										<div class="col-sm-5">
+									<div class="col-sm-2">
+										<div class="col-sm-10">
 											<label  for="volszie" class=" control-label">Size..GB</label>
 											<input type="text" id="volsize" class=" form-control ">
 										</div>
 									</div>
-									<div class="col-sm-4">
-										<label  for="button" class="  control-label "></label>
+									<div class="col-sm-3">
+										<label  for="button" class="  control-label ">&nbsp;</label>
 										<button type="button" class="btn btn-default  form-control " id="Createvol" data-toggle="tooltip" data-placement="bottom" title="CreateVol" >Create Volume
-											</button>
+										</button>
+									</div>
+									<div class=" spacer2 col-sm-4">
+										<textarea class="form-control" id="statusarea3" rows="1"></textarea>
 									</div>
 								</div>
 							</div>
@@ -74,6 +78,9 @@
 											</table>
 											
 										</div>
+									<div class=" col-sm-4">
+										<textarea class="form-control" id="statusarea2" rows="1"></textarea>
+									</div>
 								</div>
 								<div class="row">
 									<div id="k"; class="col-sm-4 scrolled">
@@ -131,8 +138,34 @@
 					</div>
 				</div>
 			</div>
+			<div id="Voldetails"	class="row Paneloption spacer">
+				<div class="col-sm-offset-1 col-sm-10">
+					<div  class="panel panel-default ">
+						<!-- Default panel contents -->
+						<div id="Volumnamedetails" class="panel-heading">All Volumes</div>
+						<div class="panel-body">
+							<form role="form">
+								<div class="row">
+									<div ; class="col-sm-12 scrolled">
+										<table id="Volumedetails" class="table table-hover table-condensed narrowtble ">
+											<thead >
+												<tr class="info">
+													<th>Volume<br>Size(GB)</th><th>Actual<br>size(GB)</th><th>Volume<br>Snaps</th><th>total<br>used</th><th>creation<br>date</th><th>free<br>space</th><th>compression<br>ratio</th><th>dedupe<br>ratio</th>
+												</tr>
+											</thead>
+											<tbody class="">
+											</tbody>
+										</table>
+								</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 									
 								
+
