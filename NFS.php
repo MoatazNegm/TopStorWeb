@@ -13,13 +13,13 @@
 					</select>
 				</div>
 				<div class="form-group col-sm-offset-2">
-					<label  for="Vol" class=" control-label">Volume</label>
+					<label  for="Vol" class=" control-label">Volumes</label>
 					<select  id="Vol" class=" form-control ">
-						<option>Vol1</option><option>Vol2</option>
+						<option class=" small" value="newoption" ><<New>></New></option><option class=" small" value="alloption"><<ALL>></option>
 					</select>
 				</div>
 			</form>
-			<div id="createvol" class=" row">
+			<div id="createvol" class=" row Paneloption">
 				<div class="col-sm-10">
 					<form  class="form">
 						<div class="col-sm-offset-2">
@@ -45,30 +45,23 @@
 							</div>
 						</div>
 					</form>		
-					<div class="form-group col-sm-offset-2">
-						<label  for="Vol" class=" control-label">Volume</label>
-						<select  id="Vol" class=" form-control ">
-							<option>Vol1</option><option>Vol2</option>
-						</select>
-					</div>
 				</div>
 			</div>
-			<div id="Vollist"	class="row spacer">
+			<div id="Vollist"	class="row Paneloption spacer">
 				<div class="col-sm-offset-1 col-sm-10">
-					<div class="panel panel-default ">
+					<div  class="panel panel-default ">
 						<!-- Default panel contents -->
 						<div class="panel-heading">All Volumes</div>
 						<div class="panel-body">
 							<form role="form">
 								<div class="row">
 									<div class="col-sm-4">
-										<table class="table table-hover table-condensed narrowtble ">
+										<table  class="table table-hover table-condensed narrowtble ">
 											<thead >
 												<tr class="info">
-													<th>Name</th><th>Size..GB</th><th>actual<br>size..GB</th><th>#snaps</th>
+													<th>Volume<br>Name</th><th>Volume<br>Size(GB)</th><th>Actual<br>size(GB)</th><th>Volume<br>Snaps</th>
 												</tr>
 											</thead>
-												
 										</table>
 									</div>
 									<div id="y"; class="col-sm-4">
@@ -84,7 +77,7 @@
 								</div>
 								<div class="row">
 									<div id="k"; class="col-sm-4 scrolled">
-										<table class="table table-hover table-condensed narrowtble ">
+										<table id="Volumetable" class="table table-hover table-condensed narrowtble ">
 											<tbody class="">
 												<tr onclick="rowisclicked(this)">
 													<td>Homes</td><td>5000</td><td>3500</td><td>5</td>
@@ -118,7 +111,7 @@
 											<table class="table table-condensed table-bordered narrowtble  ">
 												<tbody>
 												 	<tr  id="totals">
-														<td class="col-sm-4" id="TSize">0</td><td class="col-sm-4"  id="ASize">000</td><td class="col-sm-4" id="TSnap">00000</td>
+														<td class="col-sm-4" id="a">0.00</td><td class="col-sm-4"  id="b">0.00</td><td class="col-sm-4" id="c">0.00</td>
 													</tr>
 												</tbody>
 											</table>
