@@ -126,10 +126,15 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-sm-offset-1 spacer-sm">
-										<button type="submit" class="btn btn-default  col-sm-2 " id="Voldelete" data-toggle="tooltip" data-placement="bottom" title="DeleteVol">Delete Vol
+									<div  id="Voldelete" class="col-sm-offset-1 spacer-sm">
+										<button type="submit" class="btn btn-default  col-sm-2 "   data-toggle="tooltip" data-placement="bottom" title="DeleteVol">Delete Vol
 										</button>
 									</div>
+									<div class=" col-sm-offset-1 spacer-sm" id="disableddiv2">
+															<button type="button" class="btn btn-default btn-sm  " id="disabled" data-toggle="tooltip" data-placement="bottom" title="TypeSnap" disabled >to delete select only one
+															</button>
+									</div>
+
 								</div>
 
 							</form>
@@ -163,9 +168,17 @@
 					</div>
 				</div>
 			</div>
+			<div class="row">
+				<div class=" col-sm-offset-11">
+					
+					<button type="submit" class=" btn btn-default  finish" data-toggle="tooltip" data-placement="top" title="submit values">Finish</button>
+					
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 									
 								
 
+									

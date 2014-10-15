@@ -105,7 +105,7 @@
 				$(".Paneloption").hide();
 				switch(selection) {
 				case "newoption" :  $("#createvol").show(); break;
-				case "alloption" : $("#Vollist").show(); break;
+				case "alloption" : $("tr.success").removeClass("success");rowisclicked(); $("#Vollist").show(); break;
 				default: var fileloc= "Data/Vollist.txt";
 						$.get("statuslog.php", { file: fileloc }, function(data){
 						var jdata = jQuery.parseJSON(data);
@@ -125,10 +125,13 @@
 			function rowisclicked(x) {
 				//alert("Row index is: " + x.rowIndex);
 				$(x).toggleClass("success");
-				$(function(){ var a=0; var b=0; var c=0; var counter=0; $("tr.success").each(function(){ 
-					counter=+1;
-					if (counter > 1) { $("#Voldelete").hide(); } else { $("#Voldelete").show(); };
-					a+=parseFloat($(this).children("td:nth-child(2)").text()); b+=parseFloat($(this).children("td:nth-child(3)").text());  c+=parseFloat($(this).children("td:nth-child(4)").text());}); console.log(b); $("#a").text(a.toFixed(2));$("#b").text(b.toFixed(2));$("#c").text(c.toFixed(2));});
+				var counter=0;
+				$(function(){ var a=0; var b=0; var c=0;  $("tr.success").each(function(){ 
+					
+					if ($("tr.success").length == 1) { counter=1;  } else { counter=0;  };
+					a+=parseFloat($(this).children("td:nth-child(2)").text()); b+=parseFloat($(this).children("td:nth-child(3)").text());  c+=parseFloat($(this).children("td:nth-child(4)").text());});  $("#a").text(a.toFixed(2));$("#b").text(b.toFixed(2));$("#c").text(c.toFixed(2));});
+				if( counter == 0 ){  console.log("not 1"); $("#disableddiv2").show(); $("#Voldelete").hide();  
+				} else {  console.log(" 1") ;$("#Voldelete").show(); $("#disableddiv2").hide(); };
 				}
 			function plotchart(chart){
 				var data = [
