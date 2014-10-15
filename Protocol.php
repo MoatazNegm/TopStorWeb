@@ -141,7 +141,7 @@
 				 refresh3("#statusarea4"); 
 				 });
 			});
-			$("#Createvol").click( function (){ $.post("./pump.php", { req:"VolumeCreate", name:$("#Pool2 option:selected").val()+" "+" "+$("Volname").val()+" "+$("volsize").val() }, function (data){
+			$("#Createvol").click( function (){ $.post("./pump.php", { req:"VolumeCreate", name:$("#Pool2 option:selected").val()+" "+" "+$("#Volname").val()+" "+$("#volsize").val() }, function (data){
 				 refresh3("#statusarea3"); 
 				 });
 			});
