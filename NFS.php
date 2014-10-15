@@ -15,7 +15,7 @@
 				<div class="form-group col-sm-offset-2">
 					<label  for="Vol2" class=" control-label">Volumes</label>
 					<select  id="Vol2" class=" form-control ">
-						<option class=" small" value="newoption" ><<New>></New></option><option class=" small" value="alloption"><<ALL>></option>
+						<option class=" small Complete" value="newoption" >--New--</option><option class=" small Complete" value="alloption">--ALL--</option>
 					</select>
 				</div>
 			</form>

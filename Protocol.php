@@ -35,6 +35,16 @@
 
 <!-- End additional plugins -->
 		<script>
+			var voldirty=1;
+			function Voldirtytable() {
+				if (voldirty > 0) {
+				
+				voldirty = 0;
+				$("#Volumetable tr").remove();
+				refreshList2("GetPoolVollist","#Volumetable tr","Data/Vollist.txt",20)
+				}
+				
+			}
 			function refresh3(textareaid) {
 				
 				$.get("statuslog.php", { file: 'Data/status.log' }, function(data){
@@ -51,21 +61,40 @@
 			};
 			function refreshList2(req,listid,fileloc,show) {
 				$.post("./pump.php", { req: req, name:"a" }, function (data1){
-					$(listid+' option').remove();
+					//$(listid+' option').remove();
 					$.get("statuslog.php", { file: fileloc }, function(data){
 						var jdata = jQuery.parseJSON(data);
-						
+						counter=0;
+						if(show == 3) { $(listid+" option").addClass("deleteit"); }
 						if(show == 5.5) { 
-							$("#Volumetable tr").remove();
-							$(listid).append($('<option class=" small" >').text("<<new>>").val("newoption")); $(listid).append($('<option class=" small">').text("<<ALL>>").val("alloption")); 
-						 };
+							
+							$(listid+" option").addClass("deleteit");
+							$(listid+" option:nth-child(1)").removeClass("deleteit");
+							$(listid+" option:nth-child(2)").removeClass("deleteit");
+							//$(listid).append($('<option class=" small" >').text("<<new>>").val("newoption")); $(listid).append($('<option class=" small">').text("<<ALL>>").val("alloption")); 
+							counter=2;
+						};
+						 datacount=0;
 						$.each(jdata, function(i,v) {
+							counter+=1;
+							datacount+=1;
+							
 							//console.log(fileloc,i,v);
 							if(show < 2) { $(listid).append($('<option>').text(i).val(v));}
-							else if(show < 10 ){ if (show == 5.5) {  volumetable(i,v);}; console.log(fileloc,i,v,listid); $(listid).append($('<option>').text(v).val(v)); }
+							else if(show < 10 ){ 
+								if ( $(listid+" option:nth-child("+counter+")").text() == v ) { 
+									$(listid+" option:nth-child("+counter+")").removeClass("deleteit"); //console.log ("counter= "+counter+" "+v);
+								}
+								else { //console.log ("counter ="+counter+"not "+ v); 
+									voldirty+=1; $(listid+" option:nth-child("+counter+")").remove();$(listid).append($('<option>').text(v).val(v));}
+								}
 							else if(show < 13) { $(listid).append($('<option>').text(i+":"+v).val(i)); }
-							else { $(listid).append($('<option>').text(i).val(i)); }
+							else if( show == 20) { volumetable(i,v);}
+								else { $(listid).append($('<option>').text(i).val(i)); }
 						});
+
+						if (show < 10 ) { $(listid+" option.deleteit").remove(); }
+						
 					});
 				});
 			};
@@ -92,8 +121,7 @@
 				};
 			};
 			
-			refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
-			refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);
+			
 			function rowisclicked(x) {
 				//alert("Row index is: " + x.rowIndex);
 				$(x).toggleClass("success");
@@ -145,6 +173,15 @@
 				 refresh3("#statusarea3"); 
 				 });
 			});
+			
+			setInterval('refresh3("#statusarea4")', 1000);
+			setInterval('refresh3("#statusarea3")', 1000);
+			setInterval('refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);', 1000);
+			setInterval('Voldirtytable()', 5000);
+			setInterval('refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);', 5000);
+			refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);
+			refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
+			
 		</script>
 	
 
