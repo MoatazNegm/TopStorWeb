@@ -43,7 +43,7 @@
 			}	;
 			function volumetable(i,v) {
 				var res = i.split("_");
-				$("#Volumetable").append('<tr onclick="rowisclicked(this) ><td class="Volname">'+v+'</td><td>'+res[0]+'</td><td>'+res[1]+'</td><td>'+res[2]+'</td></tr>');
+				$("#Volumetable").append('<tr onclick="rowisclicked(this)" ><td class="Volname">'+v+'</td><td>'+res[0]+'</td><td>'+res[1]+'</td><td>'+res[2]+'</td></tr>');
 			};
 			function volumetabledetails(i,v) {
 				var res = i.split("_");
