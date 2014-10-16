@@ -52,6 +52,7 @@
 				}
 				if (voldirty == 1) {
 					voldirty=2;
+					console.log("voldirty in  chartnew");
 					$("#Volumetable tr").remove();
 					chartdata=[];
 					refreshList2("GetPoolVollist","#Volumetable tr","Data/Vollist.txt",20);
