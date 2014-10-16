@@ -100,7 +100,7 @@
 									$(listid+" option:nth-child("+counter+")").removeClass("deleteit"); //console.log ("counter= "+counter+" "+v);
 								}
 								else { 
-										voldirty=2; console.log (voldirty+" voldirty"); 
+										voldirty=1; console.log (voldirty+" voldirty"); 
 									 $(listid+" option:nth-child("+counter+")").remove();$(listid).append($('<option>').text(v).val(v));}
 								}
 							else if(show < 13) { $(listid).append($('<option>').text(i+":"+v).val(i)); }
