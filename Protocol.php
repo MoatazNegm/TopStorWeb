@@ -46,6 +46,7 @@
 				if(voldirty ==2) {
 					if (chartdata.length > 0) {
 						voldirty=0;
+						$("#chartNFS").children().remove();
 						plotchart('chartNFS',chartdata);
 					}
 				}
