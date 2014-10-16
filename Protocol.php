@@ -99,8 +99,9 @@
 								if ( $(listid+" option:nth-child("+counter+")").text() == v ) { 
 									$(listid+" option:nth-child("+counter+")").removeClass("deleteit"); //console.log ("counter= "+counter+" "+v);
 								}
-								else { //console.log ("counter ="+counter+"not "+ v); 
-									voldirty=1; $(listid+" option:nth-child("+counter+")").remove();$(listid).append($('<option>').text(v).val(v));}
+								else { 
+										voldirty=2; console.log (voldirty+" voldirty"); 
+									 $(listid+" option:nth-child("+counter+")").remove();$(listid).append($('<option>').text(v).val(v));}
 								}
 							else if(show < 13) { $(listid).append($('<option>').text(i+":"+v).val(i)); }
 							else if( show == 20) { volumetable(i,v);}
