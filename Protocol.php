@@ -101,15 +101,16 @@
 									$(listid+" option:nth-child("+counter+")").removeClass("deleteit"); //console.log ("counter= "+counter+" "+v);
 								}
 								else { 
-										voldirty=1; console.log (voldirty+" voldirty"); 
-									 $(listid+" option:nth-child("+counter+")").remove();$(listid).append($('<option>').text(v).val(v));}
+										voldirty=3; console.log (voldirty+" voldirty"); 
+									 $(listid+" option:nth-child("+counter+")").remove();$(listid).append($('<option>').text(v).val(v));
 								}
+							}
 							else if(show < 13) { $(listid).append($('<option>').text(i+":"+v).val(i)); }
 							else if( show == 20) { volumetable(i,v);}
 								else { $(listid).append($('<option>').text(i).val(i)); }
 						});
 
-						if (show < 10 ) { $(listid+" option.deleteit").remove(); }
+						if (show < 10 ) { $(listid+" option.deleteit").remove(); if(voldirty==3) { voldirty=1;} }
 						
 					});
 				});
