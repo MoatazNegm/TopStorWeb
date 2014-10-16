@@ -124,6 +124,9 @@
 											</table>
 										</div>
 									</div>
+									<div  class="col-sm-4" class="chart"  >
+										<div id="chartNFS" ></div>
+									</div>
 								</div>
 								<div class="row">
 									<div  id="Voldelete" class="col-sm-offset-1 spacer-sm">
@@ -134,7 +137,7 @@
 															<button type="button" class="btn btn-default btn-sm  " id="disabled" data-toggle="tooltip" data-placement="bottom" title="TypeSnap" disabled >to delete select only one
 															</button>
 									</div>
-
+									
 								</div>
 
 							</form>

@@ -338,7 +338,7 @@ input, select { padding: -5;   margin: -5; }
 .margins {
 margin-left: 1.4rem;
 }
-.spacer { margin-top : 3.5rem;}
+.spacer { margin-top : 2.5rem;}
 .spacer2 { margin-top : 0.5rem;}
 .notnow { display: none;}
 .boxize { border : #B2BEB5 3px solid; }
@@ -363,4 +363,8 @@ margin-left: 1.4rem;
 }
 
 .highlight { background-color: blue; }
-
+#chartNFS, .chart { height: 20rem;   width:40rem;
+							margin-left: -8rem;
+							margin-bottom: -15rem;
+							margin-top: 0.3rem;
+}

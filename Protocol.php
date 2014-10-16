@@ -25,7 +25,9 @@
 			<!-- Don't touch this! -->
 
 		
-    <script class="include" type="text/javascript" src="jqplot/jquery.jqplot.min.js"></script>
+	<script language="javascript" type="text/javascript" src="jqplot/excanvas.js"></script>
+	<script language="javascript" type="text/javascript" src="jqplot/jquery.jqplot.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="jqplot/jquery.jqplot.css" />
 <!-- End Don't touch this! -->
 
 <!-- Additional plugins go here -->
@@ -35,16 +37,26 @@
 
 <!-- End additional plugins -->
 		<script>
+			var chartdata = [
+					['Heavy ', 12],['Retail', 9], ['Light ', 14], 
+					['Outofhome', 16],['Commuting', 7], ['Orientation', 9]
+				];
 			var voldirty=1;
 			function Voldirtytable() {
-				if (voldirty > 0) {
-				
-				voldirty = 0;
-				$("#Volumetable tr").remove();
-				refreshList2("GetPoolVollist","#Volumetable tr","Data/Vollist.txt",20)
+				if(voldirty ==2) {
+					if (chartdata.length > 0) {
+						voldirty=0;
+						plotchart('chartNFS',chartdata);
+					}
 				}
-				
+				if (voldirty == 1) {
+					voldirty=2;
+					$("#Volumetable tr").remove();
+					chartdata=[];
+					refreshList2("GetPoolVollist","#Volumetable tr","Data/Vollist.txt",20);
+				}
 			}
+			
 			function refresh3(textareaid) {
 				
 				$.get("statuslog.php", { file: 'Data/status.log' }, function(data){
@@ -54,6 +66,7 @@
 			function volumetable(i,v) {
 				var res = i.split("_");
 				$("#Volumetable").append('<tr onclick="rowisclicked(this)" ><td class="Volname">'+v+'</td><td>'+res[0]+'</td><td>'+res[1]+'</td><td>'+res[2]+'</td></tr>');
+				chartdata.push([v,res[0]]);
 			};
 			function volumetabledetails(i,v) {
 				var res = i.split("_");
@@ -86,7 +99,7 @@
 									$(listid+" option:nth-child("+counter+")").removeClass("deleteit"); //console.log ("counter= "+counter+" "+v);
 								}
 								else { //console.log ("counter ="+counter+"not "+ v); 
-									voldirty+=1; $(listid+" option:nth-child("+counter+")").remove();$(listid).append($('<option>').text(v).val(v));}
+									voldirty=1; $(listid+" option:nth-child("+counter+")").remove();$(listid).append($('<option>').text(v).val(v));}
 								}
 							else if(show < 13) { $(listid).append($('<option>').text(i+":"+v).val(i)); }
 							else if( show == 20) { volumetable(i,v);}
@@ -133,11 +146,8 @@
 				if( counter == 0 ){  console.log("not 1"); $("#disableddiv2").show(); $("#Voldelete").hide();  
 				} else {  console.log(" 1") ;$("#Voldelete").show(); $("#disableddiv2").hide(); };
 				}
-			function plotchart(chart){
-				var data = [
-					['Heavy Industry', 12],['Retail', 9], ['Light Industry', 14], 
-					['Out of home', 16],['Commuting', 7], ['Orientation', 9]
-				];
+			function plotchart(chart,data){
+				
 				var plot1 = jQuery.jqplot (chart, [data], 
 					{ 
 						seriesDefaults: {
@@ -147,9 +157,10 @@
 								// Put data labels on the pie slices.
 								// By default, labels show the percentage of the slice.
 								showDataLabels: true
+								
 							}
 						}, 
-						legend: { show:false, location: 'e'},
+						legend: { show:true, location: 'w', marginRight: '5rem', placement: 'outside'},
 						grid: { background: "transparent", borderColor: "transparent", shadow: false }
 					}
 				);
@@ -159,9 +170,9 @@
 			
 			$(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();
 			$("#CIFS").click(function (){ 
-				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".CIFS").show(); plotchart('chartCIFS'); };});
-			$("#NFS").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/nfs.png')").text("NFS"); $(".NFS").show(); plotchart('chartNFS');};});
-			$("#ISCSI").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ISCSI").show(); plotchart('chartISCSI');};});
+				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".CIFS").show(); plotchart('chartCIFS',chartdata); };});
+			$("#NFS").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/nfs.png')").text("NFS"); $(".NFS").show(); plotchart('chartNFS',chartdata);};});
+			$("#ISCSI").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ISCSI").show(); plotchart('chartISCSI',chartdata);};});
 			$(".finish").click(function (){ config = 1; $(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();});
 			$( "#Vol2" ).change(function() {
 				var selection=$("#Vol2 option:selected").val();
@@ -184,6 +195,7 @@
 			setInterval('refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);', 5000);
 			refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);
 			refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
+			
 			
 		</script>
 	
