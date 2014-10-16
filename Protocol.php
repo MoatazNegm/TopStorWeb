@@ -43,19 +43,34 @@
 				];
 			var voldirty=1;
 			function Voldirtytable() {
-				if(voldirty ==2) {
+				if(voldirty ==5) {
 					if (chartdata.length > 0) {
 						voldirty=0;
 						$("#chartNFS").children().remove();
 						plotchart('chartNFS',chartdata);
 					}
 				}
-				if (voldirty == 1) {
+				if (voldirty == 6) {
 					voldirty=2;
 					console.log("voldirty in  chartnew");
 					$("#Volumetable tr").remove();
 					chartdata=[];
 					refreshList2("GetPoolVollist","#Volumetable tr","Data/Vollist.txt",20);
+				}
+				if (($("#Volumetable tr").length == ($("#Vol2").children().length - 2)) && ($("#chartNFS tr").length == ($("#Vol2").children().length - 2)) ) { console.log("eql"); } else {console.log("not-eql");
+					if (chartdata.length > 0) {
+						voldirty=0;
+						$("#chartNFS").children().remove();
+						plotchart('chartNFS',chartdata);
+						
+						
+						console.log("trying to chart");
+					$("#Volumetable tr").remove();
+					chartdata=[];
+					refreshList2("GetPoolVollist","#Volumetable tr","Data/Vollist.txt",20);
+					}
+					
+					
 				}
 			}
 			
@@ -105,12 +120,12 @@
 									 $(listid+" option:nth-child("+counter+")").remove();$(listid).append($('<option>').text(v).val(v));
 								}
 							}
-							else if(show < 13) { $(listid).append($('<option>').text(i+":"+v).val(i)); }
+							else if(show < 13) { $(listid).append($('<option>').text(i+":"+v).val(i));  }
 							else if( show == 20) { volumetable(i,v);}
 								else { $(listid).append($('<option>').text(i).val(i)); }
 						});
 
-						if (show < 10 ) { $(listid+" option.deleteit").remove(); if(voldirty==3) { voldirty=1;} }
+						if (show < 10 ) { $(listid+" option.deleteit").remove(); if(voldirty==3) { voldirty=1; } }
 						
 					});
 				});
