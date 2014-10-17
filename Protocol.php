@@ -230,7 +230,7 @@
 			setInterval('refresh3("#statusarea4")', 1000);
 			setInterval('refresh3("#statusarea3")', 1000);
 			setInterval('refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);', 1000);
-			setInterval('Voldirtytable()', 500);
+			setInterval('Voldirtytable()', 1000);
 			setInterval('refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);', 1000);
 			refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);
 			refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
