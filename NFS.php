@@ -19,7 +19,7 @@
 					</select>
 				</div>
 			</form>
-			</form>
+			
 			<div id="createvol" class=" row Paneloption">
 				<div class="col-sm-10">
 					<form  class="form">
