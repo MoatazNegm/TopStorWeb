@@ -60,12 +60,12 @@
 					if (($("#Volumetable tr").length == ($("#Vol2").children().length - 2)) && ($("#chartNFS tr").length == ($("#Vol2").children().length - 2)) ) { ; } else {
 						if (chartdata.length > 0) {
 							voldirty=0;
-							$("#chartNFS").children().remove();
+							//$("#chartNFS").children().remove();
 							plotchart('chartNFS',chartdata);
 							
 							
 							console.log("trying to chart");
-						$("#Volumetable tr").remove();
+						//$("#Volumetable tr").remove();
 						chartdata=[];
 						refreshList2("GetPoolVollist","#Volumetable tr","Data/Vollist.txt",20);
 						
