@@ -6,9 +6,9 @@
 							<li><a href="#" class="NFSa rightli"><h4 id="NFS"><span>NFS</span></h4></a></li>
 							<li><a href="#" class="ISCSIa rightli"><h4 id="ISCSI"><span>ISCSI</span></h4></a></li>
 						</ul>
-						<?php include "CIFS.php"; ?>
-						<?php include "NFS.php"; ?>
-						<?php include "ISCSI.php"; ?>
+						<div id="CIFScode"><?php include "CIFS.php"; ?></div>
+						<div id="NFScont"><div id="NfScode"><?php include "NFS.php"; ?></div></div>
+						<div id="ISCSIcode"><?php include "ISCSI.php"; ?></div>
 					</div>
 				</div>
 			</div>
@@ -37,34 +37,39 @@
 
 <!-- End additional plugins -->
 		<script>
+			var Protocol=0;
 			var chartdata = [
 					['Heavy ', 12],['Retail', 9], ['Light ', 14], 
 					['Outofhome', 16],['Commuting', 7], ['Orientation', 9]
 				];
 			var voldirty=1;
 			function Voldirtytable() {
-				if (($("#Volumetable tr").length == ($("#Vol2").children().length - 2)) && ($("#chartNFS tr").length == ($("#Vol2").children().length - 2)) ) { ; } else {
-					if (chartdata.length > 0) {
-						voldirty=0;
-						$("#chartNFS").children().remove();
-						plotchart('chartNFS',chartdata);
+				if(Protocol > 0){
+					
+					if (($("#Volumetable tr").length == ($("#Vol2").children().length - 2)) && ($("#chartNFS tr").length == ($("#Vol2").children().length - 2)) ) { ; } else {
+						if (chartdata.length > 0) {
+							voldirty=0;
+							$("#chartNFS").children().remove();
+							plotchart('chartNFS',chartdata);
+							
+							
+							console.log("trying to chart");
+						$("#Volumetable tr").remove();
+						chartdata=[];
+						refreshList2("GetPoolVollist","#Volumetable tr","Data/Vollist.txt",20);
+						}
 						
 						
-						console.log("trying to chart");
-					$("#Volumetable tr").remove();
-					chartdata=[];
-					refreshList2("GetPoolVollist","#Volumetable tr","Data/Vollist.txt",20);
 					}
-					
-					
 				}
 			}
 			
 			function refresh3(textareaid) {
-				
-				$.get("statuslog.php", { file: 'Data/status.log' }, function(data){
+				if(Protocol > 0) {
+					$.get("statuslog.php", { file: 'Data/status.log' }, function(data){
 					$(textareaid).val(data);
-				});
+					});
+				}
 			}	;
 			function volumetable(i,v) {
 				var res = i.split("_");
@@ -75,46 +80,50 @@
 				var res = i.split("_");
 				$("#Volumedetails > tbody").append('<tr onclick="rowisclicked(this)"><td>'+res[0]+'</td><td>'+res[1]+'</td><td>'+res[2]+'</td><td>'+res[3]+'</td><td>'+res[4]+'</td><td>'+res[5]+'</td><td>'+res[6]+'</td><td>'+res[7]+'</td></tr>');
 			};
-			function refreshList2(req,listid,fileloc,show) {
-				$.post("./pump.php", { req: req, name:"a" }, function (data1){
-					//$(listid+' option').remove();
-					$.get("statuslog.php", { file: fileloc }, function(data){
-						var jdata = jQuery.parseJSON(data);
-						counter=0;
-						if(show == 3) { $(listid+" option").addClass("deleteit"); }
-						if(show == 5.5) { 
-							
-							$(listid+" option").addClass("deleteit");
-							$(listid+" option:nth-child(1)").removeClass("deleteit");
-							$(listid+" option:nth-child(2)").removeClass("deleteit");
-							//$(listid).append($('<option class=" small" >').text("<<new>>").val("newoption")); $(listid).append($('<option class=" small">').text("<<ALL>>").val("alloption")); 
-							counter=2;
-						};
-						 datacount=0;
-						$.each(jdata, function(i,v) {
-							counter+=1;
-							datacount+=1;
-							
-							//console.log(fileloc,i,v);
-							if(show < 2) { $(listid).append($('<option>').text(i).val(v));}
-							else if(show < 10 ){ 
-								if ( $(listid+" option:nth-child("+counter+")").text() == v ) { 
-									$(listid+" option:nth-child("+counter+")").removeClass("deleteit"); //console.log ("counter= "+counter+" "+v);
+			function refreshList2(req,listid,filelocfrom,show) {
+				if(Protocol > 0) {
+					var fileloc=filelocfrom;
+					if(Protocol == 1) { fileloc = filelocfrom + "CIFS"; console.log(fileloc);};
+					$.post("./pump.php", { req: req, name:"a" }, function (data1){
+						//$(listid+' option').remove();
+						$.get("statuslog.php", { file: fileloc }, function(data){
+							var jdata = jQuery.parseJSON(data);
+							counter=0;
+							if(show == 3) { $(listid+" option").addClass("deleteit"); }
+							if(show == 5.5) { 
+								
+								$(listid+" option").addClass("deleteit");
+								$(listid+" option:nth-child(1)").removeClass("deleteit");
+								$(listid+" option:nth-child(2)").removeClass("deleteit");
+								//$(listid).append($('<option class=" small" >').text("<<new>>").val("newoption")); $(listid).append($('<option class=" small">').text("<<ALL>>").val("alloption")); 
+								counter=2;
+							};
+							 datacount=0;
+							$.each(jdata, function(i,v) {
+								counter+=1;
+								datacount+=1;
+								
+								//console.log(fileloc,i,v);
+								if(show < 2) { $(listid).append($('<option>').text(i).val(v));}
+								else if(show < 10 ){ 
+									if ( $(listid+" option:nth-child("+counter+")").text() == v ) { 
+										$(listid+" option:nth-child("+counter+")").removeClass("deleteit"); //console.log ("counter= "+counter+" "+v);
+									}
+									else { 
+											voldirty=3; console.log (voldirty+" voldirty"); 
+										 $(listid+" option:nth-child("+counter+")").remove();$(listid).append($('<option>').text(v).val(v));
+									}
 								}
-								else { 
-										voldirty=3; console.log (voldirty+" voldirty"); 
-									 $(listid+" option:nth-child("+counter+")").remove();$(listid).append($('<option>').text(v).val(v));
-								}
-							}
-							else if(show < 13) { $(listid).append($('<option>').text(i+":"+v).val(i));  }
-							else if( show == 20) { volumetable(i,v);}
-								else { $(listid).append($('<option>').text(i).val(i)); }
-						});
+								else if(show < 13) { $(listid).append($('<option>').text(i+":"+v).val(i));  }
+								else if( show == 20) { volumetable(i,v);}
+									else { $(listid).append($('<option>').text(i).val(i)); }
+							});
 
-						if (show < 10 ) { $(listid+" option.deleteit").remove(); if(voldirty==3) { voldirty=1; } }
-						
+							if (show < 10 ) { $(listid+" option.deleteit").remove(); if(voldirty==3) { voldirty=1; } }
+							
+						});
 					});
-				});
+				}
 			};
 			function SelectPanelNFS(s) {
 				var selection = s;
@@ -124,7 +133,9 @@
 				switch(selection) {
 				case "newoption" :  $("#createvol").show(); break;
 				case "alloption" : $("tr.success").removeClass("success");rowisclicked(); $("#Vollist").show(); break;
-				default: var fileloc= "Data/Vollist.txt";
+				default: 
+						var fileloc= "Data/Vollist.txt";
+						if (Protocol == 1) { fileloc = fileloc + "CIFS" };
 						$.get("statuslog.php", { file: fileloc }, function(data){
 						var jdata = jQuery.parseJSON(data);
 						$("#Volumedetails > tbody tr").remove();
@@ -175,10 +186,21 @@
 			
 			$(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();
 			$("#CIFS").click(function (){ 
-				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".CIFS").show(); plotchart('chartCIFS',chartdata); };});
-			$("#NFS").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/nfs.png')").text("NFS"); $(".NFS").show(); plotchart('chartNFS',chartdata);};});
-			$("#ISCSI").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ISCSI").show(); plotchart('chartISCSI',chartdata);};});
-			$(".finish").click(function (){ config = 1; $(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();});
+				if(config == 1 ) { Protocol=1; voldirty= 1; config= 0; 
+					$("#chartNFS").children().remove(); $("#Volumetable tr").remove();
+					$("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".NFS").show();
+					//plotchart('chartNFS',chartdata);
+				};
+			});
+			$("#NFS").click(function (){
+				if(config== 1){  Protocol=2; voldirty= 1; config = 0; 
+					$("#chartNFS").children().remove(); $("#Volumetable tr").remove();
+					$("h2").css("background-image","url('img/nfs.png')").text("NFS"); $(".NFS").show();
+					//plotchart('chartNFS',chartdata);
+				};
+			});
+			$("#ISCSI").click(function (){ Protocol=3; if(config== 1){ config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ISCSI").show(); plotchart('chartISCSI',chartdata);};});
+			$(".finish").click(function (){ Protocol=0; config = 1; $(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();});
 			$( "#Vol2" ).change(function() {
 				var selection=$("#Vol2 option:selected").val();
 				SelectPanelNFS(selection);
@@ -196,8 +218,8 @@
 			setInterval('refresh3("#statusarea4")', 1000);
 			setInterval('refresh3("#statusarea3")', 1000);
 			setInterval('refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);', 1000);
-			setInterval('Voldirtytable()', 5000);
-			setInterval('refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);', 5000);
+			setInterval('Voldirtytable()', 500);
+			setInterval('refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);', 1000);
 			refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);
 			refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
 			
