@@ -130,7 +130,7 @@
 								</div>
 								<div class="row">
 									<div  id="Voldelete" class="col-sm-offset-1 spacer-sm">
-										<button type="submit" class="btn btn-default  col-sm-2 "   data-toggle="tooltip" data-placement="bottom" title="DeleteVol">Delete Vol
+										<button type="submit" id="VoldeleteButton" class="btn btn-default  col-sm-2 "   data-toggle="tooltip" data-placement="bottom" title="DeleteVol">Delete Vol
 										</button>
 									</div>
 									<div class=" col-sm-offset-1 spacer-sm" id="disableddiv2">

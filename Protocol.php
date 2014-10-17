@@ -218,7 +218,7 @@
 				SelectPanelNFS(selection);
 			});
 			SelectPanelNFS("o");
-			$("#Voldelete").click( function (){ $.post("./pump.php", { req:"VolumeDelete", name:$("#Pool2 option:selected").val()+" "+$("tr.success td.Volname").text() }, function (data){
+			$("#VoldeleteButton").click( function (){ $.post("./pump.php", { req:"VolumeDelete", name:$("#Pool2 option:selected").val()+" "+$("tr.success td.Volname").text() }, function (data){
 				 refresh3("#statusarea4"); 
 				 });
 			});
