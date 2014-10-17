@@ -15,7 +15,7 @@
 				<div class="form-group col-sm-offset-2">
 					<label  for="Vol2" class=" control-label">Volumes</label>
 					<select  id="Vol2" class=" form-control ">
-						<option class=" small Complete" value="newoption" >--New--</option><option class=" small Complete" value="alloption">--ALL--</option>
+						<option class=" small Complete New" value="newoption" >--New--</option><option class=" small Complete" value="alloption">--ALL--</option>
 					</select>
 				</div>
 			</form>
@@ -23,7 +23,7 @@
 			<div id="createvol" class=" row Paneloption">
 				<div class="col-sm-10">
 					<form  class="form">
-						<div class="col-sm-offset-2">
+						<div class="col-sm-offset-1">
 							<div class="panel panel-default spacer ">
 								<div class="panel-heading">Create new Volume </div>
 								<div class="panel-body">
@@ -32,7 +32,7 @@
 											<input type="text"  id="Volname" class=" form-control ">
 										</div>
 									<div class="col-sm-2">
-										<div class="col-sm-10">
+										<div class="col-sm-12">
 											<label  for="volszie" class=" control-label">Size..GB</label>
 											<input type="text" id="volsize" class=" form-control ">
 										</div>
