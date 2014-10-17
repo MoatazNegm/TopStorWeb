@@ -43,21 +43,7 @@
 				];
 			var voldirty=1;
 			function Voldirtytable() {
-				if(voldirty ==5) {
-					if (chartdata.length > 0) {
-						voldirty=0;
-						$("#chartNFS").children().remove();
-						plotchart('chartNFS',chartdata);
-					}
-				}
-				if (voldirty == 6) {
-					voldirty=2;
-					console.log("voldirty in  chartnew");
-					$("#Volumetable tr").remove();
-					chartdata=[];
-					refreshList2("GetPoolVollist","#Volumetable tr","Data/Vollist.txt",20);
-				}
-				if (($("#Volumetable tr").length == ($("#Vol2").children().length - 2)) && ($("#chartNFS tr").length == ($("#Vol2").children().length - 2)) ) { console.log("eql"); } else {console.log("not-eql");
+				if (($("#Volumetable tr").length == ($("#Vol2").children().length - 2)) && ($("#chartNFS tr").length == ($("#Vol2").children().length - 2)) ) { ; } else {
 					if (chartdata.length > 0) {
 						voldirty=0;
 						$("#chartNFS").children().remove();
@@ -179,7 +165,7 @@
 								
 							}
 						}, 
-						legend: { show:true, location: 'w', marginRight: '5rem', placement: 'outside'},
+						legend: { show:true, location: 'w', marginRight: '5rem', placement: 'outside', border: "none"},
 						grid: { background: "transparent", borderColor: "transparent", shadow: false }
 					}
 				);
