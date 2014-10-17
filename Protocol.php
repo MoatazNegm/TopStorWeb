@@ -226,12 +226,17 @@
 				 refresh3("#statusarea3"); 
 				 });
 			});
+			$("#refreshb").click(function(){
+				refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
+				refresh3("#statusarea4");
+				refresh3("#statusarea3");
+			});
 			
-			setInterval('refresh3("#statusarea4")', 1000);
-			setInterval('refresh3("#statusarea3")', 1000);
-			setInterval('refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);', 1000);
-			setInterval('Voldirtytable()', 1000);
-			setInterval('refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);', 1000);
+			setInterval('refresh3("#statusarea4")', 10000);
+			setInterval('refresh3("#statusarea3")', 10000);
+			setInterval('refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);', 10000);
+			setInterval('Voldirtytable()', 10000);
+			setInterval('refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);', 10000);
 			refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);
 			refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
 			

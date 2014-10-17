@@ -3,8 +3,13 @@
 	<div class=" col-sm-offset-1 col-sm-10">
 		<div class="box " id="Popup">
 			<div class="row">
-				<h2 class="configTitle" id="SubTitle">Active Directory</h2>
-			</div>									
+				<div class="col-sm-11">
+					<h2 class="configTitle" id="SubTitle">Active Directory</h2>
+				</div>
+				<div class=" col-sm-1">
+					<button id="refreshb" class="btn btn-default">ref</button>
+				</div>								
+			</div>
 			<form class="form-inline">
 				<div class="form-group col-sm-offset-2">
 					<label  for="Pool2" class="control-label">Pool</label>
