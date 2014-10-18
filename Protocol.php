@@ -232,6 +232,7 @@
 				refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
 				refresh3("#statusarea4");
 				refresh3("#statusarea3");
+				refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);
 				Voldirtytable();
 			});
 			
