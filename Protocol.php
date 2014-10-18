@@ -43,7 +43,14 @@
 					['Outofhome', 16],['Commuting', 7], ['Orientation', 9]
 				];
 			var voldirty=1;
-			var Vollock=0
+			var Vollock=0;
+			function refreshall() {
+				refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
+				refresh3("#statusarea4");
+				refresh3("#statusarea3");
+				refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);
+				Voldirtytable();
+			}
 			function Initclickedprotocol() {
 				
 				voldirty= 1; config = 0; 
@@ -204,15 +211,20 @@
 					$("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".NFS").show();
 					//plotchart('chartNFS',chartdata);
 				};
+				refreshall();
 			});
 			$("#NFS").click(function (){
 				if(config== 1){  Protocol=2; 
 					Initclickedprotocol();
 					$("h2").css("background-image","url('img/nfs.png')").text("NFS"); $(".NFS").show();
 					//plotchart('chartNFS',chartdata);
+					
 				};
+				refreshall();
 			});
-			$("#ISCSI").click(function (){  if(config== 1){ Protocol=3; config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ISCSI").show(); plotchart('chartISCSI',chartdata);};});
+			$("#ISCSI").click(function (){  if(config== 1){ Protocol=3; config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ISCSI").show(); plotchart('chartISCSI',chartdata);};
+			refreshall()	;
+			});
 			$(".finish").click(function (){ Protocol=0; config = 1; $(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();});
 			$( "#Vol2" ).change(function() {
 				var selection=$("#Vol2 option:selected").val();
@@ -229,18 +241,14 @@
 			refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
 			});
 			$("#refreshb").click(function(){
-				refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
-				refresh3("#statusarea4");
-				refresh3("#statusarea3");
-				refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);
-				Voldirtytable();
+				refreshall();
 			});
 			
 			//setInterval('refresh3("#statusarea4")', 10000);
 			//setInterval('refresh3("#statusarea3")', 10000);
 			//setInterval('refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);', 10000);
 			//setInterval('Voldirtytable()', 10000);
-			//setInterval('refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);', 10000);
+			setInterval('refreshall()', 2000);
 			refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);
 			refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
 			
