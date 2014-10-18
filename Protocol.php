@@ -225,6 +225,7 @@
 			$("#Createvol").click( function (){ var req=""; if(Protocol == 1) { req="CIFS"; } $.post("./pump.php", { req:"VolumeCreate"+req, name:$("#Pool2 option:selected").val()+" "+" "+$("#Volname").val()+" "+$("#volsize").val() }, function (data){
 				 refresh3("#statusarea3"); 
 				 });
+			refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
 			});
 			$("#refreshb").click(function(){
 				refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
