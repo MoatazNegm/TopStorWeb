@@ -145,7 +145,7 @@
 				$(".Paneloption").hide();
 				switch(selection) {
 				case "newoption" :  $("#createvol").show(); break;
-				case "alloption" : $("tr.success").removeClass("success");rowisclicked(); $("#Vollist").show(); break;
+				case "alloption" : $("tr.success").removeClass("success");rowisclicked(); $("#Vollist").show(); plotchart('chartNFS',chartdata); break;
 				default: 
 						var fileloc= "Data/Vollist.txt";
 						if (Protocol == 1) { fileloc = fileloc + "CIFS" };
@@ -232,13 +232,14 @@
 				refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
 				refresh3("#statusarea4");
 				refresh3("#statusarea3");
+				Voldirtytable();
 			});
 			
-			setInterval('refresh3("#statusarea4")', 10000);
-			setInterval('refresh3("#statusarea3")', 10000);
-			setInterval('refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);', 10000);
-			setInterval('Voldirtytable()', 10000);
-			setInterval('refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);', 10000);
+			//setInterval('refresh3("#statusarea4")', 10000);
+			//setInterval('refresh3("#statusarea3")', 10000);
+			//setInterval('refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);', 10000);
+			//setInterval('Voldirtytable()', 10000);
+			//setInterval('refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);', 10000);
 			refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);
 			refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
 			
