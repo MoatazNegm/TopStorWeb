@@ -57,7 +57,7 @@
 			function Voldirtytable() {
 				if(Protocol > 0 ){
 					
-					if (($("#Volumetable tr").length == ($("#Vol2").children().length - 2)) && ($("#chartNFS tr").length == ($("#Vol2").children().length - 2)) ) { ; } else {
+					if (voldirty == 0 && (($("#Volumetable tr").length == ($("#Vol2").children().length - 2)) && ($("#chartNFS tr").length == ($("#Vol2").children().length - 2))) ) { ; } else {
 						if (chartdata.length > 0) {
 							voldirty=0;
 							$("#chartNFS").children().remove();
@@ -123,7 +123,8 @@
 									}
 									else { 
 											voldirty=3; console.log (voldirty+" voldirty"); 
-										 $(listid+" option:nth-child("+counter+")").remove();$(listid).append($('<option>').text(v).val(v));
+										 //$(listid+" option:nth-child("+counter+")").remove();
+										 $(listid).append($('<option>').text(v).val(v));
 									}
 								}
 								else if(show < 13) { $(listid).append($('<option>').text(i+":"+v).val(i));  }
