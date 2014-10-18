@@ -104,8 +104,9 @@
 			function refreshList2(req,listid,filelocfrom,show) {
 				if(Protocol > 0) {
 					var fileloc=filelocfrom;
-					if(Protocol == 1) { fileloc = filelocfrom + "CIFS"; console.log(fileloc);};
-					$.post("./pump.php", { req: req, name:"a" }, function (data1){
+					var request=req;
+					if(Protocol == 1) { fileloc = filelocfrom + "CIFS"; request= request + "CIFS"; };
+					$.post("./pump.php", { req: request, name:"a" }, function (data1){
 						//$(listid+' option').remove();
 						$.get("statuslog.php", { file: fileloc }, function(data){
 							var jdata = jQuery.parseJSON(data);
