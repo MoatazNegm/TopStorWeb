@@ -4,7 +4,7 @@
 	
 							<li><a href="#" class="ADa rightli"><h4 id="AD"><span>Active Directory</span></h4></a></li>
 							<li><a href="#" class="UnLina rightli"><h4 id="UnLin"><span>Box users</span></h4></a></li>
-							<li><a href="#" class="Futurea rightli"><h4 id="Future"><span> .........Future</span></h4></a></li>
+							<li><a href="#" class="Futurea rightli"><h4 id="Future"><span>Box properties</span></h4></a></li>
 						</ul>
 						<?php include "Future.php"; ?>
 						<?php include "AD.php"; ?>
@@ -46,11 +46,11 @@
 			setInterval('refreshUserList()', 5000); // Loop every 10000 milliseconds (i.e. 1 second)
 			refreshUserList();
 			var config = 1;
-			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();
+			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide(); $(".IPAddress").hide(); $(".Gateway").hide();
 			$("#AD").click(function (){ 
 				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".AD").show(); };});
 			$("#UnLin").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".UnLin").show();};});
-			$("#Future").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/future.png')").text("Future"); $(".Future").show();};});
+			$("#Future").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/future.png')").text("Box properties"); $(".Future").show();};});
 			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
 			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val(), passwd:$("#UserPass").val() }, function (data){
 				 refreshUserList(); 
@@ -60,7 +60,13 @@
 				 refreshUserList(); 
 				 });
 			});
-			
+			$("#network").change( function () {
+					var value= $("#network").val();
+					switch(value) {
+						case "DHCP" : $(".IPAddress").hide(); $(".Gateway").hide(); break;
+						case "Manual" : $(".IPAddress").show(); $(".Gateway").show(); break;
+					}
+			});
 		</script>
 			 <?php  include "footer.php"; ?>
 	</body>
