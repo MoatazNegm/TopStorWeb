@@ -4,13 +4,13 @@
 			<div class="row">
 				<h2 class="configTitle">Active Directory</h2>
 			</div>									
-			<form class="form-horizontal " role="form">
+			<form class="form-horizontal " role="form" data-toggle="validator">
 				<div class="row">
 					<div class="  col-sm-4 ">
 						<div class=" form-group row">
 							<label  for="BoxName" class="col-sm-5 control-label">BoxName</label>
 							<div class=" col-sm-6">
-								<input type="text" id="BoxName" class=" form-control " placeholder="boxname">
+								<input type="text" id="BoxName" class=" form-control " placeholder="boxname" required>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -43,14 +43,15 @@
 							<div class="row " >
 								<label  for="DNS" class=" col-sm-1 control-label">DNS</label>
 								<div class=" col-sm-7">
-								<input type="text" id="DNS" class="form-control " placeholder="DNS address">
+								<input type="text" id="DNS" class="form-control " pattern="^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$" placeholder="DNS address" data-error="......invalid ip address" required>
 								</div>
 							</div> 
+							<div class="help-block with-errors"></div>
 						</div>
 					
 						<div class="form-group row">
 							<div class="row">
-								<button type="submit" class="btn btn-default col-sm-offset-2 col-sm-7 submitb" data-toggle="tooltip" data-placement="top" title="submit values">Submit</button>
+								<button type="submit" class="btn btn-default col-sm-offset-2 col-sm-7 submitb" data-toggle="tooltip" data-placement="top" title="submit values" id="DNSsubmit">Submit</button>
 							</div>
 						</div>
 					</div>

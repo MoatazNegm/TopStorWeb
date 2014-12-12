@@ -21,7 +21,7 @@
 		</div>
 		</div>
 	</div>
-		
+	<?php  include "footer.php"; ?>	
 		<script>
 			function refresh() {
 				
@@ -67,8 +67,14 @@
 						case "Manual" : $(".IPAddress").show(); $(".Gateway").show(); break;
 					}
 			});
+			$("#DNSsubmit").click( function (){ 
+				$("form").validator("validate");
+				if($("div").hasClass("has-error")== false) {
+				 $.post("./pump.php", { req:"DNSdata", name:$("#DNS").val()+"clean" });
+				}
+			});
 		</script>
-			 <?php  include "footer.php"; ?>
+			 
 	</body>
 
 </html>
