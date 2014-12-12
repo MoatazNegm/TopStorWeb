@@ -103,11 +103,11 @@
 			$("#DNSsubmit").click( function (){ 
 				$("form").validator("validate");
 				if($("div").hasClass("has-error")== false) {
-					if($("#network").val()=="DHCP") {
-						$.post("./pump2.php", { req:"DHCPconfig", name:$("#BoxName").val()+" "+$("#DNS").val() });
+					if($("#network").val()=="2") {
+						$.post("./pump.php", { req:"DHCPconfig", name:$("#BoxName").val()+" "+$("#DNS").val() });
 					}
 					else {
-						$.post("./pump2.php", { req:"Manualconfig", name:$("#BoxName").val()+" "+$("#IPAddress").val()+" "+$("#Gateway").val()+" "+$("#DNS").val() });
+						$.post("./pump.php", { req:"Manualconfig", name:$("#BoxName").val()+" "+$("#IPAddress").val()+" "+$("#Gateway").val()+" "+$("#DNS").val() });
 					}
 				}
 			});
