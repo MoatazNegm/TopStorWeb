@@ -17,8 +17,8 @@
 							<label  for="network" class=" col-sm-5 control-label  ">Network</label>
 							<div class="col-sm-6">
 								<select id="network"  class="form-control">
-									<option value="DHCP" selected >DHCP</option>
-									<option value="Manual"  >Manual</option>
+									<option value="2"  >DHCP</option>
+									<option value="1"  >Manual</option>
 								</select>
 							</div>
 						</div>
@@ -26,14 +26,17 @@
 						<div class=" form-group row IPAddress">
 							<label  for="IPAddress" class="col-sm-5 control-label">IP Address</label>
 							<div class=" col-sm-6">
-								<input type="text" id="IPAddress" class="form-control " placeholder="IpAddress">
+								<input type="text" id="IPAddress" class="form-control " placeholder="IpAddress" pattern="^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$" data-error="......invalid ip address" required>
 							</div>
 						</div>
+						
 						<div class=" form-group row Gateway ">
 							<label  for="Gateway" class="col-sm-5 control-label">Gateway</label>
 							<div class=" col-sm-6">
-								<input type="text" id="Gateway" class="form-control " placeholder="Gateway">
+								<input type="text" id="Gateway" class="form-control " placeholder="Gateway" pattern="^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$" required>
 							</div>
+							
+						
 						</div>
 						
 					</div>
@@ -46,7 +49,7 @@
 								<input type="text" id="DNS" class="form-control " pattern="^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$" placeholder="DNS address" data-error="......invalid ip address" required>
 								</div>
 							</div> 
-							<div class="help-block with-errors"></div>
+							
 						</div>
 					
 						<div class="form-group row">

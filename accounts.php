@@ -23,6 +23,39 @@
 	</div>
 	<?php  include "footer.php"; ?>	
 		<script>
+			var DNS=1;
+			function refreshall() {
+				if(DNS > 0) {
+					refresh4("boxname","#BoxName");
+					refresh4("IPAddress","#IPAddress");
+					refresh4("Gateway","#Gateway");
+					refresh4("DNS","#DNS");
+					refresh4("network","#network");
+					
+				
+				//	Voldirtytable();
+				DNS=0;
+				}
+			}
+			function refresh4(request,field) {
+				if(DNS > 0) {
+					$.get("requestdata.php", { file: 'Data/'+request+'.log' }, function(data){
+					$(field).val(data);
+				if(request=="network") {
+					if (data==1) {
+						$("#network").val(1);  
+					} else { 
+						$("#network").val(2);
+					}; 
+					$("#network").change();
+				}
+	//				if(request=="network") { $("#network").val(data); $("#network").change(); }
+					console.log(field,request,data,$("#network").val());
+					});
+					
+				}
+			}	
+						
 			function refresh() {
 				
 				$.get("statuslog.php", { file: 'Data/status.log' }, function(data){
@@ -42,15 +75,15 @@
 					});
 				});
 			};
-			setInterval('refresh()', 1000); // Loop every 1000 milliseconds (i.e. 1 second)
-			setInterval('refreshUserList()', 5000); // Loop every 10000 milliseconds (i.e. 1 second)
+//			setInterval('refresh()', 1000); // Loop every 1000 milliseconds (i.e. 1 second)
+//			setInterval('refreshUserList()', 5000); // Loop every 10000 milliseconds (i.e. 1 second)
 			refreshUserList();
 			var config = 1;
 			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide(); $(".IPAddress").hide(); $(".Gateway").hide();
 			$("#AD").click(function (){ 
 				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".AD").show(); };});
 			$("#UnLin").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".UnLin").show();};});
-			$("#Future").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/future.png')").text("Box properties"); $(".Future").show();};});
+			$("#Future").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/future.png')").text("Box properties");DNS=1;refreshall(); $(".Future").show();};});
 			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
 			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val(), passwd:$("#UserPass").val() }, function (data){
 				 refreshUserList(); 
@@ -63,16 +96,23 @@
 			$("#network").change( function () {
 					var value= $("#network").val();
 					switch(value) {
-						case "DHCP" : $(".IPAddress").hide(); $(".Gateway").hide(); break;
-						case "Manual" : $(".IPAddress").show(); $(".Gateway").show(); break;
+						case "2" : $(".IPAddress").hide(); $(".Gateway").hide(); break;
+						case "1" : $(".IPAddress").show(); $(".Gateway").show(); break;
 					}
 			});
 			$("#DNSsubmit").click( function (){ 
 				$("form").validator("validate");
 				if($("div").hasClass("has-error")== false) {
-				 $.post("./pump.php", { req:"DNSdata", name:$("#DNS").val()+"clean" });
+					if($("#network").val()=="DHCP") {
+						$.post("./pump2.php", { req:"DHCPconfig", name:$("#BoxName").val()+" "+$("#DNS").val() });
+					}
+					else {
+						$.post("./pump2.php", { req:"Manualconfig", name:$("#BoxName").val()+" "+$("#IPAddress").val()+" "+$("#Gateway").val()+" "+$("#DNS").val() });
+					}
 				}
 			});
+			//setInterval('refreshall()', 2000);
+			refreshall();
 		</script>
 			 
 	</body>
