@@ -14,6 +14,13 @@
 															<input type="text"  class="form-control colorize" id="DomName" Data-tag="DomName" Data-id="inputs" Data-textcolor="yes" Data-background="yes" Data-border="yes"  value="Sampel type">
 														</div>
 													</div>
+													<div class=" form-group row">
+														<label  for="DCserver" class="col-sm-5 control-label">DC server</label>
+														<div class=" col-sm-6">
+															<input type="text"  class="form-control colorize" id="DCserver" Data-tag="DomainServer" Data-id="inputs" Data-textcolor="yes" Data-background="yes" Data-border="yes"  value="Domain Server">
+														</div>
+													</div>
+													
 													<div class=" form-group row ">
 														<label  for="Admin" class="col-sm-5 control-label">Administrator</label>
 														<div class=" col-sm-6">
@@ -39,7 +46,7 @@
 													</div>
 													<div class="form-group row">
 														<div class="row">
-															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-7 submitb colorize" id="Buttons" Data-tag="button" Data-id="Buttons" Data-textcolor="yes" Data-background="yes" Data-border="yes" data-toggle="tooltip" data-placement="top" title="submit values">Submit</button>
+															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-7 submitb colorize" id="ADsubmit" Data-tag="button" Data-id="Buttons" Data-textcolor="yes" Data-background="yes" Data-border="yes" data-toggle="tooltip" data-placement="top" title="submit values">Submit</button>
 														</div>
 													</div>
 												</div>
@@ -49,7 +56,7 @@
 															<textarea class="form-control colorize" id="ADstatus" Data-id="status" Data-tag="textarea" Data-textcolor="yes" Data-background="no" Data-border="yes" rows="3"> sample status Data </textarea>
 														</div>
 														<div class="row">
-															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-7 finish  data-toggle="tooltip" data-placement="bottom" title="close window">Finish</button>
+															<button type="submit" id="finish" class="btn btn-default col-sm-offset-3 col-sm-7 finish  data-toggle="tooltip" data-placement="bottom" title="close window">Finish</button>
 														</div>
 													</div>
 												</div>

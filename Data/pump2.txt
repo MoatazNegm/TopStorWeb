@@ -1,1 +1,1 @@
-Manualconfig topstor 10.0.2.29 10.0.2.43 10.2.2.44
+DomainChange somehting.local administrator 2345 windc
