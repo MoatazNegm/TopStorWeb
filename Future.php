@@ -61,7 +61,7 @@
 					<div class=" col-sm-5">
 						<div class=" form-group row">
 							<div class=" col-sm-12">
-								<textarea class="form-control" rows="3"></textarea>
+								<textarea id="Futurestatus" class="form-control" rows="3"></textarea>
 							</div>
 							<div class="row">
 								<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-7 finish" data-toggle="tooltip" data-placement="bottom" title="close window">Finish</button>

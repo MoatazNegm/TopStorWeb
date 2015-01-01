@@ -40,7 +40,7 @@
 												<div class=" col-sm-6">
 													<div class=" form-group row">
 														<div class=" col-sm-12">
-															<textarea id="statusarea" class="form-control" rows="3"></textarea>
+															<textarea id="UnLinstatus" class="form-control" rows="3"></textarea>
 														</div>
 														<div class="row">
 															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-7 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>

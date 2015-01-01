@@ -11,7 +11,7 @@
 													<div class=" form-group row">
 														<label  for="DomWork" class="col-sm-5 control-label">Domain/Workgroup</label>
 														<div class=" col-sm-6">
-															<input type="text"  class="form-control colorize" id="inputs" Data-tag="input" Data-id="inputs" Data-textcolor="yes" Data-background="yes" Data-border="yes"  value="Sampel type">
+															<input type="text"  class="form-control colorize" id="DomName" Data-tag="DomName" Data-id="inputs" Data-textcolor="yes" Data-background="yes" Data-border="yes"  value="Sampel type">
 														</div>
 													</div>
 													<div class=" form-group row ">
@@ -29,9 +29,9 @@
 												</div>
 												<div class="  col-sm-2">
 													<div class="form-group row">
-														<label  for="type" class="control-label col-sm-3 ">Type</label>
+														<label  for="Domtype" class="control-label col-sm-3 ">Type</label>
 														<div class="col-sm-9">
-															<select id="type"  class="form-control">
+															<select id="Domtype"  class="form-control">
 																<option value="Domain" selected >Domain</option>
 																<option value="Workgroup"  >Workgroup</option>
 															</select>
@@ -46,7 +46,7 @@
 												<div class=" col-sm-6">
 													<div class=" form-group row">
 														<div class=" col-sm-12">
-															<textarea class="form-control colorize" id="status" Data-id="status" Data-tag="textarea" Data-textcolor="yes" Data-background="no" Data-border="yes" rows="3"> sample status Data </textarea>
+															<textarea class="form-control colorize" id="ADstatus" Data-id="status" Data-tag="textarea" Data-textcolor="yes" Data-background="no" Data-border="yes" rows="3"> sample status Data </textarea>
 														</div>
 														<div class="row">
 															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-7 finish  data-toggle="tooltip" data-placement="bottom" title="close window">Finish</button>

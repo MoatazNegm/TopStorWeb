@@ -25,17 +25,21 @@
 		<script>
 			var DNS=1;
 			function refreshall() {
-				if(DNS > 0) {
-					refresh4("boxname","#BoxName");
-					refresh4("IPAddress","#IPAddress");
-					refresh4("Gateway","#Gateway");
-					refresh4("DNS","#DNS");
-					refresh4("network","#network");
-					
-				
-				//	Voldirtytable();
-				DNS=0;
+				DNS=1;
+			//	console.log("AD is visible : " , $(".AD").is(":visible"));
+				if($(".AD").is(":visible"))
+				{
+					$.get("requestdata.php", { file: 'Data/status.log' }, function(data){ $("#ADstatus").val(data);});
 				}
+				else if($(".Future").is(":visible"))
+				{
+					$.get("requestdata.php", { file: 'Data/status.log' }, function(data){ $("#Futurestatus").val(data);});
+				}
+				else if($(".UnLin").is(":visible"))
+				{
+					$.get("requestdata.php", { file: 'Data/status.log' }, function(data){ $("#UnLinstatus").val(data);});
+				}
+
 			}
 			function refresh4(request,field) {
 				if(DNS > 0) {
@@ -81,9 +85,20 @@
 			var config = 1;
 			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide(); $(".IPAddress").hide(); $(".Gateway").hide();
 			$("#AD").click(function (){ 
-				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".AD").show(); };});
+				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".AD").show(); 
+					$.get("requestdata.php", { file: 'Data/DomName.txt' },function(data){ $("#DomName").val(data);});
+					$.get("requestdata.php", { file: 'Data/Domtype.txt' },function(data){ $("#Domtype").val(data);});
+				};
+			});
 			$("#UnLin").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".UnLin").show();};});
-			$("#Future").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/future.png')").text("Box properties");DNS=1;refreshall(); $(".Future").show();};});
+			$("#Future").click(function (){ 
+				if(config== 1){ config = 0; $("h2").css("background-image","url('img/future.png')").text("Box properties");$("#network").val("1") ; $(".IPAddress").show(); $(".Gateway").show(); $(".Future").show(); 
+								$.get("requestdata.php", { file: 'Data/BoxName.txt' },function(data){ $("#BoxName").val(data);});
+								$.get("requestdata.php", { file: 'Data/IPAddress.txt' },function(data){ $("#IPAddress").val(data);});
+								$.get("requestdata.php", { file: 'Data/Gateway.txt' },function(data){ $("#Gateway").val(data);});
+								$.get("requestdata.php", { file: 'Data/DNS.txt' },function(data){ $("#DNS").val(data);});
+				}; 
+			});
 			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
 			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val(), passwd:$("#UserPass").val() }, function (data){
 				 refreshUserList(); 
@@ -111,7 +126,7 @@
 					}
 				}
 			});
-			//setInterval('refreshall()', 2000);
+			setInterval('refreshall()', 2000);
 			refreshall();
 		</script>
 			 
