@@ -38,6 +38,7 @@
 				else if($(".UnLin").is(":visible"))
 				{
 					$.get("requestdata.php", { file: 'Data/status.log' }, function(data){ $("#UnLinstatus").val(data);});
+					refreshUserList();
 				}
 
 			}
@@ -54,7 +55,7 @@
 					$("#network").change();
 				}
 	//				if(request=="network") { $("#network").val(data); $("#network").change(); }
-					console.log(field,request,data,$("#network").val());
+	//				console.log(field,request,data,$("#network").val());
 					});
 					
 				}
@@ -67,21 +68,39 @@
 					});
 			}	;
 			function refreshUserList() {
-				$.post("./pump.php", { req:"UnixListUsers", name:"a" }, function (data1){
-					$('#UserList option').remove();
-					$.get("statuslog.php", { file: 'Data/listusers.txt' }, function(data){
-						var jdata = jQuery.parseJSON(data);
+				var jdata;
+				
+				$.post("./pump.php", { req:"UnixListUsers", name:"a" }, function (data1){ 
+					
+					$.get("requestdata.php", { file: 'Data/listusers.txt' }, function(data){
+						jdata = jQuery.parseJSON(data);
+						if(Number($("#UserList option").length)+1 > 0 ) {
+							$("#UserList option").each(function (i,v) { 
+								for(var key in jdata) { 
+									if ( key == this.value) {
+										console.log(this.value,key,"found"); $(this).toggleClass("dontdelete"); jdata[key]="inin"; 
+									} else { 
+										console.log(this.value,key,"notfound");
+									} 
+								}
+
+							});
+						}
 						
-						$.each(jdata, function(i,v) {
-						//	console.log(i,k);
-							$('#UserList').append($('<option>').text(i).val(i));
-						});
+						for (var key in jdata ) { 
+							if(jdata[key] == "o") { $("#UserList").append($("<option class='dontdelete'>").text(key).val(key)); }
+						}
 					});
-				});
+												console.log("before:",$("#UserList option.dontdelete")); 
+												;
+					$("#UserList option").not(".dontdelete").remove();
+					$("#UserList option").toggleClass("dontdelete");
+					console.log("after:",$("#UserList option.dontdelete"));
+				});	
 			};
 //			setInterval('refresh()', 1000); // Loop every 1000 milliseconds (i.e. 1 second)
 //			setInterval('refreshUserList()', 5000); // Loop every 10000 milliseconds (i.e. 1 second)
-			refreshUserList();
+			//refreshUserList();
 			var config = 1;
 			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide(); $(".IPAddress").hide(); $(".Gateway").hide();
 			$("#AD").click(function (){ 
@@ -102,11 +121,11 @@
 			});
 			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
 			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val(), passwd:$("#UserPass").val() }, function (data){
-				 refreshUserList(); 
+				 //refreshUserList(); 
 				 });
 			});
 			$("#UnixDelUser").click( function (){ $.post("./pump.php", { req:"UnixDelUser", name:$("#UserList option:selected").val() }, function (data){
-				 refreshUserList(); 
+				 //refreshUserList(); 
 				 });
 			});
 			$("#network").change( function () {
@@ -129,7 +148,7 @@
 			});
 			$("#ADsubmit").click( function() {
 				if($("#Domtype").val()=="Domain") {
-					$.post("./pump2.php", { req:"DomainChange", name:$("#DomName").val()+" "+$("#Admin").val()+" "+"\""+$("#Pass").val()+"\""+" "+$("#DCserver").val() });
+					$.post("./pump.php", { req:"DomainChange", name:$("#DomName").val()+" "+$("#Admin").val()+" "+"\""+$("#Pass").val()+"\""+" "+$("#DCserver").val() });
 				}
 			});
 			setInterval('refreshall()', 2000);
