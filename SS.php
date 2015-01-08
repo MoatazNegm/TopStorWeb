@@ -5,22 +5,23 @@
 										<h2 class="configTitle" id="SubTitle"></h2>
 									</div>									
 									<div class="row">
+										
 										<form class="form " role="form">
 											<div class=" boxoffields col-sm-offset-1 col-sm-2">
 												<span>Show Traffic</span>
 												<div class="checkbox">
 														<label>
-														<input type="checkbox"  value="CIFS">CIF
+														<input type="checkbox" id="CIFS"  value="CIFS">CIF
 														</label>
 												</div>
 												<div class="checkbox">
 														<label>
-															<input type="checkbox"  value="NFS">NFS
+															<input type="checkbox" id="NFS"  value="NFS">NFS
 														</label>
 												</div>
 												<div class="checkbox">
 														<label>
-															<input type="checkbox"  value="ISCSI">ISCSI
+															<input type="checkbox" id="ISCSI" value="ISCSI">ISCSI
 														</label>
 												</div>
 											</div>

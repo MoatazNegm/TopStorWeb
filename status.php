@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+		
 	<?php $men=2; include "header.html"; ?>
 	
 							<li><a href="#" class="SSa rightli"><h4 id="SS"><span>Services Status</span></h4></a></li>
@@ -12,17 +13,36 @@
 			
 			</div>
 			<div class="row">
+				
 			<footer class="footer"> Errors
 			</footer>
 		</div>
 	</div>
 	</div>
-		<script src="jquery/jquery.js"></script>
-		<script src="jquery-ui/jquery-ui.js"></script>
-		<script src="jquery/jquery.datetimepicker.js"></script>
-		<script src="Bootstrap/js/bootstrap.min.js"></script>
+	<script src='js/jquery.js'></script>
+	<script src="js/bootstrap.min.js" ></script>
+	<script src='js/bootstrap-datepicker.js'></script>
+	
+		
+		<script src="js/bootstrap-timepicker.js"></script>
+		
+		
 		<script>
 			var config = 1;
+			$("#2Stime").timepicker({
+								appendWidgetTo: 'body',
+                minuteStep: 1,
+								showMeridian: false,
+			});
+			$('.input-daterange').datepicker({
+				format: "dd/mm/yyyy",
+				weekStart: 6,
+				startDate: "today",
+				todayBtn: "linked",
+				keyboardNavigation: false,
+				autoclose: true,
+				todayHighlight: true
+			});
 			$(".SS").hide(); $(".Logs").hide(); 
 			$("#SS").click(function (){ 
 				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/SS.png')").text("Service Status"); $(".SS").show(); };});
@@ -34,15 +54,18 @@
 				d1.push([i, Math.sin(i)]);
 			};
 			
-			$.plot("#placeholder", [{
+	/*		$.plot("#placeholder", [{
 			data: d1,
 			lines: { show: true, fill: false }
 		}]);
 
-	
-
+	*/
 		</script>
- 
+ <script>
+		$(document).ready(function() {
+				
+		});
+	</script>
 	</body>
 
 </html>
