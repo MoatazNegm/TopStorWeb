@@ -373,3 +373,5 @@ td { font-size : 1.3rem;}
 .datepicker {z-index: 1151 !important ;}
  table {z-index:1150 !important;
 						background: white;}
+.panel-heading { padding: 1px;}
+.panel-body { padding: 5px; }

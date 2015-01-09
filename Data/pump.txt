@@ -1,1 +1,1 @@
-DiskraidzSize Data/diskraidz.txt
+LogDateRange 2:46 01/06/2015 01/22/2015
