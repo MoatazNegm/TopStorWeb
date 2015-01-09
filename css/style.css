@@ -374,4 +374,6 @@ td { font-size : 1.3rem;}
  table {z-index:1150 !important;
 						background: white;}
 .panel-heading { padding: 1px;}
-.panel-body { padding: 5px; }
+.panel-body { padding: 5px; 
+							margin-right: 15px;
+			}
