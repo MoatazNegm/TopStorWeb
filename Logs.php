@@ -44,7 +44,7 @@
 												</div>
 												<div class="checkbox">
 														<label>
-															<input type="checkbox" id="error" class="checkboxy" value="Error">Error
+															<input type="checkbox" id="Error" class="checkboxy" value="Error">Error
 														</label>
 												</div>
 											</div>
