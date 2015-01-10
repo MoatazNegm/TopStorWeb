@@ -224,7 +224,7 @@ h2 {
 .demo-container {
 	box-sizing: border-box;
 	
-	width: 15em;
+	width: 55rem;
 	height: 16rem;
 /*	width: 850px;
 	height: 450px;
@@ -247,11 +247,11 @@ h2 {
 
 .demo-placeholder {
 
-	width: 300%; 
-	height: 12rem;
+	width: 100%; 
+	height: 100%;
 	font-size: 14px;
 	line-height: 1.2em;
-	margin: 1em ;
+	margin: 0px ;
 }
 .logswrapper {
 	padding:0;
@@ -377,3 +377,4 @@ td { font-size : 1.3rem;}
 .panel-body { padding: 5px; 
 							margin-right: 15px;
 			}
+.jqplot-target { z-index:1150 !important;}
