@@ -26,49 +26,44 @@
 																											
 													</form>
 								
-									<div class="row">
+									<div class="">
 										
-										<form class="form " role="form">
-											<div class=" boxoffields col-sm-offset-1 col-sm-2 spacer">
-												<span>Show Traffic</span>
-												<div class="checkbox">
-														<label>
-														<input type="checkbox" id="bw" class="traffic" value="Bandwidth">Bandwidth
-														</label>
-												</div>
-												<div class="checkbox">
-														<label>
-															<input type="checkbox" id="rs"  class="traffic" value="read/sec">Read/s
-														</label>
-												</div>
-												<div class="checkbox">
-														<label>
-															<input type="checkbox" id="ws" class="traffic"  value="Write/s">Write/s
-														</label>
-												</div>
-												<div class="checkbox">
-														<label>
-															<input type="checkbox" id="svct"  class="traffic"  value="svct">svc_t
-														</label>
-												</div>
-												<div class="checkbox">
-														<label>
-															<input type="checkbox" id="qlen" class="traffic"  value="qlen">Queue Length
-														</label>
-												</div>
 
-											</div>
-											<div  class= "col-sm-offset-1 col-sm-7 ">
+										<div class="row">	
+											<div  class= "col-sm-offset- col-sm-6 boxoffields2 ">
 												<div  class="  ">
 													
 													<div  class="demo-container">
-														<div id="chart1" class="demo-placeholder"></div>
+														<div id="bwchart" class="demo-placeholder"></div>
+													</div>
+													<div  class="demo-container">
+														<div id="rschart" class="demo-placeholder"></div>
+													</div>
+													<div  class="demo-container">
+														<div id="wschart" class="demo-placeholder"></div>
 													</div>
 												</div>
-												<div class="row"><button type="submit" class="btn btn-default col-sm-offset-2 col-sm-8 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
-												</div>														
 											</div>
-										</form>
+											<div  class= "col-sm-offset- col-sm-5 boxoffields3 ">
+												<div  class="  ">
+													
+													<div  class="demo-container">
+														<div id="svctchart" class="demo-placeholder"></div>
+													</div>
+													<div  class="demo-container">
+														<div id="qlenchart" class="demo-placeholder"></div>
+													</div>
+													<div  class="demo-container">
+														<div id="totaliochart" class="demo-placeholder"></div>
+													</div>
+												
+												</div>
+											</div>
+										</div>
+										<div class="row"><button type="submit" class="btn btn-default col-sm-offset-2 col-sm-8 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
+										</div>														
+									
+										
 									</div>	
 								</div>				
 							</div>
