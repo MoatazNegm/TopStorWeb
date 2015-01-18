@@ -34,6 +34,7 @@
 			var deviceobj;
 			var dl =[[[0,0]],[[0,0]]];
 			var plotbw; var plotrs; var plotws; var plotsvct; var plotqlen; var plotdl;
+			var traffictime = "55:55:55";
 			var sineRenderer = function() {
 				//var data = [[]];
 				for (var i=0; i<13; i+=0.5) {
@@ -75,8 +76,17 @@
 		var miny = 1000000;var bwminy = 1000000;var rsminy = 1000000;var wsminy = 1000000;var svctminy = 1000000;var qlenminy = 1000000;
 		var tm;
 		var tm2;
+		
 		var qlen=[[]];var rs=[[]];var ws=[[]];var dl=[[]];var bw=[[]];var svct=[[]];
 		var seriesarr="";
+		$.get("requestdate.php", { file: 'Data/currenttraffic.log' }, function(data){
+			var objdate = jQuery.parseJSON(data);
+			trafficnewtime=objdate.timey;
+			console.log("timey",trafficnewtime);
+			
+		});
+		console.log(trafficnewtime, traffictime);
+		if(traffictime==trafficnewtime) { console.log("traffic not changed"); } else { console.log ("traffic changed"); traffictime=trafficnewtime; }
 		$.get("requestdata.php", { file: 'Data/currenttraffic.log' }, function(data){
 			objc = jQuery.parseJSON(data);
 			var device = "ad0";
@@ -113,16 +123,17 @@
 							if ( Number(deviceobj[0].stats[0].Dates[k].times[y].qlen) > qlenmaxy ) { qlenmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].qlen);}
 							if ( Number(deviceobj[0].stats[0].Dates[k].times[y].qlen) < qlenminy ) {qlenminy = Number(deviceobj[0].stats[0].Dates[k].times[y].qlen);}
 							//dl[0].push([y,y]);
-							
-							maxy = rsmaxy + wsmaxy; miny = rsminy + wsminy;
+
 							totalio= Number(deviceobj[0].stats[0].Dates[k].times[y].rs ) + Number (deviceobj[0].stats[0].Dates[k].times[y].ws);
+							if ( totalio > maxy ) { maxy = totalio;}
+							if ( totalio < miny ) { miny = totalio;}
 							dl[0].push([tm2,totalio]);
 					};
 				};
 			};
 			if(plotflag > 0) { plotbw.destroy();plotrs.destroy();plotws.destroy();plotsvct.destroy();plotqlen.destroy();plotdl.destroy(); };
 			//plotbw.destroy();
-			console.log(totalio);
+		
 			bwmaxy = Number(bwmaxy+1); bwminy = Number(bwminy -1);rsmaxy = Number(rsmaxy+1); rsminy = Number(rsminy -1);
 			wsmaxy = Number(wsmaxy+1); wsminy = Number(wsminy -1);svctmaxy = Number(svctmaxy+1); svctminy = Number(svctminy -1);
 			qlenmaxy = Number(qlenmaxy+1); qlenminy = Number(qlenminy -1);

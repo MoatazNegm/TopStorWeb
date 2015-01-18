@@ -386,3 +386,4 @@ td { font-size : 1.3rem;}
 							margin-right: 15px;
 			}
 .jqplot-target { z-index:1150 !important;}
+.bootstrap-timepicker-widget {z-index: 1153 !important ;}
