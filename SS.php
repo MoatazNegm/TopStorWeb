@@ -22,6 +22,13 @@
 																	
 																</div>
 															</div>
+															<div class="col-sm-2">
+																<label  for="Disks" class="control-label">Disks</label>
+																<select  id="Disks" class="  form-control traffic">
+																	<option>High</option><option>Low</option>
+																</select>
+															</div>
+
 														</div>
 																											
 													</form>

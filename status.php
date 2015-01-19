@@ -43,6 +43,22 @@
 				
 				return dl;
 			};
+			
+			function refreshList(req,listid,fileloc) {
+				$.post("./pump.php", { req: req, name:"a" }, function (data1){
+					$(listid+' option').remove();
+					$.get("requestdata.php", { file: fileloc }, function(data){
+						var jdata = jQuery.parseJSON(data);
+						
+						$.each(jdata, function(i,v) {
+						//	console.log(i,k);
+							 $(listid).append($('<option>').text(i).val(v)); 
+							
+						});
+					});
+				});
+			};
+
 //			var plot1 = $.jqplot('chart1',dl);
 			$("#Stimec").timepicker({
 					appendWidgetTo: 'body',
@@ -82,191 +98,196 @@
 		$.get("requestdate.php", { file: 'Data/currenttraffic.log' }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			trafficnewtime=objdate.timey;
-			console.log("timey",trafficnewtime);
+		//	console.log("timey",trafficnewtime);
 			
 		});
-		console.log(trafficnewtime, traffictime);
-		if(traffictime==trafficnewtime) { console.log("traffic not changed"); } else { console.log ("traffic changed"); traffictime=trafficnewtime; }
-		$.get("requestdata.php", { file: 'Data/currenttraffic.log' }, function(data){
-			objc = jQuery.parseJSON(data);
-			var device = "ad0";
-			deviceobj= $.grep(objc.device,function(e){return e.name=="ad1"});
-			for (var k in deviceobj[0].stats[0].Dates) { 
-				for (var y in deviceobj[0].stats[0].Dates[k].times) {
-					 tm=new Date ($("#Sdatec").val()+" "+$("#Stimec").val()+":00");  tm2= new Date (deviceobj[0].stats[0].Dates[k].Date+" "+deviceobj[0].stats[0].Dates[k].times[y].time); 
-					if(Number(tm-tm2) < 0 && Number(Date.parse($("#Edatec").val()) - Date.parse(deviceobj[0].stats[0].Dates[k].Date)) > 0) {
-							//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].bw );
-							bw[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].bw]);
-							if ( Number(deviceobj[0].stats[0].Dates[k].times[y].bw) > bwmaxy ) { bwmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].bw);}
-							if ( Number(deviceobj[0].stats[0].Dates[k].times[y].bw) < bwminy ) { bwminy = Number(deviceobj[0].stats[0].Dates[k].times[y].bw);}
+		
+		if(traffictime==trafficnewtime) { //console.log("traffic not changed"); 
+		} else { 
+			//console.log ("traffic changed"); 
+			traffictime=trafficnewtime; 
+			$.get("requestdata.php", { file: 'Data/currenttraffic.log' }, function(data){
+				objc = jQuery.parseJSON(data);
+				var device = $("#Disks").val();
+				deviceobj= $.grep(objc.device,function(e){return e.name==device});
+				for (var k in deviceobj[0].stats[0].Dates) { 
+					for (var y in deviceobj[0].stats[0].Dates[k].times) {
 							
-							//dl[0].push([y,y]);
-							//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].rs );
-							rs[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].rs]);
-							if ( Number(deviceobj[0].stats[0].Dates[k].times[y].rs) > rsmaxy ) { rsmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].rs);}
-							if ( Number(deviceobj[0].stats[0].Dates[k].times[y].rs) < rsminy ) { rsminy = Number(deviceobj[0].stats[0].Dates[k].times[y].rs);}
-							//dl[0].push([y,y]);
+						 tm=new Date ($("#Sdatec").val()+" "+$("#Stimec").val()+":00");  tm2= new Date (deviceobj[0].stats[0].Dates[k].Date+" "+deviceobj[0].stats[0].Dates[k].times[y].time); 
+						if(Number(tm-tm2) < 0 && Number(Date.parse($("#Edatec").val()) - Date.parse(deviceobj[0].stats[0].Dates[k].Date)) > 0) {
+								//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].bw );
+								bw[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].bw]);
+								if ( Number(deviceobj[0].stats[0].Dates[k].times[y].bw) > bwmaxy ) { bwmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].bw);}
+								if ( Number(deviceobj[0].stats[0].Dates[k].times[y].bw) < bwminy ) { bwminy = Number(deviceobj[0].stats[0].Dates[k].times[y].bw);}
+								
+								//dl[0].push([y,y]);
+								//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].rs );
+								rs[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].rs]);
+								if ( Number(deviceobj[0].stats[0].Dates[k].times[y].rs) > rsmaxy ) { rsmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].rs);}
+								if ( Number(deviceobj[0].stats[0].Dates[k].times[y].rs) < rsminy ) { rsminy = Number(deviceobj[0].stats[0].Dates[k].times[y].rs);}
+								//dl[0].push([y,y]);
+						
+								//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].ws );
+								ws[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].ws]);
+								if ( Number(deviceobj[0].stats[0].Dates[k].times[y].ws) > wsmaxy ) { wsmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].ws);}
+								if ( Number(deviceobj[0].stats[0].Dates[k].times[y].ws) < wsminy ) { wsminy = Number(deviceobj[0].stats[0].Dates[k].times[y].ws);}
+								//dl[0].push([y,y]);
 					
-							//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].ws );
-							ws[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].ws]);
-							if ( Number(deviceobj[0].stats[0].Dates[k].times[y].ws) > wsmaxy ) { wsmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].ws);}
-							if ( Number(deviceobj[0].stats[0].Dates[k].times[y].ws) < wsminy ) { wsminy = Number(deviceobj[0].stats[0].Dates[k].times[y].ws);}
-							//dl[0].push([y,y]);
-				
-							//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].svct );
-							svct[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].svct]);
-							if ( Number(deviceobj[0].stats[0].Dates[k].times[y].svct) > svctmaxy ) { svctmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].svct);}
-							if ( Number(deviceobj[0].stats[0].Dates[k].times[y].svct) < svctminy ) { svctminy = Number(deviceobj[0].stats[0].Dates[k].times[y].svct);}
-							//dl[0].push([y,y]);
-							//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].qlen );
-							qlen[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].qlen]);
-							if ( Number(deviceobj[0].stats[0].Dates[k].times[y].qlen) > qlenmaxy ) { qlenmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].qlen);}
-							if ( Number(deviceobj[0].stats[0].Dates[k].times[y].qlen) < qlenminy ) {qlenminy = Number(deviceobj[0].stats[0].Dates[k].times[y].qlen);}
-							//dl[0].push([y,y]);
+								//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].svct );
+								svct[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].svct]);
+								if ( Number(deviceobj[0].stats[0].Dates[k].times[y].svct) > svctmaxy ) { svctmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].svct);}
+								if ( Number(deviceobj[0].stats[0].Dates[k].times[y].svct) < svctminy ) { svctminy = Number(deviceobj[0].stats[0].Dates[k].times[y].svct);}
+								//dl[0].push([y,y]);
+								//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].qlen );
+								qlen[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].qlen]);
+								if ( Number(deviceobj[0].stats[0].Dates[k].times[y].qlen) > qlenmaxy ) { qlenmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].qlen);}
+								if ( Number(deviceobj[0].stats[0].Dates[k].times[y].qlen) < qlenminy ) {qlenminy = Number(deviceobj[0].stats[0].Dates[k].times[y].qlen);}
+								//dl[0].push([y,y]);
 
-							totalio= Number(deviceobj[0].stats[0].Dates[k].times[y].rs ) + Number (deviceobj[0].stats[0].Dates[k].times[y].ws);
-							if ( totalio > maxy ) { maxy = totalio;}
-							if ( totalio < miny ) { miny = totalio;}
-							dl[0].push([tm2,totalio]);
+								totalio= Number(deviceobj[0].stats[0].Dates[k].times[y].rs ) + Number (deviceobj[0].stats[0].Dates[k].times[y].ws);
+								if ( totalio > maxy ) { maxy = totalio;}
+								if ( totalio < miny ) { miny = totalio;}
+								dl[0].push([tm2,totalio]);
+						};
 					};
 				};
-			};
-			if(plotflag > 0) { plotbw.destroy();plotrs.destroy();plotws.destroy();plotsvct.destroy();plotqlen.destroy();plotdl.destroy(); };
-			//plotbw.destroy();
-		
-			bwmaxy = Number(bwmaxy+1); bwminy = Number(bwminy -1);rsmaxy = Number(rsmaxy+1); rsminy = Number(rsminy -1);
-			wsmaxy = Number(wsmaxy+1); wsminy = Number(wsminy -1);svctmaxy = Number(svctmaxy+1); svctminy = Number(svctminy -1);
-			qlenmaxy = Number(qlenmaxy+1); qlenminy = Number(qlenminy -1);
-		//	plotbw.destroy();
-			plotbw = $.jqplot('bwchart',[bw[0]], {
-				title: "Bandwidth",
-				seriesDefaults: {
-        showMarker:false},axes: {yaxis: {min:bwminy ,max:bwmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
-        series: [
-            {
-                color: 'rgba(198,88,88,.6)',
-                negativeColor: 'rgba(100,50,50,.6)',
-                showMarker: false,
-                showLine: true,
-                fill: false,
-                fillAndStroke: false,
-                markerOptions: {
-                    style: 'filledCircle',
-                    size: 8
-                },
-                rendererOptions: {
-                    smooth: true
-                }
-            }]
-      });
-			plotrs = $.jqplot('rschart',[rs[0]], {
-				title: "Read IO/s",
-				seriesDefaults: {
-        showMarker:false},axes: {yaxis: {min:rsminy ,max:rsmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
-        series: [
-            {
-                color: 'rgba(198,88,88,.6)',
-                negativeColor: 'rgba(100,50,50,.6)',
-                showMarker: false,
-                showLine: true,
-                fill: false,
-                fillAndStroke: false,
-                markerOptions: {
-                    style: 'filledCircle',
-                    size: 8
-                },
-                rendererOptions: {
-                    smooth: true
-                }
-            }]
-      });
-			plotws = $.jqplot('wschart',[ws[0]], {
-				title: "Write IO/s",
-				seriesDefaults: {
-        showMarker:false},axes: {yaxis: {min:wsminy ,max:wsmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
-        series: [
-            {
-                color: 'rgba(198,88,88,.6)',
-                negativeColor: 'rgba(100,50,50,.6)',
-                showMarker: false,
-                showLine: true,
-                fill: false,
-                fillAndStroke: false,
-                markerOptions: {
-                    style: 'filledCircle',
-                    size: 8
-                },
-                rendererOptions: {
-                    smooth: true
-                }
-            }]
-      });
-			plotsvct = $.jqplot('svctchart',[svct[0]], {
-				title: "Latency ms",
-				seriesDefaults: {
-        showMarker:false},axes: {yaxis: {min:svctminy ,max:svctmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
-        series: [
-            {
-                color: 'rgba(198,88,88,.6)',
-                negativeColor: 'rgba(100,50,50,.6)',
-                showMarker: false,
-                showLine: true,
-                fill: false,
-                fillAndStroke: false,
-                markerOptions: {
-                    style: 'filledCircle',
-                    size: 8
-                },
-                rendererOptions: {
-                    smooth: true
-                }
-            }]
-      });
-			plotqlen = $.jqplot('qlenchart',[qlen[0]], {
-				title: "Queue length",
-				seriesDefaults: {
-	showMarker:false},axes: {yaxis: {min:qlenminy ,max:qlenmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
-	series: [
-			{
-					color: 'rgba(198,88,88,.6)',
-					negativeColor: 'rgba(100,50,50,.6)',
-					showMarker: false,
-					showLine: true,
-					fill: false,
-					fillAndStroke: false,
-					markerOptions: {
-							style: 'filledCircle',
-							size: 8
-					},
-					rendererOptions: {
-							smooth: true
-					}
-			}]
-});
-			plotdl = $.jqplot('totaliochart',[dl[0]], {
-				title: "Total IO/s",
-				seriesDefaults: {
-				showMarker:false},axes: {yaxis: {min:miny ,max:maxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
-				series: [
-						{
-					color: 'rgba(198,88,88,.6)',
-					negativeColor: 'rgba(100,50,50,.6)',
-					showMarker: false,
-					showLine: true,
-					fill: false,
-					fillAndStroke: false,
-					markerOptions: {
-							style: 'filledCircle',
-							size: 8
-					},
-					rendererOptions: {
-							smooth: true
-					}
-			}]
-});
-			plotflag = 1;
-		});
-		
+				if(plotflag > 0) { plotbw.destroy();plotrs.destroy();plotws.destroy();plotsvct.destroy();plotqlen.destroy();plotdl.destroy(); };
+				//plotbw.destroy();
+			
+				bwmaxy = Number(bwmaxy+1); bwminy = Number(bwminy -1);rsmaxy = Number(rsmaxy+1); rsminy = Number(rsminy -1);
+				wsmaxy = Number(wsmaxy+1); wsminy = Number(wsminy -1);svctmaxy = Number(svctmaxy+1); svctminy = Number(svctminy -1);
+				qlenmaxy = Number(qlenmaxy+1); qlenminy = Number(qlenminy -1);
+			//	plotbw.destroy();
+				console.log("plotting");
+				plotbw = $.jqplot('bwchart',[bw[0]], {
+					title: "Bandwidth",
+					seriesDefaults: {
+					showMarker:false},axes: {yaxis: {min:bwminy ,max:bwmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
+					series: [
+							{
+									color: 'rgba(198,88,88,.6)',
+									negativeColor: 'rgba(100,50,50,.6)',
+									showMarker: false,
+									showLine: true,
+									fill: false,
+									fillAndStroke: false,
+									markerOptions: {
+											style: 'filledCircle',
+											size: 8
+									},
+									rendererOptions: {
+											smooth: true
+									}
+							}]
+				});
+				plotrs = $.jqplot('rschart',[rs[0]], {
+					title: "Read IO/s",
+					seriesDefaults: {
+					showMarker:false},axes: {yaxis: {min:rsminy ,max:rsmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
+					series: [
+							{
+									color: 'rgba(198,88,88,.6)',
+									negativeColor: 'rgba(100,50,50,.6)',
+									showMarker: false,
+									showLine: true,
+									fill: false,
+									fillAndStroke: false,
+									markerOptions: {
+											style: 'filledCircle',
+											size: 8
+									},
+									rendererOptions: {
+											smooth: true
+									}
+							}]
+				});
+				plotws = $.jqplot('wschart',[ws[0]], {
+					title: "Write IO/s",
+					seriesDefaults: {
+					showMarker:false},axes: {yaxis: {min:wsminy ,max:wsmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
+					series: [
+							{
+									color: 'rgba(198,88,88,.6)',
+									negativeColor: 'rgba(100,50,50,.6)',
+									showMarker: false,
+									showLine: true,
+									fill: false,
+									fillAndStroke: false,
+									markerOptions: {
+											style: 'filledCircle',
+											size: 8
+									},
+									rendererOptions: {
+											smooth: true
+									}
+							}]
+				});
+				plotsvct = $.jqplot('svctchart',[svct[0]], {
+					title: "Latency ms",
+					seriesDefaults: {
+					showMarker:false},axes: {yaxis: {min:svctminy ,max:svctmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
+					series: [
+							{
+									color: 'rgba(198,88,88,.6)',
+									negativeColor: 'rgba(100,50,50,.6)',
+									showMarker: false,
+									showLine: true,
+									fill: false,
+									fillAndStroke: false,
+									markerOptions: {
+											style: 'filledCircle',
+											size: 8
+									},
+									rendererOptions: {
+											smooth: true
+									}
+							}]
+				});
+				plotqlen = $.jqplot('qlenchart',[qlen[0]], {
+					title: "Queue length",
+					seriesDefaults: {
+		showMarker:false},axes: {yaxis: {min:qlenminy ,max:qlenmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
+		series: [
+				{
+						color: 'rgba(198,88,88,.6)',
+						negativeColor: 'rgba(100,50,50,.6)',
+						showMarker: false,
+						showLine: true,
+						fill: false,
+						fillAndStroke: false,
+						markerOptions: {
+								style: 'filledCircle',
+								size: 8
+						},
+						rendererOptions: {
+								smooth: true
+						}
+				}]
+	});
+				plotdl = $.jqplot('totaliochart',[dl[0]], {
+					title: "Total IO/s",
+					seriesDefaults: {
+					showMarker:false},axes: {yaxis: {min:miny ,max:maxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
+					series: [
+							{
+						color: 'rgba(198,88,88,.6)',
+						negativeColor: 'rgba(100,50,50,.6)',
+						showMarker: false,
+						showLine: true,
+						fill: false,
+						fillAndStroke: false,
+						markerOptions: {
+								style: 'filledCircle',
+								size: 8
+						},
+						rendererOptions: {
+								smooth: true
+						}
+				}]
+	});
+				plotflag = 1;
+			});
+		}
 	}
 					
 			
@@ -320,10 +341,13 @@
 			}
 		});
 		$(".datec").datepicker().on("changeDate",function(e){
-					updatechartarea();											
+					traffictime="44:44:34";updatechartarea();											
 		});
-		$(".traffic").change( function () { updatechartarea();});
+		$(".traffic").change( function () { traffictime="44:44:34"; updatechartarea();});
 		$(".checkboxy").change (function(){ updatelogarea();});
+		refreshList("GetDisklist","#Disks","Data/disklist.txt");
+		setInterval('updatechartarea()', 1000); // Loop every 1000 milliseconds (i.e. 1 second)
+		
 		</script>
  
 	</body>
