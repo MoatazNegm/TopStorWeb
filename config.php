@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php session_start(); 
+ if( $_REQUEST["idd"] != session_id()) {  header('Location:/des19/Login.php');}
+?>
 <html>
 
 	<?php $men=6;include "header.html"; ?>

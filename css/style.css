@@ -357,7 +357,7 @@ margin-left: 1.4rem;
 
 .spacer-sm { margin-top : .5rem;}
 .table { table-layout:fixed;  text-align: center;}
-.table th { text-align: center;}
+.table th,.centry { text-align: center;}
 .table td {
   white-space: nowrap;
   overflow: hidden;

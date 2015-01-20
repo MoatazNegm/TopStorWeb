@@ -1,0 +1,2 @@
+{"name":"mezo2","status":"ok"}
+

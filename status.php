@@ -1,6 +1,10 @@
 <!DOCTYPE html>
+<?php session_start(); 
+ if( $_REQUEST["idd"] != session_id()) {  header('Location:/des19/Login.php');}
+
+?>
 <html>
-		
+
 	<?php $men=2; include "header.html"; ?>
 	
 							<li><a href="#" class="SSa rightli"><h4 id="SS"><span>Services Status</span></h4></a></li>
@@ -347,6 +351,7 @@
 		$(".checkboxy").change (function(){ updatelogarea();});
 		refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		setInterval('updatechartarea()', 1000); // Loop every 1000 milliseconds (i.e. 1 second)
+		console.log("<?php print $_REQUEST["idd"]; print session_id(); ?>");
 		
 		</script>
  
