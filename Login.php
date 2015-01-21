@@ -1,5 +1,5 @@
 <!--Pulling Awesome Font --> 
-<?php $men=2; include "header2.html";  session_start(); session_regenerate_id(); session_commit(); ?>
+<?php $men=2; include "header2.html";  session_start();  session_commit(); ?>
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
 	<div class="row">
@@ -19,7 +19,7 @@
 			</form>
 		</div>
 	</div>
-	<script src='js/jquery.js'></script>
+	
 	
 
 

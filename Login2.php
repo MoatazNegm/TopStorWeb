@@ -10,10 +10,10 @@
  $timeone=filemtime($isuser);
  shell_exec("./pump.sh "."UnixPrepUser"." ".$usern."chk ".$passwd);
  session_start();
- 
- if($usern === "mezo") { print $usern;} else { print No;}
+
+ if($usern === "mezo") { ;} else { ;}
   if( $_REQUEST["idd"] != session_id()) {  header('Location:/des19/Login.php');}
-  session_regenerate_id(); session_commit();
+  
  if (empty($_SESSION['count'])) {
    $_SESSION['count'] = 1;
 } else {
@@ -25,7 +25,7 @@
 
 <form id="accounts" action="accounts.php" method="post">
 				
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+	<input type="hidden" name="idd" value="<?php session_regenerate_id(); session_commit();print session_id();?>" >
 </form>
 
 	<div class="row">
@@ -45,11 +45,12 @@
 					var objdate = jQuery.parseJSON(data);
 					var isuser=objdate.name;
 					var isok=objdate.status;
-					if (isuser==="<?php $usern ?>" && isok == "ok" ) { 
+					if (isuser==="<?php print $usern ?>" && isok == "ok" ) { 
 						$("#state").val("OK");
 						//console.log("<?php print session_id();?>");
 						document.getElementById('accounts').submit();
 					} else {
+						//console.log("<?php print $usern ?>"," | ", isuser);
 						window.location = "/des19/Login.php";
 					};
 					

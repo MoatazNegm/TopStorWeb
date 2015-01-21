@@ -1,1 +1,1 @@
-UnixChkUser radkfal chk
+UnixChkUser mezo2 chk
