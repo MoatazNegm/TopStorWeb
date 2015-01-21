@@ -10,9 +10,10 @@
  $timeone=filemtime($isuser);
  shell_exec("./pump.sh "."UnixPrepUser"." ".$usern."chk ".$passwd);
  session_start();
- session_regenerate_id(); session_commit();
+ 
  if($usern === "mezo") { print $usern;} else { print No;}
-  if( $_REQUEST["idd"] != session_id()) {  header('Location:/des19/login.php');}
+  if( $_REQUEST["idd"] != session_id()) {  header('Location:/des19/Login.php');}
+  session_regenerate_id(); session_commit();
  if (empty($_SESSION['count'])) {
    $_SESSION['count'] = 1;
 } else {
