@@ -1,1 +1,1 @@
-GetDisklist a
+DiskraidzSize Data/diskraidz.txt

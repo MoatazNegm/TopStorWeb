@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <?php session_start(); 
- if( $_REQUEST["idd"] != session_id()) {  header('Location:/des19/Login.php');}
+ if( $_REQUEST["idd"] != session_id()) {  
+	 header('Location:/des19/Login.php');
+	 //echo "<script>console.log('sess:".session_id()."req:".$_REQUEST["idd"]."');</script>";
+	 }
 
 ?>
 <html>

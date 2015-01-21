@@ -20,7 +20,7 @@
  
 	<div class=" col-sm-1 leftPane">
 		<ul class="nav nav-pills nav-stacked config_leftPane_No_border_textcolor" >
-			<li  <?php if($men==1) {echo 'class="active leftli"';} else { echo 'class="leftli"';}; ?> class="leftli" ><a id="accounts" class="ref" href='accounts.php' ><br>Accounts</a></li>
+			<li  <?php if($men==1) {echo 'class="active leftli"';} else { echo 'class="leftli"';}; ?>><a id="accounts" class="ref" href='#' ><br>Accounts</a></li>
 			<li  <?php if($men==2) {echo 'class="active leftli"';} else { echo 'class="leftli"';}; ?>><a id="status" class="ref" href="#"  ><br>Status</a></li>
 			<li <?php if($men==3) {echo 'class="active leftli"';} else { echo 'class="leftli"';}; ?>><a id="Protocol" class="ref"href="#" ><br>Protocol</a></li>
 			<li <?php if($men==4) {echo 'class="active leftli"';} else { echo 'class="leftli"';}; ?>><a id="replication" class="ref"href="#" ><br>replication</a></li>

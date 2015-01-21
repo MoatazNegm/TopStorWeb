@@ -8,7 +8,7 @@
  $passwd=$_POST["userPassword"];
  $isuser="Data/isuser.txt";
  $timeone=filemtime($isuser);
- shell_exec("./pump.sh "."UnixprepUser"." ".$usern." ".$passwd);
+ shell_exec("./pump.sh "."UnixPrepUser"." ".$usern."chk ".$passwd);
  session_start();
  if($usern === "mezo") { print $usern;} else { print No;}
   if( $_REQUEST["idd"] != session_id()) {  header('Location:/des19/login.php');}
@@ -38,16 +38,19 @@
 	
 	function loopingauth() { 
 		if( nochange > 1 ) {
-			$.get("requestdata.php", { file: 'Data/isuser.txt' }, function(data){
-				var objdate = jQuery.parseJSON(data);
-				var isuser=objdate.name;
-				var isok=objdate.status;
-				if (isok == "ok" ) { 
-					$("#state").val("OK");console.log("<?php print session_id();?>");
-					document.getElementById('accounts').submit();
-					//window.location = "/des19/accounts.php";
-				};
-				
+			$.post("./pump.php", { req: "UnixChkUser", name:"<?php echo $usern ?>"+"chk" }, function (data1){
+				$.get("requestdata.php", { file: 'Data/isuser.txt' }, function(data){
+					var objdate = jQuery.parseJSON(data);
+					var isuser=objdate.name;
+					var isok=objdate.status;
+					if (isok == "ok" ) { 
+						$("#state").val("OK");
+						//console.log("<?php print session_id();?>");
+						document.getElementById('accounts').submit();
+						//window.location = "/des19/accounts.php";
+					};
+					
+				});
 			});
 		}
 	}
