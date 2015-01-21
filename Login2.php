@@ -39,7 +39,7 @@
 	var nochange=2;
 	
 	function loopingauth() { 
-		if( nochange > 1 && nochange < 10 ) {
+		if( nochange > 1 ) {
 			
 			$.post("./pump.php", { req: "UnixChkUser", name:"<?php echo $usern ?>"+" chk" }, function (data1){
 				$.get("requestdata.php", { file: 'Data/isuser.txt' }, function(data){
