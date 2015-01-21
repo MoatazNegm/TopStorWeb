@@ -40,13 +40,14 @@
 	
 	function loopingauth() { 
 		if( nochange > 1 ) {
-			nochange=0;
+			
 			$.post("./pump.php", { req: "UnixChkUser", name:"<?php echo $usern ?>"+" chk" }, function (data1){
 				$.get("requestdata.php", { file: 'Data/isuser.txt' }, function(data){
 					var objdate = jQuery.parseJSON(data);
 					var isuser=objdate.name;
 					var isok=objdate.status;
 					if (isuser==="<?php print $usern ?>" && isok == "ok" ) { 
+						
 						$("#state").val("OK");
 						//console.log("<?php print session_id();?>");
 						document.getElementById('accounts').submit();
@@ -59,7 +60,7 @@
 			});
 		}
 	}
-	setInterval('loopingauth()', 1000)
+	setInterval('loopingauth()', 2000)
 	
 	
 			
