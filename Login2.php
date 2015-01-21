@@ -40,6 +40,7 @@
 	
 	function loopingauth() { 
 		if( nochange > 1 ) {
+			nochange=0;
 			$.post("./pump.php", { req: "UnixChkUser", name:"<?php echo $usern ?>"+" chk" }, function (data1){
 				$.get("requestdata.php", { file: 'Data/isuser.txt' }, function(data){
 					var objdate = jQuery.parseJSON(data);
