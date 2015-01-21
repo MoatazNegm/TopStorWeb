@@ -1,1 +1,1 @@
-UnixChkUser dksl chk
+GetDisklist a

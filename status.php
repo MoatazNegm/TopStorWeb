@@ -162,6 +162,7 @@
 				wsmaxy = Number(wsmaxy+1); wsminy = Number(wsminy -1);svctmaxy = Number(svctmaxy+1); svctminy = Number(svctminy -1);
 				qlenmaxy = Number(qlenmaxy+1); qlenminy = Number(qlenminy -1);
 			//	plotbw.destroy();
+				var sercolr="#455B5B";
 				console.log("plotting");
 				plotbw = $.jqplot('bwchart',[bw[0]], {
 					title: "Bandwidth",
@@ -169,8 +170,8 @@
 					showMarker:false},axes: {yaxis: {min:bwminy ,max:bwmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
 					series: [
 							{
-									color: 'rgba(198,88,88,.6)',
-									negativeColor: 'rgba(100,50,50,.6)',
+									color: sercolr,
+								//	negativeColor: 'rgba(100,50,50,.6)',
 									showMarker: false,
 									showLine: true,
 									fill: false,
@@ -190,7 +191,7 @@
 					showMarker:false},axes: {yaxis: {min:rsminy ,max:rsmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
 					series: [
 							{
-									color: 'rgba(198,88,88,.6)',
+									color: sercolr,
 									negativeColor: 'rgba(100,50,50,.6)',
 									showMarker: false,
 									showLine: true,
@@ -211,7 +212,7 @@
 					showMarker:false},axes: {yaxis: {min:wsminy ,max:wsmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
 					series: [
 							{
-									color: 'rgba(198,88,88,.6)',
+									color: sercolr,
 									negativeColor: 'rgba(100,50,50,.6)',
 									showMarker: false,
 									showLine: true,
@@ -232,7 +233,7 @@
 					showMarker:false},axes: {yaxis: {min:svctminy ,max:svctmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
 					series: [
 							{
-									color: 'rgba(198,88,88,.6)',
+									color: sercolr,
 									negativeColor: 'rgba(100,50,50,.6)',
 									showMarker: false,
 									showLine: true,
@@ -253,7 +254,7 @@
 		showMarker:false},axes: {yaxis: {min:qlenminy ,max:qlenmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
 		series: [
 				{
-						color: 'rgba(198,88,88,.6)',
+						color: sercolr,
 						negativeColor: 'rgba(100,50,50,.6)',
 						showMarker: false,
 						showLine: true,
@@ -274,7 +275,7 @@
 					showMarker:false},axes: {yaxis: {min:miny ,max:maxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
 					series: [
 							{
-						color: 'rgba(198,88,88,.6)',
+						color: sercolr,
 						negativeColor: 'rgba(100,50,50,.6)',
 						showMarker: false,
 						showLine: true,
