@@ -10,6 +10,7 @@
  $timeone=filemtime($isuser);
  shell_exec("./pump.sh "."UnixPrepUser"." ".$usern."chk ".$passwd);
  session_start();
+ session_regenerate_id(); session_commit();
  if($usern === "mezo") { print $usern;} else { print No;}
   if( $_REQUEST["idd"] != session_id()) {  header('Location:/des19/login.php');}
  if (empty($_SESSION['count'])) {
@@ -47,7 +48,8 @@
 						$("#state").val("OK");
 						//console.log("<?php print session_id();?>");
 						document.getElementById('accounts').submit();
-						//window.location = "/des19/accounts.php";
+					} else {
+						window.location = "/des19/Login.php";
 					};
 					
 				});

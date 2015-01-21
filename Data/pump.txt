@@ -1,1 +1,1 @@
-DiskraidzSize Data/diskraidz.txt
+UnixChkUser radkfal chk
