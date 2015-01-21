@@ -43,7 +43,7 @@
 					var objdate = jQuery.parseJSON(data);
 					var isuser=objdate.name;
 					var isok=objdate.status;
-					if (isok == "ok" ) { 
+					if (isuser==="<?php $usern ?>" && isok == "ok" ) { 
 						$("#state").val("OK");
 						//console.log("<?php print session_id();?>");
 						document.getElementById('accounts').submit();
