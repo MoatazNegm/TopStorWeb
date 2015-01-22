@@ -8,7 +8,7 @@
 				<form action="Login2.php" method="post">
 				<input type="text" name="userName" class="form-control chat-input centry " placeholder="username">
 				</br>
-				<input type="text" name="userPassword" class="form-control  chat-input centry " placeholder="password"  >
+				<input type="password" name="userPassword" class="form-control  chat-input centry " placeholder="password"  >
 				<input type="hidden" name="idd" value="<?php print session_id();?>" >
 				</br>
 				<div class="wrapper">
