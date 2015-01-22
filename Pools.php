@@ -116,7 +116,7 @@
 		refreshList("GetPoollist","#Pool","Data/Poollist.txt",3);
 		refreshList("GetPoolVollist","#Vol","Data/Vollist.txt",5);
 
-		$("#submitdiskgroup").click( function (){ $.post("./pump.php", { req:"DGsetPool", name:$('input[name=Raidselect]:checked').val() }, function (data){
+		$("#submitdiskgroup").click( function (){ $.post("./pump.php", { req:"DGsetPool", name:$('input[name=Raidselect]:checked').val()+" "+'input[name=Raidselect]:checked').attr("id") }, function (data){
 				 refresh2("#statusarea2"); 
 				 });
 			});

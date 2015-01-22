@@ -32,7 +32,7 @@
 															<td> 
 																<div class="">
 																	<label>
-																		<input type="radio" class="radiocontrol" name="Raidselect" id="mirror" value="mirror" checked>
+																		<input type="radio" class="radiocontrol" name="Raidselect" id="mirror" value="Raid10" checked>
 																	</label>
 																</div>
 															</td>
@@ -43,7 +43,7 @@
 															<td> 
 																<div class="">
 																	<label>
-																		<input type="radio" class="radiocontrol" name="Raidselect" id="raidz" value="raidz" >
+																		<input type="radio" class="radiocontrol" name="Raidselect" id="raidz" value="Raid5" >
 																	</label>
 																</div>
 															</td>
@@ -54,7 +54,7 @@
 															<td> 
 																<div class="">
 																	<label>
-																		<input type="radio" class="radiocontrol" name="Raidselect" id="raidz2" value="raidz2" >
+																		<input type="radio" class="radiocontrol" name="Raidselect" id="raidz2" value="Raid6" >
 																	</label>
 																</div>
 															</td>
