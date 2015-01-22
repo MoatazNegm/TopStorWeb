@@ -25,7 +25,7 @@
 
 <form id="accounts" action="accounts.php" method="post">
 				
-	<input type="hidden" name="idd" value="<?php session_regenerate_id(); session_commit();print session_id();?>" >
+	<input type="hidden" name="idd" value="<?php session_regenerate_id(); $_SESSION["user"]=$_POST["userName"]; session_commit();print session_id();?>" >
 </form>
 
 	<div class="row">

@@ -23,6 +23,7 @@ $(document).ready(function() {
 		<link rel="stylesheet" href="css/jquery.jqplot.css">
 		<link rel="stylesheet" href="css/style.css" type="text/css">
 	</head>
+<?php session_start(); ?>
 <body >
 	<div class="colorize" id="body" Data-tag="#body,html" Data-id="body" Data-textcolor="no" Data-background="yes" Data-border="no" Data-backtrans=true >
 
@@ -37,6 +38,9 @@ $(document).ready(function() {
 					</div>
 					<div class="col-sm-6">
 						<h1 class="text-center maintext colorize" id="Title" Data-tag="#Title" Data-id="Title" Data-textcolor="yes" Data-background="no" Data-border="no" ><strong>Flex Storage</strong></h1>
+					</div>
+					<div class="col-sm-offset-4">
+						<h5 class="text-center colorize " id="userlog" Data-tag="#userlog" Data-id="userlog" Data-textcolor="yes" Data-background="no" Data-border="no" >user:<?php echo $_SESSION["user"];?>&nbsp&nbsp&nbsp<a id="logoff" href="/des19/Login.php">Logoff</a></h5>
 					</div>
 				</div>
 			</div>
