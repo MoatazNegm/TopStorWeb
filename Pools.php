@@ -105,32 +105,17 @@
 				$.get("requestdata.php", { file: fileloc }, function(data){
 					var jdata = jQuery.parseJSON(data);
 					$(spanid1).text(jdata.size);$(spanid2).text(jdata.count);$(spanid3).text(jdata.onedisk);
+					$("#R10").text(jdata.R10);$("#R5").text(jdata.R5);$("#R6").text(jdata.R6);
 					
 				});
 					
 			});
 		};
-		function disksraidzsize(spanid,fileloc) {
-			$.post("./pump.php", { req:"DiskraidzSize", name: fileloc }, function(data1){
-				$.get("statuslog.php", { file: fileloc }, function(data){
-					var jdata = jQuery.parseJSON(data);
-					
-					$.each(jdata, function(i,v) {
-					//console.log(i,v);
-						$(spanid+i).text(v);
-					});
-				});
-					
-			});
-		};
-		
+				
 		
 		refreshList("GetPoollist","#Pool","Data/Poollist.txt",3);
 		refreshList("GetPoolVollist","#Vol","Data/Vollist.txt",5);
-		
-		
-		
-		disksraidzsize("#Raidz",'Data/diskraidz.txt');
+
 		$("#submitdiskgroup").click( function (){ $.post("./pump.php", { req:"DGsetPool", name:$('input[name=Raidselect]:checked').val() }, function (data){
 				 refresh2("#statusarea2"); 
 				 });

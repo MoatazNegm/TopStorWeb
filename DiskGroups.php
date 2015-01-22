@@ -28,7 +28,7 @@
 														</th>
 														<tr>
 															<td ><strong>RAID 10</strong></td>
-															<td><span id="Raidz0"></span>GB</td>
+															<td><span id="R10"></span>GB</td>
 															<td> 
 																<div class="">
 																	<label>
@@ -39,7 +39,7 @@
 														</tr>
 														<tr>
 															<td><strong>RAID 5</strong></td>
-															<td><span id="Raidz1"></span>GB</td>
+															<td><span id="R5"></span>GB</td>
 															<td> 
 																<div class="">
 																	<label>
@@ -50,7 +50,7 @@
 														</tr>
 														<tr>
 															<td><strong>RAID 6 Enh.</strong></td>
-															<td><span id="Raidz2"></span>GB</td>
+															<td><span id="R6"></span>GB</td>
 															<td> 
 																<div class="">
 																	<label>
