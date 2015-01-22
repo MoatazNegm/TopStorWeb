@@ -37,10 +37,11 @@
 			};
 			
 			function refreshall() {
-				if(status=1) { //DiskGroup
+				if(status==1) { //DiskGroup
 				diskgetsize('Data/disksize.txt','#size',"#count","#onedisk");
-				
+				refresh2("#statusarea2");
 				}
+				
 			}	;
 			
 			
