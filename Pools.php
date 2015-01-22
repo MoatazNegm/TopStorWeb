@@ -38,8 +38,8 @@
 			
 			function refreshall() {
 				if(status=1) { //DiskGroup
-				diskgetsize("1","#onedisk",'Data/disksize.txt');
-				diskgetsize("5","#alldisks",'Data/disksizeall.txt');
+				diskgetsize('Data/disksize.txt','#size',"#count","#onedisk");
+				
 				}
 			}	;
 			
@@ -100,15 +100,12 @@
 				$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();
 				$("#Weeklyset").show();$("#SnapshotCreatediv").show();
 			})
-		function diskgetsize(no,spanid,fileloc) {
-			$.post("./pump.php", { req:"DiskSize", name: no, passwd:fileloc }, function(data1){
-				$.get("statuslog.php", { file: fileloc }, function(data){
+		function diskgetsize(fileloc,spanid1,spanid2,spanid3) {
+			$.post("./pump.php", { req:"DiskSize", name:fileloc }, function(data1){
+				$.get("requestdata.php", { file: fileloc }, function(data){
 					var jdata = jQuery.parseJSON(data);
+					$(spanid1).text(jdata.size);$(spanid2).text(jdata.count);$(spanid3).text(jdata.onedisk);
 					
-					$.each(jdata, function(i,v) {
-					//console.log(i,v);
-						$(spanid).text(i);
-					});
 				});
 					
 			});

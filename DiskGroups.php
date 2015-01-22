@@ -21,7 +21,7 @@
 											<div class="  col-sm-offset-1 col-sm-5">
 												<div class="form-group row">
 													<table id="raidtabl" class="table table-condensed">
-														<tbody class="center-block"> <strong>raw space = 5 x <span id="onedisk"></span>= <span id="alldisks"></span></span>GB</strong> </tbody>
+														<tbody class="center-block"> <strong>raw space = <span id="count"></span> x <span id="onedisk"></span>= <span id="size"></span></span>GB</strong> </tbody>
 														<th>
 															<td><strong>Useable space</strong></td>
 															<td><strong>Select</strong></td>
