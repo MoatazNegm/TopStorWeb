@@ -24,6 +24,7 @@
 		<script src="js/bootstrap-timepicker.js"></script>
 		
 		<script>
+			var status=0;
 			function snaponce(txtin,but,altbut){
 				
 						var chars=$(txtin).val().length;
@@ -35,7 +36,12 @@
 						};
 			};
 			
-				
+			function refreshall() {
+				if(status=1) { //DiskGroup
+				diskgetsize("1","#onedisk",'Data/disksize.txt');
+				diskgetsize("5","#alldisks",'Data/disksizeall.txt');
+				}
+			}	;
 			
 			
 			function refreshList(req,listid,fileloc,show) {
@@ -60,20 +66,20 @@
 					$(textareaid).val(data);
 					});
 			}	;
-			setInterval('refresh2("#statusarea2")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
-			setInterval('refresh2("#statusarea3")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
-			setInterval('refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt",12)', 10000); // Loop every 1000 milliseconds (i.e. 1 second)
-			setInterval('refreshList("GetPoolHourlylist","#Hourlylist","Data/Hourlylist.txt",5)', 10000); // Loop every 1 second
-			setInterval('refreshList("GetPoolMinutelylist","#Minutelylist","Data/Minutelylist.txt",5)', 10000); // Loop every 1 second
-			setInterval('refreshList("GetPoolWeeklylist","#Weeklylist","Data/Weeklylist.txt",5)', 10000); // Loop every 1 second
+			//setInterval('refresh2("#statusarea2")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
+			//setInterval('refresh2("#statusarea3")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
+			//setInterval('refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt",12)', 10000); // Loop every 1000 milliseconds (i.e. 1 second)
+			//setInterval('refreshList("GetPoolHourlylist","#Hourlylist","Data/Hourlylist.txt",5)', 10000); // Loop every 1 second
+			//setInterval('refreshList("GetPoolMinutelylist","#Minutelylist","Data/Minutelylist.txt",5)', 10000); // Loop every 1 second
+			//setInterval('refreshList("GetPoolWeeklylist","#Weeklylist","Data/Weeklylist.txt",5)', 10000); // Loop every 1 second
 			
 			var config = 1;
 			$("[class*='xdsoft']").hide();
 			$(".DiskGroups").hide(); $(".SnapShots").hide(); 
 			$("#DiskGroups").click(function (){ 
-				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); $(".DiskGroups").show(); };});
-			$("#SnapShots").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/snapshot.png')").text("SnapShots"); $(".SnapShots").show();};});
-			$(".finish").click(function (){ config = 1; $(".DiskGroups").hide(); $(".SnapShots").hide();});
+				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".DiskGroups").show(); };});
+			$("#SnapShots").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/snapshot.png')").text("SnapShots"); status=2;$(".SnapShots").show();};});
+			$(".finish").click(function (){ config = 1; status=0; $(".DiskGroups").hide(); $(".SnapShots").hide();});
 			
 			
 			
@@ -121,8 +127,7 @@
 			});
 		};
 		
-		diskgetsize("1","#onedisk",'Data/disksize.txt');
-		diskgetsize("5","#alldisks",'Data/disksizeall.txt');
+		
 		refreshList("GetPoollist","#Pool","Data/Poollist.txt",3);
 		refreshList("GetPoolVollist","#Vol","Data/Vollist.txt",5);
 		
@@ -176,6 +181,8 @@
 								showMeridian: false,
 
             });
+            
+			setInterval("refreshall()",1000);
 		</script>
 
 	</body>
