@@ -43,6 +43,7 @@
 					$.get("requestdata.php", { file: "Data/poolstatus.txt" },function(data){
 						var jdata = jQuery.parseJSON(data);	
 						if(jdata.status=="ok") {
+							$("#"+jdata.raid).attr("checked","checked");
 							$(".radiocontrol").attr("disabled",true);
 							$("#deletePool").show();$("#submitdiskgroup").hide();
 						} else {
@@ -54,7 +55,6 @@
 				}
 				if(status==1) { //DiskGroup
 					diskgetsize('Data/disksize.txt','#size',"#count","#onedisk");
-					console.log("inside",status);
 					status=3;
 				}
 				refresh2("#statusarea2");	
