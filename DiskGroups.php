@@ -62,6 +62,7 @@
 													</table>
 													<div class="row">
 														<button type="button" id="submitdiskgroup" class="btn btn-default col-sm-offset-3 col-sm-7 " data-toggle="tooltip" data-placement="top" title="submit values">Submit</button>
+														<button type="button" id="deletePool" class="btn btn-danger col-sm-offset-3 col-sm-7 " data-toggle="tooltip" data-placement="top" title="submit values">Delete Pool</button>
 													</div>
 												</div>
 											</div>

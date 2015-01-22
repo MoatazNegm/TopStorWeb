@@ -25,6 +25,7 @@
 		
 		<script>
 			var status=0;
+			$("#deletePool").hide();$("#submitdiskgroup").hide();
 			function snaponce(txtin,but,altbut){
 				
 						var chars=$(txtin).val().length;
@@ -36,13 +37,30 @@
 						};
 			};
 			
-			function refreshall() {
-				if(status==1) { //DiskGroup
-				diskgetsize('Data/disksize.txt','#size',"#count","#onedisk");
-				refresh2("#statusarea2");
+			function refreshall() { //check pool status
+				if(status==3) { 
+					$.post("./pump.php", { req:"DGPoolstatus" });
+					$.get("requestdata.php", { file: "Data/poolstatus.txt" },function(data){
+						var jdata = jQuery.parseJSON(data);	
+						if(jdata.status=="ok") {
+							$(".radiocontrol").attr("disabled",true);
+							$("#deletePool").show();$("#submitdiskgroup").hide();
+						} else {
+							$(".radiocontrol").attr("disabled",false);
+							$("#deletePool").hide();$("#submitdiskgroup").show();
+						}
+						status=1;
+					});
 				}
+				if(status==1) { //DiskGroup
+					diskgetsize('Data/disksize.txt','#size',"#count","#onedisk");
+					console.log("inside",status);
+					status=3;
+				}
+				refresh2("#statusarea2");	
+			}
 				
-			}	;
+			
 			
 			
 			function refreshList(req,listid,fileloc,show) {
@@ -78,7 +96,8 @@
 			$("[class*='xdsoft']").hide();
 			$(".DiskGroups").hide(); $(".SnapShots").hide(); 
 			$("#DiskGroups").click(function (){ 
-				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".DiskGroups").show(); };});
+				 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".DiskGroups").show(); 
+			});
 			$("#SnapShots").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/snapshot.png')").text("SnapShots"); status=2;$(".SnapShots").show();};});
 			$(".finish").click(function (){ config = 1; status=0; $(".DiskGroups").hide(); $(".SnapShots").hide();});
 			
@@ -121,6 +140,10 @@
 				 refresh2("#statusarea2");
 		});
 	 });
+	 
+		$("#deletePool").click( function (){ $.post("./pump.php", { req:"DGdestroyPool" });
+		});
+
 			
 		$("#DeleteSnapshot").click( function (){ $.post("./pump.php", { req:"SnapShotDelete", name:$("#Snaplist option:selected").val() }, function (data){
 				 refresh2("#statusarea3"); 

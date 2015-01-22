@@ -391,3 +391,4 @@ td { font-size : 1.3rem;}
 .bootstrap-timepicker-widget {z-index: 1153 !important ;}
 #logoff { color: #131D1D; text-decoration: underline;}
 #userlog { margin-top: 3.4rem;}
+#submitdiskgroup, #deletePool { margin-top: 1rem;}
