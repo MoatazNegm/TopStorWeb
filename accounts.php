@@ -30,7 +30,23 @@
 	</div>
 	<?php  include "footer.php"; ?>	
 		<script>
+			var proptime="55:55:55";
 			var DNS=1;
+			function updateprop() {
+				var proptimenew;
+				$.get("requestdate.php", { file: 'Data/Hostprop.txt' },function(data){ 
+						var jdata=jQuery.parseJSON(data);
+						proptimenew=jdata.timey;
+					});
+				if (proptimenew===proptime) {;} else {
+					$.get("requestdata.php", { file: 'Data/Hostprop.txt' },function(data){ 
+						var jdata=jQuery.parseJSON(data);
+						$("#BoxName").val(jdata.name); $("#IPAddress").val(jdata.addr); $("#Gateway").val(jdata.rout);
+						$("#DNS").val(jdata.dns);
+						proptime=proptimenew;
+					});
+				}
+			}
 			function refreshall() {
 				DNS=1;
 			//	console.log("AD is visible : " , $(".AD").is(":visible"));
@@ -40,6 +56,7 @@
 				}
 				else if($(".Future").is(":visible"))
 				{
+					updateprop();
 					$.get("requestdata.php", { file: 'Data/status.log' }, function(data){ $("#Futurestatus").val(data);});
 				}
 				else if($(".UnLin").is(":visible"))
@@ -119,11 +136,10 @@
 			});
 			$("#UnLin").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".UnLin").show();};});
 			$("#Future").click(function (){ 
-				if(config== 1){ config = 0; $("h2").css("background-image","url('img/future.png')").text("Box properties");$("#network").val("1") ; $(".IPAddress").show(); $(".Gateway").show(); $(".Future").show(); 
-								$.get("requestdata.php", { file: 'Data/BoxName.txt' },function(data){ $("#BoxName").val(data);});
-								$.get("requestdata.php", { file: 'Data/IPAddress.txt' },function(data){ $("#IPAddress").val(data);});
-								$.get("requestdata.php", { file: 'Data/Gateway.txt' },function(data){ $("#Gateway").val(data);});
-								$.get("requestdata.php", { file: 'Data/DNS.txt' },function(data){ $("#DNS").val(data);});
+				if(config== 1){ 
+					proptime="55:55:55";
+					config = 0; $("h2").css("background-image","url('img/future.png')").text("Box properties");$("#network").val("1") ; $(".IPAddress").show(); $(".Gateway").show(); $(".Future").show();
+					updateprop(); 
 				}; 
 			});
 			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
