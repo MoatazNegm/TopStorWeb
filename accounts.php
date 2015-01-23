@@ -31,13 +31,14 @@
 	<?php  include "footer.php"; ?>	
 		<script>
 			var proptime="55:55:55";
+			var proptimenew="33:333:33";
 			var DNS=1;
 			function updateprop() {
-				var proptimenew;
 				$.get("requestdate.php", { file: 'Data/Hostprop.txt' },function(data){ 
 						var jdata=jQuery.parseJSON(data);
 						proptimenew=jdata.timey;
 					});
+					
 				if (proptimenew===proptime) {;} else {
 					$.get("requestdata.php", { file: 'Data/Hostprop.txt' },function(data){ 
 						var jdata=jQuery.parseJSON(data);
