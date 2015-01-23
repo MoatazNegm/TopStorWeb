@@ -1,1 +1,1 @@
-GetDisklist a
+GetPoollistCIFS a
