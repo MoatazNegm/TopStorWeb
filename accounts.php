@@ -57,6 +57,7 @@
 				}
 				else if($(".Future").is(":visible"))
 				{
+					$.post("./pump.php", { req:"HostgetIPs", name:"a" });
 					updateprop();
 					$.get("requestdata.php", { file: 'Data/status.log' }, function(data){ $("#Futurestatus").val(data);});
 				}
