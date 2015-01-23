@@ -30,15 +30,18 @@
 	</div>
 	<?php  include "footer.php"; ?>	
 		<script>
+			var needupdate=1
 			var proptime="55:55:55";
 			var proptimenew="33:333:33";
 			var DNS=1;
+			
 			function updateprop() {
+				if (needupdate==1) { needupdate=0; $.post("./pump.php", { req:"HostgetIPs", name:"a" }); }	
 				$.get("requestdate.php", { file: 'Data/Hostprop.txt' },function(data){ 
 						var jdata=jQuery.parseJSON(data);
 						proptimenew=jdata.timey;
 					});
-					
+				
 				if (proptimenew===proptime) {;} else {
 					$.get("requestdata.php", { file: 'Data/Hostprop.txt' },function(data){ 
 						var jdata=jQuery.parseJSON(data);
@@ -57,8 +60,7 @@
 				}
 				else if($(".Future").is(":visible"))
 				{
-					$.post("./pump.php", { req:"HostgetIPs", name:"a" });
-					updateprop();
+					
 					$.get("requestdata.php", { file: 'Data/status.log' }, function(data){ $("#Futurestatus").val(data);});
 				}
 				else if($(".UnLin").is(":visible"))
@@ -141,6 +143,7 @@
 				if(config== 1){ 
 					proptime="55:55:55";
 					config = 0; $("h2").css("background-image","url('img/future.png')").text("Box properties");$("#network").val("1") ; $(".IPAddress").show(); $(".Gateway").show(); $(".Future").show();
+					needupdate=1;
 					updateprop(); 
 				}; 
 			});
@@ -168,6 +171,7 @@
 					}
 					else {
 						$.post("./pump.php", { req:"HostManualconfig", name:$("#BoxName").val()+" "+$("#IPAddress").val()+" "+$("#Gateway").val()+" "+$("#DNS").val() });
+						needupdate=1;
 					}
 				}
 			});

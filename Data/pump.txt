@@ -1,1 +1,1 @@
-GetPoolVollist a
+HostManualconfig mezostol 10.10.2.3 10.10.3.22 10.10.2.12
