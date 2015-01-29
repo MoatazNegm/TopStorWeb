@@ -1,1 +1,1 @@
-{"o":"Data/Homes@Weekly.20.30.Sat.3"}
+{"Weekly.19.00.Sun.2":"High/test5@Weekly.19.00.Sun.2","Weekly.18.59.Sun.2":"High/test5@Weekly.18.59.Sun.2"}

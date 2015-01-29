@@ -1,1 +1,1 @@
-{"o":"Data/Homes@Minutely.2.4"}
+[{"period":"hourly","father":"test5","t1":"4","t2":"3","t3":"5","t4":"na"},{"period":"Weekly","father":"test5","t1":"19","t2":"00","t3":"Sun","t4":"2"},{"period":"Weekly","father":"test5","t1":"18","t2":"59","t3":"Sun","t4":"2"},{"period":"Minutely","father":"test5","t1":"15","t2":"5","t3":"na","t4":"na"}]
