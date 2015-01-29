@@ -1,2 +1,1 @@
-{"name":"mezo2","status":"ok"}
-
+{"name":"admin","status":"ok"}

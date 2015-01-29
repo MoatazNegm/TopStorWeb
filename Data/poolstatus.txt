@@ -1,1 +1,1 @@
-{"status":"ok","raid":"raidz2"}
+{"status":"ok","raid":"raidz"}
