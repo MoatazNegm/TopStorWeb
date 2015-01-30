@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <?php session_start(); 
- if( $_REQUEST["idd"] != session_id()) {  
-	 header('Location:/des19/Login.php');
-	 //echo "<script>console.log('sess:".session_id()."req:".$_REQUEST["idd"]."');</script>";
-	 }
-
+ if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/des19/Login.php');}
+ 
 ?>
 <html>
 	<?php $men = 1; include "header.html"; ?>

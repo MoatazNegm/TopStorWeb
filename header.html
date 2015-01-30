@@ -8,7 +8,10 @@ $(document).ready(function() {
 	RestoreLastSettings();
 });
 </script>
-
+<?php session_start(); 
+ if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/des19/Login.php');}
+ 
+?>
 <head>
 		
 		<meta Content="text/html"; charset="utf-8" >

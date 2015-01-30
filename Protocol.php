@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php session_start(); 
- if( $_REQUEST["idd"] != session_id()) {  header('Location:/des19/Login.php');}
-
+ if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/des19/Login.php');}
+ 
 ?>
 <html>
 	<?php $men=3;  include "header.html"; ?>
@@ -42,8 +42,9 @@
 <!-- End additional plugins -->
 		<script>
 			var Protocol=0;
+			var config = 1;
 			var gdata;
-			var Vollisttime = "55:55:44"
+			var Vollisttime = "55:55:44";
 			var chartdata = [
 					['Heavy ', 12],['Retail', 9], ['Light ', 14], 
 					['Outofhome', 16],['Commuting', 7], ['Orientation', 9]
@@ -110,6 +111,7 @@
 			function refreshList2(req,listid,filelocfrom,show) {
 				var fileloc=filelocfrom;
 				var request=req;
+				
 				fileloc = filelocfrom ; request= request ; 
 				$.post("./pump.php", { req: request, name:"a" });
 				$.get("requestdate.php", { file: fileloc }, function(data){
@@ -123,6 +125,7 @@
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						gdata = jQuery.parseJSON(data);
 						if(show=="Volumes"){
+							//console.log(req,listid,filelocfrom,show);
 							$(listid+' option').remove();
 							$(listid+' tr').remove();
 							$("#Volumedetails tr.variable").remove();
@@ -246,11 +249,12 @@
 				);
 			}
 			
-			var config = 1;
+		
 			
 			$(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();
 			$("#CIFS").click(function (){ 
-				if(config == 1 ) { Protocol="CIFS"; 
+				if(config == 1 ) { Protocol="CIFS";
+					Vollisttime = "55:55:44";
 					Initclickedprotocol();
 					$("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".NFS").show();
 					//plotchart('chartNFS',chartdata);
@@ -259,6 +263,7 @@
 			});
 			$("#NFS").click(function (){
 				if(config== 1){  Protocol=2; 
+					Vollisttime = "55:55:44";
 					Initclickedprotocol();
 					$("h2").css("background-image","url('img/nfs.png')").text("NFS"); $(".NFS").show();
 					//plotchart('chartNFS',chartdata);
@@ -273,7 +278,7 @@
 			$( "#Vol2" ).change(function() {
 				var selection=$("#Vol2 option:selected").val();
 				SelectPanelNFS(selection);
-			});
+			}); 
 			SelectPanelNFS("o");
 			$("#VoldeleteButton").click( function (){ $.post("./pump.php", { req:"VolumeDelete", name:$("#Pool2 option:selected").val()+" "+$("tr.success td.Volname").text() }, function (data){
 				 refresh3("#statusarea4"); 
