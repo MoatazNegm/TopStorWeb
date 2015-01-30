@@ -29,14 +29,14 @@
 			<!-- Don't touch this! -->
 
 		
-	<script language="javascript" type="text/javascript" src="jqplot/excanvas.js"></script>
-	<script language="javascript" type="text/javascript" src="jqplot/jquery.jqplot.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="jqplot/jquery.jqplot.css" />
+	<script language="javascript" type="text/javascript" src="js/excanvas.js"></script>
+	<script language="javascript" type="text/javascript" src="js/jquery.jqplot.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/jquery.jqplot.css" />
 <!-- End Don't touch this! -->
 
 <!-- Additional plugins go here -->
 
-    <script class="include" language="javascript" type="text/javascript" src="jqplot/plugins/jqplot.pieRenderer.min.js"></script>
+    <script class="include" language="javascript" type="text/javascript" src="js/jqplot.pieRenderer.min.js"></script>
 
 
 <!-- End additional plugins -->
@@ -79,7 +79,7 @@
 							plotchart('chartNFS',chartdata);
 							
 							
-							console.log("trying to chart");
+							//console.log("trying to chart");
 						$("#Volumetable tr").remove();
 						chartdata=[];
 						//refreshList2("GetPoolVollist","#Volumetable tr","Data/Vollist2.txt",20);
@@ -115,9 +115,9 @@
 				$.get("requestdate.php", { file: fileloc }, function(data){
 					var objdate = jQuery.parseJSON(data);
 					Vollisttimenew=objdate.timey;
-					console.log("timey", objdate,fileloc);
+					//console.log("timey", objdate,fileloc);
 				});
-				if(Vollisttime==Vollisttimenew) { console.log("traffic not changed"); 
+				if(Vollisttime==Vollisttimenew) { //console.log("traffic not changed"); 
 				} else { 
 					Vollisttime=Vollisttimenew;
 					$.get("requestdata.php", { file: fileloc }, function(data){
@@ -127,10 +127,12 @@
 							$(listid+' tr').remove();
 							$("#Volumedetails tr.variable").remove();
 							$("#Vol2 option.variable").remove();
+							chartdata=[];
 							for (var prot in gdata){
 								for (var x in gdata[prot].Volumes) { 
 									$("#Vol2").append($('<option class="variable">').text(gdata[prot].Volumes[x].name).val(gdata[prot].Volumes[x].name));
 									$(listid).append('<tr onclick="rowisclicked(this)" ><td class="Volname">'+gdata[prot].Volumes[x].name+'</td><td>'+gdata[prot].Volumes[x].properties[0].volsize+'</td><td>'+gdata[prot].Volumes[x].properties[0].volact+'</td><td>'+gdata[prot].Volumes[x].properties[0].snaps+'</td></tr>');
+									chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
 								}
 							}
 						}
@@ -201,12 +203,14 @@
 									}
 								}
 							});
+							$("#Volumnamedetails").text(selection+" details");
+							$("#Voldetails").show();
 							break;
 							
 							
 				};
-				$("#Volumnamedetails").text(selection+" details");
-				$("#Voldetails").show();
+				//$("#Volumnamedetails").text(selection+" details");
+				//$("#Voldetails").show();
 			}
 
 			
@@ -219,9 +223,9 @@
 					
 					if ($("tr.success").length == 1) { counter=1;  } else { counter=0;  };
 					a+=parseFloat($(this).children("td:nth-child(2)").text()); b+=parseFloat($(this).children("td:nth-child(3)").text());  c+=parseFloat($(this).children("td:nth-child(4)").text());});  $("#a").text(a.toFixed(2));$("#b").text(b.toFixed(2));$("#c").text(c.toFixed(2));});
-				if( counter == 0 ){  console.log("not 1",+voldirty); $("#disableddiv2").show(); $("#Voldelete").hide();  
-				} else {  console.log(" 1") ;$("#Voldelete").show(); $("#disableddiv2").hide(); };
-				}
+				if( counter == 0 ){  $("#disableddiv2").show(); $("#Voldelete").hide();  
+				} else { $("#Voldelete").show(); $("#disableddiv2").hide(); };
+			}
 			function plotchart(chart,data){
 				
 				var plot1 = jQuery.jqplot (chart, [data], 
@@ -275,7 +279,7 @@
 				 refresh3("#statusarea4"); 
 				 });
 			});
-			$("#Createvol").click( function (){ var req=""; if(Protocol == 1) { req="CIFS"; };console.log("VolumeCreate"+req); $.post("./pump2.php", { req:"VolumeCreate"+req, name:$("#Pool2 option:selected").val()+" "+" "+$("#Volname").val()+" "+$("#volsize").val()+"G" }, function (data){
+			$("#Createvol").click( function (){ var req=""; if(Protocol == 1) { req="CIFS"; }; $.post("./pump2.php", { req:"VolumeCreate"+req, name:$("#Pool2 option:selected").val()+" "+" "+$("#Volname").val()+" "+$("#volsize").val()+"G" }, function (data){
 				 refresh3("#statusarea3"); 
 				 });
 			refreshList2("GetPoolVollist","#Vol2","Data/Vollist2.txt",5.5);
