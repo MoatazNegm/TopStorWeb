@@ -56,7 +56,7 @@
 					refreshList2("GetPoolVollist","#Volumetable","Data/Vollist2.txt","Volumes");
 					refresh3("#statusarea4");
 					refresh3("#statusarea3");
-					//refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);
+					//refreshList2("GetPoollist","#Pool2","Data/Poollist.txt","Pool");
 					Voldirtytable();
 				}
 			}
@@ -108,6 +108,7 @@
 				var res = i.split("_");
 				$("#Volumedetails > tbody").append('<tr onclick="rowisclicked(this)"><td>'+res[0]+'</td><td>'+res[1]+'</td><td>'+res[2]+'</td><td>'+res[3]+'</td><td>'+res[4]+'</td><td>'+res[5]+'</td><td>'+res[6]+'</td><td>'+res[7]+'</td></tr>');
 			};
+			
 			function refreshList2(req,listid,filelocfrom,show) {
 				var fileloc=filelocfrom;
 				var request=req;
@@ -132,10 +133,12 @@
 							$("#Vol2 option.variable").remove();
 							chartdata=[];
 							for (var prot in gdata){
-								for (var x in gdata[prot].Volumes) { 
-									$("#Vol2").append($('<option class="variable">').text(gdata[prot].Volumes[x].name).val(gdata[prot].Volumes[x].name));
-									$(listid).append('<tr onclick="rowisclicked(this)" ><td class="Volname">'+gdata[prot].Volumes[x].name+'</td><td>'+gdata[prot].Volumes[x].properties[0].volsize+'</td><td>'+gdata[prot].Volumes[x].properties[0].volact+'</td><td>'+gdata[prot].Volumes[x].properties[0].snaps+'</td></tr>');
-									chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
+								if(gdata[prot].protocol==Protocol){
+									for (var x in gdata[prot].Volumes) { 
+										$("#Vol2").append($('<option class="variable">').text(gdata[prot].Volumes[x].name).val(gdata[prot].Volumes[x].name));
+										$(listid).append('<tr onclick="rowisclicked(this)" ><td class="Volname">'+gdata[prot].Volumes[x].name+'</td><td>'+gdata[prot].Volumes[x].properties[0].volsize+'</td><td>'+gdata[prot].Volumes[x].properties[0].volact+'</td><td>'+gdata[prot].Volumes[x].properties[0].snaps+'</td></tr>');
+										chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
+									}
 								}
 							}
 						}
@@ -192,14 +195,12 @@
 					default: 
 							var fileloc= "Data/Vollist2.txt";
 							$("#Volumedetails tbody tr.variable").remove();
-							fileloc = fileloc;
 							$.get("requestdata.php", { file: fileloc }, function(data){
 								var jdata = jQuery.parseJSON(data);
 								for (var prot in gdata){
 									if(gdata[prot].protocol==Protocol) {
 										for (var x in gdata[prot].Volumes) { 
 											if(gdata[prot].Volumes[x].name==selection){
-												
 												$("#Volumedetails tbody").append('<tr onclick="rowisclicked(this)" class="variable" ><td class="Volname">'+gdata[prot].Volumes[x].properties[0].volsize+'</td><td>'+gdata[prot].Volumes[x].properties[0].volact+'</td><td>'+gdata[prot].Volumes[x].properties[0].snaps+'</td><td>'+gdata[prot].Volumes[x].properties[0].used+'</td><td>'+gdata[prot].Volumes[x].properties[0].crdate+'</td><td>'+gdata[prot].Volumes[x].properties[0].free+'</td><td>'+gdata[prot].Volumes[x].properties[0].compress+'</td><td>'+gdata[prot].Volumes[x].properties[0].dedup+'</td></tr>');
 											}
 										}
@@ -262,7 +263,7 @@
 				refreshall();
 			});
 			$("#NFS").click(function (){
-				if(config== 1){  Protocol=2; 
+				if(config== 1){  Protocol="NFS"; 
 					Vollisttime = "55:55:44";
 					Initclickedprotocol();
 					$("h2").css("background-image","url('img/nfs.png')").text("NFS"); $(".NFS").show();

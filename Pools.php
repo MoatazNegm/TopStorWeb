@@ -24,8 +24,34 @@
 		<script src="js/bootstrap-timepicker.js"></script>
 		
 		<script>
+			var Vollisttime="44:333:222";
 			var status=0;
 			$("#deletePool").hide();$("#submitdiskgroup").hide();
+			function refreshList3(request,listid,fileloc) {
+				$.post("./pump.php", { req: request, name:"a" });
+				$.get("requestdate.php", { file: fileloc }, function(data){
+					var objdate = jQuery.parseJSON(data);
+					Vollisttimenew=objdate.timey;
+					console.log("timey", objdate,fileloc);
+				});
+				if(Vollisttime==Vollisttimenew) { console.log("traffic not changed"); 
+				} else { 
+					Vollisttime=Vollisttimenew;
+					$(listid+" tr.variable").remove();
+					$.get("requestdata.php", { file: fileloc }, function(data){
+						gdata = jQuery.parseJSON(data);
+						$(listid+" option.variable").remove();
+						chartdata=[];
+						for (var prot in gdata){
+							for (var x in gdata[prot].Volumes) { 
+								$(listid).append($('<option class="variable">').text(gdata[prot].Volumes[x].name).val(gdata[prot].Volumes[x].name));
+								//chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
+							}
+						}
+					});
+				}
+			};
+
 			function snaponce(txtin,but,altbut){
 				
 						var chars=$(txtin).val().length;
@@ -56,6 +82,9 @@
 				if(status==1) { //DiskGroup
 					diskgetsize('Data/disksize.txt','#size',"#count","#onedisk");
 					status=3;
+				}
+				if(status=="snaps"){ //snapshots
+					refreshList3("GetPoolVollist","#Vol","Data/Vollist2.txt");
 				}
 				refresh2("#statusarea2");	
 			}
@@ -98,7 +127,7 @@
 			$("#DiskGroups").click(function (){ 
 				 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".DiskGroups").show(); 
 			});
-			$("#SnapShots").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/snapshot.png')").text("SnapShots"); status=2;$(".SnapShots").show();};});
+			$("#SnapShots").click(function (){ if(config== 1){ config = 0; status="snaps"; $("h2").css("background-image","url('img/snapshot.png')").text("SnapShots");  Vollisttime="44:333:22";$(".SnapShots").show();};});
 			$(".finish").click(function (){ config = 1; status=0; $(".DiskGroups").hide(); $(".SnapShots").hide();});
 			
 			
@@ -134,7 +163,7 @@
 				
 		
 		refreshList("GetPoollist","#Pool","Data/Poollist.txt",3);
-		refreshList("GetPoolVollist","#Vol","Data/Vollist.txt",5);
+		//refreshList2("GetPoolVollist","#Vol","Data/Vollist2.txt","Volumes");
 
 		$("#submitdiskgroup").click( function (){ $.post("./pump.php", { req:"DGsetPool", name:$('input[name=Raidselect]:checked').val()+" "+$('input[name=Raidselect]:checked').attr("id") }, function (data){
 				 refresh2("#statusarea2");
