@@ -25,19 +25,21 @@
 		
 		<script>
 			var Vollisttime="44:333:222";
+			var times= { "snaps":"30:43:433"};
 			var status=0;
 			$("#deletePool").hide();$("#submitdiskgroup").hide();
+			
 			function refreshList3(request,listid,fileloc) {
 				$.post("./pump.php", { req: request, name:"a" });
 				$.get("requestdate.php", { file: fileloc }, function(data){
 					var objdate = jQuery.parseJSON(data);
 					Vollisttimenew=objdate.timey;
-					console.log("timey", objdate,fileloc);
+					//console.log("timey", objdate,fileloc);
 				});
-				if(Vollisttime==Vollisttimenew) { console.log("traffic not changed"); 
+				if(Vollisttime==Vollisttimenew) { //console.log("traffic not changed"); 
 				} else { 
 					Vollisttime=Vollisttimenew;
-					$(listid+" tr.variable").remove();
+					$(listid+" option.variable").remove();
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						gdata = jQuery.parseJSON(data);
 						$(listid+" option.variable").remove();
@@ -85,6 +87,7 @@
 				}
 				if(status=="snaps"){ //snapshots
 					refreshList3("GetPoolVollist","#Vol","Data/Vollist2.txt");
+					refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps")
 				}
 				refresh2("#statusarea2");	
 			}
@@ -93,20 +96,30 @@
 			
 			
 			function refreshList(req,listid,fileloc,show) {
-				$.post("./pump.php", { req: req, name:"a" }, function (data1){
-					$(listid+' option').remove();
-					$.get("statuslog.php", { file: fileloc }, function(data){
-						var jdata = jQuery.parseJSON(data);
-						
-						$.each(jdata, function(i,v) {
-						//	console.log(i,k);
-							if(show < 2) { $(listid).append($('<option>').text(i).val(v));}
-							else if(show < 10 ){ $(listid).append($('<option>').text(v).val(v)); }
-							else if(show < 13) { $(listid).append($('<option>').text(i+":"+v).val(i)); }
-							else { $(listid).append($('<option>').text(i).val(i)); }
-						});
-					});
+				$.post("./pump.php", { req: req, name:"a" }, function (data1){});
+					$.get("requestdate.php", { file: fileloc }, function(data){
+					var objdate = jQuery.parseJSON(data);
+					requiedtime=objdate.timey;
+					//console.log("timey", objdate,fileloc);
 				});
+			
+				if(times[show]==requiedtime) { //console.log("traffic not changed"); 
+				} else { 
+					times[show]=requiedtime;
+					//$(listid+" tr.variable").remove();
+					$.get("requestdata.php", { file: fileloc }, function(data){
+						gdata = jQuery.parseJSON(data);
+						$(listid+" option.variable").remove();
+						chartdata=[];
+						console.log(times[show],show);
+						for (var prot in gdata){
+							if($("#Vol").val()==gdata[prot].father){
+								$(listid).append($('<option class="variable">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));
+							//chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
+							}
+						}
+					});
+				};
 			};
 			function refresh2(textareaid) {
 				
@@ -127,7 +140,7 @@
 			$("#DiskGroups").click(function (){ 
 				 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".DiskGroups").show(); 
 			});
-			$("#SnapShots").click(function (){ if(config== 1){ config = 0; status="snaps"; $("h2").css("background-image","url('img/snapshot.png')").text("SnapShots");  Vollisttime="44:333:22";$(".SnapShots").show();};});
+			$("#SnapShots").click(function (){ if(config== 1){ config = 0; status="snaps"; $("h2").css("background-image","url('img/snapshot.png')").text("SnapShots");  $("option.variable").remove(); Vollisttime="44:333:22";$(".SnapShots").show();};});
 			$(".finish").click(function (){ config = 1; status=0; $(".DiskGroups").hide(); $(".SnapShots").hide();});
 			
 			
@@ -148,7 +161,13 @@
 			$("#Weekly").change(function() {
 				$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();
 				$("#Weeklyset").show();$("#SnapshotCreatediv").show();
-			})
+			});
+			$("#Vol").change(function() {
+				//Vollisttime="44:333:222";
+				times["snaps"]="30:43:433";
+				//$(" tr.variable").remove();
+				
+			});
 		function diskgetsize(fileloc,spanid1,spanid2,spanid3) {
 			$.post("./pump.php", { req:"DiskSize", name:fileloc }, function(data1){
 				$.get("requestdata.php", { file: fileloc }, function(data){
@@ -162,7 +181,7 @@
 		};
 				
 		
-		refreshList("GetPoollist","#Pool","Data/Poollist.txt",3);
+		//refreshList("GetPoollist","#Pool","Data/Poollist.txt",3);
 		//refreshList2("GetPoolVollist","#Vol","Data/Vollist2.txt","Volumes");
 
 		$("#submitdiskgroup").click( function (){ $.post("./pump.php", { req:"DGsetPool", name:$('input[name=Raidselect]:checked').val()+" "+$('input[name=Raidselect]:checked').attr("id") }, function (data){
@@ -218,7 +237,7 @@
 
             });
             
-			setInterval("refreshall()",1000);
+			setInterval("refreshall()",500);
 		</script>
 
 	</body>
