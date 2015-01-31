@@ -25,7 +25,8 @@
 		
 		<script>
 			var Vollisttime="44:333:222";
-			var times= { "snaps":"30:43:433"};
+			var times= { "snaps":"30:43:433", "periods":"30:43:433" };
+			var requiredtime={ "snaps":"33==:433", "periods":"30==erwe:43:433" }
 			var status=0;
 			$("#deletePool").hide();$("#submitdiskgroup").hide();
 			
@@ -41,7 +42,7 @@
 					Vollisttime=Vollisttimenew;
 					$(listid+" option.variable").remove();
 					$.get("requestdata.php", { file: fileloc }, function(data){
-						gdata = jQuery.parseJSON(data);
+						var gdata = jQuery.parseJSON(data);
 						$(listid+" option.variable").remove();
 						chartdata=[];
 						for (var prot in gdata){
@@ -87,7 +88,8 @@
 				}
 				if(status=="snaps"){ //snapshots
 					refreshList3("GetPoolVollist","#Vol","Data/Vollist2.txt");
-					refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps")
+					refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps");
+					refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods");
 				}
 				refresh2("#statusarea2");	
 			}
@@ -99,22 +101,36 @@
 				$.post("./pump.php", { req: req, name:"a" }, function (data1){});
 					$.get("requestdate.php", { file: fileloc }, function(data){
 					var objdate = jQuery.parseJSON(data);
-					requiedtime=objdate.timey;
+					requiredtime[show]=objdate.timey;
 					//console.log("timey", objdate,fileloc);
 				});
 			
-				if(times[show]==requiedtime) { //console.log("traffic not changed"); 
-				} else { 
-					times[show]=requiedtime;
+				if(times[show]==requiredtime[show]) { //console.log("traffic not changed"); 
+				} 
+				else { 
+					times[show]=requiredtime[show];
 					//$(listid+" tr.variable").remove();
 					$.get("requestdata.php", { file: fileloc }, function(data){
-						gdata = jQuery.parseJSON(data);
+						console.log(fileloc)
+						var gdata = jQuery.parseJSON(data);
+						//console.log(data);
 						$(listid+" option.variable").remove();
 						chartdata=[];
 						console.log(times[show],show);
+						if(show=="periods") { 	$("#Hourlylist option.variable").remove();}
 						for (var prot in gdata){
 							if($("#Vol").val()==gdata[prot].father){
-								$(listid).append($('<option class="variable">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));
+								if( show=="snaps" ) {
+									$(listid).append($('<option class="variable">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));	
+								}
+								if (show=="periods") {
+									switch (gdata[prot].period) {
+										case "hourly": $("#Hourlylist").append($('<option class="variable">').text('Every:'+gdata[prot].t2+"hrs At:"+gdata[prot].t1+ "mins Keep:"+ gdata[prot].t3+"snaps").val("hourly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3));	 break;
+										case "Minutely": $("#Minutelylist").append($('<option class="variable">').text('Every:'+gdata[prot].t1+"mins Keep:"+gdata[prot].t2+"snaps").val("Minutely."+gdata[prot].t1+"."+gdata[prot].t2));	 break;
+										case "Weekly" : $("#Weeklylist").append($('<option class="variable">').text('Every:'+gdata[prot].t3+" At:"+gdata[prot].t1+":"+gdata[prot].t2+" Keep:"+gdata[prot].t4+"snaps").val("Weekly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3+"."+gdata[prot].t4));	 break;
+									}
+								}
+									
 							//chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
 							}
 						}
@@ -164,7 +180,7 @@
 			});
 			$("#Vol").change(function() {
 				//Vollisttime="44:333:222";
-				times["snaps"]="30:43:433";
+				times= { "snaps":"30:43:433", "periods":"30:43:433" };
 				//$(" tr.variable").remove();
 				
 			});
