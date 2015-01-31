@@ -1,1 +1,1 @@
-GetPoolperiodlist a
+GetSnaplist a

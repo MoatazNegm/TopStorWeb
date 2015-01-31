@@ -29,6 +29,7 @@
 			var requiredtime={ "snaps":"33==:433", "periods":"30==erwe:43:433" }
 			var Vollisttimenew="23:434:34543";
 			var status=0;
+			var syscounter=10;
 			$("#deletePool").hide();$("#submitdiskgroup").hide();
 			
 			function refreshList3(request,listid,fileloc) {
@@ -86,14 +87,18 @@
 				if(status==1) { //DiskGroup
 					diskgetsize('Data/disksize.txt','#size',"#count","#onedisk");
 					status=3;
+					refresh2("#statusarea2");	
 				}
 				if(status=="snaps"){ //snapshots
+					if(syscounter == 10) {
 					refreshList3("GetPoolVollist","#Vol","Data/Vollist2.txt");
 					refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps");
 					refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods");
+					syscounter=0;
+					}
+				syscounter++;
+				refresh2("#statusarea3");	
 				}
-				
-				refresh2("#statusarea2");	
 			}
 				
 			
@@ -255,7 +260,7 @@
 
             });
             
-			setInterval("refreshall()",5000);
+			setInterval("refreshall()",500);
 		</script>
 
 	</body>
