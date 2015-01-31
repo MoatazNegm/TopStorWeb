@@ -255,7 +255,7 @@
 
             });
             
-			setInterval("refreshall()",500);
+			setInterval("refreshall()",5000);
 		</script>
 
 	</body>
