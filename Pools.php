@@ -215,15 +215,15 @@
 				 refresh2("#statusarea3"); 
 				 });
 			});
-		$("#DeleteHourly").click( function (){ $.post("./pump.php", { req:"SnapShotHourlyDelete", name:$("#Hourlylist option:selected").val() }, function (data){
+		$("#DeleteHourly").click( function (){ $.post("./pump.php", { req:"SnapShotPeriodDelete", name:$("#Hourlylist option:selected").val() }, function (data){
 				 refresh2("#statusarea3"); 
 				 });
 			});
-		$("#DeleteMinutely").click( function (){ $.post("./pump.php", { req:"SnapShotMinutelyDelete", name:$("#Minutelylist option:selected").val() }, function (data){
+		$("#DeleteMinutely").click( function (){ $.post("./pump.php", { req:"SnapShotPeriodDelete", name:$("#Minutelylist option:selected").val() }, function (data){
 				 refresh2("#statusarea3"); 
 				 });
 			});
-		$("#DeleteWeekly").click( function (){ $.post("./pump.php", { req:"SnapShotWeeklyDelete", name:$("#Weeklylist option:selected").val() }, function (data){
+		$("#DeleteWeekly").click( function (){ $.post("./pump.php", { req:"SnapShotPeriodDelete", name:$("#Weeklylist option:selected").val() }, function (data){
 				 refresh2("#statusarea3"); 
 				 });
 			});

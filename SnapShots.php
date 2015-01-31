@@ -84,7 +84,7 @@
 															<div class="  col-sm-8">
 																<select   size="3" id="Hourlylist" class="  separatortop form-control col-sm-4 fonting " ></select>
 															</div>
-															<button type="submit" class="btn btn-default col-sm-offset- col-sm-2 " id="DeleteHourly" data-toggle="tooltip" data-placement="bottom" title="DeleteHourly">Delete
+															<button type="submit" class="btn btn-default col-sm-offset- col-sm-2 perioddelete" id="DeleteHourly" data-toggle="tooltip" data-placement="bottom" title="DeleteHourly">Delete
 																</button>
 														</div>
 													
@@ -106,7 +106,7 @@
 															<div class="  col-sm-8">
 																<select   size="3" id="Minutelylist" class="  separatortop form-control col-sm-4 fonting " ></select>
 															</div>
-															<button type="submit" class="btn btn-default col-sm-offset- col-sm-2 " id="DeleteMinutely" data-toggle="tooltip" data-placement="bottom" title="DeleteMinutely">Delete
+															<button type="submit" class="btn btn-default col-sm-offset- col-sm-2 perioddelete" id="DeleteMinutely" data-toggle="tooltip" data-placement="bottom" title="DeleteMinutely">Delete
 																</button>
 														</div>
 													
@@ -136,7 +136,7 @@
 															<div class="  col-sm-8">
 																<select   size="3" id="Weeklylist" class="  separatortop form-control col-sm-4 fonting " ></select>
 															</div>
-															<button type="submit" class="btn btn-default col-sm-offset- col-sm-2 " id="DeleteWeekly" data-toggle="tooltip" data-placement="bottom" title="DeleteWeekly">Delete
+															<button type="submit" class="btn btn-default col-sm-offset- col-sm-2 perioddelete" id="DeleteWeekly" data-toggle="tooltip" data-placement="bottom" title="DeleteWeekly">Delete
 																</button>
 														</div>
 													
