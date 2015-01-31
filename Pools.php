@@ -117,7 +117,7 @@
 						$(listid+" option.variable").remove();
 						chartdata=[];
 						console.log(times[show],show);
-						if(show=="periods") { 	$("#Hourlylist option.variable").remove();}
+						if(show=="periods") { 	$("#Hourlylist option.variable").remove();$("#Minutelylist option.variable").remove();$("#Weeklylist option.variable").remove();}
 						for (var prot in gdata){
 							if($("#Vol").val()==gdata[prot].father){
 								if( show=="snaps" ) {
