@@ -27,6 +27,7 @@
 			var Vollisttime="44:333:222";
 			var times= { "snaps":"30:43:433", "periods":"30:43:433" };
 			var requiredtime={ "snaps":"33==:433", "periods":"30==erwe:43:433" }
+			var Vollisttimenew="23:434:34543";
 			var status=0;
 			$("#deletePool").hide();$("#submitdiskgroup").hide();
 			
@@ -98,18 +99,18 @@
 			
 			
 			
-			function refreshList(req,listid,fileloc,show) {
+			function refreshList(req,listid,fileloc,showtime) {
 				$.post("./pump.php", { req: req, name:"a" }, function (data1){});
 					$.get("requestdate.php", { file: fileloc }, function(data){
 					var objdate = jQuery.parseJSON(data);
-					requiredtime[show]=objdate.timey;
+					requiredtime[showtime]=objdate.timey;
 					//console.log("timey", objdate,fileloc);
 				});
-				console.log(show);
-				if(times[show]==requiredtime[show]) { //console.log("traffic not changed"); 
+				console.log(showtime);
+				if(times[showtime]==requiredtime[showtime]) { //console.log("traffic not changed"); 
 				} 
 				else { 
-					times[show]=requiredtime[show];
+					times[showtime]=requiredtime[showtime];
 					//$(listid+" tr.variable").remove();
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						console.log(fileloc)
@@ -117,14 +118,14 @@
 						//console.log(data);
 						$(listid+" option.variable").remove();
 
-						console.log(times[show],show);
-						if(show=="periods") { 	$("#Hourlylist option.variable").remove();$("#Minutelylist option.variable").remove();$("#Weeklylist option.variable").remove();}
+						console.log(times[showtime],showtime);
+						if(showtime=="periods") { 	$("#Hourlylist option.variable").remove();$("#Minutelylist option.variable").remove();$("#Weeklylist option.variable").remove();}
 						for (var prot in gdata){
 							if($("#Vol").val()==gdata[prot].father){
-								if( show=="snaps" ) {
+								if( showtime=="snaps" ) {
 									$(listid).append($('<option class="variable">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));	
 								}
-								if (show=="periods") {
+								if (showtime=="periods") {
 									switch (gdata[prot].period) {
 										case "hourly": $("#Hourlylist").append($('<option class="variable">').text('Every:'+gdata[prot].t2+"hrs At:"+gdata[prot].t1+ "mins Keep:"+ gdata[prot].t3+"snaps").val("hourly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3));	 break;
 										case "Minutely": $("#Minutelylist").append($('<option class="variable">').text('Every:'+gdata[prot].t1+"mins Keep:"+gdata[prot].t2+"snaps").val("Minutely."+gdata[prot].t1+"."+gdata[prot].t2));	 break;
