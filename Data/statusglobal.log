@@ -1,17 +1,2 @@
-creating Snapshot High/test5 Minutely.15.5.na.na....
-Thu Jan 29 03:29:34 EET 2015: have to delete
-missing dataset argument
-usage:
-	destroy [-fnpRrv] <filesystem|volume>
-	destroy [-dnpRrv] <snapshot>[%<snapname>][,...]
-
-For the property list, run: zfs set|get
-
-For the delegated permission list, run: zfs allow|unallow
-cannot open 'High/test5': dataset does not exist
-usage:
-	snapshot [-r] [-o property=value] ... <filesystem@snapname|volume@snapname> ...
-
-For the property list, run: zfs set|get
-
-For the delegated permission list, run: zfs allow|unallow
+creating Snapshot Data/test5 Minutely.3.3.na.na....
+Sun Feb  1 01:05:30 EET 2015: DONE...Snapshot Data/test5 Minutely.3.3.na.na is created
