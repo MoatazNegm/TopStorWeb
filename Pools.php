@@ -91,6 +91,7 @@
 					refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps");
 					refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods");
 				}
+				
 				refresh2("#statusarea2");	
 			}
 				
