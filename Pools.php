@@ -105,7 +105,7 @@
 					requiredtime[show]=objdate.timey;
 					//console.log("timey", objdate,fileloc);
 				});
-			
+				console.log(show);
 				if(times[show]==requiredtime[show]) { //console.log("traffic not changed"); 
 				} 
 				else { 
@@ -116,7 +116,7 @@
 						var gdata = jQuery.parseJSON(data);
 						//console.log(data);
 						$(listid+" option.variable").remove();
-						chartdata=[];
+
 						console.log(times[show],show);
 						if(show=="periods") { 	$("#Hourlylist option.variable").remove();$("#Minutelylist option.variable").remove();$("#Weeklylist option.variable").remove();}
 						for (var prot in gdata){
