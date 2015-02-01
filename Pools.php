@@ -33,7 +33,7 @@
 			$("#deletePool").hide();$("#submitdiskgroup").hide();
 			
 			function refreshList3(request,listid,fileloc) {
-				$.post("./pump.php", { req: request, name:"a" });
+				if(syscounter==8) {$.post("./pump.php", { req: request, name:"a" }); }
 				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
 					console.log(data);
 					var objdate = jQuery.parseJSON(data);
