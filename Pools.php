@@ -34,10 +34,11 @@
 			
 			function refreshList3(request,listid,fileloc) {
 				$.post("./pump.php", { req: request, name:"a" });
-				$.get("requestdate.php", { file: fileloc }, function(data){
+				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
+					console.log(data);
 					var objdate = jQuery.parseJSON(data);
-					Vollisttimenew=objdate.timey;
-					//console.log("timey", objdate,fileloc);
+					Vollisttimenew=objdate.updated;
+					console.log("updated",fileloc+"updated",objdate);
 				});
 				if(Vollisttime==Vollisttimenew) { //console.log("traffic not changed"); 
 				} else { 
@@ -48,9 +49,9 @@
 						$(listid+" option.variable").remove();
 						chartdata=[];
 						for (var prot in gdata){
-							for (var x in gdata[prot].Volumes) { 
-								$(listid).append($('<option class="variable">').text(gdata[prot].Volumes[x].name).val(gdata[prot].Volumes[x].name));
-								//chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
+							if(gdata[prot].Pool=="Data") {
+									$(listid).append($('<option class="variable">').text(gdata[prot].name).val(gdata[prot].name));
+									//chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
 							}
 						}
 					});
@@ -90,8 +91,9 @@
 					refresh2("#statusarea2");	
 				}
 				if(status=="snaps"){ //snapshots
+					refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
 					if(syscounter == 10) {
-					refreshList3("GetPoolVollist","#Vol","Data/Vollist2.txt");
+					
 					refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps");
 					refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods");
 					syscounter=0;
