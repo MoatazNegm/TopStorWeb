@@ -132,9 +132,9 @@
 								}
 								if (showtime=="periods") {
 									switch (gdata[prot].period) {
-										case "hourly": $("#Hourlylist").append($('<option class="variable">').text('Every:'+gdata[prot].t2+"hrs At:"+gdata[prot].t1+ "mins Keep:"+ gdata[prot].t3+"snaps").val("hourly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3));	 break;
-										case "Minutely": $("#Minutelylist").append($('<option class="variable">').text('Every:'+gdata[prot].t1+"mins Keep:"+gdata[prot].t2+"snaps").val("Minutely."+gdata[prot].t1+"."+gdata[prot].t2));	 break;
-										case "Weekly" : $("#Weeklylist").append($('<option class="variable">').text('Every:'+gdata[prot].t3+" At:"+gdata[prot].t1+":"+gdata[prot].t2+" Keep:"+gdata[prot].t4+"snaps").val("Weekly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3+"."+gdata[prot].t4));	 break;
+										case "hourly": $("#Hourlylist").append($('<option class="variable">').text('Every:'+gdata[prot].t3+"hrs At:"+gdata[prot].t2+ "mins Keep:"+ gdata[prot].t1+"snaps").val("hourly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3));	 break;
+										case "Minutely": $("#Minutelylist").append($('<option class="variable">').text('Every:'+gdata[prot].t2+"mins Keep:"+gdata[prot].t1+"snaps").val("Minutely."+gdata[prot].t1+"."+gdata[prot].t2));	 break;
+										case "Weekly" : $("#Weeklylist").append($('<option class="variable">').text('Every:'+gdata[prot].t4+" At:"+gdata[prot].t2+":"+gdata[prot].t3+" Keep:"+gdata[prot].t1+"snaps").val("Weekly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3+"."+gdata[prot].t4));	 break;
 									}
 								}
 									
