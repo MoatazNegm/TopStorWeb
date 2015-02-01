@@ -30,7 +30,7 @@
 			var Vollisttimenew="23:434:34543";
 			var status=0;
 			var syscounter=10;
-			var syscounter=1000;
+			var syscounter2=1000;
 			$("#deletePool").hide();$("#submitdiskgroup").hide();
 			
 			function refreshList3(request,listid,fileloc) {
@@ -105,7 +105,7 @@
 				syscounter++;
 				refresh2("#statusarea3");	
 				}
-				if(syscounter2==1000) { syscoutner2=0; } else { syscounter2=syscounter2+1; }
+				if(syscounter2==1000) { syscounter2=0; } else { syscounter2=syscounter2+1; }
 			}
 				
 			
