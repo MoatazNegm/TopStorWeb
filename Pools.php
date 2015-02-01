@@ -30,12 +30,12 @@
 			var Vollisttimenew="23:434:34543";
 			var status=0;
 			var syscounter=10;
-			var syscounter=100;
+			var syscounter=1000;
 			$("#deletePool").hide();$("#submitdiskgroup").hide();
 			
 			function refreshList3(request,listid,fileloc) {
-				if(syscounter==100) { syscounter2=0; $.post("./pump.php", { req: request, name:"a" }); }
-				syscounter2=syscounter2+1;
+				if(syscounter2==1000) { $.post("./pump.php", { req: request, name:"a" }); }
+				
 				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
 					
 					var objdate = jQuery.parseJSON(data);
@@ -45,7 +45,7 @@
 				if(Vollisttime==Vollisttimenew) { //console.log("traffic not changed"); 
 				} else { 
 					Vollisttime=Vollisttimenew;
-					console.log(Vollisttime);
+					//console.log(Vollisttime);
 					$(listid+" option.variable").remove();
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						var gdata = jQuery.parseJSON(data);
@@ -95,28 +95,30 @@
 				}
 				if(status=="snaps"){ //snapshots
 					refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
+					refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps");
 					if(syscounter == 10) {
 					
-					refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps");
+					
 					refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods");
 					syscounter=0;
 					}
 				syscounter++;
 				refresh2("#statusarea3");	
 				}
+				if(syscounter2==1000) { syscoutner2=0; } else { syscounter2=syscounter2+1; }
 			}
 				
 			
 			
 			
 			function refreshList(req,listid,fileloc,showtime) {
-				$.post("./pump.php", { req: req, name:"a" }, function (data1){});
-					$.get("requestdate.php", { file: fileloc }, function(data){
+				if(syscounter2==1000){$.post("./pump.php", { req: req, name:"a" }, function (data1){});};
+					$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
 					var objdate = jQuery.parseJSON(data);
-					requiredtime[showtime]=objdate.timey;
+					requiredtime[showtime]=objdate.updated;
 					//console.log("timey", objdate,fileloc);
 				});
-				console.log(showtime);
+				//console.log(showtime);
 				if(times[showtime]==requiredtime[showtime]) { //console.log("traffic not changed"); 
 				} 
 				else { 
