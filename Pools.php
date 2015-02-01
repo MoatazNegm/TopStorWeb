@@ -30,19 +30,22 @@
 			var Vollisttimenew="23:434:34543";
 			var status=0;
 			var syscounter=10;
+			var syscounter=100;
 			$("#deletePool").hide();$("#submitdiskgroup").hide();
 			
 			function refreshList3(request,listid,fileloc) {
-				if(syscounter==8) {$.post("./pump.php", { req: request, name:"a" }); }
+				if(syscounter==100) { syscounter2=0; $.post("./pump.php", { req: request, name:"a" }); }
+				syscounter2=syscounter2+1;
 				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
-					console.log(data);
+					
 					var objdate = jQuery.parseJSON(data);
 					Vollisttimenew=objdate.updated;
-					console.log("updated",fileloc+"updated",objdate);
+					//console.log("updated",fileloc+"updated",objdate);
 				});
 				if(Vollisttime==Vollisttimenew) { //console.log("traffic not changed"); 
 				} else { 
 					Vollisttime=Vollisttimenew;
+					console.log(Vollisttime);
 					$(listid+" option.variable").remove();
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						var gdata = jQuery.parseJSON(data);
