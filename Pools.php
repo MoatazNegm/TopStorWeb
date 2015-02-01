@@ -96,6 +96,7 @@
 				if(status=="snaps"){ //snapshots
 					refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
 					refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps");
+					refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods");
 					if(syscounter == 10) {
 					
 					
