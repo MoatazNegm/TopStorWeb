@@ -59,7 +59,7 @@
 					refresh3("#statusarea4");
 					refresh3("#statusarea3");
 					//refreshList2("GetPoollist","#Pool2","Data/Poollist.txt","Pool");
-					Voldirtytable();
+					//Voldirtytable();
 				}
 				if(syscounter2==1000) { syscounter2=0; } else { syscounter2=syscounter2+1; }
 			}
@@ -272,7 +272,7 @@
 				};
 				refreshall();
 			});
-			$("#ISCSI").click(function (){  if(config== 1){ Protocol=3; config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ISCSI").show(); plotchart('chartISCSI',chartdata);};
+			$("#ISCSI").click(function (){  if(config== 1){ Protocol="ISCSI"; config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ISCSI").show(); plotchart('chartISCSI',chartdata);};
 			refreshall()	;
 			});
 			$(".finish").click(function (){ Protocol=0; config = 1; $(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();});
@@ -285,7 +285,7 @@
 				 refresh3("#statusarea4"); 
 				 });
 			});
-			$("#Createvol").click( function (){ var req=""; if(Protocol == 1) { req="CIFS"; }; $.post("./pump2.php", { req:"VolumeCreate"+req, name:$("#Pool2 option:selected").val()+" "+" "+$("#Volname").val()+" "+$("#volsize").val()+"G" }, function (data){
+			$("#Createvol").click( function (){ var req=""; if(Protocol != 0) { req=Protocol; }; $.post("./pump.php", { req:"VolumeCreate"+req, name:$("#Pool2 option:selected").val()+" "+" "+$("#Volname").val()+" "+$("#volsize").val()+"G" }, function (data){
 				 refresh3("#statusarea3"); 
 				 });
 			refreshList2("GetPoolVollist","#Vol2","Data/Vollist2.txt",5.5);

@@ -1,1 +1,1 @@
-VolumeCreateCIFS Data testv4 2G
+VolumeCreateNFS Data mezsds 56G
