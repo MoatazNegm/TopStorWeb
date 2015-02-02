@@ -140,9 +140,10 @@
 									//console.log(gdata[prot].name);
 									$("#Vol2").append($('<option class="variable">').text(gdata[prot].name).val(gdata[prot].name));
 									$(listid).append('<tr onclick="rowisclicked(this)" ><td class="Volname">'+gdata[prot].name+'</td><td>'+gdata[prot].volsize+'</td><td>'+gdata[prot].volact+'</td><td>'+gdata[prot].snaps+'</td></tr>');
-									chartdata.push([gdata[prot].name,parseFloat(gdata[prot].volsize)])
+									chartdata.push([gdata[prot].name,parseFloat(gdata[prot].volsize)]);
 								}
 							}
+							plotchart('chartNFS',chartdata);
 						}
 					});
 	/*					//$(listid).append($('<option>').text(v).val(v);
