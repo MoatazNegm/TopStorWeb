@@ -45,6 +45,7 @@
 			var config = 1;
 			var gdata;
 			var Vollisttime = "55:55:44";
+			var Vollisttimenew = "333:5455:4w344";
 			var chartdata = [
 					['Heavy ', 12],['Retail', 9], ['Light ', 14], 
 					['Outofhome', 16],['Commuting', 7], ['Orientation', 9]
@@ -53,7 +54,7 @@
 			var Vollock=0;
 			function refreshall() {
 				if(Protocol != 0) {
-					refreshList2("GetPoolVollist","#Volumetable","Data/Vollist2.txt","Volumes");
+					refreshList2("GetPoolVollist","#Volumetable","Data/Vollist.txt","Volumes");
 					refresh3("#statusarea4");
 					refresh3("#statusarea3");
 					//refreshList2("GetPoollist","#Pool2","Data/Poollist.txt","Pool");
@@ -134,11 +135,9 @@
 							chartdata=[];
 							for (var prot in gdata){
 								if(gdata[prot].protocol==Protocol){
-									for (var x in gdata[prot].Volumes) { 
-										$("#Vol2").append($('<option class="variable">').text(gdata[prot].Volumes[x].name).val(gdata[prot].Volumes[x].name));
-										$(listid).append('<tr onclick="rowisclicked(this)" ><td class="Volname">'+gdata[prot].Volumes[x].name+'</td><td>'+gdata[prot].Volumes[x].properties[0].volsize+'</td><td>'+gdata[prot].Volumes[x].properties[0].volact+'</td><td>'+gdata[prot].Volumes[x].properties[0].snaps+'</td></tr>');
-										chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
-									}
+									$("#Vol2").append($('<option class="variable">').text(gdata[prot].name).val(gdata[prot].name));
+									$(listid).append('<tr onclick="rowisclicked(this)" ><td class="Volname">'+gdata[prot].name+'</td><td>'+gdata[prot].volsize+'</td><td>'+gdata[prot].volact+'</td><td>'+gdata[prot].snaps+'</td></tr>');
+									chartdata.push([gdata[prot].name,parseFloat(gdata[prot].volsize)])
 								}
 							}
 						}
@@ -193,16 +192,15 @@
 					case "newoption" :  $("#createvol").show(); break;
 					case "alloption" : $("tr.success").removeClass("success");rowisclicked(); $("#Vollist").show(); plotchart('chartNFS',chartdata); break;
 					default: 
-							var fileloc= "Data/Vollist2.txt";
+							var fileloc= "Data/Vollist.txt";
 							$("#Volumedetails tbody tr.variable").remove();
 							$.get("requestdata.php", { file: fileloc }, function(data){
 								var jdata = jQuery.parseJSON(data);
 								for (var prot in gdata){
 									if(gdata[prot].protocol==Protocol) {
-										for (var x in gdata[prot].Volumes) { 
-											if(gdata[prot].Volumes[x].name==selection){
-												$("#Volumedetails tbody").append('<tr onclick="rowisclicked(this)" class="variable" ><td class="Volname">'+gdata[prot].Volumes[x].properties[0].volsize+'</td><td>'+gdata[prot].Volumes[x].properties[0].volact+'</td><td>'+gdata[prot].Volumes[x].properties[0].snaps+'</td><td>'+gdata[prot].Volumes[x].properties[0].used+'</td><td>'+gdata[prot].Volumes[x].properties[0].crdate+'</td><td>'+gdata[prot].Volumes[x].properties[0].free+'</td><td>'+gdata[prot].Volumes[x].properties[0].compress+'</td><td>'+gdata[prot].Volumes[x].properties[0].dedup+'</td></tr>');
-											}
+										if(gdata[prot].name==selection){
+											$("#Volumedetails tbody").append('<tr onclick="rowisclicked(this)" class="variable" ><td class="Volname">'+gdata[prot].volsize+'</td><td>'+gdata[prot].volact+'</td><td>'+gdata[prot].snaps+'</td><td>'+gdata[prot].used+'</td><td>'+gdata[prot].crdate+'</td><td>'+gdata[prot].free+'</td><td>'+gdata[prot].compress+'</td><td>'+gdata[prot].dedup+'</td></tr>');
+											
 										}
 									}
 								}
