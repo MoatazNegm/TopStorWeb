@@ -137,7 +137,7 @@
 							chartdata=[];
 							for (var prot in gdata){
 								if(gdata[prot].protocol==Protocol){
-									console.log(gdata[prot].name);
+									//console.log(gdata[prot].name);
 									$("#Vol2").append($('<option class="variable">').text(gdata[prot].name).val(gdata[prot].name));
 									$(listid).append('<tr onclick="rowisclicked(this)" ><td class="Volname">'+gdata[prot].name+'</td><td>'+gdata[prot].volsize+'</td><td>'+gdata[prot].volact+'</td><td>'+gdata[prot].snaps+'</td></tr>');
 									chartdata.push([gdata[prot].name,parseFloat(gdata[prot].volsize)])
@@ -286,7 +286,7 @@
 				 refresh3("#statusarea4"); 
 				 });
 			});
-			$("#Createvol").click( function (){ var req=""; if(Protocol != 0) { req=Protocol; }; console.log(req);$.post("./pump.php", { req:"VolumeCreate"+req, name:$("#Pool2 option:selected").val()+" "+" "+$("#Volname").val()+" "+$("#volsize").val()+"G" }, function (data){
+			$("#Createvol").click( function (){ var req=""; if(Protocol != 0) { req=Protocol; };$.post("./pump.php", { req:"VolumeCreate"+req, name:$("#Pool2 option:selected").val()+" "+" "+$("#Volname").val()+" "+$("#volsize").val()+"G" }, function (data){
 				 refresh3("#statusarea3"); 
 				 });
 			refreshList2("GetPoolVollist","#Vol2","Data/Vollist2.txt",5.5);
