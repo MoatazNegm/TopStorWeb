@@ -51,9 +51,10 @@
 					['Heavy ', 12],['Retail', 9], ['Light ', 14], 
 					['Outofhome', 16],['Commuting', 7], ['Orientation', 9]
 				];
-			var plotb;
+			
 			var voldirty=1;
 			var Vollock=0;
+			var plotb;
 			function refreshall() {
 				if(Protocol != 0) {
 					refreshList2("GetPoolVollist","#Volumetable","Data/Vollist.txt","Volumes");
