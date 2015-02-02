@@ -51,6 +51,7 @@
 					['Heavy ', 12],['Retail', 9], ['Light ', 14], 
 					['Outofhome', 16],['Commuting', 7], ['Orientation', 9]
 				];
+			var plotb;
 			var voldirty=1;
 			var Vollock=0;
 			function refreshall() {
@@ -80,7 +81,7 @@
 						if (chartdata.length > 0) {
 							voldirty=0;
 							$("#chartNFS").children().remove();
-							plotchart('chartNFS',chartdata);
+							plotb=plotchart('chartNFS',chartdata);
 							
 							
 							//console.log("trying to chart");
@@ -143,7 +144,8 @@
 									chartdata.push([gdata[prot].name,parseFloat(gdata[prot].volsize)]);
 								}
 							}
-							plotchart('chartNFS',chartdata);
+							plotb.destroy();
+							plotb=plotchart('chartNFS',chartdata);
 						}
 					});
 	/*					//$(listid).append($('<option>').text(v).val(v);
@@ -194,7 +196,7 @@
 				$(".Paneloption").hide();
 				switch(selection) {
 					case "newoption" :  $("#createvol").show(); break;
-					case "alloption" : $("tr.success").removeClass("success");rowisclicked(); $("#Vollist").show(); plotchart('chartNFS',chartdata); break;
+					case "alloption" : $("tr.success").removeClass("success");rowisclicked(); $("#Vollist").show(); plotb=plotchart('chartNFS',chartdata); break;
 					default: 
 							var fileloc= "Data/Vollist.txt";
 							$("#Volumedetails tbody tr.variable").remove();
@@ -274,7 +276,7 @@
 				};
 				refreshall();
 			});
-			$("#ISCSI").click(function (){  if(config== 1){ Protocol="ISCSI"; config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ISCSI").show(); plotchart('chartISCSI',chartdata);};
+			$("#ISCSI").click(function (){  if(config== 1){ Protocol="ISCSI"; config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ISCSI").show(); plotb=plotchart('chartISCSI',chartdata);};
 			refreshall()	;
 			});
 			$(".finish").click(function (){ Protocol=0; config = 1; $(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();});
