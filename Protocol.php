@@ -46,6 +46,7 @@
 			var gdata;
 			var Vollisttime = "55:55:44";
 			var Vollisttimenew = "333:5455:4w344";
+			var syscounter2=1000;
 			var chartdata = [
 					['Heavy ', 12],['Retail', 9], ['Light ', 14], 
 					['Outofhome', 16],['Commuting', 7], ['Orientation', 9]
@@ -60,6 +61,7 @@
 					//refreshList2("GetPoollist","#Pool2","Data/Poollist.txt","Pool");
 					Voldirtytable();
 				}
+				if(syscounter2==1000) { syscounter2=0; } else { syscounter2=syscounter2+1; }
 			}
 			function Initclickedprotocol() {
 				
@@ -115,10 +117,10 @@
 				var request=req;
 				
 				fileloc = filelocfrom ; request= request ; 
-				$.post("./pump.php", { req: request, name:"a" });
-				$.get("requestdate.php", { file: fileloc }, function(data){
+				if(syscounter2==1000){$.post("./pump.php", { req: request, name:"a" }); }
+				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
 					var objdate = jQuery.parseJSON(data);
-					Vollisttimenew=objdate.timey;
+					Vollisttimenew=objdate.updated;
 					//console.log("timey", objdate,fileloc);
 				});
 				if(Vollisttime==Vollisttimenew) { //console.log("traffic not changed"); 
@@ -296,7 +298,7 @@
 			//setInterval('refresh3("#statusarea3")', 10000);
 			//setInterval('refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);', 10000);
 			//setInterval('Voldirtytable()', 10000);
-			setInterval('refreshall()', 2000);
+			setInterval('refreshall()', 1000);
 			//refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);
 			//refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
 			

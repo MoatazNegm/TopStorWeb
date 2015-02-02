@@ -97,10 +97,11 @@
 					refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
 					refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps");
 					refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods");
+					refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods");
 					if(syscounter == 10) {
 					
 					
-					refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods");
+					
 					syscounter=0;
 					}
 				syscounter++;
