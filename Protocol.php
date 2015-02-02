@@ -121,7 +121,7 @@
 				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
 					var objdate = jQuery.parseJSON(data);
 					Vollisttimenew=objdate.updated;
-					//console.log("timey", objdate,fileloc);
+					console.log("Vollisttimenew", objdate,fileloc,"Vollold",Vollisttime);
 				});
 				if(Vollisttime==Vollisttimenew) { //console.log("traffic not changed"); 
 				} else { 
@@ -285,7 +285,7 @@
 				 refresh3("#statusarea4"); 
 				 });
 			});
-			$("#Createvol").click( function (){ var req=""; if(Protocol != 0) { req=Protocol; }; $.post("./pump.php", { req:"VolumeCreate"+req, name:$("#Pool2 option:selected").val()+" "+" "+$("#Volname").val()+" "+$("#volsize").val()+"G" }, function (data){
+			$("#Createvol").click( function (){ var req=""; if(Protocol != 0) { req=Protocol; }; console.log(req);$.post("./pump.php", { req:"VolumeCreate"+req, name:$("#Pool2 option:selected").val()+" "+" "+$("#Volname").val()+" "+$("#volsize").val()+"G" }, function (data){
 				 refresh3("#statusarea3"); 
 				 });
 			refreshList2("GetPoolVollist","#Vol2","Data/Vollist2.txt",5.5);
