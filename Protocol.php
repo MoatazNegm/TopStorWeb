@@ -41,6 +41,7 @@
 
 <!-- End additional plugins -->
 		<script>
+			var plotflag = 0;
 			var Protocol=0;
 			var config = 1;
 			var gdata;
@@ -82,7 +83,7 @@
 						if (chartdata.length > 0) {
 							voldirty=0;
 							$("#chartNFS").children().remove();
-							plotb=plotchart('chartNFS',chartdata);
+							plotchart('chartNFS',chartdata);
 							
 							
 							//console.log("trying to chart");
@@ -145,8 +146,10 @@
 									chartdata.push([gdata[prot].name,parseFloat(gdata[prot].volsize)]);
 								}
 							}
-							plotb.destroy();
-							plotb=plotchart('chartNFS',chartdata);
+							if(plotflag > 0 ) {
+								plotb.destroy();
+								plotchart('chartNFS',chartdata);
+							}
 						}
 					});
 	/*					//$(listid).append($('<option>').text(v).val(v);
@@ -197,7 +200,7 @@
 				$(".Paneloption").hide();
 				switch(selection) {
 					case "newoption" :  $("#createvol").show(); break;
-					case "alloption" : $("tr.success").removeClass("success");rowisclicked(); $("#Vollist").show(); plotb=plotchart('chartNFS',chartdata); break;
+					case "alloption" : $("tr.success").removeClass("success");rowisclicked(); $("#Vollist").show(); plotchart('chartNFS',chartdata); break;
 					default: 
 							var fileloc= "Data/Vollist.txt";
 							$("#Volumedetails tbody tr.variable").remove();
@@ -237,7 +240,7 @@
 			}
 			function plotchart(chart,data){
 				
-				var plot1 = jQuery.jqplot (chart, [data], 
+				 plotb = jQuery.jqplot (chart, [data], 
 					{ 
 						seriesDefaults: {
 							// Make this a pie chart.
@@ -253,6 +256,7 @@
 						grid: { background: "transparent", borderColor: "transparent", shadow: false }
 					}
 				);
+				plotflag=1;
 			}
 			
 		
@@ -277,7 +281,7 @@
 				};
 				refreshall();
 			});
-			$("#ISCSI").click(function (){  if(config== 1){ Protocol="ISCSI"; config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ISCSI").show(); plotb=plotchart('chartISCSI',chartdata);};
+			$("#ISCSI").click(function (){  if(config== 1){ Protocol="ISCSI"; config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ISCSI").show(); plotchart('chartISCSI',chartdata);};
 			refreshall()	;
 			});
 			$(".finish").click(function (){ Protocol=0; config = 1; $(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();});
