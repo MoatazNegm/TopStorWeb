@@ -172,7 +172,7 @@
 			$("#DiskGroups").click(function (){ 
 				 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".DiskGroups").show(); 
 			});
-			$("#SnapShots").click(function (){ if(config== 1){ config = 0; status="snaps"; $("h2").css("background-image","url('img/snapshot.png')").text("SnapShots");  $("option.variable").remove(); Vollisttime="44:333:22";$(".SnapShots").show();};});
+			$("#SnapShots").click(function (){ if(config== 1){ config = 0; status="snaps"; $("h2").css("background-image","url('img/snapshot.png')").text("SnapShots");  $("option.variable").remove(); Vollisttime="44:333:22";times= { "snaps":"30:43:433", "periods":"30:43:433" }; $(".SnapShots").show();};});
 			$(".finish").click(function (){ config = 1; status=0; $(".DiskGroups").hide(); $(".SnapShots").hide();});
 			
 			
