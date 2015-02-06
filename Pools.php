@@ -127,12 +127,12 @@
 					times[showtime]=requiredtime[showtime];
 					//$(listid+" tr.variable").remove();
 					$.get("requestdata.php", { file: fileloc }, function(data){
-						console.log(fileloc)
+						//console.log(fileloc)
 						var gdata = jQuery.parseJSON(data);
 						//console.log(data);
 						$(listid+" option.variable").remove();
 
-						console.log(times[showtime],showtime);
+						//console.log(times[showtime],showtime);
 						if(showtime=="periods") { 	$("#Hourlylist option.variable").remove();$("#Minutelylist option.variable").remove();$("#Weeklylist option.variable").remove();}
 						for (var prot in gdata){
 							if($("#Vol").val()==gdata[prot].father){
@@ -229,6 +229,10 @@
 				 refresh2("#statusarea3"); 
 				 });
 			});
+		$("#Revertsnapshot").click( function (){ $.post("./pump.php", { req:"SnapShotRevert", name:$("#Snaplist option:selected").val() }, function (data){
+				 refresh2("#statusarea3"); 
+				 });
+			});	
 		$("#DeleteHourly").click( function (){ $.post("./pump.php", { req:"SnapShotPeriodDelete", name:$("#Hourlylist option:selected").val() }, function (data){
 				 refresh2("#statusarea3"); 
 				 });
