@@ -155,7 +155,7 @@
 												<div class="form-group col-sm-offset-1">
 													<button type="submit" class="btn btn-default " id="DeleteSnapshot" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot">Delete
 													</button>
-													<button type="submit" class="btn btn-danger col-sm-offset-3 " id="Revertsnapshot" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot"> Revert to Snapshot
+													<button type="submit" class="btn btn-danger col-sm-offset-3 " id="RollbackSnapshot" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot"> Rollback to Snapshot
 													</button>
 												</form>
 											</div>

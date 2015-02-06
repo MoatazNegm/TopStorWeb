@@ -229,7 +229,7 @@
 				 refresh2("#statusarea3"); 
 				 });
 			});
-		$("#Revertsnapshot").click( function (){ $.post("./pump.php", { req:"SnapShotRevert", name:$("#Snaplist option:selected").val() }, function (data){
+		$("#RollbackSnapshot").click( function (){ $.post("./pump.php", { req:"SnapShotRollback", name:$("#Snaplist option:selected").val() }, function (data){
 				 refresh2("#statusarea3"); 
 				 });
 			});	
