@@ -146,11 +146,10 @@
 			});
 			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
 			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val(), passwd:$("#UserPass").val()+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){
-				console.log($("#UserPass").val()+" "+"<?php echo $_SESSION["user"]; ?>");
 				 //refreshUserList(); 
 				 });
 			});
-			$("#UnixDelUser").click( function (){ $.post("./pump.php", { req:"UnixDelUser", name:$("#UserList option:selected").val() }, function (data){
+			$("#UnixDelUser").click( function (){ $.post("./pump.php", { req:"UnixDelUser", name:$("#UserList option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 //refreshUserList(); 
 				 });
 			});
