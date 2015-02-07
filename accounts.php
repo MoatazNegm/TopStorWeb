@@ -174,7 +174,7 @@
 			});
 			$("#ADsubmit").click( function() {
 				if($("#Domtype").val()=="Domain") {
-					$.post("./pump.php", { req:"DomainChange", name:$("#DomName").val()+" "+$("#Admin").val()+" "+"\""+$("#Pass").val()+"\""+" "+$("#DCserver").val() });
+					$.post("./pump.php", { req:"DomainChange", name:$("#DomName").val()+" "+$("#Admin").val()+" "+"\""+$("#Pass").val()+"\""+" "+$("#DCserver").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 				}
 			});
 			setInterval('refreshall()', 2000);
