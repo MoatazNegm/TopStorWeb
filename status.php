@@ -303,36 +303,35 @@
 		var tm;
 		var tm2;
 		$("#Logdetails tr.datarow").remove();
-		$.get("requestdata.php", { file: 'Data/currentinfo.log' }, function(data){
+		$.get("requestdata.php", { file: 'Data/currentinfo2.log' }, function(data){
 			var obj = jQuery.parseJSON(data);
-			for (var k in obj.Dates) { 
-				for (var y in obj.Dates[k].times) {
-					 tm=new Date ($("#Sdate").val()+" "+$("#Stime").val()+":00");  tm2= new Date (obj.Dates[k].Date+" "+obj.Dates[k].times[y].time); 
-					if(Number(tm-tm2) < 0 && Number(Date.parse($("#Edate").val()) - Date.parse(obj.Dates[k].Date)) > 0) {
+			for (var k in obj) { 
+					 tm=new Date ($("#Sdate").val()+" "+$("#Stime").val()+":00");  tm2= new Date (obj[k].Date+" "+obj[k].time); 
+					if(Number(tm-tm2) < 0 && Number(Date.parse($("#Edate").val()) - Date.parse(obj[k].Date)) > 0) {
 						if($("#INFO").is(":checked")) {
-							if(obj.Dates[k].times[y].msg == "info") { 
-								logarea=logarea+obj.Dates[k].Date+" "+obj.Dates[k].times[y].time+" info: "+obj.Dates[k].times[y].data+"\n";
-								$("#Logdetails").append('<tr class="datarow" style="color:blue;"><td class="Volname">'+obj.Dates[k].Date+'</td><td>'+obj.Dates[k].times[y].time+'</td><td>'+obj.Dates[k].times[y].msg+'</td><td>'+obj.Dates[k].times[y].data+'</td></tr>');
+							if(obj[k].msg == "info") { 
+								logarea=logarea+obj.Date+" "+obj[k].time+" info: "+obj[k].data+"\n";
+								$("#Logdetails").append('<tr class="datarow" style="color:blue;"><td class="Volname">'+obj[k].Date+'</td><td>'+obj[k].time+'</td><td>'+obj[k].msg+'</td><td>'+obj[k].data+'</td></tr>');
 								//console.log(Number(Date.parse($("#Stime").val()) - Date.parse(obj.Dates[k].times[y].time))/1000/60/60/24);
 							}
 						};
 						if($("#Warning").is(":checked")) {
 							
-							if(obj.Dates[k].times[y].msg == "warning") { 
-								logarea=logarea+obj.Dates[k].Date+" "+obj.Dates[k].times[y].time+" warning: "+obj.Dates[k].times[y].data+"\n";
-								$("#Logdetails").append('<tr class="datarow" style="color:orange;"><td class="Volname">'+obj.Dates[k].Date+'</td><td>'+obj.Dates[k].times[y].time+'</td><td>'+obj.Dates[k].times[y].msg+'</td><td>'+obj.Dates[k].times[y].data+'</td></tr>');
+							if(obj[k].msg == "warning") { 
+								logarea=logarea+obj[k].Date+" "+obj[k].time+" warning: "+obj[k].data+"\n";
+								$("#Logdetails").append('<tr class="datarow" style="color:orange;"><td class="Volname">'+obj[k].Date+'</td><td>'+obj[k].time+'</td><td>'+obj[k].msg+'</td><td>'+obj[k].data+'</td></tr>');
 								//console.log(Number(Date.parse($("#Stime").val()) - Date.parse(obj.Dates[k].times[y].time)));
 							}
 						}
 						if($("#Error").is(":checked")) {
-							if(obj.Dates[k].times[y].msg == "error") { 
-								logarea=logarea+obj.Dates[k].Date+" "+obj.Dates[k].times[y].time+" error: "+obj.Dates[k].times[y].data+"\n";
-								$("#Logdetails").append('<tr class="datarow" style="color:red;"><td class="Volname">'+obj.Dates[k].Date+'</td><td>'+obj.Dates[k].times[y].time+'</td><td>'+obj.Dates[k].times[y].msg+'</td><td>'+obj.Dates[k].times[y].data+'</td></tr>');
+							if(obj[k].msg == "error") { 
+								logarea=logarea+obj[k].Date+" "+obj[k].time+" error: "+obj[k].data+"\n";
+								$("#Logdetails").append('<tr class="datarow" style="color:red;"><td class="Volname">'+obj[k].Date+'</td><td>'+obj[k].time+'</td><td>'+obj[k].msg+'</td><td>'+obj[k].data+'</td></tr>');
 								
 							}
 						}
 					}
-				};
+				
 			};
 			$("#logsarea").val(logarea);	
 		});
