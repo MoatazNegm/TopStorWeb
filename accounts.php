@@ -164,10 +164,10 @@
 				$("form").validator("validate");
 				if($("div").hasClass("has-error")== false) {
 					if($("#network").val()=="2") {
-						$.post("./pump.php", { req:"HostDHCPconfig", name:$("#BoxName").val()+" "+$("#DNS").val() });
+						$.post("./pump.php", { req:"HostDHCPconfig", name:$("#BoxName").val()+" "+$("#DNS").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 					}
 					else {
-						$.post("./pump.php", { req:"HostManualconfig", name:$("#BoxName").val()+" "+$("#IPAddress").val()+" "+$("#Gateway").val()+" "+$("#DNS").val() });
+						$.post("./pump.php", { req:"HostManualconfig", name:$("#BoxName").val()+" "+$("#IPAddress").val()+" "+$("#Gateway").val()+" "+$("#DNS").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 						needupdate=1;
 					}
 				}
