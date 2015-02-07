@@ -103,9 +103,9 @@
 							$("#UserList option").each(function (i,v) { 
 								for(var key in jdata) { 
 									if ( key == this.value) {
-										console.log(this.value,key,"found"); $(this).toggleClass("dontdelete"); jdata[key]="inin"; 
+										 $(this).toggleClass("dontdelete"); jdata[key]="inin"; 
 									} else { 
-										console.log(this.value,key,"notfound");
+										;
 									} 
 								}
 
@@ -116,11 +116,11 @@
 							if(jdata[key] == "o") { $("#UserList").append($("<option class='dontdelete'>").text(key).val(key)); }
 						}
 					});
-												console.log("before:",$("#UserList option.dontdelete")); 
+												
 												;
 					$("#UserList option").not(".dontdelete").remove();
 					$("#UserList option").toggleClass("dontdelete");
-					console.log("after:",$("#UserList option.dontdelete"));
+					
 				});	
 			};
 //			setInterval('refresh()', 1000); // Loop every 1000 milliseconds (i.e. 1 second)
@@ -145,7 +145,8 @@
 				}; 
 			});
 			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
-			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val(), passwd:$("#UserPass").val() }, function (data){
+			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val(), passwd:$("#UserPass").val()+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){
+				console.log($("#UserPass").val()+" "+"<?php echo $_SESSION["user"]; ?>");
 				 //refreshUserList(); 
 				 });
 			});
