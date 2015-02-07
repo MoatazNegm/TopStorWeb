@@ -311,7 +311,7 @@
 						if($("#INFO").is(":checked")) {
 							if(obj[k].msg == "info") { 
 								logarea=logarea+obj.Date+" "+obj[k].time+" info: "+obj[k].data+"\n";
-								$("#Logdetails").append('<tr class="datarow" style="color:blue;"><td class="Volname">'+obj[k].Date+'</td><td>'+obj[k].time+'</td><td>'+obj[k].msg+'</td><td>'+obj[k].data+'</td></tr>');
+								$("#Logdetails").append('<tr class="datarow" style="color:blue;"><td class="Volname">'+obj[k].Date+' '+obj[k].time+'</td><td>'+obj[k].suer+'</td><td>'+obj[k].data+'</td></tr>');
 								//console.log(Number(Date.parse($("#Stime").val()) - Date.parse(obj.Dates[k].times[y].time))/1000/60/60/24);
 							}
 						};
@@ -319,14 +319,14 @@
 							
 							if(obj[k].msg == "warning") { 
 								logarea=logarea+obj[k].Date+" "+obj[k].time+" warning: "+obj[k].data+"\n";
-								$("#Logdetails").append('<tr class="datarow" style="color:orange;"><td class="Volname">'+obj[k].Date+'</td><td>'+obj[k].time+'</td><td>'+obj[k].msg+'</td><td>'+obj[k].data+'</td></tr>');
+								$("#Logdetails").append('<tr class="datarow" style="color:orange;"><td class="Volname">'+obj[k].Date+' '+obj[k].time+'</td><td>'+obj[k].user+'</td><td>'+obj[k].data+'</td></tr>');
 								//console.log(Number(Date.parse($("#Stime").val()) - Date.parse(obj.Dates[k].times[y].time)));
 							}
 						}
 						if($("#Error").is(":checked")) {
 							if(obj[k].msg == "error") { 
 								logarea=logarea+obj[k].Date+" "+obj[k].time+" error: "+obj[k].data+"\n";
-								$("#Logdetails").append('<tr class="datarow" style="color:red;"><td class="Volname">'+obj[k].Date+'</td><td>'+obj[k].time+'</td><td>'+obj[k].msg+'</td><td>'+obj[k].data+'</td></tr>');
+								$("#Logdetails").append('<tr class="datarow" style="color:red;"><td class="Volname">'+obj[k].Date+' '+obj[k].time+'</td><td>'+obj[k].user+'</td><td>'+obj[k].data+'</td></tr>');
 								
 							}
 						}
