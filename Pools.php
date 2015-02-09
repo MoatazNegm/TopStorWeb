@@ -216,12 +216,12 @@
 		//refreshList("GetPoollist","#Pool","Data/Poollist.txt",3);
 		//refreshList2("GetPoolVollist","#Vol","Data/Vollist2.txt","Volumes");
 
-		$("#submitdiskgroup").click( function (){ $.post("./pump.php", { req:"DGsetPool", name:$('input[name=Raidselect]:checked').val()+" "+$('input[name=Raidselect]:checked').attr("id") }, function (data){
+		$("#submitdiskgroup").click( function (){ $.post("./pump.php", { req:"DGsetPool", name:$('input[name=Raidselect]:checked').val()+" "+$('input[name=Raidselect]:checked').attr("id")+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 refresh2("#statusarea2");
 		});
 	 });
 	 
-		$("#deletePool").click( function (){ $.post("./pump.php", { req:"DGdestroyPool" });
+		$("#deletePool").click( function (){ $.post("./pump.php", { req:"DGdestroyPool"+" "+"<?php echo $_SESSION["user"]; ?>" });
 		});
 
 			
