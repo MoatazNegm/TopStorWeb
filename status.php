@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<<?php session_start(); 
+<?php session_start(); 
  if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/des19/Login.php');}
  
 ?>
