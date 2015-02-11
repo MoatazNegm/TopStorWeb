@@ -28,7 +28,7 @@
 			
 			<?php 
 				if($men==6){
-					echo '<li id="Leftlist" class="active leftli colorize" Data-tag="li.leftli"Data-id="Leftlist" Data-textcolor="no" Data-background="yes" Data-border="no" ><a href="#" ><br>colorizePane</a></li>';
+					echo '<li id="Leftlist" class="active leftli colorize" Data-tag="li.leftli"Data-id="Leftlist" Data-textcolor="no" Data-background="yes" Data-border="no" ><a href="#" ><br>colorize</a></li>';
 				} else {
 					echo	'<li class="leftli"><a id="config" class="ref"href="#"   ><br>config</a></li>'	;			
 				}

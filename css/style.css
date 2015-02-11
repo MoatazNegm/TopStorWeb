@@ -392,3 +392,10 @@ td { font-size : 1.3rem;}
 #logoff { color: #131D1D; text-decoration: underline;}
 #userlog { margin-top: 3.4rem;}
 #submitdiskgroup, #deletePool { margin-top: 1rem;}
+p.Priv { font-size : 1.1rem; 
+						display: inline;
+				
+				}
+input.checkboxy {  margin-top: 0.2rem;
+				display: inline;
+			}

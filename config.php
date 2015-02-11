@@ -4,61 +4,98 @@
  
 ?>
 <html>
-
-	<?php $men=6;include "header.html"; ?>
-
-							
-							<li><a href="#" class="rightli ADa "><h4 id="AD"><span>Active Directory</span></h4></a></li>
-							<li><a   href="#" class="rightli UnLina"><h4 id="UnLin"><span>Box users</span></h4></a></li>
-							<li><a href="#" class="rightli Futurea"><h4 id="Future"><span> .........Future</span></h4></a></li>
+	<?php $men= 6; include "header.html"; ?>
+	
+							<li><a href="#" class="UserPrivilegesa rightli"><h4 id="UserPrivileges"><span>User Priviliges</span></h4></a></li>
+							<li><a href="#" class="SnapShotsa rightli"><h4 id="SnapShots"><span>SnapShots</span></h4></a></li>
 						</ul>
-						<ul  > 
-							<li><a id="List" href="#" ><h4  class=" colorize" Data-tag=".rightli" Data-id="List" Data-textcolor="yes" Data-background="no" Data-border="no" id="colorizethis"><span> Colorize List</span></h4></a></li>
-							<li ><a class="colorize " Data-tag="#rightPane" Data-id="rightPane" Data-textcolor="no" Data-background="yes" Data-border="no" href="#" ><h4 id="AD"><span>Colorize RightPane</span></h4></a></li>
-							
-							
-							
-						</ul>
+						<?php include "UserPrivileges.php"; ?>
 					
-						<?php include "AD.php"; ?>
-						<?php include "UnLin.php"; ?>
 					</div>
-					
 				</div>
-			
-		
-			
-					</div>
-	</div>
-	<div class=" prefooter colorize"  id="prefooter" Data-tag=".prefooter" Data-id="prefooter" Data-textcolor="yes" Data-background="yes" Data-border="yes">
-				<footer class="footer colorize" id="footer" Data-tag=".footer" Data-id="footer" Data-textcolor="yes" Data-background="yes" Data-border="yes"> Errors
-				</footer>
 			</div>
-	
-	</div>	
-		<script src="js/jquery.js"></script>
-		<script src="js/jquery-ui.js"></script>
-		<script src="js/jquery.datetimepicker.js"></script>
-		<script src="js/bootstrap.min.js"></script>
+			
+		<div class="row">
+			<footer class="footer"> Errors
+			</footer>
+		</div>
+			
 		
-		
-		
-	
+		<script src="js/bootstrap-timepicker.js"></script>
 		<script>
-			var config = 1;
-			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();
-			$("#AD").click(function (){ 
-				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".AD").show(); };});
-			$("#UnLin").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".UnLin").show();};});
-			$("#Future").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/future.png')").text("Future"); $(".Future").show();};});
-			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
-			$(".AD").draggable();
-			
+			var needupdate=1
+			var proptime="55:55:55";
+			var proptimenew="33:333:33";
+			var DNS=1;
+			$(".UserPrivileges").hide();
+			$(".finish").click(function (){  $(".UserPrivileges").hide(); $(".UserPrivileges").hide();});
+			$("#UserPrivileges").click(function (){   $("h2").css("background-image","url('img/snapshot.png')").text("User Privileges");  $("option.variable").remove(); proptime="44:333:22";; $(".UserPrivileges").show();refreshall();});
+			function refreshall() {
+				DNS=1;
+		//	console.log("AD is visible : " , $(".AD").is(":visible"));
+			if($(".AD").is(":visible")){
+				$.get("requestdata.php", { file: 'Data/status.log' }, function(data){ $("#ADstatus").val(data);});
+			}
+			else if($(".Future").is(":visible")) {
+				$.get("requestdata.php", { file: 'Data/status.log' }, function(data){ $("#Futurestatus").val(data);});
+			}
+			else if($(".UserPrivileges").is(":visible")) {
+				refreshUserList();
+				$.get("requestdata.php", { file: 'Data/userpriv.txt' }, function(data){ 
+					gdata=jQuery.parseJSON(data);
+					for (var prot in gdata){
+						if(gdata[prot].user==$("#UserList option:selected").val()) {
+							$.each(gdata[prot], function(key,value){ if(value=="yes") {$("#"+key).prop('checked',true)} else {$("#"+key).prop('checked',false)};});
+						}
+					}
+				});
+			}
+
+	}
+			function refreshUserList() {
+				var jdata;
+				
+				$.post("./pump.php", { req:"UnixListUsers", name:"a" }, function (data1){ 
+					
+					$.get("requestdata.php", { file: 'Data/listusers.txt' }, function(data){
+						jdata = jQuery.parseJSON(data);
+						if(Number($("#UserList option").length)+1 > 0 ) {
+							$("#UserList option").each(function (i,v) { 
+								for(var key in jdata) { 
+									if ( key == this.value) {
+										 $(this).toggleClass("dontdelete"); jdata[key]="inin"; 
+									} else { 
+										;
+									} 
+								}
+
+							});
+						}
+						
+						for (var key in jdata ) { 
+							if(jdata[key] == "o") { $("#UserList").append($("<option class='dontdelete'>").text(key).val(key)); }
+						}
+					});
+												
+												;
+					$("#UserList option").not(".dontdelete").remove();
+					$("#UserList option").toggleClass("dontdelete");
+					
+				});	
+			};
+			$("#submit").click( function (){ $.post("./pump.php", { req:"DGsetPool", name:$('input[name=Raidselect]:checked').val()+" "+$('input[name=Raidselect]:checked').attr("id")+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+				 refresh2("#statusarea2");
+		});
+	 });
+			$("#UserList").change(function(){
+				$(".checkboxy").each(function(){ $(this).prop("checked",false)});
+				refreshall();
+				});
+			setInterval('refreshUserList()', 2000);
+			refreshUserList();
+			refreshall();
 		</script>
- <?php include "colorize.php"; ?> 
-	
-		 <script> console.log("$('"+"dkdk"+"').css('background-color',"+"'dslks'"+");");</script>
-			
+		
 	</body>
 
 </html>
