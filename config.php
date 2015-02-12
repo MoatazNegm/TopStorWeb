@@ -55,7 +55,7 @@
 						gdata=jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user==$("#UserList option:selected").val()) {
-								$.each(gdata[prot], function(key,value){ if(value=="yes") {$("#"+key).prop('checked',true)} else {$("#"+key).prop('checked',false)};});
+								$.each(gdata[prot], function(key,value){  $("#"+key).prop('checked',value);});
 							}
 						}
 					});
@@ -98,7 +98,7 @@
 				
 				sm="user"+" "+$("#UserList option:selected").val()+" ";
 				$(".checkboxy").each(function (){ sm=sm+$(this).attr('id')+" "+$(this).prop('checked')+" ";});
-				$.post("./pump.php", { req:"Priv", name:sm+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+				$.post("./pump.php", { req:"Priv", name:sm+" "+"administrator "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 refresh2("#statusarea2");
 		});
 	 });
