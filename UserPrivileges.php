@@ -103,7 +103,7 @@
 			<div class=" row">
 				<div class=" col-sm-6">
 					<div class=" form-group row" id="SnapshotCreatediv">
-						<button type="submit" class="btn btn-default col-sm-offset-5 col-sm-6 SnapshotCreate " id="SubmtiPriv" data-toggle="tooltip" data-placement="bottom" title="close window">submit</button>
+						<button type="submit" class="btn btn-default col-sm-offset-5 col-sm-6 SnapshotCreate " id="SubmitPriv" data-toggle="tooltip" data-placement="bottom" title="close window">submit</button>
 					</div>
 				</div>
 				
