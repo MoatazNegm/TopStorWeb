@@ -42,14 +42,24 @@
 			}
 			else if($(".UserPrivileges").is(":visible")) {
 				refreshUserList();
-				$.get("requestdata.php", { file: 'Data/userpriv.txt' }, function(data){ 
-					gdata=jQuery.parseJSON(data);
-					for (var prot in gdata){
-						if(gdata[prot].user==$("#UserList option:selected").val()) {
-							$.each(gdata[prot], function(key,value){ if(value=="yes") {$("#"+key).prop('checked',true)} else {$("#"+key).prop('checked',false)};});
+				var objdate;
+				$.get("requestdatein.php", { file: 'Data/userprivdate.txt' }, function(data){ 
+				var objdate = jQuery.parseJSON(data);
+				proptimenew=objdate.updated });
+				
+				if(proptimenew == proptime) { }
+				else {
+					proptime=proptimenew;
+				var gdata;
+					$.get("requestdata.php", { file: 'Data/userpriv.txt' }, function(data){ 
+						gdata=jQuery.parseJSON(data);
+						for (var prot in gdata){
+							if(gdata[prot].user==$("#UserList option:selected").val()) {
+								$.each(gdata[prot], function(key,value){ if(value=="yes") {$("#"+key).prop('checked',true)} else {$("#"+key).prop('checked',false)};});
+							}
 						}
-					}
-				});
+					});
+				}
 			}
 
 	}
@@ -94,9 +104,9 @@
 	 });
 			$("#UserList").change(function(){
 				$(".checkboxy").each(function(){ $(this).prop("checked",false)});
-				refreshall();
+				proptime="44:333:22";
 				});
-			setInterval('refreshUserList()', 2000);
+			setInterval('refreshall()', 500);
 			refreshUserList();
 			refreshall();
 		</script>
