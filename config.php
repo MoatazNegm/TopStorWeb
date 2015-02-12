@@ -28,7 +28,8 @@
 			var proptimenew="33:333:33";
 			var DNS=1;
 			$(".UserPrivileges").hide();
-			$(".finish").click(function (){  $(".UserPrivileges").hide(); $(".UserPrivileges").hide();});
+			$(".finish").click(function (){ $(".checkboxy").each(function(){ $(this).prop("checked",false)});
+																				$(".UserPrivileges").hide(); $(".UserPrivileges").hide();});
 			$("#UserPrivileges").click(function (){   $("h2").css("background-image","url('img/snapshot.png')").text("User Privileges");  $("option.variable").remove(); proptime="44:333:22";; $(".UserPrivileges").show();refreshall();});
 			function refreshall() {
 				DNS=1;
@@ -83,7 +84,11 @@
 					
 				});	
 			};
-			$("#submit").click( function (){ $.post("./pump.php", { req:"DGsetPool", name:$('input[name=Raidselect]:checked').val()+" "+$('input[name=Raidselect]:checked').attr("id")+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+			$("#SubmitPriv").click( function (){ 
+				
+				sm="user"+" "+$("#UserList option:selected").val()+" ";
+				$(".checkboxy").each(function (){if ($(this).prop('checked')){ sm=sm+$(this).attr('id')+" ";}});
+				$.post("./pump.php", { req:"Priv", name:sm+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 refresh2("#statusarea2");
 		});
 	 });
