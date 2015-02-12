@@ -99,7 +99,7 @@
 				sm="user"+" "+$("#UserList option:selected").val()+" ";
 				$(".checkboxy").each(function (){ sm=sm+$(this).attr('id')+" "+$(this).prop('checked')+" ";});
 				$.post("./pump.php", { req:"Priv", name:sm+" "+"administrator "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 refresh2("#statusarea2");
+				 //refresh2("#statusarea2");
 		});
 	 });
 			$("#UserList").change(function(){

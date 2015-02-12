@@ -1,1 +1,1 @@
-Priv user mezo Active_Directory true Box_Users false Error false Service_Charts false Logs true CIFS false NFS false ISCSI true DISK_Groups false SnapShots false User_Priv false Colourize false admin
+Priv user mezo Active_Directory true Box_Users false Error false Service_Charts false Logs true CIFS false NFS false ISCSI true DISK_Groups false SnapShots false User_Priv false Colourize true administrator admin
