@@ -55,7 +55,7 @@
 						gdata=jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user==$("#UserList option:selected").val()) {
-								$.each(gdata[prot], function(key,value){  $("#"+key).prop('checked',value);});
+								$.each(gdata[prot], function(key,value){  if(value=="true") $("#"+key).prop('checked',true);});
 							}
 						}
 					});
