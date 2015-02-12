@@ -97,7 +97,7 @@
 			$("#SubmitPriv").click( function (){ 
 				
 				sm="user"+" "+$("#UserList option:selected").val()+" ";
-				$(".checkboxy").each(function (){if ($(this).prop('checked')){ sm=sm+$(this).attr('id')+" ";}});
+				$(".checkboxy").each(function (){{ sm=sm+$(this).attr('id')+" "+$(this).prop('checked')+" ";});
 				$.post("./pump.php", { req:"Priv", name:sm+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 refresh2("#statusarea2");
 		});
