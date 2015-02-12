@@ -86,8 +86,41 @@
 			});
 			$(".SS").hide(); $(".Logs").hide(); 
 			$("#SS").click(function (){ 
-				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/SS.png')").text("Service Status"); $(".SS").show();updatechartarea();  };});
-			$("#Logs").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs");updatelogarea(); $(".Logs").show();};});
+				if(config == 1 ) { 
+					var userpriv="false";
+					var curuser="<?php echo $_SESSION["user"] ?>";
+					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+						var gdata = jQuery.parseJSON(data);
+						for (var prot in gdata){
+							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+								userpriv=gdata[prot].Service_Charts
+							}
+						};
+						if( userpriv=="true" | curuser=="admin" ) {
+							config= 0; $("h2").css("background-image","url('img/SS.png')").text("Service Status"); $(".SS").show();updatechartarea(); 
+						} 
+					});
+				};
+			});
+			
+			$("#Logs").click(function (){ 
+				if(config== 1){ 
+					var userpriv="false";
+					var curuser="<?php echo $_SESSION["user"] ?>";
+					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+						var gdata = jQuery.parseJSON(data);
+						for (var prot in gdata){
+							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+								userpriv=gdata[prot].Logs
+							}
+						};
+					
+						if( userpriv=="true" | curuser=="admin" ) {
+							config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs");updatelogarea(); $(".Logs").show();
+						}
+					});
+				};
+			});
 			$(".finish").click(function (){ config = 1; $(".SS").hide(); $(".Logs").hide();});
 	
 	function updatechartarea(){

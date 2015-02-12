@@ -129,19 +129,64 @@
 			var config = 1;
 			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide(); $(".IPAddress").hide(); $(".Gateway").hide();
 			$("#AD").click(function (){ 
-				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".AD").show(); 
-					$.get("requestdata.php", { file: 'Data/DomName.txt' },function(data){ $("#DomName").val(data);});
-					$.get("requestdata.php", { file: 'Data/Domtype.txt' },function(data){ $("#Domtype").val(data);});
-					$.get("requestdata.php", { file: 'Data/DCserver.txt' },function(data){ $("#DCserver").val(data);});
+				if(config == 1 ) { 
+					var userpriv="false";
+					var curuser="<?php echo $_SESSION["user"] ?>";
+					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+						var gdata = jQuery.parseJSON(data);
+						for (var prot in gdata){
+							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+								userpriv=gdata[prot].Active_Directory
+								
+							}
+						};
+						if( userpriv=="true" | curuser=="admin" ) {
+							config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".AD").show(); 
+							$.get("requestdata.php", { file: 'Data/DomName.txt' },function(data){ $("#DomName").val(data);});
+							$.get("requestdata.php", { file: 'Data/Domtype.txt' },function(data){ $("#Domtype").val(data);});
+							$.get("requestdata.php", { file: 'Data/DCserver.txt' },function(data){ $("#DCserver").val(data);});
+						}
+					});
 				};
 			});
-			$("#UnLin").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".UnLin").show();};});
-			$("#Future").click(function (){ 
+			$("#UnLin").click(function (){ 
 				if(config== 1){ 
-					proptime="55:55:55";
-					config = 0; $("h2").css("background-image","url('img/future.png')").text("Box properties");$("#network").val("1") ; $(".IPAddress").show(); $(".Gateway").show(); $(".Future").show();
-					needupdate=1;
-					updateprop(); 
+					var userpriv="false";
+					var curuser="<?php echo $_SESSION["user"] ?>";
+					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+						var gdata = jQuery.parseJSON(data);
+						for (var prot in gdata){
+							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+								userpriv=gdata[prot].Box_Users
+							}
+						};
+					
+						if( userpriv=="true" | curuser=="admin" ) {
+					
+							config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".UnLin").show();
+						}
+					});
+				};
+			});
+			$("#Future").click(function (){ 
+				if(config== 1){
+					var userpriv="false";
+					var curuser="<?php echo $_SESSION["user"] ?>";
+					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+						var gdata = jQuery.parseJSON(data);
+						for (var prot in gdata){
+							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+								userpriv=gdata[prot].Error
+							}
+						};
+					
+						if( userpriv=="true" | curuser=="admin" ) { 
+							proptime="55:55:55";
+							config = 0; $("h2").css("background-image","url('img/future.png')").text("Box properties");$("#network").val("1") ; $(".IPAddress").show(); $(".Gateway").show(); $(".Future").show();
+							needupdate=1;
+							updateprop(); 
+						}
+					});
 				}; 
 			});
 			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});

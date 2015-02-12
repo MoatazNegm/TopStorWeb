@@ -30,7 +30,24 @@
 			$(".UserPrivileges").hide();
 			$(".finish").click(function (){ $(".checkboxy").each(function(){ $(this).prop("checked",false)});
 																				$(".UserPrivileges").hide(); $(".UserPrivileges").hide();});
-			$("#UserPrivileges").click(function (){   $("h2").css("background-image","url('img/snapshot.png')").text("User Privileges");  $("option.variable").remove(); proptime="44:333:22";; $(".UserPrivileges").show();refreshall();});
+			$("#UserPrivileges").click(function (){   
+				var userpriv="false";
+					var curuser="<?php echo $_SESSION["user"] ?>";
+					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+						var gdata = jQuery.parseJSON(data);
+						for (var prot in gdata){
+							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+								userpriv=gdata[prot].User_Priv
+							}
+						};
+					
+					if( userpriv=="true" | curuser=="admin" ) {
+						$("h2").css("background-image","url('img/snapshot.png')").text("User Privileges");  $("option.variable").remove(); proptime="44:333:22";; $(".UserPrivileges").show();refreshall();
+					}
+				});
+			});
+			
+			
 			function refreshall() {
 				DNS=1;
 		//	console.log("AD is visible : " , $(".AD").is(":visible"));

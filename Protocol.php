@@ -263,26 +263,69 @@
 			
 			$(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();
 			$("#CIFS").click(function (){ 
-				if(config == 1 ) { Protocol="CIFS";
-					Vollisttime = "55:55:44";
-					Initclickedprotocol();
-					$("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".NFS").show();
-					//plotchart('chartNFS',chartdata);
+				if(config == 1 ) {
+					var userpriv="false";
+					var curuser="<?php echo $_SESSION["user"] ?>";
+					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+						var gdata = jQuery.parseJSON(data);
+						for (var prot in gdata){
+							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+								userpriv=gdata[prot].CIFS
+							}
+						};
+					
+						if( userpriv=="true" | curuser=="admin" ) {
+							Protocol="CIFS";
+							Vollisttime = "55:55:44";
+							Initclickedprotocol();
+							$("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".NFS").show();
+							//plotchart('chartNFS',chartdata);
+						}
+					});
 				};
 				refreshall();
 			});
 			$("#NFS").click(function (){
-				if(config== 1){  Protocol="NFS"; 
-					Vollisttime = "55:55:44";
-					Initclickedprotocol();
-					$("h2").css("background-image","url('img/nfs.png')").text("NFS"); $(".NFS").show();
-					//plotchart('chartNFS',chartdata);
+				if(config== 1){  
+					var userpriv="false";
+					var curuser="<?php echo $_SESSION["user"] ?>";
+					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+						var gdata = jQuery.parseJSON(data);
+						for (var prot in gdata){
+							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+								userpriv=gdata[prot].NFS
+							}
+						};
 					
+						if( userpriv=="true" | curuser=="admin" ) {
+							Protocol="NFS"; 
+							Vollisttime = "55:55:44";
+							Initclickedprotocol();
+							$("h2").css("background-image","url('img/nfs.png')").text("NFS"); $(".NFS").show();
+							//plotchart('chartNFS',chartdata);
+						}
+					});
 				};
 				refreshall();
 			});
-			$("#ISCSI").click(function (){  if(config== 1){ Protocol="ISCSI"; config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ISCSI").show(); plotchart('chartISCSI',chartdata);};
-			refreshall()	;
+			$("#ISCSI").click(function (){  
+				if(config== 1){ 
+					var userpriv="false";
+					var curuser="<?php echo $_SESSION["user"] ?>";
+					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+						var gdata = jQuery.parseJSON(data);
+						for (var prot in gdata){
+							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+								userpriv=gdata[prot].ISCSI
+							}
+						};
+					
+						if( userpriv=="true" | curuser=="admin" ) {
+							Protocol="ISCSI"; config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ISCSI").show(); plotchart('chartISCSI',chartdata);
+						}
+					});
+				};
+				refreshall()	;
 			});
 			$(".finish").click(function (){ Protocol=0; config = 1; $(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();});
 			$( "#Vol2" ).change(function() {

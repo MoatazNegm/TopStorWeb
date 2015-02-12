@@ -1,1 +1,1 @@
-[{"user":"mezo1","Service_Charts":"true","User_Priv":"true"},{"user":"mezo","Active_Directory":"false","Logs":"true"}]
+[{"user":"mezo1","Service_Charts":"true","User_Priv":"true"},{"user":"mezo","Active_Directory":"true","Logs":"false"}]
