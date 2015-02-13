@@ -1,7 +1,5 @@
-<!--Pulling Awesome Font --> 
+<!DOCTYPE html>
 <?php $men=2; include "header2.html";  session_start();  session_commit(); ?>
-<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-
 	<div class="row">
 		<div class="col-sm-offset-5 col-sm-3">
 			<h4><strong></strong></h4>

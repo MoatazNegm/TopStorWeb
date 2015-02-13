@@ -395,7 +395,7 @@ td { font-size : 1.3rem;}
 .jqplot-title { color: #131D1D;}
 .jqplot-axis { color: #2E2E4D;}
 .bootstrap-timepicker-widget {z-index: 1153 !important ;}
-#logoff { color: #131D1D; text-decoration: underline;}
+#logoff, #userpass { color: #131D1D; text-decoration: underline;}
 #userlog { margin-top: 3.4rem;}
 #submitdiskgroup, #deletePool { margin-top: 1rem;}
 p.Priv { font-size : 1.1rem; 
@@ -405,3 +405,4 @@ p.Priv { font-size : 1.1rem;
 input.checkboxy {  margin-top: 0.2rem;
 				display: inline;
 			}
+
