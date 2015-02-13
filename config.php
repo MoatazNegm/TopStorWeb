@@ -7,7 +7,7 @@
 	<?php $men= 6; include "header.html"; ?>
 	
 							<li><a href="#" class="UserPrivilegesa rightli"><h4 id="UserPrivileges"><span>User Priviliges</span></h4></a></li>
-							<li><a href="#" class="SnapShotsa rightli"><h4 id="SnapShots"><span>SnapShots</span></h4></a></li>
+							<li><a href="#" class="Colourizea rightli"><h4 id="Colourize"><span>Colourize</span></h4></a></li>
 						</ul>
 						<?php include "UserPrivileges.php"; ?>
 					
@@ -19,7 +19,10 @@
 			<footer class="footer"> Errors
 			</footer>
 		</div>
-			
+		<form  id="Colorpls" type="hidden" method="post" action="ColorizeWeb.php">
+			<input type="hidden" id="iddcolor" name="idd">
+				<input type="hidden" value="Submit">
+		</form>	
 		
 		<script src="js/bootstrap-timepicker.js"></script>
 		<script>
@@ -42,8 +45,29 @@
 						};
 					
 					if( userpriv=="true" | curuser=="admin" ) {
-						$("h2").css("background-image","url('img/snapshot.png')").text("User Privileges");  $("option.variable").remove(); proptime="44:333:22";; $(".UserPrivileges").show();refreshall();
+						$("h2").css("background-image","url('img/Priv.png')").text("User Privileges");  $("option.variable").remove(); proptime="44:333:22";; $(".UserPrivileges").show();refreshall();
 					}
+				});
+			});
+			
+			$("#Colourize").click(function (){   
+				var userpriv="false";
+				var curuser="<?php echo $_SESSION["user"] ?>";
+				$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+					var gdata = jQuery.parseJSON(data);
+					for (var prot in gdata){
+						if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							userpriv=gdata[prot].User_Priv
+						}
+					};
+				
+				if( userpriv=="true" | curuser=="admin" ) {
+					
+					
+					$("#iddcolor").val("<?php $men=7; echo session_id() ?>");
+					$("#Colorpls").submit();
+//					$("h2").css("background-image","url('img/Priv.png')").text("User Privileges");  $("option.variable").remove(); proptime="44:333:22";; $(".UserPrivileges").show();refreshall();
+				}
 				});
 			});
 			

@@ -151,6 +151,9 @@ h4 span {
 .SnapShotsa {
 	background-image:url('../img/snapshot.png');
 }
+.UserPrivilegesa {
+	background-image:url('../img/Priv.png');
+}
 .modal {
 	position: relative;
 	left : -10%;

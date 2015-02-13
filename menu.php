@@ -27,10 +27,12 @@
 			<li <?php if($men==5) {echo 'class="active leftli"';} else { echo 'class="leftli"';}; ?>><a id="Pools" class="ref"href="#"  ><br>Pools</a></li>
 			
 			<?php 
-				if($men==6){
+				if($men==7){
 					echo '<li id="Leftlist" class="active leftli colorize" Data-tag="li.leftli"Data-id="Leftlist" Data-textcolor="no" Data-background="yes" Data-border="no" ><a href="#" ><br>colorize</a></li>';
-				} else {
-					echo	'<li class="leftli"><a id="config" class="ref"href="#"   ><br>config</a></li>'	;			
+				} else if($men==6) {
+					echo	'<li class="active leftli"><a id="config" class="ref"href="#"   ><br>config</a></li>'	;			
+				} else  {
+					echo	'<li class=" leftli"><a id="config" class="ref"href="#"   ><br>config</a></li>'	;			
 				}
 			
 			?>
