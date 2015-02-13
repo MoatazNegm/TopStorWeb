@@ -4,7 +4,7 @@
  
 ?>
 <html>
-	<?php $men= 6; include "header.html"; ?>
+	<?php $men=6; include "header.html"; ?>
 	
 							<li><a href="#" class="UserPrivilegesa rightli"><h4 id="UserPrivileges"><span>User Priviliges</span></h4></a></li>
 							<li><a href="#" class="Colourizea rightli"><h4 id="Colourize"><span>Colourize</span></h4></a></li>

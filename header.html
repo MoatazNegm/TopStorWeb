@@ -7,7 +7,7 @@
 $(document).ready(function() {
 	RestoreLastSettings();
 	$("#userpass").click(function (){   
-			$("#idduserpass").val("<?php $men=1; echo session_id() ?>");
+			$("#idduserpass").val("<?php  echo session_id() ?>");
 			$("#userpassform").submit();
 	
 	});
