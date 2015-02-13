@@ -61,7 +61,7 @@
 																			<table id="Logdetails" class="table table-hover table-condensed narrowtble ">
 																				<thead >
 																					<tr class="info">
-																						<th>date and time<br></th><th>user<br></th><th>data<br></th>
+																						<th class="col-sm-3">date and time<br></th><th class="col-sm-1">user<br></th><th class="col-sm-7">data<br></th>
 																					</tr>
 																				</thead>
 																				<tbody class="">
