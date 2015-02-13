@@ -19,6 +19,7 @@
 				<div class="wrapper">
 					<button type="button" id="wrong" class="col-sm-offset-1 btn btn-primary btn-md" disabled>passwords are not equal
 					<button type="button" id="change" class="col-sm-offset-4 btn btn-primary btn-md" >change
+					<button type="button" id="changed" class="col-sm-offset-4 btn btn-primary btn-md" >....Wait
 						
 					</button>
 				</div>
@@ -27,8 +28,19 @@
 	</div>
 	
 	<script>
+		var passcheck="22:333:33";
+		var passchecknew="323:3443:34"
+		var passchanged=0;
+		function refreshall(){
+			$.get("requestdatein.php", { file: "Data/userpass.txtupdated" }, function(data){
+				var objdate = jQuery.parseJSON(data);
+				passchecknew=objdate.updated;
+			});
+			if(passchanged==1 && passchecknew != passcheck) { $("#logagain").submit(); }
+			else  {  passcheck=passchecknew; }
+		}
  $("#head2").text("Change <?php echo $_SESSION["user"] ?> Password");
- $("#wrong").show(); $("#change").hide();
+ $("#wrong").show(); $("#change").hide();$("#changed").hide();
  $(".passin").keyup(function(){
 	 
 	 if($("#userPassword1").val() != $("#userPassword").val()|| $("#userPassword1").val() =="") {
@@ -39,11 +51,14 @@
 	 }
 	});
  $("#change").click(function() {
+	 var passchecknew="34:433:43534";
 	 $.post("./pump.php", { req:"UnixChangePass", name:"'"+$("#userPassword1").val()+"'", passwd:"<?php echo $_SESSION["user"]; ?>"}, function (data){});
-	 console.log("'"+$("#userPassword1").val()+"'","<?php echo $_SESSION["user"]; ?>");
-	 $("#logagain").submit();
-	});
+	 //console.log("'"+$("#userPassword1").val()+"'","<?php echo $_SESSION["user"]; ?>");
+	 passchanged=1;
+	 $("#change").hide(); $("#changed").show();
 	 
+	});
+	 setInterval('refreshall()', 1000);
 
 </script>
 
