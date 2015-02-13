@@ -154,6 +154,9 @@ h4 span {
 .UserPrivilegesa {
 	background-image:url('../img/Priv.png');
 }
+.Colourizea {
+	background-image:url('../img/colourize.png');
+}
 .modal {
 	position: relative;
 	left : -10%;
