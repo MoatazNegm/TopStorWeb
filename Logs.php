@@ -12,7 +12,7 @@
 															<div class="col-sm-2 ">
 																<label  for="Stime" class=" col-sm-offset- control-label">Start time</label>
 																<div class="input-group bootstrap-timepicker">
-																	<input   type="text" id="Stime" class="  form-control " ><span class="input-group-addon add-on"><i class="glyphicon glyphicon-time"></i></span>
+																	<input   type="text" id="Stime" class="  form-control timep" ><span class="input-group-addon add-on"><i class="glyphicon glyphicon-time"></i></span>
 																	</input>
 																</div>
 															</div>
@@ -34,17 +34,17 @@
 												<span>Logs</span>
 												<div class="checkbox">
 														<label>
-														<input type="checkbox" class="checkboxy" id="INFO" value="info">Info
+														<input type="checkbox" class="checkboxy timep" id="INFO" value="info">Info
 														</label>
 												</div>
 												<div class="checkbox">
 														<label>
-															<input type="checkbox"  class="checkboxy" id="Warning" value="Warning">Warning
+															<input type="checkbox"  class="checkboxy timep" id="Warning" value="Warning">Warning
 														</label>
 												</div>
 												<div class="checkbox">
 														<label>
-															<input type="checkbox" id="Error" class="checkboxy" value="Error">Error
+															<input type="checkbox" id="Error" class="checkboxy timep" value="Error">Error
 														</label>
 												</div>
 											</div>
