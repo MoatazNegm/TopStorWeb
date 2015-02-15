@@ -1,7 +1,4 @@
 creating Snapshot Data/nfsnas Minutely.4.2.na.na....
-01:35:34: have to delete Data/nfsnas@Minutely.4.2.na.na.1423956334
-01:35:34: have to delete Data/nfsnas@Minutely.2.3.na.na.1423956574
-01:35:34: DONE...Snapshot Data/nfsnas Minutely.4.2.na.na is created
-01:35:34: DONE...Snapshot Data/nfsnas Minutely.2.3.na.na is created
-01:35:34: DONE...Snapshot Data/nfsnas Minutely.4.2.na.na is created
-01:35:35: DONE...Snapshot Data/nfsnas Minutely.2.3.na.na is created
+02:57:48: have to delete Data/nfsnas@Minutely.4.2.na.na.1423961027
+02:57:49: DONE...Snapshot Data/nfsnas Minutely.4.2.na.na is created
+02:57:50: DONE...Snapshot Data/nfsnas Minutely.4.2.na.na is created
