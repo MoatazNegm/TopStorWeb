@@ -34,6 +34,8 @@
 		<script>
 			var plotflag = 0;
 			var config = 1;
+			var disktime="23:3434:34534";
+			var disktimenew="34543:43543:34";
 			var objc;
 			var deviceobj;
 			var dl =[[[0,0]],[[0,0]]];
@@ -49,10 +51,17 @@
 			};
 			
 			function refreshList(req,listid,fileloc) {
-				$.post("./pump.php", { req: req, name:"a" }, function (data1){
+				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
+					var cdata=jQuery.parseJSON(data);
+					disktimenew=cdata.updated;
+				});
+				if(disktimenew!=disktime)
+				{ 
+					disktime=disktimenew;
 					$(listid+' option').remove();
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						var jdata = jQuery.parseJSON(data);
+						//console.log(data);
 						
 						$.each(jdata, function(i,v) {
 						//	console.log(i,k);
@@ -60,7 +69,7 @@
 							
 						});
 					});
-				});
+				}
 			};
 
 //			var plot1 = $.jqplot('chart1',dl);
@@ -122,7 +131,11 @@
 				};
 			});
 			$(".finish").click(function (){ config = 1; $(".SS").hide(); $(".Logs").hide();});
-	
+	function refreshall() {
+		
+		refreshList("GetDisklist","#Disks","Data/disklist.txt");
+		updatechartarea();
+		}
 	function updatechartarea(){
 		var chartarea = "";
 		var maxy = 0;var bwmaxy = 0;var rsmaxy = 0;var wsmaxy = 0;var svctmaxy = 0;var qlenmaxy = 0; var totalio = 0;
@@ -196,7 +209,7 @@
 				qlenmaxy = Number(qlenmaxy+1); qlenminy = Number(qlenminy -1);
 			//	plotbw.destroy();
 				var sercolr="#455B5B";
-				console.log("plotting");
+				//console.log("plotting");
 				plotbw = $.jqplot('bwchart',[bw[0]], {
 					title: "Bandwidth",
 					seriesDefaults: {
@@ -383,8 +396,9 @@
 		$(".traffic").change( function () { traffictime="44:44:34"; updatechartarea();});
 		$(".checkboxy").change (function(){ updatelogarea();});
 		refreshList("GetDisklist","#Disks","Data/disklist.txt");
-		setInterval('updatechartarea()', 1000); // Loop every 1000 milliseconds (i.e. 1 second)
-		console.log("<?php print $_REQUEST["idd"]; print session_id(); ?>");
+		$.post("./pump.php", { req:"GetDisklist", name: "Data/disklist.txt"},function(){});
+		setInterval('refreshall()', 1000); // Loop every 1000 milliseconds (i.e. 1 second)
+		//console.log("<?php print $_REQUEST["idd"]; print session_id(); ?>");
 		
 		</script>
  
