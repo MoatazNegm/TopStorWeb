@@ -245,7 +245,7 @@
 				plotrs = $.jqplot('rschart',[rs[0]], {
 					title: "Read IO/s",
 					seriesDefaults: {
-					showMarker:false},axes: {yaxis: {min:rsminy ,max:rsmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'}}},
+					showMarker:false},axes: {yaxis: {min:rsminy ,max:rsmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'} , min:tm }},
 					series: [
 							{
 									color: sercolr,
@@ -267,7 +267,7 @@
 					title: "Write IO/s",
 					seriesDefaults: {
 					showMarker:false},axes: {yaxis: {min:wsminy ,max:wsmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,//tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
-						tickOptions:{formatString:'%#H:%#M'}}},
+						tickOptions:{formatString:'%#H:%#M'}, min:tm }},
 					series: [
 							{
 									color: sercolr,
@@ -288,7 +288,7 @@
 				plotsvct = $.jqplot('svctchart',[svct[0]], {
 					title: "Latency ms",
 					seriesDefaults: {
-					showMarker:false},axes: {yaxis: {min:svctminy ,max:svctmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'}}},
+					showMarker:false},axes: {yaxis: {min:svctminy ,max:svctmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'}, min:tm }},
 					series: [
 							{
 									color: sercolr,
@@ -309,7 +309,7 @@
 				plotqlen = $.jqplot('qlenchart',[qlen[0]], {
 					title: "Queue length",
 					seriesDefaults: {
-		showMarker:false},axes: {yaxis: {min:qlenminy ,max:qlenmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'}}},
+		showMarker:false},axes: {yaxis: {min:qlenminy ,max:qlenmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'}, min:tm }},
 		series: [
 				{
 						color: sercolr,
@@ -330,7 +330,7 @@
 				plotdl = $.jqplot('totaliochart',[dl[0]], {
 					title: "Total IO/s",
 					seriesDefaults: {
-					showMarker:false},axes: {yaxis: {min:miny ,max:maxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'}}},
+					showMarker:false},axes: {yaxis: {min:miny ,max:maxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'}, min:tm }},
 					series: [
 							{
 						color: sercolr,
