@@ -173,7 +173,7 @@
 						 tme.setHours(splitstimee[0],splitstimee[1],0);
 					   tm2= new Date (deviceobj[0].stats[0].Dates[k].Date+" "+deviceobj[0].stats[0].Dates[k].times[y].time);
 						 //console.log("post",tm); 
-						if(Number(tm-tm2) < 0 && (new Date(tme) > new Date(deviceobj[0].stats[0].Dates[k].Date)) ) {
+						if((new Date(tm) < new Date(tm2)) && (new Date(tme) > new Date(deviceobj[0].stats[0].Dates[k].Date)) ) {
 								//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].bw );
 								bw[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].bw]);
 								if ( Number(deviceobj[0].stats[0].Dates[k].times[y].bw) > bwmaxy ) { bwmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].bw);}
