@@ -36,6 +36,7 @@
 			var config = 1;
 			var disktime="23:3434:34534";
 			var disktimenew="34543:43543:34";
+			var logtime="34543:43543:34"; var logtimenew="32423:er:34";
 			var objc;
 			var deviceobj;
 			var dl =[[[0,0]],[[0,0]]];
@@ -135,6 +136,7 @@
 		
 		refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		updatechartarea();
+		updatelogarea();
 		}
 	function updatechartarea(){
 		var chartarea = "";
@@ -358,14 +360,27 @@
 	
 	function updatelogarea(){
 		var logarea = "";
-		var tm;
-		var tm2; var tme;
+		var tm, splitstime;
+		var tm2; var tme, splitstimee;
+		$.get("requestdate.php", { file: 'Data/currentinfo2.log' }, function(data){
+			var objdate = jQuery.parseJSON(data);
+			logtimenew=objdate.timey;
+		});
+		if(logtimenew!=logtime) {
+			logtime=logtimenew;
 		$("#Logdetails tr.datarow").remove();
 		$.get("requestdata.php", { file: 'Data/currentinfo2.log' }, function(data){
 			var obj = jQuery.parseJSON(data);
 			for (var k in obj) { 
-					 tm=new Date ($("#Sdate").val()+" "+$("#Stime").val()+":00");  tm2= new Date (obj[k].Date+" "+obj[k].time); 
-					if(Number(tm-tm2) < 0 && Number(Date.parse($("#Edate").val()) - Date.parse(obj[k].Date)) > 0) {
+					 
+					 tm=new Date ($("#Sdate").val()); //console.log("pre",tm);
+						 stime=$("#Stime").val(); splitstime=stime.split(":")
+						 tm.setHours(splitstime[0],splitstime[1],0);
+						 tme=new Date($("#Edate").val());
+						 stimee="23:59"; splitstimee=stimee.split(":")
+						 tme.setHours(splitstimee[0],splitstimee[1],0);  
+					 tm2= new Date (obj[k].Date+" "+obj[k].time); 
+					if((new Date(tm) < new Date(tm2)) && (new Date(tme) > new Date(obj[k].Date)) > 0) {
 						if($("#INFO").is(":checked")) {
 							if(obj[k].msg == "info") { 
 								logarea=logarea+obj.Date+" "+obj[k].time+" info: "+obj[k].data+"\n";
@@ -393,15 +408,15 @@
 			};
 			$("#logsarea").val(logarea);	
 		});
+		}
 	}
 		$(".datep").datepicker().on("changeDate",function(e){
-			
-			if ( Number(Date.parse($("#Edate").val()) - Date.parse($("#Sdate").val()))/1000/60/60/24 > 0) {
-				$.post("./pump.php", { req:"LogDateRange", name: $("#Stime").val()+" "+$("#Sdate").val()+" "+$("#Edate").val() }, function (data1){ 
-					updatelogarea();											
-				});	
-			}
+			logtime="44:44:34";updatelogarea();
 		});
+		$(".timep").change(function(){
+			logtime="44:44:34";updatelogarea();
+		});
+
 		$(".datec").datepicker().on("changeDate",function(e){
 					traffictime="44:44:34";updatechartarea();											
 		});
