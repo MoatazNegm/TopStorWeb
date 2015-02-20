@@ -159,11 +159,17 @@
 			$.get("requestdata.php", { file: 'Data/currenttraffic.log' }, function(data){
 				objc = jQuery.parseJSON(data);
 				var device = $("#Disks").val();
+				
 				deviceobj= $.grep(objc.device,function(e){return e.name==device});
+				
 				for (var k in deviceobj[0].stats[0].Dates) { 
 					for (var y in deviceobj[0].stats[0].Dates[k].times) {
-							
-						 tm=new Date ($("#Sdatec").val()+" "+$("#Stimec").val()+":00");  tm2= new Date (deviceobj[0].stats[0].Dates[k].Date+" "+deviceobj[0].stats[0].Dates[k].times[y].time); 
+						//console.log(deviceobj[0].stats[0].Dates[k].times[y]);	
+						 tm=new Date ($("#Sdatec").val()); console.log("pre",tm);
+						 stime=$("#Stimec").val(); splitstime=stime.split(":")
+						 tm.setHours(splitstime[0],splitstime[1],0);
+					   tm2= new Date (deviceobj[0].stats[0].Dates[k].Date+" "+deviceobj[0].stats[0].Dates[k].times[y].time);
+						 console.log("post",tm); 
 						if(Number(tm-tm2) < 0 && Number(Date.parse($("#Edatec").val()) - Date.parse(deviceobj[0].stats[0].Dates[k].Date)) > 0) {
 								//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].bw );
 								bw[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].bw]);
@@ -198,6 +204,7 @@
 								if ( totalio > maxy ) { maxy = totalio;}
 								if ( totalio < miny ) { miny = totalio;}
 								dl[0].push([tm2,totalio]);
+								
 						};
 					};
 				};
