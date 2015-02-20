@@ -145,7 +145,7 @@
 		
 		var qlen=[[]];var rs=[[]];var ws=[[]];var dl=[[]];var bw=[[]];var svct=[[]];
 		var seriesarr="";
-		$.get("requestdate.php", { file: 'Data/currenttraffic.log' }, function(data){
+		$.get("requestdate.php", { file: 'Data/ctr.log' }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			trafficnewtime=objdate.timey;
 		//	console.log("timey",trafficnewtime);
@@ -156,7 +156,7 @@
 		} else { 
 			//console.log ("traffic changed"); 
 			traffictime=trafficnewtime; 
-			$.get("requestdata.php", { file: 'Data/currenttraffic.log' }, function(data){
+			$.get("requestdata.php", { file: 'Data/ctr.log' }, function(data){
 				objc = jQuery.parseJSON(data);
 				var device = $("#Disks").val();
 				
