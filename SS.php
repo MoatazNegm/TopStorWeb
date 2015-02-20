@@ -7,9 +7,9 @@
 									<form role="form" class="col-sm-offset-1" id="Date Range">
 														<div class=" form-group row ">
 															<div class="col-sm-2 ">
-																<label  for="Stimec" class=" col-sm-offset- control-label">Start time</label>
+																<label  for="Stimec" class=" col-sm-offset- control-label ">Start time</label>
 																<div class="input-group bootstrap-timepicker">
-																	<input   type="text" id="Stimec" class="  form-control " ><span class="input-group-addon add-on"><i class="glyphicon glyphicon-time"></i></span>
+																	<input   type="text" id="Stimec" class="  form-control timec " ><span class="input-group-addon add-on"><i class="glyphicon glyphicon-time"></i></span>
 																	</input>
 																</div>
 															</div>
@@ -17,8 +17,8 @@
 																<label  for="Sdatec" class=" col-sm-offset- control-label">Date Range</label>
 																
 																<div  class="input-daterange input-group" id="datepickerc">
-																	<input id="Sdatec"  type="text" class=" form-control datec" name="start" ><span class="input-group-addon">to</span>
-																	<input type="text" id="Edatec" class="form-control datec" name="end" />
+																	<input id="Sdatec"  type="text" class=" form-control datec " name="start" ><span class="input-group-addon">to</span>
+																	<input type="text" id="Edatec" class="form-control datec " name="end" />
 																	
 																</div>
 															</div>

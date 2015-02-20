@@ -140,8 +140,8 @@
 		var chartarea = "";
 		var maxy = 0;var bwmaxy = 0;var rsmaxy = 0;var wsmaxy = 0;var svctmaxy = 0;var qlenmaxy = 0; var totalio = 0;
 		var miny = 1000000;var bwminy = 1000000;var rsminy = 1000000;var wsminy = 1000000;var svctminy = 1000000;var qlenminy = 1000000;
-		var tm;
-		var tm2;
+		var tm ,splitstime;
+		var tm2 , tme ,splitstimee;
 		
 		var qlen=[[]];var rs=[[]];var ws=[[]];var dl=[[]];var bw=[[]];var svct=[[]];
 		var seriesarr="";
@@ -165,12 +165,15 @@
 				for (var k in deviceobj[0].stats[0].Dates) { 
 					for (var y in deviceobj[0].stats[0].Dates[k].times) {
 						//console.log(deviceobj[0].stats[0].Dates[k].times[y]);	
-						 tm=new Date ($("#Sdatec").val()); console.log("pre",tm);
+						 tm=new Date ($("#Sdatec").val()); //console.log("pre",tm);
 						 stime=$("#Stimec").val(); splitstime=stime.split(":")
 						 tm.setHours(splitstime[0],splitstime[1],0);
+						 tme=new Date($("#Edatec").val());
+						 stimee="23:59"; splitstimee=stimee.split(":")
+						 tme.setHours(splitstimee[0],splitstimee[1],0);
 					   tm2= new Date (deviceobj[0].stats[0].Dates[k].Date+" "+deviceobj[0].stats[0].Dates[k].times[y].time);
-						 console.log("post",tm); 
-						if(Number(tm-tm2) < 0 && Number(Date.parse($("#Edatec").val()) - Date.parse(deviceobj[0].stats[0].Dates[k].Date)) > 0) {
+						 //console.log("post",tm); 
+						if(Number(tm-tm2) < 0 && (new Date(tme) > new Date(deviceobj[0].stats[0].Dates[k].Date)) ) {
 								//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].bw );
 								bw[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].bw]);
 								if ( Number(deviceobj[0].stats[0].Dates[k].times[y].bw) > bwmaxy ) { bwmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].bw);}
@@ -220,7 +223,8 @@
 				plotbw = $.jqplot('bwchart',[bw[0]], {
 					title: "Bandwidth",
 					seriesDefaults: {
-					showMarker:false},axes: {yaxis: {min:bwminy ,max:bwmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
+					showMarker:false},axes: {yaxis: {min:bwminy ,max:bwmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,//tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
+					tickOptions:{formatString:'%#H:%#M'}, min:tm }},
 					series: [
 							{
 									color: sercolr,
@@ -241,7 +245,7 @@
 				plotrs = $.jqplot('rschart',[rs[0]], {
 					title: "Read IO/s",
 					seriesDefaults: {
-					showMarker:false},axes: {yaxis: {min:rsminy ,max:rsmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
+					showMarker:false},axes: {yaxis: {min:rsminy ,max:rsmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'}}},
 					series: [
 							{
 									color: sercolr,
@@ -262,7 +266,8 @@
 				plotws = $.jqplot('wschart',[ws[0]], {
 					title: "Write IO/s",
 					seriesDefaults: {
-					showMarker:false},axes: {yaxis: {min:wsminy ,max:wsmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
+					showMarker:false},axes: {yaxis: {min:wsminy ,max:wsmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,//tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
+						tickOptions:{formatString:'%#H:%#M'}}},
 					series: [
 							{
 									color: sercolr,
@@ -283,7 +288,7 @@
 				plotsvct = $.jqplot('svctchart',[svct[0]], {
 					title: "Latency ms",
 					seriesDefaults: {
-					showMarker:false},axes: {yaxis: {min:svctminy ,max:svctmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
+					showMarker:false},axes: {yaxis: {min:svctminy ,max:svctmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'}}},
 					series: [
 							{
 									color: sercolr,
@@ -304,7 +309,7 @@
 				plotqlen = $.jqplot('qlenchart',[qlen[0]], {
 					title: "Queue length",
 					seriesDefaults: {
-		showMarker:false},axes: {yaxis: {min:qlenminy ,max:qlenmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
+		showMarker:false},axes: {yaxis: {min:qlenminy ,max:qlenmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'}}},
 		series: [
 				{
 						color: sercolr,
@@ -325,7 +330,7 @@
 				plotdl = $.jqplot('totaliochart',[dl[0]], {
 					title: "Total IO/s",
 					seriesDefaults: {
-					showMarker:false},axes: {yaxis: {min:miny ,max:maxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
+					showMarker:false},axes: {yaxis: {min:miny ,max:maxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'}}},
 					series: [
 							{
 						color: sercolr,
@@ -354,7 +359,7 @@
 	function updatelogarea(){
 		var logarea = "";
 		var tm;
-		var tm2;
+		var tm2; var tme;
 		$("#Logdetails tr.datarow").remove();
 		$.get("requestdata.php", { file: 'Data/currentinfo2.log' }, function(data){
 			var obj = jQuery.parseJSON(data);
@@ -400,6 +405,10 @@
 		$(".datec").datepicker().on("changeDate",function(e){
 					traffictime="44:44:34";updatechartarea();											
 		});
+		$(".timec").change(function(){
+					traffictime="44:44:34";updatechartarea();											
+		});
+
 		$(".traffic").change( function () { traffictime="44:44:34"; updatechartarea();});
 		$(".checkboxy").change (function(){ updatelogarea();});
 		refreshList("GetDisklist","#Disks","Data/disklist.txt");
