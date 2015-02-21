@@ -3,13 +3,67 @@
  if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/des19/Login.php');}
  
 ?>
+<?php
+if( $_FILES['file']['name'] != "" )
+{
+    move_uploaded_file( $_FILES['file']['tmp_name'], "Data/".$_FILES['file']['name']); 
+					switch ($_FILES['file']['error']) {
+						case UPLOAD_ERR_OK:
+								$message = "File uplodaded successfully";
+								break;
+            case UPLOAD_ERR_INI_SIZE:
+                $message = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
+                break;
+            case UPLOAD_ERR_FORM_SIZE:
+                $message = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form";
+                break;
+            case UPLOAD_ERR_PARTIAL:
+                $message = "The uploaded file was only partially uploaded";
+                break;
+            case UPLOAD_ERR_NO_FILE:
+                $message = "No file was uploaded";
+                break;
+            case UPLOAD_ERR_NO_TMP_DIR:
+                $message = "Missing a temporary folder";
+                break;
+            case UPLOAD_ERR_CANT_WRITE:
+                $message = "Failed to write file to disk";
+                break;
+            case UPLOAD_ERR_EXTENSION:
+                $message = "File upload stopped by extension";
+                break;
+
+            default:
+                $message = "Unknown upload error";
+                break;
+				
+        }   
+       
+        
+
+}
+else
+{
+    
+    $message = "No file specified !";
+    
+}
+$myfile = fopen("Data/fileupload.txt", "w");
+fwrite($myfile, $message);
+fclose($myfile);
+?>
+
+
 <html>
 	<?php $men=6; include "header.html"; ?>
 	
-							<li><a href="#" class="UserPrivilegesa rightli"><h4 id="UserPrivileges"><span>User Priviliges</span></h4></a></li>
+							<li>
+								<a href="#" class="UserPrivilegesa rightli"><h4 id="UserPrivileges"><span>User Priviliges</span></h4></a></li>
 							<li><a href="#" class="Colourizea rightli"><h4 id="Colourize"><span>Colourize</span></h4></a></li>
+							<li><a href="#" class="Uploada rightli"><h4 id="Upload"><span>Upload Firmware</span></h4></a></li>
 						</ul>
 						<?php include "UserPrivileges.php"; ?>
+						<?php include "Upload.php"; ?>
 					
 					</div>
 				</div>
@@ -23,7 +77,7 @@
 			<input type="hidden" id="iddcolor" name="idd">
 				<input type="hidden" value="Submit">
 		</form>	
-		
+
 		<script src="js/bootstrap-timepicker.js"></script>
 		<script>
 			var needupdate=1
@@ -150,6 +204,71 @@
 			setInterval('refreshall()', 500);
 			refreshUserList();
 			refreshall();
+		</script>
+		<script>
+			+ function($) { 'use strict'; // UPLOAD CLASS DEFINITION // ====================== 
+				var dropZone = document.getElementById('drop-zone'); 
+				var uploadForm = document.getElementById('js-upload-form'); 
+				var startUpload = function(files) { console.log(files) } 
+				var bar = $('.progress-bar');
+				var percent = $('.percent');
+				var status = $('.js-upload-finished');
+				$("#js-upload-form").on("submit",function (e){
+					//e.preventDefault();
+					});
+    				
+	/*			uploadForm.addEventListener('submit', function(e) { 
+					var uploadFiles = document.getElementById('js-upload-files').files; 
+					e.preventDefault();
+					startUpload(uploadFiles);
+					$.post('pumpfile.php', $("#js-upload-form").serialize(), function(data) {
+					//$('#results').html(data);
+						
+					});
+					$.ajax({
+						xhr: function() {
+							var xhr = new window.XMLHttpRequest();
+							xhr.upload.addEventListener("progress", function(evt) {
+								if (evt.lengthComputable) {
+									var percentComplete = evt.loaded / evt.total;
+									percentComplete = parseInt(percentComplete * 100);
+									console.log(percentComplete);
+
+									if (percentComplete === 100) {
+										console.log(finish);
+
+									}
+
+								}
+							}, false);
+
+							return xhr;
+						},
+						url: pumpfile.php,
+						type: "POST",
+						data: JSON.stringify(fileuploaddata),
+						contentType: "application/json",
+						dataType: "json",
+						success: function(result) {
+							console.log(result);
+						}
+					});
+				});
+	*/			dropZone.ondrop = function(e) { 
+					e.preventDefault(); 
+					this.className = 'upload-drop-zone'; 
+					startUpload(e.dataTransfer.files); 
+				};
+				dropZone.ondragover = function() { 
+					this.className = 'upload-drop-zone drop'; return false; 
+				}
+				dropZone.ondragleave = function() {
+					this.className = 'upload-drop-zone'; 
+					return false; 
+				} 
+			}(jQuery);
+		$('#h3msgid').text("<?php echo $message ?>");
+		$('#filename').text("<?php echo $_FILES['file']['name']; ?>");
 		</script>
 		
 	</body>

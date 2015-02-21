@@ -405,4 +405,8 @@ p.Priv { font-size : 1.1rem;
 input.checkboxy {  margin-top: 0.2rem;
 				display: inline;
 			}
-
+.upload-drop-zone { height: 5rem; border-width: 2px ; margin-bottom: 1rem; }
+.upload-drop-zone { width: 80%; color: #ccc; border-style: dashed; border-color: #ccc; line-height: 3rem; text-align: center } 
+.upload-drop-zone.drop { color: #222; border-color: #222; }
+.progress { padding: 0px; margin-bottom: 0px; }
+.h3msg { margin-top: 0px; margin-bottom: 0.3rem; font-size: 4rem;}
