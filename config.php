@@ -209,7 +209,7 @@ fclose($myfile);
 			
 
 		$("#drop-zone").dropzone({ url: "config.php" });
-	
+		console.log("<?php echo $message ?>");	
 		</script>
 		
 	</body>
