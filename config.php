@@ -206,69 +206,10 @@ fclose($myfile);
 			refreshall();
 		</script>
 		<script>
-			+ function($) { 'use strict'; // UPLOAD CLASS DEFINITION // ====================== 
-				var dropZone = document.getElementById('drop-zone'); 
-				var uploadForm = document.getElementById('js-upload-form'); 
-				var startUpload = function(files) { console.log(files) } 
-				var bar = $('.progress-bar');
-				var percent = $('.percent');
-				var status = $('.js-upload-finished');
-				$("#js-upload-form").on("submit",function (e){
-					//e.preventDefault();
-					});
-    				
-	/*			uploadForm.addEventListener('submit', function(e) { 
-					var uploadFiles = document.getElementById('js-upload-files').files; 
-					e.preventDefault();
-					startUpload(uploadFiles);
-					$.post('pumpfile.php', $("#js-upload-form").serialize(), function(data) {
-					//$('#results').html(data);
-						
-					});
-					$.ajax({
-						xhr: function() {
-							var xhr = new window.XMLHttpRequest();
-							xhr.upload.addEventListener("progress", function(evt) {
-								if (evt.lengthComputable) {
-									var percentComplete = evt.loaded / evt.total;
-									percentComplete = parseInt(percentComplete * 100);
-									console.log(percentComplete);
+			
 
-									if (percentComplete === 100) {
-										console.log(finish);
-
-									}
-
-								}
-							}, false);
-
-							return xhr;
-						},
-						url: pumpfile.php,
-						type: "POST",
-						data: JSON.stringify(fileuploaddata),
-						contentType: "application/json",
-						dataType: "json",
-						success: function(result) {
-							console.log(result);
-						}
-					});
-				});
-	*/			dropZone.ondrop = function(e) { 
-					e.preventDefault(); 
-					this.className = 'upload-drop-zone'; 
-					startUpload(e.dataTransfer.files); 
-				};
-				dropZone.ondragover = function() { 
-					this.className = 'upload-drop-zone drop'; return false; 
-				}
-				dropZone.ondragleave = function() {
-					this.className = 'upload-drop-zone'; 
-					return false; 
-				} 
-			}(jQuery);
-		$('#h3msgid').text("<?php echo $message ?>");
-		$('#filename').text("<?php echo $_FILES['file']['name']; ?>");
+		$("#drop-zone").dropzone({ url: "config.php" });
+	
 		</script>
 		
 	</body>
