@@ -4,6 +4,7 @@
  
 ?>
 <?php
+
 if( $_FILES['file']['name'] != "" )
 {
     move_uploaded_file( $_FILES['file']['tmp_name'], "Data/".$_FILES['file']['name']); 
@@ -128,6 +129,7 @@ fclose($myfile);
 			
 			function refreshall() {
 				DNS=1;
+				if("<?php echo $message ?>" == "File uplodaded successfully" || "<?php echo $message ?>" == "No file specified !") {$(".dz-success-mark").show();$(".dz-error-mark").hide()} else { $(".dz-success-mark").hide();$(".dz-error-mark").show(); }
 		//	console.log("AD is visible : " , $(".AD").is(":visible"));
 			if($(".AD").is(":visible")){
 				$.get("requestdata.php", { file: 'Data/status.log' }, function(data){ $("#ADstatus").val(data);});
@@ -208,8 +210,12 @@ fclose($myfile);
 		<script>
 			
 
-		$("#drop-zone").dropzone({ url: "config.php" });
-		console.log("<?php echo $message ?>");	
+		$("#drop-zone").dropzone({ url: "config.php",
+			previewsContainer: '#previews',
+
+			 });
+		
+		
 		</script>
 		
 	</body>
