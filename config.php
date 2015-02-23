@@ -113,6 +113,7 @@ fclose($myfile);
 			$("#Upload").click(function () {
 				if(whichul == 0) {
 					whichul="#Upload";
+					$("h2").css("background-image","url('img/Uploadfirmware.png')").text("Upgrade System S/W");
 					$(".dz-preview").remove(); $("#previews").show(); droppls.enable();
 					$("div.dz-message").text("Please, add or drag file here");
 					$(".Upload").show();
@@ -148,7 +149,7 @@ fclose($myfile);
 				DNS=1;
 								
 				
-				console.log("upresult: ",upresult);
+				
 			 if($(".UserPrivileges").is(":visible")) {
 					refreshUserList();
 					var objdate;
