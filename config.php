@@ -7,6 +7,7 @@
 
 if( $_FILES['file']['name'] != "" )
 {
+
     move_uploaded_file( $_FILES['file']['tmp_name'], "Data/".$_FILES['file']['name']); 
 					switch ($_FILES['file']['error']) {
 						case UPLOAD_ERR_OK:
@@ -85,12 +86,44 @@ fclose($myfile);
 			var proptime="55:55:55";
 			var proptimenew="33:333:33";
 			var DNS=1;
-			$(".UserPrivileges").hide();
-			$(".finish").click(function (){ $(".checkboxy").each(function(){ $(this).prop("checked",false)});
-																				$(".UserPrivileges").hide(); $(".UserPrivileges").hide();});
-			$("#UserPrivileges").click(function (){   
-				var userpriv="false";
+			var whichul=0;
+			var upresult=0;
+			$(".UserPrivileges").hide();$(".Upload").hide();
+			$(".finish").click(function (){ whichul = 0; $(".checkboxy").each(function(){ $(this).prop("checked",false)});
+																				$(".UserPrivileges").hide(); $(".Upload").hide();});
+			$("#UserPrivileges").click(function (){  
+				if(whichul==0) {
+					var userpriv="false";
+						var curuser="<?php echo $_SESSION["user"] ?>";
+						whichul="#UserPrivileges";
+						$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+							var gdata = jQuery.parseJSON(data);
+							for (var prot in gdata){
+								if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+									userpriv=gdata[prot].User_Priv
+								}
+							};
+						
+						if( userpriv=="true" | curuser=="admin" ) {
+							$("h2").css("background-image","url('img/Priv.png')").text("User Privileges");  $("option.variable").remove(); proptime="44:333:22";; $(".UserPrivileges").show();refreshall();
+						}
+					});
+				}
+			});
+			$("#Upload").click(function () {
+				if(whichul == 0) {
+					whichul="#Upload";
+					$(".dz-preview").remove(); $("#previews").show(); droppls.enable();
+					$("div.dz-message").text("Please, add or drag file here");
+					$(".Upload").show();
+				}
+				
+				});
+			$("#Colourize").click(function (){   
+				if(whichul==0) {
+					var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
+					whichul="#Colourize";
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
@@ -100,66 +133,45 @@ fclose($myfile);
 						};
 					
 					if( userpriv=="true" | curuser=="admin" ) {
-						$("h2").css("background-image","url('img/Priv.png')").text("User Privileges");  $("option.variable").remove(); proptime="44:333:22";; $(".UserPrivileges").show();refreshall();
+						
+						
+						$("#iddcolor").val("<?php $men=7; echo session_id() ?>");
+						$("#Colorpls").submit();
+	//					$("h2").css("background-image","url('img/Priv.png')").text("User Privileges");  $("option.variable").remove(); proptime="44:333:22";; $(".UserPrivileges").show();refreshall();
 					}
-				});
-			});
-			
-			$("#Colourize").click(function (){   
-				var userpriv="false";
-				var curuser="<?php echo $_SESSION["user"] ?>";
-				$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
-					var gdata = jQuery.parseJSON(data);
-					for (var prot in gdata){
-						if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
-							userpriv=gdata[prot].User_Priv
-						}
-					};
-				
-				if( userpriv=="true" | curuser=="admin" ) {
-					
-					
-					$("#iddcolor").val("<?php $men=7; echo session_id() ?>");
-					$("#Colorpls").submit();
-//					$("h2").css("background-image","url('img/Priv.png')").text("User Privileges");  $("option.variable").remove(); proptime="44:333:22";; $(".UserPrivileges").show();refreshall();
-				}
-				});
+					});
+					}
 			});
 			
 			
 			function refreshall() {
 				DNS=1;
-				if("<?php echo $message ?>" == "File uplodaded successfully" || "<?php echo $message ?>" == "No file specified !") {$(".dz-success-mark").show();$(".dz-error-mark").hide()} else { $(".dz-success-mark").hide();$(".dz-error-mark").show(); }
-		//	console.log("AD is visible : " , $(".AD").is(":visible"));
-			if($(".AD").is(":visible")){
-				$.get("requestdata.php", { file: 'Data/status.log' }, function(data){ $("#ADstatus").val(data);});
-			}
-			else if($(".Future").is(":visible")) {
-				$.get("requestdata.php", { file: 'Data/status.log' }, function(data){ $("#Futurestatus").val(data);});
-			}
-			else if($(".UserPrivileges").is(":visible")) {
-				refreshUserList();
-				var objdate;
-				$.get("requestdatein.php", { file: 'Data/userprivdate.txt' }, function(data){ 
-				var objdate = jQuery.parseJSON(data);
-				proptimenew=objdate.updated });
+								
 				
-				if(proptimenew == proptime) { }
-				else {
-					proptime=proptimenew;
-				var gdata;
-					$.get("requestdata.php", { file: 'Data/userpriv.txt' }, function(data){ 
-						gdata=jQuery.parseJSON(data);
-						for (var prot in gdata){
-							if(gdata[prot].user==$("#UserList option:selected").val()) {
-								$.each(gdata[prot], function(key,value){  if(value=="true") $("#"+key).prop('checked',true);});
+				console.log("upresult: ",upresult);
+			 if($(".UserPrivileges").is(":visible")) {
+					refreshUserList();
+					var objdate;
+					$.get("requestdatein.php", { file: 'Data/userprivdate.txt' }, function(data){ 
+					var objdate = jQuery.parseJSON(data);
+					proptimenew=objdate.updated });
+					
+					if(proptimenew == proptime) { }
+					else {
+						proptime=proptimenew;
+					var gdata;
+						$.get("requestdata.php", { file: 'Data/userpriv.txt' }, function(data){ 
+							gdata=jQuery.parseJSON(data);
+							for (var prot in gdata){
+								if(gdata[prot].user==$("#UserList option:selected").val()) {
+									$.each(gdata[prot], function(key,value){  if(value=="true") $("#"+key).prop('checked',true);});
+								}
 							}
-						}
-					});
+						});
+					}
 				}
-			}
 
-	}
+			}
 			function refreshUserList() {
 				var jdata;
 				
@@ -210,12 +222,32 @@ fclose($myfile);
 		<script>
 			
 
-		$("#drop-zone").dropzone({ url: "config.php",
+/*		var droppls= $("#drop-zone").dropzone({ url: "config.php",
 			previewsContainer: '#previews',
 
 			 });
+*/		
+			var droppls = new Dropzone("#drop-zone",{ url: "config.php",
+			previewsContainer: '#previews',
+			uploadMultiple: false,
+			clickable: ".clickthis"
+			});
+			droppls.on("success", function(file,msg) { 
+				upresult="success";
+				droppls.disable();
+				$(".dz-success-mark").show();$(".dz-error-mark").hide();
+				$("div.dz-message").text("File is uploaded.. please, allow some minutes for upgrade");
+				
+			});
+			droppls.on("error", function(file,msg) { 
+				upresult="error";
+				droppls.disable();
+				$("div.dz-message").text("Problem uploading the file");
+				$(".dz-success-mark").hide();$(".dz-error-mark").show();
+				
+			});
 		
-		
+		 
 		</script>
 		
 	</body>
