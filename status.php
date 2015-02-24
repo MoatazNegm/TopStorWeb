@@ -384,7 +384,7 @@
 						if($("#INFO").is(":checked")) {
 							if(obj[k].msg == "info") { 
 								logarea=logarea+obj.Date+" "+obj[k].time+" info: "+obj[k].data+"\n";
-								$("#Logdetails").append('<tr class="datarow" style="color:blue;"><td class="Volname col-sm-3">'+obj[k].Date+' '+obj[k].time+'</td><td class="col-sm-1" >'+obj[k].user+'</td><td class="col-sm-7">'+obj[k].data+'</td></tr>');
+								$("#Logdetails").append('<tr class="datarow" style="color:blue;"><td class="Volname col-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+obj[k].data+' >' +obj[k].Date+' '+obj[k].time+'</td><td class="col-sm-1" data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+obj[k].data+' >'+obj[k].user+'</td><td class="col-sm-7"  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+obj[k].data+' >'+obj[k].data+'</td></tr>');
 								//console.log(Number(Date.parse($("#Stime").val()) - Date.parse(obj.Dates[k].times[y].time))/1000/60/60/24);
 							}
 						};
@@ -403,11 +403,16 @@
 								
 							}
 						}
+						
 					}
 				
 			};
 			$("#logsarea").val(logarea);	
+			$("td").css("padding","0.1rem");
+			$('[data-toggle="popover"]').popover({ placement: "bottom",html: false,
+                    animation: false,});
 		});
+		
 		}
 	}
 		$(".datep").datepicker().on("changeDate",function(e){
@@ -431,6 +436,14 @@
 		setInterval('refreshall()', 1000); // Loop every 1000 milliseconds (i.e. 1 second)
 		//console.log("<?php print $_REQUEST["idd"]; print session_id(); ?>");
 		
+		$('[data-toggle="popover"]').popover({
+										html: true,
+                    animation: false,
+                    content: "TO BE ANNOUNCED",
+                    placement: "bottom"
+			
+			
+			});
 		</script>
  
 	</body>
