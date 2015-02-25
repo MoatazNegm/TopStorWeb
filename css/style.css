@@ -376,14 +376,15 @@ margin-left: 1.4rem;
 .scrolled { 
 		
     height: 13rem;
+    padding-right: 1px;
     overflow-y: scroll;
 }
 
 .highlight { background-color: blue; }
 #chartNFS, .chart { height: 20rem;   width:40rem;
-							margin-left: -8rem;
+							margin-left: -7.2rem;
 							margin-bottom: -15rem;
-							margin-top: 0.3rem;
+							margin-top: -2.4rem;
 }
 
 td { font-size : 1.3rem;}

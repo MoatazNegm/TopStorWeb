@@ -64,11 +64,11 @@
 						<div class="panel-body">
 							<form role="form">
 								<div class="row">
-									<div class="col-sm-4">
+									<div class="col-sm-8">
 										<table  class="table table-hover table-condensed narrowtble ">
 											<thead >
 												<tr class="info">
-													<th>Volume<br>Name</th><th>Volume<br>Size(GB)</th><th>Actual<br>size(GB)</th><th>Volume<br>Snaps</th>
+													<th>Volume<br>Name</th><th>Volume<br>Size(GB)</th><th>Actual<br>size(GB)</th><th>Snaps<br>size(GB)</th><th>Compres<br>ratio(%)</th>
 												</tr>
 											</thead>
 										</table>
@@ -77,18 +77,15 @@
 											<table class="table  table-condensed table-bordered narrowtble  ">
 												<thead >
 													<tr class=" info">
-														<th class="col-sm-4" >Total<br>&nbsp;Size</th><th class="col-sm-4">Actual<br>&nbsp;&nbsp;Size</th><th class="col-sm-4">Total<br>Snaps</th>
+														<th class="col-sm-4" >Total<br>&nbsp;Size</th><th class="col-sm-4">Actual<br>&nbsp;&nbsp;Size</th><th class="col-sm-4">Total<br>Snapsizes</th>
 													</tr>
 												</thead>
 											</table>
 											
 										</div>
-									<div class=" col-sm-4">
-										<textarea class="form-control" id="statusarea4" rows="1"></textarea>
-									</div>
 								</div>
 								<div class="row">
-									<div id="k"; class="col-sm-4 scrolled">
+									<div id="k"; class="col-sm-8 scrolled">
 										<table id="Volumetable" class="table table-hover table-condensed narrowtble ">
 											<tbody class="">
 												<tr onclick="rowisclicked(this)">
@@ -118,7 +115,7 @@
 											</tbody>
 										</table>
 								</div>
-									<div id="y"; class="col-sm-4 ">
+									<div id="y"; class=" col-sm-4">
 										<div>
 											<table class="table table-condensed table-bordered narrowtble  ">
 												<tbody>
@@ -128,17 +125,19 @@
 												</tbody>
 											</table>
 										</div>
+										<div  class="" class="chart"  >
+											<div id="chartNFS" ></div>
+										</div>
+
 									</div>
-									<div  class="col-sm-4" class="chart"  >
-										<div id="chartNFS" ></div>
-									</div>
+									
 								</div>
 								<div class="row">
-									<div  id="Voldelete" class="col-sm-offset-1 spacer-sm">
+									<div  id="Voldelete" class="col-sm-offset-3 spacer-sm">
 										<button type="submit" id="VoldeleteButton" class="btn btn-default  col-sm-2 "   data-toggle="tooltip" data-placement="bottom" title="DeleteVol">Delete Vol
 										</button>
 									</div>
-									<div class=" col-sm-offset-1 spacer-sm" id="disableddiv2">
+									<div class=" col-sm-offset-3 spacer-sm" id="disableddiv2">
 															<button type="button" class="btn btn-default btn-sm  " id="disabled" data-toggle="tooltip" data-placement="bottom" title="TypeSnap" disabled >to delete select only one
 															</button>
 									</div>

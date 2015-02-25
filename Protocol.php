@@ -142,7 +142,7 @@
 								if(gdata[prot].protocol==Protocol){
 									//console.log(gdata[prot].name);
 									$("#Vol2").append($('<option class="variable">').text(gdata[prot].name).val(gdata[prot].name));
-									$(listid).append('<tr onclick="rowisclicked(this)" ><td class="Volname">'+gdata[prot].name+'</td><td>'+gdata[prot].volsize+'</td><td>'+gdata[prot].volact+'</td><td>'+gdata[prot].snaps+'</td></tr>');
+									$(listid).append('<tr onclick="rowisclicked(this)" ><td class="Volname">'+gdata[prot].name+'</td><td>'+gdata[prot].volsize+'</td><td>'+gdata[prot].volact+'</td><td>'+gdata[prot].usedsnaps+'</td><td>'+gdata[prot].compress+'</td></tr>');
 									chartdata.push([gdata[prot].name,parseFloat(gdata[prot].volsize)]);
 								}
 							}
@@ -252,7 +252,7 @@
 								
 							}
 						}, 
-						legend: { show:true, location: 'w', marginRight: '5rem', placement: 'outside', border: "none"},
+						legend: { show:true, location: 'w', marginLeft: '6rem', placement: 'inside', border: "none"},
 						grid: { background: "transparent", borderColor: "transparent", shadow: false }
 					}
 				);
