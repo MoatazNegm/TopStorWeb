@@ -378,6 +378,7 @@ margin-left: 1.4rem;
     height: 13rem;
     padding-right: 1px;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .highlight { background-color: blue; }
