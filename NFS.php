@@ -68,7 +68,7 @@
 										<table  class="table table-hover table-condensed narrowtble ">
 											<thead >
 												<tr class="info">
-													<th>Volume<br>Name</th><th>Volume<br>Size(GB)</th><th>Actual<br>size(GB)</th><th>Snaps<br>size(GB)</th><th>Compres<br>ratio(%)</th>
+													<th>Volume<br>Name</th><th>Volume<br>Size(MB)</th><th>Actual<br>size(MB)</th><th>Snaps<br>size(MB)</th><th>Compres<br>ratio(%)</th>
 												</tr>
 											</thead>
 										</table>
@@ -162,7 +162,7 @@
 										<table id="Volumedetails" class="table table-hover table-condensed narrowtble ">
 											<thead >
 												<tr class="info">
-													<th>Volume<br>Size(GB)</th><th>Actual<br>size(GB)</th><th>Volume<br>Snaps</th><th>total<br>used</th><th>creation<br>date</th><th>free<br>space</th><th>compression<br>ratio</th><th>dedupe<br>ratio</th>
+													<th>Volume<br>Size(MB)</th><th>Actual<br>size(MB)</th><th>Volume<br>Snaps</th><th>total<br>used</th><th>creation<br>date</th><th>free<br>space</th><th>compression<br>ratio</th><th>dedupe<br>ratio</th>
 												</tr>
 											</thead>
 											<tbody class="">
