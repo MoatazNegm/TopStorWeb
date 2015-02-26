@@ -333,7 +333,7 @@
 				SelectPanelNFS(selection);
 			}); 
 			SelectPanelNFS("o");
-			$("#VoldeleteButton").click( function (){ $.post("./pump.php", { req:"VolumeDelete", name:$("#Pool2 option:selected").val()+" "+$("tr.success td.Volname").text()+" "+Protocol+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+			$("#VoldeleteButton").click( function (){ $.post("./pump.php", { req:"VolumeDelete"+Protocol, name:$("#Pool2 option:selected").val()+" "+$("tr.success td.Volname").text()+" "+Protocol+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 refresh3("#statusarea4"); 
 				 });
 			});
