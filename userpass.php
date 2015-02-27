@@ -52,7 +52,7 @@
 	});
  $("#change").click(function() {
 	 var passchecknew="34:433:43534";
-	 $.post("./pump.php", { req:"UnixChangePass", name:"'"+$("#userPassword1").val()+"'", passwd:"<?php echo $_SESSION["user"]; ?>"}, function (data){});
+	 $.post("./pump.php", { req:"UnixChangePass", name:"'"+$("#userPassword1").val()+"'", passwd:"<?php echo $_SESSION["user"]; ?>"+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){});
 	 //console.log("'"+$("#userPassword1").val()+"'","<?php echo $_SESSION["user"]; ?>");
 	 passchanged=1;
 	 $("#change").hide(); $("#changed").show();

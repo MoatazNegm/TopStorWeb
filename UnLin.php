@@ -15,13 +15,13 @@
 														</div>
 													</div>
 													<div class=" form-group row ">
-														<label  for="UserList" class="col-sm-5 control-label"></label>
+														<label  for="UserList" class="col-sm-5 control-label">User List</label>
 														<div class=" col-sm-6">
-															<select   size="3" id="UserList" class="form-control " >
+															<select   size="3" id="UserList" class="form-control " ></select>
 														</div>
 													</div>
-													<div class=" form-group row ">
-														<label  for="UserPass" class="col-sm-5 control-label">Passwored</label>
+													<div class=" form-group row  ">
+														<label  for="UserPass" class="col-sm-5 control-label">Password</label>
 														<div class=" col-sm-6">
 															<input type="password" id="UserPass" class="form-control " placeholder="user password">
 														</div>
@@ -32,10 +32,16 @@
 														<button id="UnixAddUser" type="submit" class="btn btn-default  col-sm-10 adduser"  data-toggle="tooltip" data-placement="top" title="add user">Add User</button>
 													</div>
 													<div class="form-group row">
-														<div class="row">
+														<div class="">
 															<button id="UnixDelUser" type="submit" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="remove user">Remove User</button>
 														</div>
 													</div>
+													<div class="form-group row">
+														<div class="spacer3">
+															<button id="Chapasswd" type="submit" class="btn btn-default  col-sm-10  "  data-toggle="tooltip" data-placement="top" title="Change Password">Change Password</button>
+														</div>
+													</div>
+
 												</div>
 												<div class=" col-sm-6">
 													<div class=" form-group row">

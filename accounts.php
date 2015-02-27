@@ -198,6 +198,10 @@
 				 //refreshUserList(); 
 				 });
 			});
+
+				$("#Chapasswd").click( function (){ $.post("./pump.php", { req:"UnixChangePass", name:"'"+$("#UserPass").val()+"'", passwd:$("#UserList").val()+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){});
+			});
+
 			$("#network").change( function () {
 					var value= $("#network").val();
 					switch(value) {
