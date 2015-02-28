@@ -1,4 +1,8 @@
 creating Snapshot Data/nfsnas Minutely.2.3.na.na....
-05:14:58: have to delete Data/nfsnas@Minutely.2.3.na.na.1425092580
-05:14:59: DONE...Snapshot Data/nfsnas Minutely.2.3.na.na is created
-05:15:00: DONE...Snapshot Data/nfsnas Minutely.2.3.na.na is created
+cannot open 'Data/nfsnas': dataset does not exist
+usage:
+	snapshot [-r] [-o property=value] ... <filesystem@snapname|volume@snapname> ...
+
+For the property list, run: zfs set|get
+
+For the delegated permission list, run: zfs allow|unallow
