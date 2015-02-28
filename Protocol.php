@@ -99,11 +99,11 @@
 			}
 			
 			function refresh3(textareaid) {
-				if(Protocol > 0) {
+				
 					$.get("statuslog.php", { file: 'Data/'+Protocol+'status.log' }, function(data){
 					$(textareaid).val(data);
 					});
-				}
+			
 			}	;
 			function volumetable(i,v) {
 				var res = i.split("_");
