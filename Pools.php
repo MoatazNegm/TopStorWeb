@@ -92,7 +92,7 @@
 				if(status==1) { //DiskGroup
 					diskgetsize('Data/disksize.txt','#size',"#count","#onedisk");
 					status=3;
-					refresh2("#DGstatus");	
+					refresh2("DGstatus");	
 				}
 				if(status=="snaps"){ //snapshots
 					refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
@@ -105,7 +105,7 @@
 					syscounter=0;
 					}
 				syscounter++;
-				refresh2("#Snapsstatus");	
+				refresh2("Snapsstatus");	
 				}
 				if(syscounter2==1000) { syscounter2=0; } else { syscounter2=syscounter2+1; }
 			}
@@ -155,12 +155,12 @@
 			};
 			function refresh2(textareaid) {
 				
-				$.get("statuslog.php", { file: 'Data/'+textareaid+'Snapsstatus.log' }, function(data){
-					$(textareaid).val(data);
+				$.get("statuslog.php", { file: 'Data/'+textareaid+'.log' }, function(data){
+					$('#'+textareaid).val(data);
 					});
 			}	;
-			//setInterval('refresh2("#DGstatus")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
-			//setInterval('refresh2("#Snapsstatus")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
+			//setInterval('refresh2("DGstatus")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
+			//setInterval('refresh2("Snapsstatus")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
 			//setInterval('refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt",12)', 10000); // Loop every 1000 milliseconds (i.e. 1 second)
 			//setInterval('refreshList("GetPoolHourlylist","#Hourlylist","Data/Hourlylist.txt",5)', 10000); // Loop every 1 second
 			//setInterval('refreshList("GetPoolMinutelylist","#Minutelylist","Data/Minutelylist.txt",5)', 10000); // Loop every 1 second
@@ -248,7 +248,7 @@
 		//refreshList2("GetPoolVollist","#Vol","Data/Vollist2.txt","Volumes");
 
 		$("#submitdiskgroup").click( function (){ $.post("./pump.php", { req:"DGsetPool", name:$('input[name=Raidselect]:checked').val()+" "+$('input[name=Raidselect]:checked').attr("id")+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 refresh2("#DGstatus");
+				 refresh2("DGstatus");
 		});
 	 });
 	 
@@ -257,23 +257,23 @@
 
 			
 		$("#DeleteSnapshot").click( function (){ $.post("./pump.php", { req:"SnapShotDelete", name:$("#Snaplist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 refresh2("#Snapsstatus"); 
+				 refresh2("Snapsstatus"); 
 				 });
 			});
 		$("#RollbackSnapshot").click( function (){ $.post("./pump.php", { req:"SnapShotRollback", name:$("#Snaplist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 refresh2("#Snapsstatus"); 
+				 refresh2("Snapsstatus"); 
 				 });
 			});	
 		$("#DeleteHourly").click( function (){ $.post("./pump.php", { req:"SnapShotPeriodDelete", name:$("#Hourlylist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 refresh2("#Snapsstatus"); 
+				 refresh2("Snapsstatus"); 
 				 });
 			});
 		$("#DeleteMinutely").click( function (){ $.post("./pump.php", { req:"SnapShotPeriodDelete", name:$("#Minutelylist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 refresh2("#Snapsstatus"); 
+				 refresh2("Snapsstatus"); 
 				 });
 			});
 		$("#DeleteWeekly").click( function (){ $.post("./pump.php", { req:"SnapShotPeriodDelete", name:$("#Weeklylist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 refresh2("#Snapsstatus"); 
+				 refresh2("Snapsstatus"); 
 				 });
 			});
 		$("#SnapshotCreate").click( function (){ 
@@ -289,7 +289,7 @@
 				oper =oper+" "+$("#Pool option:selected").val()+" "+$("#Vol option:selected").val();
 				
 				$.post("./pump.php", { req:"SnapshotCreate"+period, name: oper+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 refresh2("#Snapsstatus"); 
+				 refresh2("Snapsstatus"); 
 				 });
 			});
 		
