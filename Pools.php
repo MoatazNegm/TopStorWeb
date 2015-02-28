@@ -73,6 +73,7 @@
 			};
 			
 			function refreshall() { //check pool status
+				$.get("requestdata.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 				if(status==3) { 
 					$.post("./pump.php", { req:"DGPoolstatus" });
 					$.get("requestdata.php", { file: "Data/poolstatus.txt" },function(data){
