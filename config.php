@@ -148,7 +148,7 @@ fclose($myfile);
 			function refreshall() {
 				DNS=1;
 								
-				
+				$.get("requestdata.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 				
 			 if($(".UserPrivileges").is(":visible")) {
 					refreshUserList();
@@ -173,6 +173,12 @@ fclose($myfile);
 				}
 
 			}
+			function refresh2(textareaid) {
+				
+				$.get("statuslog.php", { file: 'Data/'+textareaid+'.log' }, function(data){
+					$('#'+textareaid).val(data);
+					});
+			}	;
 			function refreshUserList() {
 				var jdata;
 				

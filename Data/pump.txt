@@ -1,1 +1,1 @@
-DiskSize Data/disksize.txt
+DGPoolstatus

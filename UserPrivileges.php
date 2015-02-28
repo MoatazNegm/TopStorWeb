@@ -95,7 +95,7 @@
 					<div class=" form-group row"></div>
 					<div class=" form-group row"></div>
 					<div class=" col-sm-11 spacer">
-						<textarea class="form-control separatortop col-sm-12" id="statusarea3" rows="3"></textarea>
+						<textarea class="form-control separatortop col-sm-12" id="Privstatus" rows="3"></textarea>
 					</div>
 				</div>
 		
