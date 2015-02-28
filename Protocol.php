@@ -57,9 +57,9 @@
 			var Vollock=0;
 			var plotb;
 			function refreshall() {
+				$.get("requestdata.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 				if(Protocol != 0) {
 					refreshList2("GetPoolVollist","#Volumetable","Data/Vollist.txt","Volumes");
-					refresh3("#statusarea4");
 					refresh3("#statusarea3");
 					//refreshList2("GetPoollist","#Pool2","Data/Poollist.txt","Pool");
 					//Voldirtytable();
@@ -100,7 +100,7 @@
 			
 			function refresh3(textareaid) {
 				if(Protocol > 0) {
-					$.get("statuslog.php", { file: 'Data/status.log' }, function(data){
+					$.get("statuslog.php", { file: 'Data/'+Protocol+'status.log' }, function(data){
 					$(textareaid).val(data);
 					});
 				}
@@ -334,7 +334,7 @@
 			}); 
 			SelectPanelNFS("o");
 			$("#VoldeleteButton").click( function (){ $.post("./pump.php", { req:"VolumeDelete"+Protocol, name:$("#Pool2 option:selected").val()+" "+$("tr.success td.Volname").text()+" "+Protocol+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 refresh3("#statusarea4"); 
+				 
 				 });
 			});
 			$("#Createvol").click( function (){ var req=""; if(Protocol != 0) { req=Protocol; };$.post("./pump.php", { req:"VolumeCreate"+req, name:$("#Pool2 option:selected").val()+" "+" "+$("#Volname").val()+" "+$("#volsize").val()+"G"+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){

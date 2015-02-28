@@ -48,7 +48,7 @@
 										</button>
 									</div>
 									<div class=" spacer2 col-sm-4">
-										<textarea class="form-control" id="statusarea3" rows="1"></textarea>
+										<textarea class="form-control spacer2" id="statusarea3" rows="1"></textarea>
 									</div>
 								</div>
 							</div>
