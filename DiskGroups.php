@@ -71,7 +71,7 @@
 													<div id="emptydiv" class="col-sm-12 separator">
 													</div>
 													<div class=" separator col-sm-12">
-														<textarea class="form-control" id="statusarea2" rows="3"></textarea>
+														<textarea class="form-control" id="DGstatus" rows="3"></textarea>
 													</div>
 													<div id="emptydiv" class="col-sm-12"></div>
 													<div class="row">

@@ -163,7 +163,7 @@
 											
 											<div class="row">	
 												<div class=" col-sm-11">
-													<textarea class="form-control separatortop col-sm-12" id="statusarea3" rows="3"></textarea>
+													<textarea class="form-control separatortop col-sm-12" id="Snapsstatus" rows="3"></textarea>
 												</div>
 											</div>
 										</div>
