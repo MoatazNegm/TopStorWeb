@@ -53,19 +53,19 @@
 			//	console.log("AD is visible : " , $(".AD").is(":visible"));
 				if($(".AD").is(":visible"))
 				{
-					$.get("requestdata.php", { file: 'Data/status.log' }, function(data){ $("#ADstatus").val(data);});
+					$.get("requestdata.php", { file: 'Data/DomainChangestatus.log' }, function(data){ $("#ADstatus").val(data);});
 				}
 				else if($(".Future").is(":visible"))
 				{
 					
-					$.get("requestdata.php", { file: 'Data/status.log' }, function(data){ $("#Futurestatus").val(data);});
+					$.get("requestdata.php", { file: 'Data/HostManualconfigstatus.log' }, function(data){ $("#Futurestatus").val(data);});
 				}
 				else if($(".UnLin").is(":visible"))
 				{
-					$.get("requestdata.php", { file: 'Data/status.log' }, function(data){ $("#UnLinstatus").val(data);});
+					$.get("requestdata.php", { file: 'Data/Usersstatus.log' }, function(data){ $("#UnLinstatus").val(data);});
 					refreshUserList();
 				}
-
+				$.get("requestdata.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 			}
 			function refresh4(request,field) {
 				if(DNS > 0) {
