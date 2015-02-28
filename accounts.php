@@ -226,7 +226,7 @@
 					$.post("./pump.php", { req:"DomainChange", name:$("#DomName").val()+" "+$("#Admin").val()+" "+"\""+$("#Pass").val()+"\""+" "+$("#DCserver").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 				}
 			});
-			setInterval('refreshall()', 2000);
+			setInterval('refreshall()', 500);
 			refreshall();
 		</script>
 			 
