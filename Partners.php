@@ -15,7 +15,7 @@
 														</div>
 														<div class=" col-sm-4">
 															<select   id="type" class="form-control" >
-																<option>sender</option><option>reveiver</option><option>DualWay</option>
+																<option>sender</option><option>receiver</option><option>DualWay</option>
 															</select>
 														</div>
 
