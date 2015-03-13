@@ -84,6 +84,11 @@
 										<input type="checkbox" id="Colourize" class="checkboxy" value="Error"><p class="Priv">Colourize</p>
 									</label>
 							</div>
+							<div class="checkbox">
+									<label>
+										<input type="checkbox" id="Replication" class="checkboxy" value="Replication"><p class="Priv">Replication</p>
+									</label>
+							</div>
 						</div>
 
 					</div>
