@@ -332,7 +332,7 @@
 				}
 				oper =oper+" "+$("#Pool option:selected").val()+" "+$("#Vol option:selected").val();
 				
-				$.post("./pump.php", { req:"SnapshotCreate"+period, name: oper+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+				$.post("./pump.php", { req:"RemoteSnapshotCreate"+period, name: oper+" "+$("#Partner").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 refresh2("Snapsstatus"); 
 				 });
 			});
@@ -353,6 +353,9 @@
 			refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
 			refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps");
 			refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods");
+			$.post("./pump.php", { req: "GetPoolperiodlist", name:"a" });
+			$.post("./pump.php", { req: "GetPoolVollist", name:"a" });
+			$.post("./pump.php", { req: "GetSnaplist", name:"a" });
 		</script>
 
 	</body>
