@@ -97,10 +97,39 @@
 				}
 			};
 
+			function refreshReplicatelist(listid,fileloc) {
+				
+				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
+					var cdata=jQuery.parseJSON(data);
+					partnernew=cdata.updated;
+				});
+				//console.log(partner,partnernew,listid,fileloc);
+				if(partnernew!=partner)
+				{ 
+					partner=partnernew;
+					$(listid+' option').remove();
+					$.get("requestdata.php", { file: fileloc }, function(data){
+						var jdata = jQuery.parseJSON(data);
+						//console.log(data);
+						
+						$.each(jdata, function(i,v) {
+						console.log(v.name,v.type);
+						if (v.type == "receiver" || v.type=="DualWay")
+							 $(listid).append($('<option>').text(v.name).val(v.name)); 
+					
+						});
+					});
+				}
+			};
+
 			function refreshall() { //check pool status
 				if($(".Partners").is(":visible")) {
 					$.get("requestdata.php", { file: 'Data/Partnersstatus.log' }, function(data){ $("#Partnersstatus").val(data);});
 					refreshPartnerlist("#Partnerlist","Data/Partnerslist.txt");
+				}
+				if($(".Replicate").is(":visible")) {
+					$.get("requestdata.php", { file: 'Data/Replicatestatus.log' }, function(data){ $("#Replicatestatus").val(data);});
+					refreshReplicatelist("#Partner","Data/Partnerslist.txt");
 				}
 				$.get("requestdata.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 				if(status==3) { 
@@ -120,7 +149,7 @@
 				}
 				if(status=="snaps"){ //Replicate
 					refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
-					refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps");
+					refreshList("RemoteGetSnaplist","#Replicatelist","Data/listsnaps.txt","snaps");
 					refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods");
 					if(syscounter == 10) {
 					
@@ -161,7 +190,9 @@
 						for (var prot in gdata){
 							if($("#Vol").val()==gdata[prot].father){
 								if( showtime=="snaps" ) {
-									$(listid).append($('<option class="variable">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));	
+									console.log(gdata[prot]);
+									if(gdata[prot].receiver==$("#Partner").val())
+									$(listid).append($('<option class="variable">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));
 								}
 								if (showtime=="periods") {
 									switch (gdata[prot].period) {
@@ -255,7 +286,12 @@
 				//$(" tr.variable").remove();
 				
 			});
+			$("#Partner").change(function() {
+				//Vollisttime="44:333:222";
+				times= { "snaps":"30:43:433", "periods":"30:43:433" };
+				//$(" tr.variable").remove();
 				
+			});	
 
 		$("#AddPartner").click( function (){ $.post("./pump.php", { req:"PartnerAdd", name:$('#Partn').val()+" "+$('#type').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 	 });

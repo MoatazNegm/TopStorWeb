@@ -6,24 +6,29 @@
 									</div>									
 									<div class="row">
 										
-										<div class="  col-sm-7 ">
+										<div class="  col-sm-6 ">
 											<form class=" form-inline row">
-												<div class="form-group col-sm-offset-3">
+												<div class="form-group col-sm-offset-1">
 													<label  for="Pool" class="control-label">Pool</label>
 													<select  id="Pool" class="  form-control ">
 														<option>Data</option>
 													</select>
 												</div>
-												<div class="form-group col-sm-offset-2">
-													<label  for="Vol" class=" control-label">Volume</label>
+												<div class="form-group col-sm-offset-1">
+													<label  for="Vol" class=" control-label">Vol</label>
 													<select  id="Vol" class=" form-control ">
 														<option class="variable">Vol1</option><option class="variable" >Vol2</option>
 													</select>
 												</div>
+												<div class="form-group col-sm-offset-1">
+													<label  for="Partner" class=" control-label ">To</label>
+													<select  id="Partner" class=" form-control "><option>255.255.255.255</option></select>
+												</div>
+
 											</form>
 											<div class=" form-group row"></div>
-											<div class="form-group row">
-												<div class=" boxoffields col-sm-offset-1 col-sm-2">
+											<div class="form-group row spacer">
+												<div class=" boxoffields col-sm-offset-1 col-sm-2 spacer">
 													<span>Period</span>
 													<div class="radio">
 															<label>
@@ -144,11 +149,11 @@
 												</div>
 											</div>
 										</div>
-										<div class=" col-sm-5 " >
+										<div class=" col-sm-6 " >
 											<form role="form">
 												<div class="form-group col-sm-11 ">
 													<div class=" ">
-														<select   size="5" id="Snaplist" class="form-control  fonting" ></select>
+														<select   size="5" id="Replicatelist" class="form-control  fonting" ></select>
 														
 													</div>
 												</div>
@@ -163,7 +168,7 @@
 											
 											<div class="row">	
 												<div class=" col-sm-11">
-													<textarea class="form-control separatortop col-sm-12" id="Snapsstatus" rows="3"></textarea>
+													<textarea class="form-control separatortop col-sm-12" id="Replicatestatus" rows="3"></textarea>
 												</div>
 											</div>
 										</div>
@@ -172,13 +177,13 @@
 									<div class=" row">
 										<div class=" col-sm-6">
 											<div class=" form-group row" id="SnapshotCreatediv">
-												<button type="submit" class="btn btn-default col-sm-offset-5 col-sm-6 SnapshotCreate " id="SnapshotCreate" data-toggle="tooltip" data-placement="bottom" title="close window">submit</button>
+												<button type="submit" class="btn btn-default col-sm-offset-4 col-sm-6 SnapshotCreate " id="SnapshotCreate" data-toggle="tooltip" data-placement="bottom" title="close window">submit</button>
 											</div>
 										</div>
 										
 										<div class=" col-sm-6">
 											<div class="form-group row ">
-													<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-7 finish" data-toggle="tooltip" data-placement="top" title="submit values">Finish</button>
+													<button type="submit" id="Replicatefinish" class="btn btn-default col-sm-offset-2 col-sm-7 finish" data-toggle="tooltip" data-placement="top" title="submit values">Finish</button>
 											</div>
 										</div>
 									</div>
