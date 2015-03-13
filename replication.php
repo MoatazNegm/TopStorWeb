@@ -90,7 +90,7 @@
 						
 						$.each(jdata, function(i,v) {
 						//	console.log(i,k);
-							 $(listid).append($('<option>').text(v.name+" : "+v.type+" partner").val(v.name+":"+v.type)); 
+							 $(listid).append($('<option>').text(v.name+" : "+v.type+" partner").val(v.name)); 
 							
 						});
 					});
