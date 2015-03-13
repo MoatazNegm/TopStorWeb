@@ -51,6 +51,7 @@
 				return dl;
 			};
 			
+			
 			function refreshList(req,listid,fileloc) {
 				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
 					var cdata=jQuery.parseJSON(data);

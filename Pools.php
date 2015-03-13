@@ -305,6 +305,9 @@
             });
             
 			setInterval("refreshall()",500);
+			refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
+			refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps");
+			refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods");
 		</script>
 
 	</body>
