@@ -26,6 +26,8 @@
 		<script>
 			var partner="44:333:222";
 			var partnernew="44:d3243:erw22"
+			var replival="44:333:222";
+			var replivalnew="44:d3243:erw22"
 			var Vollisttime="44:333:222";
 			var times= { "snaps":"30:43:433", "periods":"30:43:433" };
 			var requiredtime={ "snaps":"33==:433", "periods":"30==erwe:43:433" }
@@ -101,19 +103,22 @@
 				
 				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
 					var cdata=jQuery.parseJSON(data);
-					partnernew=cdata.updated;
+					replivalnew=cdata.updated;
 				});
 				//console.log(partner,partnernew,listid,fileloc);
-				if(partnernew!=partner)
+				
+				if(replivalnew != replival)
 				{ 
-					partner=partnernew;
+					
+					replival=replivalnew;
 					$(listid+' option').remove();
+					
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						var jdata = jQuery.parseJSON(data);
 						//console.log(data);
 						
 						$.each(jdata, function(i,v) {
-						console.log(v.name,v.type);
+						//console.log(v.name,v.type);
 						if (v.type == "receiver" || v.type=="DualWay")
 							 $(listid).append($('<option>').text(v.name).val(v.name)); 
 					
@@ -191,7 +196,7 @@
 						for (var prot in gdata){
 							if($("#Vol").val()==gdata[prot].father){
 								if( showtime=="snaps" ) {
-									console.log(gdata[prot]);
+									//console.log(gdata[prot]);
 									if(gdata[prot].receiver==$("#Partner").val())
 									$(listid).append($('<option class="variable">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));
 								}
@@ -227,6 +232,7 @@
 			$(".Partners").hide(); $(".Replicate").hide(); 
 			$("#Partners").click(function (){
 				var userpriv="false";
+				
 					var curuser="<?php echo $_SESSION["user"] ?>";
 				$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 					var gdata = jQuery.parseJSON(data);
@@ -237,7 +243,7 @@
 					};
 				
 					if( userpriv=="true" | curuser=="admin" ) { 
-					 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Partners"); status="Partners"; $(".Partners").show(); 
+					 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Partners"); status="Partners"; $(".Partners").show(); partner="2432334";
 					}
 				});
 			});
