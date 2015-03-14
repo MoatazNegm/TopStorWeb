@@ -125,12 +125,13 @@
 			function refreshall() { //check pool status
 				if($(".Partners").is(":visible")) {
 					$.get("requestdata.php", { file: 'Data/Partnersstatus.log' }, function(data){ $("#Partnersstatus").val(data);});
-					refreshPartnerlist("#Partnerlist","Data/Partnerslist.txt");
+				
 				}
 				if($(".Replicate").is(":visible")) {
 					$.get("requestdata.php", { file: 'Data/Replicatestatus.log' }, function(data){ $("#Replicatestatus").val(data);});
-					refreshReplicatelist("#Partner","Data/Partnerslist.txt");
 				}
+				refreshPartnerlist("#Partnerlist","Data/Partnerslist.txt");
+				refreshReplicatelist("#Partner","Data/Partnerslist.txt"
 				$.get("requestdata.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 				if(status==3) { 
 					

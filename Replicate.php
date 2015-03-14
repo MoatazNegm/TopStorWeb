@@ -20,7 +20,7 @@
 														<option class="variable">Vol1</option><option class="variable" >Vol2</option>
 													</select>
 												</div>
-												<div class="form-group col-sm-offset-1">
+												<div id="partnerc" class="form-group col-sm-offset-">
 													<label  for="Partner" class=" control-label ">To</label>
 													<select  id="Partner" class=" form-control "><option>255.255.255.255</option></select>
 												</div>
