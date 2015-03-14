@@ -156,7 +156,7 @@
 				if(status=="snaps"){ //Replicate
 					refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
 					refreshList("RemoteGetSnaplist","#Replicatelist","Data/listsnaps.txt","snaps");
-					refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods");
+					refreshList("RemoteGetPoolperiodlist","#all","Data/periodlist.txt","periods");
 					if(syscounter == 10) {
 					
 					
@@ -359,7 +359,7 @@
 			$.post("./pump.php", { req:"Partnerslist" });
 			refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
 			refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps");
-			refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods");
+			refreshList("GetPoolperiodlist","#all","Data/Remoteperiodlist.txt","periods");
 			$.post("./pump.php", { req: "GetPoolperiodlist", name:"a" });
 			$.post("./pump.php", { req: "GetPoolVollist", name:"a" });
 			$.post("./pump.php", { req: "GetSnaplist", name:"a" });
