@@ -1,1 +1,1 @@
-GetPoolperiodlist a
+UnixChkUser admin chk

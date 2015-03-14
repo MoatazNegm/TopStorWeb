@@ -131,7 +131,7 @@
 					$.get("requestdata.php", { file: 'Data/Replicatestatus.log' }, function(data){ $("#Replicatestatus").val(data);});
 				}
 				refreshPartnerlist("#Partnerlist","Data/Partnerslist.txt");
-				refreshReplicatelist("#Partner","Data/Partnerslist.txt"
+				refreshReplicatelist("#Partner","Data/Partnerslist.txt");
 				$.get("requestdata.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 				if(status==3) { 
 					
