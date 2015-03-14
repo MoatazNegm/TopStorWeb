@@ -156,7 +156,7 @@
 				if(status=="snaps"){ //Replicate
 					refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
 					refreshList("RemoteGetSnaplist","#Replicatelist","Data/listsnaps.txt","snaps");
-					refreshList("RemoteGetPoolperiodlist","#all","Data/periodlist.txt","periods");
+					refreshList("RemoteGetPoolperiodlist","#all","Data/Remoteperiodlist.txt","periods");
 					if(syscounter == 10) {
 					
 					
