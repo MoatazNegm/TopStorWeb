@@ -358,8 +358,8 @@
 			setInterval("refreshall()",500);
 			$.post("./pump.php", { req:"Partnerslist" });
 			refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
-			refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps");
-			refreshList("GetPoolperiodlist","#all","Data/Remoteperiodlist.txt","periods");
+			refreshList("RemoteGetSnaplist","#Replicatelist","Data/listsnaps.txt","snaps");
+			refreshList("RemoteGetPoolperiodlist","#all","Data/Remoteperiodlist.txt","periods");
 			$.post("./pump.php", { req: "GetPoolperiodlist", name:"a" });
 			$.post("./pump.php", { req: "GetPoolVollist", name:"a" });
 			$.post("./pump.php", { req: "GetSnaplist", name:"a" });
