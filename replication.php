@@ -7,10 +7,12 @@
 	<?php $men= 4; include "header.html"; ?>
 	
 							<li><a href="#" class="Partnersa rightli"><h4 id="Partners"><span>Partners</span></h4></a></li>
-							<li><a href="#" class="Replicatea rightli"><h4 id="Replicate"><span>Replications</span></h4></a></li>
+							<li><a href="#" class="Replicatea rightli"><h4 id="Replicate"><span>Receivers</span></h4></a></li>
+							<li><a href="#" class="Sendersa rightli"><h4 id="Senders"><span>Senders</span></h4></a></li>
 						</ul>
 						<?php include "Partners.php"; ?>
 						<?php include "Replicate.php" ; ?>
+						<?php include "Senders.php" ; ?>
 					</div>
 				</div>
 			</div>
@@ -26,11 +28,11 @@
 		<script>
 			var partner="44:333:222";
 			var partnernew="44:d3243:erw22"
-			var replival="44:333:222";
-			var replivalnew="44:d3243:erw22"
+			var replival= { "snaps":"33==:43", "periods":"30==erwe:43:43", "sender":"43534:46:4563" };
+			var replivalnew={ "snaps":"33==:433", "periods":"30==erwe:43:433", "sender":"43534:456356:4563" };
 			var Vollisttime="44:333:222";
-			var times= { "snaps":"30:43:433", "periods":"30:43:433" };
-			var requiredtime={ "snaps":"33==:433", "periods":"30==erwe:43:433" }
+			var times= { "snaps":"33==:43", "periods":"30==erwe:43:43", "sender":"43534:46:4563" };
+			var requiredtime={ "snaps":"33==:433", "periods":"30==erwe:43:433", "sender":"43534:456356:4563" };
 			var Vollisttimenew="23:434:34543";
 			var status=0;
 			var syscounter=10;
@@ -51,6 +53,7 @@
 					Vollisttime=Vollisttimenew;
 					//console.log(Vollisttime);
 					$(listid+" option.variable").remove();
+					
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						var gdata = jQuery.parseJSON(data);
 						$(listid+" option.variable").remove();
@@ -59,9 +62,12 @@
 							if(gdata[prot].Pool=="Data") {
 									$(listid).append($('<option class="variable">').text(gdata[prot].name).val(gdata[prot].name));
 									//chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
+							 
 							}
 						}
+						
 					});
+					//replival="2323:334544"; replivalsend="sdfkjdf;dsfalkjdkjdkaj";
 				}
 			};
 
@@ -99,18 +105,18 @@
 				}
 			};
 
-			function refreshReplicatelist(listid,fileloc) {
+			function refreshReplicatelist(listid,fileloc,showtime,way) {
 				
 				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
 					var cdata=jQuery.parseJSON(data);
-					replivalnew=cdata.updated;
+					replivalnew[showtime]=cdata.updated;
 				});
-				//console.log(partner,partnernew,listid,fileloc);
+				//console.log(replival,replivalnew);
 				
-				if(replivalnew != replival)
+				if(replival[showtime] != replivalnew[showtime])
 				{ 
 					
-					replival=replivalnew;
+					replival[showtime]=replivalnew[showtime];
 					$(listid+' option').remove();
 					
 					$.get("requestdata.php", { file: fileloc }, function(data){
@@ -118,8 +124,9 @@
 						//console.log(data);
 						
 						$.each(jdata, function(i,v) {
+							
 						//console.log(v.name,v.type);
-						if (v.type == "receiver" || v.type=="DualWay")
+						if (v.type == way || v.type=="DualWay")
 							 $(listid).append($('<option>').text(v.name).val(v.name)); 
 					
 						});
@@ -130,13 +137,18 @@
 			function refreshall() { //check pool status
 				if($(".Partners").is(":visible")) {
 					$.get("requestdata.php", { file: 'Data/Partnersstatus.log' }, function(data){ $("#Partnersstatus").val(data);});
-				
-				}
+					refreshPartnerlist("#Partnerlist","Data/Partnerslist.txt");
+				};
 				if($(".Replicate").is(":visible")) {
 					$.get("requestdata.php", { file: 'Data/Replicatestatus.log' }, function(data){ $("#Replicatestatus").val(data);});
-				}
-				refreshPartnerlist("#Partnerlist","Data/Partnerslist.txt");
-				refreshReplicatelist("#Partner","Data/Partnerslist.txt");
+					refreshReplicatelist("#Partner","Data/Partnerslist.txt","snaps","receiver");
+				};
+				if($(".Sendersc").is(":visible")) {
+					$.get("requestdata.php", { file: 'Data/Replicatestatus.log' }, function(data){ $("#Sendersstatus").val(data);});
+					refreshReplicatelist("#Partnersend","Data/Partnerslist.txt","sender","sender");
+				};
+				
+				
 				$.get("requestdata.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 				if(status==3) { 
 					
@@ -155,16 +167,12 @@
 				}
 				if(status=="snaps"){ //Replicate
 					refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
-					refreshList("RemoteGetSnaplist","#Replicatelist","Data/listsnaps.txt","snaps");
-					refreshList("RemoteGetPoolperiodlist","#all","Data/Remoteperiodlist.txt","periods");
-					if(syscounter == 10) {
-					
-					
-					
-					syscounter=0;
-					}
-				syscounter++;
-				refresh2("Snapsstatus");	
+					refreshList("RemoteGetSnaplist","#Replicatelist","Data/listsnaps.txt","snaps","#Vol");
+					refreshList("RemoteGetPoolperiodlist","#all","Data/Remoteperiodlist.txt","periods","#Vol");
+				}
+				if(status=="Senders"){ //Replicate
+					refreshList3("GetPoolVollist","#Volsend","Data/Vollist.txt");
+					refreshList("RemoteGetSnaplist","#Senderslist","Data/listsnaps.txt","sender","#Volsend");
 				}
 				if(syscounter2==1000) { syscounter2=0; } else { syscounter2=syscounter2+1; }
 			}
@@ -172,7 +180,7 @@
 			
 			
 			
-			function refreshList(req,listid,fileloc,showtime) {
+			function refreshList(req,listid,fileloc,showtime,voll) {
 				if(syscounter2==1000){$.post("./pump.php", { req: req, name:"a" }, function (data1){});};
 					$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
 					var objdate = jQuery.parseJSON(data);
@@ -186,7 +194,7 @@
 					times[showtime]=requiredtime[showtime];
 					//$(listid+" tr.variable").remove();
 					$.get("requestdata.php", { file: fileloc }, function(data){
-						//console.log(fileloc)
+						//console.log(fileloc);
 						var gdata = jQuery.parseJSON(data);
 						//console.log(data);
 						$(listid+" option.variable").remove();
@@ -194,12 +202,18 @@
 						//console.log(times[showtime],showtime);
 						if(showtime=="periods") { 	$("#Hourlylist option.variable").remove();$("#Minutelylist option.variable").remove();$("#Weeklylist option.variable").remove();}
 						for (var prot in gdata){
-							if($("#Vol").val()==gdata[prot].father){
+							if($(voll).val()==gdata[prot].father){
 								if( showtime=="snaps" ) {
 									//console.log(gdata[prot]);
 									if(gdata[prot].receiver==$("#Partner").val())
 									$(listid).append($('<option class="variable">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));
 								}
+								if( showtime=="sender" ) {
+									//console.log(gdata[prot]);
+									if(gdata[prot].sender==$("#Partnersend").val())
+									$(listid).append($('<option class="variable">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));
+								}
+
 								if (showtime=="periods" &&  gdata[prot].partner==$("#Partner").val()) {
 									switch (gdata[prot].period) {
 										case "hourly": $("#Hourlylist").append($('<option class="variable">').text('Every:'+gdata[prot].t3+"hrs At:"+gdata[prot].t2+ "mins Keep:"+ gdata[prot].t1+"snaps").val("hourly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3));	 break;
@@ -229,7 +243,7 @@
 			
 			var config = 1;
 			$("[class*='xdsoft']").hide();
-			$(".Partners").hide(); $(".Replicate").hide(); 
+			$(".Partners").hide(); $(".Replicate").hide(); $(".Sendersc").hide();
 			$("#Partners").click(function (){
 				var userpriv="false";
 				
@@ -260,13 +274,32 @@
 						};
 					
 						if( userpriv=="true" | curuser=="admin" ) { 
-							config = 0; status="snaps"; $("h2").css("background-image","url('img/snapshot.png')").text("Replicate");  $("option.variable").remove(); Vollisttime="44:333:22";times= { "snaps":"30:43:433", "periods":"30:43:433" }; $(".Replicate").show();
+							config = 0; status="snaps"; $("h2").css("background-image","url('img/snapshot.png')").text("Replicate");  $("option.variable").remove(); Vollisttime="44:333:22";times= { "snaps":"33==:433", "periods":"30==erwe:43:43", "sender":"43534:456356:563"}; $(".Replicate").show();replival={ "snaps":"33==:433", "periods":"30==erwe:43:43", "sender":"43534:456356:563"};
 						}
 					});
 				};
 			});
-			
-			$(".finish").click(function (){ config = 1; status=0; $(".Partners").hide(); $(".Replicate").hide();});
+			$("#Senders").click(function (){ 
+				if(config== 1){ 
+					var userpriv="false";
+					var curuser="<?php echo $_SESSION["user"] ?>";
+					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+						var gdata = jQuery.parseJSON(data);
+						for (var prot in gdata){
+							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+								userpriv=gdata[prot].Replicate
+							}
+						};
+					
+						if( userpriv=="true" | curuser=="admin" ) { 
+							config = 0; status="Senders"; $("h2").css("background-image","url('img/snapshot.png')").text("Senders");  $("option.variable").remove(); ;times= { "snaps":"33=33", "periods":"30==erwe3:433", "sender":"43534:456:4563" }; $(".Sendersc").show();replival={ "snaps":"33==:433", "periods":"30==erwe:43:43", "sender":"43534:456356:563"};Vollisttime="44:333:sdfsd";
+						}
+					});
+				};
+			});
+
+			$(".finish").click(function (){ 
+				config = 1; status=0; $(".Partners").hide(); $(".Replicate").hide(); $(".Sendersc").hide();});
 			
 			
 			
@@ -289,13 +322,13 @@
 			});
 			$("#Vol").change(function() {
 				//Vollisttime="44:333:222";
-				times= { "snaps":"30:43:433", "periods":"30:43:433" };
+				times= { "snaps":"333", "periods":"3rwe:43:433", "sender":"43534:4563563" };
 				//$(" tr.variable").remove();
 				
 			});
 			$("#Partner").change(function() {
 				//Vollisttime="44:333:222";
-				times= { "snaps":"30:43:433", "periods":"30:43:433" };
+				times= { "snaps":"333", "periods":"30==e43:433", "sender":"43534:46:4563" };
 				//$(" tr.variable").remove();
 				
 			});	
@@ -308,13 +341,17 @@
 
 			
 		$("#DeleteSnapshot").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotDelete", name:$("#Replicatelist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 refresh2("Snapsstatus"); 
 				 });
 			});
-		$("#RollbackSnapshot").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotRollback", name:$("#Replicatelist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 refresh2("Replicatestatus"); 
+		$("#DeleteSnapshotsend").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotDelete", name:$("#Senderslist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+				 });
+			});
+		
+		$("#RollbackSnapshotsend").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotRollback", name:$("#Senderslist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+				 
 				 });
 			});	
+
 		$("#DeleteHourly").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotPeriodDelete", name:$("#Hourlylist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 refresh2("Replicatestatus"); 
 				 });
@@ -358,7 +395,9 @@
 			setInterval("refreshall()",500);
 			$.post("./pump.php", { req:"Partnerslist" });
 			refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
+			refreshList3("GetPoolVollist","#Volsend","Data/Vollist.txt");
 			refreshList("RemoteGetSnaplist","#Replicatelist","Data/listsnaps.txt","snaps");
+			refreshList("RemoteGetSnaplist","#Senderslist","Data/listsnaps.txt","sender");
 			refreshList("RemoteGetPoolperiodlist","#all","Data/Remoteperiodlist.txt","periods");
 			$.post("./pump.php", { req: "GetPoolperiodlist", name:"a" });
 			$.post("./pump.php", { req: "GetPoolVollist", name:"a" });
