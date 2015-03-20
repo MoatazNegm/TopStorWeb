@@ -1,1 +1,1 @@
-GetPoolVollist a
+GenPatch AbdoFaragMail.ods

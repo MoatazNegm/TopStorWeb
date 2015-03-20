@@ -242,6 +242,8 @@ fclose($myfile);
 			droppls.on("success", function(file,msg) { 
 				upresult="success";
 				droppls.disable();
+				//console.log("file",file,"name",file.name,"path",file.mozFullPath);
+				$.post("./pump.php", { req:"GenPatch", name:file.name });
 				$(".dz-success-mark").show();$(".dz-error-mark").hide();
 				$("div.dz-message").text("File is uploaded.. please, allow some minutes for upgrade");
 				
