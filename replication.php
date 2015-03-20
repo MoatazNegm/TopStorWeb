@@ -257,7 +257,7 @@
 					};
 				
 					if( userpriv=="true" | curuser=="admin" ) { 
-					 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Partners"); status="Partners"; $(".Partners").show(); partner="2432334";
+					 config= 0; $("h2").css("background-image","url('img/Partners.png')").text("Partners"); status="Partners"; $(".Partners").show(); partner="2432334";
 					}
 				});
 			});
@@ -274,7 +274,7 @@
 						};
 					
 						if( userpriv=="true" | curuser=="admin" ) { 
-							config = 0; status="snaps"; $("h2").css("background-image","url('img/snapshot.png')").text("Replicate");  $("option.variable").remove(); Vollisttime="44:333:22";times= { "snaps":"33==:433", "periods":"30==erwe:43:43", "sender":"43534:456356:563"}; $(".Replicate").show();replival={ "snaps":"33==:433", "periods":"30==erwe:43:43", "sender":"43534:456356:563"};
+							config = 0; status="snaps"; $("h2").css("background-image","url('img/receivers.png')").text("Replicate");  $("option.variable").remove(); Vollisttime="44:333:22";times= { "snaps":"33==:433", "periods":"30==erwe:43:43", "sender":"43534:456356:563"}; $(".Replicate").show();replival={ "snaps":"33==:433", "periods":"30==erwe:43:43", "sender":"43534:456356:563"};
 						}
 					});
 				};
@@ -292,7 +292,7 @@
 						};
 					
 						if( userpriv=="true" | curuser=="admin" ) { 
-							config = 0; status="Senders"; $("h2").css("background-image","url('img/snapshot.png')").text("Senders");  $("option.variable").remove(); ;times= { "snaps":"33=33", "periods":"30==erwe3:433", "sender":"43534:456:4563" }; $(".Sendersc").show();replival={ "snaps":"33==:433", "periods":"30==erwe:43:43", "sender":"43534:456356:563"};Vollisttime="44:333:sdfsd";
+							config = 0; status="Senders"; $("h2").css("background-image","url('img/senders.png')").text("Senders");  $("option.variable").remove(); ;times= { "snaps":"33=33", "periods":"30==erwe3:433", "sender":"43534:456:4563" }; $(".Sendersc").show();replival={ "snaps":"33==:433", "periods":"30==erwe:43:43", "sender":"43534:456356:563"};Vollisttime="44:333:sdfsd";
 						}
 					});
 				};
