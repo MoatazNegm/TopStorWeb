@@ -336,7 +336,7 @@
 				
 			});	
 			$("#Proxy").change(function() { if($("#Proxy").is(":checked") == true ) $("#passphrase").show(); else $("#passphrase").hide(); })
-		$("#AddPartner").click( function (){ $.post("./pump.php", { req:"PartnerAdd", name:$('#Partn').val()+" "+$('#type').val()+" "+$("#Proxy").is(":checked")+" "+$("#passphrase").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+		$("#AddPartner").click( function (){ $.post("./pump.php", { req:"PartnerAdd", name:$('#Partn').val()+" "+$('#type').val()+" "+$("#Proxy").is(":checked")+" "+$("#Pass").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 	 });
 	 
 		$("#DelPartner").click( function (){ $.post("./pump.php", { req:"PartnerDel", name:$("#Partnerlist").val()+" "+"<?php echo $_SESSION["user"]; ?>" });

@@ -28,9 +28,9 @@
 
 													</div>
 													<div id="passphrase"class=" form-group row" >
-														<label  for="Partn" class=" col-sm-4 control-label">Passphrase(added to the sender too)</label>
+														<label  for="Pass" class=" col-sm-4 control-label">Passphrase(added to the sender too)</label>
 														<div class=" col-sm-4">
-															<input type="text" id="Partn" class="form-control " placeholder="Passphrase">
+															<input type="text" id="Pass" class="form-control " placeholder="Passphrase">
 														</div>
 													</div>
 													<div class=" form-group row ">
