@@ -9,8 +9,8 @@
 											<div class="row">
 												<div class="  col-sm-5 ">
 													<div class=" form-group row">
-														<label  for="Partn" class="col-sm-3 control-label">Partner</label>
-														<div class=" col-sm-5">
+														<label  for="Partn" class="col-sm-2 control-label">Partner</label>
+														<div class=" col-sm-4">
 															<input type="text" id="Partn" class="form-control " placeholder="address">
 														</div>
 														<div class=" col-sm-4">
@@ -18,11 +18,18 @@
 																<option>sender</option><option>receiver</option><option>DualWay</option>
 															</select>
 														</div>
+														<div class="col-sm-2 ">
+															<div id="prox" class="checkbox ">
+																<label for="Proxy" class="partnc" >Proxy
+																<input type="checkbox" class="checkboxy " id="Proxy" value="Proxy">
+																</label>
+															</div>
+														</div>
 
 													</div>
 													<div class=" form-group row ">
-														<label  for="Partnerlist" class="col-sm-3 control-label">List</label>
-														<div class=" col-sm-9">
+														<label  for="Partnerlist" class="col-sm-2 control-label">List</label>
+														<div class=" col-sm-10">
 															<select   size="3" id="Partnerlist" class="form-control fonting" ></select>
 														</div>
 													</div>

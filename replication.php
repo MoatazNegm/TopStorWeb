@@ -98,7 +98,10 @@
 						
 						$.each(jdata, function(i,v) {
 						//	console.log(i,k);
-							 $(listid).append($('<option>').text(v.name+" : "+v.type+" partner").val(v.name)); 
+							if(v.proxy=="true")
+							 $(listid).append($('<option>').text(v.name+" : "+v.type+" partner through proxy").val(v.name)); 
+							else
+								$(listid).append($('<option>').text(v.name+" : "+v.type+" partner").val(v.name));
 							
 						});
 					});
@@ -333,7 +336,7 @@
 				
 			});	
 
-		$("#AddPartner").click( function (){ $.post("./pump.php", { req:"PartnerAdd", name:$('#Partn').val()+" "+$('#type').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+		$("#AddPartner").click( function (){ $.post("./pump.php", { req:"PartnerAdd", name:$('#Partn').val()+" "+$('#type').val()+" "+$("#Proxy").is(":checked")+" "+"<?php echo $_SESSION["user"]; ?>" });
 	 });
 	 
 		$("#DelPartner").click( function (){ $.post("./pump.php", { req:"PartnerDel", name:$("#Partnerlist").val()+" "+"<?php echo $_SESSION["user"]; ?>" });

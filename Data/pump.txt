@@ -1,1 +1,1 @@
-GenPatch AbdoFaragMail.ods
+RemoteGetSnaplist a
