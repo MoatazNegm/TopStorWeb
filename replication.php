@@ -37,7 +37,7 @@
 			var status=0;
 			var syscounter=10;
 			var syscounter2=1000;
-			$("#deletePool").hide();$("#submitdiskgroup").hide();
+			$("#deletePool").hide();$("#submitdiskgroup").hide();$("#passphrase").hide();
 			
 			function refreshList3(request,listid,fileloc) {
 				if(syscounter2==1000) { $.post("./pump.php", { req: request, name:"a" }); }
@@ -335,8 +335,8 @@
 				//$(" tr.variable").remove();
 				
 			});	
-
-		$("#AddPartner").click( function (){ $.post("./pump.php", { req:"PartnerAdd", name:$('#Partn').val()+" "+$('#type').val()+" "+$("#Proxy").is(":checked")+" "+"<?php echo $_SESSION["user"]; ?>" });
+			$("#Proxy").change(function() { if($("#Proxy").is(":checked") == true ) $("#passphrase").show(); else $("#passphrase").hide(); })
+		$("#AddPartner").click( function (){ $.post("./pump.php", { req:"PartnerAdd", name:$('#Partn').val()+" "+$('#type').val()+" "+$("#Proxy").is(":checked")+" "+$("#passphrase").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 	 });
 	 
 		$("#DelPartner").click( function (){ $.post("./pump.php", { req:"PartnerDel", name:$("#Partnerlist").val()+" "+"<?php echo $_SESSION["user"]; ?>" });

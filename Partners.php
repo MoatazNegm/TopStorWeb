@@ -27,6 +27,12 @@
 														</div>
 
 													</div>
+													<div id="passphrase"class=" form-group row" >
+														<label  for="Partn" class=" col-sm-4 control-label">Passphrase(added to the sender too)</label>
+														<div class=" col-sm-4">
+															<input type="text" id="Partn" class="form-control " placeholder="Passphrase">
+														</div>
+													</div>
 													<div class=" form-group row ">
 														<label  for="Partnerlist" class="col-sm-2 control-label">List</label>
 														<div class=" col-sm-10">
