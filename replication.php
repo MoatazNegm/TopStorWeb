@@ -128,11 +128,7 @@
 						//console.log(data);
 						
 						$.each(jdata, function(i,v) {
-							
-							console.log(listid, listid2);
-							console.log(jdata[i][listid])
-							console.log(i.proxy)
-							console.log(jdata[i][listid2])
+	
 						 $('#'+listid).val(v[listid]); 
 						 $('#'+listid2).val(v[listid2]);
 						});
@@ -393,7 +389,12 @@
 				//$(" tr.variable").remove();
 				
 			});	
-			$("#Proxy").change(function() { if($("#Proxy").is(":checked") == true ) $("#passphrase").show(); else $("#passphrase").hide(); })
+			$("#Proxy").change(function() { if($("#Proxy").is(":checked") == true ) {
+				$.get("requestport.php", function(data){
+					$("#Port").val(data); 
+			  });
+				$("#passphrase").show(); 
+				} else {$("#passphrase").hide(); $("#Port").val("<?php echo rand(15000,16000) ?>");} })
 		$("#AddPartner").click( function (){ $.post("./pump.php", { req:"PartnerAdd", name:$('#Partn').val()+" "+$('#type').val()+" "+$("#Proxy").is(":checked")+" "+$("#Pass").val()+" "+$("#Port").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 	 });
 	 

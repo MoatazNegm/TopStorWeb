@@ -34,7 +34,7 @@
 														</div>
 														<label  for="Port" class=" col-sm-2 control-label">Port</label>
 														<div class=" col-sm-3">
-															<input type="text" id="Port" class="form-control "  value="<?php echo rand(15000,16000) ?>" disabled>
+															<input type="text" id="Port" class="form-control "   disabled>
 														</div>
 													</div>
 													
