@@ -35,10 +35,15 @@
 													</div>
 													<div class="form-group row">
 														<div class="">
+															<button id="AddProxy" type="submit" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="add Proxy">Add Proxy</button>
+														</div>
+													</div>
+													<div class="form-group row">
+														<div class="">
 															<button id="AddAlias" type="submit" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="add Alias">Add Alias</button>
 														</div>
 													</div>
-													
+
 
 												</div>
 												<div class=" col-sm-5">
