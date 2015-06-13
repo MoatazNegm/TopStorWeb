@@ -403,6 +403,8 @@
 
 		$("#AddProxy").click( function (){ $.post("./pump.php", { req:"ProxyAdd", name:$('#Proxyurl').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 	 });
+		$("#AddAlias").click( function (){ $.post("./pump.php", { req:"AliasAdd", name:$('#AddAlias').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+	 });
 
 		$("#DelPartner").click( function (){ $.post("./pump.php", { req:"PartnerDel", name:$("#Partnerlist").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 		});

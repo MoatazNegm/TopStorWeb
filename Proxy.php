@@ -16,12 +16,18 @@
 
 													</div>
 													<div class=" form-group row" >
-														<label  for="Proxyurl" class=" col-sm-2 control-label">Proxy address</label>
+														<label  for="Proxyurl" class=" col-sm-2 control-label">Proxy</label>
 														<div class=" col-sm-8">
 															<input type="text" id="Proxyurl" class="form-control " placeholder="Proxy address">
 														</div>
 													</div>
-													
+													<div class=" form-group row" >
+														<label  for="Alias" class=" col-sm-2 control-label">Alias</label>
+														<div class=" col-sm-8">
+															<input type="text" id="Alias" class="form-control " placeholder="Box Alias">
+														</div>
+													</div>
+
 												</div>
 												<div class="  col-sm-2">
 													<div class="form-group row">
@@ -29,7 +35,7 @@
 													</div>
 													<div class="form-group row">
 														<div class="">
-															<button id="AddProxy" type="submit" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="add Proxy">Add Proxy</button>
+															<button id="AddAlias" type="submit" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="add Alias">Add Alias</button>
 														</div>
 													</div>
 													
