@@ -105,7 +105,7 @@ fclose($myfile);
 							};
 						
 						if( userpriv=="true" | curuser=="admin" ) {
-							$("h2").css("background-image","url('img/Priv.png')").text("User Privileges");  $("option.variable").remove(); proptime="44:333:22";; $(".UserPrivileges").show();refreshall();
+							$("h2").css("background-image","url('img/Priv.png')").text("User Privileges");  $("option.variable").remove(); proptime="44:33233:22";; $(".UserPrivileges").show();refreshall();
 						}
 					});
 				}
@@ -220,7 +220,7 @@ fclose($myfile);
 	 });
 			$("#UserList").change(function(){
 				$(".checkboxy").each(function(){ $(this).prop("checked",false)});
-				proptime="44:333:22";
+				proptime="44:54333:232";
 				});
 			setInterval('refreshall()', 500);
 			refreshUserList();

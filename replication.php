@@ -9,10 +9,12 @@
 							<li><a href="#" class="Partnersa rightli"><h4 id="Partners"><span>Partners</span></h4></a></li>
 							<li><a href="#" class="Replicatea rightli"><h4 id="Replicate"><span>Receivers</span></h4></a></li>
 							<li><a href="#" class="Sendersa rightli"><h4 id="Senders"><span>Senders</span></h4></a></li>
+							<li><a href="#" class="Proxya rightli"><h4 id="Proxys"><span>Proxy license</span></h4></a></li>
 						</ul>
 						<?php include "Partners.php"; ?>
 						<?php include "Replicate.php" ; ?>
 						<?php include "Senders.php" ; ?>
+						<?php include "Proxy.php"; ?>
 					</div>
 				</div>
 			</div>
@@ -28,12 +30,12 @@
 		<script>
 			var partner="44:333:222";
 			var partnernew="44:d3243:erw22"
-			var replival= { "snaps":"33==:43", "periods":"30==erwe:43:43", "sender":"43534:46:4563" };
-			var replivalnew={ "snaps":"33==:433", "periods":"30==erwe:43:433", "sender":"43534:456356:4563" };
-			var Vollisttime="44:333:222";
-			var times= { "snaps":"33==:43", "periods":"30==erwe:43:43", "sender":"43534:46:4563" };
-			var requiredtime={ "snaps":"33==:433", "periods":"30==erwe:43:433", "sender":"43534:456356:4563" };
-			var Vollisttimenew="23:434:34543";
+			var replival= { "snaps":"33=fgsssdf=:43", "periods":"30==ergrwe:43:43", "sender":"43534ss:46dfd:4563", "Proxy":"3242ew35s34rwe" };
+			var replivalnew={ "snaps":"33==:433", "periods":"30==erwe:43:433", "sender":"43534:456356:4563" , "Proxy":"3242ewrwe"};
+			var Vollisttime="44:333:ss222";
+			var times= { "snaps":"33==s:43", "periods":"30==erwe:s43:43", "sender":"43534:46s:4563" };
+			var requiredtime={ "snaps":"33==:s433", "periods":"30==erwe:s43:433", "sender":"43534:45s6356:4563" };
+			var Vollisttimenew="23:434s:34543";
 			var status=0;
 			var syscounter=10;
 			var syscounter2=1000;
@@ -108,6 +110,32 @@
 				}
 			};
 
+			function refreshProxy(listid,fileloc,showtime,listid2) {
+				
+				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
+					var cdata=jQuery.parseJSON(data);
+					replivalnew[showtime]=cdata.updated;
+				});
+				//console.log(replival,replivalnew);
+				
+				if(replival[showtime] != replivalnew[showtime])
+				{ 
+					
+					replival[showtime]=replivalnew[showtime];
+
+					$.get("requestdata.php", { file: fileloc }, function(data){
+						var jdata = jQuery.parseJSON(data);
+						//console.log(data);
+						
+						$.each(jdata, function(i,v) {
+						 $('#'+listid).val(v[listid]); 
+						 $('#'+listid2).val(v[listid2]);
+						});
+					});
+				}
+			};
+
+			
 			function refreshReplicatelist(listid,fileloc,showtime,way) {
 				
 				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
@@ -149,6 +177,11 @@
 				if($(".Sendersc").is(":visible")) {
 					$.get("requestdata.php", { file: 'Data/Replicatestatus.log' }, function(data){ $("#Sendersstatus").val(data);});
 					refreshReplicatelist("#Partnersend","Data/Partnerslist.txt","sender","sender");
+				};
+				if($(".Proxy").is(":visible")) {
+					$.get("requestdata.php", { file: 'Data/Proxystatus.log' }, function(data){ $("#Proxystatus").val(data);});
+					
+					
 				};
 				
 				
@@ -246,7 +279,7 @@
 			
 			var config = 1;
 			$("[class*='xdsoft']").hide();
-			$(".Partners").hide(); $(".Replicate").hide(); $(".Sendersc").hide();
+			$(".Partners").hide(); $(".Replicate").hide(); $(".Sendersc").hide();$(".Proxy").hide();
 			$("#Partners").click(function (){
 				var userpriv="false";
 				
@@ -277,7 +310,7 @@
 						};
 					
 						if( userpriv=="true" | curuser=="admin" ) { 
-							config = 0; status="snaps"; $("h2").css("background-image","url('img/receivers.png')").text("Replicate");  $("option.variable").remove(); Vollisttime="44:333:22";times= { "snaps":"33==:433", "periods":"30==erwe:43:43", "sender":"43534:456356:563"}; $(".Replicate").show();replival={ "snaps":"33==:433", "periods":"30==erwe:43:43", "sender":"43534:456356:563"};
+							config = 0; status="snaps"; $("h2").css("background-image","url('img/receivers.png')").text("Replicate");  $("option.variable").remove(); Vollisttime="44:3133:22";times= { "snaps":"331==:433", "periods":"30==erwe1:43:43", "sender":"435341:456356:563"}; $(".Replicate").show();replival={ "snaps":"33=1=:433", "periods":"30==e1rwe:43:43", "sender":"435341:456356:563", "Proxy":"32442ewrwe"};
 						}
 					});
 				};
@@ -295,14 +328,34 @@
 						};
 					
 						if( userpriv=="true" | curuser=="admin" ) { 
-							config = 0; status="Senders"; $("h2").css("background-image","url('img/senders.png')").text("Senders");  $("option.variable").remove(); ;times= { "snaps":"33=33", "periods":"30==erwe3:433", "sender":"43534:456:4563" }; $(".Sendersc").show();replival={ "snaps":"33==:433", "periods":"30==erwe:43:43", "sender":"43534:456356:563"};Vollisttime="44:333:sdfsd";
+							config = 0; status="Senders"; $("h2").css("background-image","url('img/senders.png')").text("Senders");  $("option.variable").remove(); ;times= { "snaps":"33=e33", "periods":"30==erwe3e:433", "sender":"43534:456:45e63" }; $(".Sendersc").show();replival={ "snaps":"33==e:433", "periods":"30==erwe:e43:43", "sender":"43534:4e56356:563", "Proxy":"3242ewr5we"};Vollisttime="44:333:sedfsd";
 						}
 					});
 				};
 			});
+			$("#Proxys").click(function (){ 
+							if(config== 1){
+								 
+								var userpriv="false";
+								var curuser="<?php echo $_SESSION["user"] ?>";
+								$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+									var gdata = jQuery.parseJSON(data);
+									for (var prot in gdata){
+										if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+											userpriv=gdata[prot].Proxy
+										}
+									};
+								
+									if( userpriv=="true" | curuser=="admin" ) { 
+										config = 0; status="Proxy"; $("h2").css("background-image","url('img/senders.png')").text("Proxy License");  $("option.variable").remove(); ;times= { "snaps":"33=f33", "periods":"30==erwe3:4f33", "sender":"43534:456:4563" }; $(".Proxy").show();replival={ "snaps":"33==:4f33", "periods":"30==erwe:4f3:43", "sender":"43534:456f356:563", "Proxy":"3242efwrwe"};Vollisttime="44:333:sdfsd";
+										refreshProxy("License","Data/Proxylist.txt","Proxy","Proxyurl");
+									}
+								});
+							};
+						});
 
 			$(".finish").click(function (){ 
-				config = 1; status=0; $(".Partners").hide(); $(".Replicate").hide(); $(".Sendersc").hide();});
+				config = 1; status=0; $(".Partners").hide(); $(".Replicate").hide(); $(".Sendersc").hide(); $(".Proxy").hide()});
 			
 			
 			
@@ -336,9 +389,15 @@
 				
 			});	
 			$("#Proxy").change(function() { if($("#Proxy").is(":checked") == true ) $("#passphrase").show(); else $("#passphrase").hide(); })
-		$("#AddPartner").click( function (){ $.post("./pump.php", { req:"PartnerAdd", name:$('#Partn').val()+" "+$('#type').val()+" "+$("#Proxy").is(":checked")+" "+$("#Pass").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+		$("#AddPartner").click( function (){ $.post("./pump.php", { req:"PartnerAdd", name:$('#Partn').val()+" "+$('#type').val()+" "+$("#Proxy").is(":checked")+" "+$("#Pass").val()+" "+$("#Port").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 	 });
 	 
+		$("#AddLicense").click( function (){ $.post("./pump.php", { req:"LicenseAdd", name:$('#License').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+	 });
+
+		$("#AddProxy").click( function (){ $.post("./pump.php", { req:"ProxyAdd", name:$('#Proxyurl').val()+" "+$('#type').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+	 });
+
 		$("#DelPartner").click( function (){ $.post("./pump.php", { req:"PartnerDel", name:$("#Partnerlist").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 		});
 

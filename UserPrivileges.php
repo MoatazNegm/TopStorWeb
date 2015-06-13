@@ -67,6 +67,12 @@
 													<input type="checkbox" id="DISK_Groups" class="checkboxy" value="Error"><p class="Priv">DISK Groups</p>
 												</label>
 										</div>
+										<div class="checkbox">
+												<label>
+													<input type="checkbox" id="Licen" class="checkboxy" value="Error"><p class="Priv"> Proxy License</p>
+												</label>
+										</div>
+										
 									</div>
 						<div class="col-sm-3">
 							<div class="checkbox">

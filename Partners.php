@@ -28,11 +28,16 @@
 
 													</div>
 													<div id="passphrase"class=" form-group row" >
-														<label  for="Pass" class=" col-sm-4 control-label">Passphrase(added to the sender too)</label>
+														<label  for="Pass" class=" col-sm-2 control-label">Passphrase</label>
 														<div class=" col-sm-4">
 															<input type="text" id="Pass" class="form-control " placeholder="Passphrase">
 														</div>
+														<label  for="Port" class=" col-sm-2 control-label">Port</label>
+														<div class=" col-sm-3">
+															<input type="text" id="Port" class="form-control "  value="<?php echo rand(15000,16000) ?>" disabled>
+														</div>
 													</div>
+													
 													<div class=" form-group row ">
 														<label  for="Partnerlist" class="col-sm-2 control-label">List</label>
 														<div class=" col-sm-10">
