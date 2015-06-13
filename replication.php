@@ -128,10 +128,11 @@
 						//console.log(data);
 						
 						$.each(jdata, function(i,v) {
-							console.log(jdata);
-							console.log(i)
+							
+							console.log(listid, listid2);
+							console.log(jdata[i][listid])
 							console.log(i.proxy)
-							consoleg.log(i[listid])
+							console.log(jdata[i][listid2])
 						 $('#'+listid).val(v[listid]); 
 						 $('#'+listid2).val(v[listid2]);
 						});
