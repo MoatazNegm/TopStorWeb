@@ -116,7 +116,7 @@
 					var cdata=jQuery.parseJSON(data);
 					replivalnew[showtime]=cdata.updated;
 				});
-				//console.log(replival,replivalnew);
+				console.log(replival[showtime],replivalnew[showtime]);
 				
 				if(replival[showtime] != replivalnew[showtime])
 				{ 
@@ -128,6 +128,7 @@
 						//console.log(data);
 						
 						$.each(jdata, function(i,v) {
+							console.log(jdata);
 						 $('#'+listid).val(v[listid]); 
 						 $('#'+listid2).val(v[listid2]);
 						});
@@ -395,7 +396,7 @@
 		$("#AddLicense").click( function (){ $.post("./pump.php", { req:"LicenseAdd", name:$('#License').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 	 });
 
-		$("#AddProxy").click( function (){ $.post("./pump.php", { req:"ProxyAdd", name:$('#Proxyurl').val()+" "+$('#type').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+		$("#AddProxy").click( function (){ $.post("./pump.php", { req:"ProxyAdd", name:$('#Proxyurl').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 	 });
 
 		$("#DelPartner").click( function (){ $.post("./pump.php", { req:"PartnerDel", name:$("#Partnerlist").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
