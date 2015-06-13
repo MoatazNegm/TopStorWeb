@@ -110,7 +110,7 @@
 				}
 			};
 
-			function refreshProxy(listid,fileloc,showtime,listid2) {
+			function refreshProxy(listid,fileloc,showtime,listid2,listid3) {
 				
 				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
 					var cdata=jQuery.parseJSON(data);
@@ -128,9 +128,9 @@
 						//console.log(data);
 						
 						$.each(jdata, function(i,v) {
-	
 						 $('#'+listid).val(v[listid]); 
 						 $('#'+listid2).val(v[listid2]);
+						 $('#'+listid3).val(v[listid3]);
 						});
 					});
 				}
@@ -349,7 +349,7 @@
 								
 									if( userpriv=="true" | curuser=="admin" ) { 
 										config = 0; status="Proxy"; $("h2").css("background-image","url('img/senders.png')").text("Proxy License");  $("option.variable").remove(); ;times= { "snaps":"33=f33", "periods":"30==erwe3:4f33", "sender":"43534:456:4563" }; $(".Proxy").show();replival={ "snaps":"33==:4f33", "periods":"30==erwe:4f3:43", "sender":"43534:456f356:563", "Proxy":"3242efwrwe"};Vollisttime="44:333:sdfsd";
-										refreshProxy("License","Data/Proxylist.txt","Proxy","Proxyurl");
+										refreshProxy("License","Data/Proxylist.txt","Proxy","Proxyurl","Alias");
 									}
 								});
 							};
