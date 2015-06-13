@@ -129,6 +129,9 @@
 						
 						$.each(jdata, function(i,v) {
 							console.log(jdata);
+							console.log(i)
+							console.log(i.proxy)
+							consoleg.log(i[listid])
 						 $('#'+listid).val(v[listid]); 
 						 $('#'+listid2).val(v[listid2]);
 						});
