@@ -1,1 +1,1 @@
-{"mezo":"o","cifsuser":"o","mezz":"o"}
+{"mezo":"o"}

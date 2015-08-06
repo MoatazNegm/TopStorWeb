@@ -1,1 +1,1 @@
-{"disk0":"da3","disk1":"da2","disk2":"da1","disk3":"da0"}
+{"disk0":"da2","disk1":"da1","disk2":"da0","disk3":"cd0","disk4":"ada0"}
