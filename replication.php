@@ -209,7 +209,7 @@
 				}
 				if(status=="Senders"){ //Replicate
 					refreshList3("GetPoolVollist","#Volsend","Data/Vollist.txt");
-					refreshList("RemoteGetSnaplist","#Senderslist","Data/listsnaps.txt","sender","#Volsend");
+					refreshList("GetSnaplist","#Senderslist","Data/listsnaps.txt","sender","#Volsend");
 				}
 				if(syscounter2==1000) { syscounter2=0; } else { syscounter2=syscounter2+1; }
 			}
@@ -383,9 +383,21 @@
 				//$(" tr.variable").remove();
 				
 			});
+			$("#Volsend").change(function() {
+				//Vollisttime="44:333:222";
+				times= { "snaps":"334563", "periods":"3rwe:43:433", "sender":"43534:4563563" };
+				//$(" tr.variable").remove();
+				
+			});
 			$("#Partner").change(function() {
 				//Vollisttime="44:333:222";
-				times= { "snaps":"333", "periods":"30==e43:433", "sender":"43534:46:4563" };
+				times= { "snaps":"3df33", "periods":"30==e43:467833", "sender":"435ddf34:46:4563" };
+				//$(" tr.variable").remove();
+				
+			});	
+			$("#Partnersend").change(function() {
+				//Vollisttime="44:333:222";
+				times= { "snaps":"3dgf33", "periods":"30==e43:767433", "sender":"43dfs534:46:4563" };
 				//$(" tr.variable").remove();
 				
 			});	
@@ -467,7 +479,7 @@
 			refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
 			refreshList3("GetPoolVollist","#Volsend","Data/Vollist.txt");
 			refreshList("GetSnaplist","#Replicatelist","Data/listsnaps.txt","snaps");
-			refreshList("GetSnaplist","#Senderslist","Data/listsnaps.txt","sender");
+			refreshList("GetSnaplist","#Senderslist","Data/listsnaps.txt","sender","#Volsend");
 			refreshList("RemoteGetPoolperiodlist","#all","Data/Remoteperiodlist.txt","periods");
 			$.post("./pump.php", { req: "GetPoolperiodlist", name:"a" });
 			$.post("./pump.php", { req: "GetPoolVollist", name:"a" });
