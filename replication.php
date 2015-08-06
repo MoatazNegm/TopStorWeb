@@ -383,9 +383,21 @@
 				//$(" tr.variable").remove();
 				
 			});
+			$("#Volsend").change(function() {
+				//Vollisttime="44:333:222";
+				times= { "snaps":"334563", "periods":"3rwe:43:433", "sender":"43534:4563563" };
+				//$(" tr.variable").remove();
+				
+			});
 			$("#Partner").change(function() {
 				//Vollisttime="44:333:222";
-				times= { "snaps":"333", "periods":"30==e43:433", "sender":"43534:46:4563" };
+				times= { "snaps":"3df33", "periods":"30==e43:467833", "sender":"435ddf34:46:4563" };
+				//$(" tr.variable").remove();
+				
+			});	
+			$("#Partnersend").change(function() {
+				//Vollisttime="44:333:222";
+				times= { "snaps":"3dgf33", "periods":"30==e43:767433", "sender":"43dfs534:46:4563" };
 				//$(" tr.variable").remove();
 				
 			});	
