@@ -1,0 +1,3 @@
+cannot rollback to 'Data/forreplic@mezo..1438113468': clones of previous snapshots exist
+use '-R' to force deletion of the following clones and dependents:
+Data/forreplic/%recv
