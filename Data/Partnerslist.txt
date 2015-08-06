@@ -1,1 +1,1 @@
-[{"name":"10.3.2.8","type":"receiver"},{"name":"10.3.2.7","type":"DualWay"}]
+[{"name":"10.3.2.8","type":"sender","proxy":"false","passphrase":"admin"},{"name":"1032_8","type":"sender","proxy":"true","passphrase":"Mezo2"}]

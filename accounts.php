@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php session_start(); 
  if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/des19/Login.php');}
- 
 ?>
 <html>
 	<?php $men = 1; include "header.html"; ?>
@@ -190,7 +189,7 @@
 				}; 
 			});
 			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
-			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val(), passwd:$("#UserPass").val()+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){
+			$("#UnixAddUser").click( function (){ $.post("./pump2.php", { req:"UnixAddUser", name:$("#User").val(), passwd:$("#UserPass").val()+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){
 				 //refreshUserList(); 
 				 });
 			});

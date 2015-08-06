@@ -1,8 +1,2 @@
-creating Snapshot Data/nfsnas Minutely.2.3.na.na....
-cannot open 'Data/nfsnas': dataset does not exist
-usage:
-	snapshot [-r] [-o property=value] ... <filesystem@snapname|volume@snapname> ...
-
-For the property list, run: zfs set|get
-
-For the delegated permission list, run: zfs allow|unallow
+creating Snapshot Data/forreplic hello.....
+Sun Jul 26 18:37:51 EEST 2015: DONE...Snapshot Data/forreplic@hello..1437925071 is created
