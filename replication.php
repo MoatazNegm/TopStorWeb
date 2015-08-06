@@ -209,7 +209,7 @@
 				}
 				if(status=="Senders"){ //Replicate
 					refreshList3("GetPoolVollist","#Volsend","Data/Vollist.txt");
-					refreshList("RemoteGetSnaplist","#Senderslist","Data/listsnaps.txt","sender","#Volsend");
+					refreshList("GetSnaplist","#Senderslist","Data/listsnaps.txt","sender","#Volsend");
 				}
 				if(syscounter2==1000) { syscounter2=0; } else { syscounter2=syscounter2+1; }
 			}
@@ -467,7 +467,7 @@
 			refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
 			refreshList3("GetPoolVollist","#Volsend","Data/Vollist.txt");
 			refreshList("GetSnaplist","#Replicatelist","Data/listsnaps.txt","snaps");
-			refreshList("GetSnaplist","#Senderslist","Data/listsnaps.txt","sender");
+			refreshList("GetSnaplist","#Senderslist","Data/listsnaps.txt","sender","#Volsend");
 			refreshList("RemoteGetPoolperiodlist","#all","Data/Remoteperiodlist.txt","periods");
 			$.post("./pump.php", { req: "GetPoolperiodlist", name:"a" });
 			$.post("./pump.php", { req: "GetPoolVollist", name:"a" });
