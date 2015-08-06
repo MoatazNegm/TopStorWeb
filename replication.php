@@ -466,8 +466,8 @@
 			$.post("./pump.php", { req:"Partnerslist" });
 			refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
 			refreshList3("GetPoolVollist","#Volsend","Data/Vollist.txt");
-			refreshList("RemoteGetSnaplist","#Replicatelist","Data/listsnaps.txt","snaps");
-			refreshList("RemoteGetSnaplist","#Senderslist","Data/listsnaps.txt","sender");
+			refreshList("GetSnaplist","#Replicatelist","Data/listsnaps.txt","snaps");
+			refreshList("GetSnaplist","#Senderslist","Data/listsnaps.txt","sender");
 			refreshList("RemoteGetPoolperiodlist","#all","Data/Remoteperiodlist.txt","periods");
 			$.post("./pump.php", { req: "GetPoolperiodlist", name:"a" });
 			$.post("./pump.php", { req: "GetPoolVollist", name:"a" });
