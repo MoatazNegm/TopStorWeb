@@ -223,7 +223,10 @@
 			$("#ADsubmit").click( function() {
 				if($("#Domtype").val()=="Domain") {
 					$.post("./pump.php", { req:"DomainChange", name:$("#DomName").val()+" "+$("#Admin").val()+" "+"\""+$("#Pass").val()+"\""+" "+$("#DCserver").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
-				}
+				} 
+				else {
+					$.post("./pump.php", { req:"DomainChangeWorkgrp", name:$("#DomName").val()+" "+$("#Admin").val()+" "+"\""+$("#Pass").val()+"\""+" "+$("#DCserver").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+				} 
 			});
 			setInterval('refreshall()', 500);
 			refreshall();
