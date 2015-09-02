@@ -127,7 +127,7 @@
 						};
 					
 						if( userpriv=="true" | curuser=="admin" ) {
-							config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs");updatelogarea(); $(".Logs").show();
+							config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs");logtime="4466:44:34534";updatelogarea(); $(".Logs").show();
 						}
 					});
 				};

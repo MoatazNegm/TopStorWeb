@@ -1,1 +1,1 @@
-GetPoolperiodlist a
+GetDisklist Data/disklist.txt
