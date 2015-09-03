@@ -120,7 +120,9 @@ h4 span {
 	-webkit-transform:scale(1.2); /* Chrome, Safari, Opera */
 	transform:scale(1.2); /* Standard syntax */
 }
-
+.Proxya {
+	background-image:url('../img/Proxy.png');
+}
 .ADa {
 	background-image:url('../img/AD.png');
 }
