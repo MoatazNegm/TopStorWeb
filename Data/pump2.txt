@@ -1,1 +1,1 @@
-UnixAddUser mezo 123 admin
+UnixAddUser mezo2 123 admin
