@@ -1,1 +1,1 @@
-[{"Pool":"Data","name":"forreplic","volsize":"2048","volact":"0.067383","available":"2047.9","useddata":"0.074512","usedsnaps":"0.026299","crdate":"1-Aug-2015","compress":"1.00x","dedup":"on","quota":"2048","protocol":"CIFS"}]
+[{"Pool":"Data","name":"clonedimg","volsize":"25600","volact":"4476.8","available":"21453","useddata":"4147","usedsnaps":"0","crdate":"24-Sep-2015","compress":"1.07x","dedup":"on","quota":"25600","protocol":"NFS"}]

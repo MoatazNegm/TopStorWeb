@@ -1,1 +1,5 @@
-DONE...volume nemsh is deleted
+Stopping mountd.
+Starting mountd.
+Stopping nfsd.
+NFSv4 is disabled
+Starting nfsd.

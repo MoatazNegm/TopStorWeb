@@ -1,1 +1,1 @@
-[{"name":"10.3.2.8","type":"sender","proxy":"false","passphrase":"admin"},{"name":"1032_8","type":"sender","proxy":"true","passphrase":"Mezo2"}]
+[{"name":"10.3.2.8","type":"sender","proxy":"false","passphrase":"admin"}]
