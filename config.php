@@ -222,7 +222,7 @@ fclose($myfile);
 				$(".checkboxy").each(function(){ $(this).prop("checked",false)});
 				proptime="44:54333:232";
 				});
-			setInterval('refreshall()', 500);
+			setInterval('refreshall()', 2000);
 			refreshUserList();
 			refreshall();
 		</script>

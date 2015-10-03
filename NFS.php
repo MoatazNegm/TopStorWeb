@@ -134,7 +134,7 @@
 								</div>
 								<div class="row">
 									<div  id="Voldelete" class="col-sm-offset-3 spacer-sm">
-										<button type="submit" id="VoldeleteButton" class="btn btn-default  col-sm-2 "   data-toggle="tooltip" data-placement="bottom" title="DeleteVol">Delete Vol
+										<button type="button" id="VoldeleteButton" class="btn btn-default  col-sm-2 "   data-toggle="tooltip" data-placement="bottom" title="DeleteVol">Delete Vol
 										</button>
 									</div>
 									<div class=" col-sm-offset-3 spacer-sm" id="disableddiv2">
@@ -178,7 +178,7 @@
 			<div class="row">
 				<div class=" col-sm-offset-11">
 					
-					<button type="submit" class=" btn btn-default  finish" data-toggle="tooltip" data-placement="top" title="submit values">Finish</button>
+					<button type="button" class=" btn btn-default  finish" data-toggle="tooltip" data-placement="top" title="submit values">Finish</button>
 					
 				</div>
 			</div>

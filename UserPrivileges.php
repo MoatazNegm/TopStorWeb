@@ -114,13 +114,13 @@
 			<div class=" row">
 				<div class=" col-sm-6">
 					<div class=" form-group row" id="SnapshotCreatediv">
-						<button type="submit" class="btn btn-default col-sm-offset-5 col-sm-6 SnapshotCreate " id="SubmitPriv" data-toggle="tooltip" data-placement="bottom" title="close window">submit</button>
+						<button type="button" class="btn btn-default col-sm-offset-5 col-sm-6 SnapshotCreate " id="SubmitPriv" data-toggle="tooltip" data-placement="bottom" title="close window">submit</button>
 					</div>
 				</div>
 				
 				<div class=" col-sm-6">
 					<div class="form-group row ">
-							<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-7 finish" data-toggle="tooltip" data-placement="top"  title="submit values">Finish</button>
+							<button type="button" class="btn btn-default col-sm-offset-3 col-sm-7 finish" data-toggle="tooltip" data-placement="top"  title="submit values">Finish</button>
 					</div>
 				</div>
 			</div>

@@ -69,7 +69,7 @@
 													</div>
 													<div class="form-group row">
 														<div class="row">
-															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-7 submitb" data-toggle="tooltip" data-placement="top" title="submit values">Submit</button>
+															<button type="button" class="btn btn-default col-sm-offset-3 col-sm-7 submitb" data-toggle="tooltip" data-placement="top" title="submit values">Submit</button>
 														</div>
 													</div>
 												</div>
@@ -79,7 +79,7 @@
 															<textarea class="form-control" rows="3"></textarea>
 														</div>
 														<div class="row">
-															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-7 finish" data-toggle="tooltip" data-placement="bottom" title="close window">Finish</button>
+															<button type="button" class="btn btn-default col-sm-offset-3 col-sm-7 finish" data-toggle="tooltip" data-placement="bottom" title="close window">Finish</button>
 														</div>
 													</div>
 												</div>
@@ -124,11 +124,11 @@
 												</div>
 												<div class="  col-sm-2">
 													<div class="form-group row">
-														<button type="submit" class="btn btn-default  col-sm-10 adduser"  data-toggle="tooltip" data-placement="top" title="add user">Add User</button>
+														<button type="button" class="btn btn-default  col-sm-10 adduser"  data-toggle="tooltip" data-placement="top" title="add user">Add User</button>
 													</div>
 													<div class="form-group row">
 														<div class="row">
-															<button type="submit" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="remove user">Remove User</button>
+															<button type="button" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="remove user">Remove User</button>
 														</div>
 													</div>
 												</div>
@@ -138,7 +138,7 @@
 															<textarea class="form-control" rows="3"></textarea>
 														</div>
 														<div class="row">
-															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-7 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
+															<button type="button" class="btn btn-default col-sm-offset-3 col-sm-7 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
 														</div>
 													</div>
 												</div>
@@ -183,11 +183,11 @@
 												</div>
 												<div class="  col-sm-2">
 													<div class="form-group row">
-														<button type="submit" class="btn btn-default  col-sm-10 adduser"  data-toggle="tooltip" data-placement="top" title="add user">Add User</button>
+														<button type="button" class="btn btn-default  col-sm-10 adduser"  data-toggle="tooltip" data-placement="top" title="add user">Add User</button>
 													</div>
 													<div class="form-group row">
 														<div class="row">
-															<button type="submit" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="remove user">Remove User</button>
+															<button type="button" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="remove user">Remove User</button>
 														</div>
 													</div>
 												</div>
@@ -197,7 +197,7 @@
 															<textarea class="form-control" rows="3"></textarea>
 														</div>
 														<div class="row">
-															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-7 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
+															<button type="button" class="btn btn-default col-sm-offset-3 col-sm-7 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
 														</div>
 													</div>
 												</div>

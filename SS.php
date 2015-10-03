@@ -67,7 +67,7 @@
 												</div>
 											</div>
 										</div>
-										<div class="row"><button type="submit" class="btn btn-default col-sm-offset-2 col-sm-8 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
+										<div class="row"><button type="button" class="btn btn-default col-sm-offset-2 col-sm-8 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
 										</div>														
 									
 										

@@ -89,7 +89,7 @@
 															<div class="  col-sm-8">
 																<select   size="3" id="Hourlylist" class="  separatortop form-control col-sm-4 fonting " ></select>
 															</div>
-															<button type="submit" class="btn btn-default col-sm-offset- col-sm-2 perioddelete" id="DeleteHourly" data-toggle="tooltip" data-placement="bottom" title="DeleteHourly">Delete
+															<button type="button" class="btn btn-default col-sm-offset- col-sm-2 perioddelete" id="DeleteHourly" data-toggle="tooltip" data-placement="bottom" title="DeleteHourly">Delete
 																</button>
 														</div>
 													
@@ -111,7 +111,7 @@
 															<div class="  col-sm-8">
 																<select   size="3" id="Minutelylist" class="  separatortop form-control col-sm-4 fonting " ></select>
 															</div>
-															<button type="submit" class="btn btn-default col-sm-offset- col-sm-2 perioddelete" id="DeleteMinutely" data-toggle="tooltip" data-placement="bottom" title="DeleteMinutely">Delete
+															<button type="button" class="btn btn-default col-sm-offset- col-sm-2 perioddelete" id="DeleteMinutely" data-toggle="tooltip" data-placement="bottom" title="DeleteMinutely">Delete
 																</button>
 														</div>
 													
@@ -141,7 +141,7 @@
 															<div class="  col-sm-8">
 																<select   size="3" id="Weeklylist" class="  separatortop form-control col-sm-4 fonting " ></select>
 															</div>
-															<button type="submit" class="btn btn-default col-sm-offset- col-sm-2 perioddelete" id="DeleteWeekly" data-toggle="tooltip" data-placement="bottom" title="DeleteWeekly">Delete
+															<button type="button" class="btn btn-default col-sm-offset- col-sm-2 perioddelete" id="DeleteWeekly" data-toggle="tooltip" data-placement="bottom" title="DeleteWeekly">Delete
 																</button>
 														</div>
 													
@@ -158,9 +158,9 @@
 													</div>
 												</div>
 												<div class="form-group col-sm-offset-1">
-													<button type="submit" class="btn btn-default " id="DeleteSnapshot" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot">Delete
+													<button type="button" class="btn btn-default " id="DeleteSnapshot" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot">Delete
 													</button>
-													<button type="submit" class="btn btn-danger col-sm-offset-3 " id="RollbackSnapshot" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot"> Rollback to Snapshot
+													<button type="button" class="btn btn-danger col-sm-offset-3 " id="RollbackSnapshot" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot"> Rollback to Snapshot
 													</button>
 												</form>
 											</div>
@@ -177,13 +177,13 @@
 									<div class=" row">
 										<div class=" col-sm-6">
 											<div class=" form-group row" id="SnapshotCreatediv">
-												<button type="submit" class="btn btn-default col-sm-offset-4 col-sm-6 SnapshotCreate " id="SnapshotCreate" data-toggle="tooltip" data-placement="bottom" title="close window">submit</button>
+												<button type="button" class="btn btn-default col-sm-offset-4 col-sm-6 SnapshotCreate " id="SnapshotCreate" data-toggle="tooltip" data-placement="bottom" title="close window">submit</button>
 											</div>
 										</div>
 										
 										<div class=" col-sm-6">
 											<div class="form-group row ">
-													<button type="submit" id="Replicatefinish" class="btn btn-default col-sm-offset-2 col-sm-7 finish" data-toggle="tooltip" data-placement="top" title="submit values">Finish</button>
+													<button type="button" id="Replicatefinish" class="btn btn-default col-sm-offset-2 col-sm-7 finish" data-toggle="tooltip" data-placement="top" title="submit values">Finish</button>
 											</div>
 										</div>
 									</div>

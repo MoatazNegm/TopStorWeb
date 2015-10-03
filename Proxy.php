@@ -31,16 +31,16 @@
 												</div>
 												<div class="  col-sm-2">
 													<div class="form-group row">
-														<button id="AddLicense" type="submit" class="btn btn-default  col-sm-10 adduser"  data-toggle="tooltip" data-placement="top" title="add license">Add License</button>
+														<button id="AddLicense" type="button" class="btn btn-default  col-sm-10 adduser"  data-toggle="tooltip" data-placement="top" title="add license">Add License</button>
 													</div>
 													<div class="form-group row">
 														<div class="">
-															<button id="AddProxy" type="submit" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="add Proxy">Add Proxy</button>
+															<button id="AddProxy" type="button" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="add Proxy">Add Proxy</button>
 														</div>
 													</div>
 													<div class="form-group row">
 														<div class="">
-															<button id="AddAlias" type="submit" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="add Alias">Add Alias</button>
+															<button id="AddAlias" type="button" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="add Alias">Add Alias</button>
 														</div>
 													</div>
 
@@ -52,7 +52,7 @@
 															<textarea id="Proxystatus" class="form-control" rows="3"></textarea>
 														</div>
 														<div class="row">
-															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-7 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
+															<button type="button" class="btn btn-default col-sm-offset-3 col-sm-7 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
 														</div>
 													</div>
 												</div>

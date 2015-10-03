@@ -47,11 +47,11 @@
 												</div>
 												<div class="  col-sm-2">
 													<div class="form-group row">
-														<button id="AddPartner" type="submit" class="btn btn-default  col-sm-10 adduser"  data-toggle="tooltip" data-placement="top" title="add partner">Add Partner</button>
+														<button id="AddPartner" type="button" class="btn btn-default  col-sm-10 adduser"  data-toggle="tooltip" data-placement="top" title="add partner">Add Partner</button>
 													</div>
 													<div class="form-group row">
 														<div class="">
-															<button id="DelPartner" type="submit" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="remove Partner">Remove Partner</button>
+															<button id="DelPartner" type="button" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="remove Partner">Remove Partner</button>
 														</div>
 													</div>
 													
@@ -63,7 +63,7 @@
 															<textarea id="Partnersstatus" class="form-control" rows="3"></textarea>
 														</div>
 														<div class="row">
-															<button type="submit" class="btn btn-default col-sm-offset-3 col-sm-7 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
+															<button type="button" class="btn btn-default col-sm-offset-3 col-sm-7 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
 														</div>
 													</div>
 												</div>

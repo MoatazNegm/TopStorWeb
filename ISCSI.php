@@ -24,15 +24,15 @@
 											</div>
 											<div class= "col-sm-1">	
 												<div class="form-group row">
-													<button type="submit" class="btn btn-default  col-sm-10 addclient"  data-toggle="tooltip" data-placement="top" title="add client">Add Client</button>
+													<button type="button" class="btn btn-default  col-sm-10 addclient"  data-toggle="tooltip" data-placement="top" title="add client">Add Client</button>
 												</div>
 												<div class="form-group row">
-													<button type="submit" class="btn btn-default  col-sm-10 remclient"  data-toggle="tooltip" data-placement="top" title="remove client">Remove</button>
+													<button type="button" class="btn btn-default  col-sm-10 remclient"  data-toggle="tooltip" data-placement="top" title="remove client">Remove</button>
 												</div>
 											</div>
 											<div class=" col-sm-3">
 												<div class=" form-group row middlemargin">
-													<button type="submit" class="btn btn-default  col-sm-12 " data-toggle="tooltip" data-placement="bottom" title="Assign luns">assign</button>
+													<button type="button" class="btn btn-default  col-sm-12 " data-toggle="tooltip" data-placement="bottom" title="Assign luns">assign</button>
 												</div>
 											</div>
 											<div class=" col-sm-2 ">
@@ -52,10 +52,10 @@
 											</div>
 											<div class= "col-sm-1">	
 												<div class="form-group row">
-													<button type="submit" class="btn btn-default  col-sm-10 addiqn"  data-toggle="tooltip" data-placement="top" title="add client">Add IQN</button>
+													<button type="button" class="btn btn-default  col-sm-10 addiqn"  data-toggle="tooltip" data-placement="top" title="add client">Add IQN</button>
 												</div>
 												<div class="form-group row">
-													<button type="submit" class="btn btn-default  col-sm-10 remiqn"  data-toggle="tooltip" data-placement="top" title="remove IQN">delete</button>
+													<button type="button" class="btn btn-default  col-sm-10 remiqn"  data-toggle="tooltip" data-placement="top" title="remove IQN">delete</button>
 												</div>
 											</div>
 											<div class=" col-sm-3">
@@ -76,7 +76,7 @@
 											</div>
 											<div class=" col-sm-3">
 												<div class=" form-group row middlemargin">
-													<button type="submit" class="btn btn-default  col-sm-12 " data-toggle="tooltip" data-placement="bottom" title="Assign luns">assign</button>
+													<button type="button" class="btn btn-default  col-sm-12 " data-toggle="tooltip" data-placement="bottom" title="Assign luns">assign</button>
 												</div>
 										</div>
 											<div class=" col-sm-2 ">
@@ -91,14 +91,14 @@
 												<div class="form-group row">
 												</div>
 												<div class="form-group row">
-													<button type="submit" class="btn btn-default  col-sm-10 remiqn"  data-toggle="tooltip" data-placement="top" title="remove IQN">delete</button>
+													<button type="button" class="btn btn-default  col-sm-10 remiqn"  data-toggle="tooltip" data-placement="top" title="remove IQN">delete</button>
 												</div>
 											</div>
 											<div class=" col-sm-3">
 												<div class="form-group row">
 												</div>
 												<div class="form-group row ">
-														<button type="submit" class="btn btn-default col-sm-offset-1 col-sm-9 finish" data-toggle="tooltip" data-placement="top" title="submit values">Finish</button>
+														<button type="button" class="btn btn-default col-sm-offset-1 col-sm-9 finish" data-toggle="tooltip" data-placement="top" title="submit values">Finish</button>
 												</div>
 											</div>
 										</div>

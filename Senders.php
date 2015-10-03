@@ -36,9 +36,9 @@
 													</div>
 												</div>
 												<div class="form-group col-sm-offset-1">
-													<button type="submit" class="btn btn-default " id="DeleteSnapshotsend" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot">Delete
+													<button type="button" class="btn btn-default " id="DeleteSnapshotsend" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot">Delete
 													</button>
-													<button type="submit" class="btn btn-danger col-sm-offset-3 " id="RollbackSnapshotsend" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot"> Rollback to Snapshot
+													<button type="button" class="btn btn-danger col-sm-offset-3 " id="RollbackSnapshotsend" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot"> Rollback to Snapshot
 													</button>
 												</form>
 											</div>
@@ -56,7 +56,7 @@
 										
 										<div class=" col-sm-6">
 											<div class="form-group row ">
-													<button type="submit" id="Senderfinish" class="btn btn-default col-sm-offset-2 col-sm-7 finish" data-toggle="tooltip" data-placement="top" title="submit values">Finish</button>
+													<button type="button" id="Senderfinish" class="btn btn-default col-sm-offset-2 col-sm-7 finish" data-toggle="tooltip" data-placement="top" title="submit values">Finish</button>
 											</div>
 										</div>
 									</div>
