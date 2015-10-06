@@ -44,6 +44,8 @@
 			var dl =[[[0,0]],[[0,0]]];
 			var plotbw; var plotrs; var plotws; var plotsvct; var plotqlen; var plotdl;
 			var traffictime = "55:55:55";
+			var trafficnewtime = "new 3444";
+			var disksval="hi"
 			var sineRenderer = function() {
 				//var data = [[]];
 				for (var i=0; i<13; i+=0.5) {
@@ -182,10 +184,11 @@
 			datemod=betweend[(nufiles-1)];
 		
 		  traffictime="newtime"
-			
+		}	
 		
 			if(traffictime==trafficnewtime) { //console.log("traffic not changed"); 
-			} else { 
+			} 
+			else { 
 				count=1;
 				betweend.forEach(function(datelog){
 					$.get("requestdata.php", { file: 'Data/ctr.log.'+datelog }, function(data){
@@ -399,7 +402,7 @@
 		});
 					plotflag = 1;
 				};
-		}
+		
 	}
 	
 					
@@ -476,7 +479,9 @@
 		$(".timec").change(function(){
 					traffictime="44:44:34";updatechartarea();											
 		});
-
+$("#Disks").change(function(){
+			traffictime="disk changes";updatechartarea();
+		});
 		$(".traffic").change( function () { traffictime="44:44:34"; updatechartarea();});
 		$(".checkboxy").change (function(){ updatelogarea();});
 		refreshList("GetDisklist","#Disks","Data/disklist.txt");
