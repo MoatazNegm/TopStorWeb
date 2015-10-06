@@ -32,13 +32,12 @@
 		<script src="js/jqplot.dateAxisRenderer.min.js"></script>
 		
 		<script>
+			var datalogf = [];	
 			var plotflag = 0;
 			var config = 1;
 			var disktime="23:3434:34534";
 			var disktimenew="34543:43543:34";
 			var logtime="34543:43543:34"; var logtimenew="32423:er:34";
-			var objc;
-			var deviceobj;
 			var dl =[[[0,0]],[[0,0]]];
 			var plotbw; var plotrs; var plotws; var plotsvct; var plotqlen; var plotdl;
 			var traffictime = "55:55:55";
@@ -145,10 +144,28 @@
 		var miny = 1000000;var bwminy = 1000000;var rsminy = 1000000;var wsminy = 1000000;var svctminy = 1000000;var qlenminy = 1000000;
 		var tm ,splitstime;
 		var tm2 , tme ,splitstimee;
+		var betweend = [];
 		
 		var qlen=[[]];var rs=[[]];var ws=[[]];var dl=[[]];var bw=[[]];var svct=[[]];
 		var seriesarr="";
-		$.get("requestdate.php", { file: 'Data/ctr.log' }, function(data){
+		todayd=new Date();
+		startd=new Date ($("#Sdatec").val()); //
+		endd=new Date ($("#Edatec").val()); //
+		if (todayd < endd) { endd = todayd ; }
+		startd.setDate(startd.getDate() + 1)
+		endd.setDate(endd.getDate() + 1) 
+    while (startd <= endd) {
+			fixbetween=startd.toISOString().split("T")[0].split("-");
+			formatfix=fixbetween[0].split("20")[1]+fixbetween[1]+fixbetween[2]
+			betweend.push(formatfix);
+      startd.setDate(startd.getDate() + 1);
+      //console.log (betweend);
+		}
+		
+		count=1;
+		nufiles=betweend.length
+		datemod=betweend[(nufiles-1)];
+		$.get("requestdate.php", { file: 'Data/ctr.log'+datemod }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			trafficnewtime=objdate.timey;
 		//	console.log("timey",trafficnewtime);
@@ -157,13 +174,29 @@
 		
 		if(traffictime==trafficnewtime) { //console.log("traffic not changed"); 
 		} else { 
+			count=1;
+			betweend.forEach(function(datelog){
+				$.get("requestdata.php", { file: 'Data/ctr.log'+datelog }, function(data){
+					if ( count == 1 ) {
+						datalogf = jQuery.parseJSON(data);
+						disks=datalogf.device.length
+						count=count+1;
+					} else {
+						tmpdatalogf = jQuery.parseJSON(data);
+						if (datalogf.device.length == tmpdatalogf.device.length) {
+							for ( var k in datalogf.device) {
+							datalogf.device[k].stats[0].Dates.push(tmpdatalogf.device[k].stats[0].Dates[0]);
+							}
+						}
+					}
+				});
+			});
 			//console.log ("traffic changed"); 
 			traffictime=trafficnewtime; 
-			$.get("requestdata.php", { file: 'Data/ctr.log' }, function(data){
-				objc = jQuery.parseJSON(data);
+			
 				var device = $("#Disks").val();
-				
-				deviceobj= $.grep(objc.device,function(e){return e.name==device});
+				var deviceobj=[];
+				deviceobj= $.grep(datalogf.device,function(e){return e.name==device});
 				
 				for (var k in deviceobj[0].stats[0].Dates) { 
 					for (var y in deviceobj[0].stats[0].Dates[k].times) {
@@ -176,6 +209,7 @@
 						 tme.setHours(splitstimee[0],splitstimee[1],0);
 					   tm2= new Date (deviceobj[0].stats[0].Dates[k].Date+" "+deviceobj[0].stats[0].Dates[k].times[y].time);
 						 //console.log("post",tm); 
+						
 						if((new Date(tm) < new Date(tm2)) && (new Date(tme) > new Date(deviceobj[0].stats[0].Dates[k].Date)) ) {
 								//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].bw );
 								bw[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].bw]);
@@ -352,9 +386,9 @@
 				}]
 	});
 				plotflag = 1;
-			});
+			};
 		}
-	}
+	
 					
 			
 			
