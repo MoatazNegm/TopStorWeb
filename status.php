@@ -168,17 +168,17 @@
 				startd.setDate(startd.getDate() + 1);
 				//console.log (betweend);
 			}
-		}
-		count=1;
-		nufiles=betweend.length
-		datemod=betweend[(nufiles-1)];
-		$.get("requestdate.php", { file: 'Data/ctr.log.'+datemod }, function(data){
-			var objdate = jQuery.parseJSON(data);
-			trafficnewtime=objdate.timey;
-		//	console.log("timey",trafficnewtime);
-			
-		});
 		
+			count=1;
+			nufiles=betweend.length
+			datemod=betweend[(nufiles-1)];
+			$.get("requestdate.php", { file: 'Data/ctr.log.'+datemod }, function(data){
+				var objdate = jQuery.parseJSON(data);
+				trafficnewtime=objdate.timey;
+			//	console.log("timey",trafficnewtime);
+				
+			});
+		}
 		if(traffictime==trafficnewtime) { //console.log("traffic not changed"); 
 		} else { 
 			count=1;
