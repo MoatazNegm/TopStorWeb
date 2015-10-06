@@ -156,6 +156,8 @@
 		if ( startd == oldSdatec  && endd == oldEdatec ) {  //nothing to do; 
 		} else {
 			betweend = [];
+			oldSdatec = startd;
+			oldEdatec = endd;
 			if (todayd < endd) { endd = todayd ; }
 			startd.setDate(startd.getDate() + 1)
 			endd.setDate(endd.getDate() + 1) 
