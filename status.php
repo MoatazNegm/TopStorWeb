@@ -165,7 +165,7 @@
 		count=1;
 		nufiles=betweend.length
 		datemod=betweend[(nufiles-1)];
-		$.get("requestdate.php", { file: 'Data/ctr.log'+datemod }, function(data){
+		$.get("requestdate.php", { file: 'Data/ctr.log.'+datemod }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			trafficnewtime=objdate.timey;
 		//	console.log("timey",trafficnewtime);
@@ -176,7 +176,7 @@
 		} else { 
 			count=1;
 			betweend.forEach(function(datelog){
-				$.get("requestdata.php", { file: 'Data/ctr.log'+datelog }, function(data){
+				$.get("requestdata.php", { file: 'Data/ctr.log.'+datelog }, function(data){
 					if ( count == 1 ) {
 						datalogf = jQuery.parseJSON(data);
 						disks=datalogf.device.length
