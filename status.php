@@ -176,7 +176,7 @@
 		} else { 
 			count=1;
 			betweend.forEach(function(datelog){
-				$.get("requestdata.php", { file: 'Data/ctr.log'+datelog }, function(data){
+				$.get("requestdata.php", { file: 'Data/ctr.log.'+datelog }, function(data){
 					if ( count == 1 ) {
 						datalogf = jQuery.parseJSON(data);
 						disks=datalogf.device.length
