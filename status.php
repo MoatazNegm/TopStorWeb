@@ -32,7 +32,9 @@
 		<script src="js/jqplot.dateAxisRenderer.min.js"></script>
 		
 		<script>
-			var datalogf = [];	
+			var datalogf = [];
+			var betweend = [];
+			var oldSdatec; var oldEdatec;
 			var plotflag = 0;
 			var config = 1;
 			var disktime="23:3434:34534";
@@ -151,17 +153,20 @@
 		todayd=new Date();
 		startd=new Date ($("#Sdatec").val()); //
 		endd=new Date ($("#Edatec").val()); //
-		if (todayd < endd) { endd = todayd ; }
-		startd.setDate(startd.getDate() + 1)
-		endd.setDate(endd.getDate() + 1) 
-    while (startd <= endd) {
-			fixbetween=startd.toISOString().split("T")[0].split("-");
-			formatfix=fixbetween[0].split("20")[1]+fixbetween[1]+fixbetween[2]
-			betweend.push(formatfix);
-      startd.setDate(startd.getDate() + 1);
-      //console.log (betweend);
+		if ( startd == oldSdatec  && endd == oldEdatec ) {  //nothing to do; 
+		} else {
+			betweend = [];
+			if (todayd < endd) { endd = todayd ; }
+			startd.setDate(startd.getDate() + 1)
+			endd.setDate(endd.getDate() + 1) 
+			while (startd <= endd) {
+				fixbetween=startd.toISOString().split("T")[0].split("-");
+				formatfix=fixbetween[0].split("20")[1]+fixbetween[1]+fixbetween[2]
+				betweend.push(formatfix);
+				startd.setDate(startd.getDate() + 1);
+				//console.log (betweend);
+			}
 		}
-		
 		count=1;
 		nufiles=betweend.length
 		datemod=betweend[(nufiles-1)];
