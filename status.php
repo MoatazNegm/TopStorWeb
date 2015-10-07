@@ -157,7 +157,7 @@
 		startd=new Date ($("#Sdatec").val()); //
 		endd=new Date ($("#Edatec").val()); //
 		if ( startd.toString() == oldSdatec  && endd.toString() == oldEdatec ) {  console.log("check new log");
-			if (endd => todayd) { 
+			if (endd => todayd) { console.log(" now checkking") 
 				$.get("requestdate.php", { file: 'Data/ctr.log.'+datemod }, function(data){
 				var objdate = jQuery.parseJSON(data);
 				trafficnewtime=objdate.timey;
@@ -182,7 +182,6 @@
 		
 			nufiles=betweend.length
 			datemod=betweend[(nufiles-1)];
-		
 		  traffictime="newtime"
 		}	
 		
@@ -206,7 +205,7 @@
 						}
 					});
 				});
-				//console.log ("traffic changed"); 
+				console.log ("traffic changed"); 
 				traffictime=trafficnewtime; 
 				
 					var device = $("#Disks").val();
