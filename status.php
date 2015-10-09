@@ -186,16 +186,17 @@
 			nufiles=betweend.length
 			datemod=betweend[(nufiles-1)];
 			
-		  trafficnewtime="newtime"; 
-		  traffictime="oldtime"; 
+		  trafficnewtime="newtime"
+		  traffictime="oldtime"
 		}	
 		
 			if( traffictime == trafficnewtime ) { console.log("traffic not changed"); 
 			} 
 			else { 
 				count=1;
-				if ( oldEdatec != newEdatec || oldSdatec != oldSdatec ) {
-					console.log("traffic changed");
+				console.log("traffic changed");
+				if ( oldEdatec != newEdatec || oldSdatec != newSdatec ) {
+				console.log("new limits");
 					oldSdatec = newSdatec ;
 					oldEdatec = newEdatec ;
 					datalogf = [];
@@ -218,7 +219,7 @@
 				};
 				//console.log ("traffic changed");
 				if ( endd => todayd) {
-					$.get("requestdata.php", { file: 'Data/ctr.log.'+datemod }, function(data){
+					$.get("requestlog.php", { file: 'Data/ctr.log.'+datemod }, function(data){
 						tmpdatalogf = jQuery.parseJSON(data);
 						if (datalogf.device.length == tmpdatalogf.device.length) {
 							for ( var k in datalogf.device) {
