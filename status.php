@@ -158,8 +158,8 @@
 		startd=new Date ($("#Sdatec").val()); //
 		endd=new Date ($("#Edatec").val()); //
 		if ( endd > todayd) { endd = todayd ; };
-		newSdatec = startd.toString() ;
-		newEdatec = endd.toString() ;
+		newSdatec = startd.toDateString() ;
+		newEdatec = endd.toDateString() ;
 		if ( newSdatec == oldSdatec  && newEdatec == oldEdatec ) {  console.log("check new log");
 			if (endd => todayd) { 
 				$.get("requestdate.php", { file: 'Data/ctr.log.'+datemod }, function(data){
@@ -196,7 +196,7 @@
 				count=1;
 				console.log("traffic changed");
 				if ( oldEdatec != newEdatec || oldSdatec != newSdatec ) {
-				console.log("new limits");
+				console.log("new limits",oldEdatec,newEdatec,oldSdatec,newSdatec);
 					oldSdatec = newSdatec ;
 					oldEdatec = newEdatec ;
 					datalogf = [];
