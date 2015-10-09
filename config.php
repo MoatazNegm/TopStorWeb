@@ -81,6 +81,7 @@ fclose($myfile);
 		</form>	
 
 		<script src="js/bootstrap-timepicker.js"></script>
+		<script src="js/dropzone.js"></script>
 		<script>
 			var needupdate=1
 			var proptime="55:55:55";
