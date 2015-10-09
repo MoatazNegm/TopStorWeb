@@ -34,7 +34,8 @@
 		<script>
 			var datalogf = [];
 			var betweend = [];
-			var oldSdatec; var oldEdatec;
+			var oldSdatec="1"; var oldEdatec="2";
+			var newSdatec="3"; var newEdatec="4";
 			var datemod="";
 			var plotflag = 0;
 			var config = 1;
@@ -156,20 +157,22 @@
 		todayd=new Date();
 		startd=new Date ($("#Sdatec").val()); //
 		endd=new Date ($("#Edatec").val()); //
-		if ( startd.toString() == oldSdatec  && endd.toString() == oldEdatec ) {  console.log("check new log");
+		if ( endd > todayd) { endd = todayd ; };
+		newSdatec = startd.toString() ;
+		newEdatec = endd.toString() ;
+		if ( newSdatec == oldSdatec  && newEdatec == oldEdatec ) {  console.log("check new log");
 			if (endd => todayd) { 
 				$.get("requestdate.php", { file: 'Data/ctr.log.'+datemod }, function(data){
 				var objdate = jQuery.parseJSON(data);
 				trafficnewtime=objdate.timey;
 				});
 			}
-				; 
+
 		} else {
 			console.log("will do something");
 			betweend = [];
-			oldSdatec = startd.toString();
-			oldEdatec = endd.toString();
-			if (todayd < endd) { endd = todayd ; }
+			//oldSdatec = startd.toString();
+			//oldEdatec = endd.toString();
 			startd.setDate(startd.getDate() + 1)
 			endd.setDate(endd.getDate() + 1) 
 			while (startd <= endd) {
@@ -182,31 +185,49 @@
 		
 			nufiles=betweend.length
 			datemod=betweend[(nufiles-1)];
-		
-		  traffictime="newtime"
+			
+		  trafficnewtime="newtime"
 		}	
 		
-			if(traffictime==trafficnewtime) { //console.log("traffic not changed"); 
+			if(traffictime==trafficnewtime) { console.log("traffic not changed"); 
 			} 
 			else { 
 				count=1;
-				betweend.forEach(function(datelog){
-					$.get("requestdata.php", { file: 'Data/ctr.log.'+datelog }, function(data){
-						if ( count == 1 ) {
-							datalogf = jQuery.parseJSON(data);
-							disks=datalogf.device.length
-							count=count+1;
-						} else {
-							tmpdatalogf = jQuery.parseJSON(data);
-							if (datalogf.device.length == tmpdatalogf.device.length) {
-								for ( var k in datalogf.device) {
-								datalogf.device[k].stats[0].Dates.push(tmpdatalogf.device[k].stats[0].Dates[0]);
+				if ( oldEdatec != newEdatec || oldSdatec != oldSdatec ) {
+					console.log("traffic changed");
+					oldSdatec = newSdatec ;
+					oldEdatec = newEdatec ;
+					datalogf = [];
+					betweend.forEach(function(datelog){
+						$.get("requestdata.php", { file: 'Data/ctr.log.'+datelog }, function(data){
+							if ( count == 1 ) {
+								datalogf = jQuery.parseJSON(data);
+								disks=datalogf.device.length
+								count=count+1;
+							} else {
+								tmpdatalogf = jQuery.parseJSON(data);
+								if (datalogf.device.length == tmpdatalogf.device.length) {
+									for ( var k in datalogf.device) {
+									datalogf.device[k].stats[0].Dates.push(tmpdatalogf.device[k].stats[0].Dates[0]);
+									}
 								}
+							}
+						});
+					})
+				};
+				//console.log ("traffic changed");
+				if ( endd => todayd) {
+					$.get("requestdata.php", { file: 'Data/ctr.log.'+datemod }, function(data){
+						tmpdatalogf = jQuery.parseJSON(data);
+						if (datalogf.device.length == tmpdatalogf.device.length) {
+							for ( var k in datalogf.device) {
+								datalogf.device[k].stats[0].Dates.pop();
+								datalogf.device[k].stats[0].Dates.push(tmpdatalogf.device[k].stats[0].Dates[0]);
 							}
 						}
 					});
-				});
-				//console.log ("traffic changed"); 
+				}
+
 				traffictime=trafficnewtime; 
 				
 					var device = $("#Disks").val();
@@ -486,7 +507,7 @@ $("#Disks").change(function(){
 		$(".checkboxy").change (function(){ updatelogarea();});
 		refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		$.post("./pump.php", { req:"GetDisklist", name: "Data/disklist.txt"},function(){});
-		setInterval('refreshall()', 1000); // Loop every 1000 milliseconds (i.e. 1 second)
+		setInterval('refreshall()', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
 		//console.log("<?php print $_REQUEST["idd"]; print session_id(); ?>");
 		
 		$('[data-toggle="popover"]').popover({
