@@ -186,10 +186,11 @@
 			nufiles=betweend.length
 			datemod=betweend[(nufiles-1)];
 			
-		  trafficnewtime="newtime"
+		  trafficnewtime="newtime"; 
+		  traffictime="oldtime"; 
 		}	
 		
-			if(traffictime==trafficnewtime) { console.log("traffic not changed"); 
+			if( traffictime == trafficnewtime ) { console.log("traffic not changed"); 
 			} 
 			else { 
 				count=1;
