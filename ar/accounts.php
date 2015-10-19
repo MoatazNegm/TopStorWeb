@@ -5,9 +5,9 @@
 <html>
 	<?php $men = 1; include "header.html"; ?>
 	
-							<li><a href="#" class="ADa rightli"><h4 id="AD"><span>Active Directory</span></h4></a></li>
-							<li><a href="#" class="UnLina rightli"><h4 id="UnLin"><span>Box users</span></h4></a></li>
-							<li><a href="#" class="Futurea rightli"><h4 id="Future"><span>Box properties</span></h4></a></li>
+							<li><a href="#" class="ADa rightli"><h4 id="AD"><span>توصيل بالوندوز</span></h4></a></li>
+							<li><a href="#" class="UnLina rightli"><h4 id="UnLin"><span>مستخدمي الجهاز</span></h4></a></li>
+							<li><a href="#" class="Futurea rightli"><h4 id="Future"><span>خصائص الجهاز</span></h4></a></li>
 						</ul>
 						<?php include "Future.php"; ?>
 						<?php include "AD.php"; ?>
