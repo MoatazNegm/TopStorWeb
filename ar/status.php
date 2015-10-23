@@ -89,11 +89,11 @@
 					showMeridian: false,
 			});
 
-	/*		$("#Stime").timepicker({
-								appendWidgetTo: 'body',
+			$("#Stime").timepicker({
+								appendWidgetTo: '#startimel',
                 minuteStep: 1,
 								showMeridian: false,
-			}); */
+			}); 
 			$('.input-daterange').datepicker({
 				container:"#datecont",
 				format: "mm/dd/yyyy",
@@ -114,19 +114,39 @@
 				$("#startime div tbody tr:nth-child(3) td:nth-child(1) a").data("action","decrementMinute");
 				$("#startime div tbody tr:nth-child(2) td:nth-child(1) input").val($("#Stimec").val().split(":")[1]);
 				$("#startime div tbody tr:nth-child(2) td:nth-child(3) input").val($("#Stimec").val().split(":")[0])
-				
-	//			$("#startime div tbody tr:nth-child(2) td:nth-child(1) input ").removeClass("bootstrap-timepicker-hour");
-	//			$("#startime div tbody tr:nth-child(2) td:nth-child(3) input ").removeClass("bootstrap-timepicker-minute");
-	//			$("#startime div tbody tr:nth-child(2) td:nth-child(1) input").addClass("bootstrap-timepicker-minute");
+				$(".bootstrap-timepicker-hour").addClass("minc");
+				$(".bootstrap-timepicker-minute").addClass("hrc");
+				$(".minc").removeClass("bootstrap-timepicker-hour");
+				$(".hrc ").removeClass("bootstrap-timepicker-minute");
+				$(".hrc").addClass("bootstrap-timepicker-hour ");
+				$(".minc").addClass("bootstrap-timepicker-minute");
 			});
-			$("#Sdatec , #Edatec").click(function (){ 
+			$("#startimel").click( function(){
+				$("#startimel div").css("top","100%");
+				$("#startimel div tbody tr:nth-child(1) td:nth-child(3) a").data("action","incrementHour");
+				$("#startimel div tbody tr:nth-child(1) td:nth-child(1) a").data("action","incrementMinute");
+				$("#startimel div tbody tr:nth-child(3) td:nth-child(3) a").data("action","decrementHour");
+				$("#startimel div tbody tr:nth-child(3) td:nth-child(1) a").data("action","decrementMinute");
+				$("#startimel div tbody tr:nth-child(2) td:nth-child(3) input").val($("#Stime").val().split(":")[0]);
+				$("#startimel div tbody tr:nth-child(2) td:nth-child(1) input").val($("#Stime").val().split(":")[1]);
+				$(".bootstrap-timepicker-hour").addClass("min");
+				$(".bootstrap-timepicker-minute").addClass("hr");
+				$(".min").removeClass("bootstrap-timepicker-hour");
+				$(".hr ").removeClass("bootstrap-timepicker-minute");
+				$(".hr").addClass("bootstrap-timepicker-hour ");
+				$(".min").addClass("bootstrap-timepicker-minute");
+				
+			
+			
+			});
+			$("#Sdatec , #Edatec, #Sdate, #Edate").click(function (){ 
 				$(".datepicker").css("left","49%");
 				$(".datepicker").css("top","39%");
 				$(".datepicker").css("background","rgba(0,0,0,0)");
 				$(".datepicker").css("border","rgba(0,0,0,0)");
 				$(".datepicker").css("box-shadow","none");
 			});
-			$("#Edatec, #Sdatec").change(function(){
+			$("#Edatec, #Sdatec, #Edate, #Sdate").change(function(){
 				$(".datepicker").remove();
 			});
 			$("#SS").click(function (){ 

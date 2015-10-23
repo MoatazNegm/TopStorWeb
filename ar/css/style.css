@@ -469,3 +469,12 @@ td { padding: 0.1rem;}
 	top: 1px;
 	width: 10%;
 }
+
+#Volumnamedetails {
+margin-left: 0.2 rem;
+}
+#Volumnamedetails .panel-body .row div {
+
+border-left: 10px solid transparent;
+border-color: transparent;
+}
