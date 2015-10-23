@@ -11,15 +11,15 @@
 		<div class="col-sm-offset-5 col-sm-3">
 			<h4><strong></strong></h4>
 				
-				<input type="password" name="userPassword1"id="userPassword1"class="form-control passin chat-input centry " placeholder="type password">
+				<input type="password" name="userPassword1"id="userPassword1"class="form-control passin chat-input centry " placeholder="أدخل كلمة السر">
 				</br>
-				<input type="password" name="userPassword" id="userPassword" class="form-control passin chat-input centry " placeholder="type again"  >
+				<input type="password" name="userPassword" id="userPassword" class="form-control passin chat-input centry " placeholder="أكتبها مرة أخرى"  >
 				
 				</br>
 				<div class="wrapper">
-					<button type="button" id="wrong" class="col-sm-offset-1 btn btn-primary btn-md" disabled>passwords are not equal
-					<button type="button" id="change" class="col-sm-offset-4 btn btn-primary btn-md" >change
-					<button type="button" id="changed" class="col-sm-offset-4 btn btn-primary btn-md" >....Wait
+					<button type="button" id="wrong" class="col-sm-offset-3 btn btn-primary btn-md" disabled>الكلمتين غير متساويتين
+					<button type="button" id="change" class="col-sm-offset-5 btn btn-primary btn-md" >تغيير
+					<button type="button" id="changed" class="col-sm-offset-5 btn btn-primary btn-md" >انتظر ....
 						
 					</button>
 				</div>
@@ -39,7 +39,8 @@
 			if(passchanged==1 && passchecknew != passcheck) { $("#logagain").submit(); }
 			else  {  passcheck=passchecknew; }
 		}
- $("#head2").text("Change <?php echo $_SESSION["user"] ?> Password");
+ $("#head2").text("تغيير كلمة السر لـ"+"<?php echo $_SESSION["user"] ?>");
+ 
  $("#wrong").show(); $("#change").hide();$("#changed").hide();
  $(".passin").keyup(function(){
 	 

@@ -4,13 +4,13 @@
 		<div class="col-sm-offset-5 col-sm-3">
 			<h4><strong></strong></h4>
 				<form action="Login2.php" method="post">
-				<input type="text" name="userName" class="form-control chat-input centry " placeholder="username">
+				<input type="text" name="userName" class="form-control chat-input centry " placeholder="اسم المستخدم">
 				</br>
-				<input type="password" name="userPassword" class="form-control  chat-input centry " placeholder="password"  >
+				<input type="password" name="userPassword" class="form-control  chat-input centry " placeholder="كلمة السر"  >
 				<input type="hidden" name="idd" value="<?php print session_id();?>" >
 				</br>
 				<div class="wrapper">
-					<button type="submit" id="logpls" class="col-sm-offset-4 btn btn-primary btn-md" >login
+					<button type="submit" id="logpls" class="col-sm-offset-4 btn btn-primary btn-md" >دخول
 						<i class="fa fa-sign-in"></i> 
 					</button>
 				</div>

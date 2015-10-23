@@ -1,1 +1,1 @@
-UnixChkUser mezo2 chk
+GetDisklist Data/disklist.txt

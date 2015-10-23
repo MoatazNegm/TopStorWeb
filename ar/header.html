@@ -28,12 +28,13 @@ $(document).ready(function() {
 		<link  rel="stylesheet" href="../css/normalize.css" type="text/css">
 		<link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css">
 		<link rel="stylesheet" href="../css/bootstrap-theme.min.css" type="text/css">
-		<link rel="stylesheet" href="../css/bootstrap-timepicker.min.css" type="text/css">
-		<link rel="stylesheet" href="../css/datepicker3.css" type="text/css">
 		<link rel="stylesheet" href="../css/jquery.minicolors.css">
 		<link rel="stylesheet" href="../css/jquery.jqplot.css">
+		<link rel="stylesheet" href="../css/datepicker3.css" type="text/css">
+		<link rel="stylesheet" href="../css/bootstrap-timepicker.min.css" type="text/css">
 		<link rel="stylesheet" href="css/bootstrap-arabic.min.css">
 		<link rel="stylesheet" href="css/bootstrap-arabic-theme.min.css">
+		
 		<link rel="stylesheet" href="css/style.css" type="text/css">
 	</head>
 <?php session_start(); ?>
@@ -56,8 +57,8 @@ $(document).ready(function() {
 					<div class="col-sm-6">
 						<h1 class="text-center maintext colorize" id="Title" Data-tag="#Title" Data-id="Title" Data-textcolor="yes" Data-background="no" Data-border="no" ><strong>الخزنة</strong></h1>
 					</div>
-					<div class="col-sm-offset-4">
-						<h5 class="text-center colorize " id="userlog" Data-tag="#userlog" Data-id="userlog" Data-textcolor="yes" Data-background="no" Data-border="no" ><a id="userpass" href="#">user:<?php echo $_SESSION["user"];?></a>&nbsp&nbsp&nbsp<a id="logoff" href="Login.php">Logoff</a></h5>
+					<div class="col-sm-offset-11">
+						<h5 class="text-center colorize " id="userlog" Data-tag="#userlog" Data-id="userlog" Data-textcolor="yes" Data-background="no" Data-border="no" ><a id="userpass" href="#">المستخدم:<?php echo $_SESSION["user"];?></a>&nbsp&nbsp&nbsp<a id="logoff" href="Login.php">خروج</a></h5>
 					</div>
 				</div>
 			</div>

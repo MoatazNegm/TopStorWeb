@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <?php session_start(); 
- if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/des19/Login.php');}
+ if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/des19/ar/Login.php');}
  
 ?>
 <html>
 
 	<?php $men=2; include "header.html"; ?>
 	
-							<li><a href="#" class="SSa rightli"><h4 id="SS"><span>Services Status</span></h4></a></li>
-							<li><a href="#" class="Logsa rightli"><h4 id="Logs"><span>Logs</span></h4></a></li>
+							<li><a href="#" class="SSa rightli"><h4 id="SS"><span>حالة الخدمة</span></h4></a></li>
+							<li><a href="#" class="Logsa rightli"><h4 id="Logs"><span>السجلات</span></h4></a></li>
 						</ul>
 						<?php include "SS.php" ?>
 						<?php include "Logs.php" ?>
@@ -18,17 +18,20 @@
 			</div>
 			<div class="row">
 			<div id="chart1"></div>	
-			<footer class="footer"> Errors
+			<footer class="footer"> مشكلات
 			</footer>
 		</div>
 	</div>
 	</div>
 	
-	<script src='../js/bootstrap-datepicker.js'></script>
-		<script src="../js/bootstrap-timepicker.js"></script>
+	
+		
 		<script src='../js/jquery.jqplot.min.js'></script>
 		<script src='../js/excanvas.min.js'></script>
 		<script src="../js/jqplot.dateAxisRenderer.min.js"></script>
+		<script src='../js/bootstrap-datepicker.js'></script>
+		<script src="../js/bootstrap-timepicker.js"></script>
+		
 		
 		<script>
 			var datalogf = [];
@@ -80,17 +83,19 @@
 
 //			var plot1 = $.jqplot('chart1',dl);
 			$("#Stimec").timepicker({
-					appendWidgetTo: 'body',
+					 
+					appendWidgetTo: '#startime',
 					minuteStep: 1,
 					showMeridian: false,
 			});
 
-			$("#Stime").timepicker({
+	/*		$("#Stime").timepicker({
 								appendWidgetTo: 'body',
                 minuteStep: 1,
 								showMeridian: false,
-			});
+			}); */
 			$('.input-daterange').datepicker({
+				container:"#datecont",
 				format: "mm/dd/yyyy",
 				weekStart: 6,
 				startDate: "1/1/2014",
@@ -100,11 +105,35 @@
 				todayHighlight: true
 			});
 			$(".SS").hide(); $(".Logs").hide(); 
+			// arabic fixes
+			$("#startime").click( function(){
+				$("#startime div").css("top","100%");
+				$("#startime div tbody tr:nth-child(1) td:nth-child(3) a").data("action","incrementHour");
+				$("#startime div tbody tr:nth-child(1) td:nth-child(1) a").data("action","incrementMinute");
+				$("#startime div tbody tr:nth-child(3) td:nth-child(3) a").data("action","decrementHour");
+				$("#startime div tbody tr:nth-child(3) td:nth-child(1) a").data("action","decrementMinute");
+				$("#startime div tbody tr:nth-child(2) td:nth-child(1) input").val($("#Stimec").val().split(":")[1]);
+				$("#startime div tbody tr:nth-child(2) td:nth-child(3) input").val($("#Stimec").val().split(":")[0])
+				
+	//			$("#startime div tbody tr:nth-child(2) td:nth-child(1) input ").removeClass("bootstrap-timepicker-hour");
+	//			$("#startime div tbody tr:nth-child(2) td:nth-child(3) input ").removeClass("bootstrap-timepicker-minute");
+	//			$("#startime div tbody tr:nth-child(2) td:nth-child(1) input").addClass("bootstrap-timepicker-minute");
+			});
+			$("#Sdatec , #Edatec").click(function (){ 
+				$(".datepicker").css("left","49%");
+				$(".datepicker").css("top","39%");
+				$(".datepicker").css("background","rgba(0,0,0,0)");
+				$(".datepicker").css("border","rgba(0,0,0,0)");
+				$(".datepicker").css("box-shadow","none");
+			});
+			$("#Edatec, #Sdatec").change(function(){
+				$(".datepicker").remove();
+			});
 			$("#SS").click(function (){ 
 				if(config == 1 ) { 
 					var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
-					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+					$.get("requestdata.php", { file: '../Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
@@ -112,7 +141,7 @@
 							}
 						};
 						if( userpriv=="true" | curuser=="admin" ) {
-							config= 0; $("h2").css("background-image","url('img/SS.png')").text("Service Status"); $(".SS").show();updatechartarea(); 
+							config= 0; $("h2").css("background-image","url('../img/SS.png')").text("Service Status"); $(".SS").show();updatechartarea(); 
 						} 
 					});
 				};
@@ -122,7 +151,7 @@
 				if(config== 1){ 
 					var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
-					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+					$.get("requestdata.php", { file: '../Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
@@ -131,15 +160,15 @@
 						};
 					
 						if( userpriv=="true" | curuser=="admin" ) {
-							config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs");logtime="4466:44:34534";updatelogarea(); $(".Logs").show();
+							config = 0; $("h2").css("background-image","url('../img/logs.png')").text("Logs");logtime="4466:44:34534";updatelogarea(); $(".Logs").show();
 						}
 					});
 				};
 			});
 			$(".finish").click(function (){ config = 1; $(".SS").hide(); $(".Logs").hide();});
 	function refreshall() {
-		$.get("requestdata.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
-		refreshList("GetDisklist","#Disks","Data/disklist.txt");
+		$.get("requestdata.php", { file: '../Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
+		refreshList("GetDisklist","#Disks","../Data/disklist.txt");
 		updatechartarea();
 		updatelogarea();
 		}
@@ -159,9 +188,9 @@
 		if ( endd > todayd) { endd = todayd ; };
 		newSdatec = startd.toDateString() ;
 		newEdatec = endd.toDateString() ;
-		if ( newSdatec == oldSdatec  && newEdatec == oldEdatec ) {  console.log("check new log");
+		if ( newSdatec == oldSdatec  && newEdatec == oldEdatec ) {//  console.log("check new log");
 			if (endd => todayd) { 
-				$.get("requestdate.php", { file: 'Data/ctr.log.'+datemod }, function(data){
+				$.get("requestdate.php", { file: '../Data/ctr.log.'+datemod }, function(data){
 				var objdate = jQuery.parseJSON(data);
 				trafficnewtime=objdate.timey;
 				});
@@ -189,7 +218,7 @@
 		  traffictime="oldtime"
 		}	
 		
-			if( traffictime == trafficnewtime ) { console.log("traffic not changed"); 
+			if( traffictime == trafficnewtime ) { //console.log("traffic not changed"); 
 			} 
 			else { 
 				count=1;
@@ -200,7 +229,7 @@
 					oldEdatec = newEdatec ;
 					datalogf = [];
 					betweend.forEach(function(datelog){
-						$.get("requestdata.php", { file: 'Data/ctr.log.'+datelog }, function(data){
+						$.get("requestdata.php", { file: '../Data/ctr.log.'+datelog }, function(data){
 							if ( count == 1 ) {
 								datalogf = jQuery.parseJSON(data);
 								disks=datalogf.device.length
@@ -218,7 +247,7 @@
 				};
 				//console.log ("traffic changed");
 				if ( endd => todayd) {
-					$.get("requestlog.php", { file: 'Data/ctr.log.'+datemod }, function(data){
+					$.get("requestlog.php", { file: '../Data/ctr.log.'+datemod }, function(data){
 						tmpdatalogf = jQuery.parseJSON(data);
 						if (datalogf.device.length == tmpdatalogf.device.length) {
 							for ( var k in datalogf.device) {
@@ -435,14 +464,14 @@
 		var logarea = "";
 		var tm, splitstime;
 		var tm2; var tme, splitstimee;
-		$.get("requestdate.php", { file: 'Data/currentinfo2.log' }, function(data){
+		$.get("requestdate.php", { file: '../Data/currentinfo2.log' }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			logtimenew=objdate.timey;
 		});
 		if(logtimenew!=logtime) {
 			logtime=logtimenew;
 		$("#Logdetails tr.datarow").remove();
-		$.get("requestdata.php", { file: 'Data/currentinfo2.log' }, function(data){
+		$.get("requestdata.php", { file: '../Data/currentinfo2.log' }, function(data){
 			var obj = jQuery.parseJSON(data);
 			for (var k in obj) { 
 					 
@@ -506,8 +535,8 @@ $("#Disks").change(function(){
 		});
 		$(".traffic").change( function () { traffictime="44:44:34"; updatechartarea();});
 		$(".checkboxy").change (function(){ updatelogarea();});
-		refreshList("GetDisklist","#Disks","Data/disklist.txt");
-		$.post("./pump.php", { req:"GetDisklist", name: "Data/disklist.txt"},function(){});
+		refreshList("GetDisklist","#Disks","../Data/disklist.txt");
+		$.post("./pump.php", { req:"GetDisklist", name: "../Data/disklist.txt"},function(){});
 		setInterval('refreshall()', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
 		//console.log("<?php print $_REQUEST["idd"]; print session_id(); ?>");
 		

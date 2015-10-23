@@ -465,3 +465,7 @@ td { padding: 0.1rem;}
 #Proxy {
  margin-top: 1.8rem;
 }
+.bootstrap-timepicker-widget.dropdown-menu.open {
+	top: 1px;
+	width: 10%;
+}

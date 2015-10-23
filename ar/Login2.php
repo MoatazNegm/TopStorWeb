@@ -30,7 +30,7 @@
 
 	<div class="row">
 		<div class="col-sm-offset-5 col-sm-3">
-			<h4><strong id="state">Please Wait....</strong></h4>
+			<h4><strong id="state">نرجو الانتظار قليلاً....</strong></h4>
 
 		</div>
 	</div>
