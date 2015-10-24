@@ -425,6 +425,12 @@ p.Priv { font-size : 1.1rem;
 input.checkboxy {  margin-top: 0.2rem;
 				display: inline;
 			}
+input.checkboxyar { 
+				margin-top: 0 px;
+				margin-bottom: 0 px;
+				display: inline;
+			}
+
 .upload-drop-zone { height: 30rem; border-width: 2px ; margin-bottom: 1rem; }
 .upload-drop-zone { width: 80%; color: #ccc; border-style: dashed; border-color: #ccc; line-height: 3rem; text-align: center } 
 .upload-drop-zone.drop { color: #222; border-color: #222; }

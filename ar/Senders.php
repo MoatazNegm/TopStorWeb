@@ -8,20 +8,20 @@
 										
 										<div class="  col-sm-6 ">
 											<form class=" form-inline row">
-												<div class="form-group col-sm-offset-1">
-													<label  for="Pool" class="control-label">Pool</label>
+												<div class="form-group col-sm-offset-1" style="margin-left: 2px;">
+													<label  for="Pool" class="control-label">المجموعة</label>
 													<select  id="Pool" class="  form-control ">
 														<option>Data</option>
 													</select>
 												</div>
-												<div class="form-group col-sm-offset-1">
-													<label  for="Volsend" class=" control-label">Vol</label>
+												<div class="form-group col-sm-offset-1" style="margin-left: 2px;">
+													<label  for="Volsend" class=" control-label">المجلد</label>
 													<select  id="Volsend" class=" form-control ">
 														<option class="variable">Vol1</option><option class="variable" >Vol2</option>
 													</select>
 												</div>
-												<div id="partnercsend" class="form-group col-sm-offset-">
-													<label  for="Partnersend" class=" control-label ">To</label>
+												<div id="partnercsend" class="form-group col-sm-offset-" >
+													<label  for="Partnersend" class=" control-label ">المرسل</label>
 													<select  id="Partnersend" class=" form-control "><option>255.255.255.255</option></select>
 												</div>
 
@@ -36,9 +36,9 @@
 													</div>
 												</div>
 												<div class="form-group col-sm-offset-1">
-													<button type="button" class="btn btn-default " id="DeleteSnapshotsend" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot">Delete
+													<button type="button" class="btn btn-default " id="DeleteSnapshotsend" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot">إزالة
 													</button>
-													<button type="button" class="btn btn-danger col-sm-offset-3 " id="RollbackSnapshotsend" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot"> Rollback to Snapshot
+													<button type="button" class="btn btn-danger col-sm-offset-6 " style="margin-left:0px;" id="RollbackSnapshotsend" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot"> رجوع إلى اللقطة
 													</button>
 												</form>
 											</div>
@@ -56,7 +56,7 @@
 										
 										<div class=" col-sm-6">
 											<div class="form-group row ">
-													<button type="button" id="Senderfinish" class="btn btn-default col-sm-offset-2 col-sm-7 finish" data-toggle="tooltip" data-placement="top" title="submit values">Finish</button>
+													<button type="button" id="Senderfinish" class="btn btn-default col-sm-offset-2 col-sm-7 finish" data-toggle="tooltip" data-placement="top" title="submit values">انتهاء</button>
 											</div>
 										</div>
 									</div>

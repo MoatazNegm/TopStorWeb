@@ -8,79 +8,79 @@
 										
 										<div class="  col-sm-6 ">
 											<form class=" form-inline row">
-												<div class="form-group col-sm-offset-1">
-													<label  for="Pool" class="control-label">Pool</label>
+												<div class="form-group col-sm-offset-1" style="margin-left: 2px;">
+													<label  for="Pool" class="control-label">المجموعة</label>
 													<select  id="Pool" class="  form-control ">
 														<option>Data</option>
 													</select>
 												</div>
-												<div class="form-group col-sm-offset-1">
-													<label  for="Vol" class=" control-label">Vol</label>
+												<div class="form-group col-sm-offset-1" style="margin-left: 2px;" >
+													<label  for="Vol" class=" control-label">المجلد</label>
 													<select  id="Vol" class=" form-control ">
 														<option class="variable">Vol1</option><option class="variable" >Vol2</option>
 													</select>
 												</div>
-												<div id="partnerc" class="form-group col-sm-offset-">
-													<label  for="Partner" class=" control-label ">To</label>
+												<div id="partnerc" class="form-group col-sm-offset-1" style="margin-left: 2px;">
+													<label  for="Partner" class=" control-label ">المستقبل</label>
 													<select  id="Partner" class=" form-control "><option>255.255.255.255</option></select>
 												</div>
 
 											</form>
 											<div class=" form-group row"></div>
 											<div class="form-group row spacer">
-												<div class=" boxoffields col-sm-offset-1 col-sm-2 spacer">
+												<div class=" boxoffields col-sm-offset-1 col-sm-2 spacer" style="margin-left: 0px;">
 													<span>Period</span>
 													<div class="radio">
 															<label>
-															<input type="radio" name="Period" id="Once" value="Once">Once
+															<input type="radio" name="Period" id="Once" value="Once">مرة
 															</label>
 													</div>
 													<div class="radio">
 															<label>
-																<input type="radio" name="Period" id="Hourly" value="Hourly">Hourly
+																<input type="radio" name="Period" id="Hourly" value="Hourly">بالساعة
 															</label>
 													</div>
 													<div class="radio">
 															<label>
-																<input type="radio" name="Period" id="Minutely" value="Minutely">Minutely
+																<input type="radio" name="Period" id="Minutely" value="Minutely">بالدقيقة
 															</label>
 													</div>
 													<div class="radio">
 															<label>
-																<input type="radio" name="Period" id="Weekly" value="Weekly">Weekly
+																<input type="radio" name="Period" id="Weekly" value="Weekly">بالإسبوع
 															</label>
 													</div>
 
 												</div>
-												<div class= " col-sm-offset-1 col-sm-8" >
+												<div class= " col-sm-offset-1 col-sm-8" style="margin-left: 0px;" >
 													<form class="form-horizontal row spacer" id="Onceset"role="form">
 														<div class="form-group">
-															<div class="input-group col-sm-offset-2 col-sm-5 ">
-																<label  for="Oncename" class="  control-label ">Snap name </label>
+															<div class="input-group col-sm-offset-2 col-sm-5 " style="margin-left: 0px;">
+																<label  for="Oncename" class="  control-label ">اسم اللقطة </label>
 																
 																<input type="text"  id="Oncename" class=" form-control ">
 															</div>
 														</div>
 														<div class=" col-sm-offset-3" id="disableddiv">
-															<button type="button" class="btn btn-default btn-xs   " id="disabled" data-toggle="tooltip" data-placement="bottom" title="TypeSnap" disabled >type snap name
+															<button type="button" class="btn btn-default btn-xs   " id="disabled" data-toggle="tooltip" data-placement="bottom" title="TypeSnap" disabled >اكتب اسم اللقطة
 															</button>
 														</div>
 													</form>
 													<form role="form" id="Hourlyset">
 														<div class=" form-group row ">
 															<div class=" col-sm-3">
-																<label  for="Sminute" class=" col-sm-offset- control-label">Snap.min</label>
+																<label  for="Sminute" class=" col-sm-offset- control-label">دقيقة</label>
 																<input type="number" min="0" max="59" id="Sminute" class="  form-control ">
 																
 															</div>
 															
 															<div class=" col-sm-3">
-																<label  for="Hour" class=" col-sm-offset-2 control-label">Every..hrs</label>
+																<label  for="Hour" class=" col-sm-offset-2 control-label">ساعة</label>
 																<input  type="number" min="1" max="23" id="Hour" class="  form-control ">
 																
 															</div>
 															<div class="  col-sm-3">
-																<label  for="KeepHourly" class="  control-label">keep:</label>
+																<label  for="KeepHourly" class="  control-label">احتفاظ</label>
 																<input  type="number" min="1" id="KeepHourly" class="  form-control ">
 																</input>
 															</div>
@@ -89,7 +89,7 @@
 															<div class="  col-sm-8">
 																<select   size="3" id="Hourlylist" class="  separatortop form-control col-sm-4 fonting " ></select>
 															</div>
-															<button type="button" class="btn btn-default col-sm-offset- col-sm-2 perioddelete" id="DeleteHourly" data-toggle="tooltip" data-placement="bottom" title="DeleteHourly">Delete
+															<button type="button" class="btn btn-default col-sm-offset- col-sm-2 perioddelete" id="DeleteHourly" data-toggle="tooltip" data-placement="bottom" title="DeleteHourly">إزالة
 																</button>
 														</div>
 													
@@ -97,12 +97,12 @@
 													<form role="form" id="Minutelyset">
 														<div class=" form-group row ">
 															<div class="col-sm-3">
-																<label  for="Minute" class=" col-sm-offset- control-label">Every..Min</label>
+																<label  for="Minute" class=" col-sm-offset- control-label">دقيقة</label>
 																<input  type="number" min="1" max="59" id="Minute" class="  form-control ">
 																</input>
 															</div>
 															<div class=" col-sm-3">
-																<label  for="KeepMinutely" class=" col-sm-offset- control-label"> keep: </label>
+																<label  for="KeepMinutely" class=" col-sm-offset- control-label"> احتفاظ </label>
 																<input  type="number" min="1" id="KeepMinutely" class="  form-control ">
 																</input>
 															</div>
@@ -111,28 +111,28 @@
 															<div class="  col-sm-8">
 																<select   size="3" id="Minutelylist" class="  separatortop form-control col-sm-4 fonting " ></select>
 															</div>
-															<button type="button" class="btn btn-default col-sm-offset- col-sm-2 perioddelete" id="DeleteMinutely" data-toggle="tooltip" data-placement="bottom" title="DeleteMinutely">Delete
+															<button type="button" class="btn btn-default col-sm-offset- col-sm-2 perioddelete" id="DeleteMinutely" data-toggle="tooltip" data-placement="bottom" title="DeleteMinutely">إزالة
 																</button>
 														</div>
 													
 													</form>
 													<form role="form" id="Weeklyset">
 														<div class=" form-group row ">
-															<div class="col-sm-4  ">
-																<label  for="Stime" class=" col-sm-offset- control-label">Snap time:</label>
-																<div class="input-group bootstrap-timepicker">
+															<div id="timepick" class="col-sm-4  " style="margin-left:1.3rem;">
+																<label  for="Stime" class=" col-sm-offset- control-label">ميعاد اللقطة</label>
+																<div class="input-group bootstrap-timepicker" style="width: 125%;">
 																	<input   type="text" id="Stime" class="  form-control "><span class="input-group-addon add-on"><i class="glyphicon glyphicon-time"></i></span>
 																	</input>
 																</div>
 															</div>
-															<div class="col-sm-3">
-																<label  for="Week" class=" col-sm-offset- control-label">Every..Wday</label>
+															<div class="col-sm-3" style=" margin-left: 0rem; padding-left: 0px; padding-right: 1.3rem;">
+																<label  for="Week" class=" col-sm-offset- control-label">اليوم</label>
 																<select   id="Week" class="  form-control ">
 																	<option>Sat</option><option>Sun</option><option>Mon</option><option>Tue</option><option>Wed</option><option>Thu</option><option>Fri</option>
 																</select>
 															</div>
 															<div class=" col-sm-3">
-																<label  for="KeepWeekly" class=" col-sm-offset- control-label"> keep: </label>
+																<label  for="KeepWeekly" class=" col-sm-offset- control-label"> احتفاظ </label>
 																<input   type="number" min="1" max="25" id="KeepWeekly" class="  form-control ">
 																</input>
 															</div>
@@ -141,7 +141,7 @@
 															<div class="  col-sm-8">
 																<select   size="3" id="Weeklylist" class="  separatortop form-control col-sm-4 fonting " ></select>
 															</div>
-															<button type="button" class="btn btn-default col-sm-offset- col-sm-2 perioddelete" id="DeleteWeekly" data-toggle="tooltip" data-placement="bottom" title="DeleteWeekly">Delete
+															<button type="button" class="btn btn-default col-sm-offset- col-sm-2 perioddelete" id="DeleteWeekly" data-toggle="tooltip" data-placement="bottom" title="DeleteWeekly">إزالة
 																</button>
 														</div>
 													
@@ -158,9 +158,9 @@
 													</div>
 												</div>
 												<div class="form-group col-sm-offset-1">
-													<button type="button" class="btn btn-default " id="DeleteSnapshot" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot">Delete
+													<button type="button" class="btn btn-default " id="DeleteSnapshot" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot">إزالة
 													</button>
-													<button type="button" class="btn btn-danger col-sm-offset-3 " id="RollbackSnapshot" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot"> Rollback to Snapshot
+													<button type="button" class="btn btn-danger col-sm-offset-6 " style="margin-left:0px;"id="RollbackSnapshot" data-toggle="tooltip" data-placement="bottom" title="DeleteSnapshot"> رجوع إلى اللقطة
 													</button>
 												</form>
 											</div>
@@ -177,13 +177,13 @@
 									<div class=" row">
 										<div class=" col-sm-6">
 											<div class=" form-group row" id="SnapshotCreatediv">
-												<button type="button" class="btn btn-default col-sm-offset-4 col-sm-6 SnapshotCreate " id="SnapshotCreate" data-toggle="tooltip" data-placement="bottom" title="close window">submit</button>
+												<button type="button" class="btn btn-default col-sm-offset-4 col-sm-6 SnapshotCreate " id="SnapshotCreate" data-toggle="tooltip" data-placement="bottom" title="close window">إدخال</button>
 											</div>
 										</div>
 										
 										<div class=" col-sm-6">
 											<div class="form-group row ">
-													<button type="button" id="Replicatefinish" class="btn btn-default col-sm-offset-2 col-sm-7 finish" data-toggle="tooltip" data-placement="top" title="submit values">Finish</button>
+													<button type="button" id="Replicatefinish" class="btn btn-default col-sm-offset-2 col-sm-7 finish" data-toggle="tooltip" data-placement="top" title="submit values">انتهاء</button>
 											</div>
 										</div>
 									</div>

@@ -6,10 +6,10 @@
 <html>
 	<?php $men= 4; include "header.html"; ?>
 	
-							<li><a href="#" class="Partnersa rightli"><h4 id="Partners"><span>Partners</span></h4></a></li>
-							<li><a href="#" class="Replicatea rightli"><h4 id="Replicate"><span>Receivers</span></h4></a></li>
-							<li><a href="#" class="Sendersa rightli"><h4 id="Senders"><span>Senders</span></h4></a></li>
-							<li><a href="#" class="Proxya rightli"><h4 id="Proxys"><span>Proxy license</span></h4></a></li>
+							<li><a href="#" class="Partnersa rightli"><h4 id="Partners"><span>تعريف الشركاء</span></h4></a></li>
+							<li><a href="#" class="Replicatea rightli"><h4 id="Replicate"><span>المستقبلون</span></h4></a></li>
+							<li><a href="#" class="Sendersa rightli"><h4 id="Senders"><span>المرسلون</span></h4></a></li>
+							<li><a href="#" class="Proxya rightli"><h4 id="Proxys"><span>رخصة الإرسال</span></h4></a></li>
 						</ul>
 						<?php include "Partners.php"; ?>
 						<?php include "Replicate.php" ; ?>
@@ -20,7 +20,7 @@
 			</div>
 			
 		<div class="row">
-			<footer class="footer"> Errors
+			<footer class="footer"> مشاكل
 			</footer>
 		</div>
 			
@@ -101,9 +101,9 @@
 						$.each(jdata, function(i,v) {
 						//	console.log(i,k);
 							if(v.proxy=="true")
-							 $(listid).append($('<option>').text(v.name+" : "+v.type+" partner through proxy").val(v.name)); 
+							 $(listid).append($('<option>').text(v.name+" : "+v.type+" شريك عن طريق مسهل إرسال").val(v.name)); 
 							else
-								$(listid).append($('<option>').text(v.name+" : "+v.type+" partner").val(v.name));
+								$(listid).append($('<option>').text(v.name+" : "+v.type+" شريك مباشر").val(v.name));
 							
 						});
 					});
@@ -168,28 +168,28 @@
 
 			function refreshall() { //check pool status
 				if($(".Partners").is(":visible")) {
-					$.get("requestdata.php", { file: 'Data/Partnersstatus.log' }, function(data){ $("#Partnersstatus").val(data);});
-					refreshPartnerlist("#Partnerlist","Data/Partnerslist.txt");
+					$.get("requestdata.php", { file: '../Data/Partnersstatus.log' }, function(data){ $("#Partnersstatus").val(data);});
+					refreshPartnerlist("#Partnerlist","../Data/Partnerslist.txt");
 				};
 				if($(".Replicate").is(":visible")) {
-					$.get("requestdata.php", { file: 'Data/Replicatestatus.log' }, function(data){ $("#Replicatestatus").val(data);});
-					refreshReplicatelist("#Partner","Data/Partnerslist.txt","snaps","receiver");
+					$.get("requestdata.php", { file: '../Data/Replicatestatus.log' }, function(data){ $("#Replicatestatus").val(data);});
+					refreshReplicatelist("#Partner","../Data/Partnerslist.txt","snaps","receiver");
 				};
 				if($(".Sendersc").is(":visible")) {
-					$.get("requestdata.php", { file: 'Data/Replicatestatus.log' }, function(data){ $("#Sendersstatus").val(data);});
-					refreshReplicatelist("#Partnersend","Data/Partnerslist.txt","sender","sender");
+					$.get("requestdata.php", { file: '../Data/Replicatestatus.log' }, function(data){ $("#Sendersstatus").val(data);});
+					refreshReplicatelist("#Partnersend","../Data/Partnerslist.txt","sender","sender");
 				};
 				if($(".Proxy").is(":visible")) {
-					$.get("requestdata.php", { file: 'Data/Proxystatus.log' }, function(data){ $("#Proxystatus").val(data);});
+					$.get("requestdata.php", { file: '../Data/Proxystatus.log' }, function(data){ $("#Proxystatus").val(data);});
 					
 					
 				};
 				
 				
-				$.get("requestdata.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
+				$.get("requestdata.php", { file: '../Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 				if(status==3) { 
 					
-					$.get("requestdata.php", { file: "Data/poolstatus.txt" },function(data){
+					$.get("requestdata.php", { file: "../Data/poolstatus.txt" },function(data){
 						var jdata = jQuery.parseJSON(data);	
 						if(jdata.status=="ok") {
 							$("#"+jdata.raid).attr("checked","checked");
@@ -285,7 +285,7 @@
 				var userpriv="false";
 				
 					var curuser="<?php echo $_SESSION["user"] ?>";
-				$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+				$.get("requestdata.php", { file: '../Data/userpriv.txt' },function(data){ 
 					var gdata = jQuery.parseJSON(data);
 					for (var prot in gdata){
 						if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
@@ -294,7 +294,7 @@
 					};
 				
 					if( userpriv=="true" | curuser=="admin" ) { 
-					 config= 0; $("h2").css("background-image","url('img/Partners.png')").text("Partners"); status="Partners"; $(".Partners").show(); partner="2432334";
+					 config= 0; $("h2").css("background-image","url('../img/Partners.png')").text("الشركاء"); status="Partners"; $(".Partners").show(); partner="2432334";
 					}
 				});
 			});
@@ -302,7 +302,7 @@
 				if(config== 1){ 
 					var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
-					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+					$.get("requestdata.php", { file: '../Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
@@ -311,7 +311,7 @@
 						};
 					
 						if( userpriv=="true" | curuser=="admin" ) { 
-							config = 0; status="snaps"; $("h2").css("background-image","url('img/receivers.png')").text("Replicate");  $("option.variable").remove(); Vollisttime="44:3133:22";times= { "snaps":"331==:433", "periods":"30==erwe1:43:43", "sender":"435341:456356:563"}; $(".Replicate").show();replival={ "snaps":"33=1=:433", "periods":"30==e1rwe:43:43", "sender":"435341:456356:563", "Proxy":"32442ewrwe"};
+							config = 0; status="snaps"; $("h2").css("background-image","url('../img/receivers.png')").text("المستقبلون");  $("option.variable").remove(); Vollisttime="44:3133:22";times= { "snaps":"331==:433", "periods":"30==erwe1:43:43", "sender":"435341:456356:563"}; $(".Replicate").show();replival={ "snaps":"33=1=:433", "periods":"30==e1rwe:43:43", "sender":"435341:456356:563", "Proxy":"32442ewrwe"};
 						}
 					});
 				};
@@ -320,7 +320,7 @@
 				if(config== 1){ 
 					var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
-					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+					$.get("requestdata.php", { file: '../Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
@@ -329,7 +329,7 @@
 						};
 					
 						if( userpriv=="true" | curuser=="admin" ) { 
-							config = 0; status="Senders"; $("h2").css("background-image","url('img/senders.png')").text("Senders");  $("option.variable").remove(); ;times= { "snaps":"33=e33", "periods":"30==erwe3e:433", "sender":"43534:456:45e63" }; $(".Sendersc").show();replival={ "snaps":"33==e:433", "periods":"30==erwe:e43:43", "sender":"43534:4e56356:563", "Proxy":"3242ewr5we"};Vollisttime="44:333:sedfsd";
+							config = 0; status="Senders"; $("h2").css("background-image","url('../img/senders.png')").text("المرسلون");  $("option.variable").remove(); ;times= { "snaps":"33=e33", "periods":"30==erwe3e:433", "sender":"43534:456:45e63" }; $(".Sendersc").show();replival={ "snaps":"33==e:433", "periods":"30==erwe:e43:43", "sender":"43534:4e56356:563", "Proxy":"3242ewr5we"};Vollisttime="44:333:sedfsd";
 						}
 					});
 				};
@@ -339,7 +339,7 @@
 								 
 								var userpriv="false";
 								var curuser="<?php echo $_SESSION["user"] ?>";
-								$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+								$.get("requestdata.php", { file: '../Data/userpriv.txt' },function(data){ 
 									var gdata = jQuery.parseJSON(data);
 									for (var prot in gdata){
 										if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
@@ -348,8 +348,8 @@
 									};
 								
 									if( userpriv=="true" | curuser=="admin" ) { 
-										config = 0; status="Proxy"; $("h2").css("background-image","url('img/senders.png')").text("Proxy License");  $("option.variable").remove(); ;times= { "snaps":"33=f33", "periods":"30==erwe3:4f33", "sender":"43534:456:4563" }; $(".Proxy").show();replival={ "snaps":"33==:4f33", "periods":"30==erwe:4f3:43", "sender":"43534:456f356:563", "Proxy":"3242efwrwe"};Vollisttime="44:333:sdfsd";
-										refreshProxy("License","Data/Proxylist.txt","Proxy","Proxyurl","Alias");
+										config = 0; status="Proxy"; $("h2").css("background-image","url('../img/senders.png')").text("رخصة مسهل الإرسال");  $("option.variable").remove(); ;times= { "snaps":"33=f33", "periods":"30==erwe3:4f33", "sender":"43534:456:4563" }; $(".Proxy").show();replival={ "snaps":"33==:4f33", "periods":"30==erwe:4f3:43", "sender":"43534:456f356:563", "Proxy":"3242efwrwe"};Vollisttime="44:333:sdfsd";
+										refreshProxy("License","../Data/Proxylist.txt","Proxy","Proxyurl","Alias");
 									}
 								});
 							};
@@ -468,7 +468,7 @@
 		});
 			
 			$("#Stime").timepicker({
-								appendWidgetTo: 'body',
+								appendWidgetTo: '#timepick',
                 minuteStep: 1,
 								showMeridian: false,
 
@@ -476,14 +476,33 @@
             
 			setInterval("refreshall()",500);
 			$.post("./pump.php", { req:"Partnerslist" });
-			refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
-			refreshList3("GetPoolVollist","#Volsend","Data/Vollist.txt");
-			refreshList("GetSnaplist","#Replicatelist","Data/listsnaps.txt","snaps");
-			refreshList("GetSnaplist","#Senderslist","Data/listsnaps.txt","sender","#Volsend");
-			refreshList("RemoteGetPoolperiodlist","#all","Data/Remoteperiodlist.txt","periods");
+			refreshList3("GetPoolVollist","#Vol","../Data/Vollist.txt");
+			refreshList3("GetPoolVollist","#Volsend","../Data/Vollist.txt");
+			refreshList("GetSnaplist","#Replicatelist","../Data/listsnaps.txt","snaps");
+			refreshList("GetSnaplist","#Senderslist","../Data/listsnaps.txt","sender","#Volsend");
+			refreshList("RemoteGetPoolperiodlist","#all","../Data/Remoteperiodlist.txt","periods");
 			$.post("./pump.php", { req: "GetPoolperiodlist", name:"a" });
 			$.post("./pump.php", { req: "GetPoolVollist", name:"a" });
 			$.post("./pump.php", { req: "GetSnaplist", name:"a" });
+			
+						$("#timepick").click( function(){
+				$("#timepick div").css("top","100%");
+				$("#timepick div tbody tr:nth-child(1) td:nth-child(3) a").data("action","incrementHour");
+				$("#timepick div tbody tr:nth-child(1) td:nth-child(1) a").data("action","incrementMinute");
+				$("#timepick div tbody tr:nth-child(3) td:nth-child(3) a").data("action","decrementHour");
+				$("#timepick div tbody tr:nth-child(3) td:nth-child(1) a").data("action","decrementMinute");
+				$("#timepick div tbody tr:nth-child(2) td:nth-child(1) input").val($("#Stime").val().split(":")[1]);
+				$("#timepick div tbody tr:nth-child(2) td:nth-child(3) input").val($("#Stime").val().split(":")[0]);
+				if( $(".minc").hasClass("minc") == false ) {
+					$(".bootstrap-timepicker-hour").addClass("minc");
+					$(".bootstrap-timepicker-minute").addClass("hrc");
+					$(".minc").removeClass("bootstrap-timepicker-hour");
+					$(".hrc ").removeClass("bootstrap-timepicker-minute");
+					$(".hrc").addClass("bootstrap-timepicker-hour ");
+					$(".minc").addClass("bootstrap-timepicker-minute");
+				}
+			});
+
 		</script>
 
 	</body>
