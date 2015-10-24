@@ -29,7 +29,8 @@
 											<div class=" form-group row"></div>
 											<div class="form-group row spacer">
 												<div class=" boxoffields col-sm-offset-1 col-sm-2 spacer" style="margin-left: 0px;">
-													<span>Period</span>
+													<span>التكرار</span>
+													<span>التكرار</span>
 													<div class="radio">
 															<label>
 															<input type="radio" name="Period" id="Once" value="Once">مرة

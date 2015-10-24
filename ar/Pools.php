@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <?php session_start(); 
- if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/des19/Login.php');}
+ if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/des19/ar/Login.php');}
  
 ?>
 <html>
 	<?php $men= 5; include "header.html"; ?>
 	
-							<li><a href="#" class="DiskGroupa rightli"><h4 id="DiskGroups"><span>Disk Groups</span></h4></a></li>
-							<li><a href="#" class="SnapShotsa rightli"><h4 id="SnapShots"><span>SnapShots</span></h4></a></li>
+							<li><a href="#" class="DiskGroupa rightli"><h4 id="DiskGroups"><span>تكوين الأقراص</span></h4></a></li>
+							<li><a href="#" class="SnapShotsa rightli"><h4 id="SnapShots"><span>أخذ اللقطات</span></h4></a></li>
 						</ul>
 						<?php include "DiskGroups.php"; ?>
 						<?php include "SnapShots.php" ; ?>
@@ -16,7 +16,7 @@
 			</div>
 			
 		<div class="row">
-			<footer class="footer"> Errors
+			<footer class="footer"> مشاكل
 			</footer>
 		</div>
 			
@@ -73,10 +73,10 @@
 			};
 			
 			function refreshall() { //check pool status
-				$.get("requestdata.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
+				$.get("requestdata.php", { file: '../Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 				if(status==3) { 
 					$.post("./pump.php", { req:"DGPoolstatus" });
-					$.get("requestdata.php", { file: "Data/poolstatus.txt" },function(data){
+					$.get("requestdata.php", { file: "../Data/poolstatus.txt" },function(data){
 						var jdata = jQuery.parseJSON(data);	
 						if(jdata.status=="ok") {
 							$("#"+jdata.raid).attr("checked","checked");
@@ -90,14 +90,14 @@
 					});
 				}
 				if(status==1) { //DiskGroup
-					diskgetsize('Data/disksize.txt','#size',"#count","#onedisk");
+					diskgetsize('../Data/disksize.txt','#size',"#count","#onedisk");
 					status=3;
 					refresh2("DGstatus");	
 				}
 				if(status=="snaps"){ //snapshots
-					refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
-					refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps");
-					refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods");
+					refreshList3("GetPoolVollist","#Vol","../Data/Vollist.txt");
+					refreshList("GetSnaplist","#Snaplist","../Data/listsnaps.txt","snaps");
+					refreshList("GetPoolperiodlist","#all","../Data/periodlist.txt","periods");
 					if(syscounter == 10) {
 					
 					
@@ -155,7 +155,7 @@
 			};
 			function refresh2(textareaid) {
 				
-				$.get("statuslog.php", { file: 'Data/'+textareaid+'.log' }, function(data){
+				$.get("statuslog.php", { file: '../Data/'+textareaid+'.log' }, function(data){
 					$('#'+textareaid).val(data);
 					});
 			}	;
@@ -172,7 +172,7 @@
 			$("#DiskGroups").click(function (){
 				var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
-				$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+				$.get("requestdata.php", { file: '../Data/userpriv.txt' },function(data){ 
 					var gdata = jQuery.parseJSON(data);
 					for (var prot in gdata){
 						if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
@@ -181,7 +181,7 @@
 					};
 				
 					if( userpriv=="true" | curuser=="admin" ) { 
-					 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".DiskGroups").show(); 
+					 config= 0; $("h2").css("background-image","url('../img/diskconfigs.png')").text("تكوين الأقراص"); status=1; $(".DiskGroups").show(); 
 					}
 				});
 			});
@@ -189,7 +189,7 @@
 				if(config== 1){ 
 					var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
-					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+					$.get("requestdata.php", { file: '../Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
@@ -198,7 +198,7 @@
 						};
 					
 						if( userpriv=="true" | curuser=="admin" ) { 
-							config = 0; status="snaps"; $("h2").css("background-image","url('img/snapshot.png')").text("SnapShots");  $("option.variable").remove(); Vollisttime="44:333:22";times= { "snaps":"30:43:433", "periods":"30:43:433" }; $(".SnapShots").show();
+							config = 0; status="snaps"; $("h2").css("background-image","url('../img/snapshot.png')").text("أخذ اللقطات");  $("option.variable").remove(); Vollisttime="44:333:22";times= { "snaps":"30:43:433", "periods":"30:43:433" }; $(".SnapShots").show();
 						}
 					});
 				};
@@ -298,19 +298,37 @@
 		});
 			
 			$("#Stime").timepicker({
-								appendWidgetTo: 'body',
+								appendWidgetTo: '#timepick',
                 minuteStep: 1,
 								showMeridian: false,
 
             });
             
 			setInterval("refreshall()",500);
-			refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
-			refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps");
-			refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods");
+			refreshList3("GetPoolVollist","#Vol","../Data/Vollist.txt");
+			refreshList("GetSnaplist","#Snaplist","../Data/listsnaps.txt","snaps");
+			refreshList("GetPoolperiodlist","#all","../Data/periodlist.txt","periods");
 			$.post("./pump.php", { req: "GetPoolperiodlist", name:"a" });
 			$.post("./pump.php", { req: "GetPoolVollist", name:"a" });
 			$.post("./pump.php", { req: "GetSnaplist", name:"a" });
+									$("#timepick").click( function(){
+				$("#timepick div").css("top","100%");
+				$("#timepick div tbody tr:nth-child(1) td:nth-child(3) a").data("action","incrementHour");
+				$("#timepick div tbody tr:nth-child(1) td:nth-child(1) a").data("action","incrementMinute");
+				$("#timepick div tbody tr:nth-child(3) td:nth-child(3) a").data("action","decrementHour");
+				$("#timepick div tbody tr:nth-child(3) td:nth-child(1) a").data("action","decrementMinute");
+				$("#timepick div tbody tr:nth-child(2) td:nth-child(1) input").val($("#Stime").val().split(":")[1]);
+				$("#timepick div tbody tr:nth-child(2) td:nth-child(3) input").val($("#Stime").val().split(":")[0]);
+				if( $(".minc").hasClass("minc") == false ) {
+					$(".bootstrap-timepicker-hour").addClass("minc");
+					$(".bootstrap-timepicker-minute").addClass("hrc");
+					$(".minc").removeClass("bootstrap-timepicker-hour");
+					$(".hrc ").removeClass("bootstrap-timepicker-minute");
+					$(".hrc").addClass("bootstrap-timepicker-hour ");
+					$(".minc").addClass("bootstrap-timepicker-minute");
+				}
+			});
+
 		</script>
 
 	</body>
