@@ -21,8 +21,8 @@
 																<label  id="datecont"for="Sdatec" class=" col-sm-offset- control-label">تاريخ التسجيل</label>
 																
 																<div  class="input-daterange input-group" id="datepickerc">
-																	<input id="Sdatec"  type="text" class=" form-control datec " name="start" ><span class="input-group-addon">إلى</span>
-																	<input type="text" id="Edatec" class="form-control datec " name="end" />
+																	<input id="Sdatec"  type="text" class=" form-control datec " name="startc" ><span class="input-group-addon">إلى</span>
+																	<input type="text" id="Edatec" class="form-control datec " name="endc" />
 																	
 																</div>
 															</div>

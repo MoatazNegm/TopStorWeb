@@ -8,7 +8,7 @@
 			<div class="row">
 				<div class=" col-sm-offset-11">
 					
-					<button type="button" class=" btn btn-default  finish" data-toggle="tooltip" data-placement="top" title="submit values">Finish</button>
+					<button type="button" class=" btn btn-default  finish" data-toggle="tooltip" data-placement="top" title="submit values">انتهاء</button>
 					
 				</div>
 			</div>

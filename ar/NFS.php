@@ -7,20 +7,20 @@
 					<h2 class="configTitle" id="SubTitle">Active Directory</h2>
 				</div>
 				<div class=" col-sm-1">
-					<button id="refreshb" class="btn btn-default">ref</button>
+					<button id="refreshb" class="btn btn-default">تنشيط</button>
 				</div>								
 			</div>
 			<form class="form-inline">
 				<div class="form-group col-sm-offset-2">
-					<label  for="Pool2" class="control-label">Pool</label>
+					<label  for="Pool2" class="control-label">مجموعة الأقراص</label>
 					<select  id="Pool2" class="  form-control ">
 						<option>Data</option>
 					</select>
 				</div>
 				<div class="form-group col-sm-offset-2">
-					<label  for="Vol2" class=" control-label">Volumes</label>
+					<label  for="Vol2" class=" control-label">المجلد</label>
 					<select  id="Vol2" class=" form-control ">
-						<option class=" small Complete New" value="newoption" >--New--</option><option class=" small Complete" value="alloption">--ALL--</option>
+						<option class=" small Complete New" value="newoption" >--جديد--</option><option class=" small Complete" value="alloption">--الكل--</option>
 					</select>
 				</div>
 			</form>
@@ -30,21 +30,21 @@
 					<form  class="form">
 						<div class="col-sm-offset-1">
 							<div class="panel panel-default spacer ">
-								<div class="panel-heading">Create new Volume </div>
+								<div class="panel-heading">مجلد جديد </div>
 								<div class="panel-body">
 									<div class="col-sm-3">
-											<label  for="Volname" class="  control-label ">Vol name </label>
+											<label  for="Volname" class="  control-label ">اسم المجلد </label>
 											<input type="text"  id="Volname" class=" form-control ">
 										</div>
 									<div class="col-sm-2">
 										<div class="col-sm-12">
-											<label  for="volszie" class=" control-label">Size..GB</label>
+											<label  for="volszie" class=" control-label">سعة..GB</label>
 											<input type="text" id="volsize" class=" form-control ">
 										</div>
 									</div>
 									<div class="col-sm-3">
 										<label  for="button" class="  control-label ">&nbsp;</label>
-										<button type="button" class="btn btn-default  form-control " id="Createvol" data-toggle="tooltip" data-placement="bottom" title="CreateVol" >Create Volume
+										<button type="button" class="btn btn-default  form-control " id="Createvol" data-toggle="tooltip" data-placement="bottom" title="CreateVol" >المجلد
 										</button>
 									</div>
 									<div class=" spacer2 col-sm-4">
@@ -60,7 +60,7 @@
 				<div class="col-sm-offset-1 col-sm-10">
 					<div  class="panel panel-default ">
 						<!-- Default panel contents -->
-						<div class="panel-heading">All Volumes</div>
+						<div class="panel-heading">كل المجلدات</div>
 						<div class="panel-body">
 							<form role="form">
 								<div class="row">
@@ -68,7 +68,7 @@
 										<table  class="table table-hover table-condensed narrowtble ">
 											<thead >
 												<tr class="info">
-													<th>Volume<br>Name</th><th>Volume<br>Size(MB)</th><th>Actual<br>size(MB)</th><th>Snaps<br>size(MB)</th><th>Compres<br>ratio(%)</th>
+													<th>المجلد<br>اسم</th><th>المجلد<br>سعة(MB)</th><th>الحقيقي<br>السعة(MB)</th><th>لقطات<br>سعة(MB)</th><th>انضغاط<br>نسبة(%)</th>
 												</tr>
 											</thead>
 										</table>
@@ -77,7 +77,7 @@
 											<table class="table  table-condensed table-bordered narrowtble  ">
 												<thead >
 													<tr class=" info">
-														<th class="col-sm-4" >Total<br>&nbsp;Size</th><th class="col-sm-4">Actual<br>&nbsp;&nbsp;Size</th><th class="col-sm-4">Total<br>Snapsizes</th>
+														<th class="col-sm-4" >المجموع<br>&nbsp;السعة</th><th class="col-sm-4">حقيقي<br>&nbsp;&nbsp;سعة</th><th class="col-sm-4">مجموع<br>سعة اللقطة</th>
 													</tr>
 												</thead>
 											</table>
@@ -138,7 +138,7 @@
 										</button>
 									</div>
 									<div class=" col-sm-offset-3 spacer-sm" id="disableddiv2">
-															<button type="button" class="btn btn-default btn-sm  " id="disabled" data-toggle="tooltip" data-placement="bottom" title="TypeSnap" disabled >to delete select only one
+															<button type="button" class="btn btn-default btn-sm  " id="disabled" data-toggle="tooltip" data-placement="bottom" title="TypeSnap" disabled >اختار واحدة فقط للإزالة
 															</button>
 									</div>
 									
@@ -154,7 +154,7 @@
 				<div class="col-sm-offset-1 col-sm-10">
 					<div  class="panel panel-default ">
 						<!-- Default panel contents -->
-						<div id="Volumnamedetails" class="panel-heading">All Volumes</div>
+						<div id="Volumnamedetails" class="panel-heading">كل المجلدات</div>
 						<div class="panel-body">
 							<form role="form">
 								<div class="row">
@@ -162,7 +162,7 @@
 										<table id="Volumedetails" class="table table-hover table-condensed narrowtble ">
 											<thead >
 												<tr class="info">
-													<th>Volume<br>Size(MB)</th><th>Actual<br>size(MB)</th><th>Volume<br>Snaps</th><th>total<br>used</th><th>creation<br>date</th><th>free<br>space</th><th>compression<br>ratio</th><th>dedupe<br>ratio</th>
+													<th>المجلد<br>سعة(MB)</th><th>حقيقي<br>سع (MB)</th><th>المجلد<br>اللقطات</th><th>المجموع<br>المستعمل</th><th>التخليق<br>تاريخ</th><th>فارغة<br>مساحة</th><th>انضغاط<br>نسبة</th><th>اللا متكرر<br>نسبة</th>
 												</tr>
 											</thead>
 											<tbody class="">
@@ -178,7 +178,7 @@
 			<div class="row">
 				<div class=" col-sm-offset-11">
 					
-					<button type="button" class=" btn btn-default  finish" data-toggle="tooltip" data-placement="top" title="submit values">Finish</button>
+					<button type="button" class=" btn btn-default  finish" data-toggle="tooltip" data-placement="top" title="submit values">انتهاء</button>
 					
 				</div>
 			</div>

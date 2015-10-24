@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <?php session_start(); 
- if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/des19/Login.php');}
+ if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/des19/ar/Login.php');}
  
 ?>
 <html>
 	<?php $men=3;  include "header.html"; ?>
 	
-							<li><a href="#" class="CIFSa rightli"><h4 id="CIFS"><span>CIFS</span></h4></a></li>
-							<li><a href="#" class="NFSa rightli"><h4 id="NFS"><span>NFS</span></h4></a></li>
-							<li><a href="#" class="ISCSIa rightli"><h4 id="ISCSI"><span>ISCSI</span></h4></a></li>
+							<li><a href="#" class="CIFSa rightli"><h4 id="CIFS"><span>أقراص ويندوز</span></h4></a></li>
+							<li><a href="#" class="NFSa rightli"><h4 id="NFS"><span>أقراص لينكس</span></h4></a></li>
+							<li><a href="#" class="ISCSIa rightli"><h4 id="ISCSI"><span>الأقراص المباشرة</span></h4></a></li>
 						</ul>
 						<div id="CIFScode"><?php include "CIFS.php"; ?></div>
 						<div id="NFScont"><div id="NfScode"><?php include "NFS.php"; ?></div></div>
@@ -57,11 +57,11 @@
 			var Vollock=0;
 			var plotb;
 			function refreshall() {
-				$.get("requestdata.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
+				$.get("requestdata.php", { file: '../Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 				if(Protocol != 0) {
-					refreshList2("GetPoolVollist","#Volumetable","Data/Vollist.txt","Volumes");
+					refreshList2("GetPoolVollist","#Volumetable","../Data/Vollist.txt","Volumes");
 					refresh3("#statusarea3");
-					//refreshList2("GetPoollist","#Pool2","Data/Poollist.txt","Pool");
+					//refreshList2("GetPoollist","#Pool2","../Data/Poollist.txt","Pool");
 					//Voldirtytable();
 				}
 				if(syscounter2==1000) { syscounter2=0; } else { syscounter2=syscounter2+1; }
@@ -89,7 +89,7 @@
 							//console.log("trying to chart");
 						$("#Volumetable tr").remove();
 						chartdata=[];
-						//refreshList2("GetPoolVollist","#Volumetable tr","Data/Vollist2.txt",20);
+						//refreshList2("GetPoolVollist","#Volumetable tr","../Data/Vollist2.txt",20);
 						
 						}
 						
@@ -100,7 +100,7 @@
 			
 			function refresh3(textareaid) {
 				
-					$.get("statuslog.php", { file: 'Data/'+Protocol+'status.log' }, function(data){
+					$.get("statuslog.php", { file: '../Data/'+Protocol+'status.log' }, function(data){
 					$(textareaid).val(data);
 					});
 			
@@ -202,7 +202,7 @@
 					case "newoption" :  $("#createvol").show(); break;
 					case "alloption" : $("tr.success").removeClass("success");rowisclicked(); $("#Vollist").show(); plotchart('chartNFS',chartdata); break;
 					default: 
-							var fileloc= "Data/Vollist.txt";
+							var fileloc= "../Data/Vollist.txt";
 							$("#Volumedetails tbody tr.variable").remove();
 							$.get("requestdata.php", { file: fileloc }, function(data){
 								var jdata = jQuery.parseJSON(data);
@@ -266,7 +266,7 @@
 				if(config == 1 ) {
 					var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
-					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+					$.get("requestdata.php", { file: '../Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
@@ -278,7 +278,7 @@
 							Protocol="CIFS";
 							Vollisttime = "55:55:44";
 							Initclickedprotocol();
-							$("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".NFS").show();
+							$("h2").css("background-image","url('img/cifs.png')").text("أقراص ويندوز"); $(".NFS").show();
 							//plotchart('chartNFS',chartdata);
 						}
 					});
@@ -289,7 +289,7 @@
 				if(config== 1){  
 					var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
-					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+					$.get("requestdata.php", { file: '../Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
@@ -301,7 +301,7 @@
 							Protocol="NFS"; 
 							Vollisttime = "55:55:44";
 							Initclickedprotocol();
-							$("h2").css("background-image","url('img/nfs.png')").text("NFS"); $(".NFS").show();
+							$("h2").css("background-image","url('img/nfs.png')").text("أقراص لينكس"); $(".NFS").show();
 							//plotchart('chartNFS',chartdata);
 						}
 					});
@@ -312,7 +312,7 @@
 				if(config== 1){ 
 					var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
-					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+					$.get("requestdata.php", { file: '../Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
@@ -321,7 +321,7 @@
 						};
 					
 						if( userpriv=="true" | curuser=="admin" ) {
-							Protocol="ISCSI"; config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ISCSI").show(); plotchart('chartISCSI',chartdata);
+							Protocol="ISCSI"; config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("أقراص مباشرة"); $(".ISCSI").show(); plotchart('chartISCSI',chartdata);
 						}
 					});
 				};
@@ -340,7 +340,7 @@
 			$("#Createvol").click( function (){ var req=""; if(Protocol != 0) { req=Protocol; };$.post("./pump.php", { req:"VolumeCreate"+req, name:$("#Pool2 option:selected").val()+" "+" "+$("#Volname").val()+" "+$("#volsize").val()+"G"+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 refresh3("#statusarea3"); 
 				 });
-			refreshList2("GetPoolVollist","#Vol2","Data/Vollist2.txt",5.5);
+			refreshList2("GetPoolVollist","#Vol2","../Data/Vollist2.txt",5.5);
 			});
 			$("#refreshb").click(function(){
 				refreshall();
@@ -348,11 +348,11 @@
 			
 			//setInterval('refresh3("#statusarea4")', 10000);
 			//setInterval('refresh3("#statusarea3")', 10000);
-			//setInterval('refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);', 10000);
+			//setInterval('refreshList2("GetPoollist","#Pool2","../Data/Poollist.txt",3);', 10000);
 			//setInterval('Voldirtytable()', 10000);
 			setInterval('refreshall()', 500);
-			//refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);
-			//refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
+			//refreshList2("GetPoollist","#Pool2","../Data/Poollist.txt",3);
+			//refreshList2("GetPoolVollist","#Vol2","../Data/Vollist.txt",5.5);
 			
 			
 		</script>

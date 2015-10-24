@@ -165,7 +165,7 @@
 							}
 						};
 						if( userpriv=="true" | curuser=="admin" ) {
-							config= 0; $("h2").css("background-image","url('../img/SS.png')").text("Service Status"); $(".SS").show();updatechartarea(); 
+							config= 0; $("h2").css("background-image","url('../img/SS.png')").text("حالة الخدمة"); $(".SS").show();updatechartarea(); 
 						} 
 					});
 				};
@@ -184,7 +184,7 @@
 						};
 					
 						if( userpriv=="true" | curuser=="admin" ) {
-							config = 0; $("h2").css("background-image","url('../img/logs.png')").text("Logs");logtime="4466:44:34534";updatelogarea(); $(".Logs").show();
+							config = 0; $("h2").css("background-image","url('../img/logs.png')").text("السجلات");logtime="4466:44:34534";updatelogarea(); $(".Logs").show();
 						}
 					});
 				};
@@ -193,6 +193,8 @@
 	function refreshall() {
 		$.get("requestdata.php", { file: '../Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 		refreshList("GetDisklist","#Disks","../Data/disklist.txt");
+		$(".datepicker").css("top","39%");
+		$(".datepicker").css("left","49%");
 		updatechartarea();
 		updatelogarea();
 		}
@@ -548,7 +550,7 @@
 			logtime="44:44:34";updatelogarea();
 		});
 
-		$(".datec").datepicker().on("changeDate",function(e){
+		$(".datec").datepicker().on("changeDate	",function(e){
 					traffictime="44:44:34";updatechartarea();											
 		});
 		$(".timec").change(function(){
@@ -561,7 +563,7 @@ $("#Disks").change(function(){
 		$(".checkboxy").change (function(){ updatelogarea();});
 		refreshList("GetDisklist","#Disks","../Data/disklist.txt");
 		$.post("./pump.php", { req:"GetDisklist", name: "../Data/disklist.txt"},function(){});
-		setInterval('refreshall()', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
+		setInterval('refreshall()', 200); // Loop every 1000 milliseconds (i.e. 1 second)
 		//console.log("<?php print $_REQUEST["idd"]; print session_id(); ?>");
 		
 		$('[data-toggle="popover"]').popover({
