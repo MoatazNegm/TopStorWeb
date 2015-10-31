@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php session_start(); 
- if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/des19/Login.php');}
+ if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/des19/ar/Login.php');}
  
 ?>
 <?php
@@ -8,7 +8,7 @@
 if( $_FILES['file']['name'] != "" )
 {
 
-    move_uploaded_file( $_FILES['file']['tmp_name'], "Data/".$_FILES['file']['name']); 
+    move_uploaded_file( $_FILES['file']['tmp_name'], "../Data/".$_FILES['file']['name']); 
 					switch ($_FILES['file']['error']) {
 						case UPLOAD_ERR_OK:
 								$message = "File uplodaded successfully";
@@ -50,7 +50,7 @@ else
     $message = "No file specified !";
     
 }
-$myfile = fopen("Data/fileupload.txt", "w");
+$myfile = fopen("../Data/fileupload.txt", "w");
 fwrite($myfile, $message);
 fclose($myfile);
 ?>
@@ -60,9 +60,9 @@ fclose($myfile);
 	<?php $men=6; include "header.html"; ?>
 	
 							<li>
-								<a href="#" class="UserPrivilegesa rightli"><h4 id="UserPrivileges"><span>User Priviliges</span></h4></a></li>
-							<li><a href="#" class="Colourizea rightli"><h4 id="Colourize"><span>Colourize</span></h4></a></li>
-							<li><a href="#" class="Uploada rightli"><h4 id="Upload"><span>Upload Firmware</span></h4></a></li>
+								<a href="#" class="UserPrivilegesa rightli"><h4 id="UserPrivileges"><span>إمتيازمستخدمي النظام</span></h4></a></li>
+							<li><a href="#" class="Colourizea rightli"><h4 id="Colourize"><span>التلوين</span></h4></a></li>
+							<li><a href="#" class="Uploada rightli"><h4 id="Upload"><span>تحديث النظام</span></h4></a></li>
 						</ul>
 						<?php include "UserPrivileges.php"; ?>
 						<?php include "Upload.php"; ?>
@@ -97,7 +97,7 @@ fclose($myfile);
 					var userpriv="false";
 						var curuser="<?php echo $_SESSION["user"] ?>";
 						whichul="#UserPrivileges";
-						$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+						$.get("requestdata.php", { file: '../Data/userpriv.txt' },function(data){ 
 							var gdata = jQuery.parseJSON(data);
 							for (var prot in gdata){
 								if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
@@ -106,7 +106,7 @@ fclose($myfile);
 							};
 						
 						if( userpriv=="true" | curuser=="admin" ) {
-							$("h2").css("background-image","url('img/Priv.png')").text("User Privileges");  $("option.variable").remove(); proptime="44:33233:22";; $(".UserPrivileges").show();refreshall();
+							$("h2").css("background-image","url('../img/Priv.png')").text("User Privileges");  $("option.variable").remove(); proptime="44:33233:22";; $(".UserPrivileges").show();refreshall();
 						}
 					});
 				}
@@ -114,9 +114,9 @@ fclose($myfile);
 			$("#Upload").click(function () {
 				if(whichul == 0) {
 					whichul="#Upload";
-					$("h2").css("background-image","url('img/Uploadfirmware.png')").text("Upgrade System S/W");
+					$("h2").css("background-image","url('../img/Uploadfirmware.png')").text("تحديث النظام");
 					$(".dz-preview").remove(); $("#previews").show(); droppls.enable();
-					$("div.dz-message").text("Please, add or drag file here");
+					$("div.dz-message").text("نرجو الضغط أو استخدام المؤشر لسحب الملف هنا.");
 					$(".Upload").show();
 				}
 				
@@ -126,7 +126,7 @@ fclose($myfile);
 					var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
 					whichul="#Colourize";
-					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+					$.get("requestdata.php", { file: '../Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
@@ -149,12 +149,12 @@ fclose($myfile);
 			function refreshall() {
 				DNS=1;
 								
-				$.get("requestdata.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
+				$.get("requestdata.php", { file: '../Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 				refresh2('Privstatus');
 			 if($(".UserPrivileges").is(":visible")) {
 					refreshUserList();
 					var objdate;
-					$.get("requestdatein.php", { file: 'Data/userprivdate.txt' }, function(data){ 
+					$.get("requestdatein.php", { file: '../Data/userprivdate.txt' }, function(data){ 
 					var objdate = jQuery.parseJSON(data);
 					proptimenew=objdate.updated });
 					
@@ -162,7 +162,7 @@ fclose($myfile);
 					else {
 						proptime=proptimenew;
 					var gdata;
-						$.get("requestdata.php", { file: 'Data/userpriv.txt' }, function(data){ 
+						$.get("requestdata.php", { file: '../Data/userpriv.txt' }, function(data){ 
 							gdata=jQuery.parseJSON(data);
 							for (var prot in gdata){
 								if(gdata[prot].user==$("#UserList option:selected").val()) {
@@ -176,7 +176,7 @@ fclose($myfile);
 			}
 			function refresh2(textareaid) {
 				
-				$.get("statuslog.php", { file: 'Data/'+textareaid+'.log' }, function(data){
+				$.get("statuslog.php", { file: '../Data/'+textareaid+'.log' }, function(data){
 					$('#'+textareaid).val(data);
 					});
 			}	;
@@ -185,7 +185,7 @@ fclose($myfile);
 				
 				$.post("./pump.php", { req:"UnixListUsers", name:"a" }, function (data1){ 
 					
-					$.get("requestdata.php", { file: 'Data/listusers.txt' }, function(data){
+					$.get("requestdata.php", { file: '../Data/listusers.txt' }, function(data){
 						jdata = jQuery.parseJSON(data);
 						if(Number($("#UserList option").length)+1 > 0 ) {
 							$("#UserList option").each(function (i,v) { 

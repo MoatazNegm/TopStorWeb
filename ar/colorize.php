@@ -1,13 +1,13 @@
-<script src="js/Colour.js"></script>
-<script src="js/jquery.minicolors.js"></script>
-<script src="InitColor.js"></script>
+<script src="../js/Colour.js"></script>
+<script src="../js/jquery.minicolors.js"></script>
+<script src="../InitColor.js"></script>
 <div id="modalcontainer" >
 			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-							<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+							<h4 class="modal-title" id="myModalLabel">العنوان</h4>
 						</div>
 						<div class="modal-body">
 							<form class="form-horizontal " role="form">
@@ -15,19 +15,19 @@
 												<div class="   ">
 													<div id="minicolor" class="  ">
 														<div class=" col-sm-4 textcolor">
-															<label  for="textcolor" class=" control-label">Text</label>
+															<label  for="textcolor" class=" control-label">النص</label>
 															<input type="hidden" id="textcolor" class="form-control minicolors2  " data-inline="false" value="#ffffff">
 														</div>
 													</div>
 													<div class="   ">
 														<div class=" col-sm-4 background">
-															<label  for="background" class=" control-label" >Background color</label>
+															<label  for="background" class=" control-label" >لون الخلفية</label>
 															<input type="hidden" id="background" class="form-control minicolors2  " data-inline="false" value="#ffffff">
 														</div>
 													</div>
 													<div class="  ">
 														<div class=" col-sm-4 frame">
-															<label  for="frame" class=" control-label">frame</label>
+															<label  for="frame" class=" control-label">الإطار</label>
 															<input type="hidden" id="frame" class="form-control minicolors2 " placeholder="Admin password" value="#ffffff">
 														</div>
 													</div>
@@ -35,11 +35,11 @@
 											</div>
 											
 											<div class="row">
-											<div id="samplebox"> sample box</div>
+											<div id="samplebox"> نموذج مربع</div>
 											</div>
-											<div class="row col-sm-offset-1 checkbox noback">
+											<div class="row col-sm-offset-1 checkbox noback" style="margin-left: 2px;">
 														<label>
-														<input type="checkbox" id="noback" value="background is transparent"> Background is transparent
+														<input type="checkbox" id="noback" value="background is transparent"> الخلفية شفافة
 														</label>
 												</div>
 												
@@ -48,10 +48,10 @@
 
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-							<button type="button" id="RestIntstng"class="btn btn-default" >Restore defaults</button>
-							<button type="button" id="Restlststng"class="btn btn-default" >Restore last settings</button>
-							<button type="button" id="Savechanges" class="btn btn-default">Save changes</button>
+							<button type="button" class="btn btn-primary" data-dismiss="modal">إغلاق</button>
+							<button type="button" id="RestIntstng"class="btn btn-default" >إستعادة إستعادة التعديلات الأصلية</button>
+							<button type="button" id="Restlststng"class="btn btn-default" >إستعادة آخر تعديلات</button>
+							<button type="button" id="Savechanges" class="btn btn-default">حفظ التعديلات</button>
 						</div>
 					</div>
 				</div>
