@@ -484,3 +484,8 @@ margin-left: 0.2 rem;
 border-left: 10px solid transparent;
 border-color: transparent;
 }
+#lang {
+	margin-right: 1rem;
+	color: darkred; 
+}
+#lang a { color : darkred; }

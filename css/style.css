@@ -465,3 +465,9 @@ td { padding: 0.1rem;}
 #Proxy {
  margin-top: 1.8rem;
 }
+
+#lang {
+	margin-right: 1rem;
+	color: darkred; 
+}
+#lang a { color : darkred; }
