@@ -61,7 +61,7 @@
 				}
 				else if($(".UnLin").is(":visible"))
 				{
-					$.get("requestdata.php", { file: 'Data/Usersstatus.log' }, function(data){ $("#UnLinstatus").val(data);});
+					$.get("requestdata2.php", { file: 'Data/Usersstatus.log' }, function(data){ $("#UnLinstatus").val(data);});
 					refreshUserList();
 				}
 				$.get("requestdata.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
