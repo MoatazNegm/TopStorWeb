@@ -1,0 +1,3 @@
+1000:تم التأكيد على مسح :
+1010:Error.. no user found : is not found
+1020:another message 
