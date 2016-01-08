@@ -168,19 +168,19 @@
 
 			function refreshall() { //check pool status
 				if($(".Partners").is(":visible")) {
-					$.get("requestdata.php", { file: 'Data/Partnersstatus.log' }, function(data){ $("#Partnersstatus").val(data);});
+					$.get("requestdata2.php", { file: 'Data/Partnersstatus.log' }, function(data){ $("#Partnersstatus").val(data);});
 					refreshPartnerlist("#Partnerlist","Data/Partnerslist.txt");
 				};
 				if($(".Replicate").is(":visible")) {
-					$.get("requestdata.php", { file: 'Data/Replicatestatus.log' }, function(data){ $("#Replicatestatus").val(data);});
+					$.get("requestdata2.php", { file: 'Data/Replicatestatus.log' }, function(data){ $("#Replicatestatus").val(data);});
 					refreshReplicatelist("#Partner","Data/Partnerslist.txt","snaps","receiver");
 				};
 				if($(".Sendersc").is(":visible")) {
-					$.get("requestdata.php", { file: 'Data/Replicatestatus.log' }, function(data){ $("#Sendersstatus").val(data);});
+					$.get("requestdata2.php", { file: 'Data/Replicatestatus.log' }, function(data){ $("#Sendersstatus").val(data);});
 					refreshReplicatelist("#Partnersend","Data/Partnerslist.txt","sender","sender");
 				};
 				if($(".Proxy").is(":visible")) {
-					$.get("requestdata.php", { file: 'Data/Proxystatus.log' }, function(data){ $("#Proxystatus").val(data);});
+					$.get("requestdata2.php", { file: 'Data/Proxystatus.log' }, function(data){ $("#Proxystatus").val(data);});
 					
 					
 				};
