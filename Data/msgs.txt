@@ -43,4 +43,9 @@ Replica1018:Success adding Minutely replication schedule : for partner : on volu
 Replica1019:Adding Weekly replication schedule ......
 Replica1020:Problem occurred adding Weekly replication schedule 
 Replica1021:Success adding Weekly replication schedule : for partner : on volume :
-
+Replica1022:Adding Alias : for this device ......
+Replica1023:Success adding Alias : to this device
+Replica1024:Adding proxy license : this device ......
+Replica1025:Success adding proxy license : for proxy : 
+Replica1026:Adding proxy :  
+Replica1027:Success adding proxy : for the license : 
