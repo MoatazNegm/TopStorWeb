@@ -1,4 +1,9 @@
-11000:Problem while adding user : 
-1000:User : is deleted
-1001:Deleting user : 
-1003:User : is added
+Unlin11000:Problem while adding user : 
+Unlin1000:User : is deleted
+Unlin1001:Deleting user : 
+Unlin1003:User : is added
+Domain1000:Changing Domain to :
+Domain1001:Problam chaning to Domain :
+Domain1002:Success.. Device joined Domain : 
+
+

@@ -52,7 +52,7 @@
 			//	console.log("AD is visible : " , $(".AD").is(":visible"));
 				if($(".AD").is(":visible"))
 				{
-					$.get("requestdata.php", { file: 'Data/DomainChangestatus.log' }, function(data){ $("#ADstatus").val(data);});
+					$.get("requestdata2.php", { file: 'Data/DomainChangestatus.log' }, function(data){ $("#ADstatus").val(data);});
 				}
 				else if($(".Future").is(":visible"))
 				{
