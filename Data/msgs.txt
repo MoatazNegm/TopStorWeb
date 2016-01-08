@@ -5,5 +5,16 @@ Unlin1003:User : is added
 Domain1000:Changing Domain to :
 Domain1001:Problam chaning to Domain :
 Domain1002:Success.. Device joined Domain : 
+Domain1010:Changing Domain to WorkGroup :
+Domain1011:Success...chaning to workgroup :
+HostManual1000:Changing Device name and IPs
+HostManual1001:All changes are done.Please, wait till they take effect.
+CIFS1001:Creating Volume : ....
+CIFS1002:Volume : already exists 
+CIFS1003:Problem occured while creating volume : 
+CIFS1004:Success creating volume :
+CIFS1005:Deleting : .....
+CIFS1006:Prolbem deleting :
+CIFS1007:Success deleting :
 
 

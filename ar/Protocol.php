@@ -100,7 +100,7 @@
 			
 			function refresh3(textareaid) {
 				
-					$.get("statuslog.php", { file: '../Data/'+Protocol+'status.log' }, function(data){
+					$.get("requestdata2.php", { file: '../Data/'+Protocol+'status.log' }, function(data){
 					$(textareaid).val(data);
 					});
 			

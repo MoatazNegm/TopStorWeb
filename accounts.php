@@ -57,7 +57,7 @@
 				else if($(".Future").is(":visible"))
 				{
 					
-					$.get("requestdata.php", { file: 'Data/HostManualconfigstatus.log' }, function(data){ $("#Futurestatus").val(data);});
+					$.get("requestdata2.php", { file: 'Data/HostManualconfigstatus.log' }, function(data){ $("#Futurestatus").val(data);});
 				}
 				else if($(".UnLin").is(":visible"))
 				{
