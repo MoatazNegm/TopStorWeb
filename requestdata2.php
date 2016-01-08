@@ -26,6 +26,6 @@
   };
  };
  
-
- print str_repalce("\n","",$msgf);
+ 
+ print str_replace("\n","",$msgf);
 ?>
