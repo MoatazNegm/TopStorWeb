@@ -2,7 +2,7 @@
 	<div class=" col-sm-offset-1 col-sm-10">
 		<div class="box ">
 			<div class="row">
-				<h2 class="configTitle col-sm-12">إمتيازات مستخدمي الجهاز</h2>
+				<h2 class="configTitle col-sm-12">إمتياز المستخدم</h2>
 			</div>									
 			<div class="row">
 				<div class="  col-sm-7 ">

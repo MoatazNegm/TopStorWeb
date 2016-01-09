@@ -11,7 +11,7 @@
 # $msglines = array_reverse($msglines);
  $pos = -1;
  $isfound = "";
- $msgf = "no error code found";
+ $msgf = "رسالة داخلية ...نرجو مراجعة الدعم الفني إذا تكررت";
  for ($l = 0; $l < count($msglines); $l++) {
   $isfound = strpos ($msglines[$l], $msgcode);
   if(  is_numeric($isfound)  ) {  $pos = $l; };

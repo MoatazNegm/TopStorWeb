@@ -60,7 +60,7 @@ fclose($myfile);
 	<?php $men=6; include "header.html"; ?>
 	
 							<li>
-								<a href="#" class="UserPrivilegesa rightli"><h4 id="UserPrivileges"><span>إمتيازمستخدمي النظام</span></h4></a></li>
+								<a href="#" class="UserPrivilegesa rightli"><h4 id="UserPrivileges"><span>امتياز المستخدم</span></h4></a></li>
 							<li><a href="#" class="Colourizea rightli"><h4 id="Colourize"><span>التلوين</span></h4></a></li>
 							<li><a href="#" class="Uploada rightli"><h4 id="Upload"><span>تحديث النظام</span></h4></a></li>
 						</ul>
@@ -106,7 +106,7 @@ fclose($myfile);
 							};
 						
 						if( userpriv=="true" | curuser=="admin" ) {
-							$("h2").css("background-image","url('../img/Priv.png')").text("User Privileges");  $("option.variable").remove(); proptime="44:33233:22";; $(".UserPrivileges").show();refreshall();
+							$("h2").css("background-image","url('../img/Priv.png')").text("امتياز المستخدم");  $("option.variable").remove(); proptime="44:33233:22";; $(".UserPrivileges").show();refreshall();
 						}
 					});
 				}
@@ -176,7 +176,7 @@ fclose($myfile);
 			}
 			function refresh2(textareaid) {
 				
-				$.get("statuslog.php", { file: '../Data/'+textareaid+'.log' }, function(data){
+				$.get("requestdata2.php", { file: '../Data/'+textareaid+'.log' }, function(data){
 					$('#'+textareaid).val(data);
 					});
 			}	;

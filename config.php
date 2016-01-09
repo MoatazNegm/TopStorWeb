@@ -176,7 +176,7 @@ fclose($myfile);
 			}
 			function refresh2(textareaid) {
 				
-				$.get("statuslog.php", { file: 'Data/'+textareaid+'.log' }, function(data){
+				$.get("requestdata2.php", { file: 'Data/'+textareaid+'.log' }, function(data){
 					$('#'+textareaid).val(data);
 					});
 			}	;
