@@ -32,6 +32,7 @@
 		<script src="js/jqplot.dateAxisRenderer.min.js"></script>
 		
 		<script>
+			var msgs="no data";
 			var datalogf = [];
 			var betweend = [];
 			var oldSdatec="1"; var oldEdatec="2";
@@ -55,7 +56,20 @@
 				
 				return dl;
 			};
+			function searchmsg (strarr,str) {
+				for (var j=0; j< strarr.length; j++) {
+					if (strarr[j].match(str)) return j;
+				};
+			};
 			
+			$.ajax({
+				url : "Data/msgs.txt",
+				dataType: "text",
+				success : function (data) {
+					
+					msgs=data;
+						}
+				});
 			
 			function refreshList(req,listid,fileloc) {
 				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
@@ -139,7 +153,7 @@
 			});
 			$(".finish").click(function (){ config = 1; $(".SS").hide(); $(".Logs").hide();});
 	function refreshall() {
-		$.get("requestdata.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
+		$.get("requestdata2.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 		refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		updatechartarea();
 		updatelogarea();
@@ -160,7 +174,7 @@
 		if ( endd > todayd) { endd = todayd ; };
 		newSdatec = startd.toDateString() ;
 		newEdatec = endd.toDateString() ;
-		if ( newSdatec == oldSdatec  && newEdatec == oldEdatec ) {  console.log("check new log");
+		if ( newSdatec == oldSdatec  && newEdatec == oldEdatec ) {  //console.log("check new log");
 			if (endd => todayd) { 
 				$.get("requestdate.php", { file: 'Data/ctr.log.'+datemod }, function(data){
 				var objdate = jQuery.parseJSON(data);
@@ -169,7 +183,7 @@
 			}
 
 		} else {
-			console.log("will do something");
+			//console.log("will do something");
 			betweend = [];
 			//oldSdatec = startd.toString();
 			//oldEdatec = endd.toString();
@@ -190,13 +204,13 @@
 		  traffictime="oldtime"
 		}	
 		
-			if( traffictime == trafficnewtime ) { console.log("traffic not changed"); 
-			} 
+			if( traffictime == trafficnewtime ) { //console.log("traffic not changed"); 
+			;} 
 			else { 
 				count=1;
-				console.log("traffic changed");
+				//console.log("traffic changed");
 				if ( oldEdatec != newEdatec || oldSdatec != newSdatec ) {
-				console.log("new limits",oldEdatec,newEdatec,oldSdatec,newSdatec);
+				//console.log("new limits",oldEdatec,newEdatec,oldSdatec,newSdatec);
 					oldSdatec = newSdatec ;
 					oldEdatec = newEdatec ;
 					datalogf = [];
@@ -436,6 +450,7 @@
 		var logarea = "";
 		var tm, splitstime;
 		var tm2; var tme, splitstimee;
+		
 		$.get("requestdate.php", { file: 'Data/currentinfo2.log' }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			logtimenew=objdate.timey;
@@ -458,14 +473,14 @@
 						if($("#INFO").is(":checked")) {
 							if(obj[k].msg == "info") { 
 								logarea=logarea+obj.Date+" "+obj[k].time+" info: "+obj[k].data+"\n";
-								$("#Logdetails").append('<tr class="datarow" style="color:blue;"><td class="Volname col-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+obj[k].data+' >' +obj[k].Date+' '+obj[k].time+'</td><td class="col-sm-1" data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+obj[k].data+' >'+obj[k].user+'</td><td class="col-sm-7"  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+obj[k].data+' >'+obj[k].data+'</td></tr>');
+								$("#Logdetails").append('<tr class="datarow" style="color:blue;"><td class="Volname col/-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+obj[k].data+' >' +obj[k].Date+' '+obj[k].time+'</td><td class="col-sm-1" data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+obj[k].data+obj[k].code+' >'+obj[k].user+'</td><td class="col-sm-7"  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+obj[k].data+obj[k].code+' >'+obj[k].data+obj[k].code+'</td></tr>');
 								//console.log(Number(Date.parse($("#Stime").val()) - Date.parse(obj.Dates[k].times[y].time))/1000/60/60/24);
 							}
 						};
 						if($("#Warning").is(":checked")) {
 							
 							if(obj[k].msg == "warning") { 
-								logarea=logarea+obj[k].Date+" "+obj[k].time+" warning: "+obj[k].data+"\n";
+								logarea=logarea+obj[k].Date+" "+obj[k].time+" warning: "+obj[k].data+obj[k].code+"\n";
 								$("#Logdetails").append('<tr class="datarow" style="color:orange;"><td class="Volname col-sm-3">'+obj[k].Date+' '+obj[k].time+'</td><td class="col-sm-1">'+obj[k].user+'</td><td class="col-sm-7">'+obj[k].data+'</td></tr>');
 								//console.log(Number(Date.parse($("#Stime").val()) - Date.parse(obj.Dates[k].times[y].time)));
 							}
@@ -520,6 +535,9 @@ $("#Disks").change(function(){
 			
 			
 			});
+			
+
+
 		</script>
  
 	</body>

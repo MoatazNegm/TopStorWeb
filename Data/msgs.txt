@@ -80,3 +80,4 @@ Snap1020:Problem occurred adding Weekly snapshot schedule for :
 Snap1021:Success adding Weekly snapshot schedule : for volume :
 Priv1000:Changing perivileges of user : ........
 Priv1001:Success changing privileges of user : 
+Replivol1000: : : Receving new snapshot for volume : from partner :

@@ -64,7 +64,7 @@
 					$.get("requestdata2.php", { file: '../Data/Usersstatus.log' }, function(data){ $("#UnLinstatus").val(data);});
 					refreshUserList();
 				}
-				$.get("requestdata.php", { file: '../Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
+				$.get("requestdata3.php", { file: '../Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 			}
 			function refresh4(request,field) {
 				if(DNS > 0) {
