@@ -1,7 +1,22 @@
 Unlin11000:Problem while adding user : 
+Unlin11001: : : Problem while adding user : 
 Unlin1000:User : is deleted
+Unlin1010: : : User : is deleted
 Unlin1001:Deleting user : 
+Unlin1004: : : Deleting user : 
 Unlin1003:User : is added
+Unlin1011: Changing user password for :
+Unlin1012: : : Changing user password for :
+Unlin1013: : : problem occured while chaning password for user :
+Unlin1014: problem occured while chaning password for user :
+Unlin1015: : : Success changing password for user :
+Unlin1016: Success changing password for user :
+Unlin1017: Adding user : ......
+Unlin1018: : : Adding user : 
+Unlin1019: Problem occured while adding user :
+Unlin1020: : : Problem occured while adding user :
+Unlin1021: Success adding user : 
+Unlin1022: : : Success adding user : 
 Domain1000:Changing Domain to :
 Domain1001:Problam chaning to Domain :
 Domain1002:Success.. Device joined Domain : 
@@ -80,4 +95,12 @@ Snap1020:Problem occurred adding Weekly snapshot schedule for :
 Snap1021:Success adding Weekly snapshot schedule : for volume :
 Priv1000:Changing perivileges of user : ........
 Priv1001:Success changing privileges of user : 
-Replivol1000: : : Receving new snapshot for volume : from partner :
+Replivol1000: : : Receiving new snapshot for volume : from partner :
+Replidf1000: : : Receiving new Snapshot for volume : from partner :
+NFS1000: : :  Deleting volume :
+NFS1001: : : Problem occured while deleting volume : 
+NFS1002: : : Success deleting : 
+NFS1003: : : volume : already exists
+NFS1004: : : Creating volume :
+NFS1005: : : Problem occured whiel creating volume : 
+NFS1006: : : Success creating volume : 
