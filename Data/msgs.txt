@@ -104,3 +104,29 @@ NFS1003: : : volume : already exists
 NFS1004: : : Creating volume :
 NFS1005: : : Problem occured whiel creating volume : 
 NFS1006: : : Success creating volume : 
+Snap1022: : : Deleting Snapshot :
+Snap1023: : : Problem while deleting snapshot :
+Snap1024: Success in deleting snapshot : 
+Snap1025: : : Success in deleting snapshot :
+Snap1026: : : Adding snapshot :
+Snap1027: Problem occurred while creating Snapshot :
+Snap1028: : : Problem occurred while creating Snapshot :
+Snap1029: Success creating Snapshot :
+Snap1030: : : Success creating Snapshot :
+Snap1031: : : Adding Weekly snapshot schedule for : ......
+Snap1032: : : Problem occurred adding Weekly snapshot schedule for : 
+Snap1033: : : Success adding Weekly snapshot schedule : for volume :
+Snap1034: : :Adding Minutely snapshot schedule for : ......
+Snap1035: : :Problem occurred adding Minutely snapshot schedule for :  
+Snap1036: : :Success adding Minutely snapshost schedule : for volume :
+Snap1037: : :Adding Hourly Snapshot schedule ......
+Snap1038: : :Problem occurred adding Hourly Snapshot schedule 
+Snap1039: : :Success adding Hourly Snapshot schedule :
+Snap1040: : :Rolling back snapshot : ......
+Snap1041: : :Problem occured while rolling back snapshot : 
+Snap1042: : :Success in Rollback of snapshot : 
+Snap1043: : :Deleting period : ........
+Snap1044: : :Prolbem occured while deleting period : 
+Snap1045: : :Success deleting period : 
+Repli1001: : : Problem occurred while receiving the snapshot : from :
+Repli1002: : : Success in receiving the snapshot : from :
