@@ -20,10 +20,17 @@ Unlin1022: : : Success adding user :
 Domain1000:Changing Domain to :
 Domain1001:Problam chaning to Domain :
 Domain1002:Success.. Device joined Domain : 
+Domain1003: : : Changing Domain to :
+Domain1004: : : Problam chaning to Domain :
+Domain1005: : : Success.. Device joined Domain : 
 Domain1010:Changing Domain to WorkGroup :
 Domain1011:Success...chaning to workgroup :
+Domain1012: : : Changing Domain to WorkGroup :
+Domain1013: : : Success...chaning to workgroup :
 HostManual1000:Changing Device name and IPs
 HostManual1001:All changes are done.Please, wait till they take effect.
+HostManual1002: : : Changing Device name and IPs
+HostManual1003: : : All changes are done.Please, wait till they take effect.
 CIFS1001:Creating Volume : ....
 CIFS1002:Volume : already exists 
 CIFS1003:Problem occured while creating volume : 
@@ -36,6 +43,11 @@ Partner1001:Partner : already exists
 Partner1002:Success adding partner : of type :
 Partner1003:Deleting partner : ......
 Partner1004:Success deleting partner :
+Partner1005: : : Deleting partner : ......
+Partner1006: : : Success deleting partner :
+Partner1007: : : Adding partner : ......
+Partner1008: : : Partner : already exists
+Partner1009: : : Success adding partner : of type :
 Replica1000:Deleting snapshot : .......
 Replica1001:Problem while deleting snapshot :
 Replica1002:Success deleting snapshot :
@@ -50,6 +62,12 @@ DG1002:Success deleting Pool :
 DG1003:Creating Pool : ......
 DG1004:Problem while creating Pool : 
 DG1005:Success creating Pool : with raid : 
+DG1006: : : Creating Pool : ......
+DG1007: : : Problem while creating Pool : 
+DG1008: : : Success creating Pool : with raid : 
+DG1009: : : Deleting pool : .....
+DG1010: : : Problem occurred while deleting pool : 
+DG1011: : : Success deleting Pool :
 
 Replica1008:Success in Rollback of snapshot : 
 Replica1009:Adding Hourly replication schedule ......
@@ -95,6 +113,8 @@ Snap1020:Problem occurred adding Weekly snapshot schedule for :
 Snap1021:Success adding Weekly snapshot schedule : for volume :
 Priv1000:Changing perivileges of user : ........
 Priv1001:Success changing privileges of user : 
+Priv1002: : : Changing perivileges of user : ........
+Priv1003: : : Success changing privileges of user : 
 Replivol1000: : : Receiving new snapshot for volume : from partner :
 Replidf1000: : : Receiving new Snapshot for volume : from partner :
 NFS1000: : :  Deleting volume :
@@ -130,3 +150,35 @@ Snap1044: : :Prolbem occured while deleting period :
 Snap1045: : :Success deleting period : 
 Repli1001: : : Problem occurred while receiving the snapshot : from :
 Repli1002: : : Success in receiving the snapshot : from :
+Repli1003: : : Sending Replication : to partner :
+Repli1005: : : Problem occurred while Sending replication  : to partner :
+Repli1006: : : Success sending Snapshot : to partner : 
+Replica1030: : : Adding Weekly replication schedule ......
+Replica1031: : : Problem occurred adding Weekly replication schedule 
+Replica1032: : : Success adding Weekly replication schedule : for partner : on volume :
+Replica1033: : : Manually replicating volume : to partner : .... 
+Replica1034: : : Failed manually replicating volume : to partner : with error : 
+Replica1035: : : Success manually replicating volume : to partner :
+Replica1036: : : Adding Minutely replication schedule ......
+Replica1037: : : Problem occurred adding Minutely replication schedule 
+Replica1038: : : Success adding Minutely replication schedule : for partner : on volume :
+Replica1039: : : Adding Hourly replication schedule ......
+Replica1040: : : Problem occurred adding Hourly replication schedule 
+Replica1041: : : Success adding Hourly replication schedule : for partner : on volume :
+Replica1042: : :Rolling back snapshot : ......
+Replica1043: : :Problem occured while rolling back snapshot : 
+Replica1044: : :Success in Rollback of snapshot : 
+Replica1045: : :Deleting period : ........
+Replica1046: : :Prolbem occured while deleting period : 
+Replica1047: : :Success deleting period : 
+Replica1048: : :Deleting snapshot : .......
+Replica1049: : :Problem while deleting snapshot :
+Replica1050: : :Success deleting snapshot :
+Reinit1000: : : Initializing new session with partners
+ReClose1000: : : Closing session
+Replica1051:Adding proxy :  
+Replica1052:Success adding proxy : for the license : 
+Replica1053: : : Adding proxy license : this device ......
+Replica1054: : : Success adding proxy license : for proxy : 
+Replica1055: : : Adding Alias : for this device ......
+Replica1056: : : Success adding Alias : to this device
