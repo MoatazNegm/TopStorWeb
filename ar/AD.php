@@ -53,7 +53,7 @@
 												<div class=" col-sm-6">
 													<div class=" form-group row">
 														<div class=" col-sm-12">
-															<textarea class="form-control colorize" id="ADstatus" Data-id="status" Data-tag="textarea" Data-textcolor="yes" Data-background="no" Data-border="yes" rows="3"> sample status Data </textarea>
+															<textarea class="form-control colorize" id="ADstatus" style='text-align:right, display:inline' Data-id="status" Data-tag="textarea" Data-textcolor="yes" Data-background="no" Data-border="yes" rows="3"> sample status Data </textarea>
 														</div>
 														<div class="row">
 															<button type="button" id="finish" class="btn btn-default col-sm-offset-3 col-sm-7 finish  data-toggle="tooltip" data-placement="bottom" title="close window">انتهاء</button>
