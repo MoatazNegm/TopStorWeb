@@ -7,14 +7,14 @@ Unlin1004: : : Deleting user :
 Unlin1003:User : is added
 Unlin1011: Changing user password for :
 Unlin1012: : : Changing user password for :
-Unlin1013: : : problem occured while chaning password for user :
-Unlin1014: problem occured while chaning password for user :
+Unlin1013: : : problem occurred while chaning password for user :
+Unlin1014: problem occurred while chaning password for user :
 Unlin1015: : : Success changing password for user :
 Unlin1016: Success changing password for user :
 Unlin1017: Adding user : ......
 Unlin1018: : : Adding user : 
-Unlin1019: Problem occured while adding user :
-Unlin1020: : : Problem occured while adding user :
+Unlin1019: Problem occurred while adding user :
+Unlin1020: : : Problem occurred while adding user :
 Unlin1021: Success adding user : 
 Unlin1022: : : Success adding user : 
 Domain1000:Changing Domain to :
@@ -33,7 +33,7 @@ HostManual1002: : : Changing Device name and IPs
 HostManual1003: : : All changes are done.Please, wait till they take effect.
 CIFS1001:Creating Volume : ....
 CIFS1002:Volume : already exists 
-CIFS1003:Problem occured while creating volume : 
+CIFS1003:Problem occurred while creating volume : 
 CIFS1004:Success creating volume :
 CIFS1005:Deleting : .....
 CIFS1006:Prolbem deleting :
@@ -52,10 +52,10 @@ Replica1000:Deleting snapshot : .......
 Replica1001:Problem while deleting snapshot :
 Replica1002:Success deleting snapshot :
 Replica1003:Deleting period : ........
-Replica1004:Prolbem occured while deleting period : 
+Replica1004:Prolbem occurred while deleting period : 
 Replica1005:Success deleting period : 
 Replica1006:Rolling back snapshot : ......
-Replica1007:Problem occured while rolling back snapshot : 
+Replica1007:Problem occurred while rolling back snapshot : 
 DG1000:Deleting pool : .....
 DG1001:Problem occurred while deleting pool : 
 DG1002:Success deleting Pool :
@@ -93,10 +93,10 @@ Snap1000:Deleting snapshot : .......
 Snap1001:Problem while deleting snapshot :
 Snap1002:Success deleting snapshot :
 Snap1003:Deleting period : ........
-Snap1004:Prolbem occured while deleting period : 
+Snap1004:Prolbem occurred while deleting period : 
 Snap1005:Success deleting period : 
 Snap1006:Rolling back snapshot : ......
-Snap1007:Problem occured while rolling back snapshot : 
+Snap1007:Problem occurred while rolling back snapshot : 
 Snap1008:Success in Rollback of snapshot : 
 Snap1009:Adding Hourly Snapshot schedule ......
 Snap1010:Problem occurred adding Hourly Snapshot schedule 
@@ -118,11 +118,11 @@ Priv1003: : : Success changing privileges of user :
 Replivol1000: : : Receiving new snapshot for volume : from partner :
 Replidf1000: : : Receiving new Snapshot for volume : from partner :
 NFS1000: : :  Deleting volume :
-NFS1001: : : Problem occured while deleting volume : 
+NFS1001: : : Problem occurred while deleting volume : 
 NFS1002: : : Success deleting : 
 NFS1003: : : volume : already exists
 NFS1004: : : Creating volume :
-NFS1005: : : Problem occured whiel creating volume : 
+NFS1005: : : Problem occurred whiel creating volume : 
 NFS1006: : : Success creating volume : 
 Snap1022: : : Deleting Snapshot :
 Snap1023: : : Problem while deleting snapshot :
@@ -143,10 +143,10 @@ Snap1037: : :Adding Hourly Snapshot schedule ......
 Snap1038: : :Problem occurred adding Hourly Snapshot schedule 
 Snap1039: : :Success adding Hourly Snapshot schedule :
 Snap1040: : :Rolling back snapshot : ......
-Snap1041: : :Problem occured while rolling back snapshot : 
+Snap1041: : :Problem occurred while rolling back snapshot : 
 Snap1042: : :Success in Rollback of snapshot : 
 Snap1043: : :Deleting period : ........
-Snap1044: : :Prolbem occured while deleting period : 
+Snap1044: : :Prolbem occurred while deleting period : 
 Snap1045: : :Success deleting period : 
 Repli1001: : : Problem occurred while receiving the snapshot : from :
 Repli1002: : : Success in receiving the snapshot : from :
@@ -166,10 +166,10 @@ Replica1039: : : Adding Hourly replication schedule ......
 Replica1040: : : Problem occurred adding Hourly replication schedule 
 Replica1041: : : Success adding Hourly replication schedule : for partner : on volume :
 Replica1042: : :Rolling back snapshot : ......
-Replica1043: : :Problem occured while rolling back snapshot : 
+Replica1043: : :Problem occurred while rolling back snapshot : 
 Replica1044: : :Success in Rollback of snapshot : 
 Replica1045: : :Deleting period : ........
-Replica1046: : :Prolbem occured while deleting period : 
+Replica1046: : :Prolbem occurred while deleting period : 
 Replica1047: : :Success deleting period : 
 Replica1048: : :Deleting snapshot : .......
 Replica1049: : :Problem while deleting snapshot :

@@ -44,7 +44,7 @@
 						
 						<div class=" form-group row DNS">
 							<div class="row " >
-								<label  for="DNS" class=" col-sm-1 control-label">الحافظ للأسماء</label>
+								<label  for="DNS" class=" col-sm-2 control-label">الحافظ للأسماء</label>
 								<div class=" col-sm-7">
 								<input type="text" id="DNS" class="form-control " pattern="^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$" placeholder="DNS address" data-error="......invalid ip address" required>
 								</div>
