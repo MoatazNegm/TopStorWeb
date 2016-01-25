@@ -57,7 +57,7 @@
 			var Vollock=0;
 			var plotb;
 			function refreshall() {
-				$.get("requestdata.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
+				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 				if(Protocol != 0) {
 					refreshList2("GetPoolVollist","#Volumetable","Data/Vollist.txt","Volumes");
 					refresh3("#statusarea3");
