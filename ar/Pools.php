@@ -90,7 +90,7 @@
 					});
 				}
 				if(status==1) { //DiskGroup
-					diskgetsize('../Data/disksize.txt','#size',"#count","#onedisk");
+					diskgetsize('Data/disksize.txt','#size',"#count","#onedisk");
 					status=3;
 					refresh2("DGstatus");	
 				}

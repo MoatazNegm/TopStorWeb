@@ -43,7 +43,7 @@
 															<td> 
 																<div class="">
 																	<label>
-																		<input type="radio" class="radiocontrol" name="Raidselect" id="raidz" value="Raid5" >
+																		<input type="radio" class="radiocontrol" name="Raidselect" id="raidz1" value="Raid5" >
 																	</label>
 																</div>
 															</td>
