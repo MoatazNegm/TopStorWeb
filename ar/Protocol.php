@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php session_start(); 
- if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/des19/ar/Login.php');}
+ if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/ar/Login.php');}
  
 ?>
 <html>
@@ -29,14 +29,14 @@
 			<!-- Don't touch this! -->
 
 		
-	<script language="javascript" type="text/javascript" src="js/excanvas.js"></script>
-	<script language="javascript" type="text/javascript" src="js/jquery.jqplot.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="css/jquery.jqplot.css" />
+	<script language="javascript" type="text/javascript" src="../js/excanvas.js"></script>
+	<script language="javascript" type="text/javascript" src="../js/jquery.jqplot.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/jquery.jqplot.css" />
 <!-- End Don't touch this! -->
 
 <!-- Additional plugins go here -->
 
-    <script class="include" language="javascript" type="text/javascript" src="js/jqplot.pieRenderer.min.js"></script>
+    <script class="include" language="javascript" type="text/javascript" src="../js/jqplot.pieRenderer.min.js"></script>
 
 
 <!-- End additional plugins -->
@@ -278,7 +278,7 @@
 							Protocol="CIFS";
 							Vollisttime = "55:55:44";
 							Initclickedprotocol();
-							$("h2").css("background-image","url('img/cifs.png')").text("أقراص ويندوز"); $(".NFS").show();
+							$("h2").css("background-image","url('../img/cifs.png')").text("أقراص ويندوز"); $(".NFS").show();
 							//plotchart('chartNFS',chartdata);
 						}
 					});
@@ -301,7 +301,7 @@
 							Protocol="NFS"; 
 							Vollisttime = "55:55:44";
 							Initclickedprotocol();
-							$("h2").css("background-image","url('img/nfs.png')").text("أقراص لينكس"); $(".NFS").show();
+							$("h2").css("background-image","url('../img/nfs.png')").text("أقراص لينكس"); $(".NFS").show();
 							//plotchart('chartNFS',chartdata);
 						}
 					});
@@ -321,7 +321,7 @@
 						};
 					
 						if( userpriv=="true" | curuser=="admin" ) {
-							Protocol="ISCSI"; config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("أقراص مباشرة"); $(".ISCSI").show(); plotchart('chartISCSI',chartdata);
+							Protocol="ISCSI"; config = 0; $("h2").css("background-image","url('../img/iscsi2.png')").text("أقراص مباشرة"); $(".ISCSI").show(); plotchart('chartISCSI',chartdata);
 						}
 					});
 				};

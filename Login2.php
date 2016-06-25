@@ -12,7 +12,7 @@
  session_start();
 
  if($usern === "mezo") { ;} else { ;}
-  if( $_REQUEST["idd"] != session_id()) {  header('Location:/des19/Login.php');}
+  if( $_REQUEST["idd"] != session_id()) {  header('Location:/Login.php');}
   
  if (empty($_SESSION['count'])) {
    $_SESSION['count'] = 1;
@@ -54,7 +54,7 @@
 						document.getElementById('accounts').submit();
 					} else {
 						//console.log("<?php print $usern ?>"," | ", isuser);
-						if( nochange > 10 ) {window.location = "/des19/Login.php";}
+						if( nochange > 10 ) {window.location = "/Login.php";}
 					};
 					
 				});

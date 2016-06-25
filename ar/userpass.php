@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <?php session_start(); 
- if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/des19/Login.php');}
+ if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/Login.php');}
  
 ?>
 <?php $men=1; include "header2.html";?>
-   <form type="hidden" id="logagain" method="post" action="/des19/Login.php">
+   <form type="hidden" id="logagain" method="post" action="/Login.php">
 		 <input type="hidden">
    </form>
 	<div class="row">

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php session_start(); 
- if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/des19/ar/Login.php');}
+ if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/ar/Login.php');}
  
 ?>
 <?php
@@ -80,8 +80,8 @@ fclose($myfile);
 				<input type="hidden" value="Submit">
 		</form>	
 
-		<script src="js/bootstrap-timepicker.js"></script>
-		<script src="js/dropzone.js"></script>
+		<script src="../js/bootstrap-timepicker.js"></script>
+		<script src="../js/dropzone.js"></script>
 		<script>
 			var needupdate=1
 			var proptime="55:55:55";
