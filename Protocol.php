@@ -41,6 +41,7 @@
 
 <!-- End additional plugins -->
 		<script>
+			var pools = [];
 			var plotflag = 0;
 			var Protocol=0;
 			var config = 1;
@@ -48,11 +49,7 @@
 			var Vollisttime = "55:55:44";
 			var Vollisttimenew = "333:5455:4w344";
 			var syscounter2=1000;
-			var chartdata = [
-					['Heavy ', 12],['Retail', 9], ['Light ', 14], 
-					['Outofhome', 16],['Commuting', 7], ['Orientation', 9]
-				];
-			
+			var chartdata = [];
 			var voldirty=1;
 			var Vollock=0;
 			var plotb;
@@ -137,18 +134,29 @@
 							$(listid+' tr').remove();
 							$("#Volumedetails tr.variable").remove();
 							$("#Vol2 option.variable").remove();
+							$("#Pool2 option.variable2").remove();
 							chartdata=[];
 							for (var prot in gdata){
 								if(gdata[prot].protocol==Protocol){
-									//console.log(gdata[prot].name);
-									$("#Vol2").append($('<option class="variable">').text(gdata[prot].name).val(gdata[prot].name));
-									$(listid).append('<tr onclick="rowisclicked(this)" ><td class="Volname">'+gdata[prot].name+'</td><td>'+gdata[prot].volsize+'</td><td>'+gdata[prot].volact+'</td><td>'+gdata[prot].usedsnaps+'</td><td>'+gdata[prot].compress+'</td></tr>');
-									chartdata.push([gdata[prot].name,parseFloat(gdata[prot].volsize)]);
+									console.log(gdata[prot].name);
+									if ($.inArray(gdata[prot].Pool,pools) < 0 ) {
+										pools.push(gdata[prot].Pool);
+										$("#Pool2").append($('<option class="variable2">').text(gdata[prot].Pool).val(gdata[prot].class));
+										chartdata.push(gdata[prot].class);
+										chartdata[gdata[prot].class]=[];
+									}
+									//if ( gdata[prot].Pool == $("#Pool2 option:selected").val() ) {
+										$("#Vol2").append($('<option class="variable" >').text(gdata[prot].name).val(gdata[prot].name).addClass(gdata[prot].class));
+									
+									$(listid).append('<tr onclick="rowisclicked(this)" class="variable '+gdata[prot].class+'"><td class="Volname">'+gdata[prot].name+'</td><td>'+gdata[prot].volsize+'</td><td>'+gdata[prot].volact+'</td><td>'+gdata[prot].usedsnaps+'</td><td>'+gdata[prot].compress+'</td></tr>');
+									chartdata[gdata[prot].class].push([gdata[prot].name,parseFloat(gdata[prot].volsize)]);
 								}
 							}
+							$("#Pool2").change()
+							pools = [];
 							if(plotflag > 0 ) {
 								plotb.destroy();
-								plotchart('chartNFS',chartdata);
+								plotchart('chartNFS',chartdata[$("#Pool2").val()]);
 							}
 						}
 					});
@@ -200,7 +208,13 @@
 				$(".Paneloption").hide();
 				switch(selection) {
 					case "newoption" :  $("#createvol").show(); break;
-					case "alloption" : $("tr.success").removeClass("success");rowisclicked(); $("#Vollist").show(); plotchart('chartNFS',chartdata); break;
+					case "alloption" : $("tr.success").removeClass("success");rowisclicked(); $("#Vollist").show(); 
+									 if(plotflag > 0 ) {
+										plotb.destroy();
+									}
+										plotchart('chartNFS',chartdata[$("#Pool2").val()]);
+									
+									break;
 					default: 
 							var fileloc= "Data/Vollist.txt";
 							$("#Volumedetails tbody tr.variable").remove();
@@ -209,8 +223,10 @@
 								for (var prot in gdata){
 									if(gdata[prot].protocol==Protocol) {
 										if(gdata[prot].name==selection){
-											$("#Volumedetails tbody").append('<tr onclick="rowisclicked(this)" class="variable" ><td class="Volname">'+gdata[prot].volsize+'</td><td>'+gdata[prot].volact+'</td><td>'+gdata[prot].snaps+'</td><td>'+gdata[prot].used+'</td><td>'+gdata[prot].crdate+'</td><td>'+gdata[prot].free+'</td><td>'+gdata[prot].compress+'</td><td>'+gdata[prot].dedup+'</td></tr>');
-											
+											//f ( gdata[prot].Pool == $("#Pool2 option:selected").val() ) {
+												
+												$("#Volumedetails tbody").append('<tr onclick="rowisclicked(this)" class="variable '+gdata[prot].class+'" ><td class="Volname">'+gdata[prot].volsize+'</td><td>'+gdata[prot].volact+'</td><td>'+gdata[prot].snaps+'</td><td>'+gdata[prot].used+'</td><td>'+gdata[prot].crdate+'</td><td>'+gdata[prot].free+'</td><td>'+gdata[prot].compress+'</td><td>'+gdata[prot].dedup+'</td></tr>');
+											//}
 										}
 									}
 								}
@@ -332,6 +348,20 @@
 				var selection=$("#Vol2 option:selected").val();
 				SelectPanelNFS(selection);
 			}); 
+			$("#Pool2").change(function () {
+				var selection=$("#Pool2 option:selected").val();
+				//console.log(selection);
+				if (selection == "--All--")
+					$("#Vol2 option.variable").show();
+				else {
+					$(".variable").hide();
+					$("."+selection).show();
+					if(plotflag > 0 ) {
+										plotb.destroy();
+									}
+					plotchart('chartNFS',chartdata[$("#Pool2").val()]);
+				}
+			});
 			SelectPanelNFS("o");
 			$("#VoldeleteButton").click( function (){ $.post("./pump.php", { req:"VolumeDelete"+Protocol, name:$("#Pool2 option:selected").val()+" "+$("tr.success td.Volname").text()+" "+Protocol+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 
