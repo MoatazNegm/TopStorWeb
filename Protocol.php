@@ -138,7 +138,7 @@
 							chartdata=[];
 							for (var prot in gdata){
 								if(gdata[prot].protocol==Protocol){
-									console.log(gdata[prot].name);
+									//console.log(gdata[prot].name);
 									if ($.inArray(gdata[prot].Pool,pools) < 0 ) {
 										pools.push(gdata[prot].Pool);
 										$("#Pool2").append($('<option class="variable2">').text(gdata[prot].Pool).val(gdata[prot].class));
@@ -151,6 +151,7 @@
 									$(listid).append('<tr onclick="rowisclicked(this)" class="variable '+gdata[prot].class+'"><td class="Volname">'+gdata[prot].name+'</td><td>'+gdata[prot].volsize+'</td><td>'+gdata[prot].volact+'</td><td>'+gdata[prot].usedsnaps+'</td><td>'+gdata[prot].compress+'</td></tr>');
 									chartdata[gdata[prot].class].push([gdata[prot].name,parseFloat(gdata[prot].volsize)]);
 								}
+								else $("#Pool2").append($('<option class="variable2">').text(gdata[prot].Pool).val(gdata[prot].class));
 							}
 							$("#Pool2").change()
 							pools = [];
