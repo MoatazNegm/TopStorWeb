@@ -31,6 +31,7 @@
 			var status=0;
 			var syscounter=10;
 			var syscounter2=1000;
+			var pools=[];
 			$("#deletePool").hide();$("#submitdiskgroup").hide();
 			
 			function refreshList3(request,listid,fileloc) {
@@ -50,13 +51,21 @@
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						var gdata = jQuery.parseJSON(data);
 						$(listid+" option.variable").remove();
+						$("#Pool option.variable2").remove();
 						chartdata=[];
 						for (var prot in gdata){
-							if(gdata[prot].Pool=="Data") {
-									$(listid).append($('<option class="variable">').text(gdata[prot].name).val(gdata[prot].name));
-									//chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
+							if ($.inArray(gdata[prot].Pool,pools) < 0 ) {
+										pools.push(gdata[prot].Pool);
+										$("#Pool").append($('<option class="variable2">').text(gdata[prot].uPool).val(gdata[prot].class));
+										chartdata.push(gdata[prot].class);
+										//chartdata[gdata[prot].class]=[];
 							}
+							$(listid).append($('<option class="variable">').text(gdata[prot].name).val(gdata[prot].name));
+							//chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
+						
 						}
+						$("#Pool2").change()
+							pools = [];
 					});
 				}
 			};
@@ -230,6 +239,22 @@
 				times= { "snaps":"30:43:433", "periods":"30:43:433" };
 				//$(" tr.variable").remove();
 				
+			});
+			$("#Pool").change(function () {
+				var selection=$("#Pool option:selected").val();
+				//console.log(selection);
+				if (selection == "--All--")
+					$("#Vol option.variable").show();
+				else {
+					$(".variable").hide();
+					$("."+selection).show();
+		/*			if(plotflag > 0 ) {
+										plotb.destroy();
+									}
+					plotchart('chartNFS',chartdata[$("#Pool2").val()]);
+		*/
+				}
+		
 			});
 		function diskgetsize(fileloc,spanid1,spanid2,spanid3) {
 			$.post("./pump.php", { req:"DiskSize", name:fileloc }, function(data1){
