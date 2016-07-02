@@ -1,1 +1,1 @@
-SnapShotDelete mezo_p1 p1/mezo@mezotmp..1467469848 admin
+SnapShotRollback mezo_p1 p1/mezo@mezotmp..1467469695 admin
