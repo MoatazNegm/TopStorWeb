@@ -1,9 +1,1 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-UnixChkUser admin chk
-=======
-GetPoolperiodlist a
->>>>>>> 7016686832287e8e92a356749e70422dd9c2591b
-=======
-SnapShotDelete mezo_p1 p1/mezo@mezotmp..1467469848 admin
->>>>>>> f3d92ec064da61c9ffcb70cbbb117ce4c367365a
+PartnerAdd 192.168.0.33 DualWay false admin

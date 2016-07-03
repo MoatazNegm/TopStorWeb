@@ -1,1 +1,1 @@
-[{"name":"10.3.2.7","type":"receiver","proxy":"false"},{"name":"mezo2","type":"sender","proxy":"false"}]
+[{"name":"192.168.0.33","type":"DualWay","proxy":"false","passphrase":"admin"}]
