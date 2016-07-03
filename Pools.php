@@ -60,11 +60,11 @@
 										chartdata.push(gdata[prot].class);
 										//chartdata[gdata[prot].class]=[];
 							}
-							$(listid).append($('<option class="variable">').text(gdata[prot].name).val(gdata[prot].name));
+							$(listid).append($('<option class="variable '+gdata[prot].class+'">').text(gdata[prot].name).val(gdata[prot].name));
 							//chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
 						
 						}
-						$("#Pool2").change()
+						$("#Pool").change()
 							pools = [];
 					});
 				}
@@ -248,6 +248,8 @@
 				else {
 					$(".variable").hide();
 					$("."+selection).show();
+					$('#Vol option.'+selection+':first').prop('selected', true);
+					$('#Vol').change();
 		/*			if(plotflag > 0 ) {
 										plotb.destroy();
 									}

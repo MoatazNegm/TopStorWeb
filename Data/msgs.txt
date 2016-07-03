@@ -148,6 +148,7 @@ Snap1042: : :Success in Rollback of snapshot :
 Snap1043: : :Deleting period : ........
 Snap1044: : :Prolbem occurred while deleting period : 
 Snap1045: : :Success deleting period : 
+Snap1046: : :Failed to find a host for the snapshot
 Repli1001: : : Problem occurred while receiving the snapshot : from :
 Repli1002: : : Success in receiving the snapshot : from :
 Repli1003: : : Sending Replication : to partner :
