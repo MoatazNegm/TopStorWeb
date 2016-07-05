@@ -11,7 +11,7 @@
 												<div class="form-group col-sm-offset-1">
 													<label  for="Pool" class="control-label">Pool</label>
 													<select  id="Pool" class="  form-control ">
-														<option>Data</option>
+														
 													</select>
 												</div>
 												<div class="form-group col-sm-offset-1">

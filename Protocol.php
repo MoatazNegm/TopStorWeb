@@ -371,7 +371,7 @@
 			$("#Createvol").click( function (){ var req=""; if(Protocol != 0) { req=Protocol; };$.post("./pump.php", { req:"VolumeCreate"+req, name:$("#Pool2 option:selected").val()+" "+" "+$("#Volname").val()+" "+$("#volsize").val()+"G"+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 refresh3("#statusarea3"); 
 				 });
-			refreshList2("GetPoolVollist","#Vol2","Data/Vollist2.txt",5.5);
+			refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
 			});
 			$("#refreshb").click(function(){
 				refreshall();

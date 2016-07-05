@@ -1,1 +1,1 @@
-PartnerAdd 192.168.0.33 DualWay false admin
+RemoteGetPoolperiodlist a

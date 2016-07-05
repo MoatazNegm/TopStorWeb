@@ -36,6 +36,7 @@
 			var times= { "snaps":"33==s:43", "periods":"30==erwe:s43:43", "sender":"43534:46s:4563" };
 			var requiredtime={ "snaps":"33==:s433", "periods":"30==erwe:s43:433", "sender":"43534:45s6356:4563" };
 			var Vollisttimenew="23:434s:34543";
+			var pools = [];
 			var status=0;
 			var syscounter=10;
 			var syscounter2=1000;
@@ -59,14 +60,22 @@
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						var gdata = jQuery.parseJSON(data);
 						$(listid+" option.variable").remove();
+						$("#Pool option.variable2").remove();
 						chartdata=[];
 						for (var prot in gdata){
-							if(gdata[prot].Pool=="Data") {
-									$(listid).append($('<option class="variable">').text(gdata[prot].name).val(gdata[prot].name));
+							if ($.inArray(gdata[prot].Pool,pools) < 0 ) {
+										pools.push(gdata[prot].Pool);
+										$("#Pool").append($('<option class="variable2">').text(gdata[prot].uPool).val(gdata[prot].class));
+										chartdata.push(gdata[prot].class);
+										//chartdata[gdata[prot].class]=[];
+							}
+							$(listid).append($('<option class="variable '+gdata[prot].class+'" >').text(gdata[prot].name).val(gdata[prot].name));
 									//chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
 							 
-							}
+							
 						}
+						$("#Pool").change();
+						pools = [];
 						
 					});
 					//replival="2323:334544"; replivalsend="sdfkjdf;dsfalkjdkjdkaj";
@@ -382,6 +391,23 @@
 				times= { "snaps":"333", "periods":"3rwe:43:433", "sender":"43534:4563563" };
 				//$(" tr.variable").remove();
 				
+			});
+			$("#Pool").change(function () {
+				var selection=$("#Pool option:selected").val();
+				//console.log(selection);
+				if (selection == "--All--")
+					$("#Vol option.variable").show();
+				else {
+					$(".variable").hide();
+					$("."+selection).show();
+					$('#Vol option.'+selection+':first').prop('selected', true);
+					$('#Vol').change();
+		/*			if(plotflag > 0 ) {
+										plotb.destroy();
+									}
+					plotchart('chartNFS',chartdata[$("#Pool2").val()]);
+		*/
+				}
 			});
 			$("#Volsend").change(function() {
 				//Vollisttime="44:333:222";

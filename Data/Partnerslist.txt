@@ -1,1 +1,1 @@
-[{"name":"192.168.0.33","type":"DualWay","proxy":"false","passphrase":"admin"}]
+[{"name":"topstorlin","type":"DualWay","proxy":"false","passphrase":"admin"},{"name":"192.168.0.33","type":"DualWay","proxy":"false","passphrase":"admin"}]
