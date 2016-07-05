@@ -1,4 +1,3 @@
 #! /bin/sh
 echo $@  > Data/pump.txt;
-echo $@ > /tmp/msgfile;
-read ack < /tmp/ackmsg;
+echo $@ > /tmp2/msgfile;

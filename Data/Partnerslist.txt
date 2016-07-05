@@ -1,1 +1,1 @@
-[{"name":"10.3.2.7","type":"receiver","proxy":"false","passphrase":"admin"},{"name":"TopStor2","type":"receiver","proxy":"true","passphrase":"Mezo2"}]
+[{"name":"topstorlin","type":"DualWay","proxy":"false","passphrase":"admin"},{"name":"192.168.0.33","type":"DualWay","proxy":"false","passphrase":"admin"}]
