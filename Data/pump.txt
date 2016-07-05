@@ -1,1 +1,1 @@
-RemoteGetSnaplist a
+RemoteGetPoolperiodlist a
