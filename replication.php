@@ -173,9 +173,6 @@
 						status=1;
 					});
 				}
-				refreshList4("RemoteGetSnaplist","#Replicatelist","Data/listsnaps.txt","snaps","#Vol","listsnaps");
-				refreshList4("RemoteGetPoolperiodlist","#all","Data/Remoteperiodlist.txt","periods","#Vol","periods");
-				refreshList4("GetSnaplist","#Senderslist","Data/listsnaps.txt","sender","#Volsend","listsnaps");
 				if(status=="snaps"){ //Replicate
 					
 					refreshList2("GetPoolVollist","#Vol","Data/Vollist.txt","Vol");
