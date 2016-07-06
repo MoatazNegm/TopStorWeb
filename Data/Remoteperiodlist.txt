@@ -1,0 +1,1 @@
+[{"stamp":"1467840168","period":"Minutely","pool":"p1","father":"nano226","t1":"3","t2":"3","t3":"na","t4":"na","partner":"192.168.0.33"}]
