@@ -9,9 +9,9 @@
 										<div class="  col-sm-6 ">
 											<form class=" form-inline row">
 												<div class="form-group col-sm-offset-1">
-													<label  for="Pool" class="control-label">Pool</label>
-													<select  id="Pool" class="  form-control ">
-														<option>Data</option>
+													<label  for="Poolsend" class="control-label">Pool</label>
+													<select  id="Poolsend" class="  form-control ">
+													
 													</select>
 												</div>
 												<div class="form-group col-sm-offset-1">

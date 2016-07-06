@@ -376,7 +376,7 @@
 				$("."+selection).show();
 				$('#Vol option.'+selection+':first').prop('selected', true);
 				$('#Vol').change();
-				$('#Volsend').change();
+				//$('#Volsend').change();
 		
 			});
 			$("#Volsend").change(function() {
