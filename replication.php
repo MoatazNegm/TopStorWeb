@@ -43,51 +43,6 @@
 			var syscounter2=1000;
 			$("#deletePool").hide();$("#submitdiskgroup").hide();$("#passphrase").hide();
 			
-			function refreshList3(request,listid,fileloc,update) {
-				if ($.inArray(update,listupdated) < 0 ) {
-										listupdated.push(update);
-										
-										listupdated[update]="hello first time";
-							}
-				if(syscounter2==1000) { $.post("./pump.php", { req: request, name:"a" }); }
-				
-				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
-					
-					var objdate = jQuery.parseJSON(data);
-					Vollisttimenew=objdate.updated;
-					//console.log(listupdated[update], Vollisttimenew );
-				});
-				if(listupdated[update].valueOf() != Vollisttimenew.valueOf()) { //console.log("traffic not changed"); 
-				
-					Vollisttime=Vollisttimenew;
-					listupdated[update]=Vollisttimenew.valueOf();
-					//console.log("not matched");
-					$(listid+" option.vvariable").remove();
-					
-					$.get("requestdata.php", { file: fileloc }, function(data){
-						var gdata = jQuery.parseJSON(data);
-						$(listid+" option.vvariable").remove();
-						$("#Pool option.variable2").remove();
-						chartdata=[];
-						for (var prot in gdata){
-							if ($.inArray(gdata[prot].Pool,pools) < 0 ) {
-										pools.push(gdata[prot].Pool);
-										$("#Pool").append($('<option class="variable2">').text(gdata[prot].uPool).val(gdata[prot].class));
-										chartdata.push(gdata[prot].class);
-										//chartdata[gdata[prot].class]=[];
-							}
-							$(listid).append($('<option class="vvariable '+gdata[prot].class+'" >').text(gdata[prot].name).val(gdata[prot].name));
-									//chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
-							 
-							
-						}
-						$("#Pool").change();
-						pools = [];
-						
-					});
-					//replival="2323:334544"; replivalsend="sdfkjdf;dsfalkjdkjdkaj";
-				}
-			};
 
 			function snaponce(txtin,but,altbut){
 				
@@ -245,7 +200,7 @@
 				});
 				console.log(requiredtime[showtime],listupdated[update], update);
 				if(requiredtime[showtime].valueOf() != listupdated[update].valueOf()) { //console.log("traffic not changed"); 
-					times[showtime]=requiredtime[showtime];
+					
 					listupdated[update]=requiredtime[showtime].valueOf();
 					//$(listid+" tr.variable").remove();
 					$.get("requestdata.php", { file: fileloc }, function(data){
@@ -253,7 +208,7 @@
 						var gdata = jQuery.parseJSON(data);
 						//console.log(data);
 						$("."+update).remove();
-						$(".variable").remove();
+						$(".variable"+"."+update).remove();
 						//console.log(times[showtime],showtime);
 						
 						for (var prot in gdata){
@@ -275,9 +230,9 @@
 
 								if (showtime=="periods" ) {
 									switch (gdata[prot].period) {
-										case "hourly": $("#Hourlylist").append($('<option class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].period+' '+'">').text('Every:'+gdata[prot].t3+"hrs At:"+gdata[prot].t2+ "mins Keep:"+ gdata[prot].t1+"snaps").val("hourly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3));	 break;
-										case "Minutely": $("#Minutelylist").append($('<option class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].period+' '+'">').text('Every:'+gdata[prot].t2+"mins Keep:"+gdata[prot].t1+"snaps").val("Minutely."+gdata[prot].t1+"."+gdata[prot].t2));	 break;
-										case "Weekly" : $("#Weeklylist").append($('<option class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].period+' '+'">').text('Every:'+gdata[prot].t4+" At:"+gdata[prot].t2+":"+gdata[prot].t3+" Keep:"+gdata[prot].t1+"snaps").val("Weekly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3+"."+gdata[prot].t4));	 break;
+										case "hourly": $("#Hourlylist").append($('<option class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'">').text('Every:'+gdata[prot].t3+"hrs At:"+gdata[prot].t2+ "mins Keep:"+ gdata[prot].t1+"snaps").val("hourly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3));	 break;
+										case "Minutely": $("#Minutelylist").append($('<option class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'">').text('Every:'+gdata[prot].t2+"mins Keep:"+gdata[prot].t1+"snaps").val("Minutely."+gdata[prot].t1+"."+gdata[prot].t2));	 break;
+										case "Weekly" : $("#Weeklylist").append($('<option class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'">').text('Every:'+gdata[prot].t4+" At:"+gdata[prot].t2+":"+gdata[prot].t3+" Keep:"+gdata[prot].t1+"snaps").val("Weekly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3+"."+gdata[prot].t4));	 break;
 									}
 								}
 									
@@ -417,7 +372,6 @@
 			$("#Volsend").change(function() {
 				//Vollisttime="44:333:222";
 				var selection=$("#Volsend option:selected").val();
-				
 					$('#Partnersend option.'+selection+':first').prop('selected', true);
 					$('#Partnersend').change();
 				
@@ -429,7 +383,7 @@
 				times= { "snaps":"3df33", "periods":"30==e43:467833", "sender":"435ddf34:46:4563" };
 				$(".variable").hide();
 				$("."+$("#Vol").val()+"."+$("#Pool option:selected").text()+"."+selection).show();
-				console.log("hi");
+			
 					$("."+$("#Partner").val()+"."+$("#Vol").val()+"."+$("#Pool").val()).show();
 					
 					
@@ -437,11 +391,14 @@
 				
 			});	
 			$("#Partnersend").change(function() {
+				var selection=$("#Partnersend option:selected").val();
+				selection=selection.replace(/\./g,"");
 				//Vollisttime="44:333:222";
-				times= { "snaps":"3dgf33", "periods":"30==e43:767433", "sender":"43dfs534:46:4563" };
-				$(".Vollist").hide();
-				$("."+$("#Partner").val()+"."+$("#Volsend").val()+"."+$("#Pool").val()).show();
-				//$(" tr.variable").remove();
+				times= { "snaps":"3df33", "periods":"30==e43:467833", "sender":"435ddf34:46:4563" };
+				$(".variable").hide();
+				$("."+$("#Volsend").val()+"."+$("#Pool option:selected").text()+"."+selection).show();
+				
+					$("."+$("#Partnersend").val()+"."+$("#Volsend").val()+"."+$("#Pool").val()).show();
 				
 			});	
 			$("#Proxy").change(function() { if($("#Proxy").is(":checked") == true ) {
