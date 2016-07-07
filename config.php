@@ -86,6 +86,7 @@ fclose($myfile);
 			var needupdate=1
 			var proptime="55:55:55";
 			var proptimenew="33:333:33";
+			var ggdata=[];
 			var DNS=1;
 			var whichul=0;
 			var upresult=0;
@@ -161,15 +162,20 @@ fclose($myfile);
 					if(proptimenew == proptime) { }
 					else {
 						proptime=proptimenew;
-					var gdata;
+						
+					 ;
 						$.get("requestdata.php", { file: 'Data/userpriv.txt' }, function(data){ 
-							gdata=jQuery.parseJSON(data)
-							});
-						for (var prot in gdata){
-							if(gdata[prot].user==$("#UserList option:selected").val()) {
-								$.each(gdata[prot], function(key,value){  if(value=="true") $("#"+key).prop('checked',true);});
+							 ggdata=jQuery.parseJSON(data)
+							
+							
+							for (var prot in ggdata){
+								if(ggdata[prot].user==$("#UserList option:selected").val()) {
+									console.log(ggdata[prot].user," for", $("#UserList option:selected").val())
+									
+									$.each(ggdata[prot], function(key,value){  if(value=="true") $("#"+key).prop('checked',true);});
+								}
 							}
-						}
+						});
 						
 					}
 				}
@@ -216,7 +222,7 @@ fclose($myfile);
 				
 				sm="user"+" "+$("#UserList option:selected").val()+" ";
 				$(".checkboxy").each(function (){ sm=sm+$(this).attr('id')+" "+$(this).prop('checked')+" ";});
-				$.post("./pump.php", { req:"Priv", name:sm+" "+"administrator "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+				$.post("./pump2.php", { req:"Priv", name:sm+" "+"administrator "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 //refresh2("#statusarea2");
 		});
 	 });

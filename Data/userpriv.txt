@@ -1,1 +1,1 @@
-[{"user":"temp1","Active_Directory":"true","Box_Users":"true","Error":"false","Service_Charts":"true","Logs":"false","CIFS":"false","NFS":"false","ISCSI":"false","DISK_Groups":"false","Licen":"false","SnapShots":"false","User_Priv":"false","Colourize":"false","Replication":"false","administrator":"admin"}]
+[{}]
