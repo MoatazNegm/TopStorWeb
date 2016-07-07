@@ -224,14 +224,14 @@
 								if( showtime=="snaps" ) {
 									var receiver=gdata[prot].receiver;
 									receiver=receiver.replace(/\./g,"");
-									$(listid).append($('<option class="variable '+update+' '+gdata[prot].pool+' '+gdata[prot].father+' '+receiver+' '+'">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].stamp));
+									$(listid).append($('<option class="variable '+update+' '+gdata[prot].pool+' '+gdata[prot].father+' '+receiver+' '+'">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));
 								}
 								if( showtime=="sender" ) {
 									var sender=gdata[prot].sender;
 									sender=sender.replace(/\./g,"");
 									//console.log(gdata[prot]);
 									if(gdata[prot].sender==$("#Partnersend").val())
-									$(listid).append($('<option class="variable '+update+' '+gdata[prot].pool+' '+gdata[prot].father+' '+sender+' '+'">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].stamp));
+									$(listid).append($('<option class="variable '+update+' '+gdata[prot].pool+' '+gdata[prot].father+' '+sender+' '+'">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));
 								}
 
 								if (showtime=="periods" ) {
@@ -432,10 +432,10 @@
 		});
 
 			
-		$("#DeleteSnapshot").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotDelete", name:$("#Replicatelist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+		$("#DeleteSnapshot").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotDelete", name:$("#Pool").val()+" "+$("#Replicatelist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 });
 			});
-		$("#DeleteSnapshotsend").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotDelete", name:$("#Senderslist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+		$("#DeleteSnapshotsend").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotDelete", name:$("#Pool").val()+" "+$("#Senderslist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 });
 			});
 		
@@ -539,7 +539,8 @@
 			refreshList2("GetPoolVollist","#Vol","Data/Vollist.txt","Vol");
 			refreshList2("GetPoolVollist","#Volsend","Data/Vollist.txt","Vol");
 			refreshList4("RemoteGetSnaplist","#Replicatelist","Data/listsnaps.txt","snaps","#Vol","listsnaps");
-			refreshList4("RemoteGetPoolperiodlist","#all","Data/Remoteperiodlist.txt","periods","#Vol","periods");
+			refreshList4(:q
+			"RemoteGetPoolperiodlist","#all","Data/Remoteperiodlist.txt","periods","#Vol","periods");
 			$.post("./pump.php", { req: "GetPoolperiodlist", name:"a" });
 			$.post("./pump.php", { req: "GetPoolVollist", name:"a" });
 			$.post("./pump.php", { req: "GetSnaplist", name:"a" });
