@@ -1,1 +1,1 @@
-GetSnaplist a
+RemoteSnapShotPeriodDelete 1467830302 admin
