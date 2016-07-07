@@ -1,1 +1,1 @@
-RemoteSnapShotPeriodDelete 1467830302 admin
+RemoteGetPoolperiodlist a
