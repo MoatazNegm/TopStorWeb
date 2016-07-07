@@ -249,7 +249,7 @@
 							//chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
 							
 						}
-						$("#Pool").change();
+						if (showtime == "sender" ) { $("#Poolsend").change() } else { $("#Pool").change() }	;
 					});
 				};
 				
@@ -376,6 +376,16 @@
 				$("."+selection).show();
 				$('#Vol option.'+selection+':first').prop('selected', true);
 				$('#Vol').change();
+				//$('#Volsend').change();
+		
+			});
+			$("#Poolsend").change(function () {
+				var selection=$("#Poolsend option:selected").val();
+				$(".pvariable").hide();
+				$(".vvariable").hide();
+				$("."+selection).show();
+				$('#Volsend option.'+selection+':first').prop('selected', true);
+				$('#Volsend').change();
 				//$('#Volsend').change();
 		
 			});
@@ -513,6 +523,7 @@
 							$(listid+' tr').remove();
 							$(".pvariable").remove();
 							$(".variable2").remove();
+							$(".variable2send").remove();
 							chartdata=[];
 							for (var prot in gdata){
 								//if(gdata[prot].protocol==Protocol){
@@ -520,6 +531,7 @@
 									if ($.inArray(gdata[prot].Pool,pools) < 0 ) {
 										pools.push(gdata[prot].Pool);
 										$("#Pool").append($('<option class="variable2">').text(gdata[prot].uPool).val(gdata[prot].class));
+										$("#Poolsend").append($('<option class="variable2send">').text(gdata[prot].uPool).val(gdata[prot].class));
 										
 									}
 									
@@ -528,8 +540,8 @@
 									$(listid).append($('<option class="pvariable '+gdata[prot].class+'" >').text(gdata[prot].name).val(gdata[prot].name));
 									
 								}
-								
-							$("#Pool").change()
+							
+							if (listid == "Vol" ) { $("#Pool").change() } else { $("#Poolsend").change() }	;
 							pools = [];
 
 						});
