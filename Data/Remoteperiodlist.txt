@@ -1,1 +1,1 @@
-[{"period":"father","t1":"t2","t3":"t4"}]
+[{"period":"mezo","father":"t1","t2":"t3","t4":"partner"},{"period":"mezo","father":"t1","t2":"t3","t4":"partner"},{"period":"mezo","father":"t1","t2":"t3","t4":"partner"}]
