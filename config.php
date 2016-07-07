@@ -163,13 +163,14 @@ fclose($myfile);
 						proptime=proptimenew;
 					var gdata;
 						$.get("requestdata.php", { file: 'Data/userpriv.txt' }, function(data){ 
-							gdata=jQuery.parseJSON(data);
-							for (var prot in gdata){
-								if(gdata[prot].user==$("#UserList option:selected").val()) {
-									$.each(gdata[prot], function(key,value){  if(value=="true") $("#"+key).prop('checked',true);});
-								}
+							gdata=jQuery.parseJSON(data)
+							});
+						for (var prot in gdata){
+							if(gdata[prot].user==$("#UserList option:selected").val()) {
+								$.each(gdata[prot], function(key,value){  if(value=="true") $("#"+key).prop('checked',true);});
 							}
-						});
+						}
+						
 					}
 				}
 
