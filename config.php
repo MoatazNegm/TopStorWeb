@@ -149,7 +149,7 @@ fclose($myfile);
 			function refreshall() {
 				DNS=1;
 								
-				$.get("requestdata.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
+				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 				refresh2('Privstatus');
 			 if($(".UserPrivileges").is(":visible")) {
 					refreshUserList();
