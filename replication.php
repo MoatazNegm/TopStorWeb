@@ -443,7 +443,7 @@
 				 
 				 });
 			});	
-		$("#RollbackSnapshot").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotRollback", name:$("#Pool").val()+" "+$("#Senderslist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+		$("#RollbackSnapshot").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotRollback", name:$("#Pool").val()+" "+$("#Replicatelist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 
 				 });
 			});	
