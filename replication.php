@@ -157,7 +157,7 @@
 				};
 				
 				
-				$.get("requestdata.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
+				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 				if(status==3) { 
 					
 					$.get("requestdata.php", { file: "Data/poolstatus.txt" },function(data){
