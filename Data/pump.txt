@@ -1,1 +1,1 @@
-RemoteGetSnaplist a
+GetSnaplist a

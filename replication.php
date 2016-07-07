@@ -176,8 +176,8 @@
 				if(status=="snaps"){ //Replicate
 					
 					refreshList2("GetPoolVollist","#Vol","Data/Vollist.txt","Vol");
-					refreshList4("RemoteGetSnaplist","#Replicatelist","Data/listsnaps.txt","snaps","#Vol","listsnaps");
-					refreshList4("RemoteGetPoolperiodlist","#all","Data/Remoteperiodlist.txt","periods","#Vol","Remoteperiodlist");
+					//refreshList4("RemoteGetSnaplist","#Replicatelist","Data/listsnaps.txt","snaps","#Vol","listsnaps");
+					refreshList4("RemoteGetPoolperiodlist","#all","Data/Remoteperiodlist.txt","periods","#Vol","periods");
 				}
 				if(status=="Senders"){ //Replicate
 					refreshList2("GetPoolVollist","#Volsend","Data/Vollist.txt","Vol");
@@ -198,7 +198,7 @@
 					requiredtime[showtime]=objdate.updated;
 					//console.log("timey", objdate,fileloc);
 				});
-				console.log(requiredtime[showtime],listupdated[update], update);
+				
 				if(requiredtime[showtime].valueOf() != listupdated[update].valueOf()) { //console.log("traffic not changed"); 
 					
 					listupdated[update]=requiredtime[showtime].valueOf();
@@ -210,29 +210,39 @@
 						$("."+update).remove();
 						$(".variable"+"."+update).remove();
 						//console.log(times[showtime],showtime);
-						
+						;
 						for (var prot in gdata){
+							
 							//if($(voll).val()==gdata[prot].father){
-							    var receiver=gdata[prot].receiver;
-							    var sender=gdata[prot].sender;
-							    receiver=receiver.replace(/\./g,"");
-							    sender=sender.replace(/\./g,"");
+							    
+							    
+							    
+							    
+							    
+							    
+							    
 								if( showtime=="snaps" ) {
-									//console.log(gdata[prot]);
-									//if(gdata[prot].receiver==$("#Partner").val())
+									var receiver=gdata[prot].receiver;
+									receiver=receiver.replace(/\./g,"");
 									$(listid).append($('<option class="variable '+update+' '+gdata[prot].pool+' '+gdata[prot].father+' '+receiver+' '+'">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));
 								}
 								if( showtime=="sender" ) {
+									var sender=gdata[prot].sender;
+									sender=sender.replace(/\./g,"");
 									//console.log(gdata[prot]);
 									if(gdata[prot].sender==$("#Partnersend").val())
 									$(listid).append($('<option class="variable '+update+' '+gdata[prot].pool+' '+gdata[prot].father+' '+sender+' '+'">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));
 								}
 
 								if (showtime=="periods" ) {
+									
+									var partner=gdata[prot].partner;
+									partner=partner.replace(/\./g,"");
+									console.log(update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+gdata[prot].partner)
 									switch (gdata[prot].period) {
-										case "hourly": $("#Hourlylist").append($('<option class="variables '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'">').text('Every:'+gdata[prot].t3+"hrs At:"+gdata[prot].t2+ "mins Keep:"+ gdata[prot].t1+"snaps").val("hourly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3));	 break;
-										case "Minutely": $("#Minutelylist").append($('<option class="variables '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'">').text('Every:'+gdata[prot].t2+"mins Keep:"+gdata[prot].t1+"snaps").val("Minutely."+gdata[prot].t1+"."+gdata[prot].t2));	 break;
-										case "Weekly" : $("#Weeklylist").append($('<option class="variables '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'">').text('Every:'+gdata[prot].t4+" At:"+gdata[prot].t2+":"+gdata[prot].t3+" Keep:"+gdata[prot].t1+"snaps").val("Weekly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3+"."+gdata[prot].t4));	 break;
+										case "hourly": $("#Hourlylist").append($('<option class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+gdata[prot].partner+'">').text('Every:'+gdata[prot].t3+"hrs At:"+gdata[prot].t2+ "mins Keep:"+ gdata[prot].t1+"snaps").val("hourly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3));	 break;
+										case "Minutely": $("#Minutelylist").append($('<option class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+gdata[prot].partner+'">').text('Every:'+gdata[prot].t2+"mins Keep:"+gdata[prot].t1+"snaps").val("Minutely."+gdata[prot].t1+"."+gdata[prot].t2));	 break;
+										case "Weekly" : $("#Weeklylist").append($('<option class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+gdata[prot].partner+'">').text('Every:'+gdata[prot].t4+" At:"+gdata[prot].t2+":"+gdata[prot].t3+" Keep:"+gdata[prot].t1+"snaps").val("Weekly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3+"."+gdata[prot].t4));	 break;
 									}
 								}
 									
@@ -384,7 +394,7 @@
 				$(".variable").hide();
 				$("."+$("#Vol").val()+"."+$("#Pool option:selected").text()+"."+selection).show();
 			
-					$("."+$("#Partner").val()+"."+$("#Vol").val()+"."+$("#Pool").val()).show();
+				//	$("."+selection+"."+$("#Vol").val()+"."+$("#Pool").val()).show();
 					
 					
 					//$(" tr.variable").remove();
