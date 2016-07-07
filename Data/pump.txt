@@ -1,1 +1,1 @@
-RemoteSnapShotDelete mezo_p1 p1/nano226@dksl..1467821402 admin
+RemoteGetPoolperiodlist a
