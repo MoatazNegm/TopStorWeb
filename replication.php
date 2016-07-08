@@ -393,7 +393,7 @@
 				var selection=$("#Partner option:selected").val();
 				selection=selection.replace(/\./g,"");
 				//Vollisttime="44:333:222";
-				times= { "snaps":"3df33", "periods":"30==e43:467833", "sender":"435ddf34:46:4563" };
+				//times= { "snaps":"3df33", "periods":"30==e43:467833", "sender":"435ddf34:46:4563" };
 				$(".variable").hide();
 				$("."+$("#Vol").val()+"."+$("#Pool option:selected").text()+"."+selection).show();
 			
@@ -407,7 +407,7 @@
 				var selection=$("#Partnersend option:selected").val();
 				selection=selection.replace(/\./g,"");
 				//Vollisttime="44:333:222";
-				times= { "snaps":"3df33", "periods":"30==e43:467833", "sender":"435ddf34:46:4563" };
+				//times= { "snaps":"3df33", "periods":"30==e43:467833", "sender":"435ddf34:46:4563" };
 				$(".variable").hide();
 				$("."+$("#Volsend").val()+"."+$("#Poolsend option:selected").text()+"."+selection).show();
 				
