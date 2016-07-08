@@ -1,1 +1,1 @@
-[{"period":"father","t1":"t2","t3":"t4"}]
+[{"period":"hourly","father":"nano226","pool":"p1","t1":"3","t2":"3","t3":"6","t4":"na"}]
