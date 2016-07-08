@@ -249,7 +249,7 @@
 							//chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
 							
 						}
-						if (showtime == "sender" ) { $("#Poolsend").change() } else { $("#Pool").change() }	;
+						if (showtime == "sender" ) { $("#Partnersend").change() } else { $("#Partner").change() }	;
 					});
 				};
 				
