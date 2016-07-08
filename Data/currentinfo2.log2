@@ -1,7 +1,1 @@
-cannot open 'mezo/p1/nfs22': dataset does not exist
-usage:
-	snapshot|snap [-r] [-o property=value] ... <filesystem|volume>@<snap> ...
-
-For the property list, run: zfs set|get
-
-For the delegated permission list, run: zfs allow|unallow
+Snap1029: mezo/p1/nfs22 Minutely.3.2.na.na 1467990908
