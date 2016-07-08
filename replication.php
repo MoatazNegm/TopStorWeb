@@ -198,11 +198,11 @@
 					requiredtime[showtime]=objdate.updated;
 					//console.log("timey", objdate,fileloc);
 				});
-				
 				if(requiredtime[showtime].valueOf() != listupdated[update].valueOf()) { //console.log("traffic not changed"); 
 					
 					listupdated[update]=requiredtime[showtime].valueOf();
 					//$(listid+" tr.variable").remove();
+					
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						//console.log(fileloc);
 						var gdata = jQuery.parseJSON(data);
@@ -211,16 +211,9 @@
 						$(".variable"+"."+update).remove();
 						//console.log(times[showtime],showtime);
 						;
+						
 						for (var prot in gdata){
-							
-							//if($(voll).val()==gdata[prot].father){
-							    
-							    
-							    
-							    
-							    
-							    
-							    
+					
 								if( showtime=="snaps" ) {
 									var receiver=gdata[prot].receiver;
 									receiver=receiver.replace(/\./g,"");
@@ -248,8 +241,9 @@
 							//chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
 							
 						}
-						if (showtime == "sender" ) { $("#Partnersend").change() } else { $("#Partner").change() }	;
+						;
 					});
+					if (showtime == "sender" ) { $("#Partnersend").change() } else { $("#Partner").change() }	
 				};
 				
 			};
@@ -540,11 +534,12 @@
 									
 								}
 							
-							if (listid == "Vol" ) { $("#Pool").change() } else { $("#Poolsend").change() }	;
+							
 							pools = [];
 
 						});
-					};
+					if (listid == "Vol" ) { $("#Pool").change() } else { $("#Poolsend").change() }	;
+				};
 		
 			}
 			;
