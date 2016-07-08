@@ -230,7 +230,6 @@
 									var sender=gdata[prot].sender;
 									sender=sender.replace(/\./g,"");
 									//console.log(gdata[prot]);
-									if(gdata[prot].sender==$("#Partnersend").val())
 									$(listid).append($('<option class="variable '+update+' '+gdata[prot].pool+' '+gdata[prot].father+' '+sender+' '+'">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));
 								}
 
