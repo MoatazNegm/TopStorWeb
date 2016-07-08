@@ -105,8 +105,8 @@
 				}
 				if(status=="snaps"){ //snapshots
 					refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
-					refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps");
-					refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods");
+					refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps","snaps");
+					refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods","periods");
 					if(syscounter == 10) {
 					
 					
@@ -122,7 +122,7 @@
 			
 			
 			
-			function refreshList(req,listid,fileloc,showtime) {
+			function refreshList(req,listid,fileloc,showtime,update) {
 				if(syscounter2==1000){$.post("./pump.php", { req: req, name:"a" }, function (data1){});};
 					$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
 					var objdate = jQuery.parseJSON(data);
@@ -139,27 +139,36 @@
 						//console.log(fileloc)
 						var gdata = jQuery.parseJSON(data);
 						//console.log(data);
-						$(listid+" option.variable").remove();
+						$("."+update).remove();
 
 						//console.log(times[showtime],showtime);
 						if(showtime=="periods") { 	$("#Hourlylist option.variable").remove();$("#Minutelylist option.variable").remove();$("#Weeklylist option.variable").remove();}
 						for (var prot in gdata){
 							if($("#Vol").val()==gdata[prot].father){
 								if( showtime=="snaps" ) {
-									$(listid).append($('<option class="variable">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));	
+									//$(listid).append($('<option class="variable">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));	
+								$(listid).append($('<option class="variable '+update+' '+gdata[prot].pool+' '+gdata[prot].father+'">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));
 								}
-								if (showtime=="periods") {
+								
+							if (showtime=="periods") {
 									switch (gdata[prot].period) {
-										case "hourly": $("#Hourlylist").append($('<option class="variable">').text('Every:'+gdata[prot].t3+"hrs At:"+gdata[prot].t2+ "mins Keep:"+ gdata[prot].t1+"snaps").val("hourly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3));	 break;
-										case "Minutely": $("#Minutelylist").append($('<option class="variable">').text('Every:'+gdata[prot].t2+"mins Keep:"+gdata[prot].t1+"snaps").val("Minutely."+gdata[prot].t1+"."+gdata[prot].t2));	 break;
-										case "Weekly" : $("#Weeklylist").append($('<option class="variable">').text('Every:'+gdata[prot].t4+" At:"+gdata[prot].t2+":"+gdata[prot].t3+" Keep:"+gdata[prot].t1+"snaps").val("Weekly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3+"."+gdata[prot].t4));	 break;
+									//	case "hourly": $("#Hourlylist").append($('<option class="variable">').text('Every:'+gdata[prot].t3+"hrs At:"+gdata[prot].t2+ "mins Keep:"+ gdata[prot].t1+"snaps").val("hourly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3));	 break;
+									//	case "Minutely": $("#Minutelylist").append($('<option class="variable">').text('Every:'+gdata[prot].t2+"mins Keep:"+gdata[prot].t1+"snaps").val("Minutely."+gdata[prot].t1+"."+gdata[prot].t2));	 break;
+									//	case "Weekly" : $("#Weeklylist").append($('<option class="variable">').text('Every:'+gdata[prot].t4+" At:"+gdata[prot].t2+":"+gdata[prot].t3+" Keep:"+gdata[prot].t1+"snaps").val("Weekly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3+"."+gdata[prot].t4));	 break;
+									//switch (gdata[prot].period) {
+										case "hourly": $("#Hourlylist").append($('<option class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'">').text('Every:'+gdata[prot].t3+"hrs At:"+gdata[prot].t2+ "mins Keep:"+ gdata[prot].t1+"snaps").val("hourly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3));	 break;
+										case "Minutely": $("#Minutelylist").append($('<option class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'">').text('Every:'+gdata[prot].t2+"mins Keep:"+gdata[prot].t1+"snaps").val("Minutely."+gdata[prot].t1+"."+gdata[prot].t2));	 break;
+										case "Weekly" : $("#Weeklylist").append($('<option class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'">').text('Every:'+gdata[prot].t4+" At:"+gdata[prot].t2+":"+gdata[prot].t3+" Keep:"+gdata[prot].t1+"snaps").val("Weekly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3+"."+gdata[prot].t4));	 break;
+
 									}
+										
 								}
-									
+							
 							//chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
 							}
 						}
 					});
+				//	$("#Vol").change();	
 				};
 			};
 			function refresh2(textareaid) {
@@ -236,26 +245,28 @@
 			});
 			$("#Vol").change(function() {
 				//Vollisttime="44:333:222";
+				var poolsel=$("#Pool option:selected").text();
+				var volsel=$("#Vol option:selected").val();
 				times= { "snaps":"30:43:433", "periods":"30:43:433" };
+				//$("."+poolsel+"."+volsel).show();
+					
 				//$(" tr.variable").remove();
 				
 			});
 			$("#Pool").change(function () {
+				
 				var selection=$("#Pool option:selected").val();
 				//console.log(selection);
-				if (selection == "--All--")
-					$("#Vol option.variable").show();
-				else {
-					$(".variable").hide();
-					$("."+selection).show();
-					$('#Vol option.'+selection+':first').prop('selected', true);
+				$('#Vol option.'+selection+':first').prop('selected', true);
+				//$(".variable").hide();
+					
 					$('#Vol').change();
 		/*			if(plotflag > 0 ) {
 										plotb.destroy();
 									}
 					plotchart('chartNFS',chartdata[$("#Pool2").val()]);
 		*/
-				}
+				
 		
 			});
 		function diskgetsize(fileloc,spanid1,spanid2,spanid3) {
@@ -333,8 +344,8 @@
             
 			setInterval("refreshall()",500);
 			refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
-			refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps");
-			refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods");
+			refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps","snaps");
+			refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods","periods");
 			$.post("./pump.php", { req: "GetPoolperiodlist", name:"a" });
 			$.post("./pump.php", { req: "GetPoolVollist", name:"a" });
 			$.post("./pump.php", { req: "GetSnaplist", name:"a" });
