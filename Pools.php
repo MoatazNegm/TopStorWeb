@@ -218,6 +218,7 @@
 					
 						if( userpriv=="true" | curuser=="admin" ) { 
 							config = 0; status="snaps"; $("h2").css("background-image","url('img/snapshot.png')").text("SnapShots");  $("option.variable").remove(); Vollisttime="44:333:22";times= { "snaps":"30:43:433", "periods":"30:43:433" }; $(".SnapShots").show();
+							 $("#Vol").change();
 						}
 					});
 				};
