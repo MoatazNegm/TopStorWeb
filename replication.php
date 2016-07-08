@@ -230,7 +230,6 @@
 									var sender=gdata[prot].sender;
 									sender=sender.replace(/\./g,"");
 									//console.log(gdata[prot]);
-									if(gdata[prot].sender==$("#Partnersend").val())
 									$(listid).append($('<option class="variable '+update+' '+gdata[prot].pool+' '+gdata[prot].father+' '+sender+' '+'">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));
 								}
 
@@ -416,9 +415,9 @@
 				//Vollisttime="44:333:222";
 				times= { "snaps":"3df33", "periods":"30==e43:467833", "sender":"435ddf34:46:4563" };
 				$(".variable").hide();
-				$("."+$("#Volsend").val()+"."+$("#Pool option:selected").text()+"."+selection).show();
+				$("."+$("#Volsend").val()+"."+$("#Poolsend option:selected").text()+"."+selection).show();
 				
-					$("."+$("#Partnersend").val()+"."+$("#Volsend").val()+"."+$("#Pool").val()).show();
+					$("."+$("#Partnersend").val()+"."+$("#Volsend").val()+"."+$("#Poolsend").val()).show();
 				
 			});	
 			$("#Proxy").change(function() { if($("#Proxy").is(":checked") == true ) {
@@ -516,7 +515,7 @@
 				if(listupdated[update].valueOf() != Vollisttimenew.valueOf()) { //console.log("traffic not changed"); 
 					listupdated[update]=Vollisttimenew.valueOf();
 					$.get("requestdata.php", { file: fileloc }, function(data){
-						gdata = jQuery.parseJSON(data);
+						var gdata = jQuery.parseJSON(data);
 						
 							//console.log(req,listid,filelocfrom,show);
 							$(listid+' option').remove();
@@ -552,11 +551,7 @@
 
 			setInterval("refreshall()",500);
 			$.post("./pump.php", { req:"Partnerslist" });
-			refreshList2("GetPoolVollist","#Vol","Data/Vollist.txt","Vol");
-			refreshList2("GetPoolVollist","#Volsend","Data/Vollist.txt","Vol");
-			refreshList4("RemoteGetSnaplist","#Replicatelist","Data/listsnaps.txt","snaps","#Vol","listsnaps");
-			refreshList4("RemoteGetPoolperiodlist","#all","Data/Remoteperiodlist.txt","periods","#Vol","periods");
-			$.post("./pump.php", { req: "GetPoolperiodlist", name:"a" });
+			//$.post("./pump.php", { req: "GetPoolperiodlist", name:"a" });
 			$.post("./pump.php", { req: "GetPoolVollist", name:"a" });
 			$.post("./pump.php", { req: "GetSnaplist", name:"a" });
 		</script>

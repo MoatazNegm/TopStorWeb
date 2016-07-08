@@ -1,1 +1,7 @@
-Replica1035@07/08/2016@17:02:25@mezo/p1/nano226@192.168.0.33
+cannot open 'mezo/p1/nfs22': dataset does not exist
+usage:
+	snapshot|snap [-r] [-o property=value] ... <filesystem|volume>@<snap> ...
+
+For the property list, run: zfs set|get
+
+For the delegated permission list, run: zfs allow|unallow
