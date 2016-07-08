@@ -178,12 +178,12 @@
 					refreshList2("GetPoolVollist","#Vol","Data/Vollist.txt","Vol");
 					refreshList4("RemoteGetSnaplist","#Replicatelist","Data/listsnaps.txt","snaps","#Vol","listsnaps");
 					refreshList4("RemoteGetPoolperiodlist","#all","Data/Remoteperiodlist.txt","periods","#Vol","periods");
-					$("#Partner").val(); 
+					$("#Partner").change(); 
 				}
 				if(status=="Senders"){ //Replicate
 					refreshList2("GetPoolVollist","#Volsend","Data/Vollist.txt","Vol");
 					refreshList4("GetSnaplist","#Senderslist","Data/listsnaps.txt","sender","#Volsend","listsnaps");
-					$("#Partner").val(); 
+					$("#Partner").change(); 
 				
 				}
 			    
