@@ -299,23 +299,23 @@
 
 			
 		$("#DeleteSnapshot").click( function (){ $.post("./pump.php", { req:"SnapShotDelete", name:$("#Pool").val()+" "+$("#Snaplist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 refresh2("Snapsstatus"); 
+				 refresh2("Snapsstatus"); $("#Vol").change();	
 				 });
 			});
 		$("#RollbackSnapshot").click( function (){ $.post("./pump.php", { req:"SnapShotRollback", name:$("#Pool").val()+" "+$("#Snaplist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 refresh2("Snapsstatus"); 
+				 refresh2("Snapsstatus"); $("#Vol").change();	
 				 });
 			});	
 		$("#DeleteHourly").click( function (){ $.post("./pump.php", { req:"SnapShotPeriodDelete", name:$("#Hourlylist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 refresh2("Snapsstatus"); 
+				 refresh2("Snapsstatus"); $("#Vol").change();	
 				 });
 			});
 		$("#DeleteMinutely").click( function (){ $.post("./pump.php", { req:"SnapShotPeriodDelete", name:$("#Minutelylist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 refresh2("Snapsstatus"); 
+				 refresh2("Snapsstatus"); $("#Vol").change();	
 				 });
 			});
 		$("#DeleteWeekly").click( function (){ $.post("./pump.php", { req:"SnapShotPeriodDelete", name:$("#Weeklylist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 refresh2("Snapsstatus"); 
+				 refresh2("Snapsstatus"); $("#Vol").change();	
 				 });
 			});
 		$("#SnapshotCreate").click( function (){ 
@@ -331,7 +331,7 @@
 				oper =oper+" "+$("#Pool option:selected").val()+" "+$("#Vol option:selected").val();
 				
 				$.post("./pump.php", { req:"SnapshotCreate"+period, name: oper+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 refresh2("Snapsstatus"); 
+				 refresh2("Snapsstatus"); $("#Vol").change();	
 				 });
 			});
 		
