@@ -47,10 +47,10 @@
 				} else { 
 					Vollisttime=Vollisttimenew;
 					//console.log(Vollisttime);
-					$(listid+" option.variable").remove();
+					$(listid+" option.vvariable").remove();
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						var gdata = jQuery.parseJSON(data);
-						$(listid+" option.variable").remove();
+						$(listid+" option.vvariable").remove();
 						$("#Pool option.variable2").remove();
 						chartdata=[];
 						for (var prot in gdata){
@@ -60,7 +60,7 @@
 										chartdata.push(gdata[prot].class);
 										//chartdata[gdata[prot].class]=[];
 							}
-							$(listid).append($('<option class="variable '+gdata[prot].class+'">').text(gdata[prot].name).val(gdata[prot].name));
+							$(listid).append($('<option class="vvariable '+gdata[prot].class+'">').text(gdata[prot].name).val(gdata[prot].name));
 							//chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
 						
 						}
@@ -142,25 +142,26 @@
 						$("."+update).remove();
 
 						//console.log(times[showtime],showtime);
-						if(showtime=="periods") { 	$("#Hourlylist option.variable").remove();$("#Minutelylist option.variable").remove();$("#Weeklylist option.variable").remove();}
+						
 						for (var prot in gdata){
-							if($("#Vol").val()==gdata[prot].father){
+							
 								if( showtime=="snaps" ) {
 									//$(listid).append($('<option class="variable">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));	
 								$(listid).append($('<option class="variable '+update+' '+gdata[prot].pool+' '+gdata[prot].father+'">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));
-								}
-								
+							
+							}
 							if (showtime=="periods") {
+								    console.log(data[prot].period,'    ',update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period)
 									switch (gdata[prot].period) {
 									//	case "hourly": $("#Hourlylist").append($('<option class="variable">').text('Every:'+gdata[prot].t3+"hrs At:"+gdata[prot].t2+ "mins Keep:"+ gdata[prot].t1+"snaps").val("hourly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3));	 break;
 									//	case "Minutely": $("#Minutelylist").append($('<option class="variable">').text('Every:'+gdata[prot].t2+"mins Keep:"+gdata[prot].t1+"snaps").val("Minutely."+gdata[prot].t1+"."+gdata[prot].t2));	 break;
 									//	case "Weekly" : $("#Weeklylist").append($('<option class="variable">').text('Every:'+gdata[prot].t4+" At:"+gdata[prot].t2+":"+gdata[prot].t3+" Keep:"+gdata[prot].t1+"snaps").val("Weekly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3+"."+gdata[prot].t4));	 break;
 									//switch (gdata[prot].period) {
-										case "hourly": $("#Hourlylist").append($('<option class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'">').text('Every:'+gdata[prot].t3+"hrs At:"+gdata[prot].t2+ "mins Keep:"+ gdata[prot].t1+"snaps").val("hourly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3));	 break;
-										case "Minutely": $("#Minutelylist").append($('<option class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'">').text('Every:'+gdata[prot].t2+"mins Keep:"+gdata[prot].t1+"snaps").val("Minutely."+gdata[prot].t1+"."+gdata[prot].t2));	 break;
-										case "Weekly" : $("#Weeklylist").append($('<option class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'">').text('Every:'+gdata[prot].t4+" At:"+gdata[prot].t2+":"+gdata[prot].t3+" Keep:"+gdata[prot].t1+"snaps").val("Weekly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3+"."+gdata[prot].t4));	 break;
+										case "hourly": $("#Hourlylist").append($('<option class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'">').text('Every:'+gdata[prot].t3+"hrs At:"+gdata[prot].t2+ "mins Keep:"+ gdata[prot].t1+"snaps").val(gdata[prot].stamp));	 break;
+										case "Minutely": $("#Minutelylist").append($('<option class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'">').text('Every:'+gdata[prot].t2+"mins Keep:"+gdata[prot].t1+"snaps").val(gdata[prot].stamp));	 break;
+										case "Weekly" : $("#Weeklylist").append($('<option class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'">').text('Every:'+gdata[prot].t4+" At:"+gdata[prot].t2+":"+gdata[prot].t3+" Keep:"+gdata[prot].t1+"snaps").val(gdata[prot].stamp));	 break;
 
-									}
+									
 										
 								}
 							
@@ -168,7 +169,7 @@
 							}
 						}
 					});
-				//	$("#Vol").change();	
+				$("#Vol").change();	
 				};
 			};
 			function refresh2(textareaid) {
@@ -247,8 +248,10 @@
 				//Vollisttime="44:333:222";
 				var poolsel=$("#Pool option:selected").text();
 				var volsel=$("#Vol option:selected").val();
-				times= { "snaps":"30:43:433", "periods":"30:43:433" };
-				//$("."+poolsel+"."+volsel).show();
+				//times= { "snaps":"30:43:433", "periods":"30:43:433" };
+				$(".variable").hide();
+				if(status=="snaps")
+				$("."+poolsel+"."+volsel).show();
 					
 				//$(" tr.variable").remove();
 				
@@ -258,7 +261,8 @@
 				var selection=$("#Pool option:selected").val();
 				//console.log(selection);
 				$('#Vol option.'+selection+':first').prop('selected', true);
-				//$(".variable").hide();
+				$(".vvariable").hide();
+				$(".vvariable."+selection).show();
 					
 					$('#Vol').change();
 		/*			if(plotflag > 0 ) {
