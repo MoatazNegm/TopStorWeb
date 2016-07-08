@@ -22,7 +22,7 @@
   array_shift($msgfarr);
   array_push($msgformat," ");
   for ($w = 0; $w < count($msgfarr); $w++) {
-   $msgf .= $msgfarr[$w] . $msgformat[$w] . $msgcode; 
+   $msgf .= $msgfarr[$w] . $msgformat[$w] ; 
   };
  };
  
