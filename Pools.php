@@ -148,7 +148,7 @@
 								if( showtime=="snaps" ) {
 									//$(listid).append($('<option class="variable">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));	
 								$(listid).append($('<option class="variable '+update+' '+gdata[prot].pool+' '+gdata[prot].father+'">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));
-							
+								$("#Vol").change();	
 							}
 							if (showtime=="periods") {
 								    console.log(data[prot].period,'    ',update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period)
@@ -169,7 +169,7 @@
 							}
 						}
 					});
-				$("#Vol").change();	
+				
 				};
 			};
 			function refresh2(textareaid) {
