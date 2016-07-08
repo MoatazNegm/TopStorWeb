@@ -183,7 +183,7 @@
 				if(status=="Senders"){ //Replicate
 					refreshList2("GetPoolVollist","#Volsend","Data/Vollist.txt","Vol");
 					refreshList4("GetSnaplist","#Senderslist","Data/listsnaps.txt","sender","#Volsend","listsnaps");
-					$("#Partner").change(); 
+					$("#Partnersend").change(); 
 				
 				}
 			    
