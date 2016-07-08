@@ -183,7 +183,8 @@
 					refreshList2("GetPoolVollist","#Volsend","Data/Vollist.txt","Vol");
 					refreshList4("GetSnaplist","#Senderslist","Data/listsnaps.txt","sender","#Volsend","listsnaps");
 				}
-				if(syscounter2==1000) { syscounter2=0; } else { syscounter2=syscounter2+1; }
+			    
+				if(syscounter2==1000) { syscounter2=0; $("#Partner").val();  $("#Partnersend").val(); } else { syscounter2=syscounter2+1; }
 			}
 				
 			
