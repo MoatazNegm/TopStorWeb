@@ -41,12 +41,12 @@
 					
 					var objdate = jQuery.parseJSON(data);
 					Vollisttimenew=objdate.updated;
-					//console.log("updated",fileloc+"updated",objdate);
+
 				});
-				if(Vollisttime==Vollisttimenew) { //console.log("traffic not changed"); 
+				if(Vollisttime==Vollisttimenew) { 
 				} else { 
 					Vollisttime=Vollisttimenew;
-					//console.log(Vollisttime);
+					
 					$(listid+" option.vvariable").remove();
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						var gdata = jQuery.parseJSON(data);
@@ -73,7 +73,7 @@
 			function snaponce(txtin,but,altbut){
 				
 						var chars=$(txtin).val().length;
-						//console.log(txtin, but, altbut, chars);
+						
 						if ( chars < 3 ) {  $(but).show();
 												 $(altbut).hide();
 						} else 					{	$(but).hide();
@@ -107,6 +107,7 @@
 					refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
 					refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps","snaps");
 					refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods","periods");
+					$("#Vol").change(); 
 					if(syscounter == 10) {
 					
 					
@@ -127,22 +128,20 @@
 					$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
 					var objdate = jQuery.parseJSON(data);
 					requiredtime[showtime]=objdate.updated;
-					//console.log("timey", objdate,fileloc);
+				
 				});
-				//console.log(showtime);
-				if(times[showtime]==requiredtime[showtime]) { //console.log("traffic not changed"); 
+				
+				if(times[showtime]==requiredtime[showtime]) { 
 				} 
 				else { 
 					times[showtime]=requiredtime[showtime];
 					//$(listid+" tr.variable").remove();
 					$.get("requestdata.php", { file: fileloc }, function(data){
-						//console.log(fileloc)
+						
 						var gdata = jQuery.parseJSON(data);
-						//console.log(data);
+						
 						$("."+update).remove();
 
-						//console.log(times[showtime],showtime);
-						
 						for (var prot in gdata){
 							
 								if( showtime=="snaps" ) {
@@ -151,7 +150,7 @@
 								$("#Vol").change();	
 							}
 							if (showtime=="periods") {
-								    console.log(data[prot].period,'    ',update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period)
+								    
 									switch (gdata[prot].period) {
 									//	case "hourly": $("#Hourlylist").append($('<option class="variable">').text('Every:'+gdata[prot].t3+"hrs At:"+gdata[prot].t2+ "mins Keep:"+ gdata[prot].t1+"snaps").val("hourly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3));	 break;
 									//	case "Minutely": $("#Minutelylist").append($('<option class="variable">').text('Every:'+gdata[prot].t2+"mins Keep:"+gdata[prot].t1+"snaps").val("Minutely."+gdata[prot].t1+"."+gdata[prot].t2));	 break;
@@ -260,7 +259,7 @@
 			$("#Pool").change(function () {
 				
 				var selection=$("#Pool option:selected").val();
-				//console.log(selection);
+				
 				$('#Vol option.'+selection+':first').prop('selected', true);
 				$(".vvariable").hide();
 				$(".vvariable."+selection).show();

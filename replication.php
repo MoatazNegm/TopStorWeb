@@ -47,7 +47,7 @@
 			function snaponce(txtin,but,altbut){
 				
 						var chars=$(txtin).val().length;
-						//console.log(txtin, but, altbut, chars);
+				
 						if ( chars < 3 ) {  $(but).show();
 												 $(altbut).hide();
 						} else 					{	$(but).hide();
@@ -60,17 +60,17 @@
 					var cdata=jQuery.parseJSON(data);
 					partnernew=cdata.updated;
 				});
-				//console.log(partner,partnernew,listid,fileloc);
+				
 				if(partnernew!=partner)
 				{ 
 					partner=partnernew;
 					$(listid+' option').remove();
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						var jdata = jQuery.parseJSON(data);
-						//console.log(data);
+
 						
 						$.each(jdata, function(i,v) {
-						//	console.log(i,k);
+
 							if(v.proxy=="true")
 							 $(listid).append($('<option>').text(v.name+" : "+v.type+" partner through proxy").val(v.name)); 
 							else
@@ -87,7 +87,7 @@
 					var cdata=jQuery.parseJSON(data);
 					replivalnew[showtime]=cdata.updated;
 				});
-				console.log(replival[showtime],replivalnew[showtime]);
+			
 				
 				if(replival[showtime] != replivalnew[showtime])
 				{ 
@@ -96,7 +96,7 @@
 
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						var jdata = jQuery.parseJSON(data);
-						//console.log(data);
+					
 						
 						$.each(jdata, function(i,v) {
 						 $('#'+listid).val(v[listid]); 
@@ -114,7 +114,7 @@
 					var cdata=jQuery.parseJSON(data);
 					replivalnew[showtime]=cdata.updated;
 				});
-				//console.log(replival,replivalnew);
+				
 				
 				if(replival[showtime] != replivalnew[showtime])
 				{ 
@@ -124,11 +124,10 @@
 					
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						var jdata = jQuery.parseJSON(data);
-						//console.log(data);
+					
 						
 						$.each(jdata, function(i,v) {
-							
-						//console.log(v.name,v.type);
+
 						if (v.type == way || v.type=="DualWay")
 							 $(listid).append($('<option>').text(v.name).val(v.name)); 
 					
@@ -200,20 +199,20 @@
 					$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
 					var objdate = jQuery.parseJSON(data);
 					requiredtime[showtime]=objdate.updated;
-					//console.log("timey", objdate,fileloc);
+					
 				});
-				if(requiredtime[showtime].valueOf() != listupdated[update].valueOf()) { //console.log("traffic not changed"); 
+				if(requiredtime[showtime].valueOf() != listupdated[update].valueOf()) {  
 					
 					listupdated[update]=requiredtime[showtime].valueOf();
 					//$(listid+" tr.variable").remove();
 					
 					$.get("requestdata.php", { file: fileloc }, function(data){
-						//console.log(fileloc);
+						
 						var gdata = jQuery.parseJSON(data);
-						//console.log(data);
+						
 						$("."+update).remove();
 						$(".variable"+"."+update).remove();
-						//console.log(times[showtime],showtime);
+						
 						;
 						
 						for (var prot in gdata){
@@ -226,7 +225,7 @@
 								if( showtime=="sender" ) {
 									var sender=gdata[prot].sender;
 									sender=sender.replace(/\./g,"");
-									//console.log(gdata[prot]);
+								
 									$(listid).append($('<option class="variable '+update+' '+gdata[prot].pool+' '+gdata[prot].father+' '+sender+' '+'">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));
 								}
 
@@ -508,14 +507,13 @@
 				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
 					var objdate = jQuery.parseJSON(data);
 					Vollisttimenew=objdate.updated;
-					//console.log("Vollisttimenew", objdate,fileloc,"Vollold",Vollisttime);
+					
 				});
-				if(listupdated[update].valueOf() != Vollisttimenew.valueOf()) { //console.log("traffic not changed"); 
+				if(listupdated[update].valueOf() != Vollisttimenew.valueOf()) { 
 					listupdated[update]=Vollisttimenew.valueOf();
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						var gdata = jQuery.parseJSON(data);
 						
-							//console.log(req,listid,filelocfrom,show);
 							$(listid+' option').remove();
 							$(listid+' tr').remove();
 							$(".pvariable").remove();
@@ -523,8 +521,7 @@
 							$(".variable2send").remove();
 							chartdata=[];
 							for (var prot in gdata){
-								//if(gdata[prot].protocol==Protocol){
-									//console.log(gdata[prot].name);
+
 									if ($.inArray(gdata[prot].Pool,pools) < 0 ) {
 										pools.push(gdata[prot].Pool);
 										$("#Pool").append($('<option class="variable2">').text(gdata[prot].uPool).val(gdata[prot].class));
