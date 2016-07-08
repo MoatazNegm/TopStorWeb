@@ -1,1 +1,1 @@
-GetSnaplist a
+SnapShotPeriodDelete 1467987136 admin
