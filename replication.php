@@ -516,7 +516,7 @@
 				if(listupdated[update].valueOf() != Vollisttimenew.valueOf()) { //console.log("traffic not changed"); 
 					listupdated[update]=Vollisttimenew.valueOf();
 					$.get("requestdata.php", { file: fileloc }, function(data){
-						gdata = jQuery.parseJSON(data);
+						var gdata = jQuery.parseJSON(data);
 						
 							//console.log(req,listid,filelocfrom,show);
 							$(listid+' option').remove();
@@ -552,11 +552,7 @@
 
 			setInterval("refreshall()",500);
 			$.post("./pump.php", { req:"Partnerslist" });
-			refreshList2("GetPoolVollist","#Vol","Data/Vollist.txt","Vol");
-			refreshList2("GetPoolVollist","#Volsend","Data/Vollist.txt","Vol");
-			refreshList4("RemoteGetSnaplist","#Replicatelist","Data/listsnaps.txt","snaps","#Vol","listsnaps");
-			refreshList4("RemoteGetPoolperiodlist","#all","Data/Remoteperiodlist.txt","periods","#Vol","periods");
-			$.post("./pump.php", { req: "GetPoolperiodlist", name:"a" });
+			//$.post("./pump.php", { req: "GetPoolperiodlist", name:"a" });
 			$.post("./pump.php", { req: "GetPoolVollist", name:"a" });
 			$.post("./pump.php", { req: "GetSnaplist", name:"a" });
 		</script>
