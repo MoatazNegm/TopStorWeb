@@ -18,7 +18,7 @@
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
  
-	<div class=" col-sm-1 leftPane">
+	<div class=" col-sm-1 leftPane ">
 		<ul class="nav nav-pills nav-stacked config_leftPane_No_border_textcolor" >
 			<li  <?php if($men==1) {echo 'class="active leftli"';} else { echo 'class="leftli"';}; ?>><a id="accounts" class="ref" href='#' ><br>Accounts</a></li>
 			<li  <?php if($men==2) {echo 'class="active leftli"';} else { echo 'class="leftli"';}; ?>><a id="status" class="ref" href="#"  ><br>Status</a></li>

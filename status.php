@@ -9,6 +9,7 @@
 	
 							<li><a href="#" class="SSa rightli"><h4 id="SS"><span>Services Status</span></h4></a></li>
 							<li><a href="#" class="Logsa rightli"><h4 id="Logs"><span>Logs</span></h4></a></li>
+							
 						</ul>
 						<?php include "SS.php" ?>
 						<?php include "Logs.php" ?>

@@ -7,53 +7,52 @@
 										<h2 class="configTitle" id="SubTitle"></h2>
 									</div>									
 									<div class="row">
-										<form role="form" class="col-sm-offset-1" id="Date Range">
-														<div class=" form-group row ">
-															<div class="col-sm-2 ">
-																<label  for="Stime" class=" col-sm-offset- control-label">Start time</label>
-																<div class="input-group bootstrap-timepicker">
-																	<input   type="text" id="Stime" class="  form-control timep" ><span class="input-group-addon add-on"><i class="glyphicon glyphicon-time"></i></span>
-																	</input>
-																</div>
-															</div>
-															<div class="col-sm-4" >
-																<label  for="Sdate" class=" col-sm-offset- control-label">Date Range</label>
-																
-																<div  class="input-daterange input-group" id="datepicker">
-																	<input id="Sdate"  type="text" class=" form-control datep" name="start" ><span class="input-group-addon">to</span>
-																	<input type="text" id="Edate" class="form-control datep" name="end" />
-																	
-																</div>
-															</div>
-														</div>
-																											
-													</form>
 
 										<form class="form " role="form">
-											<div class=" boxoffields col-sm-offset-1 col-sm-1 spacer">
-												<span>Logs</span>
-												<div class="checkbox">
-														<label>
-														<input type="checkbox" class="checkboxy timep" id="INFO" value="info">Info
-														</label>
-												</div>
-												<div class="checkbox">
-														<label>
-															<input type="checkbox"  class="checkboxy timep" id="Warning" value="Warning">Warning
-														</label>
-												</div>
-												<div class="checkbox">
-														<label>
-															<input type="checkbox" id="Error" class="checkboxy timep" value="Error">Error
-														</label>
-												</div>
-											</div>
-											<div class= "col-sm-offset-1 col-sm-8 ">
+											<div class= "col-sm-offset-1 col-sm-10 ">
 												<div id="Voldetails"	class="row Paneloption ">
 													<div class="col-sm-offset-col-sm-12">
 														<div  class="panel panel-default ">
 															<!-- Default panel contents -->
-															<div id="Volumnamedetails" class="panel-heading">Logs details</div>
+															<div id="Volumnamedetails" class="panel-heading" style="font-size: 50%; height: 50%">
+															 	
+																
+																<ul class=" col-sm-12" style="margin-top: 1px;margin-bottom: 1px;">
+																	<li class="col-sm-5"><div  style="font-size: 50%; margin-top: 1px; margin-bottom: 1px;" >
+																			<label  style="margin-top: 10px; " class="control-label col-sm-2" for="usr">Date:</label>
+																			<span class="input-group  col-sm-5" >
+																				<input type="date" class="form-control" style=""height: 20%; font-size: .9rem;" id="user" >
+																			</span>
+																			</div>
+																	 </li>
+						
+																		<li class="col-sm-2" style='margin-top: 8px;margin-bottom: 5px; padding-left: 1px;'>
+																				<label class="checkbox-inline" >
+																				<input type="checkbox"  id="INFO" value="info">Info
+																				</label>
+																		
+																		</li>
+																		<li class="col-sm-2" style='margin-top: 9px;margin-bottom: 5px;padding-left: 1px'>
+																				<label class="checkbox-inline">
+																					<input type="checkbox"   id="Warning" value="Warning">Warning
+																				</label>
+																		
+																		</li>
+																		<li class="col-sm-1" style='margin-top: 10px;margin-bottom: 5px; padding-left: 1px;'>
+																				<label class="checkbox-inline">
+																					<input type="checkbox" id="Error"  value="Error">Error
+																				</label>
+																		</li>
+																	<li class=" col-sm-2" >
+																		<ul class="pager" style='margin-top: 3px;margin-bottom: 5px;'>
+																			<li><a href="#" class=" col-sm-6 pull-right glyphicon glyphicon-chevron-right" style="margin-top: 8px;margin-bottom: 1px;"></a></li>
+																			<li><a href="#" class=" col-sm-6 pull-right glyphicon glyphicon-chevron-left" style="margin-top: 8px;margin-bottom: 1px;"></a></li>
+																		</ul>
+																	</li>
+															
+															</ul>
+															
+															</div>
 															<div class="panel-body">
 																<form role="form">
 																	<div class="row">
