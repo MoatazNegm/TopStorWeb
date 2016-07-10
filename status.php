@@ -479,7 +479,7 @@
 		var tm, splitstime;
 		var tm2; var tme, splitstimee;
       
-		$.get("requestdate.php", { file: 'Data/Logs.log' }, function(data){
+		$.get("requestdate.php", { file: 'Data/Logs.log'updated }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			logtimenew=objdate.timey;
 		});
