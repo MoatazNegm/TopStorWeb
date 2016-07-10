@@ -183,8 +183,8 @@
 			dater=Date.parse($("#dater").val())
 		}
 		if(logstatus==10) { logstatus=11; $.post("./pump.php", { req:"GetLog", name: dater+' '+page+' '+$("#lines").val()},function(){});}
-		if(logstatus==11) { updatechartarea(); }
-		updatelogarea();
+		if(logstatus==11) { updatelogarea();  }
+		updatechartarea();
 		}
 	function updatechartarea(){
 		var chartarea = "";
@@ -478,13 +478,14 @@
 		var logarea = "";
 		var tm, splitstime;
 		var tm2; var tme, splitstimee;
-      if(logstatus==11){
+      
 		$.get("requestdate.php", { file: 'Data/Logs.log' }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			logtimenew=objdate.timey;
 		});
 		if(logtimenew!=logtime) {
 			config=1;
+			logstatus=1
 			logtime=logtimenew;
 		$("#Logdetails tr.datarow").remove();
 		$.get("requestdata.php", { file: 'Data/Logs.log' }, function(data){
@@ -545,7 +546,7 @@
 		});
 		
 		}
-	  }
+	 
 	}
 		$(".datep").datepicker().on("changeDate",function(e){
 			logtime="44:44:34";updatelogarea();
