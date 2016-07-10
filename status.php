@@ -48,8 +48,11 @@
 			var dl =[[[0,0]],[[0,0]]];
 			var plotbw; var plotrs; var plotws; var plotsvct; var plotqlen; var plotdl;
 			var traffictime = "55:55:55";
-			var trafficnewtime = "new 3444";
+			var trafficnewtime = "new 3444"
+			var logstatus=0;
 			var disksval="hi"
+			var dater;
+			var page=1;
 			var sineRenderer = function() {
 				//var data = [[]];
 				for (var i=0; i<13; i+=0.5) {
@@ -136,7 +139,15 @@
 					});
 				};
 			});
-			
+			$("#pnext").click(function(){  
+				page=page+1;
+			});
+			$("#pprev").click(function(){  
+				if( page > 1 ) page=page-1;
+			});
+			$("#refresh").click(function(){  
+				logstatus=10;
+			});
 			$("#Logs").click(function (){ 
 				if(config== 1){ 
 					var userpriv="false";
@@ -150,16 +161,29 @@
 						};
 					
 						if( userpriv=="true" | curuser=="admin" ) {
-							config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs");logtime="4466:44:34534";updatelogarea(); $(".Logs").show();
+							logstatus=1; config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs");logtime="4466:44:34534";updatelogarea(); $(".Logs").show();
 						}
 					});
 				};
 			});
-			$(".finish").click(function (){ config = 1; $(".SS").hide(); $(".Logs").hide();});
+			$(".finish").click(function (){ logstatus=0; config = 1; $(".SS").hide(); $(".Logs").hide();});
 	function refreshall() {
+		
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 		refreshList("GetDisklist","#Disks","Data/disklist.txt");
-		updatechartarea();
+		if (logstatus==1) {
+			
+			var date
+			
+			if( $("#dater").val() == "") { 
+				date = new Date
+				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getDate() + 0)).slice(-2) + '-' + ("0" + (date.getMonth() + 1)).slice(-2)) 
+				
+			} 			
+			dater=Date.parse($("#dater").val())
+		}
+		if(logstatus==10) { logstatus=11; $.post("./pump.php", { req:"GetLog", name: dater+' '+page+' '+$("#lines").val()},function(){});}
+		if(logstatus==11) { updatechartarea(); }
 		updatelogarea();
 		}
 	function updatechartarea(){
@@ -454,26 +478,21 @@
 		var logarea = "";
 		var tm, splitstime;
 		var tm2; var tme, splitstimee;
-		
-		$.get("requestdate.php", { file: 'Data/currentinfo2.log' }, function(data){
+      if(logstatus==11){
+		$.get("requestdate.php", { file: 'Data/Logs.log' }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			logtimenew=objdate.timey;
 		});
 		if(logtimenew!=logtime) {
+			config=1;
 			logtime=logtimenew;
 		$("#Logdetails tr.datarow").remove();
-		$.get("requestdata.php", { file: 'Data/currentinfo2.log' }, function(data){
+		$.get("requestdata.php", { file: 'Data/Logs.log' }, function(data){
 			var obj = jQuery.parseJSON(data);
 			for (var k in obj) { 
 					 
-					 tm=new Date ($("#Sdate").val()); //console.log("pre",tm);
-						 stime=$("#Stime").val(); splitstime=stime.split(":")
-						 tm.setHours(splitstime[0],splitstime[1],0);
-						 tme=new Date($("#Edate").val());
-						 stimee="23:59"; splitstimee=stimee.split(":")
-						 tme.setHours(splitstimee[0],splitstimee[1],0);  
-					 tm2= new Date (obj[k].Date+" "+obj[k].time); 
-					if((new Date(tm) < new Date(tm2)) && (new Date(tme) > new Date(obj[k].Date)) > 0) {
+					 
+					
 						var objdata=obj[k].data;
 						var codes; var msgcode; var jofcode; var themsg; var themsgarr;
 						if(typeof obj[k].code != 'undefined'){
@@ -516,7 +535,7 @@
 							}
 						}
 						
-					}
+					
 				
 			};
 			$("#logsarea").val(logarea);	
@@ -526,6 +545,7 @@
 		});
 		
 		}
+	  }
 	}
 		$(".datep").datepicker().on("changeDate",function(e){
 			logtime="44:44:34";updatelogarea();
@@ -547,7 +567,7 @@ $("#Disks").change(function(){
 		$(".checkboxy").change (function(){ updatelogarea();});
 		refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		$.post("./pump.php", { req:"GetDisklist", name: "Data/disklist.txt"},function(){});
-		setInterval('refreshall()', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
+		setInterval('refreshall()', 500); // Loop every 1000 milliseconds (i.e. 1 second)
 		//console.log("<?php print $_REQUEST["idd"]; print session_id(); ?>");
 		
 		$('[data-toggle="popover"]').popover({
