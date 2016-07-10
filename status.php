@@ -184,7 +184,7 @@
 		}
 		if(logstatus==10) { logstatus=11; $("#Logdetails tr.datarow").remove(); $.post("./pump.php", { req:"GetLog", name: dater+' '+page+' '+$("#lines").val()},function(){});}
 		if( logstatus >10 ) { updatelogarea(); logstatus=logstatus+1 }
-		if (logstatus > 20 ) { logstatus=1 }
+		if (logstatus > 50 ) { logstatus=1 }
 		updatechartarea();
 		}
 	function updatechartarea(){
