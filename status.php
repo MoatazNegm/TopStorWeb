@@ -478,6 +478,8 @@
 		var logarea = "";
 		var tm, splitstime;
 		var tm2; var tme, splitstimee;
+		 if (logstatus == 200) { logstatus=1 };
+			logstatus=logstatus+1;
       
 		$.get("requestdate.php", { file: 'Data/Logs.logupdated' }, function(data){
 			var objdate = jQuery.parseJSON(data);
@@ -486,8 +488,7 @@
 		if(logtimenew!=logtime) {
 			config=1;
 			if(logstatus==11) { logstatus=12 };
-			if (logstatus == 200) { logstatus=1 };
-			logstatus=logstatus+1;
+			
 			logtime=logtimenew;
 		$("#Logdetails tr.datarow").remove();
 		$.get("requestdata.php", { file: 'Data/Logs.log' }, function(data){
