@@ -183,7 +183,7 @@
 			dater=Date.parse($("#dater").val())
 		}
 		if(logstatus==10) { logstatus=11; $("#Logdetails tr.datarow").remove(); $.post("./pump.php", { req:"GetLog", name: dater+' '+page+' '+$("#lines").val()},function(){});}
-		if( logstatus >10 && logstatus < 200) { updatelogarea();  }
+		if( logstatus >10 && logstatus < 20) { updatelogarea();  }
 		updatechartarea();
 		}
 	function updatechartarea(){
@@ -478,7 +478,7 @@
 		var logarea = "";
 		var tm, splitstime;
 		var tm2; var tme, splitstimee;
-		 if (logstatus == 200) { logstatus=1 };
+		 if (logstatus == 20) { logstatus=1 };
 			logstatus=logstatus+1;
       
 		$.get("requestdate.php", { file: 'Data/Logs.logupdated' }, function(data){
