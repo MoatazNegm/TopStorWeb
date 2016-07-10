@@ -171,7 +171,7 @@
 		
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 		refreshList("GetDisklist","#Disks","Data/disklist.txt");
-		if (logstatus==1) {
+		if (logstatus > 0) {
 			
 			var date
 			
@@ -183,7 +183,8 @@
 			dater=Date.parse($("#dater").val())
 		}
 		if(logstatus==10) { logstatus=11; $("#Logdetails tr.datarow").remove(); $.post("./pump.php", { req:"GetLog", name: dater+' '+page+' '+$("#lines").val()},function(){});}
-		if( logstatus >10 && logstatus < 20) { updatelogarea();  }
+		if( logstatus >10 ) { updatelogarea(); logstatus=logstatus+1 }
+		if (logstatus > 20 ) { logstatus=1 }
 		updatechartarea();
 		}
 	function updatechartarea(){
@@ -478,9 +479,7 @@
 		var logarea = "";
 		var tm, splitstime;
 		var tm2; var tme, splitstimee;
-		logstatus=logstatus+1;
-		 if (logstatus  > 20) { logstatus=1 };
-			
+		
       
 		$.get("requestdate.php", { file: 'Data/Logs.logupdated' }, function(data){
 			var objdate = jQuery.parseJSON(data);
