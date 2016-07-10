@@ -8,76 +8,84 @@
 									</div>									
 									<div class="row">
 
-										<form class="form " role="form">
-											<div class= "col-sm-offset-1 col-sm-10 ">
-												<div id="Voldetails"	class="row Paneloption ">
-													<div class="col-sm-offset-col-sm-12">
-														<div  class="panel panel-default ">
-															<!-- Default panel contents -->
-															<div id="Volumnamedetails" class="panel-heading" style="font-size: 50%; height: 50%">
-															 	
+										
+										<div class= " ">
+											<div id="Voldetails"	class="row Paneloption ">
+												<div class="">
+													<div  class="panel panel-default ">
+														<!-- Default panel contents -->
+														<div id="Volumnamedetails" class="panel-heading" style="">
+															<form class="form-inline " style="margin-top: -1%;margin-bottom: -1%;" role="form">	
+																<div class="form-group" style="width: 3%"></div>
+																<div class="form-group" style="width: 30%">
+																  <label   class="form-label " for="dater">Date:</label>
+																   <input type="date" class="form-control input-sm" style="padding-left: 2px; padding-right: 0px; width: 38%;" id="dater" >
+																</div>
+																<div class="form-group" style="width: 10%">
+																  <input type="checkbox"  id="INFO" value="info" checked >Info
+																</div>
+																<div class="form-group" style="width: 10%">
+																  <input type="checkbox"   id="Warning" value="Warning" checked >Warning
+																</div>
+																<div class="form-group" style="width: 10%">
+																  <input type="checkbox" id="Error"  value="Error" checked >Error
+																</div>
+																<div class="form-group" style="width: 10%">
+																  <label   class="form-label- " for="lines">lines:</label>
+																  <input type="number" min="10" max="50" class="form-control input-sm" id="lines" style="padding-left: 2px; padding-right: 0px; width: 33%" value="10">
+																</div>
 																
-																<ul class=" col-sm-12" style="margin-top: 1px;margin-bottom: 1px;">
-																	<li class="col-sm-5"><div  style="font-size: 50%; margin-top: 1px; margin-bottom: 1px;" >
-																			<label  style="margin-top: 10px; " class="control-label col-sm-2" for="usr">Date:</label>
-																			<span class="input-group  col-sm-5" >
-																				<input type="date" class="form-control" style=""height: 20%; font-size: .9rem;" id="user" >
-																			</span>
-																			</div>
-																	 </li>
-						
-																		<li class="col-sm-2" style='margin-top: 8px;margin-bottom: 5px; padding-left: 1px;'>
-																				<label class="checkbox-inline" >
-																				<input type="checkbox"  id="INFO" value="info">Info
-																				</label>
-																		
-																		</li>
-																		<li class="col-sm-2" style='margin-top: 9px;margin-bottom: 5px;padding-left: 1px'>
-																				<label class="checkbox-inline">
-																					<input type="checkbox"   id="Warning" value="Warning">Warning
-																				</label>
-																		
-																		</li>
-																		<li class="col-sm-1" style='margin-top: 10px;margin-bottom: 5px; padding-left: 1px;'>
-																				<label class="checkbox-inline">
-																					<input type="checkbox" id="Error"  value="Error">Error
-																				</label>
-																		</li>
-																	<li class=" col-sm-2" >
-																		<ul class="pager" style='margin-top: 3px;margin-bottom: 5px;'>
-																			<li><a href="#" class=" col-sm-6 pull-right glyphicon glyphicon-chevron-right" style="margin-top: 8px;margin-bottom: 1px;"></a></li>
-																			<li><a href="#" class=" col-sm-6 pull-right glyphicon glyphicon-chevron-left" style="margin-top: 8px;margin-bottom: 1px;"></a></li>
-																		</ul>
-																	</li>
-															
-															</ul>
-															
-															</div>
-															<div class="panel-body">
-																<form role="form">
-																	<div class="row">
-																		<div ; class="col-sm-12 scrolled">
-																			<table id="Logdetails" class="table table-hover table-condensed narrowtble ">
-																				<thead >
-																					<tr class="info">
-																						<th class="col-sm-3">date and time<br></th><th class="col-sm-1">user<br></th><th class="col-sm-7">data<br></th>
-																					</tr>
-																				</thead>
-																				<tbody class="">
-																				</tbody>
-																			</table>
-																	</div>
-																	</div>
-																</form>
-															</div>
+																<div class="form-group " style="width: 12%">
+																 <ul class=" pager" style=''>
+																  <li><a id="pnext" href="#" class=" pull-right glyphicon glyphicon-chevron-right" style="font-size: 50%; "></a></li>
+																  <li><a id="pprev" href="#" class=" pull-right glyphicon glyphicon-chevron-left" style="font-size: 50%;"></a></li>
+																 </ul>
+																</div>
+																<div class="form-group " style="width: 5%"></div>
+																<div class="form-group " style="width: 5%">
+																	<button type="button" id="refresh" class="btn btn-default btn-circle" 
+																	  <a href="#" class="pull-right btn btn-default btn-circle " style="width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.42;
+  border-radius: 15px;"> <i class="glyphicon glyphicon-refresh"></i></button>
+																  
+																	 
+																																	   
+																    
+																  
+																   
+																  </button>
+																</div>
+															</form>
+														</div>
+														<div class="panel-body">
+															<form role="form">
+																<div class="row">
+																	<div ; class="col-sm-12 scrolled">
+																		<table id="Logdetails" class="table table-hover table-condensed narrowtble ">
+																			<thead >
+																				<tr class="info">
+																					<th class="col-sm-3">date and time<br></th><th class="col-sm-1">user<br></th><th class="col-sm-7">data<br></th>
+																				</tr>
+																			</thead>
+																			<tbody class="">
+																			</tbody>
+																		</table>
+																</div>
+																</div>
+															</form>
 														</div>
 													</div>
 												</div>
+											</div>
 
-												<div class="row"><button type="button" class="btn btn-default col-sm-offset-2 col-sm-8 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
-												</div>																
-											</div>												
-										</form>
+											<div class="row"><button type="button" class="btn btn-default col-sm-offset-2 col-sm-8 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
+											</div>																
+										</div>												
+										
 									</div>	
 								</div>				
 							</div>
@@ -85,4 +93,5 @@
 
 						
 					</div>
+					
 				

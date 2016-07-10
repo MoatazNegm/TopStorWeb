@@ -1,1 +1,1 @@
-GetDisklist Data/disklist.txt
+GetLog 1478476800000 1 10
