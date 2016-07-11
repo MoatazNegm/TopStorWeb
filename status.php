@@ -183,7 +183,7 @@
 			dater=Date.parse($("#dater").val())
 		}
 		if(logstatus==10) { logstatus=11; $("#Logdetails tr.datarow").remove(); $.post("./pump.php", { req:"GetLog", name: dater+' '+page+' '+$("#lines").val()},function(){});}
-		if(logstatus==11 || logstatus < 200) { updatelogarea();  }
+		if( logstatus >10 && logstatus < 200) { updatelogarea();  }
 		updatechartarea();
 		}
 	function updatechartarea(){
