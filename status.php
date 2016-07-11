@@ -179,9 +179,7 @@
 				date = new Date
 				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getDate() + 0)).slice(-2) + '-' + ("0" + (date.getMonth() + 1)).slice(-2)) 
 				
-			} 
-			dater=Date.parse($("#dater").val());				
-			dater=dater/1000;	
+			} 			
 			dater=Date.parse($("#dater").val())
 		}
 		if(logstatus==10) { logstatus=11; $.post("./pump.php", { req:"GetLog", name: dater+' '+page+' '+$("#lines").val()},function(){});}
