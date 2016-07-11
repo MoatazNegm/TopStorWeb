@@ -478,7 +478,7 @@
 		var logarea = "";
 		var tm, splitstime;
 		var tm2; var tme, splitstimee;
-		 if (logstatus == 20) { logstatus=1 };
+		 if (logstatus  > 20) { logstatus=1 };
 			logstatus=logstatus+1;
       
 		$.get("requestdate.php", { file: 'Data/Logs.logupdated' }, function(data){
