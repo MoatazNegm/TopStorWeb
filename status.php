@@ -44,7 +44,7 @@
 			var config = 1;
 			var disktime="23:3434:34534";
 			var disktimenew="34543:43543:34";
-			var logtime="34543:43543:34"; var logtimenew="32423:er:34";
+			var logtime="34543:43543:34"; var logtimenew="34543:43543:34";
 			var dl =[[[0,0]],[[0,0]]];
 			var plotbw; var plotrs; var plotws; var plotsvct; var plotqlen; var plotdl;
 			var traffictime = "55:55:55";
@@ -548,12 +548,8 @@
 		}
 	 
 	}
-		$(".datep").datepicker().on("changeDate",function(e){
-			logtime="44:44:34";updatelogarea();
-		});
-		$(".timep").change(function(){
-			logtime="44:44:34";updatelogarea();
-		});
+		
+	
 
 		$(".datec").datepicker().on("changeDate",function(e){
 					traffictime="44:44:34";updatechartarea();											
