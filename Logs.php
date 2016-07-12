@@ -41,7 +41,7 @@
 														</div>
 														<div class="form-group " style="width: 5%"></div>
 														<div class="form-group " style="width: 5%">
-															<button type="button" class="btn-default btn-circle" style="border: 0; max-width: 30x; max-height: 30px;";> 
+															<button id="refresh" type="button" class="btn-default btn-circle" style="border: 0; max-width: 30x; max-height: 30px;";> 
 														<a href="#" class="pull-right btn btn-default btn-circle " style="width: 30px;
   height: 30px;
   text-align: center;
