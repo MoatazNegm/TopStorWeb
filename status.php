@@ -148,6 +148,24 @@
 			$("#refresh").click(function(){  
 				logstatus=10;
 			});
+			$("#INFO").click(function() {
+				$(".datarow").hide();
+				if($("#INFO").is(":checked")) { $(".info").show(); }
+				if($("#Warning").is(":checked")) { $(".warning").show(); }
+				if($("#Error").is(":checked")) { $(".error").show(); }
+			});
+			$("#Warning").click(function() {
+				$(".datarow").hide();
+				if($("#INFO").is(":checked")) { $(".info").show(); }
+				if($("#Warning").is(":checked")) { $(".warning").show(); }
+				if($("#Error").is(":checked")) { $(".error").show(); }
+			});
+			$("#Error").click(function() {
+				$(".datarow").hide();
+				if($("#INFO").is(":checked")) { $(".info").show(); }
+				if($("#Warning").is(":checked")) { $(".warning").show(); }
+				if($("#Error").is(":checked")) { $(".error").show(); }
+			});
 			$("#Logs").click(function (){ 
 				if(config== 1){ 
 					var userpriv="false";
@@ -515,28 +533,36 @@
 							console.log("codes",codes);
 							console.log("themsgarr",themsgarr);
 						}
-   
+						logarea=logarea+obj[k].Date+" "+obj[k].time+" "+obj[k].msg+": "+objdata+obj[k].code+"\n";
+						if(obj[k].msg == "info") { color="blue"}; if(obj[k].msg == "warning") { color="yellow"}; if(obj[k].msg == "error") { color="red"}
+						
+						$("#Logdetails").append('<tr class="datarow '+obj[k].msg+'" style="color:'+color+';"><td class="Volname col/-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >' +obj[k].Date+' '+obj[k].time+'</td><td class="col-sm-1" data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+obj[k].user+'</td><td class="col-sm-7"  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+objdata+'</td></tr>');
+						
+						$(".datarow").hide()
 						if($("#INFO").is(":checked")) {
-							if(obj[k].msg == "info") { 
-								logarea=logarea+obj.Date+" "+obj[k].time+" info: "+objdata+"\n";
-								$("#Logdetails").append('<tr class="datarow" style="color:blue;"><td class="Volname col/-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >' +obj[k].Date+' '+obj[k].time+'</td><td class="col-sm-1" data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+obj[k].user+'</td><td class="col-sm-7"  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+objdata+'</td></tr>');
+							//if(obj[k].msg == "info") { 
+								//logarea=logarea+obj[k].Date+" "+obj[k].time+" info: "+objdata+"\n";
+								//$("#Logdetails").append('<tr class="datarow '+obj[k].msg+'" style="color:blue;"><td class="Volname col/-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >' +obj[k].Date+' '+obj[k].time+'</td><td class="col-sm-1" data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+obj[k].user+'</td><td class="col-sm-7"  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+objdata+'</td></tr>');
+								
+								$(".info").show();
 								//console.log(Number(Date.parse($("#Stime").val()) - Date.parse(obj.Dates[k].times[y].time))/1000/60/60/24);
-							}
+							//}
 						};
 						if($("#Warning").is(":checked")) {
 							
-							if(obj[k].msg == "warning") { 
-								logarea=logarea+obj[k].Date+" "+obj[k].time+" warning: "+objdata+obj[k].code+"\n";
-								$("#Logdetails").append('<tr class="datarow" style="color:orange;"><td class="Volname col-sm-3">'+obj[k].Date+' '+obj[k].time+'</td><td class="col-sm-1">'+obj[k].user+'</td><td class="col-sm-7">'+objdata+'</td></tr>');
+							//if(obj[k].msg == "warning") { 
+								//logarea=logarea+obj[k].Date+" "+obj[k].time+" warning: "+objdata+obj[k].code+"\n";
+								//$("#Logdetails").append('<tr class="datarow" style="color:orange;"><td class="Volname col-sm-3">'+obj[k].Date+' '+obj[k].time+'</td><td class="col-sm-1">'+obj[k].user+'</td><td class="col-sm-7">'+objdata+'</td></tr>');
+								$(".info").show();
 								//console.log(Number(Date.parse($("#Stime").val()) - Date.parse(obj.Dates[k].times[y].time)));
-							}
+							//}
 						}
 						if($("#Error").is(":checked")) {
-							if(obj[k].msg == "error") { 
-								logarea=logarea+obj[k].Date+" "+obj[k].time+" error: "+objdata+"\n";
-								$("#Logdetails").append('<tr class="datarow" style="color:red;"><td class="Volname col-sm-3">'+obj[k].Date+' '+obj[k].time+'</td><td class="col-sm-1">'+obj[k].user+'</td><td class="col-sm-7">'+objdata+'</td></tr>');
-								
-							}
+							//if(obj[k].msg == "error") { 
+								//logarea=logarea+obj[k].Date+" "+obj[k].time+" error: "+objdata+"\n";
+								//$("#Logdetails").append('<tr class="datarow" style="color:red;"><td class="Volname col-sm-3">'+obj[k].Date+' '+obj[k].time+'</td><td class="col-sm-1">'+obj[k].user+'</td><td class="col-sm-7">'+objdata+'</td></tr>');
+								$(".error").show();
+							//}
 						}
 						
 					
