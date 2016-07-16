@@ -152,7 +152,7 @@
 				if( activepage > 0 )  { console.log("hi"); activepage=activepage-1; logstatus[activepage]=20; }
 			});
 			$("#refresh").click(function(){  
-				logstatus[0]=10;
+				activepage=0; page=0; logstatus[0]=10;
 			});
 			$("#INFO").click(function() {
 				$(".datarow").hide();
