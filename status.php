@@ -238,7 +238,8 @@
 						}
 						if ( lastpage > activepage  ) {  
 							if ( page > 0 ) {obj.pop(); obj.unshift(""); page=page-1 ; activepage=activepage+1; logstatus[i] = 10; logtime[i]="hiallwek"
-							} else { if (i > 0 ) { logstatus[(i-1)]; }
+							} else { if (i > 0 ) { logstatus[(i-1)]; } 
+									}
 						}
 						lastpage=activepage; 
 					}
