@@ -54,7 +54,8 @@
 			var obj=[];
 			var disksval="hi"
 			var dater;
-			var page=1;
+			var page=0;
+			var reqpage=0;
 			var activepage=0; var lastpage=-1;
 			
 			var sineRenderer = function() {
@@ -145,9 +146,10 @@
 			});
 			$("#pnext").click(function(){  
 				activepage=activepage+1;
+				logstatus[activepage]=20;
 			});
 			$("#pprev").click(function(){  
-				if( activepage > 1 ) activepage=activepage-1;
+				if( activepage > 0 )  { console.log("hi"); activepage=activepage-1; logstatus[activepage]=20; }
 			});
 			$("#refresh").click(function(){  
 				logstatus[0]=10;
@@ -184,11 +186,13 @@
 					
 						if( userpriv=="true" | curuser=="admin" ) {
 						   
-						   for (var i=0; i<logcache; i+=1) {
-							    updatelogarea(i); 
-								logstatus[i]=10;
-								
-							}
+			//			   for (var i=0; i<logcache; i+=1) {
+			//				    updatelogarea(i); 
+			//					logstatus[i]=10;				
+			//				}
+							updatelogarea(0);
+							logstatus[0]=10;
+							
 						    config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".Logs").show();
 						}
 					});
@@ -202,30 +206,48 @@
 		refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		if (logstatus[0] > 0) {
 			
+			
 			var date
 			
 			if( $("#dater").val() == "") { 
+				
 				date = new Date
 				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2)) 
 				
 			} 			
 			dater=Date.parse($("#dater").val())
-		}
-		for (var i=0; i<logcache; i+=1) { 
-			if(logstatus[i]==10) { logstatus[i]=11; { var reqpage=page+i; $.post("./pump.php", { req:"GetLog", name: dater+' '+reqpage+' '+$("#lines").val()+' '+i+" "+"<?php echo $_SESSION["user"]; ?>"},function(){}); 
-			//console.log(logstatus)
-			//console.log("GetLog"+dater+' '+reqpage+' '+$("#lines").val()+' '+i)
+	
+			for (var i=0; i<logcache; i+=1) { 
+				console.log("page:",page," logstatus:"," ",logstatus," activepage:",activepage," lastpage:",lastpage," obj:",obj)
+				updatelogarea(i);
+				presentlog(i);
+				if(logstatus[i]==10) { 
+					logstatus[i]=11; 
+					reqpage=page+i; $.post("./pump.php", { req:"GetLog", name: dater+' '+reqpage+' '+$("#lines").val()+' '+"<?php echo $_SESSION["user"]; ?>"},function(){}); 
+				//console.log(logstatus)
+				//console.log("GetLog"+dater+' '+reqpage+' '+$("#lines").val()+' '+i)
+				}
+				if ( logstatus[i] > 10 ) { ; ; logstatus[i]++ }
+				if ( logstatus[i] > 30 ) { 
+					logstatus[i]=1;
+					if (i == activepage) { 
+						if (lastpage <  activepage  ) { 
+							if(activepage==(logcache-1)) { obj.shift(); obj.push(""); page=page+1; activepage=activepage-1; logstatus[i]=0; logtime[i]="hkslskk"
+							 } else { logstatus[i+1]=10; }
+							
+						}
+						if ( lastpage > activepage  ) {  
+							if ( page > 0 ) {obj.pop(); obj.unshift(""); page=page-1 ; activepage=activepage+1; logstatus[i] = 10; logtime[i]="hiallwek"
+							}
+						}
+						lastpage=activepage; 
+					}
+				
+				}
+			
+			updatechartarea();
 			}
-			if( logstatus[i] >10 ) { updatelogarea(i); logstatus[i]=logstatus[i]+(1+1) }
-			if (logstatus[i] > 50 ) { 
-				logstatus[i]=1;
-				if (i == activepage) { if (lastpage <  activepage ) { activepage=activepage-1; obj.shift(); obj.push(""); page=page+1; logstatus[i]=10; }; 
-									   if ( lastpage > activepage  && page > 2 ) { activepage=activepage+1; obj.pop(); obj.unshift(""); page=page-1; logstatus [i] = 10; }
-					lastpage=activepage; }
-			}
-		}
-		
-		updatechartarea();
+			
 		}
 	}
 	function updatechartarea(){
@@ -517,27 +539,29 @@
 			
 	
 	function updatelogarea(ii){
-		var logarea = "";
+		
 		var tm, splitstime;
 		var tm2; var tme, splitstimee;
-		console.log("hi")
+		var rqpg
+		rqpg=ii+page
       
-		$.get("requestdate.php", { file: 'Data/Logs.logupdated'+ii }, function(data){
+		$.get("requestdate.php", { file: 'Data/Logs.logupdated'+rqpg }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			logtimenew=objdate.timey;
 		});
-		if(logtimenew!=logtime[ii]) {
-			config=1;
-			logtime[ii]=logtimenew;
-		
-		if(lastpage!=activepage && ii==activepage) {$("#Logdetails tr.datarow").remove();}
-		
-		$.get("requestdata.php", { file: 'Data/Logs.log'+ii }, function(data){
+		if(logtimenew!=logtime[ii] ) {
+			$.get("requestdata.php", { file: 'Data/Logs.log'+rqpg}, function(data){
 			console.log("Data/Logs.log"+ii+" obj ")
 			obj[ii] = jQuery.parseJSON(data);
-			
-			
-			if(lastpage!=activepage && ii==activepage) {
+			});
+		}
+	}
+	function presentlog(ii) {
+		var logarea = "";
+		config=1;
+		logtime[ii]=logtimenew;
+		if(lastpage!=activepage && ii==activepage) {$("#Logdetails tr.datarow").remove();}
+		if( lastpage!=activepage && ii==activepage) {
 				for (var k in obj[ii]) { 
 						
 							var objdata=obj[ii][k].data;
@@ -569,14 +593,10 @@
 					
 				};
 			}
-			$("#logsarea").val(logarea);	
+			//$("#logsarea").val(logarea);	
 			$("td").css("padding","0.1rem");
 			$('[data-toggle="popover"]').popover({ placement: "bottom",html: false,
                     animation: false,});
-		});
-		
-		}
-	 
 	}
 		
 	
