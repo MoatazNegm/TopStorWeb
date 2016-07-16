@@ -44,15 +44,19 @@
 			var config = 1;
 			var disktime="23:3434:34534";
 			var disktimenew="34543:43543:34";
-			var logtime="34543:43543:34"; var logtimenew="34543:43543:34";
+			var logtime=[]; var logtimenew="34543:43543:34";
 			var dl =[[[0,0]],[[0,0]]];
 			var plotbw; var plotrs; var plotws; var plotsvct; var plotqlen; var plotdl;
 			var traffictime = "55:55:55";
 			var trafficnewtime = "new 3444"
-			var logstatus=0;
+			var logstatus=[];
+			var logcache=3;
+			var obj=[];
 			var disksval="hi"
 			var dater;
 			var page=1;
+			var activepage=0; var lastpage=-1;
+			
 			var sineRenderer = function() {
 				//var data = [[]];
 				for (var i=0; i<13; i+=0.5) {
@@ -140,13 +144,13 @@
 				};
 			});
 			$("#pnext").click(function(){  
-				page=page+1;
+				activepage=activepage+1;
 			});
 			$("#pprev").click(function(){  
-				if( page > 1 ) page=page-1;
+				if( activepage > 1 ) activepage=activepage-1;
 			});
 			$("#refresh").click(function(){  
-				logstatus=10;
+				logstatus[0]=10;
 			});
 			$("#INFO").click(function() {
 				$(".datarow").hide();
@@ -179,17 +183,24 @@
 						};
 					
 						if( userpriv=="true" | curuser=="admin" ) {
-						   updatelogarea(); logstatus=10; config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".Logs").show();
+						   
+						   for (var i=0; i<logcache; i+=1) {
+							    updatelogarea(i); 
+								logstatus[i]=10;
+								
+							}
+						    config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".Logs").show();
 						}
 					});
 				};
 			});
-			$(".finish").click(function (){ logstatus=0; config = 1; $(".SS").hide(); $(".Logs").hide();});
+			$(".finish").click(function (){ 
+				for (var i=0; i<logcache; i+=1) { logstatus[i]=0 } config = 1; $(".SS").hide(); $(".Logs").hide();});
 	function refreshall() {
 		
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 		refreshList("GetDisklist","#Disks","Data/disklist.txt");
-		if (logstatus > 0) {
+		if (logstatus[0] > 0) {
 			
 			var date
 			
@@ -200,11 +211,23 @@
 			} 			
 			dater=Date.parse($("#dater").val())
 		}
-		if(logstatus==10) { logstatus=11; $("#Logdetails tr.datarow").remove(); $.post("./pump.php", { req:"GetLog", name: dater+' '+page+' '+$("#lines").val()},function(){});}
-		if( logstatus >10 ) { updatelogarea(); logstatus=logstatus+1 }
-		if (logstatus > 50 ) { logstatus=1 }
+		for (var i=0; i<logcache; i+=1) { 
+			if(logstatus[i]==10) { logstatus[i]=11; { var reqpage=page+i; $.post("./pump.php", { req:"GetLog", name: dater+' '+reqpage+' '+$("#lines").val()+' '+i+" "+"<?php echo $_SESSION["user"]; ?>"},function(){}); 
+			//console.log(logstatus)
+			//console.log("GetLog"+dater+' '+reqpage+' '+$("#lines").val()+' '+i)
+			}
+			if( logstatus[i] >10 ) { updatelogarea(i); logstatus[i]=logstatus[i]+(1+1) }
+			if (logstatus[i] > 50 ) { 
+				logstatus[i]=1;
+				if (i == activepage) { if (lastpage <  activepage ) { activepage=activepage-1; obj.shift(); obj.push(""); page=page+1; logstatus[i]=10; }; 
+									   if ( lastpage > activepage  && page > 2 ) { activepage=activepage+1; obj.pop(); obj.unshift(""); page=page-1; logstatus [i] = 10; }
+					lastpage=activepage; }
+			}
+		}
+		
 		updatechartarea();
 		}
+	}
 	function updatechartarea(){
 		var chartarea = "";
 		var maxy = 0;var bwmaxy = 0;var rsmaxy = 0;var wsmaxy = 0;var svctmaxy = 0;var qlenmaxy = 0; var totalio = 0;
@@ -493,57 +516,59 @@
 			
 			
 	
-	function updatelogarea(){
+	function updatelogarea(ii){
 		var logarea = "";
 		var tm, splitstime;
 		var tm2; var tme, splitstimee;
-		
+		console.log("hi")
       
-		$.get("requestdate.php", { file: 'Data/Logs.logupdated' }, function(data){
+		$.get("requestdate.php", { file: 'Data/Logs.logupdated'+ii }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			logtimenew=objdate.timey;
 		});
-		if(logtimenew!=logtime) {
+		if(logtimenew!=logtime[ii]) {
 			config=1;
-			if(logstatus==11) { logstatus=12 };
+			logtime[ii]=logtimenew;
+		
+		if(lastpage!=activepage && ii==activepage) {$("#Logdetails tr.datarow").remove();}
+		
+		$.get("requestdata.php", { file: 'Data/Logs.log'+ii }, function(data){
+			console.log("Data/Logs.log"+ii+" obj ")
+			obj[ii] = jQuery.parseJSON(data);
 			
-			logtime=logtimenew;
-		$("#Logdetails tr.datarow").remove();
-		$.get("requestdata.php", { file: 'Data/Logs.log' }, function(data){
-			var obj = jQuery.parseJSON(data);
-			for (var k in obj) { 
-					 
-					 
-					
-						var objdata=obj[k].data;
-						var codes; var msgcode; var jofcode; var themsg; var themsgarr;
-						if(typeof obj[k].code != 'undefined'){
-							codes=obj[k].code.split("@");
-							msgcode=codes[0];
-							jofcode=0;
-							jofcode=searchmsg(msgs,msgcode);
-							console.log("jofcode",jofcode);
-							themsg=msgs[jofcode];
-							themsgarr=themsg.split(":");
-							codes.push(".");
-							objdata=""
-							for (i=1; i < themsgarr.length ;i++) {
-								 objdata=objdata+themsgarr[i]+" "+codes[i]+" ";
-							 }
-							console.log("codes",codes);
-							console.log("themsgarr",themsgarr);
-						}
-						logarea=logarea+obj[k].Date+" "+obj[k].time+" "+obj[k].msg+": "+objdata+obj[k].code+"\n";
-						if(obj[k].msg == "info") { color="blue"}; if(obj[k].msg == "warning") { color="yellow"}; if(obj[k].msg == "error") { color="red"}
+			
+			if(lastpage!=activepage && ii==activepage) {
+				for (var k in obj[ii]) { 
 						
-						$("#Logdetails").append('<tr class="datarow '+obj[k].msg+'" style="color:'+color+';"><td class="Volname col/-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >' +obj[k].Date+' '+obj[k].time+'</td><td class="col-sm-1" data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+obj[k].user+'</td><td class="col-sm-7"  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+objdata+'</td></tr>');
-						
-						$(".datarow").hide();
-						$("#INFO").click();
+							var objdata=obj[ii][k].data;
+							var codes; var msgcode; var jofcode; var themsg; var themsgarr;
+							if(typeof obj[ii][k].code != 'undefined'){
+								codes=obj[ii][k].code.split("@");
+								msgcode=codes[0];
+								jofcode=0;
+								jofcode=searchmsg(msgs,msgcode);
+								//console.log("jofcode",jofcode);
+								themsg=msgs[jofcode];
+								themsgarr=themsg.split(":");
+								codes.push(".");
+								objdata=""
+								for (i=1; i < themsgarr.length ;i++) {
+									 objdata=objdata+themsgarr[i]+" "+codes[i]+" ";
+								 }
+								//console.log("codes",codes);
+								//console.log("themsgarr",themsgarr);
+							}
+							logarea=logarea+obj[ii][k].Date+" "+obj[ii][k].time+" "+obj[ii][k].msg+": "+objdata+obj[ii][k].code+"\n";
+							if(obj[ii][k].msg == "info") { color="blue"}; if(obj[ii][k].msg == "warning") { color="yellow"}; if(obj[ii][k].msg == "error") { color="red"}
+							
+							$("#Logdetails").append('<tr class="datarow '+obj[ii][k].msg+'" style="color:'+color+';"><td class="Volname col/-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td class="col-sm-1" data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+obj[ii][k].user+'</td><td class="col-sm-7"  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+objdata+'</td></tr>');
+							
+										$("#INFO").click();			$("#INFO").click();
+							
 						
 					
-				
-			};
+				};
+			}
 			$("#logsarea").val(logarea);	
 			$("td").css("padding","0.1rem");
 			$('[data-toggle="popover"]').popover({ placement: "bottom",html: false,
@@ -582,7 +607,9 @@ $("#Disks").change(function(){
 			});
 			
 
-
+		for (var i=0; i<logcache; i+=1) {
+					logstatus[i]=0; logtime[i]="ksldl";
+				}
 		</script>
  
 	</body>
