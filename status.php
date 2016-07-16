@@ -232,13 +232,13 @@
 					logstatus[i]=1;
 					if (i == activepage) { 
 						if (lastpage <  activepage  ) { 
-							if(activepage==(logcache-1)) { obj.shift(); obj.push(""); page=page+1; activepage=activepage-1; logstatus[i]=0; logtime[i]="hkslskk"
+							if(activepage==(logcache-1)) { obj.shift(); obj.push(""); page=page+1; activepage=activepage-1; logstatus[i]=10; logtime[i]="hkslskk"
 							 } else { logstatus[i+1]=10; }
 							
 						}
 						if ( lastpage > activepage  ) {  
 							if ( page > 0 ) {obj.pop(); obj.unshift(""); page=page-1 ; activepage=activepage+1; logstatus[i] = 10; logtime[i]="hiallwek"
-							}
+							} else { if (i > 0 ) { logstatus[(i-1)]; }
 						}
 						lastpage=activepage; 
 					}
