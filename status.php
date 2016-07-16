@@ -146,10 +146,12 @@
 			});
 			$("#pnext").click(function(){  
 				activepage=activepage+1;
-				logstatus[activepage]=20;
+				logstatus[activepage]=50;
+				logstatus[logstatus.length]=10;
 			});
 			$("#pprev").click(function(){  
-				if( activepage > 0 )  { console.log("hi"); activepage=activepage-1; logstatus[activepage]=20; }
+				if (activepage > 0 ) { activepage = activepage-1; logstatus[activepage]=50 }
+				
 			});
 			$("#refresh").click(function(){  
 				activepage=0; page=0; logstatus[0]=10;
@@ -186,12 +188,12 @@
 					
 						if( userpriv=="true" | curuser=="admin" ) {
 						   
-			//			   for (var i=0; i<logcache; i+=1) {
-			//				    updatelogarea(i); 
-			//					logstatus[i]=10;				
-			//				}
-							updatelogarea(0);
-							logstatus[0]=10;
+					   for (var i=0; i<logcache; i+=1) {
+						    updatelogarea(i); 
+								logstatus[i]=10;				
+							}
+					
+						
 							
 						    config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".Logs").show();
 						}
@@ -201,47 +203,32 @@
 			$(".finish").click(function (){ 
 				for (var i=0; i<logcache; i+=1) { logstatus[i]=0 } config = 1; $(".SS").hide(); $(".Logs").hide();});
 	function refreshall() {
-		
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 		refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		if (logstatus[0] > 0) {
-			
-			
 			var date
-			
 			if( $("#dater").val() == "") { 
-				
 				date = new Date
 				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2)) 
-				
 			} 			
 			dater=Date.parse($("#dater").val())
 	
-			for (var i=0; i<logcache; i+=1) { 
+			for (var i=0; i< logstatus.length; i+=1) { 
 				console.log("page:",page," logstatus:"," ",logstatus," activepage:",activepage," lastpage:",lastpage," obj:",obj)
 				updatelogarea(i);
 				presentlog(i);
 				if(logstatus[i]==10) { 
 					logstatus[i]=11; 
-					reqpage=page+i; $.post("./pump.php", { req:"GetLog", name: dater+' '+reqpage+' '+$("#lines").val()+' '+"<?php echo $_SESSION["user"]; ?>"},function(){}); 
+					 $.post("./pump.php", { req:"GetLog", name: dater+' '+i+' '+$("#lines").val()+' '+"<?php echo $_SESSION["user"]; ?>"},function(){}); 
 				//console.log(logstatus)
 				//console.log("GetLog"+dater+' '+reqpage+' '+$("#lines").val()+' '+i)
 				}
 				if ( logstatus[i] > 10 ) { ; ; logstatus[i]++ }
 				if ( logstatus[i] > 30 ) { 
+					if (i > obj.length) { logstatus.pop(1); i = lastpage; activepage=lastpage
+					}
 					logstatus[i]=1;
 					if (i == activepage) { 
-						if (lastpage <  activepage  ) { 
-							if(activepage==(logcache-1)) { obj.shift(); obj.push(""); page=page+1; activepage=activepage-1; logstatus[i]=10; logtime[i]="hkslskk"
-							 } else { logstatus[i+1]=10; }
-							
-						}
-						if ( lastpage > activepage  ) {  
-							if ( page > 0 ) {obj.pop(); obj.unshift(""); page=page-1 ; activepage=activepage+1; logstatus[i] = 10; logtime[i]="hiallwek"; 
-							} else { if (i > 0 ) { logstatus[(i-1)]; } 
-									}
-						}
-						presentlog(i);
 						lastpage=activepage; 
 					}
 				
