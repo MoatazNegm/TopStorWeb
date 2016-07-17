@@ -41,7 +41,7 @@
 	<script>
 	$(".ref").click(function() {
 		document.getElementById($(this).attr('id')+'ref').submit();
-		 console.log($(this).attr('id')+'ref');
+		 //console.log($(this).attr('id')+'ref');
 		});
 	
 	</script>

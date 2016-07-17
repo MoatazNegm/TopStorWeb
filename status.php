@@ -147,7 +147,7 @@
 			$("#lines").click(function(){
 				logstatus=[];
 				$("#Logdetails tr.datarow").remove();
-				page=0; activepage=0;
+				page=0; activepage=0; lastpage=-1
 				for (var i=0; i<logcache; i+=1) {
 						    updatelogarea(i); 
 								logstatus[i]=10;
@@ -165,7 +165,7 @@
 			});
 			$("#refresh").click(function(){ 
 				$("#Logdetails tr.datarow").remove();
-				activepage=0; page=0;
+				activepage=0; page=0; lastpage=-1
 				logstatus=[];
 				for (var i=0; i<logcache; i+=1) {
 						    updatelogarea(i); 
