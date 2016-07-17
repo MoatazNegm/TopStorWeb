@@ -144,7 +144,7 @@
 					});
 				};
 			});
-			$("#lines").clicke(function(){
+			$("#lines").click(function(){
 				logstatus=[];
 				page=0; activepage=0;
 				for (var i=0; i<logcache; i+=1) {
