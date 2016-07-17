@@ -146,6 +146,7 @@
 			});
 			$("#lines").click(function(){
 				logstatus=[];
+				$("#Logdetails tr.datarow").remove();
 				page=0; activepage=0;
 				for (var i=0; i<logcache; i+=1) {
 						    updatelogarea(i); 
@@ -162,7 +163,9 @@
 				if (activepage > 0 ) { activepage = activepage-1; logstatus[activepage]=50 }
 				
 			});
-			$("#refresh").click(function(){  
+			$("#refresh").click(function(){ 
+				$("#Logdetails tr.datarow").remove()
+				logstatus=[]; 
 				activepage=0; page=0;
 				$("#lines").clicke(function(){
 				logstatus=[];
