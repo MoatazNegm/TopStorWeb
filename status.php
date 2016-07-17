@@ -164,17 +164,14 @@
 				
 			});
 			$("#refresh").click(function(){ 
-				$("#Logdetails tr.datarow").remove()
-				logstatus=[]; 
+				$("#Logdetails tr.datarow").remove();
 				activepage=0; page=0;
-				$("#lines").clicke(function(){
 				logstatus=[];
 				for (var i=0; i<logcache; i+=1) {
 						    updatelogarea(i); 
 								logstatus[i]=10;
 								logtime[i]="3434TREYLKTRJ";		
 							}
-			});
 			});
 			$("#INFO").click(function() {
 				$(".datarow").hide();
