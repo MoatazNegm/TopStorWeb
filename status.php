@@ -144,6 +144,15 @@
 					});
 				};
 			});
+			$("#lines").clicke(function(){
+				logstatus=[];
+				page=0; activepage=0;
+				for (var i=0; i<logcache; i+=1) {
+						    updatelogarea(i); 
+								logstatus[i]=10;
+								logtime[i]="3434TREYLKTRJ";		
+							}
+			});
 			$("#pnext").click(function(){  
 				activepage=activepage+1;
 				logstatus[activepage]=50;
@@ -154,7 +163,15 @@
 				
 			});
 			$("#refresh").click(function(){  
-				activepage=0; page=0; logstatus[0]=10;
+				activepage=0; page=0;
+				$("#lines").clicke(function(){
+				logstatus=[];
+				for (var i=0; i<logcache; i+=1) {
+						    updatelogarea(i); 
+								logstatus[i]=10;
+								logtime[i]="3434TREYLKTRJ";		
+							}
+			});
 			});
 			$("#INFO").click(function() {
 				$(".datarow").hide();
