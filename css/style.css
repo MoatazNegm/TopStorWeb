@@ -437,6 +437,12 @@ td { padding: 0.1rem;}
     max-width:800px;
    
 }
+ .popover-content {
+      background-color: coral;
+      font-size: 70%;
+      color: #FFFFFF;
+      padding: 0;
+  }
 #Replicatestatus {
 	width: 94%;
 	margin-left: 1.4rem;

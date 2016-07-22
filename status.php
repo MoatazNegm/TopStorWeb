@@ -54,6 +54,7 @@
 			var obj=[];
 			var disksval="hi"
 			var dater;
+			var statsdata="initial";
 			var page=0;
 			var reqpage=0;
 			var activepage=0; var lastpage=-1;
@@ -220,6 +221,7 @@
 			$(".finish").click(function (){ 
 				for (var i=0; i<logcache; i+=1) { logstatus[i]=0 } config = 1; $(".SS").hide(); $(".Logs").hide();});
 	function refreshall() {
+		
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 		refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		if (logstatus[0] > 0) {
@@ -256,6 +258,13 @@
 			
 		}
 	}
+	function chartplease() {
+		$.get("requeststats.php", { file: '20160722' }, function(data){
+				statsdata = data;
+		});
+	}
+	chartplease();
+	
 	function updatechartarea(){
 		var chartarea = "";
 		var maxy = 0;var bwmaxy = 0;var rsmaxy = 0;var wsmaxy = 0;var svctmaxy = 0;var qlenmaxy = 0; var totalio = 0;
@@ -591,7 +600,7 @@
 							logarea=logarea+obj[ii][k].Date+" "+obj[ii][k].time+" "+obj[ii][k].msg+": "+objdata+obj[ii][k].code+"\n";
 							if(obj[ii][k].msg == "info") { color="blue"}; if(obj[ii][k].msg == "warning") { color="yellow"}; if(obj[ii][k].msg == "error") { color="red"}
 							
-							$("#Logdetails").append('<tr class="datarow '+obj[ii][k].msg+'" style="color:'+color+';"><td class="Volname col/-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td class="col-sm-1" data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+obj[ii][k].user+'</td><td class="col-sm-7"  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+objdata+'</td></tr>');
+							$("#Logdetails").append('<tr class="datarow '+obj[ii][k].msg+'" style="color:'+color+';"><td class="Volname col/-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td class="col-sm-1" data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+obj[ii][k].user+'</td><td class="col-sm-7"  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
 							
 										$("#INFO").click();			$("#INFO").click();
 							
@@ -601,8 +610,8 @@
 			}
 			//$("#logsarea").val(logarea);	
 			$("td").css("padding","0.1rem");
-			$('[data-toggle="popover"]').popover({ placement: "bottom",html: false,
-                    animation: false,});
+			//$('[data-toggle="popover"]').popover({ placement: "bottom",html: false,
+              //      animation: false,});
 	}
 		
 	
@@ -636,6 +645,8 @@ $("#Disks").change(function(){
 		for (var i=0; i<logcache; i+=1) {
 					logstatus[i]=0; logtime[i]="ksldl";
 				}
+				
+		
 		</script>
  
 	</body>
