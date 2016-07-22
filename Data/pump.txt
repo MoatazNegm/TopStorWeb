@@ -1,1 +1,1 @@
-GetLog 1465689600000 7 11 admin
+GetDisklist Data/disklist.txt

@@ -54,6 +54,7 @@
 			var obj=[];
 			var disksval="hi"
 			var dater;
+			var statsdata="initial";
 			var page=0;
 			var reqpage=0;
 			var activepage=0; var lastpage=-1;
@@ -257,6 +258,13 @@
 			
 		}
 	}
+	function chartplease() {
+		$.get("requeststats.php", { file: '20160722' }, function(data){
+				statsdata = data;
+		});
+	}
+	chartplease();
+	
 	function updatechartarea(){
 		var chartarea = "";
 		var maxy = 0;var bwmaxy = 0;var rsmaxy = 0;var wsmaxy = 0;var svctmaxy = 0;var qlenmaxy = 0; var totalio = 0;
