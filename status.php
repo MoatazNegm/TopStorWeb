@@ -46,7 +46,7 @@
 			var disktimenew="34543:43543:34";
 			var logtime=[]; var logtimenew="34543:43543:34";
 			var dl =[[[0,0]],[[0,0]]];
-			var plotpls=[[]]; var plotrs; var plotws; var plotsvct; var plotqlen; var plotdl;
+			var plotpls=[[0,0]]; var plotrs; var plotws; var plotsvct; var plotqlen; var plotdl;
 			var traffictime = "55:55:55";
 			var trafficnewtime = "new 3444"
 			var logstatus=[];
@@ -273,14 +273,12 @@
 		}
 	}
 	function chartplease(datern) {
-/*		$.get("requeststats.php", { date: datern, time: '15:40:20' }, function(data){
-				statsdata = data;
-		});
-		*/$.get("requestdate.php", { file: 'Data/ctr.logudupated' }, function(data){
+		$.get("requestdate.php", { file: 'Data/ctr.log' }, function(data){
 				var objdate = jQuery.parseJSON(data);
 				trafficnewtime=objdate.timey;
 		});
-		if( traffictime == trafficnewtime ) { //console.log("traffic not changed"); 
+		if( traffictime == trafficnewtime ) { //console.log("traffic not changed");
+			$.get("requeststats.php", { date: datern, time: plotpls[0][0] });
 		} 
 		else {
 			traffictime = trafficnewtime 			
@@ -334,7 +332,7 @@
 			  });
 				
 	}
-	chartplease();
+	
 	function updatechart(){
 		$.get("requestdate.php", { file: 'Data/ctr.logudupated' }, function(data){
 				var objdate = jQuery.parseJSON(data);
