@@ -279,7 +279,7 @@
 				trafficnewtime=objdate.timey;
 		});
 		if( traffictime == trafficnewtime ) { //console.log("traffic not changed");
-			$.get("requeststats.php", { date: datern, time: plotpls[0][0][0] });
+			$.get("requeststats.php", { date: datern, time: 0 });
 		} 
 		else {
 			traffictime = trafficnewtime 			
