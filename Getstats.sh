@@ -17,7 +17,8 @@ while [ $found -ge 1 ]; do
  cat Data/*$date*.tab | grep "$time" > /dev/null
  if [ $? -eq 0 ] 
  then
-  stats=`cat  Data/*$date*.tab | grep -v \# | sort -u  | awk  "BEGIN{flag=0;count=0} /$time/{flag=1}{if (flag > 0 ) { print; count+=1; } } "`
+  stats=`cat  Data/*$date*.tab | grep -v \# | sort -u  | awk  "BEGIN{flag=0;count=0} /$time/{flag=1}{if (flag > 0 ) { print; count+=1; } } " | tail -n 50`
+  echo "${stats[@]}"
   found=0;
  else
   time=`date --date=${time}' seconds' +%T`
