@@ -282,7 +282,7 @@
 		if( (traffictime == trafficnewtime) && (requeststats==0)) { //console.log("traffic not changed");
 			$.get("requeststats.php", { date: datern, time: 0 });
 			requeststats=1;
-			console.log("requesint");
+			console.log("requesing",traffictime,trafficnewtime,requeststats);
 		} 
 		else {
 			traffictime = trafficnewtime 			
