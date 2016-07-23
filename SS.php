@@ -4,44 +4,56 @@
 									<div class="row">
 										<h2 class="configTitle" id="SubTitle"></h2>
 									</div>	
-									<form role="form" class="col-sm-offset-1" id="Date Range">
-														<div class=" form-group row ">
-															<div class="col-sm-2 ">
-																<label  for="Stimec" class=" col-sm-offset- control-label ">Start time</label>
-																<div class="input-group bootstrap-timepicker">
-																	<input   type="text" id="Stimec" class="  form-control timec " ><span class="input-group-addon add-on"><i class="glyphicon glyphicon-time"></i></span>
-																	</input>
-																</div>
-															</div>
-															<div class="col-sm-4" >
-																<label  for="Sdatec" class=" col-sm-offset- control-label">Date Range</label>
-																
-																<div  class="input-daterange input-group" id="datepickerc">
-																	<input id="Sdatec"  type="text" class=" form-control datec " name="start" ><span class="input-group-addon">to</span>
-																	<input type="text" id="Edatec" class="form-control datec " name="end" />
-																	
-																</div>
-															</div>
-															<div class="col-sm-2">
-																<label  for="Disks" class="control-label">Disks</label>
-																<select  id="Disks" class="  form-control traffic">
-																	<option>High</option><option>Low</option>
-																</select>
-															</div>
-
+										<div id="Voldetails2"	class="row Paneloption ">
+												<div  class="panel panel-default ">
+										        <!-- Default panel contents -->
+												    <div id="Volumnamedetails2" class="panel-heading" style="">
+													   <form class="form-inline " style="margin-top: -1%;margin-bottom: -1%;" role="form">	
+														<div class="form-group" style="width: 3%"></div>
+														<div class="form-group" style="width: 30%">
+															<label   class="form-label " for="dater2">Date:</label>
+															<input type="date" class="form-control input-sm" style="padding-left: 2px; padding-right: 0px; width: 38%;" id="dater2" >
 														</div>
-																											
-													</form>
-								
-									<div class="">
-										
-
-										<div class="row">	
+														<div class="form-group" style="width: 10%">
+															<input type="checkbox"  id="INFO" value="info" checked >Info
+														</div>
+														<div class="form-group" style="width: 10%">
+															<input type="checkbox"   id="Warning" value="Warning" checked >Warning
+														</div>
+														<div class="form-group" style="width: 10%">
+															<input type="checkbox" id="Error"  value="Error" checked >Error
+														</div>
+														<div class="form-group" style="width: 10%">
+															<label   class="form-label- " for="lines">lines:</label>
+															<input type="number" min="10" max="50" class="form-control input-sm" id="lines" style="padding-left: 2px; padding-right: 0px; width: 33%" value="10">
+														</div>
+														<div class="form-group " style="width: 12%">
+															<ul class=" pager" style=''>
+																<li><a id="pnext2" href="#" class=" pull-right glyphicon glyphicon-chevron-right" style="font-size: 50%; "></a></li>
+																<li><a id="pprev2" href="#" class=" pull-right glyphicon glyphicon-chevron-left" style="font-size: 50%;"></a></li>
+															</ul>
+														</div>
+														<div class="form-group " style="width: 5%"></div>
+														<div class="form-group " style="width: 5%">
+															<button id="refresh2" type="button" class="btn-default btn-circle" style="border: 0; max-width: 30x; max-height: 30px;";> 
+														<a href="#" class="pull-right btn btn-default btn-circle " style="width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.42;
+  border-radius: 15px;"> <i class="glyphicon glyphicon-refresh"></i></a>
+															</button>
+														</div>
+													  </form>
+													</div>
+													<div class="panel-body">
+																								<div class="row">	
 											<div  class= "col-sm-offset- col-sm-6 boxoffields2 ">
 												<div  class="  ">
 													
 													<div  class="demo-container">
-														<div id="bwchart" class="demo-placeholder"></div>
+														<div id="CPU" class="demo-placeholder"></div>
 													</div>
 													<div  class="demo-container">
 														<div id="rschart" class="demo-placeholder"></div>
@@ -67,6 +79,16 @@
 												</div>
 											</div>
 										</div>
+
+														</div>
+												</div>
+											</div>
+
+									
+								
+									<div class="">
+										
+
 										<div class="row"><button type="button" class="btn btn-default col-sm-offset-2 col-sm-8 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
 										</div>														
 									
