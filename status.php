@@ -279,13 +279,16 @@
 				var objdate = jQuery.parseJSON(data);
 				trafficnewtime=objdate.timey;
 		});
-		if( (traffictime == trafficnewtime) && (requeststats==0)) { //console.log("traffic not changed");
-			$.get("requeststats.php", { date: datern, time: 0 });
-			requeststats=1;
-			console.log("requesing",traffictime,trafficnewtime,requeststats);
+		if( traffictime == trafficnewtime ) { //console.log("traffic not changed");
+			if (requeststats==0) {
+				$.get("requeststats.php", { date: datern, time: 0 });
+				requeststats=1;
+				console.log("requesing",traffictime,trafficnewtime,requeststats);
+			}
 		} 
 		else {
-			traffictime = trafficnewtime 			
+			traffictime = trafficnewtime 	
+			console.log("change").		
 			$.get("requestdata.php", { file: 'Data/ctr.log' }, function(data){
 				datalogf = jQuery.parseJSON(data);
 						var xax=[]; var yax=[];
