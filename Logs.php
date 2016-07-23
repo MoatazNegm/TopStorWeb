@@ -56,7 +56,7 @@
 													<div class="panel-body">
 															<form role="form">
 																<div class="row">
-																	<div ; class="col-sm-12 pre-scrollable" style="max-height: 120 px; min-height: 100px;">
+																	 <div ; class="col-sm-12 pre-scrollable" style="max-height: 120 px; min-height: 100px;">
 																		<table id="Logdetails" class="table table-hover table-condensed narrowtble ">
 																			<thead >
 																				<tr class="info">
