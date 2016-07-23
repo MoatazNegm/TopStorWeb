@@ -288,7 +288,7 @@
 		} 
 		else {
 			traffictime = trafficnewtime 	
-			console.log("change").		
+			console.log("change")		
 			$.get("requestdata.php", { file: 'Data/ctr.log' }, function(data){
 				datalogf = jQuery.parseJSON(data);
 						var xax=[]; var yax=[];
