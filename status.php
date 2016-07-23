@@ -37,6 +37,7 @@
 			var msgs="no data";
 			var datalogf = [];
 			var betweend = [];
+			var plots=[];
 			var oldSdatec="1"; var oldEdatec="2";
 			var newSdatec="3"; var newEdatec="4";
 			var datemod="";
@@ -283,16 +284,16 @@
 		else {
 			traffictime = trafficnewtime 			
 			$.get("requestdata.php", { file: 'Data/ctr.log' }, function(data){
-
-				datalogf = jQuery.parseJSON(data)
+				datalogf = jQuery.parseJSON(data);
 						var xax=[]; var yax=[];
-						var data = [[]];
+						plotpls = [[0,0]];
 						for (var i=0; i<50; i++) {
 							plotpls[0].push([datalogf[i].time,datalogf[i].cpu]);
 							xax.push(datalogf[i].time); yax.push(datalogf[i].cpu);
 						}
 						//console.log("max yax:"+Math.max.apply(null,yax)+" "+Math.min.apply(null,yax));
 						//console.log("max xax:"+Math.max.apply(null,xax)+" "+Math.min.apply(null,xax));	
+						plotpls[0].shift(1); plotpls[0].shift(1);
 						drawnow("CPU","CPU Utilization %",Math.min.apply(null,yax),Math.max.apply(null,yax),0);
 			});
 		}
@@ -300,7 +301,9 @@
 	function drawnow(name,title,miny,maxy,series) {
   // we have an empty data array here, but use the "dataRenderer"
   // option to tell the plot to get data from our renderer.
-			  var plot1 = $.jqplot(name,[plotpls[series]],{
+	if(plotflag > 0) { plots[series].destroy();
+	} else { plotflag = 1; }
+			   plots[series] = $.jqplot(name,[plotpls[series]],{
 				  title: title,
 				  seriesDefaults: {
 							  rendererOptions: {
