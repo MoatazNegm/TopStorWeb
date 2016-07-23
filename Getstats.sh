@@ -37,7 +37,9 @@ result="[";
 while read -r line ; do
  timen=` echo $line | awk '{print $2}'`;
  cpu=`echo $line | awk '{print $11}'`;
- mem=`echo $line | awk '{print $25}'`;
+ memused=`echo $line | awk '{print $25}'`;
+ memtot=`echo $line | awk '{print $24}'`;
+ mem=$((100*memused/memtot));
  netrx=`echo $line | awk '{print $65}'`;
  nettotkb=`echo $line | awk '{print $66}'`;
  if [ $nettotkb -eq 0 ]; then nettotkb=1; fi
