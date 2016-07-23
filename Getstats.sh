@@ -1,4 +1,5 @@
 #! /bin/bash
+echo $@ > Data/tmpGet
 date=`echo $@ | awk '{print $1}'`
 time=`echo $@ | awk '{print $2}'`;
 found=1
