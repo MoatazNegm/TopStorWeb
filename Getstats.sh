@@ -21,8 +21,6 @@ while [ $found -ge 1 ]; do
   found=0;
  else
   time=`date --date=${time}' seconds' +%T`
-#  seconds=$((seconds-1));
-#  found=$((found+seconds));
   echo $time $lasttime
   printf "$time\n$lasttime\n" | sort -u | tail -n 1 | grep "$time"
   if [ $? -eq  0 ]; 
@@ -31,3 +29,25 @@ while [ $found -ge 1 ]; do
   fi
  fi
 done
+result="[";
+while read -r line ; do
+ timen=` echo $line | awk '{print $2}'`;
+ cpu=`echo $line | awk '{print $11}'`;
+ mem=`echo $line | awk '{print $25}'`;
+ netrx=`echo $line | awk '{print $65}'`;
+ nettotkb=`echo $line | awk '{print $66}'`;
+ if [ $nettotkb -eq 0 ]; then nettotkb=0.00000001; fi
+ netrxpercent=$((100*netrx/nettotkb));
+ deskreadiops=`echo $line | awk '{print $72}'`;
+ deskiops=`echo $line | awk '{print $74}'`;
+ deskreadkb=`echo $line | awk '{print $75}'`;
+ deskwritekb=`echo $line | awk '{print $76}'`;
+ deskthrouput=`echo $line | awk '{print $77}'`;
+ if [ $deskiops -eq 0 ]; then deskiops=0.00000001; fi
+ deskiopavgkb=$((deskthrouput/deskiops))
+ deskreadpercent=$((100*deskreadiops/deskiops))
+ subres=`./jsonthis3.sh time $timen cpu $cpu mem $mem deskiops $deskiops deskiopavgkb $deskiopavgkb deskreadpercent $deskreadpercent deskthrouput $deskthrouput nettotkb $nettotkb netreadpercent $netrxpercent `;
+ result=${result}${subres}','
+done <<< "$(echo -e "${stats[@]}")"
+result=`echo $result | rev | cut -c 2- | rev`']';
+echo $result > Data/ctr.log;
