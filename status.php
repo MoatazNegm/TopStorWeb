@@ -142,7 +142,7 @@
 							}
 						};
 						if( userpriv=="true" | curuser=="admin" ) {
-							config= 0; $("h2").css("background-image","url('img/SS.png')").text("Service Status"); $(".SS").show();updatechartarea(); 
+							config= 0; $("h2").css("background-image","url('img/SS.png')").text("Service Status"); $(".SS").show(); 
 						} 
 					});
 				};
@@ -268,7 +268,7 @@
 				
 				}
 			
-			updatechartarea();
+			
 			}
 			
 		}
@@ -279,7 +279,7 @@
 				trafficnewtime=objdate.timey;
 		});
 		if( traffictime == trafficnewtime ) { //console.log("traffic not changed");
-			$.get("requeststats.php", { date: datern, time: plotpls[0][0] });
+			$.get("requeststats.php", { date: datern, time: plotpls[0][0][0] });
 		} 
 		else {
 			traffictime = trafficnewtime 			
@@ -422,15 +422,15 @@
 	
 
 		$(".datec").datepicker().on("changeDate",function(e){
-					traffictime="44:44:34";updatechartarea();											
+					traffictime="44:44:34";											
 		});
 		$(".timec").change(function(){
-					traffictime="44:44:34";updatechartarea();											
+					traffictime="44:44:34";											
 		});
 $("#Disks").change(function(){
-			traffictime="disk changes";updatechartarea();
+			traffictime="disk changes";
 		});
-		$(".traffic").change( function () { traffictime="44:44:34"; updatechartarea();});
+		$(".traffic").change( function () { traffictime="44:44:34"; });
 		$(".checkboxy").change (function(){ updatelogarea();});
 		refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		$.post("./pump.php", { req:"GetDisklist", name: "Data/disklist.txt"},function(){});
