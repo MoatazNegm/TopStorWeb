@@ -46,7 +46,7 @@
 			var disktimenew="34543:43543:34";
 			var logtime=[]; var logtimenew="34543:43543:34";
 			var dl =[[[0,0]],[[0,0]]];
-			var plotbw; var plotrs; var plotws; var plotsvct; var plotqlen; var plotdl;
+			var plotpls=[[]]; var plotrs; var plotws; var plotsvct; var plotqlen; var plotdl;
 			var traffictime = "55:55:55";
 			var trafficnewtime = "new 3444"
 			var logstatus=[];
@@ -54,6 +54,7 @@
 			var obj=[];
 			var disksval="hi"
 			var dater;
+			var dater2;
 			var statsdata="initial";
 			var page=0;
 			var reqpage=0;
@@ -224,6 +225,19 @@
 		
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 		refreshList("GetDisklist","#Disks","Data/disklist.txt");
+		if (config == 0) {
+			var date2
+			if( $("#dater2").val() == "") { 
+				date2 = new Date
+				$("#dater2").val(date2.getFullYear() + '-' + ("0" + (date2.getMonth() + 1)).slice(-2) + '-' + ("0" + (date2.getDate() + 0)).slice(-2))
+			} 			
+			dater2=new Date($("#dater2").val())
+			dater2=dater2.getFullYear() + ("0" + (dater2.getMonth() + 1)).slice(-2) +  ("0" + (dater2.getDate() + 0)).slice(-2)
+			chartplease(dater2);
+			
+		
+		}
+		
 		if (logstatus[0] > 0) {
 			var date
 			if( $("#dater").val() == "") { 
@@ -258,300 +272,90 @@
 			
 		}
 	}
-	function chartplease() {
-		$.get("requeststats.php", { file: '20160722' }, function(data){
+	function chartplease(datern) {
+/*		$.get("requeststats.php", { date: datern, time: '15:40:20' }, function(data){
 				statsdata = data;
 		});
-	}
-	chartplease();
-	
-	function updatechartarea(){
-		var chartarea = "";
-		var maxy = 0;var bwmaxy = 0;var rsmaxy = 0;var wsmaxy = 0;var svctmaxy = 0;var qlenmaxy = 0; var totalio = 0;
-		var miny = 1000000;var bwminy = 1000000;var rsminy = 1000000;var wsminy = 1000000;var svctminy = 1000000;var qlenminy = 1000000;
-		var tm ,splitstime;
-		var tm2 , tme ,splitstimee;
-	
-		
-		var qlen=[[]];var rs=[[]];var ws=[[]];var dl=[[]];var bw=[[]];var svct=[[]];
-		var seriesarr="";
-		todayd=new Date();
-		startd=new Date ($("#Sdatec").val()); //
-		endd=new Date ($("#Edatec").val()); //
-		if ( endd > todayd) { endd = todayd ; };
-		newSdatec = startd.toDateString() ;
-		newEdatec = endd.toDateString() ;
-		if ( newSdatec == oldSdatec  && newEdatec == oldEdatec ) {  //console.log("check new log");
-			if (endd => todayd) { 
-				$.get("requestdate.php", { file: 'Data/ctr.log.'+datemod }, function(data){
+		*/$.get("requestdate.php", { file: 'Data/ctr.logudupated' }, function(data){
 				var objdate = jQuery.parseJSON(data);
 				trafficnewtime=objdate.timey;
-				});
-			}
+		});
+		if( traffictime == trafficnewtime ) { //console.log("traffic not changed"); 
+		} 
+		else {
+			traffictime = trafficnewtime 			
+			$.get("requestdata.php", { file: 'Data/ctr.log' }, function(data){
 
-		} else {
-			//console.log("will do something");
-			betweend = [];
-			//oldSdatec = startd.toString();
-			//oldEdatec = endd.toString();
-			startd.setDate(startd.getDate() + 1)
-			endd.setDate(endd.getDate() + 1) 
-			while (startd <= endd) {
-				fixbetween=startd.toISOString().split("T")[0].split("-");
-				formatfix=fixbetween[0].split("20")[1]+fixbetween[1]+fixbetween[2]
-				betweend.push(formatfix);
-				startd.setDate(startd.getDate() + 1);
-				//console.log (betweend);
-			}
-		
-			nufiles=betweend.length
-			datemod=betweend[(nufiles-1)];
-			
-		  trafficnewtime="newtime"
-		  traffictime="oldtime"
-		}	
-		
-			if( traffictime == trafficnewtime ) { //console.log("traffic not changed"); 
-			;} 
-			else { 
-				count=1;
-				//console.log("traffic changed");
-				if ( oldEdatec != newEdatec || oldSdatec != newSdatec ) {
-				//console.log("new limits",oldEdatec,newEdatec,oldSdatec,newSdatec);
-					oldSdatec = newSdatec ;
-					oldEdatec = newEdatec ;
-					datalogf = [];
-					betweend.forEach(function(datelog){
-						$.get("requestdata.php", { file: 'Data/ctr.log.'+datelog }, function(data){
-							if ( count == 1 ) {
-								datalogf = jQuery.parseJSON(data);
-								disks=datalogf.device.length
-								count=count+1;
-							} else {
-								tmpdatalogf = jQuery.parseJSON(data);
-								if (datalogf.device.length == tmpdatalogf.device.length) {
-									for ( var k in datalogf.device) {
-									datalogf.device[k].stats[0].Dates.push(tmpdatalogf.device[k].stats[0].Dates[0]);
-									}
-								}
-							}
-						});
-					})
-				};
-				//console.log ("traffic changed");
-				if ( endd => todayd) {
-					$.get("requestlog.php", { file: 'Data/ctr.log.'+datemod }, function(data){
-						tmpdatalogf = jQuery.parseJSON(data);
-						if (datalogf.device.length == tmpdatalogf.device.length) {
-							for ( var k in datalogf.device) {
-								datalogf.device[k].stats[0].Dates.pop();
-								datalogf.device[k].stats[0].Dates.push(tmpdatalogf.device[k].stats[0].Dates[0]);
-							}
+				datalogf = jQuery.parseJSON(data)
+						var xax=[]; var yax=[];
+						var data = [[]];
+						for (var i=0; i<50; i++) {
+							plotpls[0].push([datalogf[i].time,datalogf[i].cpu]);
+							xax.push(datalogf[i].time); yax.push(datalogf[i].cpu);
 						}
-					});
-				}
-
-				traffictime=trafficnewtime; 
-				
-					var device = $("#Disks").val();
-					var deviceobj=[];
-					deviceobj= $.grep(datalogf.device,function(e){return e.name==device});
-					
-					for (var k in deviceobj[0].stats[0].Dates) { 
-						for (var y in deviceobj[0].stats[0].Dates[k].times) {
-							//console.log(deviceobj[0].stats[0].Dates[k].times[y]);	
-							 tm=new Date ($("#Sdatec").val()); //console.log("pre",tm);
-							 stime=$("#Stimec").val(); splitstime=stime.split(":")
-							 tm.setHours(splitstime[0],splitstime[1],0);
-							 tme=new Date($("#Edatec").val());
-							 stimee="23:59"; splitstimee=stimee.split(":")
-							 tme.setHours(splitstimee[0],splitstimee[1],0);
-							 tm2= new Date (deviceobj[0].stats[0].Dates[k].Date+" "+deviceobj[0].stats[0].Dates[k].times[y].time);
-							 //console.log("post",tm); 
-							
-							if((new Date(tm) < new Date(tm2)) && (new Date(tme) > new Date(deviceobj[0].stats[0].Dates[k].Date)) ) {
-									//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].bw );
-									bw[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].bw]);
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].bw) > bwmaxy ) { bwmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].bw);}
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].bw) < bwminy ) { bwminy = Number(deviceobj[0].stats[0].Dates[k].times[y].bw);}
-									
-									//dl[0].push([y,y]);
-									//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].rs );
-									rs[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].rs]);
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].rs) > rsmaxy ) { rsmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].rs);}
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].rs) < rsminy ) { rsminy = Number(deviceobj[0].stats[0].Dates[k].times[y].rs);}
-									//dl[0].push([y,y]);
-							
-									//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].ws );
-									ws[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].ws]);
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].ws) > wsmaxy ) { wsmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].ws);}
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].ws) < wsminy ) { wsminy = Number(deviceobj[0].stats[0].Dates[k].times[y].ws);}
-									//dl[0].push([y,y]);
+						//console.log("max yax:"+Math.max.apply(null,yax)+" "+Math.min.apply(null,yax));
+						//console.log("max xax:"+Math.max.apply(null,xax)+" "+Math.min.apply(null,xax));	
+						drawnow("CPU","CPU Utilization %",Math.min.apply(null,yax),Math.max.apply(null,yax),0);
+			});
+		}
+	}
+	function drawnow(name,title,miny,maxy,series) {
+  // we have an empty data array here, but use the "dataRenderer"
+  // option to tell the plot to get data from our renderer.
+			  var plot1 = $.jqplot(name,[plotpls[series]],{
+				  title: title,
+				  seriesDefaults: {
+							  rendererOptions: {
+								  smooth: true
+							  },
+							  showMarker: false,
+				   },
+				  axesDefaults: {
+					rendererOptions: {
+								baselineWidth: 1.5,
+								baselineColor: '#444444',
+								drawBaseline: false
+							},
 						
-									//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].svct );
-									svct[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].svct]);
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].svct) > svctmaxy ) { svctmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].svct);}
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].svct) < svctminy ) { svctminy = Number(deviceobj[0].stats[0].Dates[k].times[y].svct);}
-									//dl[0].push([y,y]);
-									//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].qlen );
-									qlen[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].qlen]);
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].qlen) > qlenmaxy ) { qlenmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].qlen);}
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].qlen) < qlenminy ) {qlenminy = Number(deviceobj[0].stats[0].Dates[k].times[y].qlen);}
-									//dl[0].push([y,y]);
-
-									totalio= Number(deviceobj[0].stats[0].Dates[k].times[y].rs ) + Number (deviceobj[0].stats[0].Dates[k].times[y].ws);
-									if ( totalio > maxy ) { maxy = totalio;}
-									if ( totalio < miny ) { miny = totalio;}
-									dl[0].push([tm2,totalio]);
-									
-							};
-						};
-					};
-					if(plotflag > 0) { plotbw.destroy();plotrs.destroy();plotws.destroy();plotsvct.destroy();plotqlen.destroy();plotdl.destroy(); };
-					//plotbw.destroy();
+					},
+				  axes:{
+					xaxis:{
+						renderer:$.jqplot.DateAxisRenderer,
+						  tickOptions:{formatString:'%H:%M:%S'},
+						  tickInterval:'60 second'
+						},
+					yaxis: {
+						min: miny,
+						max: maxy,
+						 
+						},
+					}	
+					
+			  });
 				
-					bwmaxy = Number(bwmaxy+1); bwminy = Number(bwminy -1);rsmaxy = Number(rsmaxy+1); rsminy = Number(rsminy -1);
-					wsmaxy = Number(wsmaxy+1); wsminy = Number(wsminy -1);svctmaxy = Number(svctmaxy+1); svctminy = Number(svctminy -1);
-					qlenmaxy = Number(qlenmaxy+1); qlenminy = Number(qlenminy -1);
-				//	plotbw.destroy();
-					var sercolr="#455B5B";
-					//console.log("plotting");
-					plotbw = $.jqplot('bwchart',[bw[0]], {
-						title: "Bandwidth",
-						seriesDefaults: {
-						showMarker:false},axes: {yaxis: {min:bwminy ,max:bwmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,//tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
-						tickOptions:{formatString:'%#H:%#M'}, min:tm }},
-						series: [
-								{
-										color: sercolr,
-									//	negativeColor: 'rgba(100,50,50,.6)',
-										showMarker: false,
-										showLine: true,
-										fill: false,
-										fillAndStroke: false,
-										markerOptions: {
-												style: 'filledCircle',
-												size: 8
-										},
-										rendererOptions: {
-												smooth: true
-										}
-								}]
-					});
-					plotrs = $.jqplot('rschart',[rs[0]], {
-						title: "Read IO/s",
-						seriesDefaults: {
-						showMarker:false},axes: {yaxis: {min:rsminy ,max:rsmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'} , min:tm }},
-						series: [
-								{
-										color: sercolr,
-										negativeColor: 'rgba(100,50,50,.6)',
-										showMarker: false,
-										showLine: true,
-										fill: false,
-										fillAndStroke: false,
-										markerOptions: {
-												style: 'filledCircle',
-												size: 8
-										},
-										rendererOptions: {
-												smooth: true
-										}
-								}]
-					});
-					plotws = $.jqplot('wschart',[ws[0]], {
-						title: "Write IO/s",
-						seriesDefaults: {
-						showMarker:false},axes: {yaxis: {min:wsminy ,max:wsmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,//tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
-							tickOptions:{formatString:'%#H:%#M'}, min:tm }},
-						series: [
-								{
-										color: sercolr,
-										negativeColor: 'rgba(100,50,50,.6)',
-										showMarker: false,
-										showLine: true,
-										fill: false,
-										fillAndStroke: false,
-										markerOptions: {
-												style: 'filledCircle',
-												size: 8
-										},
-										rendererOptions: {
-												smooth: true
-										}
-								}]
-					});
-					plotsvct = $.jqplot('svctchart',[svct[0]], {
-						title: "Latency ms",
-						seriesDefaults: {
-						showMarker:false},axes: {yaxis: {min:svctminy ,max:svctmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'}, min:tm }},
-						series: [
-								{
-										color: sercolr,
-										negativeColor: 'rgba(100,50,50,.6)',
-										showMarker: false,
-										showLine: true,
-										fill: false,
-										fillAndStroke: false,
-										markerOptions: {
-												style: 'filledCircle',
-												size: 8
-										},
-										rendererOptions: {
-												smooth: true
-										}
-								}]
-					});
-					plotqlen = $.jqplot('qlenchart',[qlen[0]], {
-						title: "Queue length",
-						seriesDefaults: {
-			showMarker:false},axes: {yaxis: {min:qlenminy ,max:qlenmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'}, min:tm }},
-			series: [
-					{
-							color: sercolr,
-							negativeColor: 'rgba(100,50,50,.6)',
-							showMarker: false,
-							showLine: true,
-							fill: false,
-							fillAndStroke: false,
-							markerOptions: {
-									style: 'filledCircle',
-									size: 8
-							},
-							rendererOptions: {
-									smooth: true
-							}
-					}]
+	}
+	chartplease();
+	function updatechart(){
+		$.get("requestdate.php", { file: 'Data/ctr.logudupated' }, function(data){
+				var objdate = jQuery.parseJSON(data);
+				trafficnewtime=objdate.timey;
 		});
-					plotdl = $.jqplot('totaliochart',[dl[0]], {
-						title: "Total IO/s",
-						seriesDefaults: {
-						showMarker:false},axes: {yaxis: {min:miny ,max:maxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'}, min:tm }},
-						series: [
-								{
-							color: sercolr,
-							negativeColor: 'rgba(100,50,50,.6)',
-							showMarker: false,
-							showLine: true,
-							fill: false,
-							fillAndStroke: false,
-							markerOptions: {
-									style: 'filledCircle',
-									size: 8
-							},
-							rendererOptions: {
-									smooth: true
-							}
-					}]
-		});
-					plotflag = 1;
-				};
-		
+		if( traffictime == trafficnewtime ) { //console.log("traffic not changed"); 
+		} 
+		else {
+			$.get("requestdata.php", { file: 'Data/ctr.log' }, function(data){
+							
+				datalogf = jQuery.parseJSON(data)
+				for (i=0; i<100; i++) {
+					plotpls.push("50");
+				}
+				
+			});
+	
+		} 
 	}
 	
-					
-			
-			
+	
 	
 	function updatelogarea(ii){
 		
