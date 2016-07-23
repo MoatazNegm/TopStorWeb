@@ -56,10 +56,10 @@
 														<div id="CPU" class="demo-placeholder"></div>
 													</div>
 													<div  class="demo-container">
-														<div id="rschart" class="demo-placeholder"></div>
+														<div id="MEM" class="demo-placeholder"></div>
 													</div>
 													<div  class="demo-container">
-														<div id="wschart" class="demo-placeholder"></div>
+														<div id="NET" class="demo-placeholder"></div>
 													</div>
 												</div>
 											</div>
@@ -67,13 +67,13 @@
 												<div  class="  ">
 													
 													<div  class="demo-container">
-														<div id="svctchart" class="demo-placeholder"></div>
+														<div id="DIO" class="demo-placeholder"></div>
 													</div>
 													<div  class="demo-container">
-														<div id="qlenchart" class="demo-placeholder"></div>
+														<div id="DTH" class="demo-placeholder"></div>
 													</div>
 													<div  class="demo-container">
-														<div id="totaliochart" class="demo-placeholder"></div>
+														<div id="DRP" class="demo-placeholder"></div>
 													</div>
 												
 												</div>

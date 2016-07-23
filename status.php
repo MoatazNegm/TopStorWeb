@@ -41,7 +41,7 @@
 			var oldSdatec="1"; var oldEdatec="2";
 			var newSdatec="3"; var newEdatec="4";
 			var datemod="";
-			var plotflag = 0;
+			var plotflag = [];
 			var requeststats = 0;
 			var config = 1;
 			var disktime="23:3434:34534";
@@ -213,7 +213,10 @@
 						    updatelogarea(i); 
 								logstatus[i]=10;				
 							}
-					
+					    for (var i=0; i<20; i+=1) {
+
+								plotflag[i]=0;				
+							}
 						
 							
 						    config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".Logs").show();
@@ -299,6 +302,47 @@
 						}
 						plotpls[0].shift(1); plotpls[0].shift(1);
 						drawnow("CPU","CPU Utilization %",Math.min.apply(null,yax),Math.max.apply(null,yax),0);
+				var xax=[]; var yax=[];
+					plotpls[1] = [0,0];
+					for (var i=0; i<50; i++) {
+					plotpls[1].push([datalogf[i].time,datalogf[i].mem]);
+					xax.push(datalogf[i].time); yax.push(datalogf[i].mem);
+					}
+					plotpls[1].shift(1); plotpls[1].shift(1);
+					drawnow("MEM","Memory Used %",Math.min.apply(null,yax),Math.max.apply(null,yax),1);
+							var xax=[]; var yax=[];
+							plotpls[2] = [0,0];
+							for (var i=0; i<50; i++) {
+							plotpls[2].push([datalogf[i].time,datalogf[i].nettotkb]);
+							xax.push(datalogf[i].time); yax.push(datalogf[i].nettotkb);
+							}
+							plotpls[2].shift(1); plotpls[2].shift(1);
+							drawnow("NET","Network Throughput (Kb)",Math.min.apply(null,yax),Math.max.apply(null,yax),2);
+			   var xax=[]; var yax=[];
+				plotpls[3] = [0,0];
+				for (var i=0; i<50; i++) {
+				plotpls[3].push([datalogf[i].time,datalogf[i].deskiops]);
+				xax.push(datalogf[i].time); yax.push(datalogf[i].deskiops);
+				}
+				plotpls[3].shift(1); plotpls[3].shift(1);
+				drawnow("DIO","Storage IOPs ",Math.min.apply(null,yax),Math.max.apply(null,yax),3);
+							var xax=[]; var yax=[];
+							plotpls[4] = [0,0];
+							for (var i=0; i<50; i++) {
+							plotpls[4].push([datalogf[i].time,datalogf[i].deskthrouput]);
+							xax.push(datalogf[i].time); yax.push(datalogf[i].deskthrouput);
+							}
+							plotpls[4].shift(1); plotpls[4].shift(1);
+							drawnow("DTH","Storage Throughput (kb) ",Math.min.apply(null,yax),Math.max.apply(null,yax),4);
+							   var xax=[]; var yax=[];
+				plotpls[5] = [0,0];
+				for (var i=0; i<50; i++) {
+				plotpls[5].push([datalogf[i].time,datalogf[i].deskreadpercent]);
+				xax.push(datalogf[i].time); yax.push(datalogf[i].deskreadpercent);
+				}
+				plotpls[5].shift(1); plotpls[5].shift(1);
+				drawnow("DRP","Storage read % ",Math.min.apply(null,yax),Math.max.apply(null,yax),5);
+
 			});
 			requeststats=0;
 		}
@@ -306,8 +350,8 @@
 	function drawnow(name,title,miny,maxy,series) {
   // we have an empty data array here, but use the "dataRenderer"
   // option to tell the plot to get data from our renderer.
-	if(plotflag > 0) { plots[series].destroy();
-	} else { plotflag = 1; }
+	if(plotflag[series] > 0) { plots[series].destroy();
+	} else { plotflag[series] = 1; }
 			   plots[series] = $.jqplot(name,[plotpls[series]],{
 				  title: title,
 				  seriesDefaults: {
