@@ -42,6 +42,7 @@
 			var newSdatec="3"; var newEdatec="4";
 			var datemod="";
 			var plotflag = 0;
+			var requeststats = 0;
 			var config = 1;
 			var disktime="23:3434:34534";
 			var disktimenew="34543:43543:34";
@@ -278,8 +279,9 @@
 				var objdate = jQuery.parseJSON(data);
 				trafficnewtime=objdate.timey;
 		});
-		if( traffictime == trafficnewtime ) { //console.log("traffic not changed");
+		if( traffictime == trafficnewtime && requeststats==0) { //console.log("traffic not changed");
 			$.get("requeststats.php", { date: datern, time: 0 });
+			requeststats=1;
 		} 
 		else {
 			traffictime = trafficnewtime 			
@@ -296,6 +298,7 @@
 						plotpls[0].shift(1); plotpls[0].shift(1);
 						drawnow("CPU","CPU Utilization %",Math.min.apply(null,yax),Math.max.apply(null,yax),0);
 			});
+			requeststats=0;
 		}
 	}
 	function drawnow(name,title,miny,maxy,series) {
