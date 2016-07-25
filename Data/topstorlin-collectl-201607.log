@@ -14,3 +14,9 @@
 20160723 11:29:35 I-First log rollover will be: 20160724 00:00:00
 20160723 11:29:35 W--sx disabled because no interconnect hardware/drivers found
 20160723 11:29:35 I-Waiting 4345438 usecs for time alignment
+20160723 21:52:42 W-Shutting down in response to signal TERM on topstorlin...
+20160723 21:52:42 I-Terminating...
+20160725 14:11:15 I-V4.0.4-1 Beginning execution on topstorlin...
+20160725 14:11:15 I-First log rollover will be: 20160726 00:00:00
+20160725 14:11:15 W--sx disabled because no interconnect hardware/drivers found
+20160725 14:11:15 I-Waiting 4667826 usecs for time alignment
