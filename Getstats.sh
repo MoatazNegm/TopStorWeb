@@ -35,6 +35,7 @@ else
 fi
 result="[";
 while read -r line ; do
+ daten=` echo $line | awk '{print $1}'`;
  timen=` echo $line | awk '{print $2}'`;
  cpu=`echo $line | awk '{print $11}'`;
  memused=`echo $line | awk '{print $25}'`;
@@ -52,7 +53,7 @@ while read -r line ; do
  if [ $deskiops -eq 0 ]; then deskiops=1; fi
  deskiopavgkb=$((deskthrouput/deskiops))
  deskreadpercent=$((100*deskreadiops/deskiops))
- subres=`./jsonthis3.sh time $timen cpu $cpu mem $mem deskiops $deskiops deskiopavgkb $deskiopavgkb deskreadpercent $deskreadpercent deskthrouput $deskthrouput nettotkb $nettotkb netreadpercent $netrxpercent `;
+ subres=`./jsonthis3.sh date $daten time $timen cpu $cpu mem $mem deskiops $deskiops deskiopavgkb $deskiopavgkb deskreadpercent $deskreadpercent deskthrouput $deskthrouput nettotkb $nettotkb netreadpercent $netrxpercent `;
  result=${result}${subres}','
 done <<< "$(echo -e "${stats[@]}")"
 result=`echo $result | rev | cut -c 2- | rev`']';

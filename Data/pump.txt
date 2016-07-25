@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-GetDisklist Data/disklist.txt
-=======
 GetPoolVollist a
->>>>>>> 8087de36297a14c676cbba9dfaabcb4330d5087b
