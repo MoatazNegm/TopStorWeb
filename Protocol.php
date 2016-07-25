@@ -117,13 +117,15 @@
 				var request=req;
 				
 				fileloc = filelocfrom ; request= request ; 
-				if(syscounter2==1000){$.post("./pump.php", { req: request, name:"a" }); }
+			//	if(syscounter2==1000){ }
 				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
 					var objdate = jQuery.parseJSON(data);
 					Vollisttimenew=objdate.updated;
 					//console.log("Vollisttimenew", objdate,fileloc,"Vollold",Vollisttime);
 				});
-				if(Vollisttime==Vollisttimenew) { //console.log("traffic not changed"); 
+				if(Vollisttime==Vollisttimenew) { 
+					$.post("./pump.php", { req: request, name:"a" });//console.log("traffic not changed"); 
+					console.log("pump",request, fileloc);
 				} else { 
 					Vollisttime=Vollisttimenew;
 					$.get("requestdata.php", { file: fileloc }, function(data){
