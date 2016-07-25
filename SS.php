@@ -1,6 +1,6 @@
 <div class="row SS">
-							<div class=" col-sm-offset-1 col-sm-10">
-								<div class="box " id="Popup">
+							<div class=" col-sm-offset- col-sm-12">
+								<div class="boxx " id="Popupss">
 									<div class="row">
 										<h2 class="configTitle" id="SubTitle"></h2>
 									</div>	

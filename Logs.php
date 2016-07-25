@@ -1,15 +1,11 @@
 <div class="row Logs"> 
 
 
-							<div class=" col-sm-offset-1 col-sm-10" >
-								<div class="box " id="Popup">
+							<div class=" col-sm-offset-- col-sm-12" >
+								<div class="boxx " id="Popuplog">
 									<div class="row">
 										<h2 class="configTitle" id="SubTitle"></h2>
 									</div>									
-									<div class="row">
-
-										
-										
 											<div id="Voldetails"	class="row Paneloption ">
 												<div  class="panel panel-default ">
 										        <!-- Default panel contents -->
@@ -76,7 +72,7 @@
 
 											<div class="row"><button type="button" class="btn btn-default col-sm-offset-2 col-sm-8 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
 											</div>																
-										</div>												
+																						
 										
 									</div>	
 								</div>				

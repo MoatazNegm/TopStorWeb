@@ -143,7 +143,7 @@
 							}
 						};
 						if( userpriv=="true" | curuser=="admin" ) {
-							config= 0; $("h2").css("background-image","url('img/SS.png')").text("Service Status"); $(".SS").show(); 
+							config= 0; $("h2").css("background-image","url('img/SS.png')").text("Service Status");$(".ullis").hide(); $(".SS").show(); 
 						} 
 					});
 				};
@@ -219,13 +219,13 @@
 							}
 						
 							
-						    config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".Logs").show();
+						    config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".ullis").hide();$(".Logs").show();
 						}
 					});
 				};
 			});
 			$(".finish").click(function (){ 
-				for (var i=0; i<logcache; i+=1) { logstatus[i]=0 } config = 1; $(".SS").hide(); $(".Logs").hide();});
+				for (var i=0; i<logcache; i+=1) { logstatus[i]=0 } config = 1; $(".SS").hide(); $(".Logs").hide();$(".ullis").show();});
 	function refreshall() {
 		
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
