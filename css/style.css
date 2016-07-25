@@ -190,7 +190,7 @@ h4 span {
 	background-size: 4rem 4rem;
 */	background: #797e86;
 	padding: 2px;
-	margin: -5rem;
+	margin: -1rem;
 }
 .box2 {
 	
@@ -201,12 +201,12 @@ h4 span {
 	padding: 0;
 }
 h2 {
-	margin:0 0 1.5rem 0;
+	margin:0 0 1.0rem 0;
 	background-image:url('../img/future.png');
 	background-repeat:no-repeat;
 	background-position:1.2rem top;
-	background-size: 4rem 4rem;
-	color: #145014;
+	background-size: 3rem 3rem;
+	color: lightblue;
 
 	
 }
@@ -220,7 +220,7 @@ h2 {
 }
 .configTitle {
 	text-align: center;
-	height: 4rem;
+/*	height: 4rem; */
 }
 .boxoffields { 
 	
