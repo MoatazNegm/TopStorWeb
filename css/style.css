@@ -104,6 +104,7 @@ h4 span {
 	position: absolute;
 	width: 100%;
 	bottom: 0;
+	color: bluelight;
 	
 	text-align: center;
 }
@@ -201,7 +202,7 @@ h4 span {
 	padding: 0;
 }
 h2 {
-	margin:0 0 1.0rem 0;
+	margin:0 0 1.0hrem 0;
 	background-image:url('../img/future.png');
 	background-repeat:no-repeat;
 	background-position:1.2rem top;
