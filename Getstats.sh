@@ -42,9 +42,10 @@ while read -r line ; do
  memtot=`echo $line | awk '{print $24}'`;
  mem=$((100*memused/memtot));
  netrx=`echo $line | awk '{print $65}'`;
- nettotkb=`echo $line | awk '{print $66}'`;
+ nettx=`echo $line | awk '{print $66}'`;
+ nettotkb=$((netrx+nettx));
  if [ $nettotkb -eq 0 ]; then nettotkb=1; fi
- netrxpercent=$((100*netrx/nettotkb));
+ netrxpercent=$((100*netrx/(netrx+nettotkb)));
  deskreadiops=`echo $line | awk '{print $72}'`;
  deskiops=`echo $line | awk '{print $74}'`;
  deskreadkb=`echo $line | awk '{print $75}'`;
