@@ -6,6 +6,7 @@ time=`echo $@ | awk '{print $2}'`;
 found=1
 if [ $time -eq 0 ]; then
   stats=`cat  Data/*$date*.tab | grep -v \# | sort -u  | awk  "BEGIN{flag=0;count=0} /$time/{flag=1}{if (flag > 0 ) { print; count+=1; } } " | tail -n 50`
+  statsnet=`cat  Data/*$date*.net | grep -v \# | sort -u  | awk  "BEGIN{flag=0;count=0} /$time/{flag=1}{if (flag > 0 ) { print; count+=1; } } " | tail -n 50`
 else
  firsttime=`cat Data/*$date*.tab | grep -v \# | head -n 1 | awk '{print $2}'`
  printf "$time\n$firsttime\n" | sort -u | tail -n 1 | grep "$firsttime"
@@ -21,6 +22,8 @@ else
   if [ $? -eq 0 ] 
   then
    stats=`cat  Data/*$date*.tab | grep -v \# | sort -u  | awk  "BEGIN{flag=0;count=0} /$time/{flag=1}{if (flag > 0 ) { print; count+=1; } } " | tail -n 50`
+   statsnet=`cat  Data/*$date*.net | grep -v \# | sort -u  | awk  "BEGIN{flag=0;count=0} /$time/{flag=1}{if (flag > 0 ) { print; count+=1; } } " | tail -n 50`
+   echo "${stats[@]}"
    found=0;
   else
    time=`date --date=${time}' seconds' +%T`
@@ -41,8 +44,24 @@ while read -r line ; do
  memused=`echo $line | awk '{print $25}'`;
  memtot=`echo $line | awk '{print $24}'`;
  mem=$((100*memused/memtot));
- netrx=`echo $line | awk '{print $65}'`;
- nettx=`echo $line | awk '{print $66}'`;
+ echo $mem
+ netline=`echo "${statsnet[@]}" | grep "$daten" | grep "$timen"`
+	 l=`echo $netline | awk '{$1=$2="";print $0}'`;
+	 n=`echo $l | awk '{print NF}'`;
+	 p=$(((n/19)-1));
+         netrx=0;
+	 nettx=0 
+	for ((i = 0; i < $p; i++ )); 
+	do 
+		rx=$((($i*19)+4)); 
+		tx=$((($i*19)+5)); 
+		subrx=`echo $l | awk -v s=$rx '{print $s}'`; 
+		subtx=`echo $l | awk -v s=$tx '{print $s}'`; 
+		netrx=$((netrx+subrx));
+		nettx=$((nettx+subtx));
+	 done
+#netrx=`echo $line | awk '{print $65}'`;
+#nettx=`echo $line | awk '{print $66}'`;
  nettotkb=$((netrx+nettx));
  if [ $nettotkb -eq 0 ]; then nettotkb=1; fi
  netrxpercent=$((100*netrx/(netrx+nettotkb)));
