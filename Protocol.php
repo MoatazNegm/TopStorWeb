@@ -298,6 +298,7 @@
 							Protocol="CIFS";
 							Vollisttime = "55:55:44";
 							Initclickedprotocol();
+							Vollisttime2=32423
 							$("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".NFS").show();
 							//plotchart('chartNFS',chartdata);
 						}
@@ -321,6 +322,7 @@
 							Protocol="NFS"; 
 							Vollisttime = "55:55:44";
 							Initclickedprotocol();
+							Vollisttime2=5654
 							$("h2").css("background-image","url('img/nfs.png')").text("NFS"); $(".NFS").show();
 							//plotchart('chartNFS',chartdata);
 						}
