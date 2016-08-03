@@ -3,12 +3,26 @@
 	<div class=" col-sm-offset-1 col-sm-10">
 		<div class="box " id="Popup">
 			<div class="row">
-				<div class="col-sm-11">
-					<h2 class="configTitle" id="SubTitle">Active Directory</h2>
+				<div class="col-sm-10">
+					<h2 class="configTitle" style="margin:2px;" id="SubTitle">Active Directory</h2>
 				</div>
-				<div class=" col-sm-1">
-					<button id="refreshb" class="btn btn-default">ref</button>
-				</div>								
+				<div class=" col-sm-2">
+					
+															
+														<div id="refresh2" type="button" class="btn-default btn-circle" style="background: transparent; border: 0px; max-width: 30x; max-height: 30px;";> 
+														<a href="#" class="pull-right btn btn-default btn-circle " style="width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.42;
+  border-radius: 15px;"> <i class="glyphicon glyphicon-refresh"></i>
+  </a>
+															</div>
+													
+				</div>
+														
+												
 			</div>
 			<form class="form-inline">
 				<div class="form-group col-sm-offset-2">

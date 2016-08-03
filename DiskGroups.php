@@ -3,7 +3,7 @@
 								<div class="box ">
 									<div class="row">
 									
-										<h2 class="configTitle">Active Directory</h2>
+										<h2 class="configTitle separatortbot" style="margin-top:2px;" >Active Directory</h2>
 									</div>									
 									<div class="row">
 										<div id="s" class="col-sm-offset-2 col-sm-8">

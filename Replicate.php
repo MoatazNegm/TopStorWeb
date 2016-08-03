@@ -2,7 +2,7 @@
 							<div class=" col-sm-offset-1 col-sm-10">
 								<div class="box ">
 									<div class="row">
-										<h2 class="configTitle col-sm-12">Active Directory</h2>
+										<h2 class="configTitle col-sm-12  separatortbot" style="margin-top:2px;">Active Directory</h2>
 									</div>									
 									<div class="row">
 										
