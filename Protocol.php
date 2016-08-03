@@ -379,6 +379,8 @@
 			refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
 			});
 			$("#refreshb").click(function(){
+				Vollisttime2=345325
+				Vollisttime=4523452
 				refreshall();
 			});
 			
