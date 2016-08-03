@@ -47,6 +47,7 @@
 			var config = 1;
 			var gdata;
 			var Vollisttime = "55:55:44";
+			var Vollisttime2 = "55:55:44";
 			var Vollisttimenew = "333:5455:4w344";
 			var syscounter2=1000;
 			var chartdata = [];
@@ -123,11 +124,11 @@
 					Vollisttimenew=objdate.updated;
 					//console.log("Vollisttimenew", objdate,fileloc,"Vollold",Vollisttime);
 				});
-				if(Vollisttime==Vollisttimenew) { 
+				if(Vollisttime2==Vollisttimenew) { 
 					$.post("./pump.php", { req: request, name:"a" });//console.log("traffic not changed"); 
 					console.log("pump",request, fileloc);
 				} else { 
-					Vollisttime=Vollisttimenew;
+					Vollisttime2=Vollisttimenew;
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						gdata = jQuery.parseJSON(data);
 						if(show=="Volumes"){
