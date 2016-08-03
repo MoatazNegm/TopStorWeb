@@ -229,7 +229,7 @@
 										if(gdata[prot].name==selection){
 											//f ( gdata[prot].Pool == $("#Pool2 option:selected").val() ) {
 												
-												$("#Volumedetails tbody").append('<tr onclick="rowisclicked(this)" class="variable '+gdata[prot].class+'" ><td class="Volname">'+gdata[prot].volsize+'</td><td>'+gdata[prot].volact+'</td><td>'+gdata[prot].snaps+'</td><td>'+gdata[prot].used+'</td><td>'+gdata[prot].crdate+'</td><td>'+gdata[prot].free+'</td><td>'+gdata[prot].compress+'</td><td>'+gdata[prot].dedup+'</td></tr>');
+												$("#Volumedetails tbody").append('<tr onclick="rowisclicked(this)" class="variable '+gdata[prot].class+'" ><td class="Volname">'+gdata[prot].volsize+'</td><td>'+gdata[prot].volact+'</td><td>'+gdata[prot].usedsnaps+'</td><td>'+gdata[prot].useddata+'</td><td>'+gdata[prot].crdate+'</td><td>'+gdata[prot].available+'</td><td>'+gdata[prot].compress+'</td><td>'+gdata[prot].dedup+'</td></tr>');
 											//}
 										}
 									}
