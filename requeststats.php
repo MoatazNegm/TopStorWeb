@@ -1,4 +1,3 @@
 <?php 
- $content = shell_exec('./Getstats'.' '.$_GET["date"].' '.$_GET["time"]);
- print $_GET["date"];
+ shell_exec("bash Getstats.sh ".$_GET["date"]." ".$_GET["time"]);
 ?>
