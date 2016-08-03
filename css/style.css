@@ -221,6 +221,7 @@ h2 {
 }
 .configTitle {
 	text-align: center;
+	margin: 2px;
 /*	height: 4rem; */
 }
 .boxoffields { 
@@ -333,6 +334,9 @@ h2 {
 }
 .separatortop {
 	margin-top: .5rem;
+}
+.separatortbot {
+	margin-bottom: .5rem;
 }
 .NNmodal-dialog, #modalcontainer {
 			position: fixed;

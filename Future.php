@@ -2,7 +2,7 @@
 	<div class=" col-sm-offset-1 col-sm-10">
 		<div class="box ">
 			<div class="row">
-				<h2 class="configTitle">Active Directory</h2>
+				<h2 class="configTitle separatortbot" style="margin-top:2px;" >Active Directory</h2>
 			</div>									
 			<form class="form-horizontal " role="form" data-toggle="validator">
 				<div class="row">

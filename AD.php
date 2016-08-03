@@ -3,7 +3,7 @@
 								
 									<div id="Popup" class="box colorize " Data-tag=".box" Data-id="Popup" Data-textcolor="yes" Data-background="yes" Data-border="yes">
 										<div class="row">
-											<h2 class="configTitle colorize" id="SubTitle"  Data-tag="#SubTitle" Data-id="SubTitle" Data-textcolor="yes" Data-background="no" Data-border="no">Active Directory</h2>
+											<h2 class="configTitle colorize separatortbot" style="margin-top:2px;"  id="SubTitle"  Data-tag="#SubTitle" Data-id="SubTitle" Data-textcolor="yes" Data-background="no" Data-border="no">Active Directory</h2>
 										</div>									
 										<form class="form-horizontal " role="form">
 											<div class="row">

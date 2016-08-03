@@ -3,7 +3,7 @@
 								
 								<div class="box " id="Popup">
 										<div class="row">
-											<h2 class="configTitle" id="SubTitle"></h2>
+											<h2 class="configTitle separatortbot" style="margin-top:2px;"  id="SubTitle"></h2>
 										</div>									
 										<form class="form-horizontal " role="form">
 											<div class="row">

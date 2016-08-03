@@ -4,7 +4,7 @@
 							<div class=" col-sm-offset-- col-sm-12" >
 								<div class="boxx " id="Popuplog">
 									<div class="row">
-										<h2 class="configTitle" id="SubTitle"></h2>
+										<h2 class="configTitle separatortbot" style="margin-top:2px;" id="SubTitle"></h2>
 									</div>									
 											<div id="Voldetails"	class="row Paneloption ">
 												<div  class="panel panel-default ">

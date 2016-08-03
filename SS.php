@@ -2,7 +2,7 @@
 							<div class=" col-sm-offset- col-sm-12">
 								<div class="boxx " id="Popupss">
 									<div class="row">
-										<h2 class="configTitle" id="SubTitle"></h2>
+										<h2 class="configTitle separatortbot" style="margin-top:2px;" id="SubTitle"></h2>
 									</div>	
 										<div id="Voldetails2"	class="row Paneloption ">
 												<div  class="panel panel-default ">
