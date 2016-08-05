@@ -1,165 +1,159 @@
-<script src="js/Colour.js"></script>
+/<script src="js/Colour.js"></script>
 <script src="js/jquery.minicolors.js"></script>
-<script src="InitColor.js"></script>
-<div id="modalcontainer" >
-			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-							<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+<script src="InitColor.js?lskdsldew"></script>
+<div class=" row "> 
+	<div class="col-sm-12">
+								
+									<div id="Popup" class="xbox colorize " Data-tag=".box" Data-id="Popup" Data-textcolor="yes" Data-background="yes" Data-border="yes">
+										<div class="row">
+											<h2 class="configTitle colorize separatortbot" style="margin-top:2px;"  id="mymodal"  Data-tag="#SubTitle" Data-id="SubTitle" Data-textcolor="yes" Data-background="no" Data-border="no">Colorize</h2>
+										</div>									
+	</div>
+	
+	<form class="form-horizontal " role="form">
+			<div class="row">
+				<div class="minicolorgrp" class=" form-group ">
+					<div class="  col-sm-12 textcolor ">
+						<label  for="textcolor" class="col-sm-1">Text</label>
+						<div class="  col-sm-5 textcolor ">
+							<input type="input"   id="textcolor"  style="margin-top: 0.5rem;"class="form-control tocolor "  data-inline="false" value="#ffffff">
+							
 						</div>
-						<div class="modal-body">
-							<form class="form-horizontal " role="form">
-											<div class="row">
-												<div class="   ">
-													<div id="minicolor" class="  ">
-														<div class=" col-sm-4 textcolor">
-															<label  for="textcolor" class=" control-label">Text</label>
-															<input type="hidden" id="textcolor" class="form-control minicolors2  " data-inline="false" value="#ffffff">
-														</div>
-													</div>
-													<div class="   ">
-														<div class=" col-sm-4 background">
-															<label  for="background" class=" control-label" >Background color</label>
-															<input type="hidden" id="background" class="form-control minicolors2  " data-inline="false" value="#ffffff">
-														</div>
-													</div>
-													<div class="  ">
-														<div class=" col-sm-4 frame">
-															<label  for="frame" class=" control-label">frame</label>
-															<input type="hidden" id="frame" class="form-control minicolors2 " placeholder="Admin password" value="#ffffff">
-														</div>
-													</div>
-												</div>
-											</div>
-											
-											<div class="row">
-											<div id="samplebox"> sample box</div>
-											</div>
-											<div class="row col-sm-offset-1 checkbox noback">
-														<label>
-														<input type="checkbox" id="noback" value="background is transparent"> Background is transparent
-														</label>
-												</div>
-												
-										 
-										</form>
-
+						
+						<div class=" col-sm-1 textcolor ">
+							<label  for="transtxt" class="col-sm-1">transparent</label>
 						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-							<button type="button" id="RestIntstng"class="btn btn-default" >Restore defaults</button>
-							<button type="button" id="Restlststng"class="btn btn-default" >Restore last settings</button>
-							<button type="button" id="Savechanges" class="btn btn-default">Save changes</button>
+						<div class=" col-sm-offset-2 col-sm-2 textcolor ">
+							<input type="checkbox" class="form-control" id="transtxt" value="0">
 						</div>
+					</div>
+										
+						
+						
+				</div>
+			</div>
+			<div class="row">
+				<div class="minicolorgrp" class=" form-group ">	
+					<div class=" col-sm-offset-1 col-sm-6 background ">
+						<label  for="background" class=" control-label" style="margin-left: -1rem;">Background</label>
+						<input type="input" id="background" class="form-control   " data-inline="false" value="#ffffff">
+						<input type="radio" style="margin-left: 2rem;" name="Period" id="bckgrnd" value="bckgrnd">
+						<div class="row">
+							<div class="col-sm-offset-3 col-sm-1" >
+								<input type="checkbox" id="transbckgrnd" value="0">
+							</div>
+						</div>
+					
 					</div>
 				</div>
 			</div>
-		</div>
+			<div class="row">
+				<div class="minicolorgrp" class=" form-group ">	
+				
+					<div class=" col-sm-offset-1 col-sm-6 frame ">
+						<label  for="frame" class=" control-label">frame</label>
+						<input type="input"  id="frame" class="form-control  " placeholder="Admin password" value="#ffffff">
+						<input type="radio"  name="Period" style="margin-left: 2rem;"  id="frm" value="frm">
+						<div class="row">
+							<div class="col-sm-offset-3 col-sm-1" >
+								<input type="checkbox" id="transfrm" value="0">
+							</div>
+						</div>
+					
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="minicolorgrp" class=" form-group ">	
+
+			<div class="row">
+			<div id="sbox" class="col-sm-offset-3 col-sm-8"style="margin-top: 0.3 rem; text-align: center; border: solid 2px; color: red; background-color: green;">sample box</div>
+			</div>
+			<div class="row">
+			<div id="minimin" class="col-sm-offset-3 col-sm-8" style="height: 10rem;"></div>
+			</div>
+				</div>
+			</div>
+			
+				
+										 
+	</form>
+
+						<div class="xmodal-footer col-sm-offset-1" style="margin-top: 3rem;" >
+							<button type="button" class="col-sm-12 btn btn-primary" data-dismiss="xmodal">Close</button>
+							<button type="button" id="RestIntstng"class="col-sm-12 btn btn-default btn-warning" >Restore defaults</button>
+							<button type="button" id="Restlststng"class="col-sm-12 btn btn-default btn-danger" >Restore last settings</button>
+							<button type="button" id="Savechanges" class="col-sm-12 btn btn-default btn-success">Save changes</button>
+						</div>
+					</div>
+				</div> 
+			
 
 
 <script>
+	
+
+      
+        
 		var ElementtoColor;	
 		var Elementid;
 		init(".colorize");
 		
+	$("#textcolor").minicolors({
+		theme: 'bootstrap',
+		control: 'hue',
+		opacity: false,
+		format: "hex",
+		change: function(hex, opacity) {
+		 
+		 $("#sbox").css("color", hex);
+		 var title = $("#mymodal").text();
+		 $(ElementtoColor).css("color", hex);
+		 $("#"+title).css("color",hex);
+			 ColorCurrentupdate(ElementtoColor,"color",hex);
+
+		}
+		 
+	});
+	
 		$('#noback').change(function() {
 			if($(this).prop("checked")) { 
 				$(ElementtoColor).css("background-color", "rgba(200,54,54,0)");
 				$("#"+Elementid).data("Data-backtrans",true);
 				
-				console.log("opacitytrans:"+$('#'+Elementid).css("background-color"));
+				//console.log("opacitytrans:"+$('#'+Elementid).css("background-color"));
 			} else {
 				$(ElementtoColor).css("background-color", "rgba(200,54,54,1)");
-				 console.log("opacitysolid:"+$('#'+Elementid).css("background-color"));
+				 //console.log("opacitysolid:"+$('#'+Elementid).css("background-color"));
 				$(ElementtoColor).css("background-color",$("#samplebox").css("background-color"));
 				$("#"+Elementid).data("Data-backtrans",false); $("#"+Elementid).data("background-color",$("#samplebox").css("background-color"));
 			};
 			ColorCurrentupdate(ElementtoColor,"Data-backtrans",$("#"+Elementid).data("Data-backtrans"));	
 		});
-	function colorToHex(color) {
-		if (color==null) { return '#ffffff';}
-		if (!color.match(/rgb/g)) { return "#ffffff"; }
-		if (color.substr(0, 1) === '#') {
-				return color;
-		}
-		
-		var digits = /(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color);
-		
-		var red = parseInt(digits[2]);
-		var green = parseInt(digits[3]);
-		var blue = parseInt(digits[4]);
-
-		var rgb = blue | (green << 8) | (red << 16);
-		return digits[1] + '#' + rgb.toString(16);
-	};
-
-
-
+	
 	$(".colorize").click(function (e) {
 				e.stopPropagation();
 				ElementtoColor = $(this).attr("Data-tag");
 				Elementid=  $(this).attr("Data-id");
 				var title = $(this).attr("class").split(' ').pop();
-				$("#myModalLabel").text(Elementid);
-				
-				
-				
-				
-			//	console.log($(this).attr("class"));
-			//	console.log("B=" + $(this).css("background-color") +";" + colorToHex($(this).css("background-color").match(/rgb/g))+ ", F:" + $(this).css("color") + ", bor=" + $(this).css("border-color")+";" + colorToHex($(this).css("background-color").match(/rgb/g)));
-			//	$("#textcolor").minicolors("value", colorToHex($(this).css("color")) ); 
-		
-	//		$(".minicolors2").minicolors({ theme: 'bootstrap'});
+				$("#mymodal").text(Elementid);
+					$("#sbox").css("backgroundColor", $("#"+Elementid).css("backgroundColor"));
+					$("#background").val(rgba2hex($("#"+Elementid).css("backgroundColor")) );
+					if(rgba2hex($("#"+Elementid).css("background-color")) == "#000000") {$("#transbckgrnd").prop("checked",true);
+					} else { $("#transbckgrnd").prop("checked",false); }
+					
+					$("#sbox").css("color", $('#'+Elementid).css("color"));
+					$("#textcolor").val(rgba2hex($('#'+Elementid).css("color")) );
+					if(rgba2hex($("#"+Elementid).css("color")) == "#000000") {$("#transtxt").prop("checked",true);
+					} else { $("#transtxt").prop("checked",false); }
+					$("#sbox").css("border-color", $('#'+Elementid).css("border-color"));
+					$("#frame").val(rgba2hex($('#'+Elementid).css("border-color")) ); 
+					if(rgba2hex($("#"+Elementid).css("border-color")) == "#000000") {$("#transfrm").prop("checked",true);
+					} else { $("#transfrm").prop("checked",false); }
 
-			
-				
-				if($(this).attr("Data-background") == "yes") { 
-					$(".background").show(); $(".noback").show();
-					$("#samplebox").css("background-color", $("#"+Elementid).css("background-color"));
-					$("#background").minicolors("value", colorToHex($("#"+Elementid).css("background-color")) );
-					if($("#"+Elementid).css("background-color") == "transparent") {
-						$("#noback").prop("checked",true); //console.log("found transparent"+$("#"+Elementid).css("background-color"));
-						$(ElementtoColor).css("background-color","transparent"); 
-						//$("#"+Elementid).data("Data-backtrans",true); 
-						
-					} else {
-						$("#noback").prop("checked",false);//console.log("found not transparent"+$('#'+Elementid).css("background-color"));
-					//	$("#"+Elementid).data("Data-backtrans",false);
-						 
-					}
-					//console.log("back is disabled");
-					//$("#background").minicolors("value", "#ffffff");
-				} else { 
-					$(".background").hide();
-					$(".noback").hide();
-					
-				};
-				if($(this).attr("Data-textcolor") == "yes") { 
-					$(".textcolor").show();
-					$("#samplebox").css("color", $('#'+Elementid).css("color"));
-					$("#textcolor").minicolors("value", colorToHex($('#'+Elementid).css("color")) );
-					//console.log("textcolor enabled");
-					//$("#background").minicolors("value", "#ffffff");
-				} else { 
-				$(".textcolor").hide();
-					
-				};
-				if($(this).attr("Data-border") == "yes") { 
-					$(".frame").show();
-					$("#samplebox").css("border-color", $('#'+Elementid).css("border-color"));
-					$("#frame").minicolors("value", colorToHex($('#'+Elementid).css("border-color")) ); 
-					//$("#background").minicolors("value", "#ffffff");
-				} else { 
-					$(".frame").hide();
-					
-				};
-
-				$("#myModal").modal("show");
 			});
 			
-	$("#modalcontainer").draggable();
+	//$("#modalcontainer").draggable();
 	$("#textcolor.minicolors2").minicolors({
 		theme: 'bootstrap',
 		
@@ -199,7 +193,7 @@
 		 $(ElementtoColor).css("border-color", hex);
 		 $("#"+Elementid).data("Data-bordercolor",hex);
 		 ColorCurrentupdate(ElementtoColor,"border-color",hex);
-//			console.log($("#samplebox").css("color"));
+//			console.log($("#sampleboxsamplebox").css("color"));
 //			console.log("...."+hex + "....." + opacity);
 		}
 		 

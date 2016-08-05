@@ -43,6 +43,12 @@ body {
 	
 
 }
+.colorpane {
+	border: 5px ridge;
+	height: 43rem; 
+	text-align: center;
+	
+}
 .leftPane {
 	background-color: lightgrey;
 
@@ -344,12 +350,8 @@ h2 {
 			top : -2% ;
 			width: 20	rem ;
 } 
-#samplebox {
-	position: relative;
-	left: 38%;
-	margin-top: 2rem;
-	width : 15rem;
-	height: 3rem;
+#sbox {
+	
 	border: solid 2px;
 	color: red;
 	background-color: green;

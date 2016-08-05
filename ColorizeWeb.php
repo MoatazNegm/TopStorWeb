@@ -5,7 +5,7 @@
 ?>
 <html>
 
-	<?php $men=7;include "header.html"; ?>
+	<?php $men=7;include "header3.html"; ?>
 
 							
 							<li><a href="#" class="rightli ADa "><h4 id="AD"><span>Active Directory</span></h4></a></li>
@@ -22,13 +22,18 @@
 					
 						<?php include "AD.php"; ?>
 						<?php include "UnLin.php"; ?>
-					</div>
 					
+								
+					
+					<div class="col-sm-4 colorpane" id="colorpane" Data-tag="#colorpane" Data-id="colorpane" Data-textcolor="no" Data-background="no" Data-border="no">
+						<?php include "colorize.php"; ?>
+						</div>
 				</div>
+				</div>
+					</div>
 			
 		
-			
-					</div>
+
 	</div>
 	<div class=" prefooter colorize"  id="prefooter" Data-tag=".prefooter" Data-id="prefooter" Data-textcolor="yes" Data-background="yes" Data-border="yes">
 				<footer class="footer colorize" id="footer" Data-tag=".footer" Data-id="footer" Data-textcolor="yes" Data-background="yes" Data-border="yes"> Errors
@@ -55,9 +60,7 @@
 			$(".AD").draggable();
 			
 		</script>
- <?php include "colorize.php"; ?> 
-	
-		 <script> console.log("$('"+"dkdk"+"').css('background-color',"+"'dslks'"+");");</script>
+ 
 			
 	</body>
 

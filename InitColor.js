@@ -23,7 +23,27 @@ function init(colorclass) {
 //	$.post("InitColor.php", Elementinit);
 	
 }
+function rgba2hex( color_value ) {
+	if ( ! color_value ) return false;
 
+	var  parts = color_value.toLowerCase().match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/),
+	    length = color_value.indexOf('rgba') ? 3 : 2; // Fix for alpha values
+	    ;
+
+if (color_value.indexOf('rgba') === false) { //check if it is 0 (start with rgba) or false (it is NOT rgba)
+length = 2;
+} else{
+length = 3;
+delete(parts[4]); //delete the alpha value prevent adding it by parts.join
+};
+
+	delete(parts[0]);
+	for ( var i = 1; i <= length; i++ ) {
+		parts[i] = parseInt( parts[i] ).toString(16);
+		if ( parts[i].length == 1 ) parts[i] = '0' + parts[i];
+	}
+	return '#' + parts.join('').toUpperCase(); // #F7F7F7
+}
 function GetInitialColors(Ele) {
 				Elementid = Ele["Data-id"];
 		//		console.log(Elementid + " " +Ele["Data-background"] + " "+Ele["Data-backtrans"] + " "  +Ele["Data-backtrans"] == true);
@@ -33,8 +53,9 @@ function GetInitialColors(Ele) {
 						$("#"+Elementid).data("Data-backtrans",true); $("#"+Elementid).data("background-color","transparent");
 						
 					} else {
-						Ele["Data-backtrans"]=false; Ele["background-color"]= colorToHex($("#"+Elementid).css("background-color"));
-						$("#"+Elementid).data("Data-backtrans",false);$("#"+Elementid).data("background-color",colorToHex($("#"+Elementid).css("background-color")));
+						//console.log("element:",Elementid,rgba2hex($("#"+Elementid).css("background-color")));
+						Ele["Data-backtrans"]=false; Ele["background-color"]= rgba2hex($("#"+Elementid).css("background-color"));
+						$("#"+Elementid).data("Data-backtrans",false);$("#"+Elementid).data("background-color",rgba2hex($("#"+Elementid).css("background-color")));
 						 
 					}
 					//console.log("back is disabled");
@@ -91,7 +112,7 @@ function ApplySetting() {
 		 if(Ele[loc].hasOwnProperty("Data-backtrans") == true) {
 			  
 			 if(Ele[loc]["Data-backtrans"] == "true") { 
-				 console.log(loc+ " : "+ Ele[loc]["Data-backtrans"]);
+			//	 console.log(loc+ " : "+ Ele[loc]["Data-backtrans"]);
 				 $(loc).css("background-color","rgba(200,54,54,0)");
 		//	 console.log("found true :"+loc) ;
 				 } else {
