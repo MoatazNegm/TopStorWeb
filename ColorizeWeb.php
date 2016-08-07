@@ -14,7 +14,7 @@
 						</ul>
 						<ul  > 
 							<li><a id="List" href="#" ><h4  class=" colorize" Data-tag=".rightli" Data-id="List" Data-textcolor="yes" Data-background="no" Data-border="no" id="colorizethis"><span> Colorize List</span></h4></a></li>
-							<li ><a class="colorize " Data-tag="#rightPane" Data-id="rightPane" Data-textcolor="no" Data-background="yes" Data-border="no" href="#" ><h4 id="AD"><span>Colorize RightPane</span></h4></a></li>
+							<li ><a class="colorize " Data-tag="#rightPane" Data-id="rightPane" Data-textcolor="yes" Data-background="yes" Data-border="yes" href="#" ><h4 id="AD"><span>Colorize RightPane</span></h4></a></li>
 							
 							
 							
