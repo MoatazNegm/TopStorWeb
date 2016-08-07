@@ -35,8 +35,9 @@
 		
 
 	</div>
-	<div class=" prefooter colorize"  id="prefooter" Data-tag=".prefooter" Data-id="prefooter" Data-textcolor="yes" Data-background="yes" Data-border="yes">
-				<footer class="footer colorize" id="footer" Data-tag=".footer" Data-id="footer" Data-textcolor="yes" Data-background="yes" Data-border="yes"> Errors
+	
+	<div class=" prefooter colorize"  id="prefooter" Data-tag=".prefooter" Data-id="footer" Data-textcolor="yes" Data-background="yes" Data-border="yes">
+				<footer class="footer prefooter colorize" id="footer" Data-tag=".footer" Data-id="footer" Data-textcolor="yes" Data-background="yes" Data-border="yes"> Errors
 				</footer>
 			</div>
 	
