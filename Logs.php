@@ -1,33 +1,33 @@
-<div class="row Logs"> 
+<div class="row Logs dialogbox"> 
 
 
 							<div class=" col-sm-offset-- col-sm-12" >
 								<div class="boxx " id="Popuplog">
 									<div class="row">
-										<h2 class="configTitle separatortbot" style="margin-top:2px;" id="SubTitle"></h2>
+										<h2 class="configTitle separatortbot col-sm-2" style="margin-top:2px;" id="SubTitle"></h2>
 									</div>									
 											<div id="Voldetails"	class="row Paneloption ">
 												<div  class="panel panel-default ">
 										        <!-- Default panel contents -->
-												    <div id="Volumnamedetails" class="panel-heading" style="">
-													   <form class="form-inline " style="margin-top: -1%;margin-bottom: -1%;" role="form">	
-														<div class="form-group" style="width: 3%"></div>
-														<div class="form-group" style="width: 30%">
-															<label   class="form-label " for="dater">Date:</label>
-															<input type="date" class="form-control input-sm" style="padding-left: 2px; padding-right: 0px; width: 38%;" id="dater" >
+												    <div id="Volumnamedetails" class="panel-heading  colorize " Data-tag=".panel-heading" Data-id="panel-heading" Data-textcolor="yes" Data-background="yes" Data-border="yes"style="">
+													   <form class="form-inline "style="margin-top: -1%;margin-bottom: -1%;" role="form">	
+														<div class="form-group heading"  style="width: 3%"></div>
+														<div class="form-group heading" class="cheading" style="width: 30%">
+															<label   class="form-label heading" for="dater">Date:</label>
+															<input type="date" class="form-control colorize input-sm headingdate" Data-tag=".headingdate" Data-id="headingdate" style="padding-left: 2px; padding-right: 0px; width: 38%;" id="dater" >
 														</div>
-														<div class="form-group" style="width: 10%">
-															<input type="checkbox"  id="INFO" value="info" checked >Info
+														<div class="form-group heading"  style="width: 10%">
+															<input type="checkbox" class="heading" id="INFO" value="info" checked >Info
 														</div>
-														<div class="form-group" style="width: 10%">
-															<input type="checkbox"   id="Warning" value="Warning" checked >Warning
+														<div class="form-group heading" style="width: 10%">
+															<input type="checkbox"  class="heading" id="Warning" value="Warning" checked >Warning
 														</div>
-														<div class="form-group" style="width: 10%">
-															<input type="checkbox" id="Error"  value="Error" checked >Error
+														<div class="form-group heading"  style="width: 10%">
+															<input type="checkbox" class="heading" id="Error"  value="Error" checked >Error
 														</div>
-														<div class="form-group" style="width: 10%">
-															<label   class="form-label- " for="lines">lines:</label>
-															<input type="number" min="10" max="50" class="form-control input-sm" id="lines" style="padding-left: 2px; padding-right: 0px; width: 33%" value="10">
+														<div class="form-group heading" style="width: 10%">
+															<label   class="form-label- heading" for="lines">lines:</label>
+															<input type="number" min="10" max="50" class="form-control input-sm heading" id="lines" style="padding-left: 2px; padding-right: 0px; width: 33%" value="10">
 														</div>
 														<div class="form-group " style="width: 12%">
 															<ul class=" pager" style=''>

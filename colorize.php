@@ -4,9 +4,9 @@
 <div class=" row "> 
 	<div class="col-sm-12">
 								
-									<div id="Popup" class="xbox colorize " Data-tag=".box" Data-id="Popup" Data-textcolor="yes" Data-background="yes" Data-border="yes">
+									<div id="Popup" class="xbox  " Data-tag=".box" Data-id="Popup" Data-textcolor="yes" Data-background="yes" Data-border="yes">
 										<div class="row">
-											<h2 class="configTitle colorize separatortbot" style="margin-top:2px;"  id="mymodal"  Data-tag="#SubTitle" Data-id="SubTitle" Data-textcolor="yes" Data-background="no" Data-border="no">Colorize</h2>
+											<h2 class="  separatortbot" style="margin-top:2px;"  id="mymodal"  Data-tag="" Data-background="no" Data-border="no">Pls-select-to-Colorize</h2>
 										</div>									
 	</div>
 	
@@ -67,7 +67,7 @@
 	</form>
 
 						<div class="xmodal-footer col-sm-offset-1" style="margin-top: 3rem;" >
-							<button type="button" class="col-sm-12 btn btn-primary" data-dismiss="xmodal">Close</button>
+							
 							<button type="button" id="RestIntstng"class="col-sm-12 btn btn-default btn-warning" >Restore defaults</button>
 							<button type="button" id="Restlststng"class="col-sm-12 btn btn-default btn-danger" >Restore last settings</button>
 							<button type="button" id="Savechanges" class="col-sm-12 btn btn-default btn-success">Save changes</button>
@@ -132,42 +132,27 @@ $("#background").minicolors({
 	});
 	
 	
-		$('#noback').change(function() {
-			if($(this).prop("checked")) { 
-				$(ElementtoColor).css("background-color", "rgba(200,54,54,0)");
-				$("#"+Elementid).data("Data-backtrans",true);
-				
-				//console.log("opacitytrans:"+$('#'+Elementid).css("background-color"));
-			} else {
-				$(ElementtoColor).css("background-color", "rgba(200,54,54,1)");
-				 //console.log("opacitysolid:"+$('#'+Elementid).css("background-color"));
-				$(ElementtoColor).css("background-color",$("#samplebox").css("background-color"));
-				$("#"+Elementid).data("Data-backtrans",false); $("#"+Elementid).data("background-color",$("#samplebox").css("background-color"));
-			};
-			ColorCurrentupdate(ElementtoColor,"Data-backtrans",$("#"+Elementid).data("Data-backtrans"));	
-		});
-	
-	$(".colorize").click(function (e) {
+			$(".colorize").click(function (e) {
 				e.stopPropagation();
 				ElementtoColor = $(this).attr("Data-tag");
 				Elementid=  $(this).attr("Data-id");
 				var title = $(this).attr("class").split(' ').pop();
 				$("#mymodal").text(Elementid);
-					$("#sbox").css("backgroundColor", $("#"+Elementid).css("backgroundColor"));
-					$("#background").val(rgba2hex($("#"+Elementid).css("backgroundColor")) );
-					$('.background .minicolors-swatch-color').css('background-color',$('#'+Elementid).css("backgroundColor"))
-					if(rgba2hex($("#"+Elementid).css("background-color")) == "#000000") {$("#transbckgrnd").prop("checked",true);$("#background").prop("disabled",true);
+					$("#sbox").css("backgroundColor", $(ElementtoColor).css("backgroundColor"));
+					$("#background").val(rgba2hex($(ElementtoColor).css("backgroundColor")) );
+					$('.background .minicolors-swatch-color').css('background-color',$(ElementtoColor).css("backgroundColor"))
+					if(rgba2hex($(ElementtoColor).css("background-color")) == "#000000") {$("#transbckgrnd").prop("checked",true);$("#background").prop("disabled",true);
 					} else { $("#transbckgrnd").prop("checked",false); $("#background").prop("disabled",false); }
 					
-					$("#sbox").css("color", $('#'+Elementid).css("color"));
-					$("#textcolor").val(rgba2hex($('#'+Elementid).css("color")) );
-					$('.textcolor .minicolors-swatch-color').css('background-color',$('#'+Elementid).css("color"))
-					if(rgba2hex($("#"+Elementid).css("color")) == "#000000") {$("#transtxt").prop("checked",true); $("#textcolor").prop("disabled",true);
+					$("#sbox").css("color", $(ElementtoColor).css("color"));
+					$("#textcolor").val(rgba2hex($(ElementtoColor).css("color")) );
+					$('.textcolor .minicolors-swatch-color').css('background-color',$(ElementtoColor).css("color"))
+					if(rgba2hex($(ElementtoColor).css("color")) == "#000000") {$("#transtxt").prop("checked",true); $("#textcolor").prop("disabled",true);
 					} else { $("#transtxt").prop("checked",false); $("#textcolor").prop("disabled",false);}
-					$("#sbox").css("border-color", $('#'+Elementid).css("border-color"));
-					$('.frame .minicolors-swatch-color').css('background-color',$('#'+Elementid).css("border-color"))
-					$("#frame").val(rgba2hex($('#'+Elementid).css("border-color")) ); 
-					if(rgba2hex($("#"+Elementid).css("border-color")) == "#000000") {$("#transfrm").prop("checked",true);$("#frame").prop("disabled",true);
+					$("#sbox").css("border-color", $(this).css("border-color"));
+					$('.frame .minicolors-swatch-color').css('background-color',$(ElementtoColor).css("border-color"))
+					$("#frame").val(rgba2hex($(ElementtoColor).css("border-color")) ); 
+					if(rgba2hex($(ElementtoColor).css("border-color")) == "#000000") {$("#transfrm").prop("checked",true);$("#frame").prop("disabled",true);
 					} else { $("#transfrm").prop("checked",false); $("#frame").prop("disabled",false); }
 
 			});

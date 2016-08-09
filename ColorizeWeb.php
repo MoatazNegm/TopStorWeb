@@ -7,21 +7,24 @@
 
 	<?php $men=7;include "header3.html"; ?>
 
+							<li><a href="#" class="ADa rightli"><h4 id="AD"><span>Active Directory</span></h4></a></li>
+							<li><a href="#" class="ADa rightli"><h4 id="AD"><span>Active Directory</span></h4></a></li>
+							<li><a href="#" class="ADa rightli"><h4 id="AD"><span>Active Directory</span></h4></a></li>
 							
-							<li><a href="#" class="rightli ADa "><h4 id="AD"><span>Active Directory</span></h4></a></li>
-							<li><a   href="#" class="rightli UnLina"><h4 id="UnLin"><span>Box users</span></h4></a></li>
-							<li><a href="#" class="rightli Futurea"><h4 id="Future"><span> .........Future</span></h4></a></li>
+							
 						</ul>
 						<ul  > 
-							<li><a id="List" href="#" ><h4  class=" colorize" Data-tag=".rightli" Data-id="List" Data-textcolor="yes" Data-background="no" Data-border="no" id="colorizethis"><span> Colorize List</span></h4></a></li>
-							<li ><a class="colorize " Data-tag="#rightPane" Data-id="rightPane" Data-textcolor="yes" Data-background="yes" Data-border="yes" href="#" ><h4 id="AD"><span>Colorize RightPane</span></h4></a></li>
+							<li><a id="List" href="#" ><h4  class=" colorize rightli" Data-tag=".rightli" Data-id="List" Data-textcolor="yes" Data-background="no" Data-border="no" id="colorizethis"><span> Colorize List</span></h4></a></li>
+							<li ><a class="colorize rightli " Data-tag="#rightPane" Data-id="rightPane" Data-textcolor="yes" Data-background="yes" Data-border="yes" href="#" ><h4 id="AD"><span>Colorize RightPane</span></h4></a></li>
 							
 							
 							
 						</ul>
 					
+						<?php include "Future.php"; ?>
 						<?php include "AD.php"; ?>
 						<?php include "UnLin.php"; ?>
+						
 					
 								
 					
@@ -52,12 +55,14 @@
 	
 		<script>
 			var config = 1;
-			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();
-			$("#AD").click(function (){ 
-				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".AD").show(); };});
-			$("#UnLin").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".UnLin").show();};});
+			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();$(".SS").hide();$(".Logs").hide();
+			$("#AD").click(function (){ if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".AD").show(); };});
+			$("#UnLin").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/linux.png')"); $(".UnLin").show();};});
 			$("#Future").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/future.png')").text("Future"); $(".Future").show();};});
-			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
+			$("#SS").click(function (){ if(config== 1){ config= 0; $("h2").css("background-image","url('img/SS.png')").text("Service Status");; $(".SS").show();};});
+			$("#Logs").click(function (){ if(config== 1){ config= 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".Logs").show();};});
+			
+			$(".finish").click(function (){ config = 1;$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();$(".SS").hide();$(".Logs").hide();});
 			$(".AD").draggable();
 			
 		</script>

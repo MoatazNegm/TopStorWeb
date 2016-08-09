@@ -1,9 +1,9 @@
-<div class="row AD ">
+<div class="row AD dialogbox">
 							<div class=" col-sm-offset-1 col-sm-10">
 								
 									<div id="Popup" class="box colorize " Data-tag=".box" Data-id="Popup" Data-textcolor="yes" Data-background="yes" Data-border="yes">
 										<div class="row">
-											<h2 class="configTitle colorize separatortbot" style="margin-top:2px;"  id="SubTitle"  Data-tag="#SubTitle" Data-id="SubTitle" Data-textcolor="yes" Data-background="no" Data-border="no">Active Directory</h2>
+											<h2 class="configTitle colorize separatortbot" style="margin-top:2px;"  id="SubTitle"  Data-tag=".configTitle" Data-id="SubTitle" Data-textcolor="yes" Data-background="no" Data-border="no">Active Directory</h2>
 										</div>									
 										<form class="form-horizontal " role="form">
 											<div class="row">
@@ -11,7 +11,7 @@
 													<div class=" form-group row">
 														<label  for="DomWork" class="col-sm-5 control-label">Domain/Workgroup</label>
 														<div class=" col-sm-6">
-															<input type="text"  class="form-control colorize" id="DomName" Data-tag="DomName" Data-id="inputs" Data-textcolor="yes" Data-background="yes" Data-border="yes"  value="Sampel type">
+															<input type="text"  class="form-control colorize" id="DomName" Data-tag="input" Data-id="inputs" Data-textcolor="yes" Data-background="yes" Data-border="yes"  value="Sampel type">
 														</div>
 													</div>
 													<div class=" form-group row">
@@ -35,12 +35,12 @@
 													</div>
 												</div>
 												<div class="  col-sm-2">
-													<div class="form-group row">
-														<label  for="Domtype" class="control-label col-sm-3 ">Type</label>
+													<div class="form-group row colorize" Data-tag="select" Data-id="droplist">
+														<label  for="Domtype"  class="control-label col-sm-4 colorize" >Type</label>
 														<div class="col-sm-9">
-															<select id="Domtype"  class="form-control">
-																<option value="Domain" selected >Domain</option>
-																<option value="Workgroup"  >Workgroup</option>
+															<select id="Domtype colorize"  class="form-control" value="Workgroup">
+																<option value="Domain"  >Domain</option>
+																<option value="Workgroup" selected >Workgroup</option>
 															</select>
 														</div>
 													</div>
@@ -56,7 +56,7 @@
 															<textarea class="form-control colorize" id="ADstatus" Data-id="status" Data-tag="textarea" Data-textcolor="yes" Data-background="no" Data-border="yes" rows="3"> sample status Data </textarea>
 														</div>
 														<div class="row">
-															<button type="button" id="finish" class="btn btn-default col-sm-offset-3 col-sm-7 finish  data-toggle="tooltip" data-placement="bottom" title="close window">Finish</button>
+															<button type="button" id="finish" class="btn btn-default col-sm-offset-3 col-sm-7 finish colorize" Data-id="Pls-select-to-Colorize" Data-tag="Colorize" data-toggle="tooltip" data-placement="bottom" title="close window">Finish</button>
 														</div>
 													</div>
 												</div>

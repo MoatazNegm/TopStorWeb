@@ -1,4 +1,4 @@
-<div class="row SS">
+<div class="row SS dialogbox">
 							<div class=" col-sm-offset- col-sm-12">
 								<div class="boxx " id="Popupss">
 									<div class="row">
