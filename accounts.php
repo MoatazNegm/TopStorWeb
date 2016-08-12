@@ -140,7 +140,7 @@
 							}
 						};
 						if( userpriv=="true" | curuser=="admin" ) {
-							config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".AD").show(); 
+							config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".ullis").hide(); $(".AD").show(); 
 							$.get("requestdata.php", { file: 'Data/DomName.txt' },function(data){ $("#DomName").val(data);});
 							$.get("requestdata.php", { file: 'Data/Domtype.txt' },function(data){ $("#Domtype").val(data);});
 							$.get("requestdata.php", { file: 'Data/DCserver.txt' },function(data){ $("#DCserver").val(data);});
@@ -162,7 +162,7 @@
 					
 						if( userpriv=="true" | curuser=="admin" ) {
 					
-							config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".UnLin").show();
+							config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".ullis").hide();$(".UnLin").show();
 						}
 					});
 				};
@@ -181,14 +181,14 @@
 					
 						if( userpriv=="true" | curuser=="admin" ) { 
 							proptime="55:55:55";
-							config = 0; $("h2").css("background-image","url('img/future.png')").text("Box properties");$("#network").val("1") ; $(".IPAddress").show(); $(".Gateway").show(); $(".Future").show();
+							config = 0; $("h2").css("background-image","url('img/future.png')").text("Box properties");$("#network").val("1") ; $(".IPAddress").show(); $(".Gateway").show();$(".ullis").hide(); $(".Future").show();
 							needupdate=1;
 							updateprop(); 
 						}
 					});
 				}; 
 			});
-			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
+			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide(); $(".ullis").show();});
 			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val(), passwd:$("#UserPass").val()+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){
 				 //refreshUserList(); 
 				 });

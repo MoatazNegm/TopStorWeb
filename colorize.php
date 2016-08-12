@@ -1,62 +1,80 @@
 <script src="js/Colour.js"></script>
 <script src="js/jquery.minicolors.js"></script>
-<script src="InitColor.js"></script>
-<div id="modalcontainer" >
-			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-							<h4 class="modal-title" id="myModalLabel">Modal title</h4>
-						</div>
-						<div class="modal-body">
-							<form class="form-horizontal " role="form">
-											<div class="row">
-												<div class="   ">
-													<div id="minicolor" class="  ">
-														<div class=" col-sm-4 textcolor">
-															<label  for="textcolor" class=" control-label">Text</label>
-															<input type="hidden" id="textcolor" class="form-control minicolors2  " data-inline="false" value="#ffffff">
-														</div>
-													</div>
-													<div class="   ">
-														<div class=" col-sm-4 background">
-															<label  for="background" class=" control-label" >Background color</label>
-															<input type="hidden" id="background" class="form-control minicolors2  " data-inline="false" value="#ffffff">
-														</div>
-													</div>
-													<div class="  ">
-														<div class=" col-sm-4 frame">
-															<label  for="frame" class=" control-label">frame</label>
-															<input type="hidden" id="frame" class="form-control minicolors2 " placeholder="Admin password" value="#ffffff">
-														</div>
-													</div>
-												</div>
-											</div>
-											
-											<div class="row">
-											<div id="samplebox"> sample box</div>
-											</div>
-											<div class="row col-sm-offset-1 checkbox noback">
-														<label>
-														<input type="checkbox" id="noback" value="background is transparent"> Background is transparent
-														</label>
-												</div>
-												
-										 
-										</form>
-
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-							<button type="button" id="RestIntstng"class="btn btn-default" >Restore defaults</button>
-							<button type="button" id="Restlststng"class="btn btn-default" >Restore last settings</button>
-							<button type="button" id="Savechanges" class="btn btn-default">Save changes</button>
-						</div>
+<script src="InitColor.js?lskdew"></script>
+<div class=" row "> 
+	<div class="col-sm-12">
+								
+									<div id="Popup" class="xbox  " Data-tag=".box" Data-id="Popup" Data-textcolor="yes" Data-background="yes" Data-border="yes">
+										<div class="row">
+											<h2 class="  separatortbot" style="margin-top:2px;"  id="mymodal"  Data-tag="" Data-background="no" Data-border="no">Pls-select-to-Colorize</h2>
+										</div>									
+	</div>
+	
+	<form class="form-horizontal " role="form">
+			<div class="row">
+				<div class=" form-group minicolorgrp">
+					<div class="  col-sm-1 textcolor ">
+						<label  for="textcolor" class="control-label col-sm-1">Text</label>
+					</div>
+					<div class="  col-sm-offset-1 col-sm-5 textcolor ">
+						<input type="input"   id="textcolor"  class="form-control tocolor "  data-inline="false" value="#ffffff">
+					</div>
+					<div class=" col-sm-1 textcolor ">
+						<label  for="transtxt" class="control-label">transparent</label>
+					</div>
+					<div class=" col-sm-offset-1 col-sm-2 textcolor ">
+						<input type="checkbox" class="form-control" id="transtxt" value="0">
 					</div>
 				</div>
 			</div>
-		</div>
+			<div class="row" >
+				<div class=" form-group minicolorgrp">	
+					<div class="col-sm-2 background ">
+						<label  for="background"  class="control-label" >Back-ground</label>
+					</div>
+					<div class="  col-sm-5 background ">
+						<input type="input" id="background" class="form-control tocolor "  data-inline="false" value="#ffffff">
+					</div>
+					<div class=" col-sm-1 background ">
+						<label  for="transbckgrnd" class="control-label" >transparent</label>
+					</div>
+					<div class=" col-sm-offset-1 col-sm-2 background ">
+						<input type="checkbox" class="form-control" id="transbckgrnd" value="0">
+					</div>
+					
+				</div>
+			</div>
+			<div class="row">
+				<div class=" form-group minicolorgrp">	
+					<div class="col-sm-2 frame ">
+						<label  for="frame"  class="control-label" >frame</label>
+					</div>
+					<div class="  col-sm-5 frame ">
+						<input type="input" id="frame" class="form-control tocolor "  data-inline="false" value="#ffffff">
+					</div>
+					<div class=" col-sm-1 frame ">
+						<label  for="transfrm" class="control-label" >transparent</label>
+					</div>
+					<div class=" col-sm-offset-1 col-sm-2 frame ">
+						<input type="checkbox" class="form-control" id="transfrm" value="0">
+					</div>
+			</div>
+			<div class="row">
+				<div id="sbox" class="col-sm-offset-2 col-sm-8"style="margin-top: 0.3 rem; text-align: center; border: solid 2px; color: red; background-color: green;">sample box</div>
+			</div>
+			
+			</div>
+	</form>
+
+						<div class="xmodal-footer col-sm-offset-1" style="margin-top: 3rem;" >
+							
+							<button type="button" id="RestIntstng"class="col-sm-12 btn btn-default btn-warning" >Restore defaults</button>
+							<button type="button" id="Restlststng"class="col-sm-12 btn btn-default btn-danger" >Restore last settings</button>
+							<button type="button" id="Savechanges" class="col-sm-12 btn btn-default btn-success">Save changes</button>
+						</div>
+					</div>
+				</div> 
+			
 
 
 <script>
@@ -64,102 +82,82 @@
 		var Elementid;
 		init(".colorize");
 		
-		$('#noback').change(function() {
-			if($(this).prop("checked")) { 
-				$(ElementtoColor).css("background-color", "rgba(200,54,54,0)");
-				$("#"+Elementid).data("Data-backtrans",true);
-				
-				console.log("opacitytrans:"+$('#'+Elementid).css("background-color"));
-			} else {
-				$(ElementtoColor).css("background-color", "rgba(200,54,54,1)");
-				 console.log("opacitysolid:"+$('#'+Elementid).css("background-color"));
-				$(ElementtoColor).css("background-color",$("#samplebox").css("background-color"));
-				$("#"+Elementid).data("Data-backtrans",false); $("#"+Elementid).data("background-color",$("#samplebox").css("background-color"));
-			};
-			ColorCurrentupdate(ElementtoColor,"Data-backtrans",$("#"+Elementid).data("Data-backtrans"));	
-		});
-	function colorToHex(color) {
-		if (color==null) { return '#ffffff';}
-		if (!color.match(/rgb/g)) { return "#ffffff"; }
-		if (color.substr(0, 1) === '#') {
-				return color;
+	$("#textcolor").minicolors({
+		theme: 'bootstrap',
+		control: 'hue',
+		opacity: false,
+		format: "hex",
+		change: function(hex, opacity) {
+		 
+		 $("#sbox").css("color", hex);
+		 var title = $("#mymowdal").text();
+		 $(ElementtoColor).css("color", hex);
+		 $("#"+title).css("color",hex);
+			 ColorCurrentupdate(ElementtoColor,"color",hex);
+
 		}
-		
-		var digits = /(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color);
-		
-		var red = parseInt(digits[2]);
-		var green = parseInt(digits[3]);
-		var blue = parseInt(digits[4]);
+});		 
 
-		var rgb = blue | (green << 8) | (red << 16);
-		return digits[1] + '#' + rgb.toString(16);
-	};
+$("#background").minicolors({
+		theme: 'bootstrap',
+		control: 'hue',
+		opacity: false,
+		format: "hex",
+		change: function(hex, opacity) {
+		 
+		 $("#sbox").css("background-color", hex);
+		 var title = $("#mymodal").text();
+		 $(ElementtoColor).css("background-color", hex);
+		 $("#"+title).css("background-color",hex);
+			 ColorCurrentupdate(ElementtoColor,"background-color",hex);
 
+		}
+		 
+	});
+	$("#frame").minicolors({
+		theme: 'bootstrap',
+		control: 'hue',
+		opacity: false,
+		format: "hex",
+		change: function(hex, opacity) {
+		 
+		 $("#sbox").css("border-color", hex);
+		 var title = $("#mymodal").text();
+		 $(ElementtoColor).css("border-color", hex);
+		 $("#"+title).css("border-color",hex);
+			 ColorCurrentupdate(ElementtoColor,"border-color",hex);
 
-
-	$(".colorize").click(function (e) {
+		}
+		 
+	});
+	
+	
+			$(".colorize").click(function (e) {
 				e.stopPropagation();
 				ElementtoColor = $(this).attr("Data-tag");
 				Elementid=  $(this).attr("Data-id");
 				var title = $(this).attr("class").split(' ').pop();
-				$("#myModalLabel").text(Elementid);
-				
-				
-				
-				
-			//	console.log($(this).attr("class"));
-			//	console.log("B=" + $(this).css("background-color") +";" + colorToHex($(this).css("background-color").match(/rgb/g))+ ", F:" + $(this).css("color") + ", bor=" + $(this).css("border-color")+";" + colorToHex($(this).css("background-color").match(/rgb/g)));
-			//	$("#textcolor").minicolors("value", colorToHex($(this).css("color")) ); 
-		
-	//		$(".minicolors2").minicolors({ theme: 'bootstrap'});
+				$("#mymodal").text(Elementid);
+					$("#sbox").css("backgroundColor", $(ElementtoColor).css("backgroundColor"));
+					$("#background").val(rgba2hex($(ElementtoColor).css("backgroundColor")) );
+					$('.background .minicolors-swatch-color').css('background-color',$(ElementtoColor).css("backgroundColor"))
+					if(rgba2hex($(ElementtoColor).css("background-color")) == "#000000") {$("#transbckgrnd").prop("checked",true);$("#background").prop("disabled",true);
+					} else { $("#transbckgrnd").prop("checked",false); $("#background").prop("disabled",false); }
+					
+					$("#sbox").css("color", $(ElementtoColor).css("color"));
+					$("#textcolor").val(rgba2hex($(ElementtoColor).css("color")) );
+					$('.textcolor .minicolors-swatch-color').css('background-color',$(ElementtoColor).css("color"))
+					if(rgba2hex($(ElementtoColor).css("color")) == "#000000") {$("#transtxt").prop("checked",true); $("#textcolor").prop("disabled",true);
+					} else { $("#transtxt").prop("checked",false); $("#textcolor").prop("disabled",false);}
+					$("#sbox").css("border-color", $(this).css("border-color"));
+					$('.frame .minicolors-swatch-color').css('background-color',$(ElementtoColor).css("border-color"))
+					$("#frame").val(rgba2hex($(ElementtoColor).css("border-color")) ); 
+					if(rgba2hex($(ElementtoColor).css("border-color")) == "#000000") {$("#transfrm").prop("checked",true);$("#frame").prop("disabled",true);
+					} else { $("#transfrm").prop("checked",false); $("#frame").prop("disabled",false); }
 
-			
-				
-				if($(this).attr("Data-background") == "yes") { 
-					$(".background").show(); $(".noback").show();
-					$("#samplebox").css("background-color", $("#"+Elementid).css("background-color"));
-					$("#background").minicolors("value", colorToHex($("#"+Elementid).css("background-color")) );
-					if($("#"+Elementid).css("background-color") == "transparent") {
-						$("#noback").prop("checked",true); //console.log("found transparent"+$("#"+Elementid).css("background-color"));
-						$(ElementtoColor).css("background-color","transparent"); 
-						//$("#"+Elementid).data("Data-backtrans",true); 
-						
-					} else {
-						$("#noback").prop("checked",false);//console.log("found not transparent"+$('#'+Elementid).css("background-color"));
-					//	$("#"+Elementid).data("Data-backtrans",false);
-						 
-					}
-					//console.log("back is disabled");
-					//$("#background").minicolors("value", "#ffffff");
-				} else { 
-					$(".background").hide();
-					$(".noback").hide();
-					
-				};
-				if($(this).attr("Data-textcolor") == "yes") { 
-					$(".textcolor").show();
-					$("#samplebox").css("color", $('#'+Elementid).css("color"));
-					$("#textcolor").minicolors("value", colorToHex($('#'+Elementid).css("color")) );
-					//console.log("textcolor enabled");
-					//$("#background").minicolors("value", "#ffffff");
-				} else { 
-				$(".textcolor").hide();
-					
-				};
-				if($(this).attr("Data-border") == "yes") { 
-					$(".frame").show();
-					$("#samplebox").css("border-color", $('#'+Elementid).css("border-color"));
-					$("#frame").minicolors("value", colorToHex($('#'+Elementid).css("border-color")) ); 
-					//$("#background").minicolors("value", "#ffffff");
-				} else { 
-					$(".frame").hide();
-					
-				};
-
-				$("#myModal").modal("show");
 			});
 			
-	$("#modalcontainer").draggable();
+	//$("#modalcontainer").draggable();
 	$("#textcolor.minicolors2").minicolors({
 		theme: 'bootstrap',
 		
@@ -199,18 +197,55 @@
 		 $(ElementtoColor).css("border-color", hex);
 		 $("#"+Elementid).data("Data-bordercolor",hex);
 		 ColorCurrentupdate(ElementtoColor,"border-color",hex);
-//			console.log($("#samplebox").css("color"));
+//			console.log($("#sampleboxsamplebox").css("color"));
 //			console.log("...."+hex + "....." + opacity);
 		}
 		 
 	});
 	
-/*	$(".colorize").each(function(index){
-		
-		console.log(index + ":" + $(this).attr("Data-id") + ":" + $(this).attr("Data-tag"));
-		
-		});
-*/
+$("#transtxt").click(function(){
+ if ($("#transtxt").prop("checked")) { 
+	 $("#sbox").css("color", "transparent");
+	 $("#textcolor").prop("disabled",true);
+	 $(ElementtoColor).css("color","transparent");
+	 ColorCurrentupdate(ElementtoColor,"color","transparent");
+ } else {
+	 $("#textcolor").prop("disabled",false);
+	 $("#sbox").css("color", $("#textcolor").val());
+	 $(ElementtoColor).css("color",$("#textcolor").val());
+	 ColorCurrentupdate(ElementtoColor,"color",$("#textcolor").val());
+	 
+ }
+});
+$("#transbckgrnd").click(function(){
+ if ($("#transbckgrnd").prop("checked")) { 
+	 $("#sbox").css("background-color", "transparent");
+	 $("#background").prop("disabled",true);
+	 $(ElementtoColor).css("background-color","transparent");
+	 ColorCurrentupdate(ElementtoColor,"background-color","transparent");
+ } else {
+	 $("#background").prop("disabled",false);
+	 $("#sbox").css("background-color", $("#background").val());
+	 $(ElementtoColor).css("background-color",$("#background").val());
+	 ColorCurrentupdate(ElementtoColor,"background-color",$("#background").val());
+	 
+ }
+});
+$("#transfrm").click(function(){
+ if ($("#transfrm").prop("checked")) { 
+	 $("#sbox").css("border-color", "transparent");
+	 $("#frame").prop("disabled",true);
+	 $(ElementtoColor).css("border-color","transparent");
+	 ColorCurrentupdate(ElementtoColor,"border-color","transparent");
+ } else {
+	 $("#frame").prop("disabled",false);
+	 $("#sbox").css("border-color", $("#frame").val());
+	 $(ElementtoColor).css("border-color",$("#frame").val());
+	 ColorCurrentupdate(ElementtoColor,"border-color",$("#frame").val());
+	 
+ }
+});
+
 $("#Savechanges").click(function(){
 	
 	Savecurrent();

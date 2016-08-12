@@ -229,7 +229,7 @@
 	function refreshall() {
 		
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
-		refreshList("GetDisklist","#Disks","Data/disklist.txt");
+		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		if (config == 0) {
 			var date2
 			if( $("#dater2").val() == "") { 
@@ -481,7 +481,7 @@ $("#Disks").change(function(){
 		});
 		$(".traffic").change( function () { traffictime="44:44:34"; });
 		$(".checkboxy").change (function(){ updatelogarea();});
-		refreshList("GetDisklist","#Disks","Data/disklist.txt");
+		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		$.post("./pump.php", { req:"GetDisklist", name: "Data/disklist.txt"},function(){});
 		setInterval('refreshall()', 500); // Loop every 1000 milliseconds (i.e. 1 second)
 		//console.log("<?php print $_REQUEST["idd"]; print session_id(); ?>");

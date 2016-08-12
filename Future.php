@@ -1,8 +1,8 @@
-<div class="row Future">
+<div class="row Future dialogbox">
 	<div class=" col-sm-offset-1 col-sm-10">
 		<div class="box ">
 			<div class="row">
-				<h2 class="configTitle separatortbot" style="margin-top:2px;" >Active Directory</h2>
+				<h2 class="configTitle separatortbot" style="margin-top:2px;" >Box Properties</h2>
 			</div>									
 			<form class="form-horizontal " role="form" data-toggle="validator">
 				<div class="row">
@@ -13,15 +13,7 @@
 								<input type="text" id="BoxName" class=" form-control " placeholder="boxname" required>
 							</div>
 						</div>
-						<div class="form-group row">
-							<label  for="network" class=" col-sm-5 control-label  ">Network</label>
-							<div class="col-sm-6">
-								<select id="network"  class="form-control">
-									<option value="2"  >DHCP</option>
-									<option value="1"  >Manual</option>
-								</select>
-							</div>
-						</div>
+						
 						
 						<div class=" form-group row IPAddress">
 							<label  for="IPAddress" class="col-sm-5 control-label">IP Address</label>
@@ -54,18 +46,18 @@
 					
 						<div class="form-group row">
 							<div class="row">
-								<button type="button" class="btn btn-default col-sm-offset-2 col-sm-7 submitb" data-toggle="tooltip" data-placement="top" title="submit values" id="DNSsubmit">Submit</button>
+								<button type="button" class="btn btn-default col-sm-offset-2 col-sm-6 submitb" data-toggle="tooltip" data-placement="top" title="submit values" id="DNSsubmit">Submit</button>
 							</div>
 						</div>
 					</div>
 					<div class=" col-sm-5">
 						<div class=" form-group row">
-							<div class=" col-sm-12">
+							<div class=" col-sm-11">
 								<textarea id="Futurestatus" class="form-control" rows="3"></textarea>
 							</div>
-							<div class="row">
-								<button type="button" class="btn btn-default col-sm-offset-3 col-sm-7 finish" data-toggle="tooltip" data-placement="bottom" title="close window">Finish</button>
-							</div>
+						</div>
+						<div class="form-group row">
+								<button type="button" class="btn btn-default col-sm-offset-2 col-sm-7 finish" style="margin-top: 0.8rem;" data-toggle="tooltip" data-placement="bottom" title="close window">Finish</button>
 						</div>
 					</div>
 				</div>

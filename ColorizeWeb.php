@@ -5,33 +5,46 @@
 ?>
 <html>
 
-	<?php $men=7;include "header.html"; ?>
+	<?php $men=7;include "header3.html"; ?>
 
+							<li><a href="#" class="ADa rightli"><h4 id="AD"><span>Active Directory</span></h4></a></li>
+							<li><a href="#" class="Logsa rightli"><h4 id="Logs"><span>Logs</span></h4></a></li>
 							
-							<li><a href="#" class="rightli ADa "><h4 id="AD"><span>Active Directory</span></h4></a></li>
-							<li><a   href="#" class="rightli UnLina"><h4 id="UnLin"><span>Box users</span></h4></a></li>
-							<li><a href="#" class="rightli Futurea"><h4 id="Future"><span> .........Future</span></h4></a></li>
+							
+							
 						</ul>
-						<ul  > 
-							<li><a id="List" href="#" ><h4  class=" colorize" Data-tag=".rightli" Data-id="List" Data-textcolor="yes" Data-background="no" Data-border="no" id="colorizethis"><span> Colorize List</span></h4></a></li>
-							<li ><a class="colorize " Data-tag="#rightPane" Data-id="rightPane" Data-textcolor="no" Data-background="yes" Data-border="no" href="#" ><h4 id="AD"><span>Colorize RightPane</span></h4></a></li>
+						<ul class="ullis" > 
+							<li><a id="List" href="#" ><h4  class=" colorize rightli" Data-tag=".rightli" Data-id="List" Data-textcolor="yes" Data-background="no" Data-border="no" id="colorizethis"><span> Colorize List</span></h4></a></li>
+							<li ><a class="colorize rightli " Data-tag="#rightPane" Data-id="rightPane" Data-textcolor="yes" Data-background="yes" Data-border="yes" href="#" ><h4 id="AD"><span>Colorize RightPane</span></h4></a></li>
 							
 							
 							
 						</ul>
 					
+					   
 						<?php include "AD.php"; ?>
-						<?php include "UnLin.php"; ?>
-					</div>
+						<?php include "Logs.php" ?>
+						<?php include "SScolorize.php" ?>
 					
+					</div>
+					<div class="col-sm-4 colorpane" id="colorpane" Data-tag="#colorpane" Data-id="colorpane" Data-textcolor="no" Data-background="no" Data-border="no">
+						<?php include "colorize.php"; ?>
+					</div>
+					  
+					
+								
+					
+					
+				
 				</div>
+					</div>
 			
 		
-			
-					</div>
+
 	</div>
-	<div class=" prefooter colorize"  id="prefooter" Data-tag=".prefooter" Data-id="prefooter" Data-textcolor="yes" Data-background="yes" Data-border="yes">
-				<footer class="footer colorize" id="footer" Data-tag=".footer" Data-id="footer" Data-textcolor="yes" Data-background="yes" Data-border="yes"> Errors
+	
+	<div class=" prefooter colorize"  id="prefooter" Data-tag=".prefooter" Data-id="footer" Data-textcolor="yes" Data-background="yes" Data-border="yes">
+				<footer class="footer prefooter colorize" id="footer" Data-tag=".footer" Data-id="footer" Data-textcolor="yes" Data-background="yes" Data-border="yes"> Errors
 				</footer>
 			</div>
 	
@@ -46,18 +59,18 @@
 	
 		<script>
 			var config = 1;
-			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();
-			$("#AD").click(function (){ 
-				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".AD").show(); };});
-			$("#UnLin").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".UnLin").show();};});
+			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();$(".SS").hide();$(".Logs").hide();
+			$("#AD").click(function (){ if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".ullis").hide(); $(".AD").show(); };});
+			$("#UnLin").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/linux.png')"); $(".UnLin").show();};});
 			$("#Future").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/future.png')").text("Future"); $(".Future").show();};});
-			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
+			$("#SS").click(function (){ if(config== 1){ config= 0; $("h2").css("background-image","url('img/SS.png')").text("Service Status");; $(".SS").show();};});
+			$("#Logs").click(function (){ if(config== 1){ config= 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".ullis").hide(); $(".Logs").show();};});
+			
+			$(".finish").click(function (){ config = 1;$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();$(".SS").hide();$(".Logs").hide(); $(".ullis").show();});
 			$(".AD").draggable();
 			
 		</script>
- <?php include "colorize.php"; ?> 
-	
-		 <script> console.log("$('"+"dkdk"+"').css('background-color',"+"'dslks'"+");");</script>
+ 
 			
 	</body>
 
