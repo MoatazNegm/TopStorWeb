@@ -2,14 +2,14 @@
 
 
 							<div class=" col-sm-offset-- col-sm-12" >
-								<div class="boxx " id="Popuplog">
+								<div class="boxx statusbox colorize" Data-tag=".statusbox" Data-id="statusbox" id="Popuplog">
 									<div class="row">
-										<h2 class="configTitle separatortbot col-sm-2" style="margin-top:2px;" id="SubTitle"></h2>
+										<h2 class="configTitle separatortbot col-sm-12" style="margin-top:2px;" id="SubTitle"></h2>
 									</div>									
 											<div id="Voldetails"	class="row Paneloption ">
-												<div  class="panel panel-default ">
+												<div  class="col-sm-offset-1 col-sm-10 panel panel-default ">
 										        <!-- Default panel contents -->
-												    <div id="Volumnamedetails" class="panel-heading  colorize " Data-tag=".panel-heading" Data-id="panel-heading" Data-textcolor="yes" Data-background="yes" Data-border="yes"style="">
+												    <div id="Volumnamedetails" class=" panel-heading  colorize " Data-tag=".panel-heading" Data-id="panel-heading" Data-textcolor="yes" Data-background="yes" Data-border="yes"style="">
 													   <form class="form-inline "style="margin-top: -1%;margin-bottom: -1%;" role="form">	
 														<div class="form-group heading"  style="width: 3%"></div>
 														<div class="form-group heading" class="cheading" style="width: 30%">
