@@ -230,6 +230,7 @@
 			});
 			setInterval('refreshall()', 500);
 			refreshall();
+			
 		</script>
 			 
 	</body>
