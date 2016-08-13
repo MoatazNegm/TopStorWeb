@@ -33,16 +33,18 @@ body {
 .leftPane {
 	border: 5px ridge;
 	height: 43rem; 
-	
-
-
 
 }
+
 .rightPane {
 	background-color: #3e4146; /* Old browsers */
 	
 
 }
+.boxy {
+ height: 42rem;
+ padding: 1rem;
+ }
 .colorpane {
 	border: 5px ridge;
 	height: 43rem; 

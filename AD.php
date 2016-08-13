@@ -1,11 +1,10 @@
-<div class="row AD dialogbox">
-	<div id="Popup" class="col-sm-offset-1 col-sm-10 boxy colorize " style="margin-top: 1rem;" Data-tag=".boxy" Data-id="Popup" Data-textcolor="yes" Data-background="yes" Data-border="yes">
+<div class="row AD ">
+	<div id="Popup" class=" boxy colorize "  style="height: 42rem; padding: 1rem;" Data-tag=".boxy" Data-id="Popup" Data-textcolor="yes" Data-background="yes" Data-border="yes">
 		<div class="row">
 			<h2 class="configTitle colorize separatortbot" style="margin-top:2px;"  id="SubTitle"  Data-tag=".configTitle" Data-id="SubTitle" Data-textcolor="yes" Data-background="no" Data-border="no">Active Directory</h2>
 		</div>									
 		<div class="row">
 			<form class="form-horizontal " role="form" style="margin-top: 6rem;">
-			
 				<div class=" col-sm-7">
 					<div class=" form-group row ">
 						<label  for="DomWork" class="col-sm-3 control-label">Domain/Workgroup
@@ -60,10 +59,6 @@
 
 		</div>
 		
-		<div class=" row">
-			<div class="col-sm-offset- col-sm-12  ">
-				<button type="button" id="finish" class="btn btn-default form-control finish colorize" style="margin-top: 3.2rem;" Data-id="Pls-select-to-Colorize" Data-tag="Colorize" data-toggle="tooltip" data-placement="bottom" title="close window">Finish</button>
-			</div>
-		</div>
+		
 	</div>
 </div>

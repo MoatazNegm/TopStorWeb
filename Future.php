@@ -1,10 +1,10 @@
 <div class="row Future dialogbox">
-	<div class="col-sm-offset-1 col-sm-10 boxy colorize " style="margin-top: 1rem;" >
+	<div class=" col-sm-12 boxy colorize " style="height: 42rem; padding: 1rem;">
 		<div class="row">
 			<h2 class="configTitle separatortbot" style="margin-top:2px;" >Box Properties</h2>
 		</div>
 		<div class="row">									
-			<form class="form-horizontal " role="form" data-toggle="validator">
+			<form class="form-horizontal " style="margin-top: 6rem;" role="form" data-toggle="validator">
 				<div class="  col-sm-7">
 					<div class=" form-group row">
 						<label  for="BoxName" class="col-sm-3 control-label">BoxName</label>
@@ -48,10 +48,5 @@
 				</div>
 			</form>
 		</div>
-		<div class=" row">
-			<div class="col-sm-offset- col-sm-12  ">			
-				<button type="button" class="btn btn-default form-control finish"  style="margin-top: 3.2rem;" data-toggle="tooltip" data-placement="bottom" title="close window">Finish</button>
 			</div>
-		</div>
-	</div>
 </div>

@@ -1,10 +1,10 @@
 <div class="row UnLin dialogbox">
-	<div class=" col-sm-offset-1 col-sm-10 boxy" style="margin-top: 1rem;">
+	<div class=" col-sm-12 boxy" style="height: 42rem; padding: 1rem;">
 		<div class="row">
 			<h2 class="configTitle colorize separatortbot" style="margin-top:2px;"  id="SubTitle2"  Data-tag=".configTitle" Data-id="SubTitle" Data-textcolor="yes" Data-background="no" Data-border="no">Unix/Linux</h2>
 		</div>									
 		<div class="row">
-				<form class="form-horizontal " role="form">
+				<form class="form-horizontal " style="margin-top: 6rem;" role="form">
 					
 						<div class="  col-sm-4 ">
 							<div class=" form-group row">
@@ -52,12 +52,7 @@
 						</div>
 				</form>
 		</div>	
-		<div class=" row">
-			<div class="col-sm-offset- col-sm-12  ">
-				<button type="button" id="finish" class="btn btn-default form-control finish colorize" style="margin-top: 3.2rem;" Data-id="Pls-select-to-Colorize" Data-tag="Colorize" data-toggle="tooltip" data-placement="bottom" title="close window">Finish</button>
-			</div>
-		</div>
-
+		
 	</div>
 </div>
 					

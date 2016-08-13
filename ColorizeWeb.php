@@ -9,6 +9,7 @@
 
 							<li><a href="#" class="ADa rightli"><h4 id="AD"><span>Active Directory</span></h4></a></li>
 							<li><a href="#" class="Logsa rightli"><h4 id="Logs"><span>Logs</span></h4></a></li>
+							<li><a href="#" class="CIFSa rightli"><h4 id="CIFS"><span>CIFS</span></h4></a></li>
 							
 							
 							
@@ -21,9 +22,10 @@
 							
 						</ul>
 					
-					   
+
 						<?php include "AD.php"; ?>
 						<?php include "Logs.php" ?>
+						<?php include "NFS.php"; ?>
 						<?php include "SScolorize.php" ?>
 					
 					</div>
@@ -59,14 +61,15 @@
 	
 		<script>
 			var config = 1;
-			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();$(".SS").hide();$(".Logs").hide();
+			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();$(".SS").hide();$(".Logs").hide();$(".NFS").hide();$(".Paneloption").hide();
 			$("#AD").click(function (){ if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".ullis").hide(); $(".AD").show(); };});
 			$("#UnLin").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/linux.png')"); $(".UnLin").show();};});
 			$("#Future").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/future.png')").text("Future"); $(".Future").show();};});
 			$("#SS").click(function (){ if(config== 1){ config= 0; $("h2").css("background-image","url('img/SS.png')").text("Service Status");; $(".SS").show();};});
 			$("#Logs").click(function (){ if(config== 1){ config= 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".ullis").hide(); $(".Logs").show();};});
+			$("#CIFS").click(function (){ if(config== 1){ config= 0; $("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".ullis").hide(); $(".NFS").show();$("#Vollist").show();};});
 			
-			$(".finish").click(function (){ config = 1;$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();$(".SS").hide();$(".Logs").hide(); $(".ullis").show();});
+			$(".finish").click(function (){ config = 1;$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();$(".SS").hide();$(".Logs").hide();$(".NFS").hide(); $(".ullis").show();});
 			$(".AD").draggable();
 			
 		</script>
