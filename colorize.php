@@ -247,7 +247,7 @@ $("#transfrm").click(function(){
 });
 
 $("#Savechanges").click(function(){
-	
+	console.log("saving");
 	Savecurrent();
 	});	
 $("#Restlststng").click(function(){
@@ -255,15 +255,16 @@ $("#Restlststng").click(function(){
 	RestoreLastSettings();
 	
 	
-	//ApplySetting();
+	ApplySetting();
 	});	
 	
 $("#RestIntstng").click(function(){
 	
+	
 	RestoreInitSettings();
 	
 	
-	//ApplySetting();
+	ApplySetting();
 	});	
 
 </script>

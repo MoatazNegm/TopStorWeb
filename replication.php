@@ -41,7 +41,7 @@
 			var status=0;
 			var syscounter=10;
 			var syscounter2=1000;
-			$("#deletePool").hide();$("#submitdiskgroup").hide();$("#passphrase").hide();
+			$("#deletePool").hide();$("#submitdiskgroup").hide();$("#passphrase").hide();$(".finish").hide();$("#SnapshotCreatediv").hide();
 			
 
 			function snaponce(txtin,but,altbut){
@@ -260,7 +260,7 @@
 			
 			var config = 1;
 			$("[class*='xdsoft']").hide();
-			$(".Partners").hide(); $(".Replicate").hide(); $(".Sendersc").hide();$(".Proxy").hide();
+			$(".Partners").hide(); $(".Replicate").hide(); $(".Sendersc").hide();$(".Proxy").hide();$(".finish").hide();
 			$("#Partners").click(function (){
 				var userpriv="false";
 				
@@ -274,7 +274,7 @@
 					};
 				
 					if( userpriv=="true" | curuser=="admin" ) { 
-					 config= 0; $("h2").css("background-image","url('img/Partners.png')").text("Partners"); status="Partners"; $(".Partners").show(); partner="2432334";
+					 config= 0; $("h2").css("background-image","url('img/Partners.png')").text("Partners"); status="Partners"; $(".ullis").hide();$(".finish").show(); $(".Partners").show(); partner="2432334";
 					}
 				});
 			});
@@ -291,7 +291,7 @@
 						};
 					
 						if( userpriv=="true" | curuser=="admin" ) { 
-							config = 0; status="snaps"; $("h2").css("background-image","url('img/receivers.png')").text("Replicate");  $("option.variable").remove(); Vollisttime="44:3133:22";times= { "snaps":"331==:433", "periods":"30==erwe1:43:43", "sender":"435341:456356:563"}; $(".Replicate").show();replival={ "snaps":"33=1=:433", "periods":"30==e1rwe:43:43", "sender":"435341:456356:563", "Proxy":"32442ewrwe"};
+							config = 0; status="snaps"; $("h2").css("background-image","url('img/receivers.png')").text("Replicate");  $("option.variable").remove(); Vollisttime="44:3133:22";times= { "snaps":"331==:433", "periods":"30==erwe1:43:43", "sender":"435341:456356:563"};$(".ullis").hide(); $(".finish").show(); $(".Replicate").show();replival={ "snaps":"33=1=:433", "periods":"30==e1rwe:43:43", "sender":"435341:456356:563", "Proxy":"32442ewrwe"};
 						}
 					});
 				};
@@ -309,7 +309,7 @@
 						};
 					
 						if( userpriv=="true" | curuser=="admin" ) { 
-							config = 0; status="Senders"; $("h2").css("background-image","url('img/senders.png')").text("Senders");  $("option.variable").remove(); ;times= { "snaps":"33=e33", "periods":"30==erwe3e:433", "sender":"43534:456:45e63" }; $(".Sendersc").show();replival={ "snaps":"33==e:433", "periods":"30==erwe:e43:43", "sender":"43534:4e56356:563", "Proxy":"3242ewr5we"};Vollisttime="44:333:sedfsd";
+							config = 0; status="Senders"; $("h2").css("background-image","url('img/senders.png')").text("Senders");  $("option.variable").remove(); ;times= { "snaps":"33=e33", "periods":"30==erwe3e:433", "sender":"43534:456:45e63" };$(".ullis").hide();$(".finish").show(); $(".Sendersc").show();replival={ "snaps":"33==e:433", "periods":"30==erwe:e43:43", "sender":"43534:4e56356:563", "Proxy":"3242ewr5we"};Vollisttime="44:333:sedfsd";
 						}
 					});
 				};
@@ -328,7 +328,7 @@
 									};
 								
 									if( userpriv=="true" | curuser=="admin" ) { 
-										config = 0; status="Proxy"; $("h2").css("background-image","url('img/senders.png')").text("Proxy License");  $("option.variable").remove(); ;times= { "snaps":"33=f33", "periods":"30==erwe3:4f33", "sender":"43534:456:4563" }; $(".Proxy").show();replival={ "snaps":"33==:4f33", "periods":"30==erwe:4f3:43", "sender":"43534:456f356:563", "Proxy":"3242efwrwe"};Vollisttime="44:333:sdfsd";
+										config = 0; status="Proxy"; $("h2").css("background-image","url('img/senders.png')").text("Proxy License");  $("option.variable").remove(); ;times= { "snaps":"33=f33", "periods":"30==erwe3:4f33", "sender":"43534:456:4563" };$(".ullis").hide();$(".finish").show(); $(".Proxy").show();replival={ "snaps":"33==:4f33", "periods":"30==erwe:4f3:43", "sender":"43534:456f356:563", "Proxy":"3242efwrwe"};Vollisttime="44:333:sdfsd";
 										refreshProxy("License","Data/Proxylist.txt","Proxy","Proxyurl","Alias");
 									}
 								});
@@ -336,7 +336,7 @@
 						});
 
 			$(".finish").click(function (){ 
-				config = 1; status=0; $(".Partners").hide(); $(".Replicate").hide(); $(".Sendersc").hide(); $(".Proxy").hide()});
+				config = 1; status=0; $(".Partners").hide(); $(".Replicate").hide(); $(".Sendersc").hide();$(".ullis").show();$(".finish").hide(); $(".Proxy").hide()});
 			
 			
 			

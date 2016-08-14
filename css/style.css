@@ -33,16 +33,18 @@ body {
 .leftPane {
 	border: 5px ridge;
 	height: 43rem; 
-	
-
-
 
 }
+
 .rightPane {
 	background-color: #3e4146; /* Old browsers */
 	
 
 }
+.boxy {
+ height: 42rem;
+ padding: 1rem;
+ }
 .colorpane {
 	border: 5px ridge;
 	height: 43rem; 
@@ -468,19 +470,10 @@ td { padding: 0.1rem;}
 {
  margin-left: 2rem;
 }
-#prox.checkbox, .partnc {
- padding-top: 0px;
- padding-left: 0px;
-}
-#prox.checkbox label{
- padding-left: 0px;
-}
-#Proxy {
- margin-top: 1.8rem;
-}
 
 #lang {
 	margin-right: 1rem;
 	color: darkred; 
 }
 #lang a { color : darkred; }
+input { text-align: center; }

@@ -1,58 +1,56 @@
 <div class="row Replicate">
-							<div class=" col-sm-offset-1 col-sm-10">
-								<div class="box ">
-									<div class="row">
-										<h2 class="configTitle col-sm-12">Active Directory</h2>
-									</div>									
-									<div class="row">
-										
-										<div class="  col-sm-6 ">
-											<form class=" form-inline row">
-												<div class="form-group col-sm-offset-1" style="margin-left: 2px;">
-													<label  for="Pool" class="control-label">المجموعة</label>
-													<select  id="Pool" class="  form-control ">
-														<option>Data</option>
-													</select>
-												</div>
-												<div class="form-group col-sm-offset-1" style="margin-left: 2px;" >
-													<label  for="Vol" class=" control-label">المجلد</label>
-													<select  id="Vol" class=" form-control ">
-														<option class="variable">Vol1</option><option class="variable" >Vol2</option>
-													</select>
-												</div>
-												<div id="partnerc" class="form-group col-sm-offset-1" style="margin-left: 2px;">
-													<label  for="Partner" class=" control-label ">المستقبل</label>
-													<select  id="Partner" class=" form-control "><option>255.255.255.255</option></select>
-												</div>
+	<div class=" boxy colorize "  style="height: 42rem; padding: 1rem;">
+		<div class="row">
+			<h2 class="configTitle col-sm-12">Active Directory</h2>
+		</div>									
+		<div class="row">
+			<form class="form-horizontal " role="form" style="margin-top: 6rem;">
+				<div class="  col-sm-6 ">
+					<div class="form-group col-sm-offset-1" style="margin-left: 2px;">
+						<label  for="Pool" class="control-label">المجموعة</label>
+						<select  id="Pool" class="  form-control ">
+							<option>Data</option>
+						</select>
+					</div>
+					<div class="form-group col-sm-offset-1" style="margin-left: 2px;" >
+						<label  for="Vol" class=" control-label">المجلد</label>
+						<select  id="Vol" class=" form-control ">
+							<option class="variable">Vol1</option><option class="variable" >Vol2</option>
+						</select>
+					</div>
+					<div id="partnerc" class="form-group col-sm-offset-1" style="margin-left: 2px;">
+						<label  for="Partner" class=" control-label ">المستقبل</label>
+						<select  id="Partner" class=" form-control "><option>255.255.255.255</option></select>
+					</div>
+				</div>
+			</form>
+						<div class=" form-group row"></div>
+						<div class="form-group row spacer">
+							<div class=" boxoffields col-sm-offset-1 col-sm-2 spacer" style="margin-left: 0px;">
+								<span>التكرار</span>
+								<span>التكرار</span>
+								<div class="radio">
+										<label>
+										<input type="radio" name="Period" id="Once" value="Once">مرة
+										</label>
+								</div>
+								<div class="radio">
+										<label>
+											<input type="radio" name="Period" id="Hourly" value="Hourly">بالساعة
+										</label>
+								</div>
+								<div class="radio">
+										<label>
+											<input type="radio" name="Period" id="Minutely" value="Minutely">بالدقيقة
+										</label>
+								</div>
+								<div class="radio">
+										<label>
+											<input type="radio" name="Period" id="Weekly" value="Weekly">بالإسبوع
+										</label>
+								</div>
 
-											</form>
-											<div class=" form-group row"></div>
-											<div class="form-group row spacer">
-												<div class=" boxoffields col-sm-offset-1 col-sm-2 spacer" style="margin-left: 0px;">
-													<span>التكرار</span>
-													<span>التكرار</span>
-													<div class="radio">
-															<label>
-															<input type="radio" name="Period" id="Once" value="Once">مرة
-															</label>
-													</div>
-													<div class="radio">
-															<label>
-																<input type="radio" name="Period" id="Hourly" value="Hourly">بالساعة
-															</label>
-													</div>
-													<div class="radio">
-															<label>
-																<input type="radio" name="Period" id="Minutely" value="Minutely">بالدقيقة
-															</label>
-													</div>
-													<div class="radio">
-															<label>
-																<input type="radio" name="Period" id="Weekly" value="Weekly">بالإسبوع
-															</label>
-													</div>
-
-												</div>
+							</div>
 												<div class= " col-sm-offset-1 col-sm-8" style="margin-left: 0px;" >
 													<form class="form-horizontal row spacer" id="Onceset"role="form">
 														<div class="form-group">

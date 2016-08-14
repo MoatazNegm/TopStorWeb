@@ -6,15 +6,20 @@
 <html>
 	<?php $men=3;  include "header.html"; ?>
 	
+	
 							<li><a href="#" class="CIFSa rightli"><h4 id="CIFS"><span>CIFS</span></h4></a></li>
 							<li><a href="#" class="NFSa rightli"><h4 id="NFS"><span>NFS</span></h4></a></li>
 							<li><a href="#" class="ISCSIa rightli"><h4 id="ISCSI"><span>ISCSI</span></h4></a></li>
 						</ul>
+						
 						<div id="CIFScode"><?php include "CIFS.php"; ?></div>
 						<div id="NFScont"><div id="NfScode"><?php include "NFS.php"; ?></div></div>
 						<div id="ISCSIcode"><?php include "ISCSI.php"; ?></div>
+					
 					</div>
+					
 				</div>
+				
 			</div>
 			
 		</div>
@@ -59,6 +64,7 @@
 				if(Protocol != 0) {
 					refreshList2("GetPoolVollist","#Volumetable","Data/Vollist.txt","Volumes");
 					refresh3("#statusarea3");
+					ApplySetting(); 
 					//refreshList2("GetPoollist","#Pool2","Data/Poollist.txt","Pool");
 					//Voldirtytable();
 				}
@@ -105,12 +111,12 @@
 			}	;
 			function volumetable(i,v) {
 				var res = i.split("_");
-				$("#Volumetable").append('<tr onclick="rowisclicked(this)" ><td class="Volname">'+v+'</td><td>'+res[0]+'</td><td>'+res[1]+'</td><td>'+res[2]+'</td></tr>');
+				$("#Volumetable").append('<tr class="trow" onclick="rowisclicked(this)" ><td class="Volname tcol">'+v+'</td><td class="tcol">'+res[0]+'</td><td class="tcol">'+res[1]+'</td><td class="tcol">'+res[2]+'</td></tr>');
 				chartdata.push([v,parseFloat(res[0])]);
 			};
 			function volumetabledetails(i,v) {
 				var res = i.split("_");
-				$("#Volumedetails > tbody").append('<tr onclick="rowisclicked(this)"><td>'+res[0]+'</td><td>'+res[1]+'</td><td>'+res[2]+'</td><td>'+res[3]+'</td><td>'+res[4]+'</td><td>'+res[5]+'</td><td>'+res[6]+'</td><td>'+res[7]+'</td></tr>');
+				$("#Volumedetails > tbody").append('<tr class="trow" onclick="rowisclicked(this)"><td class=" tcol">'+res[0]+'</td><td class=" tcol">'+res[1]+'</td><td class=" tcol">'+res[2]+'</td><td class=" tcol">'+res[3]+'</td><td class=" tcol" >'+res[4]+'</td><td class=" tcol">'+res[5]+'</td><td class=" tcol">'+res[6]+'</td><td class=" tcol">'+res[7]+'</td></tr>');
 			};
 			
 			function refreshList2(req,listid,filelocfrom,show) {
@@ -151,7 +157,7 @@
 									//if ( gdata[prot].Pool == $("#Pool2 option:selected").val() ) {
 										$("#Vol2").append($('<option class="variable" >').text(gdata[prot].name).val(gdata[prot].name).addClass(gdata[prot].class));
 									
-									$(listid).append('<tr onclick="rowisclicked(this)" class="variable '+gdata[prot].class+'"><td class="Volname">'+gdata[prot].name+'</td><td>'+gdata[prot].volsize+'</td><td>'+gdata[prot].volact+'</td><td>'+gdata[prot].usedsnaps+'</td><td>'+gdata[prot].compress+'</td></tr>');
+									$(listid).append('<tr onclick="rowisclicked(this)" class="variable trow '+gdata[prot].class+'"><td class="Volname tcol">'+gdata[prot].name+'</td><td class="tcol">'+gdata[prot].volsize+'</td><td class="tcol">'+gdata[prot].volact+'</td><td class="tcol">'+gdata[prot].usedsnaps+'</td><td class="tcol">'+gdata[prot].compress+'</td></tr>');
 									chartdata[gdata[prot].class].push([gdata[prot].name,parseFloat(gdata[prot].volsize)]);
 								}
 								else $("#Pool2").append($('<option class="variable2">').text(gdata[prot].Pool).val(gdata[prot].class));
@@ -212,14 +218,14 @@
 				$(".Paneloption").hide();
 				switch(selection) {
 					case "newoption" :  $("#createvol").show(); break;
-					case "alloption" : $("tr.success").removeClass("success");rowisclicked(); $("#Vollist").show(); 
+					case "alloption" : $("tr.success").removeClass("success");rowisclicked(); $("#createvol").hide(); $("#Vollist").show(); 
 									 if(plotflag > 0 ) {
 										plotb.destroy();
 									}
 										plotchart('chartNFS',chartdata[$("#Pool2").val()]);
 									
 									break;
-					default: 
+					default:  $("#createvol").hide();
 							var fileloc= "Data/Vollist.txt";
 							$("#Volumedetails tbody tr.variable").remove();
 							$.get("requestdata.php", { file: fileloc }, function(data){
@@ -229,7 +235,7 @@
 										if(gdata[prot].name==selection){
 											//f ( gdata[prot].Pool == $("#Pool2 option:selected").val() ) {
 												
-												$("#Volumedetails tbody").append('<tr onclick="rowisclicked(this)" class="variable '+gdata[prot].class+'" ><td class="Volname">'+gdata[prot].volsize+'</td><td>'+gdata[prot].volact+'</td><td>'+gdata[prot].usedsnaps+'</td><td>'+gdata[prot].useddata+'</td><td>'+gdata[prot].crdate+'</td><td>'+gdata[prot].available+'</td><td>'+gdata[prot].compress+'</td><td>'+gdata[prot].dedup+'</td></tr>');
+												$("#Volumedetails tbody").append('<tr onclick="rowisclicked(this)" class="variable trow'+gdata[prot].class+'" ><td class="Volname tcol ">'+gdata[prot].volsize+'</td><td class="tcol">'+gdata[prot].volact+'</td><td class="tcol">'+gdata[prot].usedsnaps+'</td><td class="tcol">'+gdata[prot].useddata+'</td><td class="tcol">'+gdata[prot].crdate+'</td><td class="tcol">'+gdata[prot].available+'</td><td class="tcol">'+gdata[prot].compress+'</td><td class="tcol">'+gdata[prot].dedup+'</td></tr>');
 											//}
 										}
 									}
@@ -281,7 +287,7 @@
 			
 		
 			
-			$(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();
+			$(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();$(".ullis").show();$(".finish").hide();
 			$("#CIFS").click(function (){ 
 				if(config == 1 ) {
 					var userpriv="false";
@@ -299,7 +305,7 @@
 							Vollisttime = "55:55:44";
 							Initclickedprotocol();
 							Vollisttime2=32423
-							$("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".NFS").show();
+							$("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".ullis").hide(); $(".finish").show(); $(".NFS").show();
 							//plotchart('chartNFS',chartdata);
 						}
 					});
@@ -323,7 +329,7 @@
 							Vollisttime = "55:55:44";
 							Initclickedprotocol();
 							Vollisttime2=5654
-							$("h2").css("background-image","url('img/nfs.png')").text("NFS"); $(".NFS").show();
+							$("h2").css("background-image","url('img/nfs.png')").text("NFS"); $(".ullis").hide();$(".finish").show(); $(".NFS").show();
 							//plotchart('chartNFS',chartdata);
 						}
 					});
@@ -343,13 +349,13 @@
 						};
 					
 						if( userpriv=="true" | curuser=="admin" ) {
-							Protocol="ISCSI"; config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ISCSI").show(); plotchart('chartISCSI',chartdata);
+							Protocol="ISCSI"; config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ullis").hide(); $(".finish").show();$(".ISCSI").show(); plotchart('chartISCSI',chartdata);
 						}
 					});
 				};
 				refreshall()	;
 			});
-			$(".finish").click(function (){ Protocol=0; config = 1; $(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();});
+			$(".finish").click(function (){ Protocol=0; config = 1; $(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide(); $(".finish").hide(); $(".ullis").show();});
 			$( "#Vol2" ).change(function() {
 				var selection=$("#Vol2 option:selected").val();
 				SelectPanelNFS(selection);

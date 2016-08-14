@@ -1,25 +1,22 @@
-<div class="row AD dialogbox">
-						
-								
-	<div id="Popup" class="col-sm-offset-1 col-sm-10 boxy colorize " style="margin-top: 1rem;" Data-tag=".boxy" Data-id="Popup" Data-textcolor="yes" Data-background="yes" Data-border="yes">
+<div class="row AD ">
+	<div id="Popup" class=" boxy colorize "  style="height: 42rem; padding: 1rem;" Data-tag=".boxy" Data-id="Popup" Data-textcolor="yes" Data-background="yes" Data-border="yes">
 		<div class="row">
 			<h2 class="configTitle colorize separatortbot" style="margin-top:2px;"  id="SubTitle"  Data-tag=".configTitle" Data-id="SubTitle" Data-textcolor="yes" Data-background="no" Data-border="no">Active Directory</h2>
 		</div>									
 		<div class="row">
 			<form class="form-horizontal " role="form" style="margin-top: 6rem;">
-			
 				<div class=" col-sm-7">
 					<div class=" form-group row ">
 						<label  for="DomWork" class="col-sm-3 control-label">Domain/Workgroup
 						</label>
 							<div class=" col-sm-4">
-								<input type="text"  class="form-control colorize" id="DomName" Data-tag="input" Data-id="inputs" Data-textcolor="yes" Data-background="yes" Data-border="yes"  value="Sampel type">
+								<input type="text"  class="form-control text-center  colorize" id="DomName" Data-tag="input" Data-id="inputs" Data-textcolor="yes" Data-background="yes" Data-border="yes"  value="Sampel type">
 							</div>
 
 						<label  for="Domtype"  class="control-label col-sm-1 colorize"  Data-tag="select" Data-id="droplist">Type
 						</label>
 						<div class="col-sm-4">
-							<select id="Domtype colorize"  class="form-control" value="Workgroup">
+							<select id="Domtype colorize"  class="form-control text-center " value="Workgroup">
 								<option value="Domain"  >Domain</option>
 								<option value="Workgroup" selected >Workgroup</option>
 							</select>
@@ -28,13 +25,13 @@
 					<div class=" form-group row">
 							<label  for="DCserver" class="col-sm-3 control-label">DC server</label>
 							<div class=" col-sm-4">
-								<input type="text"  class="form-control colorize" id="DCserver" Data-tag="DomainServer" Data-id="inputs" Data-textcolor="yes" Data-background="yes" Data-border="yes"  value="Domain Server">
+								<input type="text"  class="form-control text-center colorize" id="DCserver" Data-tag="DomainServer" Data-id="inputs" Data-textcolor="yes" Data-background="yes" Data-border="yes"  value="Domain Server">
 							</div>
 						</div>
 					<div class=" form-group row ">
 						<label  for="Admin" class="col-sm-3 control-label">Administrator</label>
 						<div class=" col-sm-4">
-							<input type="text" id="Admin" class="form-control " value="sample input">
+							<input type="text" id="Admin" class="form-control text-center " value="sample input">
 						</div>
 					</div>
 				</div>	
@@ -51,7 +48,7 @@
 					
 						<label  for="Pass" class="col-sm-3 control-label">Passwored</label>
 						<div class=" col-sm-4">
-							<input type="password" id="Pass" class="form-control " placeholder="Admin password">
+							<input type="password" id="Pass" class="form-control text-center  " placeholder="Admin password">
 						</div>
 					</div>
 				</div>
@@ -62,10 +59,6 @@
 
 		</div>
 		
-		<div class=" row">
-			<div class="col-sm-offset- col-sm-12  ">
-				<button type="button" id="finish" class="btn btn-default form-control finish colorize" style="margin-top: 3.2rem;" Data-id="Pls-select-to-Colorize" Data-tag="Colorize" data-toggle="tooltip" data-placement="bottom" title="close window">Finish</button>
-			</div>
-		</div>
+		
 	</div>
 </div>

@@ -1,9 +1,9 @@
 <div class="row UserPrivileges">
-	<div class=" col-sm-offset-1 col-sm-10">
-		<div class="box ">
-			<div class="row">
-				<h2 class="configTitle col-sm-12">User Privileges</h2>
-			</div>									
+	<div class=" col-sm-12 boxy "  style="height: 42rem; padding: 1rem;" >
+		<div class="row">
+			<div class="col-sm-11">
+				<h2 class="configTitle colorize separatortbot " style="margin-top:2px;"  id="SubTitle">Active Directory</h2>
+			</div>			
 			<div class="row">
 				<div class="  col-sm-7 ">
 					<form class=" form-inline row">
@@ -111,18 +111,14 @@
 				</div>
 		
 			</div>
-			<div class=" row">
-				<div class=" col-sm-6">
+			<div class=" row spacer">
+				<div class=" col-sm-offset-2 col-sm-8">
 					<div class=" form-group row" id="SnapshotCreatediv">
-						<button type="button" class="btn btn-default col-sm-offset-5 col-sm-6 SnapshotCreate " id="SubmitPriv" data-toggle="tooltip" data-placement="bottom" title="close window">submit</button>
+						<button type="button" class="btn btn-default form-control SnapshotCreate " id="SubmitPriv" data-toggle="tooltip" data-placement="bottom" title="close window">submit</button>
 					</div>
 				</div>
 				
-				<div class=" col-sm-6">
-					<div class="form-group row ">
-							<button type="button" class="btn btn-default col-sm-offset-3 col-sm-7 finish" data-toggle="tooltip" data-placement="top"  title="submit values">Finish</button>
-					</div>
-				</div>
+				
 			</div>
 		</div>				
 	</div>
