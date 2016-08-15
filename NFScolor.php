@@ -80,6 +80,7 @@
 											</tr>
 											<tr class="info">
 												<th class="colorize" Data-tag=".tcol" Data-id="tablerow">Colorize row</th>
+												<th class="colorize" Data-tag=".success .tcol" Data-id="row selected">colorize selected row</th>
 											</tr>
 										</thead>
 									</table>
@@ -102,8 +103,8 @@
 											<tr class="trow" onclick="rowisclicked(this)">
 												<td class="tcol" >Homes</td><td class="tcol">5000</td><td class="tcol">3500</td><td class="tcol">5</td>
 											</tr>
-											<tr class="trow" onclick="rowisclicked(this)">
-												<td class="tcol">SQL</td><td class="tcol">2</td class="tcol"><td>.4</td><td class="tcol">20</td>
+											<tr class="trow success" onclick="rowisclicked(this)">
+												<td class="tcol">SQL</td><td class="tcol">2</td class="tcol"><td class="tcol">.4</td><td class="tcol">20</td>
 											</tr>
 											<tr class="trow" onclick="rowisclicked(this)">
 												<td class="tcol">temp</td><td class="tcol">1</td><td class="tcol">.1</td><td class="tcol">3</td>

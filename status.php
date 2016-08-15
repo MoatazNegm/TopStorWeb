@@ -48,8 +48,8 @@
 			var logtime=[]; var logtimenew="34543:43543:34";
 			var dl =[[[0,0]],[[0,0]]];
 			var plotpls=[[0,0]]; var plotrs; var plotws; var plotsvct; var plotqlen; var plotdl;
-			var traffictime = "55:55:55";
-			var trafficnewtime = "new 3444"
+			var traffictime = "0";
+			var trafficnewtime = traffictime;
 			var logstatus=[];
 			var logcache=3;
 			var obj=[];
@@ -60,9 +60,27 @@
 			var page=0;
 			var reqpage=0;
 			var activepage=0; var lastpage=-1;
-			
+			$.get("requestdatein.php", { file: 'Data/ctr.logupdated' }, function(data){
+				
+					var objdate=jQuery.parseJSON(data);
+					
+					trafficnewtime=objdate.updated;
+					traffictime=trafficnewtime;
+				});
+			function parse(str) {
+									 var weekday= [ "Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday" ];
+									var months = [ "January", "February", "March", "April", "May", "June", 
+               "July", "August", "September", "October", "November", "December" ];
+									var y = str.substr(0,4),
+										m = str.substr(4,2) - 1,
+										d = str.substr(6,2);
+									var D = new Date(y,m,d);
+									//return(D.getFullYear() == y && D.getMonth() == m && D.getDate() == d) ? D : 'invalid date';
+									return weekday[D.getDay()]+" "+D.getDate()+"-"+months[D.getMonth()]+"-"+D.getFullYear();
+								}
+											
 					$("#INFO").click(function() {
-				console.log("clicked");
+				
 				$(".datarow").hide();
 				if($("#INFO").is(":checked")) { $(".info").show(); }
 				if($("#Warning").is(":checked")) { $(".warning").show(); }
@@ -140,7 +158,7 @@
 			});
 			$(".SS").hide(); $(".Logs").hide(); $(".finish").hide();
 			$("#dater2").change(function(){
-				$("#nothing").show(); $("#found").show();
+				$("#nothing").text("Please wait"); $("#found").hide();
 			});
 			
 			$("#SS").click(function (){ 
@@ -242,9 +260,11 @@
 				date2 = new Date
 				$("#dater2").val(date2.getFullYear() + '-' + ("0" + (date2.getMonth() + 1)).slice(-2) + '-' + ("0" + (date2.getDate() + 0)).slice(-2))
 			} 			
-			dater2=new Date($("#dater2").val())
-			dater2=dater2.getFullYear() + ("0" + (dater2.getMonth() + 1)).slice(-2) +  ("0" + (dater2.getDate() + 0)).slice(-2)
-			chartplease(dater2);
+			var dater2=new Date($("#dater2").val())
+			var dater3=dater2.getFullYear() + ("0" + (dater2.getMonth() + 1)).slice(-2) +  ("0" + (dater2.getDate() + 0)).slice(-2)
+			
+			
+			chartplease(dater3);
 			
 		
 		}
@@ -284,24 +304,39 @@
 		}
 	}
 	function chartplease(datern) {
-		$.get("requestdate.php", { file: 'Data/ctr.log' }, function(data){
-				var objdate = jQuery.parseJSON(data);
-				trafficnewtime=objdate.timey;
+		//$.post("requeststats.php", { date: datern, time: 0 });
+		$.get("requestdatein.php", { file: 'Data/ctr.logupdated' }, function(data){
+				
+					var objdate=jQuery.parseJSON(data);
+					
+					trafficnewtime=objdate.updated;
 		});
 		if( traffictime == trafficnewtime ) { //console.log("traffic not changed");
+			
 			if (requeststats==0) {
 				
-				$.get("requeststats.php", { date: datern, time: 0 });
+				$.post("requeststats.php", { date: datern, time: 0 });
 				requeststats=1;
-				console.log("requesing",traffictime,trafficnewtime,requeststats);
+				
 			}
 		} 
 		else {
-			$("#nothing").hide(); $("#found").show();
-			traffictime = trafficnewtime 			
+			
+			traffictime = trafficnewtime 	
+			console.log("change");	
 			$.get("requestdata.php", { file: 'Data/ctr.log' }, function(data){
 				datalogf = jQuery.parseJSON(data);
+			 if (datalogf[0].nothing == 0 ) {
+				  console.log( " zero");
+				  
+				  $("#nothing").text("Nothing to Display"); $("#found").hide();
+				} 
+				else {
+					
+				$("#nothing").text(parse(datern)); $("#found").show();
+				 
 						var xax=[]; var yax=[];
+						//plotpls=[[0,0]];
 						plotpls[0] = [0,0];
 						for (var i=0; i<50; i++) {
 							plotpls[0].push([datalogf[i].time,datalogf[i].cpu]);
@@ -349,8 +384,13 @@
 				}
 				plotpls[5].shift(1); plotpls[5].shift(1);
 				drawnow("DRP","Storage read % ",Math.min.apply(null,yax),Math.max.apply(null,yax),5);
-
+		 		
+		}
+		     
+				
+			
 			});
+		
 			requeststats=0;
 		}
 	}
@@ -392,25 +432,6 @@
 				
 	}
 	
-	function updatechart(){
-		$.get("requestdate.php", { file: 'Data/ctr.logudupated' }, function(data){
-				var objdate = jQuery.parseJSON(data);
-				trafficnewtime=objdate.timey;
-		});
-		if( traffictime == trafficnewtime ) { //console.log("traffic not changed"); 
-		} 
-		else {
-			$.get("requestdata.php", { file: 'Data/ctr.log' }, function(data){
-							
-				datalogf = jQuery.parseJSON(data)
-				for (i=0; i<100; i++) {
-					plotpls.push("50");
-				}
-				
-			});
-	
-		} 
-	}
 	
 	
 	

@@ -53,3 +53,7 @@
 20160820 00:00:00 I-Logs rolled
 20160822 10:19:33 I-Logs rolled
 20160822 10:19:40 I-Logs rolled
+20160815 01:53:16 I-V4.0.4-1 Beginning execution on topstorlin...
+20160815 01:53:16 I-First log rollover will be: 20160816 00:00:00
+20160815 01:53:17 W--sx disabled because no interconnect hardware/drivers found
+20160815 01:53:17 I-Waiting 2091061 usecs for time alignment

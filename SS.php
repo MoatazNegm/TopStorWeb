@@ -8,39 +8,26 @@
 												<div  class="panel" id="panel" >
 										        <!-- Default panel contents -->
 												    <div id="Volumnamedetails2" class="panel-heading" style="">
-													   <form class="form-inline " style="margin-top: -1%;margin-bottom: -1%;" role="form">	
+													   <form class="form-inline " style="margin-top: -0.5%;margin-bottom: -0.5%;" role="form">	
 														<div class="form-group" style="width: 3%"></div>
 														<div class="form-group" style="width: 30%">
 															<label   class="form-label " for="dater2">Date:</label>
 															<input type="date" class="form-control input-sm" style="padding-left: 2px; padding-right: 0px; width: 38%;" id="dater2" >
 														</div>
+														<div  class="form-group "style=" width: 30%">
+																<h3 class="configTitle separatortbot" style="margin-top:2px;" id="nothing" >Please wait...</h3>
 														
+													
+														</div>
 														<div class="form-group " style="width: 12%">
 															<ul class=" pager" style=''>
-																<li><a id="pnext2" href="#" class=" pull-right glyphicon glyphicon-chevron-right" style="font-size: 50%; "></a></li>
-																<li><a id="pprev2" href="#" class=" pull-right glyphicon glyphicon-chevron-left" style="font-size: 50%;"></a></li>
-															</ul>
+																															</ul>
+																															</ul>
 														</div>
 														<div class="form-group " style="width: 5%"></div>
-														<div class="form-group " style="width: 5%">
-															<button id="refresh2" type="button" class="btn-default btn-circle" style="border: 0; max-width: 30x; max-height: 30px;";> 
-														<a href="#" class="pull-right btn btn-default btn-circle " style="width: 30px;
-  height: 30px;
-  text-align: center;
-  padding: 6px 0;
-  font-size: 12px;
-  line-height: 1.42;
-  border-radius: 15px;"> <i class="glyphicon glyphicon-refresh"></i></a>
-															</button>
-														</div>
 													  </form>
 													</div>
-													<div class="panel-body" id="nothing" style="display: block;">
-														<div class="row">
-															<h3 class="configTitle separatortbot" style="margin-top:2px;" >Nothing to display</h3>
-														</div>
 													
-													</div>
 													<div class="panel-body" id="found">
 																								<div class="row">	
 											<div  class= "col-sm-offset- col-sm-6 boxoffields2 ">

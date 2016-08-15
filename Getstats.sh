@@ -1,9 +1,25 @@
-#! /bin/bash
+#! /bin/sh
 cd /var/www/html/des20/
+if [ -f Data/Getstatspid ]; 
+then
+ exit 0;
+else
+echo hi > Data/ctr.log
+touch Data/Getstatspid
 echo $@ > Data/tmpGet
 date=`echo $@ | awk '{print $1}'`
 time=`echo $@ | awk '{print $2}'`;
 found=1
+ls  Data/*  | grep $date &>/dev/null
+if [ $? -ne 0 ];
+then 
+ nothing='['`./jsonthis3.sh nothing 0`']' 
+ echo $nothing > Data/ctr.log
+ resdate=`date +%s`;
+ res=` ./jsonthis3.sh updated $resdate`;
+ echo $res > Data/ctr.logupdated;
+ rm -rf Data/Getstatspid; echo notfound; exit;
+fi
 if [ $time -eq 0 ]; then
   stats=`cat  Data/*$date*.tab | grep -v \# | sort -u  | awk  "BEGIN{flag=0;count=0} /$time/{flag=1}{if (flag > 0 ) { print; count+=1; } } " | tail -n 50`
   statsnet=`cat  Data/*$date*.net | grep -v \# | sort -u  | awk  "BEGIN{flag=0;count=0} /$time/{flag=1}{if (flag > 0 ) { print; count+=1; } } " | tail -n 50`
@@ -43,14 +59,13 @@ while read -r line ; do
  cpu=`echo $line | awk '{print $11}'`;
  memused=`echo $line | awk '{print $25}'`;
  memtot=`echo $line | awk '{print $24}'`;
- mem=$((100*memused/memtot));
- echo $mem
+ mem=$((100*memused/(memtot+1)));
  netline=`echo "${statsnet[@]}" | grep "$daten" | grep "$timen"`
 	 l=`echo $netline | awk '{$1=$2="";print $0}'`;
 	 n=`echo $l | awk '{print NF}'`;
 	 p=$(((n/19)-1));
          netrx=0;
-	 nettx=0 
+	 nettx=0;
 	for ((i = 0; i < $p; i++ )); 
 	do 
 		rx=$((($i*19)+4)); 
@@ -77,10 +92,16 @@ while read -r line ; do
  result=${result}${subres}','
 done <<< "$(echo -e "${stats[@]}")"
 result=`echo $result | rev | cut -c 2- | rev`']';
-echo $result > Data/ctr.log;
-resdate=`date +%s`;
-res=` ./jsonthis3.sh updated $resdate`;
-if [[ `wc -c Data/ctr.log | awk '{print $1}'` -ge 5 ]];
+if [ `echo $result | wc -c ` -ge 5 ];
 then
+ echo done
+ echo $result > Data/ctr.log;
+ resdate=`date +%s`;
+ res=` ./jsonthis3.sh updated $resdate`;
  echo $res > Data/ctr.logupdated;
+else
+ rm -rf Data/ctr.log;
+ echo wrong
+fi
+rm -rf Data/Getstatspid
 fi

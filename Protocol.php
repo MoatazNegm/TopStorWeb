@@ -132,7 +132,7 @@
 				});
 				if(Vollisttime2==Vollisttimenew) { 
 					$.post("./pump.php", { req: request, name:"a" });//console.log("traffic not changed"); 
-					console.log("pump",request, fileloc);
+					
 				} else { 
 					Vollisttime2=Vollisttimenew;
 					$.get("requestdata.php", { file: fileloc }, function(data){
@@ -145,22 +145,27 @@
 							$("#Vol2 option.variable").remove();
 							$("#Pool2 option.variable2").remove();
 							chartdata=[];
+							
 							for (var prot in gdata){
 								if(gdata[prot].protocol==Protocol){
 									//console.log(gdata[prot].name);
-									if ($.inArray(gdata[prot].Pool,pools) < 0 ) {
-										pools.push(gdata[prot].Pool);
+									if ($.inArray(gdata[prot].class,pools) < 0 ) { 
+										
+										
+										pools.push(gdata[prot].class);
 										$("#Pool2").append($('<option class="variable2">').text(gdata[prot].Pool).val(gdata[prot].class));
 										chartdata.push(gdata[prot].class);
+										
 										chartdata[gdata[prot].class]=[];
 									}
 									//if ( gdata[prot].Pool == $("#Pool2 option:selected").val() ) {
 										$("#Vol2").append($('<option class="variable" >').text(gdata[prot].name).val(gdata[prot].name).addClass(gdata[prot].class));
+										
 									
 									$(listid).append('<tr onclick="rowisclicked(this)" class="variable trow '+gdata[prot].class+'"><td class="Volname tcol">'+gdata[prot].name+'</td><td class="tcol">'+gdata[prot].volsize+'</td><td class="tcol">'+gdata[prot].volact+'</td><td class="tcol">'+gdata[prot].usedsnaps+'</td><td class="tcol">'+gdata[prot].compress+'</td></tr>');
 									chartdata[gdata[prot].class].push([gdata[prot].name,parseFloat(gdata[prot].volsize)]);
 								}
-								else $("#Pool2").append($('<option class="variable2">').text(gdata[prot].Pool).val(gdata[prot].class));
+								//else $("#Pool2").append($('<option class="variable2">').text(gdata[prot].Pool).val(gdata[prot].class));
 							}
 							$("#Pool2").change()
 							pools = [];
@@ -214,7 +219,7 @@
 			function SelectPanelNFS(s) {
 				var selection = s;
 				if (selection == "o") { selection = $("#Vol2 option:selected").val(); };
-				//console.log(selection);
+				
 				$(".Paneloption").hide();
 				switch(selection) {
 					case "newoption" :  $("#createvol").show(); break;
