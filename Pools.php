@@ -34,7 +34,7 @@
 			var pools=[];
 			$(".SnapShots").draggable();
 			$("DiskGroups").draggable();
-			$("#deletePool").hide();$("#submitdiskgroup").hide();
+			$("#deletePool").hide();$("#submitdiskgroup").hide();$(".finish").hide();$("#SnapshotCreatediv").hide();
 			
 			function refreshList3(request,listid,fileloc) {
 				if(syscounter2==1000) { $.post("./pump.php", { req: request, name:"a" }); }
@@ -201,7 +201,7 @@
 					};
 				
 					if( userpriv=="true" | curuser=="admin" ) { 
-					 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".DiskGroups").show(); 
+					 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show(); 
 					}
 				});
 			});
@@ -218,14 +218,14 @@
 						};
 					
 						if( userpriv=="true" | curuser=="admin" ) { 
-							config = 0; status="snaps"; $("h2").css("background-image","url('img/snapshot.png')").text("SnapShots");  $("option.variable").remove(); Vollisttime="44:333:22";times= { "snaps":"30:43:433", "periods":"30:43:433" }; $(".SnapShots").show();
+							config = 0; status="snaps"; $("h2").css("background-image","url('img/snapshot.png')").text("SnapShots");  $("option.variable").remove(); Vollisttime="44:333:22";times= { "snaps":"30:43:433", "periods":"30:43:433" }; $(".ullis").hide();$(".finish").show();$(".SnapShots").show();
 							 $("#Vol").change();
 						}
 					});
 				};
 			});
 			
-			$(".finish").click(function (){ config = 1; status=0; $(".DiskGroups").hide(); $(".SnapShots").hide();});
+			$(".finish").click(function (){ config = 1; status=0; $(".DiskGroups").hide(); $(".SnapShots").hide(); $(".ullis").show();$(".finish").hide()});
 			
 			
 			
