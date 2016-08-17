@@ -7,9 +7,9 @@
 										<h2 class="configTitle separatortbot col-sm-12" style="margin-top:2px;" id="SubTitle"></h2>
 									</div>									
 											<div id="Voldetails"	class="row Paneloption ">
-												<div  class="col-sm-offset-1 col-sm-10 panel panel-default ">
+												<div  class="col-sm-offset-1 col-sm-10 panel ">
 										        <!-- Default panel contents -->
-												    <div id="Volumnamedetails" class=" panel-heading  colorize " Data-tag=".panel-heading" Data-id="panel-heading" Data-textcolor="yes" Data-background="yes" Data-border="yes"style="">
+												    <div id="Volumnamedetails" class=" panel-heading pheading  colorize " Data-tag=".pheading" Data-id="panel-heading" Data-textcolor="yes" Data-background="yes" Data-border="yes"style="">
 													   <form class="form-inline "style="margin-top: -1%;margin-bottom: -1%;" role="form">	
 														<div class="form-group heading"  style="width: 3%"></div>
 														<div class="form-group heading" class="cheading" style="width: 30%">
@@ -49,14 +49,14 @@
 														</div>
 													  </form>
 													</div>
-													<div class="panel-body">
+													<div class="panel-body pbody">
 															<form role="form">
 																<div class="row">
 																	 <div ; class="col-sm-12 pre-scrollable" style="max-height: 120 px; min-height: 100px;">
 																		<table id="Logdetails" class="table table-hover table-condensed narrowtble ">
 																			<thead >
 																				<tr class="info">
-																					<th class="col-sm-3">date and time<br></th><th class="col-sm-1">user<br></th><th class="col-sm-7">data<br></th>
+																					<th class="col-sm-3 theader">date and time<br></th ><th class="col-sm-1 theader">user<br></th><th class="col-sm-7 theader">data<br></th>
 																				</tr>
 																			</thead>
 																			<tbody class="">
@@ -70,8 +70,7 @@
 											</div>
 									
 
-											<div class="row"><button type="button" class="btn btn-default col-sm-offset-2 col-sm-8 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
-											</div>																
+																									
 																						
 										
 									</div>	

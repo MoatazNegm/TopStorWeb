@@ -78,6 +78,9 @@
 											<tr class="info ">
 												<th class="theader" >Volume<br>Name</th><th class="theader">Volume<br>Size(MB)</th><th class="theader">Actual<br>size(MB)</th><th class="theader">Snaps<br>size(MB)</th><th class="theader">Compres<br>ratio(%)</th>
 											</tr>
+											<tr class="info">
+												<th class="colorize" Data-tag=".tcol" Data-id="tablerow">Colorize row</th>
+											</tr>
 										</thead>
 									</table>
 								</div>
@@ -95,30 +98,30 @@
 							<div class="row">
 								<div id="k"; class="col-sm-8 scrolled">
 									<table id="Volumetable" class="table table-hover table-condensed narrowtble ">
-										<tbody class="">
-											<tr onclick="rowisclicked(this)">
-												<td>Homes</td><td>5000</td><td>3500</td><td>5</td>
+										<tbody  class="">
+											<tr class="trow" onclick="rowisclicked(this)">
+												<td class="tcol" >Homes</td><td class="tcol">5000</td><td class="tcol">3500</td><td class="tcol">5</td>
 											</tr>
-											<tr onclick="rowisclicked(this)">
-												<td>SQL</td><td>2</td><td>.4</td><td>20</td>
+											<tr class="trow" onclick="rowisclicked(this)">
+												<td class="tcol">SQL</td><td class="tcol">2</td class="tcol"><td>.4</td><td class="tcol">20</td>
 											</tr>
-											<tr onclick="rowisclicked(this)">
-												<td>temp</td><td>1</td><td>.1</td><td>3</td>
+											<tr class="trow" onclick="rowisclicked(this)">
+												<td class="tcol">temp</td><td class="tcol">1</td><td class="tcol">.1</td><td class="tcol">3</td>
 											</tr>
-											<tr onclick="rowisclicked(this)">
-												<td>temp</td><td>1</td><td>.1</td><td>34</td>
+											<tr class="trow" onclick="rowisclicked(this)">
+												<td class="tcol">temp</td><td class="tcol">1</td><td class="tcol">.1</td><td class="tcol">34</td>
 											</tr>
-											<tr onclick="rowisclicked(this)">
-												<td>temp</td><td>1</td><td>.1</td><td>3</td>
+											<tr class="trow" onclick="rowisclicked(this)">
+												<td class="tcol">temp</td><td class="tcol">1</td><td class="tcol">.1</td><td class="tcol">3</td>
 											</tr>
-											<tr onclick="rowisclicked(this)">
-												<td>temp</td><td>1</td><td>.1</td><td>4</td>
+											<tr class="trow" onclick="rowisclicked(this)">
+												<td class="tcol">temp</td><td class="tcol">1</td><td class="tcol">.1</td><td class="tcol">4</td>
 											</tr>
-											<tr onclick="rowisclicked(this)">
-												<td>temp</td><td>1</td><td>.1</td><td>55</td>
+											<tr class="trow" onclick="rowisclicked(this)">
+												<td class="tcol">temp</td><td class="tcol">1</td><td class="tcol">.1</td><td class="tcol">55</td>
 											</tr>
-											<tr onclick="rowisclicked(this)">
-												<td>temp</td><td>1</td><td>.1</td><td>54</td>
+											<tr class="trow" onclick="rowisclicked(this)">
+												<td class="tcol">temp</td><td class="tcol">1</td><td class="tcol">.1</td><td class="tcol">54</td>
 											</tr>
 										</tbody>
 									</table>

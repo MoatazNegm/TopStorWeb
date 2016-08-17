@@ -90,9 +90,9 @@ fclose($myfile);
 			var DNS=1;
 			var whichul=0;
 			var upresult=0;
-			$(".UserPrivileges").hide();$(".Upload").hide();
+			$(".UserPrivileges").hide();$(".Upload").hide();$(".ullis").show();$(".finish").hide();
 			$(".finish").click(function (){ whichul = 0; $(".checkboxy").each(function(){ $(this).prop("checked",false)});
-																				$(".UserPrivileges").hide(); $(".Upload").hide();});
+																				$(".UserPrivileges").hide(); $(".Upload").hide();$(".ullis").show();$(".finish").hide();});
 			$("#UserPrivileges").click(function (){  
 				if(whichul==0) {
 					var userpriv="false";
@@ -107,7 +107,7 @@ fclose($myfile);
 							};
 						
 						if( userpriv=="true" | curuser=="admin" ) {
-							$("h2").css("background-image","url('img/Priv.png')").text("User Privileges");  $("option.variable").remove(); proptime="44:33233:22";; $(".UserPrivileges").show();refreshall();
+							$("h2").css("background-image","url('img/Priv.png')").text("User Privileges");  $("option.variable").remove(); proptime="44:33233:22";$(".ullis").hide();$(".finish").show(); $(".UserPrivileges").show();refreshall();
 						}
 					});
 				}
@@ -118,7 +118,7 @@ fclose($myfile);
 					$("h2").css("background-image","url('img/Uploadfirmware.png')").text("Upgrade System S/W");
 					$(".dz-preview").remove(); $("#previews").show(); droppls.enable();
 					$("div.dz-message").text("Please, add or drag file here");
-					$(".Upload").show();
+					$(".ullis").hide();$(".finish").show();$(".Upload").show();
 				}
 				
 				});

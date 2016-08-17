@@ -130,7 +130,7 @@
 				autoclose: true,
 				todayHighlight: true
 			});
-			$(".SS").hide(); $(".Logs").hide(); 
+			$(".SS").hide(); $(".Logs").hide(); $(".finish").hide();
 			$("#SS").click(function (){ 
 				if(config == 1 ) { 
 					var userpriv="false";
@@ -143,7 +143,7 @@
 							}
 						};
 						if( userpriv=="true" | curuser=="admin" ) {
-							config= 0; $("h2").css("background-image","url('img/SS.png')").text("Service Status");$(".ullis").hide(); $(".SS").show(); 
+							config= 0; $("h2").css("background-image","url('img/SS.png')").text("Service Status");$(".ullis").hide();$(".finish").show();  $(".SS").show(); 
 						} 
 					});
 				};
@@ -219,13 +219,13 @@
 							}
 						
 							
-						    config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".ullis").hide();$(".Logs").show();
+						    config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".ullis").hide(); $(".finish").show();$(".Logs").show();
 						}
 					});
 				};
 			});
 			$(".finish").click(function (){ 
-				for (var i=0; i<logcache; i+=1) { logstatus[i]=0 } config = 1; $(".SS").hide(); $(".Logs").hide();$(".ullis").show();});
+				for (var i=0; i<logcache; i+=1) { logstatus[i]=0 } config = 1; $(".SS").hide(); $(".Logs").hide();$(".finish").hide();$(".ullis").show();});
 	function refreshall() {
 		
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
@@ -252,7 +252,7 @@
 			dater=Date.parse($("#dater").val())
 	
 			for (var i=0; i< logstatus.length; i+=1) { 
-				console.log("page:",page," logstatus:"," ",logstatus," activepage:",activepage," lastpage:",lastpage," obj:",obj)
+				
 				updatelogarea(i);
 				presentlog(i);
 				if(logstatus[i]==10) { 
@@ -272,7 +272,7 @@
 				
 				}
 			
-			
+				ApplySetting();
 			}
 			
 		}
@@ -454,7 +454,7 @@
 							logarea=logarea+obj[ii][k].Date+" "+obj[ii][k].time+" "+obj[ii][k].msg+": "+objdata+obj[ii][k].code+"\n";
 							if(obj[ii][k].msg == "info") { color="blue"}; if(obj[ii][k].msg == "warning") { color="yellow"}; if(obj[ii][k].msg == "error") { color="red"}
 							
-							$("#Logdetails").append('<tr class="datarow '+obj[ii][k].msg+'" style="color:'+color+';"><td class="Volname col/-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td class="col-sm-1" data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+obj[ii][k].user+'</td><td class="col-sm-7"  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
+							$("#Logdetails").append('<tr class="datarow trow '+obj[ii][k].msg+'" style="color:'+color+';"><td class="Volname tcol col/-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td class="col-sm-1 tcol"  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+obj[ii][k].user+'</td><td class="col-sm-7 tcol"  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
 							
 										$("#INFO").click();			$("#INFO").click();
 							

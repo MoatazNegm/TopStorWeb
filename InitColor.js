@@ -157,25 +157,14 @@ function ApplySettingold() {
 	
 function RestoreLastSettings() {
 	$.get("requestdata.php", { file: "Data/InitcolorSaved.ini" }, function(pdata){
-						data = jQuery.parseJSON(pdata);
-	// $.getJSON("Data/InitcolorSaved.ini", function(data) { 
-		 
-		 for(var loc in data) {
-				//[data[loc]["Data-tag"]] = $.extend(true,{},data[loc]);
-			 Elementcurrent[data[loc]["Data-tag"]] = $.extend(true,{},data[loc]);
-		//	 console.log( Elementsaved[data[loc]["Data-tag"]]["Data-tag"] + Elementsaved[data[loc]["Data-tag"]]["background-color"]);
-		
+				var		data = jQuery.parseJSON(pdata);
 			 
-//		
-			};
+		 for(var loc in data) {
+				
+			 Elementcurrent[data[loc]["Data-tag"]] = $.extend(true,{},data[loc]);
+		};
 			
-			//console.log(Elementcurrent);
-			
-			
-	//		console.log("data "+data["#rightPane"]["background-color"]);
-
-		//	console.log("Eleme"+Elementcurrent["#rightPane"]["background-color"]); 
-			ApplySetting(); 
+		ApplySetting(); 
 			
 		});
 		
@@ -184,24 +173,18 @@ function RestoreLastSettings() {
 	}	
 
 function RestoreInitSettings() {
-	
-	 $.getJSON("./Data/Initcolor.ini", function(data) { 
+	console.log("restoring Init");
+	 $.get("requestdata.php", { file: "Data/Initcolor.ini" }, function(pdata){
+					var	data = jQuery.parseJSON(pdata);
+	      console.log("data",data);
 		 
 		 for(var loc in data) {
 			 Elementsaved[data[loc]["Data-tag"]] = $.extend(true,{},data[loc]);
 			 Elementcurrent[data[loc]["Data-tag"]] = $.extend(true,{},data[loc]);
-	//		 console.log( Elementsaved[data[loc]["Data-tag"]]["Data-tag"] + Elementsaved[data[loc]["Data-tag"]]["background-color"]);
-			 
-//		
-			};
-			
-	//		console.log("data "+data["#rightPane"]["background-color"]);
-
-	//		console.log("Eleme"+Elementcurrent["#rightPane"]["background-color"]); 
+		 }
+	
 			ApplySetting(); 
 			
 		});
-		
-	 
-	 
-	}	
+	
+}
