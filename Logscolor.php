@@ -53,14 +53,27 @@
 															<form role="form">
 																<div class="row">
 																	 <div ; class="col-sm-12 pre-scrollable" style="max-height: 120 px; min-height: 100px;">
-																		<table id="Logdetails" class="table table-hover table-condensed narrowtble colorize " Data-tag=".logheader" Data-id="LogHeader">
+																		<table id="Logdetails" class="table table-hover table-condensed narrowtble colorize" Data-tag=".logheader" Data-id="LogHeader">
 																			<thead >
 																				<tr class="info">
 																					<th class="col-sm-3 logheader">date and time<br></th ><th class="col-sm-1 logheader">user<br></th><th class="col-sm-7 logheader">data<br></th>
 																				</tr>
+																				<tr class="">
+																					<th class="colorize" Data-tag=".info" Data-id="LogINFO">Colorize info</th>
+																				
+																					<th class="colorize" Data-tag=".warning" Data-id="LogWARNING">Colorize warning</th>
+																				
+																					<th class="colorize" Data-tag=".error" Data-id="LogERROR">Colorize error</th>
+																				</tr>
 																			</thead>
 																			<tbody class="">
-																		
+<tr class="datarow trown info" ><td class="Volname info tcoln col/-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >info</td><td class="col-sm-1 info tcoln"  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >info</td><td class="col-sm-7 info tcoln"  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >info</td></tr>
+<tr class="datarow trown warning" ><td class="Volname warning tcoln col/-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >warning</td><td class="col-sm-1 warning tcoln"  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >warning</td><td class="col-sm-7 warning tcoln"  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >warning</td></tr>
+<tr class="datarow trown error" ><td class="Volname  error tcoln col/-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >error</td><td class="col-sm-1 error tcoln"  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >error</td><td class="col-sm-7 error tcoln"  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >error</td></tr>
+<tr class="datarow trown error" ><td class="Volname error tcoln col/-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >error</td><td class="col-sm-1 error tcoln"  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >error</td><td class="col-sm-7 error tcoln"  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >error</td></tr>
+<tr class="datarow trown warning" ><td class="Volname warning tcoln col/-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >warning</td><td class="col-sm-1 warning tcoln"  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >warning</td><td class="col-sm-7 warning tcoln"  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >warning</td></tr>
+																		<tr class="datarow trown info" ><td class="Volname info tcoln col/-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >info</td><td class="col-sm-1 info tcoln"  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >info</td><td class="col-sm-7 info tcoln"  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >info</td></tr>
+
 																			</tbody>
 																		</table>
 																</div>

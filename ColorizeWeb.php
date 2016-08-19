@@ -27,7 +27,7 @@
 					
 
 						<?php include "AD.php"; ?>
-						<?php include "Logs.php" ?>
+						<?php include "Logscolor.php" ?>
 						<?php include "NFScolor.php"; ?>
 						<?php include "SScolorize.php" ?>
 					
@@ -69,7 +69,7 @@
 			$("#UnLin").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/linux.png')"); $(".ullis").hide();$(".finish").show();$(".UnLin").show();};});
 			$("#Future").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/future.png')").text("Future");$(".ullis").hide();$(".finish").show(); $(".Future").show();};});
 			$("#SS").click(function (){ if(config== 1){ config= 0; $("h2").css("background-image","url('img/SS.png')").text("Service Status");$(".ullis").hide();$(".finish").show();; $(".SS").show();};});
-			$("#Logs").click(function (){ if(config== 1){ config= 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".ullis").hide();$(".finish").show();$(".Logs").show();};});
+			$("#Logs").click(function (){ if(config== 1){ config= 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".ullis").hide();$(".finish").show();$(".Logs").show();$("#Voldetails").show();};});
 			$("#CIFS").click(function (){ if(config== 1){ config= 0; $("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".ullis").hide();$(".finish").show();$(".NFS").show();$("#Vollist").show();};});
 			
 			$(".finish").click(function (){ config = 1;$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();$(".SS").hide();$(".Logs").hide();$(".NFS").hide(); $(".ullis").show();$(".finish").hide();});

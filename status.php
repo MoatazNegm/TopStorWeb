@@ -19,11 +19,10 @@
 			</div>
 			<div class="row">
 			<div id="chart1"></div>	
-			<footer class="footer"> Errors
+			<footer class="footer prefooter"  > Errors
 			</footer>
 		</div>
-	</div>
-	</div>
+	
 	<script src='js/jquery.js'></script>
 	<script src="js/bootstrap.min.js" ></script>
 	<script src='js/bootstrap-datepicker.js'></script>
@@ -61,6 +60,15 @@
 			var page=0;
 			var reqpage=0;
 			var activepage=0; var lastpage=-1;
+			
+					$("#INFO").click(function() {
+				console.log("clicked");
+				$(".datarow").hide();
+				if($("#INFO").is(":checked")) { $(".info").show(); }
+				if($("#Warning").is(":checked")) { $(".warning").show(); }
+				if($("#Error").is(":checked")) { $(".error").show(); }
+			});
+	
 			
 			var sineRenderer = function() {
 				//var data = [[]];
@@ -176,12 +184,6 @@
 								logstatus[i]=10;
 								logtime[i]="3434TREYLKTRJ";		
 							}
-			});
-			$("#INFO").click(function() {
-				$(".datarow").hide();
-				if($("#INFO").is(":checked")) { $(".info").show(); }
-				if($("#Warning").is(":checked")) { $(".warning").show(); }
-				if($("#Error").is(":checked")) { $(".error").show(); }
 			});
 			$("#Warning").click(function() {
 				$(".datarow").hide();
@@ -454,9 +456,9 @@
 							logarea=logarea+obj[ii][k].Date+" "+obj[ii][k].time+" "+obj[ii][k].msg+": "+objdata+obj[ii][k].code+"\n";
 							if(obj[ii][k].msg == "info") { color="blue"}; if(obj[ii][k].msg == "warning") { color="yellow"}; if(obj[ii][k].msg == "error") { color="red"}
 							
-							$("#Logdetails").append('<tr class="datarow trow '+obj[ii][k].msg+'" style="color:'+color+';"><td class="Volname tcol col/-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td class="col-sm-1 tcol"  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+obj[ii][k].user+'</td><td class="col-sm-7 tcol"  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
+							$("#Logdetails").append('<tr class="datarow  '+obj[ii][k].msg+'" ><td class="Volname  col/-sm-3 '+obj[ii][k].msg+' "data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td class="col-sm-1  '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+obj[ii][k].user+'</td><td class="col-sm-7  '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
 							
-										$("#INFO").click();			$("#INFO").click();
+										$("#INFO").click();			
 							
 						
 					
@@ -479,8 +481,10 @@
 $("#Disks").change(function(){
 			traffictime="disk changes";
 		});
-		$(".traffic").change( function () { traffictime="44:44:34"; });
-		$(".checkboxy").change (function(){ updatelogarea();});
+		$(".traffic").change( function () { traffictime="44:44:34"; 
+			});
+		$(".checkboxy").change (function(){ updatelogarea();
+			});
 		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		$.post("./pump.php", { req:"GetDisklist", name: "Data/disklist.txt"},function(){});
 		setInterval('refreshall()', 500); // Loop every 1000 milliseconds (i.e. 1 second)

@@ -31,9 +31,9 @@
 					echo '<li id="Leftlist" class="active leftli leftlia colorize" Data-tag=":not(.active) > .leftli" Data-id="LeftMenue" Data-textcolor="no" Data-background="yes" Data-border="no" ><a class="leftlia" href="#" ><br>colorize</a></li>';
 					//echo '<li id="Selections" class="active leftli colorize" Data-tag="li.leftli a"Data-id="Selectoin" Data-textcolor="no" Data-background="yes" Data-border="no" ><a href="#" ><br>selections</a></li>';
 				} else if($men==6) {
-					echo	'<li class="active leftli "><a id="config" class="ref "href="#"   ><br>config</a></li>'	;			
+					echo	'<li class="active leftli "><a id="config" class="ref leftli" href="#"   ><br>config</a></li>'	;			
 				} else  {
-					echo	'<li class=" leftli "><a id="config" class="ref "href="#"   ><br>config</a></li>'	;			
+					echo	'<li class=" leftli "><a id="config" class="ref leftli"href="#"   ><br>config</a></li>'	;			
 				}
 			
 			?>

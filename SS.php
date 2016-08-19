@@ -14,19 +14,7 @@
 															<label   class="form-label " for="dater2">Date:</label>
 															<input type="date" class="form-control input-sm" style="padding-left: 2px; padding-right: 0px; width: 38%;" id="dater2" >
 														</div>
-														<div class="form-group" style="width: 10%">
-															<input type="checkbox"  id="INFO" value="info" checked >Info
-														</div>
-														<div class="form-group" style="width: 10%">
-															<input type="checkbox"   id="Warning" value="Warning" checked >Warning
-														</div>
-														<div class="form-group" style="width: 10%">
-															<input type="checkbox" id="Error"  value="Error" checked >Error
-														</div>
-														<div class="form-group" style="width: 10%">
-															<label   class="form-label- " for="lines">lines:</label>
-															<input type="number" min="10" max="50" class="form-control input-sm" id="lines" style="padding-left: 2px; padding-right: 0px; width: 33%" value="10">
-														</div>
+														
 														<div class="form-group " style="width: 12%">
 															<ul class=" pager" style=''>
 																<li><a id="pnext2" href="#" class=" pull-right glyphicon glyphicon-chevron-right" style="font-size: 50%; "></a></li>

@@ -72,7 +72,7 @@ fclose($myfile);
 			</div>
 			
 		<div class="row">
-			<footer class="footer"> Errors
+			<footer class="footer prefooter"> Errors
 			</footer>
 		</div>
 		<form  id="Colorpls" type="hidden" method="post" action="ColorizeWeb.php">
