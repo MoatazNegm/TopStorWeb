@@ -8,8 +8,8 @@
 				<div class="  col-sm-12 ">
 					<div class="form-group  row">
 						<label  for="Pool" class="  col-sm-1 control-label  text-center">Pool</label>
-						<div class="col-sm-1">
-							<select  id="Pool" class="  form-control text-center "></select>
+						<div class="col-sm-1" >
+							<select  id="Pool" class="  form-control text-center " style="width: 110%;" ></select>
 						</div>	
 						<label  for="Vol" class=" col-sm-offset-1 col-sm-1 control-label text-center">Volume</label>
 						<div class="col-sm-2">
@@ -142,7 +142,7 @@
 									<div class="form-group row">
 										<div class=" col-sm-10 ">
 								
-											<select   size="5" id="Replicatelist" class="form-control  fonting" ></select>
+											<select   size="8" style="margin-top: -5rem;" id="Snaplist" class="form-control  fonting" ></select>
 										</div>
 									</div>
 								</form>
@@ -174,7 +174,7 @@
 								<form role="form-horizontal">
 									<div class="form-group row">
 										<div class=" col-sm-10 ">
-											<textarea class="form-control separatortop " id="Replicatestatus" rows="3"></textarea>
+											<textarea class="form-control separatortop " style="margin-top: -1rem;" id="Snapsstatus" rows="3"></textarea>
 										</div>
 									</div>
 								</form>
