@@ -25,7 +25,7 @@
 		</div>
 			
 		<div class="row">
-			<footer class="footer"> Errors
+			<footer class="footer prefooter"> Errors
 			</footer>
 		</div>
   </div>
