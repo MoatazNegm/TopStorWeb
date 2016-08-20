@@ -1,1 +1,1 @@
-GetPoolperiodlist a
+GetLog 1471824000000 5 10 admin

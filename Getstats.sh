@@ -80,4 +80,7 @@ result=`echo $result | rev | cut -c 2- | rev`']';
 echo $result > Data/ctr.log;
 resdate=`date +%s`;
 res=` ./jsonthis3.sh updated $resdate`;
-echo $res > Data/ctr.logupdated;
+if [[ `wc -c Data/ctr.log | awk '{print $1}'` -ge 5 ]];
+then
+ echo $res > Data/ctr.logupdated;
+fi
