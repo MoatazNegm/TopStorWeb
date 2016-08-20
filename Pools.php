@@ -32,8 +32,7 @@
 			var syscounter=10;
 			var syscounter2=1000;
 			var pools=[];
-			$(".SnapShots").draggable();
-			$("DiskGroups").draggable();
+			
 			$("#deletePool").hide();$("#submitdiskgroup").hide();$(".finish").hide();$("#SnapshotCreatediv").hide();
 			
 			function refreshList3(request,listid,fileloc) {
