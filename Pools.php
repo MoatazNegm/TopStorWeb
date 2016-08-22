@@ -32,6 +32,7 @@
 			var syscounter=10;
 			var syscounter2=1000;
 			var pools=[];
+			$(".SnapShots").draggable();
 			
 			$("#deletePool").hide();$("#submitdiskgroup").hide();$(".finish").hide();$("#SnapshotCreatediv").hide();
 			

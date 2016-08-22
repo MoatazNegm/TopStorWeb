@@ -139,6 +139,10 @@
 				todayHighlight: true
 			});
 			$(".SS").hide(); $(".Logs").hide(); $(".finish").hide();
+			$("#dater2").change(function(){
+				$("#nothing").show(); $("#found").hide();
+			});
+			
 			$("#SS").click(function (){ 
 				if(config == 1 ) { 
 					var userpriv="false";
@@ -286,6 +290,7 @@
 		});
 		if( traffictime == trafficnewtime ) { //console.log("traffic not changed");
 			if (requeststats==0) {
+				$("#nothing").hide(); $("#found").show();
 				$.get("requeststats.php", { date: datern, time: 0 });
 				requeststats=1;
 				console.log("requesing",traffictime,trafficnewtime,requeststats);
