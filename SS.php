@@ -35,7 +35,13 @@
 														</div>
 													  </form>
 													</div>
-													<div class="panel-body">
+													<div class="panel-body" id="nothing" style="display: block;">
+														<div class="row">
+															<h3 class="configTitle separatortbot" style="margin-top:2px;" >Nothing to display</h3>
+														</div>
+													
+													</div>
+													<div class="panel-body" id="found">
 																								<div class="row">	
 											<div  class= "col-sm-offset- col-sm-6 boxoffields2 ">
 												<div  class="  ">
@@ -69,6 +75,7 @@
 										</div>
 
 														</div>
+												
 												</div>
 											</div>
 
