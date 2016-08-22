@@ -140,7 +140,7 @@
 			});
 			$(".SS").hide(); $(".Logs").hide(); $(".finish").hide();
 			$("#dater2").change(function(){
-				$("#nothing").show(); $("#found").hide();
+				$("#nothing").show(); $("#found").show();
 			});
 			
 			$("#SS").click(function (){ 
