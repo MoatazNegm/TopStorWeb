@@ -290,15 +290,15 @@
 		});
 		if( traffictime == trafficnewtime ) { //console.log("traffic not changed");
 			if (requeststats==0) {
-				$("#nothing").hide(); $("#found").show();
+				
 				$.get("requeststats.php", { date: datern, time: 0 });
 				requeststats=1;
 				console.log("requesing",traffictime,trafficnewtime,requeststats);
 			}
 		} 
 		else {
-			traffictime = trafficnewtime 	
-			console.log("change")		
+			$("#nothing").hide(); $("#found").show();
+			traffictime = trafficnewtime 			
 			$.get("requestdata.php", { file: 'Data/ctr.log' }, function(data){
 				datalogf = jQuery.parseJSON(data);
 						var xax=[]; var yax=[];
