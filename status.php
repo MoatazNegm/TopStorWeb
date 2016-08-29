@@ -440,7 +440,8 @@
 		var tm, splitstime;
 		var tm2; var tme, splitstimee;
 		var rqpg
-		rqpg=ii+page
+		rqpg=ii+page;
+		
       
 		$.get("requestdate.php", { file: 'Data/Logs.logupdated'+rqpg }, function(data){
 			var objdate = jQuery.parseJSON(data);
@@ -448,7 +449,7 @@
 		});
 		if(logtimenew!=logtime[ii] ) {
 			$.get("requestdata.php", { file: 'Data/Logs.log'+rqpg}, function(data){
-			console.log("Data/Logs.log"+ii+" obj ")
+		
 			obj[ii] = jQuery.parseJSON(data);
 			});
 		}
@@ -460,7 +461,6 @@
 		if(lastpage!=activepage && ii==activepage) {$("#Logdetails tr.datarow").remove();}
 		if( lastpage!=activepage && ii==activepage) {
 				for (var k in obj[ii]) { 
-						
 							var objdata=obj[ii][k].data;
 							var codes; var msgcode; var jofcode; var themsg; var themsgarr;
 							if(typeof obj[ii][k].code != 'undefined'){

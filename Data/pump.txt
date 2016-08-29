@@ -1,1 +1,1 @@
-GetLog 1472169600000 2 10 admin
+GetLog 1472428800000 2 10 admin
