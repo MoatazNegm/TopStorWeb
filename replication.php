@@ -9,7 +9,7 @@
 							<li><a href="#" class="Partnersa rightli"><h4 id="Partners"><span>Partners</span></h4></a></li>
 							<li><a href="#" class="Replicatea rightli"><h4 id="Replicate"><span>Receivers</span></h4></a></li>
 							<li><a href="#" class="Sendersa rightli"><h4 id="Senders"><span>Senders</span></h4></a></li>
-							<li><a href="#" class="Proxya rightli"><h4 id="Proxys"><span>Proxy license</span></h4></a></li>
+							<li><a href="#" class="Proxya rightli"><h4 id="Proxy"><span>Proxy license</span></h4></a></li>
 						</ul>
 						<?php include "Partners.php"; ?>
 						<?php include "Replicate.php" ; ?>
@@ -269,7 +269,7 @@
 					var gdata = jQuery.parseJSON(data);
 					for (var prot in gdata){
 						if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
-							userpriv=gdata[prot].DISK_Groups
+							userpriv=gdata[prot].Partners
 						}
 					};
 				
@@ -304,7 +304,7 @@
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
-								userpriv=gdata[prot].Replicate
+								userpriv=gdata[prot].Senders
 							}
 						};
 					
@@ -314,7 +314,7 @@
 					});
 				};
 			});
-			$("#Proxys").click(function (){ 
+			$("#Proxy").click(function (){ 
 							if(config== 1){
 								 
 								var userpriv="false";
@@ -550,6 +550,32 @@
 			//$.post("./pump.php", { req: "GetPoolperiodlist", name:"a" });
 			$.post("./pump.php", { req: "GetPoolVollist", name:"a" });
 			$.post("./pump.php", { req: "GetSnaplist", name:"a" });
+			function starting() {
+				$(".ullis").hide();
+				if(config == 1 ) {
+						var userprivPartners="false"; var userprivReplicate="false";var userprivSenders="false"; var userprivProxy="false";
+						var curuser="<?php echo $_SESSION["user"] ?>";
+						if (curuser !="admin") {
+							$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+								var gdata = jQuery.parseJSON(data);
+								for (var prot in gdata){
+									if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+										userprivPartners=gdata[prot].Partners;
+										userprivReplicate=gdata[prot].Replication;
+										userprivSenders=gdata[prot].Senders;
+										userprivProxy=gdata[prot].Proxylic;
+										
+									}
+								};
+									
+								if( userprivPartners =="true") { $("#Partners").show(); } else { $("#Partners").hide(); } ; if( userprivReplicate =="true") { $("#Replicate").show(); } else { $("#Replicate").hide(); };;
+								if( userprivSenders =="true") { $("#Senders").show(); } else { $("#Senders").hide(); }; if( userprivProxy =="true") { $("#Proxy").show(); } else { $("#Proxy").hide(); };
+						});
+					}
+					$(".ullis").show();
+			}
+		}
+		starting();
 		</script>
 
 	</body>

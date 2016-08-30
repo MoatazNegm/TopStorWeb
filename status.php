@@ -7,7 +7,7 @@
 
 	<?php $men=2; include "header.html"; ?>
 	
-							<li><a href="#" class="SSa rightli"><h4 id="SS"><span>Services Status</span></h4></a></li>
+							<li ><a href="#" class="SSa rightli"><h4 id="SS"><span>Services Status</span></h4></a></li>
 							<li><a href="#" class="Logsa rightli"><h4 id="Logs"><span>Logs</span></h4></a></li>
 							
 						</ul>
@@ -529,7 +529,28 @@ $("#Disks").change(function(){
 		for (var i=0; i<logcache; i+=1) {
 					logstatus[i]=0; logtime[i]="ksldl";
 				}
-				
+		function starting() {
+				$(".ullis").hide();
+				if(config == 1 ) {
+						var userprivss="false"; var userprivlogs="false";
+						var curuser="<?php echo $_SESSION["user"] ?>";
+						if (curuser !="admin") {
+							$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+								var gdata = jQuery.parseJSON(data);
+								for (var prot in gdata){
+									if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+										userprivss=gdata[prot].Service_Charts;
+										userprivlogs=gdata[prot].Logs;
+									}
+								};
+									
+								if( userprivss =="true") { $("#SS").show(); } else { $("#SS").hide(); } ; if( userprivlogs =="true") { $("#Logs").show(); } else { $("#Logs").hide(); };;
+						});
+					}
+					$(".ullis").show();
+			}
+		}
+		starting();
 		
 		</script>
  

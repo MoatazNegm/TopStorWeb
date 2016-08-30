@@ -32,6 +32,12 @@
 										<input type="checkbox" id="Error" class="checkboxy" value="Error"><p class="Priv">Box Properties</p>
 									</label>
 							</div>
+							<div class="checkbox">
+									<label>
+										
+										<input type="checkbox" id="Partners" class="checkboxy" value="Partners"><p class="Priv">Partners</p>
+									</label>
+							</div>
 						</div>
 						
 						<div class="col-sm-3">
@@ -50,6 +56,11 @@
 										<input type="checkbox" id="CIFS" class="checkboxy" value="Error"><p class="Priv">CIFS</p>
 									</label>
 							</div>
+							<div class="checkbox">
+									<label>
+										<input type="checkbox" id="Senders" class="checkboxy" value="Senders"><p class="Priv">Senders</p>
+									</label>
+							</div>
 						</div>
 						<div class="col-sm-3">
 										<div class="checkbox">
@@ -64,12 +75,12 @@
 										</div>
 										<div class="checkbox">
 												<label>
-													<input type="checkbox" id="DISK_Groups" class="checkboxy" value="Error"><p class="Priv">DISK Groups</p>
+													<input type="checkbox" id="DiskGroups" class="checkboxy" value="DiskGroups"><p class="Priv">Disk Groups</p>
 												</label>
 										</div>
 										<div class="checkbox">
 												<label>
-													<input type="checkbox" id="Licen" class="checkboxy" value="Error"><p class="Priv"> Proxy License</p>
+													<input type="checkbox" id="Proxylic" class="checkboxy" value="Proxylic"><p class="Priv"> Proxy License</p>
 												</label>
 										</div>
 										
@@ -82,17 +93,22 @@
 							</div>
 							<div class="checkbox">
 									<label>
-										<input type="checkbox"  class="checkboxy" id="User_Priv" value="Warning"><p class="Priv">User Privileges</p>
+										<input type="checkbox"  class="checkboxy" id="UserPrivilegesch" value="UserPrivileges"><p class="Priv">User Privileges</p>
 									</label>
 							</div>
 							<div class="checkbox">
 									<label>
-										<input type="checkbox" id="Colourize" class="checkboxy" value="Error"><p class="Priv">Colourize</p>
+										<input type="checkbox" id="Colourizech" class="checkboxy" value="Colourize"><p class="Priv">Colourize</p>
 									</label>
 							</div>
 							<div class="checkbox">
 									<label>
 										<input type="checkbox" id="Replication" class="checkboxy" value="Replication"><p class="Priv">Replication</p>
+									</label>
+							</div>
+							<div class="checkbox">
+									<label>
+										<input type="checkbox" id="Uploadch" class="checkboxy" value="Upload"><p class="Priv">Firmware</p>
 									</label>
 							</div>
 						</div>

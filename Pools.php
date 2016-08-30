@@ -196,7 +196,7 @@
 					var gdata = jQuery.parseJSON(data);
 					for (var prot in gdata){
 						if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
-							userpriv=gdata[prot].DISK_Groups
+							userpriv=gdata[prot].DISKGroups
 						}
 					};
 				
@@ -355,6 +355,28 @@
 			$.post("./pump.php", { req: "GetPoolperiodlist", name:"a" });
 			$.post("./pump.php", { req: "GetPoolVollist", name:"a" });
 			$.post("./pump.php", { req: "GetSnaplist", name:"a" });
+			function starting() {
+				$(".ullis").hide();
+				if(config == 1 ) {
+						var userprivDiskGroups="false"; var userprivSnapShots="false";
+						var curuser="<?php echo $_SESSION["user"] ?>";
+						if (curuser !="admin") {
+							$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+								var gdata = jQuery.parseJSON(data);
+								for (var prot in gdata){
+									if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+										userprivDiskGroups=gdata[prot].DiskGroups;
+										userprivSnapShots=gdata[prot].SnapShots;
+									}
+								};
+									
+								if( userprivDiskGroups =="true") { $("#DiskGroups").show(); } else { $("#DiskGroups").hide(); } ; if( userprivSnapShots =="true") { $("#SnapShots").show(); } else { $("#SnapShots").hide(); };;
+						});
+					}
+					$(".ullis").show();
+			}
+		}
+		starting();
 		</script>
 
 	</body>

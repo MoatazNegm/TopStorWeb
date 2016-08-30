@@ -1,1 +1,1 @@
-{"temp1":"o","mezo":"o","nedo":"o"}
+{"tepo":"o","mezo":"o"}

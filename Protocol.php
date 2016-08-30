@@ -9,7 +9,7 @@
 	
 							<li><a href="#" class="CIFSa rightli"><h4 id="CIFS"><span>CIFS</span></h4></a></li>
 							<li><a href="#" class="NFSa rightli"><h4 id="NFS"><span>NFS</span></h4></a></li>
-							<li><a href="#" class="ISCSIa rightli"><h4 id="ISCSI"><span>ISCSI</span></h4></a></li>
+							<!---- <li><a href="#" class="ISCSIa rightli"><h4 id="ISCSI"><span>ISCSI</span></h4></a></li>  ----->
 						</ul>
 						
 						<div id="CIFScode"><?php include "CIFS.php"; ?></div>
@@ -59,6 +59,7 @@
 			var voldirty=1;
 			var Vollock=0;
 			var plotb;
+			$(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();$(".finish").hide();
 			function refreshall() {
 				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 				if(Protocol != 0) {
@@ -292,7 +293,7 @@
 			
 		
 			
-			$(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();$(".ullis").show();$(".finish").hide();
+			
 			$("#CIFS").click(function (){ 
 				if(config == 1 ) {
 					var userpriv="false";
@@ -304,7 +305,7 @@
 								userpriv=gdata[prot].CIFS
 							}
 						};
-					
+							
 						if( userpriv=="true" | curuser=="admin" ) {
 							Protocol="CIFS";
 							Vollisttime = "55:55:44";
@@ -313,6 +314,7 @@
 							$("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".ullis").hide(); $(".finish").show(); $(".NFS").show();
 							//plotchart('chartNFS',chartdata);
 						}
+						else { $("#CIFS").hide(); };
 					});
 				};
 				refreshall();
@@ -402,8 +404,28 @@
 			setInterval('refreshall()', 500);
 			//refreshList2("GetPoollist","#Pool2","Data/Poollist.txt",3);
 			//refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
-			
-			
+			function starting() {
+				$(".ullis").hide();
+				if(config == 1 ) {
+						var userprivcifs="false"; var userprivnfs="false";
+						var curuser="<?php echo $_SESSION["user"] ?>";
+						if (curuser !="admin") {
+							$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+								var gdata = jQuery.parseJSON(data);
+								for (var prot in gdata){
+									if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+										userprivcifs=gdata[prot].CIFS;
+										userprivnfs=gdata[prot].NFS;
+									}
+								};
+									
+								if( userprivcifs =="true") { $("#CIFS").show(); } else { $("#CIFS").hide(); } ; if( userprivnfs =="true") { $("#NFS").show(); } else { $("#NFS").hide(); };;
+						});
+					}
+					$(".ullis").show();
+			}
+		}
+		starting();
 		</script>
 	
 

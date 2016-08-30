@@ -230,6 +230,29 @@
 			});
 			setInterval('refreshall()', 500);
 			refreshall();
+			function starting() {
+				$(".ullis").hide();
+				if(config == 1 ) {
+						var userprivad="false"; var userprivunlin="false"; var userprivfuture="false";
+						var curuser="<?php echo $_SESSION["user"] ?>";
+						if (curuser !="admin") {
+							$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+								var gdata = jQuery.parseJSON(data);
+								for (var prot in gdata){
+									if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+										userprivad=gdata[prot].Active_Directory;
+										userprivunlin=gdata[prot].Box_Users;
+										userprivfuture=gdata[prot].Error;
+									}
+								};
+									
+								if( userprivad =="true") { $("#AD").show(); } else { $("#AD").hide(); } ; if( userprivunlin =="true") { $("#UnLin").show(); } else { $("#UnLin").hide(); };if( userprivfuture =="true") { $("#Future").show(); } else { $("#Future").hide(); };;
+						});
+					}
+					$(".ullis").show();
+			}
+		}
+		starting();
 			
 		</script>
 			 

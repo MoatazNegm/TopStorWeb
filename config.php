@@ -62,7 +62,7 @@ fclose($myfile);
 							<li>
 								<a href="#" class="UserPrivilegesa rightli"><h4 id="UserPrivileges"><span>User Priviliges</span></h4></a></li>
 							<li><a href="#" class="Colourizea rightli"><h4 id="Colourize"><span>Colourize</span></h4></a></li>
-							<li><a href="#" class="Uploada rightli"><h4 id="Upload"><span>Upload Firmware</span></h4></a></li>
+							<li><a href="#" class="Uploada rightli"><h4 id="Upload"><span>Firmware upgrade</span></h4></a></li>
 						</ul>
 						<?php include "UserPrivileges.php"; ?>
 						<?php include "Upload.php"; ?>
@@ -90,6 +90,31 @@ fclose($myfile);
 			var DNS=1;
 			var whichul=0;
 			var upresult=0;
+			function starting() {
+				$(".ullis").hide();
+				
+						var userprivUserPrivileges="false"; var userprivColourize="false";var userprivUpload="false";
+						var curuser="<?php echo $_SESSION["user"] ?>";
+						
+						if (curuser !="admin") {
+							$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+								var gdata = jQuery.parseJSON(data);
+								for (var prot in gdata){
+									if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+										userprivUserPrivileges=gdata[prot].UserPrivilegesch;
+										userprivColourize=gdata[prot].Colourizech;
+										userprivUpload=gdata[prot].Uploadch;
+									}
+								};
+									
+								if( userprivUserPrivileges =="true") { $("#UserPrivileges").show(); } else { $("#UserPrivileges").hide(); } ; if( userprivColourize =="true") { $("#Colourize").show(); } else { $("#Colourize").hide(); };;
+								if( userprivUpload =="true") { $("#Upload").show(); } else { $("#Upload").hide(); }
+						});
+					}
+					$(".ullis").show();
+			
+		}
+				starting();
 			$(".UserPrivileges").hide();$(".Upload").hide();$(".ullis").show();$(".finish").hide();
 			$(".finish").click(function (){ whichul = 0; $(".checkboxy").each(function(){ $(this).prop("checked",false)});
 																				$(".UserPrivileges").hide(); $(".Upload").hide();$(".ullis").show();$(".finish").hide();});
@@ -102,7 +127,7 @@ fclose($myfile);
 							var gdata = jQuery.parseJSON(data);
 							for (var prot in gdata){
 								if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
-									userpriv=gdata[prot].User_Priv
+									userpriv=gdata[prot].UserPrivileges
 								}
 							};
 						
@@ -115,10 +140,21 @@ fclose($myfile);
 			$("#Upload").click(function () {
 				if(whichul == 0) {
 					whichul="#Upload";
-					$("h2").css("background-image","url('img/Uploadfirmware.png')").text("Upgrade System S/W");
-					$(".dz-preview").remove(); $("#previews").show(); droppls.enable();
-					$("div.dz-message").text("Please, add or drag file here");
-					$(".ullis").hide();$(".finish").show();$(".Upload").show();
+					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+						var gdata = jQuery.parseJSON(data);
+						for (var prot in gdata){
+							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+								userpriv=gdata[prot].Colourize
+							}
+						};
+					
+						if( userpriv=="true" | curuser=="admin" ) {
+							$("h2").css("background-image","url('img/Uploadfirmware.png')").text("Upgrade System S/W");
+							$(".dz-preview").remove(); $("#previews").show(); droppls.enable();
+							$("div.dz-message").text("Please, add or drag file here");
+							$(".ullis").hide();$(".finish").show();$(".Upload").show();
+						}
+					});
 				}
 				
 				});
@@ -131,7 +167,7 @@ fclose($myfile);
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
-								userpriv=gdata[prot].User_Priv
+								userpriv=gdata[prot].Colourize
 							}
 						};
 					
@@ -170,9 +206,9 @@ fclose($myfile);
 							
 							for (var prot in ggdata){
 								if(ggdata[prot].user==$("#UserList option:selected").val()) {
-									console.log(ggdata[prot].user," for", $("#UserList option:selected").val())
 									
-									$.each(ggdata[prot], function(key,value){  if(value=="true") $("#"+key).prop('checked',true);});
+									
+									$.each(ggdata[prot], function(key,value){  if(value=="true") $("#"+key).prop('checked',true); console.log("true is", key);});
 								}
 							}
 						});
@@ -233,15 +269,11 @@ fclose($myfile);
 			setInterval('refreshall()', 2000);
 			refreshUserList();
 			refreshall();
-		</script>
-		<script>
+ 
+		
 			
 
-/*		var droppls= $("#drop-zone").dropzone({ url: "config.php",
-			previewsContainer: '#previews',
-
-			 });
-*/		
+	
 			var droppls = new Dropzone("#drop-zone",{ url: "upload.php",
 			previewsContainer: '#previews',
 			uploadMultiple: false,
@@ -265,8 +297,7 @@ fclose($myfile);
 				
 			});
 		
-		 
-		</script>
+				</script>
 		
 	</body>
 
