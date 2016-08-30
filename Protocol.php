@@ -51,9 +51,9 @@
 			var Protocol=0;
 			var config = 1;
 			var gdata;
-			var Vollisttime = "55:55:44";
-			var Vollisttime2 = "55:55:44";
-			var Vollisttimenew = "333:5455:4w344";
+			var Vollisttime = 333;
+			var Vollisttime2 = 4444;
+			var Vollisttimenew = 5555;
 			var syscounter2=1000;
 			var chartdata = [];
 			var voldirty=1;
@@ -135,6 +135,7 @@
 					$.post("./pump.php", { req: request, name:"a" });//console.log("traffic not changed"); 
 					
 				} else { 
+					console.log("pool",Vollisttime2,Vollisttimenew);
 					Vollisttime2=Vollisttimenew;
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						gdata = jQuery.parseJSON(data);
@@ -145,10 +146,15 @@
 							$("#Volumedetails tr.variable").remove();
 							$("#Vol2 option.variable").remove();
 							$("#Pool2 option.variable2").remove();
+							
+							
 							chartdata=[];
+							pools = [];
+							console.log(gdata, chartdata);
 							
 							for (var prot in gdata){
-								if(gdata[prot].protocol==Protocol){
+								
+								
 									//console.log(gdata[prot].name);
 									if ($.inArray(gdata[prot].class,pools) < 0 ) { 
 										
@@ -159,6 +165,7 @@
 										
 										chartdata[gdata[prot].class]=[];
 									}
+									if(gdata[prot].protocol==Protocol){
 									//if ( gdata[prot].Pool == $("#Pool2 option:selected").val() ) {
 										$("#Vol2").append($('<option class="variable" >').text(gdata[prot].name).val(gdata[prot].name).addClass(gdata[prot].class));
 										
@@ -308,7 +315,7 @@
 							
 						if( userpriv=="true" | curuser=="admin" ) {
 							Protocol="CIFS";
-							Vollisttime = "55:55:44";
+							Vollisttime = 99999;
 							Initclickedprotocol();
 							Vollisttime2=32423
 							$("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".ullis").hide(); $(".finish").show(); $(".NFS").show();
