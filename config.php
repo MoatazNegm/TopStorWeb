@@ -127,7 +127,7 @@ fclose($myfile);
 							var gdata = jQuery.parseJSON(data);
 							for (var prot in gdata){
 								if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
-									userpriv=gdata[prot].UserPrivileges
+									userpriv=gdata[prot].UserPrivilegesch
 								}
 							};
 						
@@ -139,12 +139,14 @@ fclose($myfile);
 			});
 			$("#Upload").click(function () {
 				if(whichul == 0) {
+					var userpriv="false";
+					var curuser="<?php echo $_SESSION["user"] ?>";
 					whichul="#Upload";
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
-								userpriv=gdata[prot].Colourize
+								userpriv=gdata[prot].Uploadch
 							}
 						};
 					
@@ -167,7 +169,7 @@ fclose($myfile);
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
-								userpriv=gdata[prot].Colourize
+								userpriv=gdata[prot].Colourizech
 							}
 						};
 					

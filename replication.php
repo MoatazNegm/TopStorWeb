@@ -286,7 +286,7 @@
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
-								userpriv=gdata[prot].Replicate
+								userpriv=gdata[prot].Replication
 							}
 						};
 					
@@ -323,7 +323,7 @@
 									var gdata = jQuery.parseJSON(data);
 									for (var prot in gdata){
 										if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
-											userpriv=gdata[prot].Proxy
+											userpriv=gdata[prot].Proxylic
 										}
 									};
 								

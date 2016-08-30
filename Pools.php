@@ -196,7 +196,7 @@
 					var gdata = jQuery.parseJSON(data);
 					for (var prot in gdata){
 						if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
-							userpriv=gdata[prot].DISKGroups
+							userpriv=gdata[prot].DiskGroups
 						}
 					};
 				
