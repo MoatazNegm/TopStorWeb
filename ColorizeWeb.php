@@ -3,12 +3,12 @@
  if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/Login.php');}
  
 ?>
-<html>
+<html class="bodydiv">
 
 	<?php $men=7;include "header3.html"; ?>
 
 							<li><a href="#" class="ADa rightli"><h4 id="AD"><span>Active Directory</span></h4></a></li>
-							<li><a href="#" class="Logsa rightli"><h4 id="Logs"><span>Logs</span></h4></a></li>
+							<li><a href="#" class="Logsa righStli"><h4 id="Logs"><span>Logs</span></h4></a></li>
 							<li><a href="#" class="CIFSa rightli"><h4 id="CIFS"><span>CIFS</span></h4></a></li>
 							
 							
