@@ -1,1 +1,1 @@
-GetDisklist Data/disklist.txt
+UnixListUsers a

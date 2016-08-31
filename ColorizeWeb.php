@@ -17,7 +17,7 @@
 						<ul class="ullis" > 
 							<li><a id="List" href="#" ><h4  class=" colorize rightli" Data-tag=".rightli" Data-id="List" Data-textcolor="yes" Data-background="no" Data-border="no" id="colorizethis"><span> Colorize List</span></h4></a></li>
 							<li ><a class="colorize rightli " Data-tag="#rightPane" Data-id="rightPane" Data-textcolor="yes" Data-background="yes" Data-border="yes" href="#" ><h4 ><span>Colorize RightPane</span></h4></a></li>
-							<li ><a class="colorize rightli " Data-tag=".leftPane" Data-id="leftPane" Data-textcolor="yes" Data-background="yes" Data-border="yes" href="#" ><h4 "><span>Colorize LeftPane</span></h4></a></li>
+							<li ><a class="colorize rightli " Data-tag=".leftPane" Data-id="leftPane" Data-textcolor="yes" Data-background="yes" Data-border="yes" href="#" ><h4 ><span>Colorize LeftPane</span></h4></a></li>
 
 							<li ><a class="colorize rightli " Data-tag="li.active a" Data-id="menuActiveElement" Data-textcolor="yes" Data-background="yes" Data-border="yes" href="#" ><h4 ><span>MenuActiveElement</span></h4></a></li>
 							
