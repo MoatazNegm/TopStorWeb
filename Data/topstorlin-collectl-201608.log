@@ -80,3 +80,17 @@
 20160829 14:26:19 W--sx disabled because no interconnect hardware/drivers found
 20160829 14:26:21 I-Waiting 8449383 usecs for time alignment
 20160830 00:00:00 I-Logs rolled
+20160830 10:11:26 I-V4.0.4-1 Beginning execution on topstorlin...
+20160830 10:11:26 I-First log rollover will be: 20160831 00:00:00
+20160830 10:11:26 W--sx disabled because no interconnect hardware/drivers found
+20160830 10:11:27 I-Waiting 2962672 usecs for time alignment
+20160830 10:13:09 I-V4.0.4-1 Beginning execution on topstorlin...
+20160830 10:13:09 I-First log rollover will be: 20160831 00:00:00
+20160830 10:13:10 W--sx disabled because no interconnect hardware/drivers found
+20160830 10:14:56 I-V4.0.4-1 Beginning execution on topstorlin...
+20160830 10:14:56 I-First log rollover will be: 20160831 00:00:00
+20160830 10:14:56 W--sx disabled because no interconnect hardware/drivers found
+20160830 10:20:01 I-V4.0.4-1 Beginning execution on topstorlin...
+20160830 10:20:01 I-First log rollover will be: 20160831 00:00:00
+20160830 10:20:02 W--sx disabled because no interconnect hardware/drivers found
+20160830 10:20:02 I-Waiting 7750822 usecs for time alignment
