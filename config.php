@@ -56,7 +56,7 @@ fclose($myfile);
 ?>
 
 
-<html>
+<html class="bodydiv">
 	<?php $men=6; include "header.html"; ?>
 	
 							<li>

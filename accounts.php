@@ -2,7 +2,7 @@
 <?php session_start(); 
  if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/Login.php');}
 ?>
-<html>
+<html class="bodydiv">
 	<?php $men = 1; include "header.html"; ?>
 	
 							<li><a href="#" class="ADa rightli"><h4 id="AD"><span>Active Directory</span></h4></a></li>

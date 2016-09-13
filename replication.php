@@ -3,7 +3,7 @@
  if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/Login.php');}
  
 ?>
-<html>
+<html class="bodydiv">
 	<?php $men= 4; include "header.html"; ?>
 	
 							<li><a href="#" class="Partnersa rightli"><h4 id="Partners"><span>Partners</span></h4></a></li>
