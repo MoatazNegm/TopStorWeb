@@ -39,11 +39,9 @@ else
   then
    stats=`cat  Data/*$date*.tab | grep -v \# | sort -u  | awk  "BEGIN{flag=0;count=0} /$time/{flag=1}{if (flag > 0 ) { print; count+=1; } } " | tail -n 50`
    statsnet=`cat  Data/*$date*.net | grep -v \# | sort -u  | awk  "BEGIN{flag=0;count=0} /$time/{flag=1}{if (flag > 0 ) { print; count+=1; } } " | tail -n 50`
-   echo "${stats[@]}"
    found=0;
   else
    time=`date --date=${time}' seconds' +%T`
-   echo $time $lasttime
    printf "$time\n$lasttime\n" | sort -u | tail -n 1 | grep "$time"
    if [ $? -eq  0 ]; 
    then 
@@ -75,8 +73,8 @@ while read -r line ; do
 		netrx=$((netrx+subrx));
 		nettx=$((nettx+subtx));
 	 done
-#netrx=`echo $line | awk '{print $65}'`;
-#nettx=`echo $line | awk '{print $66}'`;
+netrx=`echo $line | awk '{print $65}'`;
+nettx=`echo $line | awk '{print $66}'`;
  nettotkb=$((netrx+nettx));
  if [ $nettotkb -eq 0 ]; then nettotkb=1; fi
  netrxpercent=$((100*netrx/(netrx+nettotkb)));
@@ -94,14 +92,12 @@ done <<< "$(echo -e "${stats[@]}")"
 result=`echo $result | rev | cut -c 2- | rev`']';
 if [ `echo $result | wc -c ` -ge 5 ];
 then
- echo done
  echo $result > Data/ctr.log;
  resdate=`date +%s`;
  res=` ./jsonthis3.sh updated $resdate`;
  echo $res > Data/ctr.logupdated;
 else
  rm -rf Data/ctr.log;
- echo wrong
 fi
 rm -rf Data/Getstatspid
 fi
