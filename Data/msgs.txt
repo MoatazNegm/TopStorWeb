@@ -19,9 +19,11 @@ Unlin1021: Success adding user :
 Unlin1022: : : Success adding user : 
 Domain1000: Changing Domain to :
 Domain1001: Problam chaning to Domain :
+Domain1101: Problem, Domain : is not found
 Domain1002: Success.. Device joined Domain : 
 Domain1003: : : Changing Domain to :
 Domain1004: : : Problam chaning to Domain :
+Domain1104: : : Problam, Domain : is not found
 Domain1005: : : Success.. Device joined Domain : 
 Domain1010: Changing Domain to WorkGroup :
 Domain1011: Success...chaning to workgroup :

@@ -16,7 +16,7 @@
 						<label  for="Domtype"  class="control-label col-sm-1 colorize"  Data-tag="select" Data-id="droplist">Type
 						</label>
 						<div class="col-sm-4">
-							<select id="Domtype colorize"  class="form-control text-center " value="Workgroup">
+							<select id="Domtype"  class="form-control text-center colorize " value="Workgroup">
 								<option value="Domain"  >Domain</option>
 								<option value="Workgroup" selected >Workgroup</option>
 							</select>

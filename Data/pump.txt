@@ -1,1 +1,1 @@
-UnixListUsers a
+DomainChange zenty.localdomain Administrator 123 zentyal admin
