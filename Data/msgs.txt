@@ -29,6 +29,8 @@ Domain1010: Changing Domain to WorkGroup :
 Domain1011: Success...chaning to workgroup :
 Domain1012: : : Changing Domain to WorkGroup :
 Domain1013: : : Success...chaning to workgroup :
+Domain1014: Changing to Domain : is cancelled. Please configure storage first
+Domain1015: : : Changing to Domain : is cancelled. Please configure storage first
 HostManual1000: Changing Device name and IPs
 HostManual1001: All changes are done.Please, wait till they take effect.
 HostManual1002: : : Changing Device name and IPs

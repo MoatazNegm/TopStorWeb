@@ -1,1 +1,1 @@
-DomainChange zenty.localdomain Administrator 123 zentyal admin
+DomainChange winty.localdomain administrator YousefNadody!@#2 windc admin
