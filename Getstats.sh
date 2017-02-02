@@ -4,11 +4,12 @@ if [ -f Data/Getstatspid ];
 then
  exit 0;
 else
+echo $@ > Data/Getstatstime
 echo hi > Data/ctr.log
 touch Data/Getstatspid
 echo $@ > Data/tmpGet
-date=`echo $@ | awk '{print $1}'`
-time=`echo $@ | awk '{print $2}'`;
+date=`echo $@ | awk '{print $1}'`;
+ptime=`echo $@ | awk '{print $2}'`;
 found=1
 ls  Data/*  | grep $date &>/dev/null
 if [ $? -ne 0 ];
@@ -20,29 +21,29 @@ then
  echo $res > Data/ctr.logupdated;
  rm -rf Data/Getstatspid; echo notfound; exit;
 fi
-if [ $time -eq 0 ]; then
-  stats=`cat  Data/*$date*.tab | grep -v \# | sort -u  | awk  "BEGIN{flag=0;count=0} /$time/{flag=1}{if (flag > 0 ) { print; count+=1; } } " | tail -n 50`
-  statsnet=`cat  Data/*$date*.net | grep -v \# | sort -u  | awk  "BEGIN{flag=0;count=0} /$time/{flag=1}{if (flag > 0 ) { print; count+=1; } } " | tail -n 50`
+if [ $ptime -eq 0 ]; then
+  stats=`cat  Data/*$date*.tab | grep -v \# | sort -u  | awk  "BEGIN{flag=0;count=0} /$ptime/{flag=1}{if (flag > 0 ) { print; count+=1; } } " | tail -n 50`
+  statsnet=`cat  Data/*$date*.net | grep -v \# | sort -u  | awk  "BEGIN{flag=0;count=0} /$ptime/{flag=1}{if (flag > 0 ) { print; count+=1; } } " | tail -n 50`
 else
  firsttime=`cat Data/*$date*.tab | grep -v \# | head -n 1 | awk '{print $2}'`
- printf "$time\n$firsttime\n" | sort -u | tail -n 1 | grep "$firsttime"
+ printf "$ptime\n$firsttime\n" | sort -u | tail -n 1 | grep "$firsttime"
  if [ $? -eq  0 ]; 
  then 
-  time=$firsttime
+  ptime=$firsttime
  else
   lasttime=`cat Data/*$date*.tab | grep -v \# | tail -n 1 | awk '{print $2}'`
  fi
  while [ $found -ge 1 ]; do 
   found=1;
-  cat Data/*$date*.tab | grep "$time" > /dev/null
+  cat Data/*$date*.tab | grep "$ptime" > /dev/null
   if [ $? -eq 0 ] 
   then
-   stats=`cat  Data/*$date*.tab | grep -v \# | sort -u  | awk  "BEGIN{flag=0;count=0} /$time/{flag=1}{if (flag > 0 ) { print; count+=1; } } " | tail -n 50`
-   statsnet=`cat  Data/*$date*.net | grep -v \# | sort -u  | awk  "BEGIN{flag=0;count=0} /$time/{flag=1}{if (flag > 0 ) { print; count+=1; } } " | tail -n 50`
+   stats=`cat  Data/*$date*.tab | grep -v \# | sort -u  | awk  "BEGIN{flag=0;count=0} /$ptime/{flag=1}{if (flag > 0 ) { print; count+=1; } } " | tail -n 50`
+   statsnet=`cat  Data/*$date*.net | grep -v \# | sort -u  | awk  "BEGIN{flag=0;count=0} /$ptime/{flag=1}{if (flag > 0 ) { print; count+=1; } } " | tail -n 50`
    found=0;
   else
-   time=`date --date=${time}' seconds' +%T`
-   printf "$time\n$lasttime\n" | sort -u | tail -n 1 | grep "$time"
+   ptime=`date --date=${ptime}' seconds' +%T`
+   printf "$ptime\n$lasttime\n" | sort -u | tail -n 1 | grep "$ptime"
    if [ $? -eq  0 ]; 
    then 
     exit 1;

@@ -1,1 +1,1 @@
-DomainChange winty.localdomain administrator YousefNadody!@#2 windc admin
+GetDisklist Data/disklist.txt

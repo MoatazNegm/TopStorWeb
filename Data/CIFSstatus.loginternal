@@ -1,1 +1,1 @@
-cannot create 'p1/cifs1': bad numeric value 'G'
+cannot create 'p1/skdls': 'redundant_metadata' must be one of 'all | most'
