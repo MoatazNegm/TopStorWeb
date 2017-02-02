@@ -4,6 +4,7 @@ if [ -f Data/Getstatspid ];
 then
  exit 0;
 else
+./pump.sh fixchart
 echo $@ > Data/Getstatstime
 echo hi > Data/ctr.log
 touch Data/Getstatspid
