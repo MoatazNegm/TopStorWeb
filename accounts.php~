@@ -327,7 +327,7 @@
 						var jdata=jQuery.parseJSON(data);
 						$("#BoxName").val(jdata.name); $("#IPAddress").val(jdata.addr); $("#Gateway").val(jdata.rout);
 						$("#DNS").val(jdata.dns);
-						
+						console.log(jdata.name,jdata.addr,jdata.rout,jdata.dns);
 						proptime=proptimenew;
 						refresherprop=refresherprop-1;
 					});

@@ -126,7 +126,7 @@ NFS1001: : : Problem occurred while deleting volume :
 NFS1002: : : Success deleting : 
 NFS1003: : : volume : already exists
 NFS1004: : : Creating volume :
-NFS1005: : : Problem occurred whiel creating volume : 
+NFS1005: : : Problem occurred while creating volume : 
 NFS1006: : : Success creating volume : 
 Snap1022: : : Deleting Snapshot :
 Snap1023: : : Problem while deleting snapshot :

@@ -477,3 +477,4 @@
 20170217 16:12:16 W-If somewhere else, move it or define in collectl.conf
 20170217 16:12:16 I-First log rollover will be: 20170218 00:00:00
 20170217 16:12:16 I-Waiting 3115343 usecs for time alignment
+20170217 22:03:23 F-Error: a daemonized collectl already running

@@ -1,9 +1,6 @@
 <!DOCTYPE html>
-<?php session_start(); 
- if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/Login.php');}
-?>
 <html lang="en">
-<?php session_start(); ?>
+<head>
     <meta charset="UTF-8">
     <title>Pilot</title>
     <!--META TAGS-->
@@ -11,10 +8,9 @@
     <meta name="viewport" content="width=device-width">
     <link rel="icon" type="image/png" href="assets/images/Qonly.png">
 
-<head>
     <!--BOOTSTRAP CSS STYLE-->
-    <link href="assets/css/tether.min.css" rel="stylesheet" type="text/css">    
     <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
     <!--Font Awesome css-->
     <link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
@@ -22,10 +18,6 @@
     <link href="assets/css/main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<form  id="userpassform" type="hidden" method="post" action="userpass.php">
-			<input type="hidden" id="idduserpass" name="idd">
-				<input type="hidden" value="Submit">
-		</form>	
 <!--NAVBAR-->
 <nav class="navbar">
     <!--<div class="container row">-->
@@ -39,7 +31,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="changepassword.html">Change Password</a>
-                    <a class="dropdown-item" href="Login.php">Logout</a>
+                    <a class="dropdown-item" href="login.html">Logout</a>
                 </div>
             </li>
         </ul>
@@ -47,7 +39,7 @@
     </div>
 </nav>
 <!--MESSAGES-->
-<div class="dr-messages ">
+<div class="dr-messages">
     <div class="bg-warning">Your changes may be not saved
         <button type="button" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -115,7 +107,7 @@
                                 <div></div>
                                 <span>Box users</span></a>
                         </li>
-                        <li id="navboxProperties" class="nav-item boxProperties">
+                        <li class="nav-item boxProperties">
                             <a class="nav-link" data-toggle="tab" href="#boxProperties" role="tab">
                                 <div></div>
                                 <span>Box properties</span></a>
@@ -216,35 +208,34 @@
                         </table>
                     </div>
                 </div>
-                <div class="tab-pane Future" id="boxProperties" role="tabpanel"> 
-                 
+                <div class="tab-pane " id="boxProperties" role="tabpanel">
                     <form class="dr-form">
                         <div class="form-group row">
                             <label class="col-2 col-form-label">BoxName</label>
                             <div class="col-5">
-                                <input id="BoxName" class="form-control" type="text">
+                                <input class="form-control" type="text">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-2 col-form-label">IP Address</label>
                             <div class="col-5">
-                                <input id="IPAddress" class="form-control ip_address" type="text"  placeholder="xxx.xxx.xxx.xxx">
+                                <input class="form-control ip_address" type="text"  placeholder="xxx.xxx.xxx.xxx">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-2 col-form-label">Gateway</label>
                             <div class="col-5">
-                                <input id="Gateway" class="form-control ip_address" type="text" placeholder="xxx.xxx.xxx.xxx">
+                                <input class="form-control ip_address" type="text" placeholder="xxx.xxx.xxx.xxx">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-2 col-form-label">DNS</label>
                             <div class="col-5">
-                                <input id="DNS" class="form-control ip_address" type="text" placeholder="xxx.xxx.xxx.xxx">
+                                <input class="form-control ip_address" type="text" placeholder="xxx.xxx.xxx.xxx">
                             </div>
                         </div>
                         <div class="">
-                            <button id="DNSsubmit" type="button" class="btn btn-submit col-3">Submit</button>
+                            <button type="submit" class="btn btn-submit col-3">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -252,6 +243,26 @@
         </div>
     </div>
 </main>
+
+<!--JAVA SCRIPT-->
+<!--JQUERY SCROPT-->
+<script src="assets/js/jquery.min.js"></script>
+
+<!--BOOTSTRAP SCRIPT-->
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
+<script src="assets/js/chartist-js-develop/dist/chartist.min.js"></script>
+
+<script src="assets/js/dropzen.js"></script>
+<script src="assets/js/jquery.mask.min.js"></script>
+
+<!--CUSTOM JS-->
+<script src="assets/js/main.js"></script>
+
+<!--MODAL-->
+<!--userEditing-->
+
+<!-- Modal -->
 <div class="modal fade" id="userEditing" tabindex="-1" role="dialog" aria-labelledby="userEditing" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -283,266 +294,5 @@
         </div>
     </div>
 </div>
-
-<!--JAVA SCRIPT-->
-<!--JQUERY SCROPT-->
-<script src="assets/js/jquery.min.js"></script>
-
-<!--BOOTSTRAP SCRIPT-->
-<script src="assets/js/tether.min.js"></script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/js/chartist-js-develop/dist/chartist.min.js"></script>
-
-<script src="assets/js/dropzen.js"></script>
-<script src="assets/js/jquery.mask.min.js"></script>
-
-<!--CUSTOM JS-->
-<script src="assets/js/main.js"></script>
-
-<!--MODAL-->
-<!--userEditing-->
-
-<!-- Modal -->
-		<script>
-			var refresherprop=1;
-			var proptime="55:55:55";
-			var proptimenew="33:333:33";
-			var DNS=1;
-			$("#userpass").click(function (){   
-			$("#idduserpass").val("<?php  echo session_id() ?>");
-			$("#userpassform").submit();
-			})
-
-			$(".bg-success").hide();$(".bg-danger").hide();$(".bg-warning").hide();
-			function updateprop() {
-				if (refresherprop > 0) { $.post("./pump.php", { req:"HostgetIPs", name:"a" });}				
-				if (refresherprop > 0) {  	
-				$.get("requestdate.php", { file: 'Data/Hostprop.txt' },function(data){ 
-						var jdata=jQuery.parseJSON(data);
-						proptimenew=jdata.timey;
-					});
-				
-				if(proptimenew===proptime){;} else {
-					$.get("requestdata.php", { file: 'Data/Hostprop.txt' },function(data){ 
-						var jdata=jQuery.parseJSON(data);
-						$("#BoxName").val(jdata.name); $("#IPAddress").val(jdata.addr); $("#Gateway").val(jdata.rout);
-						$("#DNS").val(jdata.dns);
-						
-						proptime=proptimenew;
-						refresherprop=refresherprop-1;
-					});
-				}
-			 }
-			}
-			function refreshall() {
-				DNS=1;
-				
-					updateprop();
-				//	$.get("requestdata2.php", { file: 'Data/HostManualconfigstatus.log' }, function(data){ $(".bg-success").text(data);});
-				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
-			//	console.log("AD is visible : " , $(".AD").is(":visible"));
-				if($(".AD").is(":visible"))
-				{
-					$.get("requestdata2.php", { file: 'Data/DomainChangestatus.log' }, function(data){ $("#ADstatus").val(data);});
-				}
-				else if($(".Future").is(":visible"))
-				{
-
-//					updateprop();
-//					$.get("requestdata2.php", { file: 'Data/HostManualconfigstatus.log' }, function(data){ $(".bg-success").text(data);});
-					
-				}
-				else if($(".UnLin").is(":visible"))
-				{
-					$.get("requestdata2.php", { file: 'Data/Usersstatus.log' }, function(data){ $("#UnLinstatus").val(data);});
-					refreshUserList();
-				}
-				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $(".bg-success").show();$(".bg-success").text(data);});
-			}
-			function refresh4(request,field) {
-				if(DNS > 0) {
-					$.get("requestdata.php", { file: 'Data/'+request+'.log' }, function(data){
-					$(field).val(data);
-				if(request=="network") {
-					if (data==1) {
-						$("#network").val(1);  
-					} else { 
-						$("#network").val(2);
-					}; 
-					$("#network").change();
-				}
-	//				if(request=="network") { $("#network").val(data); $("#network").change(); }
-	//				console.log(field,request,data,$("#network").val());
-					});
-					
-				}
-			}	
-						
-			function refresh() {
-				
-				$.get("statuslog.php", { file: 'Data/status.log' }, function(data){
-					$("#statusarea").val(data);
-					});
-			}	;
-			function refreshUserList() {
-				var jdata;
-				
-				$.post("./pump.php", { req:"UnixListUsers", name:"a" }, function (data1){ 
-					
-					$.get("requestdata.php", { file: 'Data/listusers.txt' }, function(data){
-						jdata = jQuery.parseJSON(data);
-						if(Number($("#UserList option").length)+1 > 0 ) {
-							$("#UserList option").each(function (i,v) { 
-								for(var key in jdata) { 
-									if ( key == this.value) {
-										 $(this).toggleClass("dontdelete"); jdata[key]="inin"; 
-									} else { 
-										;
-									} 
-								}
-
-							});
-						}
-						
-						for (var key in jdata ) { 
-							if(jdata[key] == "o") { $("#UserList").append($("<option class='dontdelete'>").text(key).val(key)); }
-						}
-					});
-												
-												;
-					$("#UserList option").not(".dontdelete").remove();
-					$("#UserList option").toggleClass("dontdelete");
-					
-				});	
-			};
-//			setInterval('refresh()', 1000); // Loop every 1000 milliseconds (i.e. 1 second)
-//			setInterval('refreshUserList()', 5000); // Loop every 10000 milliseconds (i.e. 1 second)
-			//refreshUserList();
-			var config = 1;
-			
-			$("#AD").click(function (){ 
-				if(config == 1 ) { 
-					var userpriv="false";
-					var curuser="<?php echo $_SESSION["user"] ?>";
-					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
-						var gdata = jQuery.parseJSON(data);
-						for (var prot in gdata){
-							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
-								userpriv=gdata[prot].Active_Directory
-								
-							}
-						};
-						if( userpriv=="true" | curuser=="admin" ) {
-							config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".ullis").hide(); $(".finish").show();$(".AD").show(); 
-							$.get("requestdata.php", { file: 'Data/DomName.txt' },function(data){ $("#DomName").val(data);});
-							$.get("requestdata.php", { file: 'Data/Domtype.txt' },function(data){ $("#Domtype").val(data);});
-							$.get("requestdata.php", { file: 'Data/DCserver.txt' },function(data){ $("#DCserver").val(data);});
-						}
-					});
-				};
-			});
-			$("#UnLin").click(function (){ 
-				if(config== 1){ 
-					var userpriv="false";
-					var curuser="<?php echo $_SESSION["user"] ?>";
-					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
-						var gdata = jQuery.parseJSON(data);
-						for (var prot in gdata){
-							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
-								userpriv=gdata[prot].Box_Users
-							}
-						};
-					
-						if( userpriv=="true" | curuser=="admin" ) {
-					
-							config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".ullis").hide();$(".finish").show(); $(".UnLin").show();
-						}
-					});
-				};
-			});
-			$("#navboxProperties").click(function (){ 				
-				
-					var userpriv="false";
-					var curuser="<?php echo $_SESSION["user"] ?>";
-					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
-						var gdata = jQuery.parseJSON(data);
-						for (var prot in gdata){
-							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
-								userpriv=gdata[prot].Error
-							}
-						};
-					
-						if( userpriv=="true" | curuser=="admin" ) { 
-							proptime="55:55:55";
-							
-							refresherprop=2;
-							updateprop(); 
-						}
-					});
-				 
-			});
-			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide(); $(".finish").hide(); $(".ullis").show();});
-			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val(), passwd:$("#UserPass").val()+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){
-				 //refreshUserList(); 
-				 });
-			});
-			$("#UnixDelUser").click( function (){ $.post("./pump.php", { req:"UnixDelUser", name:$("#UserList option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 //refreshUserList(); 
-				 });
-			});
-
-				$("#Chapasswd").click( function (){ $.post("./pump.php", { req:"UnixChangePass", name:"'"+$("#UserPass").val()+"'", passwd:$("#UserList").val()+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){});
-			});
-
-			$("#network").change( function () {
-					var value= $("#network").val();
-					switch(value) {
-						case "2" : $(".IPAddress").hide(); $(".Gateway").hide(); break;
-						case "1" : $(".IPAddress").show(); $(".Gateway").show(); break;
-					}
-			});
-			$("#DNSsubmit").click(function (){ 
-				//$("form").validator("validate");
-						$.post("./pump.php", { req:"HostManualconfig", name:$("#BoxName").val()+" "+$("#IPAddress").val()+" "+$("#Gateway").val()+" "+$("#DNS").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
-						setTimeout(function(){ refresherprop=4},3000);					
-						
-						
-			});
-			$("#ADsubmit").click( function() {
-				if($("#Domtype").val()=="Domain") {
-					$.post("./pump.php", { req:"DomainChange", name:$("#DomName").val()+" "+$("#Admin").val()+" "+"\""+$("#Pass").val()+"\""+" "+$("#DCserver").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
-				} 
-				else {
-					$.post("./pump.php", { req:"DomainChangeWorkgrp", name:$("#DomName").val()+" "+$("#Admin").val()+" "+"\""+$("#Pass").val()+"\""+" "+$("#DCserver").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
-				} 
-			});
-			refreshall();
-			function starting() {
-				$(".ullis").hide();
-				if(config == 1 ) {
-						var userprivad="false"; var userprivunlin="false"; var userprivfuture="false";
-						var curuser="<?php echo $_SESSION["user"] ?>";
-						if (curuser !="admin") {
-							$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
-								var gdata = jQuery.parseJSON(data);
-								for (var prot in gdata){
-									if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
-										userprivad=gdata[prot].Active_Directory;
-										userprivunlin=gdata[prot].Box_Users;
-										userprivfuture=gdata[prot].Error;
-									}
-								};
-									
-								if( userprivad =="true") { $("#AD").show(); } else { $("#AD").hide(); } ; if( userprivunlin =="true") { $("#UnLin").show(); } else { $("#UnLin").hide(); };if( userprivfuture =="true") { $("#Future").show(); } else { $("#Future").hide(); };;
-						});
-					}
-					$(".ullis").show();
-			}
-		}
-		starting();
-			
-		setInterval('refreshall()',500);
-		</script>
-
 </body>
 </html>
