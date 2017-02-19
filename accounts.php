@@ -110,7 +110,7 @@
                                 <div></div>
                                 <span>Active Directory</span></a>
                         </li>
-                        <li class="nav-item boxUsers">
+                        <li id="navUnLin" class="nav-item boxUsers">
                             <a class="nav-link" data-toggle="tab" href="#boxUsers" role="tab">
                                 <div></div>
                                 <span>Box users</span></a>
@@ -167,22 +167,22 @@
                         </div>
                     </form>
                 </div>
-                <div class="tab-pane " id="boxUsers" role="tabpanel">
+                <div class="tab-pane Unlin " id="boxUsers" role="tabpanel">
                     <form class="dr-form">
                         <div class="form-group row">
                             <label class="col-2 col-form-label">User</label>
                             <div class="col-5">
-                                <input class="form-control" type="text">
+                                <input id="User" class="form-control" type="text">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-2 col-form-label">Password</label>
                             <div class="col-5">
-                                <input class="form-control" type="password">
+                                <input id="UserPass" class="form-control" type="password">
                             </div>
                         </div>
                         <div class="">
-                            <button type="submit" class="btn btn-submit col-3">Add User</button>
+                            <button id="UnixAddUser" type="button" class="btn btn-submit col-3">Add User</button>
                         </div>
                     </form>
                     <h1>Users List:</h1>
@@ -195,7 +195,7 @@
                                 <th class="text-center">Delete</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody  id="UserList">
                             <tr>
                                 <td class="col-4">John Doe</td>
                                 <td class="text-center"><a href="#" data-toggle="modal" data-target="#userEditing"><img src="assets/images/edit.png"
@@ -304,7 +304,8 @@
 
 <!-- Modal -->
 		<script>
-			var refresherprop=1;
+			var refresherprop=2;
+			var refresheruser=2;
 			var proptime="55:55:55";
 			var proptimenew="33:333:33";
 			var DNS=1;
@@ -338,8 +339,10 @@
 				DNS=1;
 				
 					updateprop();
+					refreshUserList();
+					
 				//	$.get("requestdata2.php", { file: 'Data/HostManualconfigstatus.log' }, function(data){ $(".bg-success").text(data);});
-				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
+				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("bg-success").text(data);});
 			//	console.log("AD is visible : " , $(".AD").is(":visible"));
 				if($(".AD").is(":visible"))
 				{
@@ -353,7 +356,8 @@
 					
 				}
 				else if($(".UnLin").is(":visible"))
-				{
+				{		
+				refreshUserList()		
 					$.get("requestdata2.php", { file: 'Data/Usersstatus.log' }, function(data){ $("#UnLinstatus").val(data);});
 					refreshUserList();
 				}
@@ -384,36 +388,61 @@
 					$("#statusarea").val(data);
 					});
 			}	;
-			function refreshUserList() {
+			function refreshUserList(){
 				var jdata;
-				
-				$.post("./pump.php", { req:"UnixListUsers", name:"a" }, function (data1){ 
-					
+				if(refresheruser > 0){
+					$.post("./pump.php", { req:"UnixListUsers", name:"a" }); 
+						refresheruser=refresheruser-1
 					$.get("requestdata.php", { file: 'Data/listusers.txt' }, function(data){
 						jdata = jQuery.parseJSON(data);
-						if(Number($("#UserList option").length)+1 > 0 ) {
-							$("#UserList option").each(function (i,v) { 
-								for(var key in jdata) { 
-									if ( key == this.value) {
+						$("#UserList tr").remove(); 
+						for(var key in jdata){ 
+							if(jdata[key] == "o") {  
+  								$("#UserList").append('<tr class="dontdelete" > ><td class="col-4">'+key+'</td><td class="text-center"><a href="#" data-toggle="modal" data-target="#userEditing"><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td class="text-center"><a href="#"><img src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+							}
+						}
+					});
+				}
+			}
+			function refreshUserListold() {
+				var jdata;
+				if(refresheruser > 0){
+					$.post("./pump.php", { req:"UnixListUsers", name:"a" }); 
+					refresheruser=refresheruser-1
+					$.get("requestdata.php", { file: 'Data/listusers.txt' }, function(data){
+						jdata = jQuery.parseJSON(data);
+						if(Number($("#UserList tr").length)+1 > 0 ) {
+							$("#UserList tr").each(function (i,v) { 
+								for(var key in jdata){ 
+									if (key == this.value) {
 										 $(this).toggleClass("dontdelete"); jdata[key]="inin"; 
-									} else { 
+										 
+									} else {
+										if(jdata[key] == "o") {  
+  											$("#UserList").append('<tr class="dontdelete" > ><td class="col-4">'+key+'</td><td class="text-center"><a href="#" data-toggle="modal" data-target="#userEditing"><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td class="text-center"><a href="#"><img src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+											console.log("hi",key)											
+						 }
 										;
 									} 
 								}
-
 							});
-						}
-						
-						for (var key in jdata ) { 
-							if(jdata[key] == "o") { $("#UserList").append($("<option class='dontdelete'>").text(key).val(key)); }
-						}
-					});
-												
-												;
-					$("#UserList option").not(".dontdelete").remove();
-					$("#UserList option").toggleClass("dontdelete");
+						}	
 					
-				});	
+									
+					for (var key in jdata ) { 
+						
+//						if(jdata[key] == "o") {  
+ // 											$("#UserList").append('<tr class="dontdelete" > ><td class="col-4">'+key+'</td><td class="text-center"><a href="#" data-toggle="modal" data-target="#userEditing"><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td class="text-center"><a href="#"><img src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+//<td class="text-center"><a href="#" data-toggle="modal" data-target="#userEditing"><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td>
+//<td class="text-center"><a href="#"><img src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');							
+//			console.log("hi",key)											
+//						}
+					}				
+				});							;
+					$("#UserList tr").not(".dontdelete").remove();
+					
+					
+				}		
 			};
 //			setInterval('refresh()', 1000); // Loop every 1000 milliseconds (i.e. 1 second)
 //			setInterval('refreshUserList()', 5000); // Loop every 10000 milliseconds (i.e. 1 second)
@@ -441,8 +470,7 @@
 					});
 				};
 			});
-			$("#UnLin").click(function (){ 
-				if(config== 1){ 
+			$("#navUnLin").click(function (){ 
 					var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
@@ -453,12 +481,12 @@
 							}
 						};
 					
-						if( userpriv=="true" | curuser=="admin" ) {
-					
-							config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".ullis").hide();$(".finish").show(); $(".UnLin").show();
+						if(userpriv=="true" | curuser=="admin" ) {
+							refresheruser=2
+							refreshUserList();
 						}
 					});
-				};
+				
 			});
 			$("#navboxProperties").click(function (){ 				
 				
@@ -472,7 +500,7 @@
 							}
 						};
 					
-						if( userpriv=="true" | curuser=="admin" ) { 
+						if (userpriv=="true" | curuser=="admin") { 
 							proptime="55:55:55";
 							
 							refresherprop=2;
@@ -481,13 +509,15 @@
 					});
 				 
 			});
-			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide(); $(".finish").hide(); $(".ullis").show();});
+		
 			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val(), passwd:$("#UserPass").val()+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){
 				 //refreshUserList(); 
+				 refresheruser=3
 				 });
 			});
 			$("#UnixDelUser").click( function (){ $.post("./pump.php", { req:"UnixDelUser", name:$("#UserList option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 //refreshUserList(); 
+				 //refreshUserList();
+				 refresheruser=3 
 				 });
 			});
 

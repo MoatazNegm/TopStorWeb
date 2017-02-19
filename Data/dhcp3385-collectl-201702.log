@@ -478,3 +478,31 @@
 20170217 16:12:16 I-First log rollover will be: 20170218 00:00:00
 20170217 16:12:16 I-Waiting 3115343 usecs for time alignment
 20170217 22:03:23 F-Error: a daemonized collectl already running
+20170218 11:44:01 I-Logs rolled
+20170217 22:55:21 I-V4.1.0-1 Beginning execution on dhcp3385...
+20170217 22:55:21 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
+20170217 22:55:21 W-If somewhere else, move it or define in collectl.conf
+20170217 22:55:21 I-First log rollover will be: 20170218 00:00:00
+20170217 22:55:21 I-Waiting 8101556 usecs for time alignment
+20170218 15:08:01 I-Logs rolled
+20170217 23:56:13 I-V4.1.0-1 Beginning execution on dhcp3385...
+20170217 23:56:13 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
+20170217 23:56:13 W-If somewhere else, move it or define in collectl.conf
+20170217 23:56:13 I-First log rollover will be: 20170218 00:00:00
+20170217 23:56:13 I-Waiting 6174497 usecs for time alignment
+20170218 00:00:00 I-Logs rolled
+20170218 15:56:12 I-V4.1.0-1 Beginning execution on dhcp3385...
+20170218 15:56:12 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
+20170218 15:56:12 W-If somewhere else, move it or define in collectl.conf
+20170218 15:56:12 I-First log rollover will be: 20170219 00:00:00
+20170218 15:56:12 I-Waiting 7292492 usecs for time alignment
+20170218 16:01:10 I-V4.1.0-1 Beginning execution on dhcp3385...
+20170218 16:01:10 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
+20170218 16:01:10 W-If somewhere else, move it or define in collectl.conf
+20170218 16:01:10 I-First log rollover will be: 20170219 00:00:00
+20170218 16:01:11 I-Waiting 8930450 usecs for time alignment
+20170219 08:43:22 I-V4.1.0-1 Beginning execution on dhcp3385...
+20170219 08:43:22 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
+20170219 08:43:22 W-If somewhere else, move it or define in collectl.conf
+20170219 08:43:22 I-First log rollover will be: 20170220 00:00:00
+20170219 08:43:22 I-Waiting 7507535 usecs for time alignment
