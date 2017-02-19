@@ -187,11 +187,11 @@
                     </form>
                     <h1>Users List:</h1>
                     <div class=" table-responsive">
-                        <table class="col-7 table  dr-table-show">
+                        <table class="col-5 table  dr-table-show">
                             <thead>
                             <tr>
                                 <th class="col-4">user</th>
-                                <th class="text-center">Edit</th>
+                                <th class="text-center">Change Password</th>
                                 <th class="text-center">Delete</th>
                             </tr>
                             </thead>
@@ -263,6 +263,31 @@
             </div>
             <div class="modal-body">
                 <form class="dr-form">
+                     <div class="form-group row">
+                        <label class="col-3 col-form-label">Password</label>
+                        <div class="col-9">
+                            <input id="chpass"class="form-control" type="password">
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <button type="button" class="btn btn-submit ChPass col-5"  data-dismiss="modal" aria-label="Close">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="userEditing2" tabindex="-1" role="dialog" aria-labelledby="userEditing" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title " id="exampleModalLabel">Edit User Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="dr-form">
                     <div class="form-group row">
                         <label class="col-3 col-form-label">User</label>
                         <div class="col-9">
@@ -276,7 +301,7 @@
                         </div>
                     </div>
                     <div class="text-right">
-                        <button type="submit" class="btn btn-submit col-5">Save changes</button>
+                        <button type="button" class="btn btn-submit col-5"  data-dismiss="modal" aria-label="Close">Save changes</button>
                     </div>
                 </form>
             </div>
@@ -306,6 +331,7 @@
 		<script>
 			var refresherprop=2;
 			var refresheruser=2;
+			var userpass="hi";
 			var proptime="55:55:55";
 			var proptimenew="33:333:33";
 			var DNS=1;
@@ -398,7 +424,7 @@
 						$("#UserList tr").remove(); 
 						for(var key in jdata){ 
 							if(jdata[key] == "o") {  
-  								$("#UserList").append('<tr class="dontdelete" > ><td class="col-4">'+key+'</td><td class="text-center"><a href="#" data-toggle="modal" data-target="#userEditing"><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td class="text-center"><a class="UnixDelUser" val="'+key+'" href="javascript:auserdel('+key+')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+  								$("#UserList").append('<tr class="dontdelete" > ><td class="col-4">'+key+'</td><td class="text-center"><a href="javascript:userPassword(\''+key+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td class="text-center"><a class="UnixDelUser" val="'+key+'" href="javascript:auserdel(\''+key+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
 							}
 						}
 					});
@@ -528,8 +554,15 @@
 				 refresheruser=3 
 				 });
 			};
+			function userPassword(){ userpass=arguments[0]; console.log("user",userpass); $("#userEditing").modal('show') };
+			function changePassword(){ $.post("./pump.php", { req:"UnixChangePass", name:"'"+userpass+"'", passwd:arguments[0]+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){});
+				refresheruser=1;			
+			};
 
-				$("#Chapasswd").click( function (){ $.post("./pump.php", { req:"UnixChangePass", name:"'"+$("#UserPass").val()+"'", passwd:$("#UserList").val()+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){});
+
+				$(".ChPass").click(function (){ $.post("./pump.php",{ req:"UnixChangePass", name:$("#chpass").val(), passwd:"'"+userpass+"'"+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){});
+				refresheruser=1;
+				console.log("hi",userpass,$("#chpass").val())
 			});
 
 			$("#network").change( function () {

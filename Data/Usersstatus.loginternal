@@ -1,1 +1,2 @@
-userdel: mezo home directory (/p1/mezo) not found
+usermod: user 'rewtr' does not exist
+Failed to add entry for user rewtr.
