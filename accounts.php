@@ -398,7 +398,7 @@
 						$("#UserList tr").remove(); 
 						for(var key in jdata){ 
 							if(jdata[key] == "o") {  
-  								$("#UserList").append('<tr class="dontdelete" > ><td class="col-4">'+key+'</td><td class="text-center"><a href="#" data-toggle="modal" data-target="#userEditing"><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td class="text-center"><a href="#"><img src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+  								$("#UserList").append('<tr class="dontdelete" > ><td class="col-4">'+key+'</td><td class="text-center"><a href="#" data-toggle="modal" data-target="#userEditing"><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td class="text-center"><a class="UnixDelUser" val="'+key+'" href="javascript:auserdel(\''+key+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
 							}
 						}
 					});
@@ -515,11 +515,19 @@
 				 refresheruser=3
 				 });
 			});
-			$("#UnixDelUser").click( function (){ $.post("./pump.php", { req:"UnixDelUser", name:$("#UserList option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+			$("a.UnixDelUser").click(function (e){ e.preventDefault(); $.post("./pump.php", { req:"UnixDelUser", name:$(this).val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 //refreshUserList();
+				 console.log("hi", $(this).val());
 				 refresheruser=3 
 				 });
 			});
+			
+			function auserdel(){ $.post("./pump.php", { req:"UnixDelUser", name:arguments[0]+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+				 //refreshUserList();
+				 console.log("hi", arguments[0]);
+				 refresheruser=3 
+				 });
+			};
 
 				$("#Chapasswd").click( function (){ $.post("./pump.php", { req:"UnixChangePass", name:"'"+$("#UserPass").val()+"'", passwd:$("#UserList").val()+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){});
 			});
