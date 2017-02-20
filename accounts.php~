@@ -75,27 +75,27 @@
                         Accounts</a>
                 </li>
                 <li class="nav-item status">
-                    <a class="nav-link " href="status.html" role="tab">
+                    <a class="nav-link " href="status.php" role="tab">
                         <div></div>
                         Status</a>
                 </li>
                 <li class="nav-item protocol">
-                    <a class="nav-link" href="protocol.html" role="tab">
+                    <a class="nav-link" href="protocol.php" role="tab">
                         <div></div>
                         Protocol</a>
                 </li>
                 <li class="nav-item replication">
-                    <a class="nav-link" href="replication.html" role="tab">
+                    <a class="nav-link" href="replication.php" role="tab">
                         <div></div>
                         Replication</a>
                 </li>
                 <li class="nav-item pools">
-                    <a class="nav-link" href="pools.html" role="tab">
+                    <a class="nav-link" href="pools.php" role="tab">
                         <div></div>
                         Pools</a>
                 </li>
                 <li class="nav-item config">
-                    <a class="nav-link" href="config.html" role="tab">
+                    <a class="nav-link" href="config.php" role="tab">
                         <div></div>
                         Config</a>
                 </li>
@@ -132,38 +132,38 @@
                         <div class="form-group row">
                             <label class="col-2 col-form-label">Domain/Workgroup</label>
                             <div class="col-5">
-                                <input class="form-control" type="text">
+                                <input id="DomName" class="form-control" type="text">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-2 col-form-label">DC server</label>
                             <div class="col-5">
-                                <input class="form-control" type="text">
+                                <input id="DCserver" class="form-control" type="text">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-2 col-form-label">Administrator</label>
                             <div class="col-5">
-                                <input class="form-control" type="text">
+                                <input id="Admin" class="form-control" type="text">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-2 col-form-label">Passwored</label>
                             <div class="col-5">
-                                <input class="form-control" type="password">
+                                <input id="Pass" class="form-control" type="password">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-2 col-form-label">Type</label>
                             <div class="col-5">
-                                <select class="form-control">
+                                <select id="Domtype" class="form-control">
                                     <option>Domain</option>
                                     <option>WorkGroup</option>
                                 </select>
                             </div>
                         </div>
                         <div class="">
-                            <button type="submit" class="btn btn-submit col-3">Submit</button>
+                            <button type="button" id="ADsubmit" class="btn btn-submit col-3">Joint Domain</button>
                         </div>
                     </form>
                 </div>

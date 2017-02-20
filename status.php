@@ -3,34 +3,256 @@
  if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/Login.php');}
  
 ?>
-<html class="bodydiv">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pilot</title>
+    <!--META TAGS-->
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" type="image/png" href="assets/images/Qonly.png">
 
-	<?php $men=2; include "header.html"; ?>
-	
-							<li ><a href="#" class="SSa rightli"><h4 id="SS"><span>Services Status</span></h4></a></li>
-							<li><a href="#" class="Logsa rightli"><h4 id="Logs"><span>Logs</span></h4></a></li>
-							
-						</ul>
-						<?php include "SS.php" ?>
-						<?php include "Logs.php" ?>
-					</div>
-				</div>
-			
-			</div>
-			<div class="row">
-			<div id="chart1"></div>	
-			<footer class="footer prefooter"  > Errors
-			</footer>
-		</div>
-	
-	<script src='js/jquery.js'></script>
-	<script src="js/bootstrap.min.js" ></script>
-	<script src='js/bootstrap-datepicker.js'></script>
-		<script src="js/bootstrap-timepicker.js"></script>
-		<script src='js/jquery.jqplot.min.js'></script>
-		<script src='js/excanvas.min.js'></script>
-		<script src="js/jqplot.dateAxisRenderer.min.js"></script>
-		
+    <!--BOOTSTRAP CSS STYLE-->
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+    <!--Font Awesome css-->
+    <link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <link href="assets/js/chartist-js-develop/dist/chartist.min.css" rel="stylesheet" type="text/css">
+
+    <!--CUSTOME CSS-->
+    <link href="assets/css/main.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<!--NAVBAR-->
+<nav class="navbar">
+    <!--<div class="container row">-->
+    <div class="col-md-12">
+        <a class="navbar-brand" href="index.html"><img src="assets/images/logo.png"></a>
+        <ul class="navbar-nav pull-right">
+            <li class="nav-item dropdown user-dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span><img src="assets/images/user-icon.png"> </span>Admin
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="changepassword.html">Change Password</a>
+                    <a class="dropdown-item" href="login.html">Logout</a>
+                </div>
+            </li>
+        </ul>
+        <!--</div>-->
+    </div>
+</nav>
+<!--MESSAGES-->
+<div class="dr-messages">
+    <div class="bg-warning">Your changes may be not saved
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="bg-danger">Your changes hasn't been saved
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="bg-success">Your changes has been saved
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+<!--BODY CONTENT-->
+<main class="col-md-12">
+    <div class="row">
+        <div class="col-md-1 main-menu">
+            <ul class="nav flex-column" role="tablist">
+                <li class="nav-item accounts">
+                    <a class=" ref nav-link " id="accounts" href="#" role="tab">
+                        <div></div>
+                        Accounts</a>
+                </li>
+                <li class="nav-item status">
+                    <a class="nav-link active" data-toggle="tab" href="#status" role="tab">
+                        <div></div>
+                        Status</a>
+                </li>
+                <li class="nav-item protocol">
+                    <a class="nav-link" href="protocol.php" role="tab">
+                        <div></div>
+                        Protocol</a>
+                </li>
+                <li class="nav-item replication">
+                    <a class="nav-link" href="replication.php" role="tab">
+                        <div></div>
+                        Replication</a>
+                </li>
+                <li class="nav-item pools">
+                    <a class="nav-link" href="pools.php" role="tab">
+                        <div></div>
+                        Pools</a>
+                </li>
+                <li class="nav-item config">
+                    <a class="nav-link" href="config.php" role="tab">
+                        <div></div>
+                        Config</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-2 second-menu">
+            <div class="tab-content">
+                <div class="tab-pane active" id="status" role="tabpanel">
+                    <ul class="nav flex-column" role="tablist">
+                        <li class="nav-item servicestatus">
+                            <a class="nav-link active" data-toggle="tab" href="#servicestatus" role="tab">
+                                <div></div>
+                                <span>Service Status</span></a>
+                        </li>
+                        <li class="nav-item logs">
+                            <a class="nav-link" data-toggle="tab" href="#logs" role="tab">
+                                <div></div>
+                                <span>Logs</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 main-content">
+            <div class="tab-content">
+                <div class="tab-pane active" id="servicestatus" role="tabpanel">
+                    <form class="dr-form">
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label">Select date</label>
+                            <div class="col-4">
+                                <input class="form-control" type="datetime-local">
+                            </div>
+                            <p class="col-3 col-form-label">10 February 2017 08:00 AM</p>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="ct-chart" id="cpuUtilization"></div>
+                        <h1>Cpu Utilization</h1>
+                        <div class="ct-chart" id="storageLoops"></div>
+                        <h1>Storage Loops</h1>
+                    </div>
+                    <div class="row">
+                        <div class="ct-chart" id="memoryUsed"></div>
+                        <h1>Memory Used</h1>
+                        <div class="ct-chart" id="storagethroughput"></div>
+                        <h1>Storage Throughput</h1>
+                    </div>
+                    <div class="row">
+                    <div class="ct-chart" id="networkthroughput"></div>
+                    <h1>Network Throughput</h1>
+                    <div class="ct-chart" id="storageNeed"></div>
+                    <h1>Storage Need</h1>
+                    </div>
+                </div>
+                <div class="tab-pane " id="logs" role="tabpanel">
+                    <form class="dr-form">
+                        <div class="form-group row">
+                            <label class="col-1 col-form-label">Date</label>
+                            <div class="col-3">
+                                <input class="form-control form-control-sm" type="date">
+                            </div>
+                            <div class="col-3 logs-check">
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" value="option1">Info
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" value="option2">Warning
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="checkbox" value="option2">Error
+                                    </label>
+                                </div>
+                            </div>
+                            <label class="col-1 col-form-label">Lines</label>
+                            <div class="col-1">
+                                <input class="form-control form-control-sm" type="number">
+                            </div>
+                            <div class="col-2 text-right">
+                                <a href="#"><img src="assets/images/refresh.png"> </a>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row table-responsive">
+                        <table class="col-12 table  dr-table-show">
+                            <thead>
+                            <tr>
+                                <th class="text-center">user</th>
+                                <th>Data</th>
+                                <th class="text-center">Date and time</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="text-center">Ahmed Adham</td>
+                                <td>Success creating Snapshot mezo/p1/cifs1 Minutely.3.2.na.na.1472599081</td>
+                                <td class="text-center">08/31/2016 02:18:03</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">Ahmed Adham</td>
+                                <td>Success creating Snapshot mezo/p1/cifs1 Minutely.3.2.na.na.1472599081</td>
+                                <td class="text-center">08/31/2016 02:18:03</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">Ahmed Adham</td>
+                                <td>Success creating Snapshot mezo/p1/cifs1 Minutely.3.2.na.na.1472599081</td>
+                                <td class="text-center">08/31/2016 02:18:03</td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row col-md-12">
+                        <div class=" text-right">
+                            <a href="#"><img src="assets/images/previous.png"></a>
+                            <a href="#"><img src="assets/images/next.png"> </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<form id="accountsref" action="accounts.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="statusref" action="status.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="Protocolref" action="Protocol.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="replicationref" action="replication.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="Poolsref" action="Pools.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="configref" action="config.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+
+<!--JAVA SCRIPT-->
+<!--JQUERY SCROPT-->
+<script src="assets/js/jquery.min.js"></script>
+
+<!--BOOTSTRAP SCRIPT-->
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
+<script src="assets/js/chartist-js-develop/dist/chartist.min.js"></script>
+
+<script src="assets/js/dropzen.js"></script>
+
+<!--CUSTOM JS-->
+<script src="assets/js/main.js"></script>
 		<script>
 			var msgdata= "no no no";
 			var msgs="no data";
@@ -60,6 +282,12 @@
 			var page=0;
 			var reqpage=0;
 			var activepage=0; var lastpage=-1;
+			
+			$(".bg-success").hide();$(".bg-danger").hide();$(".bg-warning").hide();
+	$(".ref").click(function() {
+		document.getElementById($(this).attr('id')+'ref').submit();
+		 //console.log($(this).attr('id')+'ref');
+		});			
 			$.get("requestdatein.php", { file: 'Data/ctr.logupdated' }, function(data){
 				
 					var objdate=jQuery.parseJSON(data);
@@ -553,7 +781,6 @@ $("#Disks").change(function(){
 		starting();
 		
 		</script>
- 
-	</body>
 
+</body>
 </html>

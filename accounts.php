@@ -75,27 +75,27 @@
                         Accounts</a>
                 </li>
                 <li class="nav-item status">
-                    <a class="nav-link " href="status.html" role="tab">
+                    <a class="ref nav-link " id="status" href="#" role="tab">
                         <div></div>
                         Status</a>
                 </li>
                 <li class="nav-item protocol">
-                    <a class="nav-link" href="protocol.html" role="tab">
+                    <a class="nav-link" href="protocol.php" role="tab">
                         <div></div>
                         Protocol</a>
                 </li>
                 <li class="nav-item replication">
-                    <a class="nav-link" href="replication.html" role="tab">
+                    <a class="nav-link" href="replication.php" role="tab">
                         <div></div>
                         Replication</a>
                 </li>
                 <li class="nav-item pools">
-                    <a class="nav-link" href="pools.html" role="tab">
+                    <a class="nav-link" href="pools.php" role="tab">
                         <div></div>
                         Pools</a>
                 </li>
                 <li class="nav-item config">
-                    <a class="nav-link" href="config.html" role="tab">
+                    <a class="nav-link" href="config.php" role="tab">
                         <div></div>
                         Config</a>
                 </li>
@@ -308,6 +308,23 @@
         </div>
     </div>
 </div>
+<form id="accountsref" action="accounts.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="statusref" action="status.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="Protocolref" action="Protocol.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="replicationref" action="replication.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="Poolsref" action="Pools.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="configref" action="config.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 
 <!--JAVA SCRIPT-->
 <!--JQUERY SCROPT-->
@@ -335,6 +352,10 @@
 			var proptime="55:55:55";
 			var proptimenew="33:333:33";
 			var DNS=1;
+				$(".ref").click(function() {
+		document.getElementById($(this).attr('id')+'ref').submit();
+		 //console.log($(this).attr('id')+'ref');
+		});
 			$("#userpass").click(function (){   
 			$("#idduserpass").val("<?php  echo session_id() ?>");
 			$("#userpassform").submit();
