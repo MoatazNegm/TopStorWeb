@@ -554,7 +554,7 @@
 				 refresheruser=3 
 				 });
 			};
-			function userPassword(){ userpass=arguments[0]; console.log("user",userpass); $("#userEditing").modal('show') };
+			function userPassword(){ userpass=arguments[0];  $("#userEditing").modal('show') };
 			function changePassword(){ $.post("./pump.php", { req:"UnixChangePass", name:"'"+userpass+"'", passwd:arguments[0]+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){});
 				refresheruser=1;			
 			};
@@ -562,7 +562,7 @@
 
 				$(".ChPass").click(function (){ $.post("./pump.php",{ req:"UnixChangePass", name:$("#chpass").val(), passwd:"'"+userpass+"'"+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){});
 				refresheruser=1;
-				console.log("hi",userpass,$("#chpass").val())
+				
 			});
 
 			$("#network").change( function () {

@@ -132,38 +132,38 @@
                         <div class="form-group row">
                             <label class="col-2 col-form-label">Domain/Workgroup</label>
                             <div class="col-5">
-                                <input class="form-control" type="text">
+                                <input id="DomName" class="form-control" type="text">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-2 col-form-label">DC server</label>
                             <div class="col-5">
-                                <input class="form-control" type="text">
+                                <input id="DCserver" class="form-control" type="text">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-2 col-form-label">Administrator</label>
                             <div class="col-5">
-                                <input class="form-control" type="text">
+                                <input id="Admin" class="form-control" type="text">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-2 col-form-label">Passwored</label>
                             <div class="col-5">
-                                <input class="form-control" type="password">
+                                <input id="Pass" class="form-control" type="password">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-2 col-form-label">Type</label>
                             <div class="col-5">
-                                <select class="form-control">
+                                <select id="Domtype" class="form-control">
                                     <option>Domain</option>
                                     <option>WorkGroup</option>
                                 </select>
                             </div>
                         </div>
                         <div class="">
-                            <button type="submit" class="btn btn-submit col-3">Submit</button>
+                            <button type="button" id="ADsubmit" class="btn btn-submit col-3">Joint Domain</button>
                         </div>
                     </form>
                 </div>
