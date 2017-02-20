@@ -13,6 +13,7 @@
     <link rel="icon" type="image/png" href="assets/images/Qonly.png">
 
     <!--BOOTSTRAP CSS STYLE-->
+     <link href="assets/css/tether.min.css" rel="stylesheet" type="text/css">   
     <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
     <!--Font Awesome css-->
@@ -108,8 +109,8 @@
                                 <div></div>
                                 <span>Service Status</span></a>
                         </li>
-                        <li class="nav-item logs">
-                            <a class="nav-link" data-toggle="tab" href="#logs" role="tab">
+                        <li id="Logs" class="nav-item logs">
+                            <a class="nav-link" data-toggle="tab" href="#Logspanel" role="tab">
                                 <div></div>
                                 <span>Logs</span></a>
                         </li>
@@ -148,33 +149,33 @@
                     <h1>Storage Need</h1>
                     </div>
                 </div>
-                <div class="tab-pane " id="logs" role="tabpanel">
+                <div class="tab-pane " id="Logspanel" role="tabpanel">
                     <form class="dr-form">
                         <div class="form-group row">
                             <label class="col-1 col-form-label">Date</label>
                             <div class="col-3">
-                                <input class="form-control form-control-sm" type="date">
+                                <input id="dater" class="form-control form-control-sm" type="date">
                             </div>
                             <div class="col-3 logs-check">
                                 <div class="form-check form-check-inline">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" value="option1">Info
+                                        <input class="form-check-input" id="INFO" type="checkbox" value="option1">Info
                                     </label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" value="option2">Warning
+                                        <input id="Warning" class="form-check-input" type="checkbox" value="option2">Warning
                                     </label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" value="option2">Error
+                                        <input id="Error" class="form-check-input" type="checkbox" value="option2">Error
                                     </label>
                                 </div>
                             </div>
                             <label class="col-1 col-form-label">Lines</label>
                             <div class="col-1">
-                                <input class="form-control form-control-sm" type="number">
+                                <input id="lines" min="10" max="50" value="10" class="form-control form-control-sm" type="number">
                             </div>
                             <div class="col-2 text-right">
                                 <a href="#"><img src="assets/images/refresh.png"> </a>
@@ -182,38 +183,25 @@
                         </div>
                     </form>
                     <div class="row table-responsive">
-                        <table class="col-12 table  dr-table-show">
+                        <table  class="col-12 table  dr-table-show">
                             <thead>
-                            <tr>
-                                <th class="text-center">user</th>
-                                <th>Data</th>
-                                <th class="text-center">Date and time</th>
+                            <tr class="row">
+										  <th class="text-left col-3" style="padding-left: 2rem; ">Date and time</th>                                
+                                <th class="text-center col-2">user</th>
+                                <th class="text-center col-7">Data</th>
+                                
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td class="text-center">Ahmed Adham</td>
-                                <td>Success creating Snapshot mezo/p1/cifs1 Minutely.3.2.na.na.1472599081</td>
-                                <td class="text-center">08/31/2016 02:18:03</td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">Ahmed Adham</td>
-                                <td>Success creating Snapshot mezo/p1/cifs1 Minutely.3.2.na.na.1472599081</td>
-                                <td class="text-center">08/31/2016 02:18:03</td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">Ahmed Adham</td>
-                                <td>Success creating Snapshot mezo/p1/cifs1 Minutely.3.2.na.na.1472599081</td>
-                                <td class="text-center">08/31/2016 02:18:03</td>
-                            </tr>
+                            <tbody id="Logdetails">
+                           
 
                             </tbody>
                         </table>
                     </div>
                     <div class="row col-md-12">
                         <div class=" text-right">
-                            <a href="#"><img src="assets/images/previous.png"></a>
-                            <a href="#"><img src="assets/images/next.png"> </a>
+                            <a id="pprev" href="#"><img src="assets/images/previous.png"></a>
+                            <a id="pnext" href="#"><img src="assets/images/next.png"> </a>
                         </div>
                     </div>
                 </div>
@@ -245,6 +233,7 @@
 <script src="assets/js/jquery.min.js"></script>
 
 <!--BOOTSTRAP SCRIPT-->
+<script src="assets/js/tether.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 
 <script src="assets/js/chartist-js-develop/dist/chartist.min.js"></script>
@@ -363,27 +352,27 @@
 				}
 			};
 
-//			var plot1 = $.jqplot('chart1',dl);
-			$("#Stimec").timepicker({
-					appendWidgetTo: 'body',
-					minuteStep: 1,
-					showMeridian: false,
-			});
+// to be evaluated moataz			var plot1 = $.jqplot('chart1',dl);
+//			$("#Stimec").timepicker({
+//					appendWidgetTo: 'body',
+//					minuteStep: 1,
+//					showMeridian: false,
+//			});
 
-			$("#Stime").timepicker({
-								appendWidgetTo: 'body',
-                minuteStep: 1,
-								showMeridian: false,
-			});
-			$('.input-daterange').datepicker({
-				format: "mm/dd/yyyy",
-				weekStart: 6,
-				startDate: "1/1/2014",
-				todayBtn: "linked",
-				keyboardNavigation: false,
-				autoclose: true,
-				todayHighlight: true
-			});
+//			$("#Stime").timepicker({
+//								appendWidgetTo: 'body',
+//               minuteStep: 1,
+//								showMeridian: false,
+//			});
+//			$('.input-daterange').datepicker({
+//				format: "mm/dd/yyyy",
+//				weekStart: 6,
+//				startDate: "1/1/2014",
+//				todayBtn: "linked",
+//				keyboardNavigation: false,
+//				autoclose: true,
+//				todayHighlight: true
+//			});
 			$(".SS").hide(); $(".Logs").hide(); $(".finish").hide();
 			$("#dater2").change(function(){
 				$("#nothing").text("Please wait"); $("#found").hide();
@@ -448,7 +437,7 @@
 				if($("#Error").is(":checked")) { $(".error").show(); }
 			});
 			$("#Logs").click(function (){ 
-				if(config== 1){ 
+				 console.log("Logs")
 					var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
@@ -459,7 +448,7 @@
 							}
 						};
 					
-						if( userpriv=="true" | curuser=="admin" ) {
+						if(userpriv=="true" | curuser=="admin" ) {
 						   
 					   for (var i=0; i<logcache; i+=1) {
 						    updatelogarea(i); 
@@ -474,7 +463,7 @@
 						    config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".ullis").hide(); $(".finish").show();$(".Logs").show();
 						}
 					});
-				};
+				
 			});
 			$(".finish").click(function (){ 
 				for (var i=0; i<logcache; i+=1) { logstatus[i]=0 } config = 1; $(".SS").hide(); $(".Logs").hide();$(".finish").hide();$(".ullis").show();});
@@ -526,7 +515,7 @@
 				
 				}
 			
-				ApplySetting();
+			//	ApplySetting();
 			}
 			
 		}
@@ -710,7 +699,7 @@
 							logarea=logarea+obj[ii][k].Date+" "+obj[ii][k].time+" "+obj[ii][k].msg+": "+objdata+obj[ii][k].code+"\n";
 							if(obj[ii][k].msg == "info") { color="blue"}; if(obj[ii][k].msg == "warning") { color="yellow"}; if(obj[ii][k].msg == "error") { color="red"}
 							
-							$("#Logdetails").append('<tr class="datarow  '+obj[ii][k].msg+'" ><td class="Volname  col/-sm-3 '+obj[ii][k].msg+' "data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td class="col-sm-1  '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+obj[ii][k].user+'</td><td class="col-sm-7  '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
+							$("#Logdetails").append('<tr class="datarow  '+obj[ii][k].msg+'" ><td class="Volname'+obj[ii][k].msg+' "data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td class="'+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+obj[ii][k].user+'</td><td'+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
 							
 										$("#INFO").click();			
 							
@@ -726,9 +715,9 @@
 		
 	
 
-		$(".datec").datepicker().on("changeDate",function(e){
-					traffictime="44:44:34";											
-		});
+//		$(".datec").datepicker().on("changeDate",function(e){
+//					traffictime="44:44:34";											
+//		});
 		$(".timec").change(function(){
 					traffictime="44:44:34";											
 		});
