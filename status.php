@@ -109,7 +109,7 @@
                                 <div></div>
                                 <span>Service Status</span></a>
                         </li>
-                        <li id="Logs" class="nav-item logs">
+                        <li id="Logs" class="nav-item logs2<em></em>">
                             <a class="nav-link" data-toggle="tab" href="#Logspanel" role="tab">
                                 <div></div>
                                 <span>Logs</span></a>
@@ -159,23 +159,23 @@
                             <div class="col-3 logs-check">
                                 <div class="form-check form-check-inline">
                                     <label class="form-check-label">
-                                        <input class="form-check-input" id="INFO" type="checkbox" value="option1">Info
+                                        <input class="form-check-input msgtype" id="INFO" type="checkbox" value="option1">Info
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline ">
+                                    <label class="form-check-label">
+                                        <input id="Warning" class="form-check-input msgtype" type="checkbox" value="option2">Warning
                                     </label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <label class="form-check-label">
-                                        <input id="Warning" class="form-check-input" type="checkbox" value="option2">Warning
-                                    </label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <label class="form-check-label">
-                                        <input id="Error" class="form-check-input" type="checkbox" value="option2">Error
+                                        <input id="Error" class="form-check-input msgtype" type="checkbox" value="option2">Error
                                     </label>
                                 </div>
                             </div>
                             <label class="col-1 col-form-label">Lines</label>
                             <div class="col-1">
-                                <input id="lines" min="10" max="50" value="10" class="form-control form-control-sm" type="number">
+                                <input id="lines" min="5" max="50" value="10" class="form-control form-control-sm" type="number">
                             </div>
                             <div class="col-2 text-right">
                                 <a href="#"><img src="assets/images/refresh.png"> </a>
@@ -296,14 +296,14 @@
 									return weekday[D.getDay()]+" "+D.getDate()+"-"+months[D.getMonth()]+"-"+D.getFullYear();
 								}
 											
-					$("#INFO").click(function() {
+					function infochange() {
 				
 				$(".datarow").hide();
 				if($("#INFO").is(":checked")) { $(".info").show(); }
 				if($("#Warning").is(":checked")) { $(".warning").show(); }
 				if($("#Error").is(":checked")) { $(".error").show(); }
-			});
-	
+			};
+	     $(".msgtype").click(function() { topresentlog(); infochange(); console.log("hithere"); });
 			
 			var sineRenderer = function() {
 				//var data = [[]];
@@ -389,21 +389,15 @@
 								userpriv=gdata[prot].Service_Charts
 							}
 						};
-						if( userpriv=="true" | curuser=="admin" ) {
+						if(userpriv=="true" | curuser=="admin" ) {
 							config= 0; $("h2").css("background-image","url('img/SS.png')").text("Service Status");$(".ullis").hide();$(".finish").show();  $(".SS").show(); 
 						} 
 					});
 				};
 			});
 			$("#lines").click(function(){
-				logstatus=[];
-				$("#Logdetails tr.datarow").remove();
-				page=0; activepage=0; lastpage=-1
-				for (var i=0; i<logcache; i+=1) {
-						    updatelogarea(i); 
-								logstatus[i]=10;
-								logtime[i]="3434TREYLKTRJ";		
-							}
+				   topresentlog(); 
+							
 			});
 			$("#pnext").click(function(){  
 				activepage=activepage+1;
@@ -419,23 +413,12 @@
 				activepage=0; page=0; lastpage=-1
 				logstatus=[];
 				for (var i=0; i<logcache; i+=1) {
-						    updatelogarea(i); 
+						    updatelogarea(20); 
 								logstatus[i]=10;
 								logtime[i]="3434TREYLKTRJ";		
 							}
 			});
-			$("#Warning").click(function() {
-				$(".datarow").hide();
-				if($("#INFO").is(":checked")) { $(".info").show(); }
-				if($("#Warning").is(":checked")) { $(".warning").show(); }
-				if($("#Error").is(":checked")) { $(".error").show(); }
-			});
-			$("#Error").click(function() {
-				$(".datarow").hide();
-				if($("#INFO").is(":checked")) { $(".info").show(); }
-				if($("#Warning").is(":checked")) { $(".warning").show(); }
-				if($("#Error").is(":checked")) { $(".error").show(); }
-			});
+			
 			$("#Logs").click(function (){ 
 				 console.log("Logs")
 					var userpriv="false";
@@ -473,7 +456,7 @@
 		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		if (config == 0) {
 			var date2
-			if( $("#dater2").val() == "") { 
+			if($("#dater2").val() == "") { 
 				date2 = new Date
 				$("#dater2").val(date2.getFullYear() + '-' + ("0" + (date2.getMonth() + 1)).slice(-2) + '-' + ("0" + (date2.getDate() + 0)).slice(-2))
 			} 			
@@ -486,40 +469,33 @@
 		
 		}
 		
-		if (logstatus[0] > 0) {
-			var date
+	}
+	function topresentlog() {
+	var date
+	var liner;	
 			if( $("#dater").val() == "") { 
 				date = new Date
 				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2)) 
 			} 			
 			dater=Date.parse($("#dater").val())
+			liner=$("#lines").val();
 	
 			for (var i=0; i< logstatus.length; i+=1) { 
 				
-				updatelogarea(i);
-				presentlog(i);
-				if(logstatus[i]==10) { 
-					logstatus[i]=11; 
-					 $.post("./pump.php", { req:"GetLog", name: dater+' '+i+' '+$("#lines").val()+' '+"<?php echo $_SESSION["user"]; ?>"},function(){}); 
+				updatelogarea(liner);
+			presentlog(liner);
+				
+					 $.post("./pump.php", { req:"GetLog", name: dater+' '+liner+' '+"<?php echo $_SESSION["user"]; ?>"},function(){}); 
 				//console.log(logstatus)
 				//console.log("GetLog"+dater+' '+reqpage+' '+$("#lines").val()+' '+i)
-				}
-				if ( logstatus[i] > 10 ) { ; ; logstatus[i]++ }
-				if ( logstatus[i] > 30 ) { 
-					if (i > obj.length) { logstatus.pop(1); i = lastpage; activepage=lastpage
-					}
-					logstatus[i]=1;
-					if (i == activepage) { 
-						lastpage=activepage; 
-					}
 				
+					
+					
+							
 				}
 			
-			//	ApplySetting();
 			}
-			
-		}
-	}
+
 	function chartplease(datern) {
 		//$.post("requeststats.php", { date: datern, time: 0 });
 		$.get("requestdatein.php", { file: 'Data/ctr.logupdated' }, function(data){
@@ -528,7 +504,7 @@
 					
 					trafficnewtime=objdate.updated;
 		});
-		if( traffictime == trafficnewtime ) { //console.log("traffic not changed");
+		if(traffictime == trafficnewtime) { //console.log("traffic not changed");
 			
 			if (requeststats==0) {
 				
@@ -536,17 +512,15 @@
 				requeststats=1;
 				
 			}
-		} 
-		else {
-			
+		} else {
 			traffictime = trafficnewtime 	
 			console.log("change");	
 			$.get("requestdata.php", { file: 'Data/ctr.log' }, function(data){
 				datalogf = jQuery.parseJSON(data);
-			 if (datalogf[0].nothing == 0 ) {
-				  console.log( " zero");
+			 	if (datalogf[0].nothing == 0) {
+					console.log(" zero");
 				  
-				  $("#nothing").text("Nothing to Display"); $("#found").hide();
+					$("#nothing").text("Nothing to Display"); $("#found").hide();
 				} 
 				else {
 					
@@ -604,13 +578,12 @@
 		 		
 		}
 		     
-				
-			
 			});
+				
+		requeststats=0;
 		
-			requeststats=0;
-		}
 	}
+}
 	function drawnow(name,title,miny,maxy,series) {
   // we have an empty data array here, but use the "dataRenderer"
   // option to tell the plot to get data from our renderer.
@@ -657,27 +630,29 @@
 		var tm, splitstime;
 		var tm2; var tme, splitstimee;
 		var rqpg
-		rqpg=ii+page;
+		rqpg=ii;
 		
-      
+    
 		$.get("requestdate.php", { file: 'Data/Logs.logupdated'+rqpg }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			logtimenew=objdate.timey;
 		});
 		if(logtimenew!=logtime[ii] ) {
 			$.get("requestdata.php", { file: 'Data/Logs.log'+rqpg}, function(data){
-		
+		console.log(data)
 			obj[ii] = jQuery.parseJSON(data);
 			});
 		}
 	}
 	function presentlog(ii) {
 		var logarea = "";
+		var color;
 		config=1;
 		logtime[ii]=logtimenew;
-		if(lastpage!=activepage && ii==activepage) {$("#Logdetails tr.datarow").remove();}
-		if( lastpage!=activepage && ii==activepage) {
+		$("#Logdetails tr.datarow").remove();
+		
 				for (var k in obj[ii]) { 
+				 console.log(k)
 							var objdata=obj[ii][k].data;
 							var codes; var msgcode; var jofcode; var themsg; var themsgarr;
 							if(typeof obj[ii][k].code != 'undefined'){
@@ -697,20 +672,19 @@
 								//console.log("themsgarr",themsgarr);
 							}
 							logarea=logarea+obj[ii][k].Date+" "+obj[ii][k].time+" "+obj[ii][k].msg+": "+objdata+obj[ii][k].code+"\n";
+							
 							if(obj[ii][k].msg == "info") { color="blue"}; if(obj[ii][k].msg == "warning") { color="yellow"}; if(obj[ii][k].msg == "error") { color="red"}
 							
-							$("#Logdetails").append('<tr class="datarow  '+obj[ii][k].msg+'" ><td class="Volname'+obj[ii][k].msg+' "data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td class="'+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+obj[ii][k].user+'</td><td'+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
 							
-										$("#INFO").click();			
+							$("#Logdetails").append('<tr style="padding-left: 2rem; color:'+color+'" class="row datarow '+obj[ii][k].msg+'" ><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-3 text-left tdlog Volname '+k+' '+obj[ii][k].msg+ ' " data-toggle="popover" rel="popover" data-trigger="hover" data-container="body"  >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td style="margin-left: -1.7rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-2 text-center tdlog '+obj[ii][k].msg+' "  data-content='+objdata+' >'+obj[ii][k].user+'</td><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-7 text-center tdlog '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
+							
+							
+										infochange();			
 							
 						
 					
 				};
-			}
-			//$("#logsarea").val(logarea);	
-			$("td").css("padding","0.1rem");
-			//$('[data-toggle="popover"]').popover({ placement: "bottom",html: false,
-              //      animation: false,});
+	
 	}
 		
 	
@@ -767,7 +741,7 @@ $("#Disks").change(function(){
 					$(".ullis").show();
 			}
 		}
-		starting();
+		 topresentlog();
 		
 		</script>
 

@@ -439,7 +439,7 @@ input.checkboxy {  margin-top: 0.2rem;
 .upload-drop-zone.drop { color: #222; border-color: #222; }
 .progress { padding: 0px; margin-bottom: 0px; }
 .h3msg { margin-top: 0px; margin-bottom: 0.3rem; font-size: 2.3rem;}
-#Logdetails { margin-left: 0.5rem;}
+#Logdetails2 { margin-left: 0.5rem;}
 .panel-body { padding-top: 0.2rem;}
 td { padding: 0.1rem;}
 .popover{
@@ -477,3 +477,4 @@ td { padding: 0.1rem;}
 }
 #lang a { color : darkred; }
 input { text-align: center; }
+.table td.tdlog { padding-top: 0.1rem; padding-bottom: 0.1rem;}

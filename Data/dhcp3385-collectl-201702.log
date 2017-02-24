@@ -507,3 +507,28 @@
 20170219 08:43:22 I-First log rollover will be: 20170220 00:00:00
 20170219 08:43:22 I-Waiting 7507535 usecs for time alignment
 20170220 19:19:03 I-Logs rolled
+20170220 00:16:00 I-V4.1.0-1 Beginning execution on dhcp3385...
+20170220 00:16:00 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
+20170220 00:16:00 W-If somewhere else, move it or define in collectl.conf
+20170220 00:16:00 I-First log rollover will be: 20170221 00:00:00
+20170220 00:16:01 I-Waiting 8904951 usecs for time alignment
+20170220 00:28:39 I-V4.1.0-1 Beginning execution on dhcp3385...
+20170220 00:28:39 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
+20170220 00:28:39 W-If somewhere else, move it or define in collectl.conf
+20170220 00:28:39 I-First log rollover will be: 20170221 00:00:00
+20170220 00:28:39 I-Waiting 539398 usecs for time alignment
+20170221 21:36:40 I-V4.1.0-1 Beginning execution on dhcp3385...
+20170221 21:36:40 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
+20170221 21:36:40 W-If somewhere else, move it or define in collectl.conf
+20170221 21:36:40 I-First log rollover will be: 20170222 00:00:00
+20170221 21:36:40 I-Waiting 9339142 usecs for time alignment
+20170222 22:31:34 I-V4.1.0-1 Beginning execution on dhcp3385...
+20170222 22:31:34 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
+20170222 22:31:34 W-If somewhere else, move it or define in collectl.conf
+20170222 22:31:34 I-First log rollover will be: 20170223 00:00:00
+20170222 22:31:35 I-Waiting 4991441 usecs for time alignment
+20170224 12:03:06 I-V4.1.0-1 Beginning execution on dhcp3385...
+20170224 12:03:06 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
+20170224 12:03:06 W-If somewhere else, move it or define in collectl.conf
+20170224 12:03:06 I-First log rollover will be: 20170225 00:00:00
+20170224 12:03:06 I-Waiting 3005664 usecs for time alignment
