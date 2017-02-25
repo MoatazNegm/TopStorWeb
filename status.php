@@ -154,7 +154,7 @@
                         <div class="form-group row">
                             <label class="col-1 col-form-label">Date</label>
                             <div class="col-3">
-                                <input id="dater" class="form-control form-control-sm" type="date">
+                                <input id="dater" class="form-control form-control-sm" type="datetime-local">
                             </div>
                             <div class="col-3 logs-check">
                                 <div class="form-check form-check-inline">
@@ -397,13 +397,21 @@
 				};
 			});
 			$("#lines").change(function(){
-				   topresentlog(); infochange();
+				   topresentlog();updatelogarea(); infochange();
+							
+			});
+			
+			$("#dater").change(function(){
+				   topresentlog(); updatelogarea(); infochange();
+				   console.log("hi")
 							
 			});
 			$("#pnext").click(function(){  
-				activepage=activepage+1;
-				logstatus[activepage]=50;
-				logstatus[logstatus.length]=10;
+				var date=new Date($("td.last").text());
+				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2)+"T"+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()) 	
+				dater=Date.parse($("#dater").val())
+					$("#dater").change();
+							
 			});
 			$("#pprev").click(function(){  
 				if (activepage > 0 ) { activepage = activepage-1; logstatus[activepage]=50 }
@@ -454,7 +462,7 @@
 	function refreshall() {
 		
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
-		updatelogarea();
+		presentlog();
 		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		if (config == 0) {
 			var date2
@@ -477,7 +485,7 @@
 	
 			if( $("#dater").val() == "") { 
 				date = new Date
-				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2)) 
+				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) + "T00:00:00") 
 			} 			
 			dater=Date.parse($("#dater").val())
 			liner=$("#lines").val();
@@ -655,9 +663,8 @@
 		var ii=1;
 		
 		$("#Logdetails tr.datarow").remove();
-		
+		var y="between";
 				for (var k in obj[ii]) { 
-				 console.log(k)
 							var objdata=obj[ii][k].data;
 							var codes; var msgcode; var jofcode; var themsg; var themsgarr;
 							if(typeof obj[ii][k].code != 'undefined'){
@@ -677,11 +684,11 @@
 								//console.log("themsgarr",themsgarr);
 							}
 							logarea=logarea+obj[ii][k].Date+" "+obj[ii][k].time+" "+obj[ii][k].msg+": "+objdata+obj[ii][k].code+"\n";
-							
-							if(obj[ii][k].msg == "info") { color="blue"}; if(obj[ii][k].msg == "warning") { color="yellow"}; if(obj[ii][k].msg == "error") { color="red"}
-							
-							
-							$("#Logdetails").append('<tr style="padding-left: 2rem; color:'+color+'" class="row datarow '+obj[ii][k].msg+'" ><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-3 text-left tdlog Volname '+k+' '+obj[ii][k].msg+ ' " data-toggle="popover" rel="popover" data-trigger="hover" data-container="body"  >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td style="margin-left: -1.7rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-2 text-center tdlog '+obj[ii][k].msg+' "  data-content='+objdata+' >'+obj[ii][k].user+'</td><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-7 text-center tdlog '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
+							y="between"
+							if (k == 0) { y="first"; };
+							if (k == (obj[ii].length-1)) {y="last";};
+							if(obj[ii][k].msg == "info") { color="blue"}; if(obj[ii][k].msg == "warning") { color="yellow"}; if(obj[ii][k].msg == "error") { color="red"}						
+							$("#Logdetails").append('<tr style="padding-left: 2rem; color:'+color+'" class="row datarow '+obj[ii][k].msg+'" ><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-3 text-left tdlog Volname '+y+' '+obj[ii][k].msg+' " data-toggle="popover" rel="popover" data-trigger="hover" data-container="body"  >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td style="margin-left: -1.7rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-2 text-center tdlog '+obj[ii][k].msg+' "  data-content='+objdata+' >'+obj[ii][k].user+'</td><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-7 text-center tdlog '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
 							
 							
 										infochange();			
