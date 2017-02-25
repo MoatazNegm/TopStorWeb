@@ -109,7 +109,7 @@
                                 <div></div>
                                 <span>Service Status</span></a>
                         </li>
-                        <li id="Logs" class="nav-item logs2<em></em>">
+                        <li id="Logs" class="nav-item  logs2<em></em>">
                             <a class="nav-link" data-toggle="tab" href="#Logspanel" role="tab">
                                 <div></div>
                                 <span>Logs</span></a>
@@ -159,25 +159,25 @@
                             <div class="col-3 logs-check">
                                 <div class="form-check form-check-inline">
                                     <label class="form-check-label">
-                                        <input class="form-check-input msgtype" id="INFO" type="checkbox" value="option1">Info
+                                        <input class="form-check-input msgtype" id="INFO" type="checkbox" value="option1" checked>Info
                                     </label>
                                 </div>
                                 <div class="form-check form-check-inline ">
                                     <label class="form-check-label">
-                                        <input id="Warning" class="form-check-input msgtype" type="checkbox" value="option2">Warning
+                                        <input id="Warning" class="form-check-input msgtype" type="checkbox" value="option2" checked>Warning
                                     </label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <label class="form-check-label">
-                                        <input id="Error" class="form-check-input msgtype" type="checkbox" value="option2">Error
+                                        <input id="Error" class="form-check-input msgtype" type="checkbox" value="option2" checked>Error
                                     </label>
                                 </div>
                             </div>
                             <label class="col-1 col-form-label">Lines</label>
                             <div class="col-1">
-                                <input id="lines" min="5" max="50" value="10" class="form-control form-control-sm" type="number">
+                                <input id="lines" min="5" max="50" value="10" class="form-control form-control-sm " type="number">
                             </div>
-                            <div class="col-2 text-right">
+                            <div class="col-2 text-right msgtype">
                                 <a href="#"><img src="assets/images/refresh.png"> </a>
                             </div>
                         </div>
@@ -256,7 +256,7 @@
 			var config = 1;
 			var disktime="23:3434:34534";
 			var disktimenew="34543:43543:34";
-			var logtime=[]; var logtimenew="34543:43543:34";
+			var logtime="slkdj"; var logtimenew="34543:43543:34";
 			var dl =[[[0,0]],[[0,0]]];
 			var plotpls=[[0,0]]; var plotrs; var plotws; var plotsvct; var plotqlen; var plotdl;
 			var traffictime = "0";
@@ -266,6 +266,7 @@
 			var obj=[];
 			var disksval="hi"
 			var dater;
+			var liner;
 			var dater2;
 			var statsdata="initial";
 			var page=0;
@@ -395,8 +396,8 @@
 					});
 				};
 			});
-			$("#lines").click(function(){
-				   topresentlog(); 
+			$("#lines").change(function(){
+				   topresentlog(); infochange();
 							
 			});
 			$("#pnext").click(function(){  
@@ -420,7 +421,7 @@
 			});
 			
 			$("#Logs").click(function (){ 
-				 console.log("Logs")
+				
 					var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
@@ -443,7 +444,7 @@
 							}
 						
 							
-						    config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".ullis").hide(); $(".finish").show();$(".Logs").show();
+						    config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".ullis").hide(); $(".finish").show();$(".Logs").show(); topresentlog();
 						}
 					});
 				
@@ -453,6 +454,7 @@
 	function refreshall() {
 		
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
+		updatelogarea();
 		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		if (config == 0) {
 			var date2
@@ -472,7 +474,7 @@
 	}
 	function topresentlog() {
 	var date
-	var liner;	
+	
 			if( $("#dater").val() == "") { 
 				date = new Date
 				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2)) 
@@ -482,8 +484,9 @@
 	
 			for (var i=0; i< logstatus.length; i+=1) { 
 				
-				updatelogarea(liner);
-			presentlog(liner);
+				updatelogarea();
+			presentlog();
+			infochange();
 				
 					 $.post("./pump.php", { req:"GetLog", name: dater+' '+liner+' '+"<?php echo $_SESSION["user"]; ?>"},function(){}); 
 				//console.log(logstatus)
@@ -625,30 +628,32 @@
 	
 	
 	
-	function updatelogarea(ii){
+	function updatelogarea(){
 		
 		var tm, splitstime;
 		var tm2; var tme, splitstimee;
 		var rqpg
-		rqpg=ii;
-		
+		rqpg=liner;
+		ii=1;
     
-		$.get("requestdate.php", { file: 'Data/Logs.logupdated'+rqpg }, function(data){
+		$.get("requestdate.php", { file: 'Data/Logs.logupdated' }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			logtimenew=objdate.timey;
 		});
-		if(logtimenew!=logtime[ii] ) {
-			$.get("requestdata.php", { file: 'Data/Logs.log'+rqpg}, function(data){
+		if(logtimenew!=logtime ) {
+			logtime=logtimenew;			
+			$.get("requestdata.php", { file: 'Data/Logs.log'+liner}, function(data){
 		console.log(data)
 			obj[ii] = jQuery.parseJSON(data);
 			});
 		}
 	}
-	function presentlog(ii) {
+	function presentlog() {
 		var logarea = "";
 		var color;
 		config=1;
-		logtime[ii]=logtimenew;
+		var ii=1;
+		
 		$("#Logdetails tr.datarow").remove();
 		
 				for (var k in obj[ii]) { 
@@ -717,9 +722,6 @@ $("#Disks").change(function(){
 			});
 			
 
-		for (var i=0; i<logcache; i+=1) {
-					logstatus[i]=0; logtime[i]="ksldl";
-				}
 		function starting() {
 				$(".ullis").hide();
 				if(config == 1 ) {
