@@ -70,7 +70,7 @@
         <div class="col-md-1 main-menu">
             <ul class="nav flex-column" role="tablist">
                 <li class="nav-item accounts">
-                    <a class="nav-link active" data-toggle="tab" href="#accounts" role="tab">
+                    <a class="ref nav-link active" id="accounts" data-toggle="tab" href="#" role="tab">
                         <div></div>
                         Accounts</a>
                 </li>
@@ -80,7 +80,7 @@
                         Status</a>
                 </li>
                 <li class="nav-item protocol">
-                    <a class="nav-link" href="protocol.php" role="tab">
+                    <a class=" ref nav-link" id="protocol" href="#" role="tab">
                         <div></div>
                         Protocol</a>
                 </li>
@@ -314,7 +314,7 @@
 <form id="statusref" action="status.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
-<form id="Protocolref" action="Protocol.php" method="post">
+<form id="protocolref" action="protocol.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
 <form id="replicationref" action="replication.php" method="post">

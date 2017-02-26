@@ -78,12 +78,12 @@
                         Accounts</a>
                 </li>
                 <li class="nav-item status">
-                    <a class="nav-link active" data-toggle="tab" href="#status" role="tab">
+                    <a class="nav-link active" data-toggle="tab" href="#" role="tab">
                         <div></div>
                         Status</a>
                 </li>
                 <li class="nav-item protocol">
-                    <a class="nav-link" href="protocol.php" role="tab">
+                    <a class="ref nav-link" id="protocol" href="#" role="tab">
                         <div></div>
                         Protocol</a>
                 </li>
@@ -131,7 +131,7 @@
                             <div class="col-4">
                                 <input id="dater2" class="form-control" type="datetime-local">
                             </div>
-                            <p class="col-3 col-form-label">10 February 2017 08:00 AM</p>
+                            <p class="col-3 col-form-label">System Monitor</p>
                         </div>
                     </form>
                     <div class="row ">
@@ -239,7 +239,7 @@
 <form id="statusref" action="status.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
-<form id="Protocolref" action="Protocol.php" method="post">
+<form id="protocolref" action="protocol.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
 <form id="replicationref" action="replication.php" method="post">
@@ -549,7 +549,7 @@
 		if(traffictime == trafficnewtime) { //console.log("traffic not changed");
 			
 			if (requeststats==0) {
-				console.log(datern)
+				
 				$.post("requeststats.php", { date: datern, time: 0 });
 				
 				requeststats=1;
@@ -558,11 +558,11 @@
 		} else {
 			traffictime = trafficnewtime 	
 			
-			console.log("change");	
+			
 			$.get("requestdata.php", { file: 'Data/ctr.log' }, function(data){
 				datalogf = jQuery.parseJSON(data);
 			 	if (datalogf[0].nothing == 0) {
-					console.log(" zero");
+					
 				  
 					$("#nothing").text("Nothing to Display"); $("#found").hide();
 				} 

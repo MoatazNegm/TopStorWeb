@@ -70,17 +70,17 @@
         <div class="col-md-1 main-menu">
             <ul class="nav flex-column" role="tablist">
                 <li class="nav-item accounts">
-                    <a class="nav-link active" data-toggle="tab" href="#accounts" role="tab">
+                    <a class="nav-link active" data-toggle="tab" href="#" role="tab">
                         <div></div>
                         Accounts</a>
                 </li>
                 <li class="nav-item status">
-                    <a class="nav-link " href="status.php" role="tab">
+                    <a class="ref nav-link " id="status" href="#" role="tab">
                         <div></div>
                         Status</a>
                 </li>
                 <li class="nav-item protocol">
-                    <a class="nav-link" href="protocol.php" role="tab">
+                    <a class=" ref nav-link" href="protocol.php" role="tab">
                         <div></div>
                         Protocol</a>
                 </li>
@@ -308,6 +308,23 @@
         </div>
     </div>
 </div>
+<form id="accountsref" action="accounts.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="statusref" action="status.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="protocolref" action="protocol.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="replicationref" action="replication.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="Poolsref" action="Pools.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="configref" action="config.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 
 <!--JAVA SCRIPT-->
 <!--JQUERY SCROPT-->
@@ -335,6 +352,10 @@
 			var proptime="55:55:55";
 			var proptimenew="33:333:33";
 			var DNS=1;
+				$(".ref").click(function() {
+		document.getElementById($(this).attr('id')+'ref').submit();
+		 //console.log($(this).attr('id')+'ref');
+		});
 			$("#userpass").click(function (){   
 			$("#idduserpass").val("<?php  echo session_id() ?>");
 			$("#userpassform").submit();
