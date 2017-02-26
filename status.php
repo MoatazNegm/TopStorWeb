@@ -271,6 +271,7 @@
 			var statsdata="initial";
 			var page=0;
 			var reqpage=0;
+			var counter = 1;
 			var activepage=0; var lastpage=-1;
 			
 			$(".bg-success").hide();$(".bg-danger").hide();$(".bg-warning").hide();
@@ -408,8 +409,10 @@
 			});
 			$("#pnext").click(function(){  
 				var date=new Date($("td.last").text());
-				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2)+"T"+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()) 	
-				dater=Date.parse($("#dater").val())
+				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2)+"T"+("0" + date.getUTCHours()).slice(-2)+":"+("0" +date.getUTCMinutes()).slice(-2)+":"+("0" + date.getUTCSeconds()).slice(-2)) 	
+				dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+date.getFullYear()+"T"+("0" + date.getUTCHours()).slice(-2)+":"+("0" +date.getUTCMinutes()).slice(-2)+":"+("0" + date.getUTCSeconds()).slice(-2) 	
+				
+				dater=$("#dater").val()
 					$("#dater").change();
 							
 			});
@@ -463,6 +466,8 @@
 		
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 		presentlog();
+		counter=counter+1;
+		if(counter > 2 ) { topresentlog(); updatelogarea(); infochange(); counter = 1; }
 		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		if (config == 0) {
 			var date2
@@ -486,22 +491,20 @@
 			if( $("#dater").val() == "") { 
 				date = new Date
 				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) + "T00:00:00") 
-			} 			
-			dater=Date.parse($("#dater").val())
+			} 		
+		///dateri=date.getFullYear()+'/' +("0" + (date.getDate() + 0)).slice(-2)+'/'+("0" + (date.getMonth() + 1)).slice(-2)+"T"+("0" + date.getUTCHours()).slice(-2)+":"+("0" +date.getUTCMinutes()).slice(-2)+":"+("0" + date.getUTCSeconds()).slice(-2) 	
+		date=new Date($("#dater").val());		
+		dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+date.getFullYear()+"T"+("0" + date.getUTCHours()).slice(-2)+":"+("0" +date.getUTCMinutes()).slice(-2)+":"+("0" + date.getUTCSeconds()).slice(-2) 	
+
 			liner=$("#lines").val();
 	
 			for (var i=0; i< logstatus.length; i+=1) { 
+			 $.post("./pump.php", { req:"GetLog", name: dater+' '+liner+' '+"<?php echo $_SESSION["user"]; ?>"},function(){}); 
+
 				
 				updatelogarea();
 			presentlog();
 			infochange();
-				
-					 $.post("./pump.php", { req:"GetLog", name: dater+' '+liner+' '+"<?php echo $_SESSION["user"]; ?>"},function(){}); 
-				//console.log(logstatus)
-				//console.log("GetLog"+dater+' '+reqpage+' '+$("#lines").val()+' '+i)
-				
-					
-					
 							
 				}
 			
@@ -674,7 +677,7 @@
 								jofcode=searchmsg(msgs,msgcode);
 								//console.log("jofcode",jofcode);
 								themsg=msgs[jofcode];
-								themsgarr=themsg.split(":");
+								try { themsgarr=themsg.split(":"); } catch(err) { updatelogarea();console.log("founderror");}
 								codes.push(".");
 								objdata=""
 								for (i=1; i < themsgarr.length ;i++) {
