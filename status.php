@@ -20,9 +20,13 @@
     <link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <link href="assets/js/chartist-js-develop/dist/chartist.min.css" rel="stylesheet" type="text/css">
+    	<link rel="stylesheet" href="css/jquery.jqplot.css">
+   
+		
 
     <!--CUSTOME CSS-->
     <link href="assets/css/main.css" rel="stylesheet" type="text/css">
+   
 </head>
 <body>
 <!--NAVBAR-->
@@ -125,29 +129,49 @@
                         <div class="form-group row">
                             <label class="col-2 col-form-label">Select date</label>
                             <div class="col-4">
-                                <input class="form-control" type="datetime-local">
+                                <input id="dater2" class="form-control" type="datetime-local">
                             </div>
                             <p class="col-3 col-form-label">10 February 2017 08:00 AM</p>
                         </div>
                     </form>
-                    <div class="row">
-                        <div class="ct-chart" id="cpuUtilization"></div>
-                        <h1>Cpu Utilization</h1>
-                        <div class="ct-chart" id="storageLoops"></div>
-                        <h1>Storage Loops</h1>
+                    <div class="row ">
+                    	 <div class="demo-container">
+                        <div class="demo-placeholder" id="CPU"></div>
+                        <h1>CPU Utilization</h1>
+                      </div>
                     </div>
-                    <div class="row">
-                        <div class="ct-chart" id="memoryUsed"></div>
-                        <h1>Memory Used</h1>
-                        <div class="ct-chart" id="storagethroughput"></div>
-                        <h1>Storage Throughput</h1>
+                     <div class="row ">
+                    	 <div class="demo-container">
+                        <div class="demo-placeholder" id="MEM"></div>
+                        <h1>Memory Utilization</h1>
+                      </div>
                     </div>
-                    <div class="row">
-                    <div class="ct-chart" id="networkthroughput"></div>
-                    <h1>Network Throughput</h1>
-                    <div class="ct-chart" id="storageNeed"></div>
-                    <h1>Storage Need</h1>
+                     <div class="row ">
+                    	 <div class="demo-container">
+                        <div class="demo-placeholder" id="NET"></div>
+                        <h1>Network Throughput</h1>
+                      </div>
                     </div>
+                     <div class="row ">
+                    	 <div class="demo-container">
+                        <div class="demo-placeholder" id="DIO"></div>
+                        <h1>Storage I/O per second </h1>
+                      </div>
+                    </div>
+                     <div class="row ">
+                    	 <div class="demo-container">
+                        <div class="demo-placeholder" id="DTH"></div>
+                        <h1>Storage Throughput K Byet per second </h1>
+                      </div>
+                    </div>
+                     <div class="row ">
+                    	 <div class="demo-container">
+                        <div class="demo-placeholder" id="DRP"></div>
+                        <h1>Storage read percentage of I/O request per second</h1>
+                      </div>
+                    </div>
+                   
+                   
                 </div>
                 <div class="tab-pane " id="Logspanel" role="tabpanel">
                     <form class="dr-form">
@@ -239,9 +263,11 @@
 <script src="assets/js/chartist-js-develop/dist/chartist.min.js"></script>
 
 <script src="assets/js/dropzen.js"></script>
+<script src='js/jquery.jqplot.min.js'></script>
+<script src='js/excanvas.min.js'></script>
+<script src="js/jqplot.dateAxisRenderer.min.js"></script>
 
 <!--CUSTOM JS-->
-<script src="assets/js/main.js"></script>
 		<script>
 			var msgdata= "no no no";
 			var msgs="no data";
@@ -353,8 +379,7 @@
 					});
 				}
 			};
-
-// to be evaluated moataz			var plot1 = $.jqplot('chart1',dl);
+//		var plot1 = $.jqplot('chart1',dl);
 //			$("#Stimec").timepicker({
 //					appendWidgetTo: 'body',
 //					minuteStep: 1,
@@ -469,11 +494,13 @@
 		counter=counter+1;
 		if(counter > 2 ) { topresentlog(); updatelogarea(); infochange(); counter = 1; }
 		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
-		if (config == 0) {
-			var date2
+		
+			var date
 			if($("#dater2").val() == "") { 
-				date2 = new Date
-				$("#dater2").val(date2.getFullYear() + '-' + ("0" + (date2.getMonth() + 1)).slice(-2) + '-' + ("0" + (date2.getDate() + 0)).slice(-2))
+				date = new Date
+			//	$("#dater2").val(date2.getFullYear() + '-' + ("0" + (date2.getMonth() + 1)).slice(-2) + '-' + ("0" + (date2.getDate() + 0)).slice(-2))
+				$("#dater2").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) + "T00:00:00") 
+		
 			} 			
 			var dater2=new Date($("#dater2").val())
 			var dater3=dater2.getFullYear() + ("0" + (dater2.getMonth() + 1)).slice(-2) +  ("0" + (dater2.getDate() + 0)).slice(-2)
@@ -482,7 +509,7 @@
 			chartplease(dater3);
 			
 		
-		}
+		
 		
 	}
 	function topresentlog() {
@@ -516,18 +543,21 @@
 				
 					var objdate=jQuery.parseJSON(data);
 					
+					
 					trafficnewtime=objdate.updated;
 		});
 		if(traffictime == trafficnewtime) { //console.log("traffic not changed");
 			
 			if (requeststats==0) {
-				
+				console.log(datern)
 				$.post("requeststats.php", { date: datern, time: 0 });
+				
 				requeststats=1;
 				
 			}
 		} else {
 			traffictime = trafficnewtime 	
+			
 			console.log("change");	
 			$.get("requestdata.php", { file: 'Data/ctr.log' }, function(data){
 				datalogf = jQuery.parseJSON(data);
@@ -756,6 +786,8 @@ $("#Disks").change(function(){
 		 topresentlog();
 		
 		</script>
+	<!-----	<script src="assets/js/main.js"></script>
+----->
 
 </body>
 </html>
