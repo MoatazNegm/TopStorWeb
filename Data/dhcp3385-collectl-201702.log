@@ -534,3 +534,10 @@
 20170224 12:03:06 I-Waiting 3005664 usecs for time alignment
 20170225 09:25:28 I-Logs rolled
 20170226 00:00:00 I-Logs rolled
+20170226 05:11:37 W-Shutting down in response to signal TERM on dhcp3385...
+20170226 05:11:37 I-Terminating...
+20170226 11:23:25 I-V4.1.0-1 Beginning execution on dhcp3385...
+20170226 11:23:25 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
+20170226 11:23:25 W-If somewhere else, move it or define in collectl.conf
+20170226 11:23:25 I-First log rollover will be: 20170227 00:00:00
+20170226 11:23:25 I-Waiting 4323461 usecs for time alignment

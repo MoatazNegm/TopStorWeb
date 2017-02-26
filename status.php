@@ -153,8 +153,8 @@
                     <form class="dr-form">
                         <div class="form-group row">
                             <label class="col-1 col-form-label">Date</label>
-                            <div class="col-3">
-                                <input id="dater" class="form-control form-control-sm" type="datetime-local">
+                            <div class="col-3" style="padding-left: 0px;">
+                                <input id="dater" class="form-control form-control-sm" type="datetime-local" style="font-size: 13px;">
                             </div>
                             <div class="col-3 logs-check">
                                 <div class="form-check form-check-inline">
@@ -173,11 +173,11 @@
                                     </label>
                                 </div>
                             </div>
-                            <label class="col-1 col-form-label">Lines</label>
-                            <div class="col-1">
+                            <label class="col-1 col-form-label" style="padding-right: 0px; maring-right: -2rem;">Lines</label>
+                            <div class="col-1" style="margin-top: 0.2rem; margin-left: -2.5rem; ">
                                 <input id="lines" min="5" max="50" value="10" class="form-control form-control-sm " type="number">
                             </div>
-                            <div class="col-2 text-right msgtype">
+                            <div class="col-2 text-right msgtype" style="margin-top: 0.4rem;">
                                 <a href="#"><img src="assets/images/refresh.png"> </a>
                             </div>
                         </div>
@@ -305,7 +305,7 @@
 				if($("#Warning").is(":checked")) { $(".warning").show(); }
 				if($("#Error").is(":checked")) { $(".error").show(); }
 			};
-	     $(".msgtype").click(function() { topresentlog(); infochange(); console.log("hithere"); });
+	     $(".msgtype").click(function() { topresentlog(); infochange(); });
 			
 			var sineRenderer = function() {
 				//var data = [[]];
@@ -404,7 +404,7 @@
 			
 			$("#dater").change(function(){
 				   topresentlog(); updatelogarea(); infochange();
-				   console.log("hi")
+				 
 							
 			});
 			$("#pnext").click(function(){  
@@ -654,7 +654,7 @@
 		if(logtimenew!=logtime ) {
 			logtime=logtimenew;			
 			$.get("requestdata.php", { file: 'Data/Logs.log'+liner}, function(data){
-		console.log(data)
+	
 			obj[ii] = jQuery.parseJSON(data);
 			});
 		}
@@ -677,7 +677,7 @@
 								jofcode=searchmsg(msgs,msgcode);
 								//console.log("jofcode",jofcode);
 								themsg=msgs[jofcode];
-								try { themsgarr=themsg.split(":"); } catch(err) { updatelogarea();console.log("founderror");}
+								try { themsgarr=themsg.split(":"); } catch(err) { updatelogarea();}
 								codes.push(".");
 								objdata=""
 								for (i=1; i < themsgarr.length ;i++) {
