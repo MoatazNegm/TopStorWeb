@@ -312,8 +312,8 @@
 			var plotb;
 				$(".bg-successold").show();$(".bg-danger").hide();$(".bg-warning").hide();
 			function refreshall() {
-				if($("#cifspane").hasClass('active')) { if (prot !="CIfS") { Vollisttime2="skldjfadks"; prot="CIFS";}};
-				if($("#nfspane").hasClass('active') ) { if (prot !="NFS") { Vollisttime2="ndfsfsn";prot="NFS";}};
+				if($("#cifspane").hasClass('active'))  { if (prot !="CIFS") { pools=[]; $("#Pool2"+prot+" option.variable2").remove(); Vollisttime2="skldjfadks"; prot="CIFS";}};
+				if($("#nfspane").hasClass('active') ) { if (prot !="NFS") { pools=[]; $("#Pool2"+prot+" option.variable2").remove();Vollisttime2="ndfsfsn";prot="NFS";}};
 				$.get("requestdate.php", { file: 'Data/currentinfo2.log2' }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			currentinfo2timenew=objdate.timey;
@@ -389,7 +389,7 @@
 							
 							
 							chartdata=[];
-							pools = [];
+							//pools = [];
 							
 							
 							for (var proty in gdata){
