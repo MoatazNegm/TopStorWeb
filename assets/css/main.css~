@@ -534,7 +534,7 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
 .demo-container {
 	box-sizing: border-box;
 	
-	width: 50rem;
+	width: 44rem;
 	height: 10.5rem;
 	width: 850px;
 /*	height: 450px; */

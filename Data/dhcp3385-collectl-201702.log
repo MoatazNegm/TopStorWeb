@@ -541,3 +541,4 @@
 20170226 11:23:25 W-If somewhere else, move it or define in collectl.conf
 20170226 11:23:25 I-First log rollover will be: 20170227 00:00:00
 20170226 11:23:25 I-Waiting 4323461 usecs for time alignment
+20170227 00:00:00 I-Logs rolled

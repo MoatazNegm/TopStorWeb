@@ -562,3 +562,16 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
 	font-size: 14px;
 	line-height: 1.2em;
 	margin: 0px ;
+}
+	
+#chartNFS, .chart {
+ position: absolute;	
+ right: 1rem;
+ top: 5rem;	
+	
+	 height: 20rem;   width:40rem;
+							margin-left: -7.2rem;
+							margin-bottom: -15rem;
+							margin-top: -2.4rem;
+}
+
