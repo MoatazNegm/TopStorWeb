@@ -63,9 +63,7 @@
         </button>
     </div>
 </div>
-<div  class="" class="chart"  >
-										<div id="chartNFS2" ></div>
-									</div>
+
 <!--BODY CONTENT-->
 <main class="col-md-12">
     <div class="row">
@@ -124,16 +122,19 @@
         <div class="col-md-9 main-content">
             <div class="tab-content">
                 <div class="tab-pane active" id="cifspane" role="tabpanel">
-                    <form class="dr-form">
+                	
+                    <div class="col-6 dr-form">
                         <div class="form-group row">
-                            <label class="col-2 col-form-label">Pool</label>
+                        	
+                            <label class="col-3 col-form-label">Pool</label>
                             <div class="col-5">
                                 <select id="Pool2CIFS" class="Pool2 form-control">
                                 </select>
                             </div>
+                         
                         </div>
                         <div class="form-group row">
-                            <label class="col-2 col-form-label">Volumes</label>
+                            <label class="col-3 col-form-label">Volumes</label>
                             <div class="col-5">
                                 <select id="Vol2CIFS" class="form-control">
                                     <option class="Complete" value="newoption" >New</option>
@@ -142,22 +143,25 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-2 col-form-label">Vol name</label>
+                            <label class="col-3 col-form-label">Vol name</label>
                             <div class="col-5">
                                 <input id="volnameCIFS" class="form-control" type="text">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-2 col-form-label">Size..GB</label>
+                            <label class="col-3 col-form-label">Size..GB</label>
                             <div class="col-5">
                                 <input id="volsizeCIFS" min="1" class="form-control" type="number" value="1">
                             </div>
                         </div>
 
-                        <div class="">
-                            <button id="createvolCIFS" type="button" class="createvol btn btn-submit col-3">Create Volumn</button>
+                        <div class="row">
+                            <button id="createvolCIFS" type="button" class="createvol btn btn-submit col-5">Create Volume</button>
                         </div>
-                    </form>
+                    </div>
+						  <div  class="" class="col-4 chart"  >
+								<div class="" id="chartCIFS" ></div>
+						  </div>                  
                     <h1>created volumes:</h1>
                     <div class="row table-responsive">
                         <table class="col-12 table  dr-table-show">
@@ -187,9 +191,9 @@
                     </div>
                 </div>
                 <div class="tab-pane" id="nfspane" role="tabpanel">
-                    <form class="dr-form">
+                    <div class="col-6 dr-form">
                         <div class="form-group row">
-                            <label class="col-2 col-form-label">Pool</label>
+                            <label class="col-3 col-form-label">Pool</label>
                             <div class="col-5">
                                 <select id="Pool2NFS" class=" Pool2 form-control">
                                     
@@ -197,7 +201,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-2 col-form-label">Volumes</label>
+                            <label class="col-3 col-form-label">Volumes</label>
                             <div class="col-5">
                                 <select id="Vol2NFS" class="form-control">
                                     <option class="Complete" value="newoption">--New--</option>
@@ -206,22 +210,25 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-2 col-form-label">Vol name</label>
+                            <label class="col-3 col-form-label">Vol name</label>
                             <div class="col-5">
                                 <input id="volnameNFS" class="form-control" type="text">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-2 col-form-label">Size..GB</label>
+                            <label class="col-3 col-form-label">Size..GB</label>
                             <div class="col-5">
                                 <input id="volsizeNFS" class="form-control" min=1 value=1 type="number">
                             </div>
                         </div>
 
-                        <div class="">
-                            <button type="button" id="createvolNFS" class="createvol btn btn-submit col-3">Create Volumn</button>
+                        <div class="row">
+                            <button type="button" id="createvolNFS" class="createvol btn btn-submit col-5">Create Volumn</button>
                         </div>
-                    </form>
+                    </div>
+                    <div  class="" class="col-6 chart"  >
+								<div class="" id="chartNFS" ></div>
+						  </div>                  
                     <h1>created volumes:</h1>
                     <div class="row table-responsive">
                         <table class="col-12 table  dr-table-show">
@@ -308,12 +315,12 @@
 			var chartdata = [];
 			var voldirty=1;
 			var Vollock=0;
-			var prot="";
+			var prot="kssl";
 			var plotb;
 				$(".bg-successold").show();$(".bg-danger").hide();$(".bg-warning").hide();
 			function refreshall() {
 				if($("#cifspane").hasClass('active'))  { if (prot !="CIFS") { pools=[]; $("#Pool2"+prot+" option.variable2").remove(); Vollisttime2="skldjfadks"; prot="CIFS";}};
-				if($("#nfspane").hasClass('active') ) { if (prot !="NFS") { pools=[]; $("#Pool2"+prot+" option.variable2").remove();Vollisttime2="ndfsfsn";prot="NFS";}};
+				if($("#nfspane").hasClass('active') ) { if (prot !="NFS") { pools=[]; $("#Pool2"+prot+" option.variable2").remove();prot="NFS"; Vollisttime2="ndfsfsn";}};
 				$.get("requestdate.php", { file: 'Data/currentinfo2.log2' }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			currentinfo2timenew=objdate.timey;
@@ -343,22 +350,22 @@
 			}
 			
 			
-			function refresh3(textareaid) {
+	//		function refresh3(textareaid) {
 				
-					$.get("requestdata2.php", { file: 'Data/'+Protocol+'status.log' }, function(data){
-					$(textareaid).val(data);
-					});
+	//				$.get("requestdata2.php", { file: 'Data/'+Protocol+'status.log' }, function(data){
+	//				$(textareaid).val(data);
+	//				});
 			
-			}	;
-			function volumetable(i,v) {
-				var res = i.split("_");
-				$("#Volumetable").append('<tr class="trow" onclick="rowisclicked(this)" ><td style="padding-left: 2rem; " class="Volname tcol" >'+v+'</td><td class="tcol">'+res[0]+'</td><td class="tcol">'+res[1]+'</td><td class="tcol">'+res[2]+'</td></tr>');
-				chartdata.push([v,parseFloat(res[0])]);
-			};
-			function volumetabledetails(i,v) {
-				var res = i.split("_");
-				$("#Volumedetails > tbody").append('<tr class="trow" onclick="rowisclicked(this)"><td style="padding-left: 2rem; " class=" tcol">'+res[0]+'</td><td class=" tcol">'+res[1]+'</td><td class=" tcol">'+res[2]+'</td><td class=" tcol">'+res[3]+'</td><td class=" tcol" >'+res[4]+'</td><td class=" tcol">'+res[5]+'</td><td class=" tcol">'+res[6]+'</td><td class=" tcol">'+res[7]+'</td></tr>');
-			};
+	//		}	;
+	//		function volumetable(i,v) {
+	//			var res = i.split("_");
+	//			$("#Volumetable").append('<tr class="trow" onclick="rowisclicked(this)" ><td style="padding-left: 2rem; " class="Volname tcol" >'+v+'</td><td class="tcol">'+res[0]+'</td><td class="tcol">'+res[1]+'</td><td class="tcol">'+res[2]+'</td></tr>');
+	//			chartdata.push([v,parseFloat(res[0])]);
+	//		};
+	//		function volumetabledetails(i,v) {
+	//			var res = i.split("_");
+	//			$("#Volumedetails > tbody").append('<tr class="trow" onclick="rowisclicked(this)"><td style="padding-left: 2rem; " class=" tcol">'+res[0]+'</td><td class=" tcol">'+res[1]+'</td><td class=" tcol">'+res[2]+'</td><td class=" tcol">'+res[3]+'</td><td class=" tcol" >'+res[4]+'</td><td class=" tcol">'+res[5]+'</td><td class=" tcol">'+res[6]+'</td><td class=" tcol">'+res[7]+'</td></tr>');
+	//		};
 			
 			function refreshList2(req,listid,filelocfrom,show) {
 				var fileloc=filelocfrom;
@@ -379,7 +386,7 @@
 					Vollisttime2=Vollisttimenew;
 					$.get("requestdata.php", { file: fileloc }, function(data){
 						gdata = jQuery.parseJSON(data);
-						if(show=="Volumes"){
+					
 							//console.log(req,listid,filelocfrom,show);
 							$(listid+' option').remove();
 							$(listid+' tr').remove();
@@ -389,40 +396,43 @@
 							
 							
 							chartdata=[];
-							//pools = [];
+							pools = [];
 							
 							
 							for (var proty in gdata){
 								
 								
-									//console.log(gdata[prot].name);
+									console.log("to push",gdata[proty].class,pools);
 									if ($.inArray(gdata[proty].class,pools) < 0 ) { 
 									
 									pools.push(gdata[proty].class);
 									$("#Pool2"+prot).append($('<option class="variable2">').text(gdata[proty].Pool).val(gdata[proty].class));
-										
-										chartdata.push(gdata[proty].class);
+									chartdata.push(gdata[proty].class);
 										
 										chartdata[gdata[proty].class]=[];
+
+									console.log("to push",gdata[proty].class);										
+										console.log("changed chartdata",chartdata)
 									} 
 									if(gdata[proty].protocol==prot){
 									//if ( gdata[prot].Pool == $("#Pool2 option:selected").val() ) {
 										//$("#Vol2").append($('<option class="variable" >').text(gdata[prot].name).val(gdata[prot].name).addClass(gdata[prot].class));
 										
-									
+									console.log("to push in chartdata",gdata[proty].name,parseFloat(gdata[proty].volsize),gdata[proty].class,chartdata)
 									$(listid).append('<tr onclick="rowisclicked(this)" class="variable trow '+gdata[proty].class+'"><td style="padding-left: 2rem; " class="Volname tcol">'+gdata[proty].name+'</td><td class="text-center tcol">'+gdata[proty].volsize+'</td><td class="text-center tcol">'+gdata[proty].volact+'</td><td class=" text-center tcol">'+gdata[proty].usedsnaps+'</td><td class=" text-center tcol">'+gdata[proty].compress+'</td><td class="text-center"><a href="javascript:voldel(\''+gdata[proty].name+'\')"><img src="assets/images/delete.png" alt="can\'t upload delete icon"></a></td></tr>');
 									chartdata[gdata[proty].class].push([gdata[proty].name,parseFloat(gdata[proty].volsize)]);
 								}
 							
 								//else $("#Pool2").append($('<option class="variable2">').text(gdata[prot].Pool).val(gdata[prot].class));
 							}
-							$(".Pool2").change()
-							pools = [];
-							if(plotflag > 0 ) {
-								plotb.destroy();
-								plotchart('chartNFS',chartdata[$("#Pool2"+prot+"").val()]);
-							}
-						}
+							console.log("tochart",chartdata)
+							//$("#Pool2"+prot).change()
+							//pools = [];
+							console.log(chartdata);
+							if (plotb) {plotb.destroy();}
+								plotchart('chart'+prot,chartdata[$("#Pool2"+prot+"").val()]);
+							
+					
 					});
 	
 			}
@@ -521,7 +531,7 @@
 							Protocol="CIFS";
 							Vollisttime = 99999;
 							Initclickedprotocol();
-							Vollisttime2=32423
+							prot=32423
 							$("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".ullis").hide(); $(".finish").show(); $(".NFS").show();
 							//plotchart('chartNFS',chartdata);
 						}
@@ -546,7 +556,7 @@
 							Protocol="NFS"; 
 							Vollisttime = "55:55:44";
 							Initclickedprotocol();
-							Vollisttime2=5654
+							prot=5654
 							$("h2").css("background-image","url('img/nfs.png')").text("NFS"); $(".ullis").hide();$(".finish").show(); $(".NFS").show();
 							//plotchart('chartNFS',chartdata);
 						}
@@ -579,8 +589,8 @@
 				SelectPanelNFS(selection);
 			}); 
 			$(".Pool2").change(function () {
-				var selection=$(".Pool2 option:selected").val();
-				//console.log(selection);
+				var selection=$(".Pool2 option:selected").val();//
+				//console.log(selection
 				if (selection == "--All--")
 					$("#Vol2 option.variable").show();
 				else {
@@ -600,10 +610,10 @@
 			$(".createvol").click( function (){  var req="";$.post("./pump.php", { req:"VolumeCreate"+prot+"", name:$("#Pool2"+prot+" option:selected").val()+" "+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 
 				 });
-			refreshList2("GetPoolVollist","#Vol2","Data/Vollist.txt",5.5);
+			
 			});
 			$("#refreshb").click(function(){
-				Vollisttime2=345325
+				prot=345325
 				Vollisttime=4523452
 				refreshall();
 			});
