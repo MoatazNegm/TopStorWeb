@@ -61,8 +61,8 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="bg-success">Your changes has been saved
-        <button type="button" class="close" aria-label="Close">
+    <div class="bg-success"><div id="texthere"></div>
+        <button type="button" id="close-success" style="margin-top: -2.4rem" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -93,7 +93,7 @@
                         Replication</a>
                 </li>
                 <li class="nav-item pools">
-                    <a class="nav-link" href="pools.php" role="tab">
+                    <a class="ref nav-link" id="pools" href="#" role="tab">
                         <div></div>
                         Pools</a>
                 </li>
@@ -161,7 +161,7 @@
                      <div class="row ">
                     	 <div class="demo-container">
                         <div class="demo-placeholder" id="DTH"></div>
-                        <h1>Storage Throughput K Byet per second </h1>
+                        <h1>Storage Throughput K Byte per second </h1>
                       </div>
                     </div>
                      <div class="row ">
@@ -245,7 +245,7 @@
 <form id="replicationref" action="replication.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
-<form id="Poolsref" action="Pools.php" method="post">
+<form id="poolsref" action="pools.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
 <form id="configref" action="config.php" method="post">
@@ -300,7 +300,7 @@
 			var counter = 1;
 			var activepage=0; var lastpage=-1;
 			
-			$(".bg-success").hide();$(".bg-danger").hide();$(".bg-warning").hide();
+			$(".bg-success").show();$(".bg-danger").hide();$(".bg-warning").hide();
 	$(".ref").click(function() {
 		document.getElementById($(this).attr('id')+'ref').submit();
 		 //console.log($(this).attr('id')+'ref');
@@ -489,7 +489,7 @@
 				for (var i=0; i<logcache; i+=1) { logstatus[i]=0 } config = 1; $(".SS").hide(); $(".Logs").hide();$(".finish").hide();$(".ullis").show();});
 	function refreshall() {
 		
-		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
+		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data);});
 		presentlog();
 		counter=counter+1;
 		if(counter > 2 ) { topresentlog(); updatelogarea(); infochange(); counter = 1; }
@@ -784,6 +784,7 @@ $("#Disks").change(function(){
 			}
 		}
 		 topresentlog();
+		 		$("#close-success").click(function() { $(".bg-success").hide(); });
 		
 		</script>
 	<!-----	<script src="assets/js/main.js"></script>

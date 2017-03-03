@@ -564,7 +564,7 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
 	margin: 0px ;
 }
 	
-#chartNFS, .chart {
+#chartNFS2, .chart {
  position: absolute;	
  right: 1rem;
  top: 5rem;	

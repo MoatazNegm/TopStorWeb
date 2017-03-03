@@ -90,7 +90,7 @@
                         Replication</a>
                 </li>
                 <li class="nav-item pools">
-                    <a class="nav-link" href="pools.html" role="tab">
+                    <a class="ref nav-link" id="pools" href="#" role="tab">
                         <div></div>
                         Pools</a>
                 </li>
@@ -283,7 +283,7 @@
 <form id="replicationref" action="replication.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
-<form id="Poolsref" action="Pools.php" method="post">
+<form id="poolsref" action="pools.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
 <form id="configref" action="config.php" method="post">

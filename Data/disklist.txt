@@ -1,1 +1,1 @@
-{"-:p1":""}
+[{"disk":"scsi-36001405b117cea744dd4387a2b43546f","host":"dhcp3385","pool":"p1","size":"8","poolrole":"spare"}]

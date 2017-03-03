@@ -575,3 +575,7 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
 							margin-top: -2.4rem;
 }
 
+.InGroup {   background : blue; }
+.FreeDisk {  background: green; }
+.SelectedInArray {  border: solid red; }
+.SelectedFree { border: solid green;}

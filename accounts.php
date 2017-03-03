@@ -58,12 +58,12 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="bg-success">Your changes has been saved
-        <button type="button" class="close" aria-label="Close">
+    <div class="bg-success"><div id="texthere"></div>
+        <button type="button" id="close-success" style="margin-top: -2.4rem" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-</div>
+ </div>
 <!--BODY CONTENT-->
 <main class="col-md-12">
     <div class="row">
@@ -90,7 +90,7 @@
                         Replication</a>
                 </li>
                 <li class="nav-item pools">
-                    <a class="nav-link" href="pools.php" role="tab">
+                    <a class=" ref nav-link" id="pools"  href="#" role="tab">
                         <div></div>
                         Pools</a>
                 </li>
@@ -320,7 +320,7 @@
 <form id="replicationref" action="replication.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
-<form id="Poolsref" action="Pools.php" method="post">
+<form id="poolsref" action="pools.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
 <form id="configref" action="config.php" method="post">
@@ -337,6 +337,7 @@
 
 <script src="assets/js/dropzen.js"></script>
 <script src="assets/js/jquery.mask.min.js"></script>
+<script src="js/bootstrap-timepicker.js"></script>
 
 <!--CUSTOM JS-->
 <script src="assets/js/main.js"></script>
@@ -361,7 +362,7 @@
 			$("#userpassform").submit();
 			})
 
-			$(".bg-success").hide();$(".bg-danger").hide();$(".bg-warning").hide();
+			$(".bg-success").show();$(".bg-danger").hide();$(".bg-warning").hide();
 			function updateprop() {
 				if (refresherprop > 0) { $.post("./pump.php", { req:"HostgetIPs", name:"a" });}				
 				if (refresherprop > 0) {  	
@@ -408,7 +409,7 @@
 					$.get("requestdata2.php", { file: 'Data/Usersstatus.log' }, function(data){ $("#UnLinstatus").val(data);});
 					refreshUserList();
 				}
-				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $(".bg-success").show();$(".bg-success").text(data);});
+				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data);});
 			}
 			function refresh4(request,field) {
 				if(DNS > 0) {
@@ -631,9 +632,10 @@
 					$(".ullis").show();
 			}
 		}
-		starting();
+	
 			
 		setInterval('refreshall()',500);
+				$("#close-success").click(function() { $(".bg-success").hide(); });
 		</script>
 
 </body>
