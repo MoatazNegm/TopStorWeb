@@ -1,1 +1,1 @@
-GetPoolperiodlist a
+GetDisklist a
