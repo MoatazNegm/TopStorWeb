@@ -127,20 +127,35 @@
                        
                     </div>
                     <h1>Disk Groups:</h1>
-                    <div class="row table-responsive">
+                    <div id="requesttable" class="row table-responsive">
                         <table class="col-12 table  dr-table-show">
                             <thead>
                             <tr>
                                 <th class="text-center">Select</th>
                                 <th class="text-center">Name</th>
-                                <th class="text-center">AUsable Space</th>
+                                <th class="text-center">Usable Space</th>
                                 <th class="text-center">Create</th>
                                 <th class="text-center">Delete</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="DG">
+                               <tr  style="font-size: 2rem; background: grey;height: 5rem; text-align: center;">
+                                <td class="text-center ">
+                                    <div> Running Pool </div>
+                                </td>
+                                <td class="text-center">p1</td>
+                                <td class="text-center">20G</td>
+                                <td class="text-center"><a href="#"><img
+                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
+                                        alt="can't upload Create icon"></a>
+                                </td>
+                                <td class="text-center"><a href="#"><img src="assets/images/delete.png"
+                                                                         alt="can't upload delete icon"></a>
+                              	</td>
+                            	</tr>
+
                             <tr>
-                                <td class="text-center">
+                                <td class="text-center ">
                                     <input type="radio" class="form-check-input" name="diskRadios">
                                 </td>
                                 <td class="text-center">RAID 10</td>
@@ -184,6 +199,7 @@
                             </tbody>
                         </table>
                     </div>
+                
                 </div>
                 <div class="tab-pane " id="snapshots" role="tabpanel">
                     <form class="dr-form">
@@ -695,11 +711,12 @@
 							disks[jdata[disk].id]["host"]=jdata[disk].host;
 							disks[jdata[disk].id]["pool"]=jdata[disk].pool;
 							disks[jdata[disk].id]["size"]=jdata[disk].size;
-							disks[jdata[disk].id]["poolrole"]=jdata[disk].poolrole;
+							disks[jdata[disk].id]["poolsize"]=jdata[disk].poolsize;
 							disks[jdata[disk].id]["grouptype"]=jdata[disk].grouptype;
-							$("#diskimg").append('<img id="'+k+' " class="img-fluid disk-image" src="assets/images/disk-image.png" alt="can\'t upload disk images">')
-						
-							
+							disks[jdata[disk].id]["InGroupDisk1"]=jdata[disk].InGroupDisk1;
+							disks[jdata[disk].id]["InGroupDisk2"]=jdata[disk].InGroupDisk2;
+							$("#diskimg").append('<a id="'+k+'" href="javascript:diskclick(\''+k+'\')"> <img class="img-fluid disk-image disk'+k+'" src="assets/images/disk-image.png" alt="can\'t upload disk images"></a>')
+							disks[k]["selected"]=0;						
 						}
 					});
 				}
@@ -725,8 +742,50 @@
 				if(syscounter2==1000) { syscounter2=0; } else { syscounter2=syscounter2+1; }
 			}
 				
-			
-			
+			function diskclick(id) { 
+			  var selectingdisks;
+					$(".disk"+id).toggleClass("SelectedFree"); 
+					if($(".disk"+id).hasClass("SelectedFree")) {
+						disks[id]["selected"]=1;
+						if(disks[id]["grouptype"]!="free") {
+							for (k in disks) {
+								if (k != id) {
+									if(disks[k]["grouptype"]!="free"){
+										disks[k]["selected"]=0;
+										$(".disk"+k).removeClass("SelectedFree");
+									}
+								}
+							}				
+						}
+					} else { disks[id]["selected"]=0; }
+					if(disks[id]["grouptype"]!="free") {
+						selectingdisks=disks[id]["InGroupDisk1"]
+						while(selectingdisks != "notavailable") {
+						
+							selectingdisks=toggleDiskselect(selectingdisks,disks[id]["selected"],"InGroupDisk1");
+						}
+						selectingdisks=disks[id]["InGroupDisk2"]
+						while(selectingdisks != "notavailable") {
+						
+							selectingdisks=toggleDiskselect(selectingdisks,disks[id]["selected"],"InGroupDisk2");
+						}
+					}						
+			};
+			function toggleDiskselect(dd,sel,nextd) {
+				var nextdisk="notavailable"
+				for (k in disks){
+				
+				  if (disks[k]["name"]==dd) {
+					if(sel==1){ 
+						$(".disk"+k).addClass("SelectedFree"); disks[k]["selected"]=1; nextdisk=disks[k][nextd]
+					 } else {
+					 
+					 	$(".disk"+k).removeClass("SelectedFree"); disks[k]["selected"]=0; nextdisk=disks[k][nextd]
+					 }	
+				  }
+				}
+				return nextdisk;
+			}
 			
 			function refreshList(req,listid,fileloc,showtime,update) {
 				if(syscounter2==1000){$.post("./pump.php", { req: req, name:"a" }, function (data1){});};
