@@ -29,3 +29,9 @@
 20170304 11:18:28 W-If somewhere else, move it or define in collectl.conf
 20170304 11:18:28 I-First log rollover will be: 20170305 00:00:00
 20170304 11:18:28 I-Waiting 1592505 usecs for time alignment
+20170305 00:00:00 I-Logs rolled
+20170306 01:43:18 I-V4.1.0-1 Beginning execution on dhcp3385...
+20170306 01:43:18 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
+20170306 01:43:18 W-If somewhere else, move it or define in collectl.conf
+20170306 01:43:18 I-First log rollover will be: 20170307 00:00:00
+20170306 01:43:18 I-Waiting 1307487 usecs for time alignment

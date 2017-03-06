@@ -30,7 +30,7 @@
 <nav class="navbar">
     <!--<div class="container row">-->
     <div class="col-md-12">
-        <a class="navbar-brand" href="index.html"><img src="assets/images/logo.png"></a>
+        <a class="navbar-brand" href="#"><img src="assets/images/logo.png"></a>
         <ul class="navbar-nav pull-right">
             <li class="nav-item dropdown user-dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
@@ -126,7 +126,7 @@
                     <div id="diskimg">
                        
                     </div>
-                    <h1>Disk Groups:</h1>
+                    <h1 id="poolmsg">No pool is created... Please create a pool by selecting disks </h1>
                     <div id="requesttable" class="row table-responsive">
                         <table class="col-12 table  dr-table-show">
                             <thead>
@@ -139,27 +139,103 @@
                             </tr>
                             </thead>
                             <tbody id="DG">
-                               <tr  style="font-size: 2rem; background: grey;height: 5rem; text-align: center;">
-                                <td class="text-center ">
-                                    <div> Running Pool </div>
+                               <tr id="Pooldelete" style="font-size: 2rem; background: lightgrey;height: 12rem; text-align: center;">
+                                <td class="text-center poolcrdel ">
+                                    <div  class="poolcrdel"> Running Pool </div>
                                 </td>
-                                <td class="text-center">p1</td>
-                                <td class="text-center">20G</td>
-                                <td class="text-center"><a href="#"><img
-                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
-                                        alt="can't upload Create icon"></a>
+                                <td id="poolname" class="poolcrdel text-center">p1</td>
+                                <td id="poolsize" class="poolcrdel text-center">20G</td>
+                               <td></td>
+                                <td  class="poolcrdel" ><a href="javascript:pooldelete()"><div type="button"  class=" btn btn-danger ">Delete Pool</div></a></td>
+                            	</tr>
+										<tr id="Poolcreate" style="font-size: 2rem; background: lightgrey;height: 12rem; text-align: center;">
+                                <td class="text-center poolcrdel ">
+                                    <div  class="poolcrdel"> Running Pool </div>
                                 </td>
-                                <td class="text-center"><a href="#"><img src="assets/images/delete.png"
-                                                                         alt="can't upload delete icon"></a>
-                              	</td>
+                                <td id="poolname" class="poolcrdel text-center">p1</td>
+                                <td id="poolsize" class="poolcrdel text-center">20G</td>
+                                <td  class="poolcrdel"><a  href="#"><div type="button" class=" btn btn-submit ">Create Pool</div></a></td>
+                              
                             	</tr>
 
-                            <tr>
+                            <tr id="Spareadd">
                                 <td class="text-center ">
+                                    <input type="radio" class="form-check-input" name="diskRadios" checked="checked">
+                                </td>
+                                <td class="text-center">Spare</td>
+                                <td class="text-center"></td>
+                                <td class="text-center"><a href="#"><img
+                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
+                                        alt="can't upload Create icon"></a>
+                                </td>
+                               
+                            </tr>
+                            
+                            <tr id="Sparedel">
+                                <td class="text-center ">
+                                    <input type="radio" class="form-check-input" name="diskRadios" checked="checked">
+                                </td>
+                                <td class="text-center">Spare</td>
+                                <td class="text-center"></td>
+                                <td class="text-center"><div href="#">exists for pool p1</div>
+                                </td>
+                                <td class="text-center"><a href="#"><img src="assets/images/delete.png"
+                                                                         alt="can't upload delete icon"></a>
+                                </td>
+                            </tr>
+                            <tr id="mirror">
+                                <td class="text-center">
                                     <input type="radio" class="form-check-input" name="diskRadios">
                                 </td>
-                                <td class="text-center">RAID 10</td>
-                                <td class="text-center">97.9GB</td>
+                                <td class="text-center">Mirror</td>
+                                <td id="Mirrorsize" class="sizegb text-center">97.9GB</td>
+                                <td class="text-center"><a href="#"><img
+                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
+                                        alt="can't upload Create icon"></a>
+                                </td>
+                                
+                            </tr>
+                            <tr id="raid-SingleRed">
+                                <td class="text-center">
+                                    <input type="radio" class="form-check-input" name="diskRadios">
+                                </td>
+                                <td class="text-center">Single Redundancy</td>
+                                <td id="Mirrorsize" class="sizegb text-center">97.9GB</td>
+                                <td class="text-center"><a href="#"><img
+                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
+                                        alt="can't upload Create icon"></a>
+                                </td>
+                                
+                            </tr>
+                             <tr id="raid-DualRed">
+                                <td class="text-center">
+                                    <input type="radio" class="form-check-input" name="diskRadios">
+                                </td>
+                                <td class="text-center">Dual-Redundancy</td>
+                                <td id="" class="sizegb text-center">97.9GB</td>
+                                <td class="text-center"><a href="#"><img
+                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
+                                        alt="can't upload Create icon"></a>
+                                </td>
+                             <tr id="splitmirror">
+                                <td class="text-center poolcrdel">
+                                    <input type="radio" class=" form-check-input" name="diskRadios">
+                                </td>
+                                <td class="text-center poolcrdel ">Split Mirror</td>
+                                <td id="MirrorSize" class="sizgb poolcrdel text-center">97.9GB</td>
+                                <td class="text-center poolcrdel "><a href="#"><img
+                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
+                                        alt="can't upload Create icon"></a>
+                                </td>
+                                <td class="text-center"><a href="#"><div type="button" class=" btn btn-submit" >Split Mirror<div></a>
+                                </td>
+                            </tr>
+                            <tr id="readcache">
+                                <td class="text-center">
+                                    <input type="radio" class="form-check-input" name="diskRadios">
+                                </td>
+                                <td class="text-center">read only cache</td>
+                                <td class="text-center" class="sizegb text-center">97.9GB</td>
                                 <td class="text-center"><a href="#"><img
                                         src="assets/images/plus-symbol-in-a-rounded-black-square.png"
                                         alt="can't upload Create icon"></a>
@@ -168,26 +244,13 @@
                                                                          alt="can't upload delete icon"></a>
                                 </td>
                             </tr>
-                            <tr>
+                              </tr>
+                            <tr id="readwritecache">
                                 <td class="text-center">
                                     <input type="radio" class="form-check-input" name="diskRadios">
                                 </td>
-                                <td class="text-center">RAID 10</td>
-                                <td class="text-center">97.9GB</td>
-                                <td class="text-center"><a href="#"><img
-                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
-                                        alt="can't upload Create icon"></a>
-                                </td>
-                                <td class="text-center"><a href="#"><img src="assets/images/delete.png"
-                                                                         alt="can't upload delete icon"></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">
-                                    <input type="radio" class="form-check-input" name="diskRadios">
-                                </td>
-                                <td class="text-center">RAID 10</td>
-                                <td class="text-center">97.9GB</td>
+                                <td class="text-center">read/write mirrored cache</td>
+                                <td class="text-center" class="sizegb text-center">97.9GB</td>
                                 <td class="text-center"><a href="#"><img
                                         src="assets/images/plus-symbol-in-a-rounded-black-square.png"
                                         alt="can't upload Create icon"></a>
@@ -632,7 +695,7 @@
 		
 		
 			$(".bg-success").show();$(".bg-danger").hide();$(".bg-warning").hide();
-			
+			$("#DG tr").hide();
 			$("#deletePool").hide();$("#submitdiskgroup").hide();$(".finish").hide();$("#SnapshotCreatediv").hide();
 			
 			function refreshList3(request,listid,fileloc) {
@@ -686,7 +749,7 @@
 				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data);});
 				if($("#diskGroupspane").hasClass('active'))  { if (panesel !="diskgroup") { Vollisttime2="skldjfadks"; panesel="diskgroup";}};
 				if($("#snapshotspane").hasClass('active'))  { if (panesel !="snapshot") { Vollisttime2="skldjfadks"; panesel="snapshot";}};
-				if (panesel == "diskgroup") 
+				if (panesel == "diskgroup") { 
 				if(syscounter2==1000){ }
 				$.get("requestdatein.php", { file: "Data/disklist.txtupdated" }, function(data){
 					var objdate = jQuery.parseJSON(data);
@@ -696,7 +759,7 @@
 				if(Vollisttime2==Vollisttimenew) { 
 					$.post("./pump.php", { req: "GetDisklist", name:"a" });//console.log("traffic not changed"); 
 					
-				} else { 
+				} else {					 
 					Vollisttime2=Vollisttimenew;
 					$.get("requestdata.php", { file: "Data/disklist.txt" },function(data){
 						var jdata = jQuery.parseJSON(data);
@@ -716,10 +779,13 @@
 							disks[jdata[disk].id]["InGroupDisk1"]=jdata[disk].InGroupDisk1;
 							disks[jdata[disk].id]["InGroupDisk2"]=jdata[disk].InGroupDisk2;
 							$("#diskimg").append('<a id="'+k+'" href="javascript:diskclick(\''+k+'\')"> <img class="img-fluid disk-image disk'+k+'" src="assets/images/disk-image.png" alt="can\'t upload disk images"></a>')
-							disks[k]["selected"]=0;						
+							disks[k]["selected"]=0;			
+			
 						}
 					});
 				}
+				setstatus();
+				}			
 				if(status==1) { //DiskGroup
 					diskgetsize('Data/disksize.txt','#size',"#count","#onedisk");
 					status=3;
@@ -741,6 +807,19 @@
 				}
 				if(syscounter2==1000) { syscounter2=0; } else { syscounter2=syscounter2+1; }
 			}
+	function setstatus() {
+		for (k in disks) {
+	/*  if grouptype is free  status free, if pool=pxx   poolstatus="exists" ,if poolstats=exists : "grouptype:stripe :  .. disktstatus=single;, grouptype=mirror, raidsingle, raid-dual readwritecache ,  : diskstatus=grouped next,preceding=join 	
+	
+	*/	$(".disk"+k).addClass(disks[k].grouptype)
+			if(disks[k].grouptype=="stripe") {
+					$("#poolmsg").text("Pool p1 is running on disk: "+k); $("#poolsize").text(disks[k].poolsize+"GB")
+					$("#Pooldelete").show();
+					
+			}
+		
+		}	
+	}		
 				
 			function diskclick(id) { 
 			  var selectingdisks;
@@ -958,8 +1037,8 @@
 		});
 	 });
 	 
-		$("#deletePool").click( function (){ $.post("./pump.php", { req:"DGdestroyPool"+" "+"<?php echo $_SESSION["user"]; ?>" });
-		});
+		function pooldelete(){ $.post("./pump.php", { req:"DGdestroyPool"+" "+"<?php echo $_SESSION["user"]; ?>" });
+		};
 
 			
 		$("#DeleteSnapshot").click( function (){ $.post("./pump.php", { req:"SnapShotDelete", name:$("#Pool").val()+" "+$("#Snaplist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){

@@ -348,7 +348,13 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
     font-size: 15px;
     margin-top: 15px;
 }
-
+.btn-danger  {
+   
+    color: white;
+    font-weight: 400;
+    font-size: 15px;
+    margin-top: 0px;;
+}
 .btn-rollback {
     color: white;
     font-weight: 400;
@@ -577,5 +583,14 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
 .disk-image { border: solid white; }
 .InGroup {   background : blue; }
 .FreeDisk {  background: green; }
+.stripe { background: amber; }
 .SelectedInArray {  border: solid red; }
-.SelectedFree { border: solid green;}
+.SelectedFree { border: solid green;
+			animation: blinker 1s linear infinite;
+}
+.table td.poolcrdel { 
+		vertical-align: middle;
+		margin: 0;
+}
+#splitmirror td a { color : white;}
+div.btn-submit { margin-top: 0; }
