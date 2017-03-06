@@ -153,9 +153,9 @@
                                     <div  class="poolcrdel"> Running Pool </div>
                                 </td>
                                 <td id="poolname" class="poolcrdel text-center">p1</td>
-                                <td id="poolsize" class="poolcrdel text-center">20G</td>
-                                <td  class="poolcrdel"><a  href="#"><div type="button" class=" btn btn-submit ">Create Pool</div></a></td>
-                              
+                                <td id="crpoolsize" class="poolcrdel text-center">20G</td>
+                                <td  class="poolcrdel"><a  href="javascript:poolcreatestripe()"><div type="button" class=" btn btn-submit ">Create Pool</div></a></td>
+										  <td></td>                              
                             	</tr>
 
                             <tr id="Spareadd">
@@ -686,6 +686,9 @@
 			var panesel="hifirst";
 			var syscounter=10;
 			var syscounter2=1000;
+			var runningpool=0;
+			var dd=[];
+			var olddiskpool=0;
 			var disks=[];
 			var pools=[];
 		$(".ref").click(function() {
@@ -747,21 +750,16 @@
 			
 			function refreshall() { //check pool status
 				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data);});
-				if($("#diskGroupspane").hasClass('active'))  { if (panesel !="diskgroup") { Vollisttime2="skldjfadks"; panesel="diskgroup";}};
-				if($("#snapshotspane").hasClass('active'))  { if (panesel !="snapshot") { Vollisttime2="skldjfadks"; panesel="snapshot";}};
+				if($("#diskGroupspane").hasClass('active'))  { if (panesel !="diskgroup") { syscounter2=1000; Vollisttime2="skldjfadks"; panesel="diskgroup";}};
+				if($("#snapshotspane").hasClass('active'))  { if (panesel !="snapshot") { syscounter2=1000; Vollisttime2="skldjfadks"; panesel="snapshot";}};
 				if (panesel == "diskgroup") { 
-				if(syscounter2==1000){ }
-				$.get("requestdatein.php", { file: "Data/disklist.txtupdated" }, function(data){
-					var objdate = jQuery.parseJSON(data);
-					Vollisttimenew=objdate.updated;
-					//console.log("Vollisttimenew", objdate,fileloc,"Vollold",Vollisttime);
-				});
-				if(Vollisttime2==Vollisttimenew) { 
-					$.post("./pump.php", { req: "GetDisklist", name:"a" });//console.log("traffic not changed"); 
-					
-				} else {					 
-					Vollisttime2=Vollisttimenew;
+				if(syscounter2 > 2 ){syscounter2=0; $.post("./pump.php", { req: "GetDisklist", name:"a" }); }
+				
 					$.get("requestdata.php", { file: "Data/disklist.txt" },function(data){
+						if(data!=olddiskpool) {
+							console.log("changed")	
+								$("#DG tr").hide(); 
+						olddiskpool=data
 						var jdata = jQuery.parseJSON(data);
 						disks=[];
 						var k;
@@ -782,9 +780,13 @@
 							disks[k]["selected"]=0;			
 			
 						}
+						setstatus();
+					} else {syscounter2=syscounter2+1}
 					});
-				}
-				setstatus();
+					
+			
+				
+								
 				}			
 				if(status==1) { //DiskGroup
 					diskgetsize('Data/disksize.txt','#size',"#count","#onedisk");
@@ -808,6 +810,8 @@
 				if(syscounter2==1000) { syscounter2=0; } else { syscounter2=syscounter2+1; }
 			}
 	function setstatus() {
+		runningpool=0;
+		
 		for (k in disks) {
 	/*  if grouptype is free  status free, if pool=pxx   poolstatus="exists" ,if poolstats=exists : "grouptype:stripe :  .. disktstatus=single;, grouptype=mirror, raidsingle, raid-dual readwritecache ,  : diskstatus=grouped next,preceding=join 	
 	
@@ -815,14 +819,38 @@
 			if(disks[k].grouptype=="stripe") {
 					$("#poolmsg").text("Pool p1 is running on disk: "+k); $("#poolsize").text(disks[k].poolsize+"GB")
 					$("#Pooldelete").show();
+					runningpool=disks[k].pool;
 					
 			}
 		
-		}	
+		}
+		setaction();
 	}		
-				
-			function diskclick(id) { 
+	function setaction()	{
+		var freedisk=0;
+		var possiblenotstripe=0;
+		var foundselected=0;
+			
+		dd=[];
+		for (k in disks) {
+			if(disks[k].selected==1 && disks[k].grouptype=="free") {
+				foundselected=1;
+				possiblenotstripe=possiblenotstripe+1; dd[possiblenotstripe]=disks[k];
+				console.log('1hi',possiblenotstripe, dd[1])
+			}
+		}	
+		
+		if(possiblenotstripe==1 && runningpool==0) {
+				$("#poolmsg").text("Pool p1 with no redundancy can be created from disk : "+k+" please choose below to create it"); $("#crpoolsize").text(dd["1"].size+"GB")
+				$("#Poolcreate").show();
+				console.log("hi")		
+		}
+		if(foundselected==0 && runningpool!=0) { $("#DG tr").hide(); $("#Pooldelete").show(); }
+		if(foundselected==0 && runningpool==0) { $("#DG tr").hide(); $("#poolmsg").text("No pool is created... Please create a pool by selecting disks")};
+	}
+		function diskclick(id) { 
 			  var selectingdisks;
+			  syscounter2=800
 					$(".disk"+id).toggleClass("SelectedFree"); 
 					if($(".disk"+id).hasClass("SelectedFree")) {
 						disks[id]["selected"]=1;
@@ -849,7 +877,9 @@
 							selectingdisks=toggleDiskselect(selectingdisks,disks[id]["selected"],"InGroupDisk2");
 						}
 					}						
-			};
+				setaction();
+			}
+			;
 			function toggleDiskselect(dd,sel,nextd) {
 				var nextdisk="notavailable"
 				for (k in disks){
@@ -930,7 +960,7 @@
 			var config = 1;
 			$("[class*='xdsoft']").hide();
 			$(".DiskGroups").hide(); $(".SnapShots").hide(); 
-			$("#DiskGroups").click(function (){
+			function poolcreatestripe(){
 				var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
 				$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
@@ -941,11 +971,16 @@
 						}
 					};
 				
-					if( userpriv=="true" | curuser=="admin" ) { 
-					 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show(); 
+					if(userpriv=="true" | curuser=="admin" ) { 
+					
+				//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
+					$.post("./pump.php", { req: "DGsetPool", name:"Single " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name });
+					syscounter2=980;  
+									
 					}
 				});
-			});
+			};
+		
 			$("#SnapShots").click(function (){ 
 				if(config== 1){ 
 					var userpriv="false";
@@ -1037,7 +1072,22 @@
 		});
 	 });
 	 
-		function pooldelete(){ $.post("./pump.php", { req:"DGdestroyPool"+" "+"<?php echo $_SESSION["user"]; ?>" });
+		function pooldelete(p){
+			var userpriv="false";
+					var curuser="<?php echo $_SESSION["user"] ?>";
+				$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+					var gdata = jQuery.parseJSON(data);
+					for (var prot in gdata){
+						if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							userpriv=gdata[prot].DiskGroups
+						}
+					};
+				
+					if(userpriv=="true" | curuser=="admin" ) {  
+						$.post("./pump.php", { req:"DGdestroyPool "+runningpool+" "+"<?php echo $_SESSION["user"]; ?>" });
+						syscounter2=980
+					}
+				});
 		};
 
 			
