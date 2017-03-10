@@ -826,17 +826,23 @@
 		var possiblenotstripe=0;
 		var foundselected=0;
 		var selectingdisks;
-		var selectingdisks2; 
+		var selectingdisks2
+		
 		   var diskid=0;
-			
+		runningpool=0; 	
 		dd=[];
 		for (k in disks) {
+			if(k > 0 ) {
+		
 			if(disks[k].selected==1 && disks[k].grouptype=="free") {
 				foundselected=1;
 				possiblenotstripe=possiblenotstripe+1; dd[possiblenotstripe]=disks[k];
 				//console.log('1hi',possiblenotstripe, dd[1])
 			}
+		   if(disks[k].pool!="free"){ console.log("poolisnotfreee",[disks]),runningpool=disks[k].pool;}
+		   
 		}	
+	}
 		if(possiblenotstripe > 0) {
 			$("#DG tr").hide();
 			if(possiblenotstripe==1 && runningpool==0) {
@@ -851,12 +857,14 @@
 					$("#Stripesize").text((parseInt(dd["1"].size)*2)+"GB");
 					$("#Mirrorsize").text(dd["1"].size+"GB");
 					if (dd["1"].size > dd["2"].size) {$("#Mirrorsize").text(dd["2"].size+"GB"); $("#Stripesize").text((parseInt(dd["2"].size)*2)+"GB");}
-					console.log(dd["1"]," 2: ", dd["2"]) ;	
+					
 			}
 		}
-		if(possiblenotstripe==0 && runningpool!=0) { 
+		console.log("poolstripe",possiblenotstripe, runningpool)
+		if((possiblenotstripe==0 ) && runningpool!=0) { 
 		   
 			$("#DG tr").hide(); $("#Pooldelete").show();
+			
 		   for (id in disks) {
 		   	if(disks[id]["pool"]!="free" && disks[id]["class"]=="empty") {
 					disks[id]["class"]=disks[id]["grouptype"]+" for disks: "+id
@@ -867,7 +875,7 @@
 						disks[id]["class"]=disks[id]["class"]+","+diskid
 						disks[diskid]["class"]=disks[id]["class"]+diskid+", "
 						console.log(id, diskid, disks[id]["class"])
-						selectingdisks=toggleDiskselect(selectingdisks,disks[id]["selected"],"InGroupDisk2","SelectedFree");
+						selectingdisks=toggleDiskselect(selectingdisks,disks[id]["selected"],"InGroupDisk2","Inpool");
 					
 					
 					}
@@ -876,7 +884,7 @@
 					while(selectingdisks != "notavailable") {
 						diskid=toggleDiskselect(selectingdisks,2,"InGroupDisk2","inpool");
 						disks[diskid]["class"]=disks[id]["class"]
-						selectingdisks=toggleDiskselect(selectingdisks,disks[id]["selected"],"InGroupDisk2","SelectedFree");
+						selectingdisks=toggleDiskselect(selectingdisks,disks[id]["selected"],"InGroupDisk2","Inpool");
 					}
 			     
 		    	}
@@ -885,9 +893,12 @@
 		   for (id in disks) {
 				if(disks[id]["pool"]!="free" && id > 0) {
 				
-				if(selectingdisks.indexOf(disks[id]["class"]) < 0 ) { ; selectingdisks=selectingdisks+disks[id]["class"]+","}				
+				if(selectingdisks.indexOf(disks[id]["class"]) < 0 ) { ; selectingdisks=selectingdisks+disks[id]["class"]+","}	
+				$("#poolsize").text(disks[id]["poolsize"])
+				$(".disk"+id).addClass(disks[id].grouptype);	
 				}	   
 		   $("#poolmsg").text(selectingdisks.slice(0,-1));
+		   
 		   }	
 		}
 	
@@ -1046,7 +1057,7 @@
 				
 					if(userpriv=="true" | curuser=="admin" ) { 
 					var stripeset=dd["1"].host+" "
-					for( k in dd) {
+					for(k in dd) {
 						 stripeset=stripeset+dd[k].name+" "			
 					}
 					
@@ -1058,7 +1069,29 @@
 					}
 				});
 			};
-		
+			function poolcreatemirror() {
+				var userpriv="false";
+					var curuser="<?php echo $_SESSION["user"] ?>";
+				$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+					var gdata = jQuery.parseJSON(data);
+					for (var prot in gdata){
+						if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							userpriv=gdata[prot].DiskGroups
+						}
+					};
+				
+					if(userpriv=="true" | curuser=="admin" ) { 
+					
+					
+				//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
+					$.post("./pump.php", { req: "DGsetPool", name:"mirror " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+" "+dd[2].name});
+					
+					syscounter2=980;  
+									
+					}
+				});
+	
+			}
 			$("#SnapShots").click(function (){ 
 				if(config== 1){ 
 					var userpriv="false";
