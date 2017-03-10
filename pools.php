@@ -154,7 +154,7 @@
                                 </td>
                                 <td id="poolname" class="poolcrdel text-center">p1</td>
                                 <td id="crpoolsize" class="poolcrdel text-center">20G</td>
-                                <td  class="poolcrdel"><a  href="javascript:poolcreatestripe()"><div type="button" class=" btn btn-submit ">Create Pool</div></a></td>
+                                <td  class="poolcrdel"><a  href="javascript:poolcreatesingle()"><div type="button" class=" btn btn-submit ">Create Pool</div></a></td>
 										  <td></td>                              
                             	</tr>
 
@@ -189,7 +189,19 @@
                                 </td>
                                 <td class="text-center">Mirror</td>
                                 <td id="Mirrorsize" class="sizegb text-center">97.9GB</td>
-                                <td class="text-center"><a href="#"><img
+                                <td class="text-center"><a href="javascript:poolcreatemirror()"><img
+                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
+                                        alt="can't upload Create icon"></a>
+                                </td>
+                                
+                            </tr>
+                            <tr id="striped">
+                                <td class="text-center">
+                                    <input type="radio" class="form-check-input" name="diskRadios">
+                                </td>
+                                <td class="text-center">striped(no redundancy)</td>
+                                <td id="Stripesize" class="sizegb text-center">97.9GB</td>
+                                <td class="text-center"><a href="javascript:poolcreatestripe()"><img
                                         src="assets/images/plus-symbol-in-a-rounded-black-square.png"
                                         alt="can't upload Create icon"></a>
                                 </td>
@@ -201,7 +213,7 @@
                                 </td>
                                 <td class="text-center">Single Redundancy</td>
                                 <td id="Mirrorsize" class="sizegb text-center">97.9GB</td>
-                                <td class="text-center"><a href="#"><img
+                                <td class="text-center"><a href="javascript:poolcreatestripe()"><img
                                         src="assets/images/plus-symbol-in-a-rounded-black-square.png"
                                         alt="can't upload Create icon"></a>
                                 </td>
@@ -213,7 +225,7 @@
                                 </td>
                                 <td class="text-center">Dual-Redundancy</td>
                                 <td id="" class="sizegb text-center">97.9GB</td>
-                                <td class="text-center"><a href="#"><img
+                                <td class="text-center"><a href="javascript:poolcreatestripe()"><img
                                         src="assets/images/plus-symbol-in-a-rounded-black-square.png"
                                         alt="can't upload Create icon"></a>
                                 </td>
@@ -689,6 +701,7 @@
 			var runningpool=0;
 			var dd=[];
 			var olddiskpool=0;
+			var oldcurrentinfo="";
 			var disks=[];
 			var pools=[];
 		$(".ref").click(function() {
@@ -749,7 +762,7 @@
 			};
 			
 			function refreshall() { //check pool status
-				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data);});
+				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ if(data!=oldcurrentinfo){oldcurrentinfo=data;  $(".bg-success").show(); $("#texthere").text(data);}});
 				if($("#diskGroupspane").hasClass('active'))  { if (panesel !="diskgroup") { syscounter2=1000; Vollisttime2="skldjfadks"; panesel="diskgroup";}};
 				if($("#snapshotspane").hasClass('active'))  { if (panesel !="snapshot") { syscounter2=1000; Vollisttime2="skldjfadks"; panesel="snapshot";}};
 				if (panesel == "diskgroup") { 
@@ -776,6 +789,8 @@
 							disks[jdata[disk].id]["grouptype"]=jdata[disk].grouptype;
 							disks[jdata[disk].id]["InGroupDisk1"]=jdata[disk].InGroupDisk1;
 							disks[jdata[disk].id]["InGroupDisk2"]=jdata[disk].InGroupDisk2;
+							disks[jdata[disk].id]["id"]=jdata[disk].id;
+							
 							$("#diskimg").append('<a id="'+k+'" href="javascript:diskclick(\''+k+'\')"> <img class="img-fluid disk-image disk'+k+'" src="assets/images/disk-image.png" alt="can\'t upload disk images"></a>')
 							disks[k]["selected"]=0;			
 			
@@ -836,17 +851,28 @@
 			if(disks[k].selected==1 && disks[k].grouptype=="free") {
 				foundselected=1;
 				possiblenotstripe=possiblenotstripe+1; dd[possiblenotstripe]=disks[k];
-				console.log('1hi',possiblenotstripe, dd[1])
+				//console.log('1hi',possiblenotstripe, dd[1])
 			}
 		}	
-		
-		if(possiblenotstripe==1 && runningpool==0) {
-				$("#poolmsg").text("Pool p1 with no redundancy can be created from disk : "+k+" please choose below to create it"); $("#crpoolsize").text(dd["1"].size+"GB")
-				$("#Poolcreate").show();
-				console.log("hi")		
+		if(possiblenotstripe > 0) {
+			$("#DG tr").hide();
+			if(possiblenotstripe==1 && runningpool==0) {
+					$("#poolmsg").text("Pool p1 with no redundancy can be created from disk : "+dd["1"].id+" please choose below to create it"); $("#crpoolsize").text(dd["1"].size+"GB")
+					$("#Poolcreate").show();
+				
+			}
+			if(possiblenotstripe==2 && runningpool==0) {
+			
+			$("#poolmsg").text("Pool p1 with mirrored disks: disk"+dd["1"].id+", disk"+dd["2"].id+"  can be created. please choose below"); $("#crpoolsize").text(dd["1"].size+"GB")
+					$("#mirror").show(); $("#striped").show()
+					$("#Stripesize").text((parseInt(dd["1"].size)*2)+"GB");
+					$("#Mirrorsize").text(dd["1"].size+"GB");
+					if (dd["1"].size > dd["2"].size) {$("#Mirrorsize").text(dd["2"].size+"GB"); $("#Stripesize").text((parseInt(dd["2"].size)*2)+"GB");}
+					console.log(dd["1"]," 2: ", dd["2"]) ;	
+			}
 		}
-		if(foundselected==0 && runningpool!=0) { $("#DG tr").hide(); $("#Pooldelete").show(); }
-		if(foundselected==0 && runningpool==0) { $("#DG tr").hide(); $("#poolmsg").text("No pool is created... Please create a pool by selecting disks")};
+		if(possiblenotstripe==0 && runningpool!=0) { $("#DG tr").hide(); $("#Pooldelete").show(); }
+		if(possiblenotstripe==0 && runningpool==0) { $("#DG tr").hide(); $("#poolmsg").text("No pool is created... Please create a pool by selecting disks")};
 	}
 		function diskclick(id) { 
 			  var selectingdisks;
@@ -960,7 +986,7 @@
 			var config = 1;
 			$("[class*='xdsoft']").hide();
 			$(".DiskGroups").hide(); $(".SnapShots").hide(); 
-			function poolcreatestripe(){
+			function poolcreatesingle(){
 				var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
 				$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
@@ -975,6 +1001,31 @@
 					
 				//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
 					$.post("./pump.php", { req: "DGsetPool", name:"Single " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name });
+					syscounter2=980;  
+									
+					}
+				});
+			};
+			function poolcreatestripe(){
+				var userpriv="false";
+					var curuser="<?php echo $_SESSION["user"] ?>";
+				$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+					var gdata = jQuery.parseJSON(data);
+					for (var prot in gdata){
+						if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							userpriv=gdata[prot].DiskGroups
+						}
+					};
+				
+					if(userpriv=="true" | curuser=="admin" ) { 
+					var stripeset=dd["1"].host+" "
+					for( k in dd) {
+						 stripeset=stripeset+dd[k].name+" "			
+					}
+					
+				//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
+					$.post("./pump.php", { req: "DGsetPool", name:"stripeset " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset });
+					
 					syscounter2=980;  
 									
 					}

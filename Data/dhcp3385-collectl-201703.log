@@ -2137,3 +2137,14 @@
 20170306 12:43:04 F-Error: a daemonized collectl already running
 20170306 12:46:09 F-Error: a daemonized collectl already running
 20170306 12:47:24 F-Error: a daemonized collectl already running
+20170310 14:24:39 I-V4.1.0-1 Beginning execution on dhcp3385...
+20170310 14:24:39 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
+20170310 14:24:39 W-If somewhere else, move it or define in collectl.conf
+20170310 14:24:39 I-First log rollover will be: 20170311 00:00:00
+20170310 14:24:39 I-Waiting 418453 usecs for time alignment
+20170310 14:24:54 F-Error: a daemonized collectl already running
+20170310 16:25:01 F-Error: a daemonized collectl already running
+20170310 16:27:08 F-Error: a daemonized collectl already running
+20170310 16:41:53 F-Error: a daemonized collectl already running
+20170310 16:43:12 F-Error: a daemonized collectl already running
+20170310 16:45:54 F-Error: a daemonized collectl already running
