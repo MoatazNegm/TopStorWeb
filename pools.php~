@@ -701,6 +701,7 @@
 			var runningpool=0;
 			var dd=[];
 			var olddiskpool=0;
+			var oldcurrentinfo="";
 			var disks=[];
 			var pools=[];
 		$(".ref").click(function() {
@@ -761,7 +762,7 @@
 			};
 			
 			function refreshall() { //check pool status
-				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data);});
+				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ if(data!=oldcurrentinfo){oldcurrentinfo=data;  $(".bg-success").show(); $("#texthere").text(data);}});
 				if($("#diskGroupspane").hasClass('active'))  { if (panesel !="diskgroup") { syscounter2=1000; Vollisttime2="skldjfadks"; panesel="diskgroup";}};
 				if($("#snapshotspane").hasClass('active'))  { if (panesel !="snapshot") { syscounter2=1000; Vollisttime2="skldjfadks"; panesel="snapshot";}};
 				if (panesel == "diskgroup") { 
@@ -789,6 +790,7 @@
 							disks[jdata[disk].id]["InGroupDisk1"]=jdata[disk].InGroupDisk1;
 							disks[jdata[disk].id]["InGroupDisk2"]=jdata[disk].InGroupDisk2;
 							disks[jdata[disk].id]["id"]=jdata[disk].id;
+							disks[jdata[disk].id]["class"]="empty";
 							
 							$("#diskimg").append('<a id="'+k+'" href="javascript:diskclick(\''+k+'\')"> <img class="img-fluid disk-image disk'+k+'" src="assets/images/disk-image.png" alt="can\'t upload disk images"></a>')
 							disks[k]["selected"]=0;			
@@ -797,30 +799,9 @@
 						setstatus();
 					} else {syscounter2=syscounter2+1}
 					});
-					
-			
-				
-								
+						
 				}			
-				if(status==1) { //DiskGroup
-					diskgetsize('Data/disksize.txt','#size',"#count","#onedisk");
-					status=3;
-					refresh2("DGstatus");	
-				}
-				if(status=="snaps"){ //snapshots
-					refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
-					refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps","snaps");
-					refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods","periods");
-					$("#Vol").change(); 
-					if(syscounter == 10) {
-					
-					
-					
-					syscounter=0;
-					}
-				syscounter++;
-				refresh2("Snapsstatus");	
-				}
+				
 				if(syscounter2==1000) { syscounter2=0; } else { syscounter2=syscounter2+1; }
 			}
 	function setstatus() {
@@ -844,6 +825,9 @@
 		var freedisk=0;
 		var possiblenotstripe=0;
 		var foundselected=0;
+		var selectingdisks;
+		var selectingdisks2; 
+		   var diskid=0;
 			
 		dd=[];
 		for (k in disks) {
@@ -870,7 +854,43 @@
 					console.log(dd["1"]," 2: ", dd["2"]) ;	
 			}
 		}
-		if(possiblenotstripe==0 && runningpool!=0) { $("#DG tr").hide(); $("#Pooldelete").show(); }
+		if(possiblenotstripe==0 && runningpool!=0) { 
+		   
+			$("#DG tr").hide(); $("#Pooldelete").show();
+		   for (id in disks) {
+		   	if(disks[id]["pool"]!="free" && disks[id]["class"]=="empty") {
+					disks[id]["class"]=disks[id]["grouptype"]+" for disks: "+id
+   				selectingdisks=disks[id]["InGroupDisk2"]
+					while(selectingdisks != "notavailable") {
+						
+						diskid=toggleDiskselect(selectingdisks,2,"InGroupDisk2","inpool");
+						disks[id]["class"]=disks[id]["class"]+","+diskid
+						disks[diskid]["class"]=disks[id]["class"]+diskid+", "
+						console.log(id, diskid, disks[id]["class"])
+						selectingdisks=toggleDiskselect(selectingdisks,disks[id]["selected"],"InGroupDisk2","inpool");
+					
+					
+					}
+					selectingdisks=disks[id]["InGroupDisk2"]
+					
+					while(selectingdisks != "notavailable") {
+						diskid=toggleDiskselect(selectingdisks,2,"InGroupDisk2","inpool");
+						disks[diskid]["class"]=disks[id]["class"]
+						selectingdisks=toggleDiskselect(selectingdisks,disks[id]["selected"],"InGroupDisk2","inpool");
+					}
+			     
+		    	}
+		   }	
+		   selectingdisks="Pool consists of: "
+		   for (id in disks) {
+				if(disks[id]["pool"]!="free" && id > 0) {
+				
+				if(selectingdisks.indexOf(disks[id]["class"]) < 0 ) { ; selectingdisks=selectingdisks+disks[id]["class"]+","}				
+				}	   
+		   $("#poolmsg").text(selectingdisks.slice(0,-1));
+		   }	
+		}
+	
 		if(possiblenotstripe==0 && runningpool==0) { $("#DG tr").hide(); $("#poolmsg").text("No pool is created... Please create a pool by selecting disks")};
 	}
 		function diskclick(id) { 
@@ -891,31 +911,39 @@
 						}
 					} else { disks[id]["selected"]=0; }
 					if(disks[id]["grouptype"]!="free") {
+					   
 						selectingdisks=disks[id]["InGroupDisk1"]
 						while(selectingdisks != "notavailable") {
-						
-							selectingdisks=toggleDiskselect(selectingdisks,disks[id]["selected"],"InGroupDisk1");
+							
+							selectingdisks=toggleDiskselect(selectingdisks,disks[id]["selected"],"InGroupDisk1","SelectedFree");
 						}
 						selectingdisks=disks[id]["InGroupDisk2"]
 						while(selectingdisks != "notavailable") {
 						
-							selectingdisks=toggleDiskselect(selectingdisks,disks[id]["selected"],"InGroupDisk2");
+							selectingdisks=toggleDiskselect(selectingdisks,disks[id]["selected"],"InGroupDisk2","SelectedFree");
 						}
 					}						
 				setaction();
 			}
-			;
-			function toggleDiskselect(dd,sel,nextd) {
+			
+			function toggleDiskselect(dd,sel,nextd,webclass) {
 				var nextdisk="notavailable"
 				for (k in disks){
 				
-				  if (disks[k]["name"]==dd) {
-					if(sel==1){ 
-						$(".disk"+k).addClass("SelectedFree"); disks[k]["selected"]=1; nextdisk=disks[k][nextd]
-					 } else {
+				  	if (disks[k]["name"]==dd) {
+						if(sel==1){ 
+							$(".disk"+k).addClass(webclass); disks[k]["selected"]=1; nextdisk=disks[k][nextd]
+					 	} 
+						if(sel==0) {
 					 
-					 	$(".disk"+k).removeClass("SelectedFree"); disks[k]["selected"]=0; nextdisk=disks[k][nextd]
-					 }	
+					 		$(".disk"+k).removeClass(webclass); disks[k]["selected"]=0; nextdisk=disks[k][nextd]
+					 	}
+				  	} 
+				   
+				  if(sel==2) {
+				  	if (disks[k]["name"]==dd) {
+						nextdisk=disks[k]["id"]
+					}	
 				  }
 				}
 				return nextdisk;
