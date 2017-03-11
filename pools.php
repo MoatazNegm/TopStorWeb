@@ -207,6 +207,7 @@
                                 </td>
                                 
                             </tr>
+                            
                             <tr id="raid-SingleRed">
                                 <td class="text-center">
                                     <input type="radio" class="form-check-input" name="diskRadios">
@@ -224,11 +225,23 @@
                                     <input type="radio" class="form-check-input" name="diskRadios">
                                 </td>
                                 <td class="text-center">Dual-Redundancy</td>
-                                <td id="" class="sizegb text-center">97.9GB</td>
-                                <td class="text-center"><a href="javascript:poolcreatestripe()"><img
+                                <td id="dualraid" class="sizegb text-center">97.9GB</td>
+                                <td class="text-center"><a href="javascript:poolcreateraiddual()"><img
                                         src="assets/images/plus-symbol-in-a-rounded-black-square.png"
                                         alt="can't upload Create icon"></a>
                                 </td>
+                             </tr>
+                             <tr id="raid-TripleRed">
+                                <td class="text-center">
+                                    <input type="radio" class="form-check-input" name="diskRadios">
+                                </td>
+                                <td class="text-center">Triple-Redundancy</td>
+                                <td id="tripleraid" class="sizegb text-center">97.9GB</td>
+                                <td class="text-center"><a href="javascript:poolcreateraidtriple()"><img
+                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
+                                        alt="can't upload Create icon"></a>
+                                </td>
+                             </tr>
                              <tr id="splitmirror">
                                 <td class="text-center poolcrdel">
                                     <input type="radio" class=" form-check-input" name="diskRadios">
@@ -704,6 +717,8 @@
 			var oldcurrentinfo="";
 			var disks=[];
 			var pools=[];
+			var ddk;
+			var minspace; var maxspace;
 		$(".ref").click(function() {
 		document.getElementById($(this).attr('id')+'ref').submit();
 		 //console.log($(this).attr('id')+'ref');
@@ -766,7 +781,7 @@
 				if($("#diskGroupspane").hasClass('active'))  { if (panesel !="diskgroup") { syscounter2=1000; Vollisttime2="skldjfadks"; panesel="diskgroup";}};
 				if($("#snapshotspane").hasClass('active'))  { if (panesel !="snapshot") { syscounter2=1000; Vollisttime2="skldjfadks"; panesel="snapshot";}};
 				if (panesel == "diskgroup") { 
-				if(syscounter2 > 2 ){syscounter2=0; $.post("./pump.php", { req: "GetDisklist", name:"a" }); }
+				if(syscounter2 > 20 ){syscounter2=0; $.post("./pump.php", { req: "GetDisklist", name:"a" }); }
 				
 					$.get("requestdata.php", { file: "Data/disklist.txt" },function(data){
 						if(data!=olddiskpool) {
@@ -831,7 +846,8 @@
 		var possiblenotstripe=0;
 		var foundselected=0;
 		var selectingdisks;
-		var selectingdisks2
+		var selectingdisks2;
+		var poolmsg="";
 		
 		   var diskid=0;
 		runningpool=0; 	
@@ -867,19 +883,64 @@
 					
 			}
 			if(possiblenotstripe==3 && runningpool==0) {
-				$("#poolmsg").text("Pool p1 with one disk redundancy : disk"+dd["1"].id+", disk"+dd["2"].id+", disk"+dd["3"].id+"  can be created. please choose below"); $("#crpoolsize").text(dd["1"].size+"GB")
-					$("#raid-SingleRed").show()
-					var minspace;
-					var ddk;
-					minspace=parseInt(dd["1"].size)
-					while(ddk in dd){
+				
+				$("#poolmsg").text("Pool p1 with one disk redundancy or no redundancy using disk"+dd["1"].id+", disk"+dd["2"].id+", disk"+dd["3"].id+"  can be created. please choose below"); $("#crpoolsize").text(dd["1"].size+"GB")
+					$("#raid-SingleRed").show(); $("#striped").show();
+					
+					
+					minspace=parseInt(dd["1"].size); maxspace=0;
+					console.log(minspace, maxspace, dd)
+					for(ddk in dd){
+						console.log("here to")
 						if (ddk > 0) {
-							if (parseInt(dd[ddk].size) < minspace) { minspace=parseInt(dd[ddk].size)}						
+							if (parseInt(dd[ddk].size) < minspace) { minspace=parseInt(dd[ddk].size)}	
+							maxspace=maxspace+parseInt(dd[ddk].size)	
+							console.log(maxspace,minspace)				
 						}
 					
 					}
 					
-					$("#SingleRed").text((minspace*2)+"GB");
+					$("#SingleRed").text((minspace*2)+"GB"); $("#Stripesize").text(maxspace+"GB")
+				}
+				if(possiblenotstripe==4 && runningpool==0) {
+					poolsmg="Pool p1 with : one/dual disk redundancy or no redunancy using disk";
+				//$("#poolmsg").text("Pool p1 with : one disk redundancy/dual disk or no redunancy using disk"+dd["1"].id+", disk"+dd["2"].id+", disk"+dd["3"].id+"  can be created. please choose below"); $("#crpoolsize").text(dd["1"].size+"GB")
+					$("#raid-SingleRed").show(),$("#raid-DualRed").show();$("#striped").show();
+					diskcount=0;
+					minspace=parseInt(dd["1"].size)
+					maxspace=0;
+					for(ddk in dd){
+						if (ddk > 0) {
+							poolsmg=poolsmg+dd[ddk].id+", disk"
+							if (parseInt(dd[ddk].size) < minspace) { minspace=parseInt(dd[ddk].size)}	
+							maxspace=maxspace+parseInt(dd[ddk].size)			
+							diskcount=diskcount+1;			
+						}
+					
+					}
+					selectingdisks=poolsmg
+					$("#poolmsg").text(selectingdisks+" can be created. please choose below");
+					$("#SingleRed").text((minspace*(diskcount-1))+"GB");$("#Stripesize").text(maxspace+"GB"); $("#dualraid").text(minspace*(diskcount-2)+"GB")
+				}
+				if(possiblenotstripe>4 && runningpool==0) {
+					poolsmg="Pool p1 with : one/dual/triple disk redundancy or no redunancy using disk";
+				//$("#poolmsg").text("Pool p1 with : one disk redundancy/dual disk or no redunancy using disk"+dd["1"].id+", disk"+dd["2"].id+", disk"+dd["3"].id+"  can be created. please choose below"); $("#crpoolsize").text(dd["1"].size+"GB")
+					$("#raid-SingleRed").show(),$("#raid-DualRed").show(); $("#raid-TripleRed").show();$("#striped").show();
+					diskcount=0;
+					minspace=parseInt(dd["1"].size)
+					maxspace=0;
+					for(ddk in dd){
+						if (ddk > 0) {
+							poolsmg=poolsmg+dd[ddk].id+", disk"
+							if (parseInt(dd[ddk].size) < minspace) { minspace=parseInt(dd[ddk].size)}	
+							maxspace=maxspace+parseInt(dd[ddk].size)			
+							diskcount=diskcount+1;			
+						}
+					
+					}
+					selectingdisks=poolsmg
+					$("#poolmsg").text(selectingdisks+" can be created. please choose below");
+					$("#SingleRed").text((minspace*(diskcount-1))+"GB");$("#Stripesize").text(maxspace+"GB"); $("#dualraid").text(minspace*(diskcount-2)+"GB");$("#tripleraid").text(minspace*(diskcount-3)+"GB")
 				}
 				
 		}
@@ -1070,6 +1131,64 @@
 					}
 				});
 			};
+			function poolcreateraidtriple(){
+			var userpriv="false";
+					var curuser="<?php echo $_SESSION["user"] ?>";
+				$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+					var gdata = jQuery.parseJSON(data);
+					for (var prot in gdata){
+						if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							userpriv=gdata[prot].DiskGroups
+						}
+					};
+				
+					if(userpriv=="true" | curuser=="admin" ) { 
+					var stripeset=dd["1"].host+" "
+					for(var k in dd) {
+						if(k > 0){
+						 stripeset=stripeset+dd[k].name+" "		
+						}		
+					}
+					
+				//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
+					$.post("./pump.php", { req: "DGsetPool", name:"parity3 " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset });
+					
+					syscounter2=980;  
+									
+					}
+				});
+			
+			
+			}
+			function poolcreateraiddual(){
+			var userpriv="false";
+					var curuser="<?php echo $_SESSION["user"] ?>";
+				$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+					var gdata = jQuery.parseJSON(data);
+					for (var prot in gdata){
+						if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							userpriv=gdata[prot].DiskGroups
+						}
+					};
+				
+					if(userpriv=="true" | curuser=="admin" ) { 
+					var stripeset=dd["1"].host+" "
+					for(var k in dd) {
+						if(k > 0){
+						 stripeset=stripeset+dd[k].name+" "		
+						}		
+					}
+					
+				//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
+					$.post("./pump.php", { req: "DGsetPool", name:"parity2 " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset });
+					
+					syscounter2=980;  
+									
+					}
+				});
+			
+			
+			}
 			function poolcreateraidsingle(){
 			var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
