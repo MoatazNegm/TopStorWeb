@@ -236,7 +236,7 @@
                                 <td class="text-center">
                                     <input type="radio" class="form-check-input" name="diskRadios">
                                 </td>
-                                <td class="text-center">add mirroed disk</td>
+                                <td class="text-center">add mirrored disk</td>
                                 <td id="Attachmirroredsize" class="sizegb text-center">97.9GB</td>
                                 <td class="text-center"><a href="javascript:poolattachemirror()"><img
                                         src="assets/images/plus-symbol-in-a-rounded-black-square.png"
@@ -881,11 +881,12 @@
 				
 					$.get("requestdata.php", { file: "Data/disklist.txt" },function(data){
 						if(data!=olddiskpool) {
-							console.log("changed")	
-								$("#DG tr").hide(); 
+							
 						
 						var jdata = jQuery.parseJSON(data);
 						if(typeof jdata =='object') {
+							console.log("changed")	
+								$("#DG tr").hide(); 
 							olddiskpool=data
 						disks=[];
 						var k;
@@ -958,7 +959,13 @@
 				//console.log('1hi',possiblenotstripe, dd[1])
 				
 				}
-		   	if(disks[k].pool!="free"){ runningpool=disks[k].pool;runningroup=runningroup+disks[k].grouptype.substr(disks[k].grouptype.length-1)}
+		   	if(disks[k].pool!="free"){ 
+		   		runningpool=disks[k].pool;
+		   		selectingdisks=disks[k].grouptype;
+		   		if(selectingdisks=="cache"){ selectingdisks="read cache"}
+		   		if(selectingdisks=="log"){ selectingdisks="read/write cache"}
+		   		runningroup=runningroup+selectingdisks
+		   	}
 		   	
 		   
 			}
@@ -975,7 +982,7 @@
 		if(foundselected==-1) { 
 			
 			$("#DG tr").hide();
-			if(possiblenotstripe==1) { $("#poolmsg").text("remove the"+dd["1"].grouptype+" disk"+dd["1"].id);
+			if(possiblenotstripe==1) { $("#poolmsg").text("remove the "+dd["1"].grouptype+" disk"+dd["1"].id);
 			selectingdisks="spare"
 				if(dd["1"].grouptype=="cache"){selectingdisks="read cache"}
 				if(dd["1"].grouptype=="log"){selectingdisks="read/write cache"}
@@ -1062,40 +1069,50 @@
 				}
 				
 			if(possiblenotstripe==1 && runningpool!=0) {
-				
+				var sparevalid;
 				if(dd[possiblenotstripe].grouptype=="free"){
 					maxspace=parseInt(dd["1"].size);
 					minspace=parseInt(dd["1"].size)
+					var sparevalid=0;					
 					for(ddk in disks){
 						if(disks[ddk].grouptype!="free" && ddk > 0){
 
 							maxspace=maxspace+parseInt(disks[ddk].size)
-							console.log(maxspace, minspace, disks[ddk].grouptype, parseInt(disks[ddk].poolsize), minspace-parseInt(disks[ddk].poolsize))
+							//console.log(maxspace, minspace, disks[ddk].grouptype, parseInt(disks[ddk].poolsize), minspace-parseInt(disks[ddk].poolsize))
+							if(parseInt(dd["1"].size) >= parseInt(disks[ddk].size) ) { sparevalid=1;}							
 							if (parseInt(disks[ddk].poolsize)<=minspace) { minspace=parseInt(disks[ddk].poolsize); } else { minspace=0;}
 							if(disks[ddk].grouptype=="mirror" || disks[ddk].grouptype=="stripe") {dd["2"]=disks[ddk]}
-							console.log(maxspace, minspace, disks[ddk].grouptype, parseInt(disks[ddk].poolsize))
+							//console.log(maxspace, minspace, disks[ddk].grouptype, parseInt(disks[ddk].poolsize))
 							
 						}
 						
 						
 					}	
 					
-					if(runningroup.indexOf('e') > -1){
+					if(runningroup.indexOf('stripe') > -1){
 						poolmsg="Pool p1 can be expanded by adding disk"+dd["1"].id+" (no redundancy) or mirrored. please select from below"
 						$("#poolmsg").text(poolmsg);
 						$("#Addstriped").show();
 						$("#AddStripesize").text(maxspace+"GB"); if(minspace > 0) {$("#Attachmirrored").show(); $("#Attachmirroredsize").text(minspace+"GB")};
 						
 					}
-					if(runningroup.indexOf('rr') > -1 && minspace > 0) {
+					if(runningroup.indexOf('mirror') > -1 && minspace > 0) {
 							
 						
 						poolmsg="Pool p1 can be more redundant by adding disk"+dd["1"].id+"  mirrored. please select from below"
 						$("#poolmsg").text(poolmsg);
 						$("#Attachmirrored").show(); $("#Attachmirroredsize").text(minspace+"GB");
-						if(parseInt(dd["1"].size) >= minspace) { $("#Addspare").show();}
+						if(sparevalid==1) { $("#Addspare").show();}
 						$("#Addreadcache").show(); $("#Addwritecache").show()
 						
+					
+					}
+					if(runningroup.indexOf('stripe') < 0) {
+					
+					poolmsg="Pool p1 performance can be increased by adding cache using disk"+dd["1"].id+"please select from below"
+					if(sparevalid==1) { $("#Addspare").show();poolmsg="Pool p1 performance or recoverability can be increased by adding cache or spare using disk"+dd["1"].id+"please select from below"}
+					$("#Addreadcache").show(); $("#Addwritecache").show()
+					
 					
 					}
 				}
@@ -1114,7 +1131,7 @@
 							
 					}
 				}	
-				if(runningroup.indexOf('e') > -1){
+				if(runningroup.indexOf('stripe') > -1){
 					poolmsg="Pool p1 can be expanded by adding disk"
 					
 					;
@@ -1123,7 +1140,7 @@
 					$("#Addstriped").show();
 					$("#AddStripesize").text(maxspace+"GB"); 
 				}
-				if(runningroup.indexOf('e') < 0 && possiblenotstripe==2) {
+				if(runningroup.indexOf('stripee') < 0 && possiblenotstripe==2) {
 					maxspace=parseInt(dd["1"].size);
 				
 				poolmsg="Pool p1 can be expanded by adding a pair of mirrored disks using disks: "
@@ -1136,7 +1153,7 @@
 				
 				
 				}
-				if(runningroup.indexOf('e') < 0 && possiblenotstripe==3) {
+				if(runningroup.indexOf('stripe') < 0 && possiblenotstripe==3) {
 					poolmsg="Pool p1 can be expanded by adding a single redunancy group of disks using disk "
 					minspace=parseInt(dd["1"].size); maxspace=0;
 					for(ddk in dd){
@@ -1154,8 +1171,8 @@
 					$("#poolmsg").text(poolmsg.slice(0,-2)+" please select from below");
 					$("#addSingleRed").text((maxspace+(minspace*2))+"GB"); 
 				}
-				if(runningroup.indexOf('e') < 0 && possiblenotstripe==4) {
-					poolmsg="Pool p1 can be expanded by adding a single/Dual redunancy group of disks using disk "
+				if(runningroup.indexOf('stripe') < 0 && possiblenotstripe==4) {
+					poolmsg="Pool p1 can be expanded by adding a single/Dual redundancy group of disks using disk "
 					minspace=parseInt(dd["1"].size); maxspace=0;
 					for(ddk in dd){
 						
@@ -1170,9 +1187,9 @@
 					for(ddk in disks) { if(disks[ddk].pool!="free"){ maxspace=parseInt(disks[ddk].poolsize)}}
 					$("#addraid-SingleRed").show();$("#addraid-DualRed").show();
 					$("#poolmsg").text(poolmsg.slice(0,-2)+" please select from below");
-					$("#addSingleRed").text((maxspace+(minspace*3))+"GB"); $("#adddualred").text((maxspace+(minspace*2))+"GB"); 
+					$("#addSingleRed").text((maxspace+(minspace*3))+"GB"); $("#adddualraid").text((maxspace+(minspace*2))+"GB"); 
 				}
-				if(runningroup.indexOf('e') < 0 && possiblenotstripe>4) {
+				if(runningroup.indexOf('stripe') < 0 && possiblenotstripe>4) {
 					poolmsg="Pool p1 can be expanded by adding a single/Dual or Triple redunancy group of disks using disk "
 					minspace=parseInt(dd["1"].size); maxspace=0;
 					var diskcount=0;
@@ -1190,7 +1207,7 @@
 					for(ddk in disks) { if(disks[ddk].pool!="free"){ maxspace=parseInt(disks[ddk].poolsize)}}
 					$("#addraid-SingleRed").show();$("#addraid-DualRed").show();$("#addraid-TripleRed").show();
 					$("#poolmsg").text(poolmsg.slice(0,-2)+" please select from below");
-					$("#addSingleRed").text((maxspace+(minspace*(diskcount-1)))+"GB"); $("#adddualred").text((maxspace+(minspace*(diskcount-2)))+"GB"); $("#addtriplered").text((maxspace+(minspace*(diskcount-3)))+"GB"); 
+					$("#addSingleRed").text((maxspace+(minspace*(diskcount-1)))+"GB"); $("#adddualraid").text((maxspace+(minspace*(diskcount-2)))+"GB"); $("#addtripleraid").text((maxspace+(minspace*(diskcount-3)))+"GB"); 
 				}
 				
 				
@@ -1204,7 +1221,10 @@
 			
 		   for (id in disks) {
 		   	if(disks[id]["pool"]!="free" && disks[id]["class"]=="empty") {
-					disks[id]["class"]=disks[id]["grouptype"]+" for disks: "+id
+		   		selectingdisks2=disks[id].grouptype;
+		   		if(selectingdisks2=="cache"){ selectingdisks2="read cache"}
+		   		if(selectingdisks2=="log"){ selectingdisks2="read/write cache"}
+					disks[id]["class"]=selectingdisks2+" for disks: "+id
    				selectingdisks=disks[id]["InGroupDisk2"]
 					while(selectingdisks != "notavailable") {
 						
@@ -1924,9 +1944,9 @@
 //            });
             
 			setInterval("refreshall()",500);
-			refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
-			refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps","snaps");
-			refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods","periods");
+			//refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
+			//refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt","snaps","snaps");
+			//refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods","periods");
 			$.post("./pump.php", { req: "GetPoolperiodlist", name:"a" });
 			$.post("./pump.php", { req: "GetPoolVollist", name:"a" });
 			$.post("./pump.php", { req: "GetSnaplist", name:"a" });
