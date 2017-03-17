@@ -1,1 +1,9 @@
-cannot destroy snapshot p1/nano226@Minutely.2.3.na.na..1469482561: dataset is busy
+missing dataset argument
+usage:
+	destroy [-fnpRrv] <filesystem|volume>
+	destroy [-dnpRrv] <filesystem|volume>@<snap>[%<snap>][,...]
+	destroy <filesystem|volume>#<bookmark>
+
+For the property list, run: zfs set|get
+
+For the delegated permission list, run: zfs allow|unallow

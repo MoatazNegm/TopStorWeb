@@ -1,13 +1,11 @@
 #! /bin/sh
 cd /var/www/html/des20/
-if [ -f Data/Getstatspid ]; 
-then
- exit 0;
-else
+COMMAND=$0
+RUNNING=`ps --no-headers -C${COMMAND} | wc -l`
+if [ $RUNNING -gt 1 ]; then exit 0; fi
 ./pump.sh fixchart
 echo $@ > Data/Getstatstime
 echo hi > Data/ctr.log
-touch Data/Getstatspid
 echo $@ > Data/tmpGet
 date=`echo $@ | awk '{print $1}'`;
 ptime=`echo $@ | awk '{print $2}'`;
@@ -100,6 +98,4 @@ then
  echo $res > Data/ctr.logupdated;
 else
  rm -rf Data/ctr.log;
-fi
-rm -rf Data/Getstatspid
 fi

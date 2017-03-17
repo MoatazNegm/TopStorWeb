@@ -95,7 +95,7 @@
     new Chartist.Line('#storageNeed', storageNeeddata, options, responsiveOptions);
 
     // FOR IP, DNS , GATEWAY INPUT
-    $('.ip_address').mask('099.099.099.099');
+  $('.ip_address').mask('099.099.099.099');
     
 
 })();

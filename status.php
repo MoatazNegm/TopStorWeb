@@ -3,34 +3,271 @@
  if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/Login.php');}
  
 ?>
-<html class="bodydiv">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pilot</title>
+    <!--META TAGS-->
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" type="image/png" href="assets/images/Qonly.png">
 
-	<?php $men=2; include "header.html"; ?>
-	
-							<li ><a href="#" class="SSa rightli"><h4 id="SS"><span>Services Status</span></h4></a></li>
-							<li><a href="#" class="Logsa rightli"><h4 id="Logs"><span>Logs</span></h4></a></li>
-							
-						</ul>
-						<?php include "SS.php" ?>
-						<?php include "Logs.php" ?>
-					</div>
-				</div>
-			
-			</div>
-			<div class="row">
-			<div id="chart1"></div>	
-			<footer class="footer prefooter"  > Errors
-			</footer>
-		</div>
-	
-	<script src='js/jquery.js'></script>
-	<script src="js/bootstrap.min.js" ></script>
-	<script src='js/bootstrap-datepicker.js'></script>
-		<script src="js/bootstrap-timepicker.js"></script>
-		<script src='js/jquery.jqplot.min.js'></script>
-		<script src='js/excanvas.min.js'></script>
-		<script src="js/jqplot.dateAxisRenderer.min.js"></script>
+    <!--BOOTSTRAP CSS STYLE-->
+     <link href="assets/css/tether.min.css" rel="stylesheet" type="text/css">   
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+    <!--Font Awesome css-->
+    <link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <link href="assets/js/chartist-js-develop/dist/chartist.min.css" rel="stylesheet" type="text/css">
+    	<link rel="stylesheet" href="css/jquery.jqplot.css">
+   
 		
+
+    <!--CUSTOME CSS-->
+    <link href="assets/css/main.css" rel="stylesheet" type="text/css">
+   
+</head>
+<body>
+<!--NAVBAR-->
+<nav class="navbar">
+    <!--<div class="container row">-->
+    <div class="col-md-12">
+        <a class="navbar-brand" href="index.html"><img src="assets/images/logo.png"></a>
+        <ul class="navbar-nav pull-right">
+            <li class="nav-item dropdown user-dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span><img src="assets/images/user-icon.png"> </span>Admin
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="changepassword.html">Change Password</a>
+                    <a class="dropdown-item" href="login.html">Logout</a>
+                </div>
+            </li>
+        </ul>
+        <!--</div>-->
+    </div>
+</nav>
+<!--MESSAGES-->
+<div class="dr-messages">
+    <div class="bg-warning">Your changes may be not saved
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="bg-danger">Your changes hasn't been saved
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="bg-success"><div id="texthere"></div>
+        <button type="button" id="close-success" style="margin-top: -2.4rem" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+<!--BODY CONTENT-->
+<main class="col-md-12">
+    <div class="row">
+        <div class="col-md-1 main-menu">
+            <ul class="nav flex-column" role="tablist">
+                <li class="nav-item accounts">
+                    <a class=" ref nav-link " id="accounts" href="#" role="tab">
+                        <div></div>
+                        Accounts</a>
+                </li>
+                <li class="nav-item status">
+                    <a class="nav-link active" data-toggle="tab" href="#" role="tab">
+                        <div></div>
+                        Status</a>
+                </li>
+                <li class="nav-item protocol">
+                    <a class="ref nav-link" id="protocol" href="#" role="tab">
+                        <div></div>
+                        Protocol</a>
+                </li>
+                <li class="nav-item replication">
+                    <a class="nav-link" href="replication.php" role="tab">
+                        <div></div>
+                        Replication</a>
+                </li>
+                <li class="nav-item pools">
+                    <a class="ref nav-link" id="pools" href="#" role="tab">
+                        <div></div>
+                        Pools</a>
+                </li>
+                <li class="nav-item config">
+                    <a class="nav-link" href="config.php" role="tab">
+                        <div></div>
+                        Config</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-2 second-menu">
+            <div class="tab-content">
+                <div class="tab-pane active" id="status" role="tabpanel">
+                    <ul class="nav flex-column" role="tablist">
+                        <li class="nav-item servicestatus">
+                            <a class="nav-link active" data-toggle="tab" href="#servicestatus" role="tab">
+                                <div></div>
+                                <span>Service Status</span></a>
+                        </li>
+                        <li id="Logs" class="nav-item  logs2<em></em>">
+                            <a class="nav-link" data-toggle="tab" href="#Logspanel" role="tab">
+                                <div></div>
+                                <span>Logs</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 main-content">
+            <div class="tab-content">
+                <div class="tab-pane active" id="servicestatus" role="tabpanel">
+                    <form class="dr-form">
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label">Select date</label>
+                            <div class="col-4">
+                                <input id="dater2" class="form-control" type="datetime-local">
+                            </div>
+                            <p class="col-3 col-form-label">System Monitor</p>
+                        </div>
+                    </form>
+                    <div class="row ">
+                    	 <div class="demo-container">
+                        <div class="demo-placeholder" id="CPU"></div>
+                        <h1>CPU Utilization</h1>
+                      </div>
+                    </div>
+                     <div class="row ">
+                    	 <div class="demo-container">
+                        <div class="demo-placeholder" id="MEM"></div>
+                        <h1>Memory Utilization</h1>
+                      </div>
+                    </div>
+                     <div class="row ">
+                    	 <div class="demo-container">
+                        <div class="demo-placeholder" id="NET"></div>
+                        <h1>Network Throughput</h1>
+                      </div>
+                    </div>
+                     <div class="row ">
+                    	 <div class="demo-container">
+                        <div class="demo-placeholder" id="DIO"></div>
+                        <h1>Storage I/O per second </h1>
+                      </div>
+                    </div>
+                     <div class="row ">
+                    	 <div class="demo-container">
+                        <div class="demo-placeholder" id="DTH"></div>
+                        <h1>Storage Throughput K Byte per second </h1>
+                      </div>
+                    </div>
+                     <div class="row ">
+                    	 <div class="demo-container">
+                        <div class="demo-placeholder" id="DRP"></div>
+                        <h1>Storage read percentage of I/O request per second</h1>
+                      </div>
+                    </div>
+                   
+                   
+                </div>
+                <div class="tab-pane " id="Logspanel" role="tabpanel">
+                    <form class="dr-form">
+                        <div class="form-group row">
+                            <label class="col-1 col-form-label">Date</label>
+                            <div class="col-3" style="padding-left: 0px;">
+                                <input id="dater" class="form-control form-control-sm" type="datetime-local" style="font-size: 13px;">
+                            </div>
+                            <div class="col-3 logs-check">
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input msgtype" id="INFO" type="checkbox" value="option1" checked>Info
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline ">
+                                    <label class="form-check-label">
+                                        <input id="Warning" class="form-check-input msgtype" type="checkbox" value="option2" checked>Warning
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input id="Error" class="form-check-input msgtype" type="checkbox" value="option2" checked>Error
+                                    </label>
+                                </div>
+                            </div>
+                            <label class="col-1 col-form-label" style="padding-right: 0px; maring-right: -2rem;">Lines</label>
+                            <div class="col-1" style="margin-top: 0.2rem; margin-left: -2.5rem; ">
+                                <input id="lines" min="5" max="50" value="10" class="form-control form-control-sm " type="number">
+                            </div>
+                            <div class="col-2 text-right msgtype" style="margin-top: 0.4rem;">
+                                <a href="#"><img src="assets/images/refresh.png"> </a>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row table-responsive">
+                        <table  class="col-12 table  dr-table-show">
+                            <thead>
+                            <tr class="row">
+										  <th class="text-left col-3" style="padding-left: 2rem; ">Date and time</th>                                
+                                <th class="text-center col-2">user</th>
+                                <th class="text-center col-7">Data</th>
+                                
+                            </tr>
+                            </thead>
+                            <tbody id="Logdetails">
+                           
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row col-md-12">
+                        <div class=" text-right">
+                            <a id="pprev" href="#"><img src="assets/images/previous.png"></a>
+                            <a id="pnext" href="#"><img src="assets/images/next.png"> </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<form id="accountsref" action="accounts.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="statusref" action="status.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="protocolref" action="protocol.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="replicationref" action="replication.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="poolsref" action="pools.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="configref" action="config.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+
+<!--JAVA SCRIPT-->
+<!--JQUERY SCROPT-->
+<script src="assets/js/jquery.min.js"></script>
+
+<!--BOOTSTRAP SCRIPT-->
+<script src="assets/js/tether.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
+<script src="assets/js/chartist-js-develop/dist/chartist.min.js"></script>
+
+<script src="assets/js/dropzen.js"></script>
+<script src='js/jquery.jqplot.min.js'></script>
+<script src='js/excanvas.min.js'></script>
+<script src="js/jqplot.dateAxisRenderer.min.js"></script>
+
+<!--CUSTOM JS-->
 		<script>
 			var msgdata= "no no no";
 			var msgs="no data";
@@ -45,7 +282,7 @@
 			var config = 1;
 			var disktime="23:3434:34534";
 			var disktimenew="34543:43543:34";
-			var logtime=[]; var logtimenew="34543:43543:34";
+			var logtime="slkdj"; var logtimenew="34543:43543:34";
 			var dl =[[[0,0]],[[0,0]]];
 			var plotpls=[[0,0]]; var plotrs; var plotws; var plotsvct; var plotqlen; var plotdl;
 			var traffictime = "0";
@@ -55,11 +292,19 @@
 			var obj=[];
 			var disksval="hi"
 			var dater;
+			var liner;
 			var dater2;
 			var statsdata="initial";
 			var page=0;
 			var reqpage=0;
+			var counter = 1;
 			var activepage=0; var lastpage=-1;
+			
+			$(".bg-success").show();$(".bg-danger").hide();$(".bg-warning").hide();
+	$(".ref").click(function() {
+		document.getElementById($(this).attr('id')+'ref').submit();
+		 //console.log($(this).attr('id')+'ref');
+		});			
 			$.get("requestdatein.php", { file: 'Data/ctr.logupdated' }, function(data){
 				
 					var objdate=jQuery.parseJSON(data);
@@ -79,14 +324,14 @@
 									return weekday[D.getDay()]+" "+D.getDate()+"-"+months[D.getMonth()]+"-"+D.getFullYear();
 								}
 											
-					$("#INFO").click(function() {
+					function infochange() {
 				
 				$(".datarow").hide();
 				if($("#INFO").is(":checked")) { $(".info").show(); }
 				if($("#Warning").is(":checked")) { $(".warning").show(); }
 				if($("#Error").is(":checked")) { $(".error").show(); }
-			});
-	
+			};
+	     $(".msgtype").click(function() { topresentlog(); infochange(); });
 			
 			var sineRenderer = function() {
 				//var data = [[]];
@@ -134,28 +379,27 @@
 					});
 				}
 			};
+//		var plot1 = $.jqplot('chart1',dl);
+//			$("#Stimec").timepicker({
+//					appendWidgetTo: 'body',
+//					minuteStep: 1,
+//					showMeridian: false,
+//			});
 
-//			var plot1 = $.jqplot('chart1',dl);
-			$("#Stimec").timepicker({
-					appendWidgetTo: 'body',
-					minuteStep: 1,
-					showMeridian: false,
-			});
-
-			$("#Stime").timepicker({
-								appendWidgetTo: 'body',
-                minuteStep: 1,
-								showMeridian: false,
-			});
-			$('.input-daterange').datepicker({
-				format: "mm/dd/yyyy",
-				weekStart: 6,
-				startDate: "1/1/2014",
-				todayBtn: "linked",
-				keyboardNavigation: false,
-				autoclose: true,
-				todayHighlight: true
-			});
+//			$("#Stime").timepicker({
+//								appendWidgetTo: 'body',
+//               minuteStep: 1,
+//								showMeridian: false,
+//			});
+//			$('.input-daterange').datepicker({
+//				format: "mm/dd/yyyy",
+//				weekStart: 6,
+//				startDate: "1/1/2014",
+//				todayBtn: "linked",
+//				keyboardNavigation: false,
+//				autoclose: true,
+//				todayHighlight: true
+//			});
 			$(".SS").hide(); $(".Logs").hide(); $(".finish").hide();
 			$("#dater2").change(function(){
 				$("#nothing").text("Please wait"); $("#found").hide();
@@ -172,26 +416,30 @@
 								userpriv=gdata[prot].Service_Charts
 							}
 						};
-						if( userpriv=="true" | curuser=="admin" ) {
+						if(userpriv=="true" | curuser=="admin" ) {
 							config= 0; $("h2").css("background-image","url('img/SS.png')").text("Service Status");$(".ullis").hide();$(".finish").show();  $(".SS").show(); 
 						} 
 					});
 				};
 			});
-			$("#lines").click(function(){
-				logstatus=[];
-				$("#Logdetails tr.datarow").remove();
-				page=0; activepage=0; lastpage=-1
-				for (var i=0; i<logcache; i+=1) {
-						    updatelogarea(i); 
-								logstatus[i]=10;
-								logtime[i]="3434TREYLKTRJ";		
-							}
+			$("#lines").change(function(){
+				   topresentlog();updatelogarea(); infochange();
+							
+			});
+			
+			$("#dater").change(function(){
+				   topresentlog(); updatelogarea(); infochange();
+				 
+							
 			});
 			$("#pnext").click(function(){  
-				activepage=activepage+1;
-				logstatus[activepage]=50;
-				logstatus[logstatus.length]=10;
+				var date=new Date($("td.last").text());
+				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2)+"T"+("0" + date.getUTCHours()).slice(-2)+":"+("0" +date.getUTCMinutes()).slice(-2)+":"+("0" + date.getUTCSeconds()).slice(-2)) 	
+				dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+date.getFullYear()+"T"+("0" + date.getUTCHours()).slice(-2)+":"+("0" +date.getUTCMinutes()).slice(-2)+":"+("0" + date.getUTCSeconds()).slice(-2) 	
+				
+				dater=$("#dater").val()
+					$("#dater").change();
+							
 			});
 			$("#pprev").click(function(){  
 				if (activepage > 0 ) { activepage = activepage-1; logstatus[activepage]=50 }
@@ -202,25 +450,14 @@
 				activepage=0; page=0; lastpage=-1
 				logstatus=[];
 				for (var i=0; i<logcache; i+=1) {
-						    updatelogarea(i); 
+						    updatelogarea(20); 
 								logstatus[i]=10;
 								logtime[i]="3434TREYLKTRJ";		
 							}
 			});
-			$("#Warning").click(function() {
-				$(".datarow").hide();
-				if($("#INFO").is(":checked")) { $(".info").show(); }
-				if($("#Warning").is(":checked")) { $(".warning").show(); }
-				if($("#Error").is(":checked")) { $(".error").show(); }
-			});
-			$("#Error").click(function() {
-				$(".datarow").hide();
-				if($("#INFO").is(":checked")) { $(".info").show(); }
-				if($("#Warning").is(":checked")) { $(".warning").show(); }
-				if($("#Error").is(":checked")) { $(".error").show(); }
-			});
+			
 			$("#Logs").click(function (){ 
-				if(config== 1){ 
+				
 					var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
@@ -231,7 +468,7 @@
 							}
 						};
 					
-						if( userpriv=="true" | curuser=="admin" ) {
+						if(userpriv=="true" | curuser=="admin" ) {
 						   
 					   for (var i=0; i<logcache; i+=1) {
 						    updatelogarea(i); 
@@ -243,22 +480,27 @@
 							}
 						
 							
-						    config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".ullis").hide(); $(".finish").show();$(".Logs").show();
+						    config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".ullis").hide(); $(".finish").show();$(".Logs").show(); topresentlog();
 						}
 					});
-				};
+				
 			});
 			$(".finish").click(function (){ 
 				for (var i=0; i<logcache; i+=1) { logstatus[i]=0 } config = 1; $(".SS").hide(); $(".Logs").hide();$(".finish").hide();$(".ullis").show();});
 	function refreshall() {
 		
-		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
+		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data);});
+		presentlog();
+		counter=counter+1;
+		if(counter > 2 ) { topresentlog(); updatelogarea(); infochange(); counter = 1; }
 		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
-		if (config == 0) {
-			var date2
-			if( $("#dater2").val() == "") { 
-				date2 = new Date
-				$("#dater2").val(date2.getFullYear() + '-' + ("0" + (date2.getMonth() + 1)).slice(-2) + '-' + ("0" + (date2.getDate() + 0)).slice(-2))
+		
+			var date
+			if($("#dater2").val() == "") { 
+				date = new Date
+			//	$("#dater2").val(date2.getFullYear() + '-' + ("0" + (date2.getMonth() + 1)).slice(-2) + '-' + ("0" + (date2.getDate() + 0)).slice(-2))
+				$("#dater2").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) + "T00:00:00") 
+		
 			} 			
 			var dater2=new Date($("#dater2").val())
 			var dater3=dater2.getFullYear() + ("0" + (dater2.getMonth() + 1)).slice(-2) +  ("0" + (dater2.getDate() + 0)).slice(-2)
@@ -267,69 +509,62 @@
 			chartplease(dater3);
 			
 		
-		}
 		
-		if (logstatus[0] > 0) {
-			var date
+		
+	}
+	function topresentlog() {
+	var date
+	
 			if( $("#dater").val() == "") { 
 				date = new Date
-				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2)) 
-			} 			
-			dater=Date.parse($("#dater").val())
+				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) + "T00:00:00") 
+			} 		
+		///dateri=date.getFullYear()+'/' +("0" + (date.getDate() + 0)).slice(-2)+'/'+("0" + (date.getMonth() + 1)).slice(-2)+"T"+("0" + date.getUTCHours()).slice(-2)+":"+("0" +date.getUTCMinutes()).slice(-2)+":"+("0" + date.getUTCSeconds()).slice(-2) 	
+		date=new Date($("#dater").val());		
+		dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+date.getFullYear()+"T"+("0" + date.getUTCHours()).slice(-2)+":"+("0" +date.getUTCMinutes()).slice(-2)+":"+("0" + date.getUTCSeconds()).slice(-2) 	
+
+			liner=$("#lines").val();
 	
 			for (var i=0; i< logstatus.length; i+=1) { 
+			 $.post("./pump.php", { req:"GetLog", name: dater+' '+liner+' '+"<?php echo $_SESSION["user"]; ?>"},function(){}); 
+
 				
-				updatelogarea(i);
-				presentlog(i);
-				if(logstatus[i]==10) { 
-					logstatus[i]=11; 
-					 $.post("./pump.php", { req:"GetLog", name: dater+' '+i+' '+$("#lines").val()+' '+"<?php echo $_SESSION["user"]; ?>"},function(){}); 
-				//console.log(logstatus)
-				//console.log("GetLog"+dater+' '+reqpage+' '+$("#lines").val()+' '+i)
-				}
-				if ( logstatus[i] > 10 ) { ; ; logstatus[i]++ }
-				if ( logstatus[i] > 30 ) { 
-					if (i > obj.length) { logstatus.pop(1); i = lastpage; activepage=lastpage
-					}
-					logstatus[i]=1;
-					if (i == activepage) { 
-						lastpage=activepage; 
-					}
-				
+				updatelogarea();
+			presentlog();
+			infochange();
+							
 				}
 			
-				ApplySetting();
 			}
-			
-		}
-	}
+
 	function chartplease(datern) {
 		//$.post("requeststats.php", { date: datern, time: 0 });
 		$.get("requestdatein.php", { file: 'Data/ctr.logupdated' }, function(data){
 				
 					var objdate=jQuery.parseJSON(data);
 					
+					
 					trafficnewtime=objdate.updated;
 		});
-		if( traffictime == trafficnewtime ) { //console.log("traffic not changed");
+		if(traffictime == trafficnewtime) { //console.log("traffic not changed");
 			
 			if (requeststats==0) {
 				
 				$.post("requeststats.php", { date: datern, time: 0 });
+				
 				requeststats=1;
 				
 			}
-		} 
-		else {
-			
+		} else {
 			traffictime = trafficnewtime 	
-			console.log("change");	
+			
+			
 			$.get("requestdata.php", { file: 'Data/ctr.log' }, function(data){
 				datalogf = jQuery.parseJSON(data);
-			 if (datalogf[0].nothing == 0 ) {
-				  console.log( " zero");
+			 	if (datalogf[0].nothing == 0) {
+					
 				  
-				  $("#nothing").text("Nothing to Display"); $("#found").hide();
+					$("#nothing").text("Nothing to Display"); $("#found").hide();
 				} 
 				else {
 					
@@ -387,13 +622,12 @@
 		 		
 		}
 		     
-				
-			
 			});
+				
+		requeststats=0;
 		
-			requeststats=0;
-		}
 	}
+}
 	function drawnow(name,title,miny,maxy,series) {
   // we have an empty data array here, but use the "dataRenderer"
   // option to tell the plot to get data from our renderer.
@@ -435,31 +669,34 @@
 	
 	
 	
-	function updatelogarea(ii){
+	function updatelogarea(){
 		
 		var tm, splitstime;
 		var tm2; var tme, splitstimee;
 		var rqpg
-		rqpg=ii+page;
-		
-      
-		$.get("requestdate.php", { file: 'Data/Logs.logupdated'+rqpg }, function(data){
+		rqpg=liner;
+		ii=1;
+    
+		$.get("requestdate.php", { file: 'Data/Logs.logupdated' }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			logtimenew=objdate.timey;
 		});
-		if(logtimenew!=logtime[ii] ) {
-			$.get("requestdata.php", { file: 'Data/Logs.log'+rqpg}, function(data){
-		
+		if(logtimenew!=logtime ) {
+			logtime=logtimenew;			
+			$.get("requestdata.php", { file: 'Data/Logs.log'+liner}, function(data){
+	
 			obj[ii] = jQuery.parseJSON(data);
 			});
 		}
 	}
-	function presentlog(ii) {
+	function presentlog() {
 		var logarea = "";
+		var color;
 		config=1;
-		logtime[ii]=logtimenew;
-		if(lastpage!=activepage && ii==activepage) {$("#Logdetails tr.datarow").remove();}
-		if( lastpage!=activepage && ii==activepage) {
+		var ii=1;
+		
+		$("#Logdetails tr.datarow").remove();
+		var y="between";
 				for (var k in obj[ii]) { 
 							var objdata=obj[ii][k].data;
 							var codes; var msgcode; var jofcode; var themsg; var themsgarr;
@@ -470,7 +707,7 @@
 								jofcode=searchmsg(msgs,msgcode);
 								//console.log("jofcode",jofcode);
 								themsg=msgs[jofcode];
-								themsgarr=themsg.split(":");
+								try { themsgarr=themsg.split(":"); } catch(err) { updatelogarea();}
 								codes.push(".");
 								objdata=""
 								for (i=1; i < themsgarr.length ;i++) {
@@ -480,27 +717,26 @@
 								//console.log("themsgarr",themsgarr);
 							}
 							logarea=logarea+obj[ii][k].Date+" "+obj[ii][k].time+" "+obj[ii][k].msg+": "+objdata+obj[ii][k].code+"\n";
-							if(obj[ii][k].msg == "info") { color="blue"}; if(obj[ii][k].msg == "warning") { color="yellow"}; if(obj[ii][k].msg == "error") { color="red"}
+							y="between"
+							if (k == 0) { y="first"; };
+							if (k == (obj[ii].length-1)) {y="last";};
+							if(obj[ii][k].msg == "info") { color="blue"}; if(obj[ii][k].msg == "warning") { color="yellow"}; if(obj[ii][k].msg == "error") { color="red"}						
+							$("#Logdetails").append('<tr style="padding-left: 2rem; color:'+color+'" class="row datarow '+obj[ii][k].msg+'" ><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-3 text-left tdlog Volname '+y+' '+obj[ii][k].msg+' " data-toggle="popover" rel="popover" data-trigger="hover" data-container="body"  >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td style="margin-left: -1.7rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-2 text-center tdlog '+obj[ii][k].msg+' "  data-content='+objdata+' >'+obj[ii][k].user+'</td><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-7 text-center tdlog '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
 							
-							$("#Logdetails").append('<tr class="datarow  '+obj[ii][k].msg+'" ><td class="Volname  col/-sm-3 '+obj[ii][k].msg+' "data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td class="col-sm-1  '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+obj[ii][k].user+'</td><td class="col-sm-7  '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
 							
-										$("#INFO").click();			
+										infochange();			
 							
 						
 					
 				};
-			}
-			//$("#logsarea").val(logarea);	
-			$("td").css("padding","0.1rem");
-			//$('[data-toggle="popover"]').popover({ placement: "bottom",html: false,
-              //      animation: false,});
+	
 	}
 		
 	
 
-		$(".datec").datepicker().on("changeDate",function(e){
-					traffictime="44:44:34";											
-		});
+//		$(".datec").datepicker().on("changeDate",function(e){
+//					traffictime="44:44:34";											
+//		});
 		$(".timec").change(function(){
 					traffictime="44:44:34";											
 		});
@@ -526,9 +762,6 @@ $("#Disks").change(function(){
 			});
 			
 
-		for (var i=0; i<logcache; i+=1) {
-					logstatus[i]=0; logtime[i]="ksldl";
-				}
 		function starting() {
 				$(".ullis").hide();
 				if(config == 1 ) {
@@ -550,10 +783,12 @@ $("#Disks").change(function(){
 					$(".ullis").show();
 			}
 		}
-		starting();
+		 topresentlog();
+		 		$("#close-success").click(function() { $(".bg-success").hide(); });
 		
 		</script>
- 
-	</body>
+	<!-----	<script src="assets/js/main.js"></script>
+----->
 
+</body>
 </html>

@@ -1,1 +1,1 @@
-{"dhcp216:p1":""}
+[{"id":"1","name":"scsi-3600140530d4d3cd620f4116b5b55e0c5","host":"dhcp15637","pool":"p1","size":"8","grouptype":"stripe","poolsize":"7.69","InGroupDisk1":"notavailable","InGroupDisk2":"notavailable"}]
