@@ -1,1 +1,1 @@
-UnixChkUser admin chk
+SnapshotCreateWeekly 17:00 Mon 4 dhcp15637_p1 djksl admin

@@ -348,7 +348,13 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
     font-size: 15px;
     margin-top: 15px;
 }
-
+.btn-danger  {
+   
+    color: white;
+    font-weight: 400;
+    font-size: 15px;
+    margin-top: 0px;;
+}
 .btn-rollback {
     color: white;
     font-weight: 400;
@@ -393,7 +399,7 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
     color: white;
     text-align: center;
     position: absolute;
-    top: 70px;
+    bottom: 0px;
     width: 100%;
     z-index: 100;
 }
@@ -449,8 +455,8 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
     display: inline-block;
 }
 
-.margin-top > button {
-    margin-top: 40px;
+.margin-top  {
+    margin-top: 1.3rem;
 }
 
 #proxyliscence .col-md-12 {
@@ -531,3 +537,66 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
 #proxyliscence .dr-two-tables .col-md-3, #proxyliscence .dr-two-tables .col-md-4 {
     display: inline-block;
 }
+.demo-container {
+	box-sizing: border-box;
+	
+	width: 44rem;
+	height: 10.5rem;
+	width: 850px;
+/*	height: 450px; */
+	padding: 20px 15px 15px 15px;
+	margin: 15px auto 30px auto;
+	border: 1px solid #ddd;
+	background: #fff;
+	background: linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -o-linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -ms-linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -moz-linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -webkit-linear-gradient(#f6f6f6 0, #fff 50px);
+	box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+	-o-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-ms-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	
+}
+
+.demo-placeholder {
+	padding: 0px;
+	width: 100%; 
+	height: 100%;
+	font-size: 14px;
+	line-height: 1.2em;
+	margin: 0px ;
+}
+	
+#chartNFS2, .chart {
+ position: absolute;	
+ right: 1rem;
+ top: 5rem;	
+	
+	 height: 20rem;   width:40rem;
+							margin-left: -7.2rem;
+							margin-bottom: -15rem;
+							margin-top: -2.4rem;
+}
+.disk-image { border: solid white; }
+.InGroup {   background : blue; }
+.FreeDisk {  background: green; }
+.stripe { background: red; }
+.spare { background: yellow; }
+.cache { background: gray; }
+.log  { background: darkblue; }
+.mirror,.raid1,.raid2,.raid3 { background: blue; }
+.SelectedInArray {  border: solid red; }
+.SelectedFree { border: solid green;
+			animation: blinker 1s linear infinite;
+}
+.table td.poolcrdel { 
+		vertical-align: middle;
+		margin: 0;
+}
+#splitmirror td a { color : white;}
+div.btn-submit { margin-top: 0; }
+.NotComplete { background: lightyellow; border: 1px solid red;}
+.NotComplete:focus { background: lightyellow; border: 1px solid red;}
