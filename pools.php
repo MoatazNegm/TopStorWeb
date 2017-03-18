@@ -693,6 +693,7 @@
 			var requiredtime={ "snaps":"33==:433", "periods":"30==erwe:43:433" }
 			var Vollisttimenew="23:434:34543";
 			var status=0;
+			var olddata=[]
 			var panesel="hifirst";
 			var snapsel="hihi";
 			var syscounter=10;
@@ -743,7 +744,9 @@
 										chartdata.push(gdata[prot].class);
 										//chartdata[gdata[prot].class]=[];
 							}
+						
 							$(listid).append($('<option class="vvariable '+gdata[prot].class+'">').text(gdata[prot].name).val(gdata[prot].name));
+							console.log("listid",listid)
 							//chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
 						
 						}
@@ -1237,7 +1240,8 @@
 					times[showtime]=requiredtime[showtime];
 					//$(listid+" tr.variable").remove();
 					$.get("requestdata.php", { file: fileloc }, function(data){
-						
+						if(data!=olddata[showtime]) {
+							olddata[showtime]=data
 						var gdata = jQuery.parseJSON(data);
 												
 						$("."+update).remove();
@@ -1264,10 +1268,11 @@
 									
 										
 								}
-							
+						
 							//chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
 							}
 						}
+						}					
 					});
 				
 				};
@@ -1278,12 +1283,7 @@
 					$('#'+textareaid).val(data);
 					});
 			}	;
-			//setInterval('refresh2("DGstatus")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
-			//setInterval('refresh2("Snapsstatus")', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
-			//setInterval('refreshList("GetSnaplist","#Snaplist","Data/listsnaps.txt",12)', 10000); // Loop every 1000 milliseconds (i.e. 1 second)
-			//setInterval('refreshList("GetPoolHourlylist","#Hourlylist","Data/Hourlylist.txt",5)', 10000); // Loop every 1 second
-			//setInterval('refreshList("GetPoolMinutelylist","#Minutelylist","Data/Minutelylist.txt",5)', 10000); // Loop every 1 second
-			//setInterval('refreshList("GetPoolWeeklylist","#Weeklylist","Data/Weeklylist.txt",5)', 10000); // Loop every 1 second
+			
 			
 			var config = 1;
 			$("[class*='xdsoft']").hide();
@@ -1736,11 +1736,15 @@
 				var volsel=$("#Vol option:selected").val();
 				//times= { "snaps":"30:43:433", "periods":"30:43:433" };
 				$(".variable").hide();
-				if(panesel=="snapshot")
-				$("."+poolsel+"."+volsel).show();
+				if(volsel!=""){
+				
+				
+				if(panesel=="snapshot") {
+					$("."+poolsel+"."+volsel).show();
 					
 				//$(" tr.variable").remove();
-				
+				}
+				}
 			});
 			$("#Pool").change(function () {
 				

@@ -1,1 +1,1 @@
-SnapshotCreateWeekly 17:00 Mon 4 dhcp15637_p1 djksl admin
+SnapShotRollback dhcp24782_p1 p1/hiallcifs@mdlsk..1489851873 admin
