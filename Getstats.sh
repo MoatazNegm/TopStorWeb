@@ -13,12 +13,18 @@ found=1
 ls  Data/*  | grep $date &>/dev/null
 if [ $? -ne 0 ];
 then 
- nothing='['`./jsonthis3.sh nothing 0`']' 
- echo $nothing > Data/ctr.log
- resdate=`date +%s`;
- res=` ./jsonthis3.sh updated $resdate`;
- echo $res > Data/ctr.logupdated;
- rm -rf Data/Getstatspid; echo notfound; exit;
+ date2=`date +%Y%m%d`
+ res=$((date-date2))
+ if [ $res -gt 0 ]; then 
+  date=$date2
+ else
+  nothing='['`./jsonthis3.sh nothing 0`']' 
+  echo $nothing > Data/ctr.log
+  resdate=`date +%s`;
+  res=` ./jsonthis3.sh updated $resdate`;
+  echo $res > Data/ctr.logupdated;
+  rm -rf Data/Getstatspid; echo notfound; exit;
+ fi
 fi
 if [ $ptime -eq 0 ]; then
   stats=`cat  Data/*$date*.tab | grep -v \# | sort -u  | awk  "BEGIN{flag=0;count=0} /$ptime/{flag=1}{if (flag > 0 ) { print; count+=1; } } " | tail -n 50`

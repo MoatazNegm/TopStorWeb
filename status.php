@@ -499,7 +499,7 @@
 			if($("#dater2").val() == "") { 
 				date = new Date
 			//	$("#dater2").val(date2.getFullYear() + '-' + ("0" + (date2.getMonth() + 1)).slice(-2) + '-' + ("0" + (date2.getDate() + 0)).slice(-2))
-				$("#dater2").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) + "T00:00:00") 
+				$("#dater2").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) + "T23:59:00") 
 		
 			} 			
 			var dater2=new Date($("#dater2").val())
@@ -517,7 +517,7 @@
 	
 			if( $("#dater").val() == "") { 
 				date = new Date
-				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) + "T00:00:00") 
+				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) + "T23:59:00") 
 			} 		
 		///dateri=date.getFullYear()+'/' +("0" + (date.getDate() + 0)).slice(-2)+'/'+("0" + (date.getMonth() + 1)).slice(-2)+"T"+("0" + date.getUTCHours()).slice(-2)+":"+("0" +date.getUTCMinutes()).slice(-2)+":"+("0" + date.getUTCSeconds()).slice(-2) 	
 		date=new Date($("#dater").val());		
