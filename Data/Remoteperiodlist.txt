@@ -1,1 +1,1 @@
-[{"stamp":"1467843745","period":"Weekly","pool":"p1","father":"nano226","t1":"6","t2":"18","t3":"09","t4":"Tue","partner":"192.168.0.33"}]
+[{"stamp":"1489919619","period":"hourly","pool":"father","hiallcifs":"t1","5":"t2","4":"t3","2":"t4","na":"partner"}]

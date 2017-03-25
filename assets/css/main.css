@@ -274,11 +274,11 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
     background: url("../images/sender.png") no-repeat;
 }
 
-.reciver div {
+.recive div {
     background: url("../images/reciever-gray.png") no-repeat;
 }
 
-.reciver > .nav-link.active > div {
+.receiver > .nav-link.active > div {
     background: url("../images/recevier.png") no-repeat;
 }
 
@@ -445,12 +445,12 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
     color: #185487;
 }
 
-#reciver .tab-pane, #snapshots .tab-pane {
+#receiver .tab-pane, #snapshots .tab-pane {
     /*display: block;*/
     width: 100%;
 }
 
-#reciver .tab-pane > label, .tab-pane > div,
+#receiver .tab-pane > label, .tab-pane > div,
 #snapshots .tab-pane > label, .snapshots > div {
     display: inline-block;
 }

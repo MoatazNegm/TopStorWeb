@@ -85,7 +85,7 @@
                         Protocol</a>
                 </li>
                 <li class="nav-item replication">
-                    <a class="nav-link" href="replication.html" role="tab">
+                    <a class="nav-link ref" href="#" id="replication" role="tab">
                         <div></div>
                         Replication</a>
                 </li>
@@ -1750,9 +1750,9 @@
 				
 				var selection=$("#Pool option:selected").val();
 				
-				//$('#Vol option.'+selection+':first').prop('selected', true);
-				//$(".vvariable").hide();
-				//$(".vvariable."+selection).show();
+				$('#Vol option.'+selection+':first').prop('selected', true);
+				$(".vvariable").hide();
+				$(".vvariable."+selection).show();
 					
 					$('#Vol').change();
 		/*			if(plotflag > 0 ) {

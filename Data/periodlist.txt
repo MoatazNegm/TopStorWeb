@@ -1,1 +1,1 @@
-[{"stamp":"1489852066","period":"hourly","father":"hiallcifs","pool":"p1","t1":"5","t2":"4","t3":"2","t4":"na"}]
+[{"stamp":"1489852066","period":"hourly","father":"hiallcifs","pool":"p1","t1":"5","t2":"4","t3":"2","t4":"na"},{"stamp":"1489857930","period":"Minutely","father":"reconfs","pool":"p1","t1":"10","t2":"3","t3":"na","t4":"na"}]

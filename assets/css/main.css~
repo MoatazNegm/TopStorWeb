@@ -274,11 +274,11 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
     background: url("../images/sender.png") no-repeat;
 }
 
-.reciver div {
+.receiver div {
     background: url("../images/reciever-gray.png") no-repeat;
 }
 
-.reciver > .nav-link.active > div {
+.receiver > .nav-link.active > div {
     background: url("../images/recevier.png") no-repeat;
 }
 
@@ -445,12 +445,12 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
     color: #185487;
 }
 
-#reciver .tab-pane, #snapshots .tab-pane {
+#receiver .tab-pane, #snapshots .tab-pane {
     /*display: block;*/
     width: 100%;
 }
 
-#reciver .tab-pane > label, .tab-pane > div,
+#receiver .tab-pane > label, .tab-pane > div,
 #snapshots .tab-pane > label, .snapshots > div {
     display: inline-block;
 }
@@ -598,5 +598,5 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
 }
 #splitmirror td a { color : white;}
 div.btn-submit { margin-top: 0; }
-.NotComplete { border: 1px solid red;}
-.NotComplete:focus { border: 1px solid red;}
+.NotComplete { background: lightyellow; border: 1px solid red;}
+.NotComplete:focus { background: lightyellow; border: 1px solid red;}

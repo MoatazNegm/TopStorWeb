@@ -85,7 +85,7 @@
                         Protocol</a>
                 </li>
                 <li class="nav-item replication">
-                    <a class="nav-link" href="replication.php" role="tab">
+                    <a class="nav-link ref" href="#" id="replication" role="tab">
                         <div></div>
                         Replication</a>
                 </li>

@@ -221,10 +221,10 @@
                                 <input id="volsizeNFS" class="form-control" min=1 value=1 type="number">
                             </div>
                         </div>
-
-                        <div class="row">
-                            <button type="button" id="createvolNFS" class="createvol btn btn-submit col-5">Create Volumn</button>
-                        </div>
+								<a href="javascript:createvol()"class="row">
+                            <div id="createvolNFS" type="button" class="createvol btn btn-submit col-5">Create Volume</div>
+                        </a>
+                        
                     </div>
                     <div  class="" class="col-6 chart"  >
 								<div class="" id="chartNFS" ></div>

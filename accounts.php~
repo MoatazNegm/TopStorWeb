@@ -632,9 +632,10 @@
 					$(".ullis").show();
 			}
 		}
-		starting();
+	
 			
 		setInterval('refreshall()',500);
+				$("#close-success").click(function() { $(".bg-success").hide(); });
 		</script>
 
 </body>
