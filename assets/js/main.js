@@ -1,4 +1,6 @@
 (function () {
+	
+	
     // CLOSING ERROR MESSAGES
     $(".close").click(function () {
         $(".dr-messages").fadeOut("fast");
@@ -85,14 +87,14 @@
         }]
     ];
 
-    new Chartist.Line('#cpuUtilization', cpuUtilizationdata, options, responsiveOptions);
-    new Chartist.Line('#storageLoops', storageLoopsdata, options, responsiveOptions);
+   // new Chartist.Line('#cpuUtilization', cpuUtilizationdata, options, responsiveOptions);
+    //new Chartist.Line('#storageLoops', storageLoopsdata, options, responsiveOptions);
 
-    new Chartist.Line('#memoryUsed', memoryUseddata, options, responsiveOptions);
-    new Chartist.Line('#storagethroughput', storagethroughputdata, options, responsiveOptions);
+   // new Chartist.Line('#memoryUsed', memoryUseddata, options, responsiveOptions);
+   // new Chartist.Line('#storagethroughput', storagethroughputdata, options, responsiveOptions);
 
-    new Chartist.Line('#networkthroughput', networkthroughputdata, options, responsiveOptions);
-    new Chartist.Line('#storageNeed', storageNeeddata, options, responsiveOptions);
+   // new Chartist.Line('#networkthroughput', networkthroughputdata, options, responsiveOptions);
+   // new Chartist.Line('#storageNeed', storageNeeddata, options, responsiveOptions);
 
     // FOR IP, DNS , GATEWAY INPUT
   $('.ip_address').mask('099.099.099.099');

@@ -18,6 +18,8 @@
 
     <!--Font Awesome css-->
     <link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    	<link rel="stylesheet" href="css/jquery.jqplot.css">
+   
 
     <!--CUSTOME CSS-->
     <link href="assets/css/main.css" rel="stylesheet" type="text/css">
@@ -32,10 +34,10 @@
             <li class="nav-item dropdown user-dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span><img src="assets/images/user-icon.png"> </span>Admin
+                    <span><img src="assets/images/user-icon.png"> </span><?php echo $_SESSION["user"] ?>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="changepassword.html">Change Password</a>
+                    <a class="dropdown-item ref" href="#" id="changepassword">Change Password</a>
                     <a class="dropdown-item" href="login.html">Logout</a>
                 </div>
             </li>
@@ -92,7 +94,7 @@
                         Pools</a>
                 </li>
                 <li class="nav-item config">
-                    <a class="nav-link ref" href="config.html" role="tab">
+                    <a class="nav-link ref" href="#" id="config" role="tab">
                         <div></div>
                         Config</a>
                 </li>
@@ -117,10 +119,10 @@
                                 <div></div>
                                 <span>Receivers</span></a>
                         </li>
-                        <li class="nav-item proxyliscence">
+                        <li class="nav-item proxyliscence" hidden>
                             <a class="nav-link" data-toggle="tab" href="#proxyliscence" role="tab">
                                 <div></div>
-                                <span>Proxy Liscence</span></a>
+                                <span>Replication Alias</span></a>
                         </li>
                     </ul>
                 </div>
@@ -494,25 +496,29 @@
                 </div>
                 <div class="tab-pane " id="proxyliscence" role="tabpanel">
                     <form class="dr-form">
-                        <div class="form-group row">
+                        <div class="form-group row" hidden>
                             <label class="col-2 col-form-label">License</label>
                             <div class="col-5">
                                 <input class="form-control" type="text">
                             </div>
                             <button type="submit" class="btn btn-proxy col-md-2">Add License</button>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group row" hidden>
                             <label class="col-2 col-form-label">Proxy</label>
                             <div class="col-5">
                                 <input class="form-control" type="text">
                             </div>
-                            <button type="submit" class="btn btn-proxy col-md-2">Add Proxy</button>
+                            <a  href="javascript:AddAlias()" class="" >
+                                   
+                              <div type="button" class="btn btn-proxy col-md-2">Add Proxy</div>
 
+                            </a>
+                            
                         </div>
                         <div class="form-group row">
                             <label class="col-2 col-form-label">Alias</label>
                             <div class="col-5">
-                                <input class="form-control" type="text">
+                                <input id="Alias" class="form-control" type="text">
                             </div>
                             <button type="submit" class="btn btn-proxy col-md-2">Add Alias</button>
                         </div>
@@ -601,6 +607,9 @@
         </div>
     </div>
 </main>
+<form id="changepasswordref" action="changepassword.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
 <form id="accountsref" action="accounts.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
@@ -628,9 +637,12 @@
 <script src="assets/js/tether.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 
-<script src="assets/js/chartist-js-develop/dist/chartist.min.js"></script>
+//<script src="assets/js/chartist-js-develop/dist/chartist.min.js"></script>
 
 <script src="assets/js/dropzen.js"></script>
+<script src='js/jquery.jqplot.min.js'></script>
+<script src='js/excanvas.min.js'></script>
+<script src="js/jqplot.dateAxisRenderer.min.js"></script>
 
 <!--CUSTOM JS-->
 <script src="assets/js/main.js"></script>
@@ -661,6 +673,54 @@
 		document.getElementById($(this).attr('id')+'ref').submit();
 		 //console.log($(this).attr('id')+'ref');
 		});		
+		function SS(){ 
+				
+				   var alltabsAcco=0;var alltabsStat=0;var alltabsProt=0;var alltabsRepli=0;var alltabsPool=0;var alltabsUP=0;
+				   var userprivAccoAD="false"; var userprivAccoBU="false"; var userprivAccoEr="false";
+					var userprivStatSC="false"; var userprivStatLo="false";
+					var userprivProtCI="false"; var userprivProtNF="false";
+					var userprivRepliPa="false"; var userprivRepliSe="false"; var userprivRepliRe="false";
+					var userprivPoolDG="false"; var userprivPoolSS="false";
+					var userprivUserPrivileges="false"; var userprivUpload="false";
+					var curuser="<?php echo $_SESSION["user"] ?>";
+					if(curuser!="admin"){
+					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+						var gdata = jQuery.parseJSON(data);
+						for (var prot in gdata){
+							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+								userprivAccoAD=gdata[prot].Active_Directory; userprivAccoBU=gdata[prot].Box_Users; userprivAccoEr=gdata[prot].Error
+								userprivStatSC=gdata[prot].Service_Charts;userprivStatLo=gdata[prot].Logs;
+								userprivProtCI=gdata[prot].CIFS; userprivProtNF=gdata[prot].NFS;
+								userprivRepliPa=gdata[prot].Partners; userprivRepliRe=gdata[prot].Replication; userprivRepliSe=gdata[prot].Senders;
+								userprivPoolDG=gdata[prot].DiskGroups; userprivPoolSS=gdata[prot].SnapShots;
+								userprivUserPrivileges=gdata[prot].UserPrivilegesch;userprivUpload=gdata[prot].Uploadch;
+								
+							}
+						};
+						if(userprivAccoAD!="true") { $(".activeDirectory").hide(); $("#activeDirectory").hide(); alltabsAcco=1;} 
+						if(userprivAccoBU!="true") { $(".boxUsers").hide(); $("#boxUsers").hide(); alltabsAcco=alltabsAcco+1;} 
+						if(userprivAccoEr!="true") { $(".boxProperties").hide(); $("#boxProperties").hide(); alltabsAcco=alltabsAcco+1;} 
+						if(alltabsAcco==3) { $(".accounts").hide()}
+						if(userprivStatSC!="true") { $(".servicestatus").hide(); $("#servicestatus").hide(); alltabsStat=1;} 	else { $(".servicestatus").show(); $("#servicestatus").show();}
+						if(userprivStatLo!="true") { $("#Logs").hide(); $("#Logspanel").hide();alltabsStat=alltabsStat+1;}
+						if(alltabsStat==2) { $(".status").hide();}
+						if(userprivProtCI!="true") { $(".cifs").hide(); $("#cifspane").hide(); alltabsProt=1;} 
+						if(userprivProtNF!="true") { $(".nfs").hide(); $("#nfspane").hide(); alltabsProt=alltabsProt+1;}
+						if(alltabsProt==2) { $(".protocol").hide()}
+						if(userprivRepliPa!="true") { $(".partner").hide(); $("#partner").hide(); alltabsRepli=1;} 
+						if(userprivRepliSe!="true") { $(".sender").hide(); $("#sender").hide(); alltabsRepli=alltabsRepli+1;} 
+						if(userprivRepliRe!="true") { $(".recive").hide(); $("#receiver").hide(); alltabsRepli=alltabsRepli+1;} 
+						if(alltabsRepli==3) { $(".replication").hide()}
+						if(userprivPoolDG!="true") { $(".diskGroups").hide(); $("#diskGroups").hide(); alltabsPool=1;} 
+						if(userprivPoolSS!="true") { $(".snapshots").hide(); $("#snapshots").hide(); alltabsPool=alltabsPool+1;}
+						if(alltabsPool==2) { $(".pools").hide()}
+						if(userprivUserPrivileges!="true") { $(".userPrivlliges").hide(); $("#userPrivlliges").hide(); alltabsUP=1;} 
+						if(userprivUpload!="true") { $(".firmware").hide(); $("#firmware").hide(); alltabsUP=alltabsUP+1;}
+						if(alltabsUP==2) { $(".config").hide()}
+					
+					});
+				};
+			};
 
 			$("#deletePool").hide();$("#submitdiskgroup").hide();$("#passphrase").hide();$(".finish").hide();$("#SnapshotCreatediv").hide();
 			
@@ -1122,8 +1182,8 @@
 
 		$("#AddProxy").click( function (){ $.post("./pump.php", { req:"ProxyAdd", name:$('#Proxyurl').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 	 });
-		$("#AddAlias").click( function (){ $.post("./pump.php", { req:"AliasAdd", name:$('#Alias').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
-	 });
+	 function AddAlias(){ $.post("./pump.php", { req:"AliasAdd", name:$('#Alias').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+	 };
 
 		$("#DelPartner").click( function (){ $.post("./pump.php", { req:"PartnerDel", name:$("#Partnerlist").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 		});
@@ -1322,7 +1382,8 @@
 					$(".ullis").show();
 			}
 		}
-		$("#close-success").click(function() { $(".bg-success").hide(); });;
+		$("#close-success").click(function() { $(".bg-success").hide(); });
+		SS();
 		</script>
 
 </body>

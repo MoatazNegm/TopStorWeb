@@ -1,1 +1,1 @@
-RemoteSnapShotPeriodDelete 1490429219 admin
+fixchart
