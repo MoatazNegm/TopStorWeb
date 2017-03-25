@@ -868,13 +868,13 @@
 								if(showtime =="receiver") {
 									var receiver=gdata[prot].receiver;
 									receiver=receiver.replace(/\./g,"");
-									$(listid).append('<tr class="variable '+update+' '+gdata[prot].pool+' '+gdata[prot].father+' '+receiver+' '+'"><td class="text-center">'+gdata[prot].onlyname+"</td><td class='text-center'>"+gdata[prot].creation+ " "+ gdata[prot].time+"</td><td class='text-center'>"+gdata[prot].name+'</td><td class="text-center"><a href="javascript:SnapshotDelete(\''+gdata[prot].name+'\')"><img src="assets/images/delete.png"</td><td class="text-center"><a href="javascript:SnapshotRollback(\''+gdata[prot].name+'\')"><img src="assets/images/return.png" alt="can\'t upload delete icon"></a></td></tr>');
+									$(listid).append('<tr class="variable '+update+' '+gdata[prot].class+' '+gdata[prot].father+' '+receiver+' '+'"><td class="text-center">'+gdata[prot].onlyname+"</td><td class='text-center'>"+gdata[prot].creation+ " "+ gdata[prot].time+"</td><td class='text-center'>"+gdata[prot].name+'</td><td class="text-center"><a href="javascript:SnapshotDelete(\''+gdata[prot].name+'\')"><img src="assets/images/delete.png"</td><td class="text-center"><a href="javascript:SnapshotRollback(\''+gdata[prot].name+'\')"><img src="assets/images/return.png" alt="can\'t upload delete icon"></a></td></tr>');
 									$("."+update).hide();
 									}
 								if(showtime=="sender") {
 									var sender=gdata[prot].sender;
 									sender=sender.replace(/\./g,"");
-										$(listid).append('<tr class="variable '+update+' '+gdata[prot].pool+' '+gdata[prot].father+' '+sender+' '+'"><td class="text-center">'+gdata[prot].onlyname+"</td><td class='text-center'>"+gdata[prot].creation+ " "+ gdata[prot].time+"</td><td class='text-center'>"+gdata[prot].name+'</td><td class="text-center"><a href="javascript:SnapshotDelete(\''+gdata[prot].name+'\')"><img src="assets/images/delete.png"</td><td class="text-center"><a href="javascript:SnapshotRollback(\''+gdata[prot].name+'\')"><img src="assets/images/return.png" alt="can\'t upload delete icon"></a></td></tr>');
+										$(listid).append('<tr class="variable '+update+' '+gdata[prot].class+' '+gdata[prot].father+' '+sender+' '+'"><td class="text-center">'+gdata[prot].onlyname+"</td><td class='text-center'>"+gdata[prot].creation+ " "+ gdata[prot].time+"</td><td class='text-center'>"+gdata[prot].name+'</td><td class="text-center"><a href="javascript:SnapshotDelete(\''+gdata[prot].name+'\')"><img src="assets/images/delete.png"</td><td class="text-center"><a href="javascript:SnapshotRollback(\''+gdata[prot].name+'\')"><img src="assets/images/return.png" alt="can\'t upload delete icon"></a></td></tr>');
 									$("."+update).hide();
 								//	$(listid).append($('<option class="variable '+update+' '+gdata[prot].pool+' '+gdata[prot].father+' '+sender+' '+'">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));
 								}
@@ -882,6 +882,7 @@
 								if (showtime=="periods" ) {
 									
 									var partner=gdata[prot].partner;
+									console.log("partner",partner,gdata);
 									partner=partner.replace(/\./g,"");
 									
 									switch (gdata[prot].period) {
@@ -1099,7 +1100,8 @@
 				if($("#Volrec").val()!=null && $("#Poolrec").val()!=null && selection1 !=null){
 					partnerrefreshrec=1;
 				selection=selection1.replace(/\./g,""); 
-				$("."+selection+"."+$("#Volrec").val()+"."+$("#Poolrec").val()).show();
+				$("."+selection+"."+$("#Volrec").val()).show();
+				console.log("."+selection+"."+$("#Volrec").val()+".")
 				} else { partnerrefreshrec=0;listupdated["Volrec"]= "updateme"
 			}
 				
@@ -1169,7 +1171,7 @@
 					case "Weekly" : oper = $("#Stime").val()+" "+$("#Week").val()+" "+$("#KeepWeekly").val(); break;
 				}
 				oper =oper+" "+$("#Poolrec").val()+" "+$("#Volrec").val();
-				console.log("priod",oper,$("#partnercrec").val())
+				console.log("period",oper,$("#partnercrec").val(),snapsel)
 				
 				$.post("./pump.php", { req:"RemoteSnapshotCreate"+snapsel, name: oper+" "+$("#partnercrec").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 refresh2("Snapsstatus"); 
@@ -1223,14 +1225,14 @@
 									if ($.inArray(gdata[prot].Pool,pools) < 0 ) {
 										pools.push(gdata[prot].Pool);
 										$("#Pool").append($('<option class="variable2">').text(gdata[prot].uPool).val(gdata[prot].uPool));
-										$("#Poolsend").append($('<option class="variable2send">').text(gdata[prot].uPool).val(gdata[prot].uPool));
-										$("#Poolrec").append($('<option class="variable2rec">').text(gdata[prot].uPool).val(gdata[prot].uPool));
+										$("#Poolsend").append($('<option class="variable2send">').text(gdata[prot].uPool).val(gdata[prot].class));
+										$("#Poolrec").append($('<option class="variable2rec">').text(gdata[prot].uPool).val(gdata[prot].class));
 										
 									}
 									
 									
 									
-									$(listid).append($('<option class="pvariable '+gdata[prot].uPool+'" >').text(gdata[prot].name).val(gdata[prot].name));
+									$(listid).append($('<option class="pvariable '+gdata[prot].class+'" >').text(gdata[prot].name).val(gdata[prot].name));
 									
 								}
 							
@@ -1242,7 +1244,10 @@
 				};
 		
 			}
-			;
+			function SnapshotPeriodDelete(k){ $.post("./pump.php", { req:"RemoteSnapShotPeriodDelete", name:k+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+				 partnerrefresh=0;
+				 });
+			};
 			function SnapshotCreate2(){ 
 				var period=$('input[name=Period]:checked').val();
 				

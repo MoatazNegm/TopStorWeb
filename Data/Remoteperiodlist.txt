@@ -1,1 +1,1 @@
-[{"stamp":"1489919619","period":"hourly","pool":"father","hiallcifs":"t1","5":"t2","4":"t3","2":"t4","na":"partner"}]
+[]
