@@ -1,1 +1,1 @@
-DGsetPool addcache admin dhcp15666 scsi-36001405cb34e6b2b0764d3fb0780b910
+GetPoolVollist a
