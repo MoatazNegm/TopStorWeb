@@ -244,7 +244,7 @@
                             </div>
                         </div>
                         <div class="">
-                            <button id="DNSsubmit" type="button" class="btn btn-submit col-3">Submit</button>
+                            <button id="DNSsubmit" type="button" style="cursor: pointer;"class="btn btn-submit col-3">Submit</button>
                         </div>
                     </form>
                 </div>

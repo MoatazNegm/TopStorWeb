@@ -144,7 +144,7 @@ fclose($myfile);
                         Pools</a>
                 </li>
                 <li class="nav-item config">
-                    <a class="nav-link active " href="#" id="config" role="tab">
+                    <a class="nav-link ref active " href="#" id="config" role="tab">
                         <div></div>
                         Config</a>
                 </li>
@@ -164,7 +164,7 @@ fclose($myfile);
                         <li class="nav-item firmware">
                             <a class="nav-link" data-toggle="tab" href="#firmware" role="tab">
                                 <div></div>
-                                <span>FirmWare Upgrade</span></a>
+                                <span> Upgrade</span></a>
                         </li>
                     </ul>
                 </div>
@@ -290,7 +290,7 @@ fclose($myfile);
                                 <div class="col-md-3" hidden>
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input type="checkbox" value="Proxylic" class="form-check-input checkboxy">
+                                            <input type="checkbox" id="Proxylic" value="Proxylic" class="form-check-input hiddencheckbox">
                                             Proxy License
                                         </label>
                                     </div>
@@ -319,13 +319,16 @@ fclose($myfile);
                     </form>
                 </div>
                 <div class="tab-pane " id="firmware" role="tabpanel">
-                    <form action="/file-upload"
-                          class="dropzone"
-                          id="my-awesome-dropzone">
+                    <div class="dropzone upload-drop-zone clickthis" id="drop-zone">
+                    	
+								<div class=" col-sm-12" id="previews">
+							
+									<div class="dz-message">Pls. add or drag file here</div>
+								</div>
 
 
-                    </form>
-                    <button type="submit" class="btn btn-submit col-3">Submit</button>
+                    </div>
+                    <button type="button"  class="btn btn-submit col-3">Submit</button>
                 </div>
             </div>
         </div>
@@ -623,7 +626,7 @@ SS();
 				upresult="success";
 				droppls.disable();
 				//console.log("file",file,"name",file.name,"path",file.mozFullPath);
-				$.post("./pump.php", { req:"GenPatch", name:file.name });
+				$.post("./pump.php", { req:"GenPatch", name:file.name+" <?php echo $_SESSION["user"]; ?>"});
 				$(".dz-success-mark").show();$(".dz-error-mark").hide();
 				$("div.dz-message").text("File is uploaded.. please, allow some minutes for upgrade");
 				

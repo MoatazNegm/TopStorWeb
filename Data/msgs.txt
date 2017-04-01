@@ -33,8 +33,8 @@ Domain1014: Changing to Domain : is cancelled. Please configure storage first
 Domain1015: : : Changing to Domain : is cancelled. Please configure storage first
 HostManual1000: Changing Device name and IPs
 HostManual1001: All changes are done.Please, wait till they take effect.
-HostManual1002: : : Changing Device name and IPs
-HostManual1003: : : All changes are done.Please, wait till they take effect.
+HostManual1002: : : Changing System name and IPs
+HostManual1003: : : Changed Device System name and IPs to name: ip: gateway: dns:
 CIFS1001: Creating Volume : ....
 CIFS1002: Volume : already exists 
 CIFS1003: Problem occurred while creating volume : 
@@ -229,3 +229,6 @@ Replica1053: : : Adding proxy license : this device ......
 Replica1054: : : Success adding proxy license : for proxy : 
 Replica1055: : : Adding Alias : for this device ......
 Replica1056: : : Success adding Alias : to this device
+Upsa1010: : : Start updating fromm version : to version :
+Upfa1010: : : Failed updating from version : to version :
+Upsu1010: : : Success updating from version : to version :

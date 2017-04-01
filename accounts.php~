@@ -308,6 +308,9 @@
         </div>
     </div>
 </div>
+<form id="changepasswordref" action="changepassword.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
 <form id="accountsref" action="accounts.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
