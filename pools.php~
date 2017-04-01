@@ -35,7 +35,7 @@
             <li class="nav-item dropdown user-dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span><img src="assets/images/user-icon.png"> </span>Admin
+                    <span><img src="assets/images/user-icon.png"> </span><?php echo $_SESSION["user"] ?>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item ref" href="#" id="changepassword">Change Password</a>
@@ -123,10 +123,15 @@
         <div class="col-md-9 main-content">
             <div class="tab-content">
                 <div class="tab-pane active" id="diskGroups" role="tabpanel">
+                <div class="col-2 pull-right text-right msgtype" style="margin-top: 0.4rem;">
+                      <a href="javascript:getdisk=1;"><img src="assets/images/refresh.png"> </a>
+                </div>
                     <div id="diskimg">
                        
                     </div>
+                    
                     <h1 id="poolmsg">No pool is created... Please create a pool by selecting disks </h1>
+                    
                     <div id="requesttable" class="row table-responsive">
                         <table class="col-12 table  dr-table-show">
                             <thead>
@@ -701,6 +706,7 @@
 			var snapsel="hihi";
 			var syscounter=10;
 			var syscounter2=1000;
+			var getdisk=0;
 			var runningpool=0;
 			var runningroup=0;
 			var dd=[];
@@ -823,7 +829,7 @@
 				if($("#diskGroupspane").hasClass('active'))  { if (panesel !="diskgroup") { syscounter2=1000; Vollisttime2="skldjfadks"; panesel="diskgroup";}};
 				if($("#snapshotspane").hasClass('active'))  { if (panesel !="snapshot") { syscounter2=1000; Vollisttime2="skldjfadks"; panesel="snapshot"; snaponce("#Oncename","#shortname","#goodname","#Oncename");}};
 				if (panesel == "diskgroup") { 
-				if(syscounter2 > 20 ){syscounter2=0; $.post("./pump.php", { req: "GetDisklist", name:"a" }); }
+				if(getdisk==1 ){getdisk=0; $.post("./pump.php", { req: "GetDisklist", name:"a" }); }
 				
 					$.get("requestdata.php", { file: "Data/disklist.txt" },function(data){
 						if(data!=olddiskpool) {
@@ -859,13 +865,13 @@
 						}
 						setstatus();
 					}
-					} else {syscounter2=syscounter2+1}
+					} else {}
 				
 					});
 						
 				}			
 				
-				if(syscounter2==1000) { syscounter2=0; } else { syscounter2=syscounter2+1; }
+				
 				if (panesel == "snapshot") {
 					refreshList("GetSnaplist",".Snaplist","Data/listsnaps.txt","snaps","snaps");
 					refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods","periods")

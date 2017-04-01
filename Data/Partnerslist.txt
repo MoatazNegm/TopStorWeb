@@ -1,1 +1,1 @@
-[{"name":"nonono","type":"Receiver","proxy":"false","passphrase":"undefined"},{"name":"mezodell","type":"Sender","proxy":"false","passphrase":"undefined"},{"name":"mekho","type":"Receiver","proxy":"false","passphrase":"undefined"},{"name":"dodo","type":"Sender","proxy":"false","passphrase":"undefined"}]
+]

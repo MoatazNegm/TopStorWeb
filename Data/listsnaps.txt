@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 [{"stamp":"host","Abdobox2":"class","Abdobox2_":"name","pool":"onlyname","father":"creation","03/31/17":"time","00:00":"sender"}]
+=======
+[{"stamp":"host","tyiuiyi":"class","tyiuiyi_":"name","pool":"onlyname","father":"creation","04/01/17":"time","00:00":"sender"}]
+>>>>>>> 3d6d05e0996a1b8a628291f2c99b56c989e8786e

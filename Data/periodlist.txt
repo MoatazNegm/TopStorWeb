@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 [{"stamp":"1490966508","period":"hourly","father":"admin","pool":"p1","t1":"10","t2":"3","t3":"4","t4":"na"},{"stamp":"1490966655","period":"Minutely","father":"admin","pool":"p1","t1":"4","t2":"4","t3":"na","t4":"na"}]
+=======
+[{"stamp":"period","father":"pool","t1":"t2","t3":"t4"}]
+>>>>>>> 3d6d05e0996a1b8a628291f2c99b56c989e8786e

@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 [{"host":"Abdobox2","uPool":"p1","class":"Abdobox2_p1","Pool":"Abdobox2:p1"}]
+=======
+[{"host":"tyiuiyi","uPool":"p1","class":"tyiuiyi_p1","Pool":"tyiuiyi:p1"}]
+>>>>>>> 3d6d05e0996a1b8a628291f2c99b56c989e8786e
