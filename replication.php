@@ -84,7 +84,7 @@
                         Protocol</a>
                 </li>
                 <li class="nav-item replication">
-                    <a class="nav-link active" data-toggle="tab" id="replication" href="#" role="tab">
+                    <a class="nav-link ref active" data-toggle="tab" id="replication" href="#" role="tab">
                         <div></div>
                         Replication</a>
                 </li>

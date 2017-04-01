@@ -113,7 +113,7 @@
                                 <div></div>
                                 <span>Service Status</span></a>
                         </li>
-                        <li id="Logs" class="nav-item  logs2<em></em>">
+                        <li id="Logs" class="nav-item  logs">
                             <a class="nav-link" data-toggle="tab" href="#Logspanel" role="tab">
                                 <div></div>
                                 <span>Logs</span></a>

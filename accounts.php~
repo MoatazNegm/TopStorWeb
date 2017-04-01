@@ -163,7 +163,7 @@
                             </div>
                         </div>
                         <div class="">
-                            <button type="button" id="ADsubmit" class="btn btn-submit col-3">Joint Domain</button>
+                            <button type="button" id="ADsubmit" class="btn btn-submit col-3" style="cursor: pointer;">Joint Domain</button>
                         </div>
                     </form>
                 </div>
@@ -244,7 +244,7 @@
                             </div>
                         </div>
                         <div class="">
-                            <button id="DNSsubmit" type="button" class="btn btn-submit col-3">Submit</button>
+                            <button id="DNSsubmit" type="button" style="cursor: pointer;"class="btn btn-submit col-3">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -308,6 +308,9 @@
         </div>
     </div>
 </div>
+<form id="changepasswordref" action="changepassword.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
 <form id="accountsref" action="accounts.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>

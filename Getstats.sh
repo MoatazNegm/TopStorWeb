@@ -1,8 +1,14 @@
-#! /bin/sh
+#!/usr/local/bin/zsh
 cd /var/www/html/des20/
-COMMAND=$0
+COMMAND0=$0
+echo $COMMAND0 | grep \/
+if [ $? -eq 0 ]; then
+ COMMAND=`echo $COMMAND0 | awk -F'/' '{print $2}'`;
+else
+ COMMAND=$COMMAND0;
+fi
 RUNNING=`ps --no-headers -C${COMMAND} | wc -l`
-if [ $RUNNING -gt 1 ]; then exit 0; fi
+if [[ $RUNNING -gt 1 ]]; then echo $COMMAND; echo $RUNNING;  exit 0; fi
 ./pump.sh fixchart
 echo $@ > Data/Getstatstime
 echo hi > Data/ctr.log
