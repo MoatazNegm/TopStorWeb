@@ -38,7 +38,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item ref" href="#" id="changepassword">Change Password</a>
-                    <a class="dropdown-item" href="login.html">Logout</a>
+                    <a class="dropdown-item ref" href="#" id="Login">Logout</a>
                 </div>
             </li>
         </ul>
@@ -271,6 +271,9 @@
         </div>
     </div>
 </main>
+<form id="Loginref" action="Login.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
 <form id="changepasswordref" action="changepassword.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
@@ -707,9 +710,20 @@
 		$("#close-success").click(function() { $(".bg-success").hide(); });
 		function voldel() {   $.post("./pump.php", { req:"VolumeDelete"+prot, name:$("#Pool2"+prot+" option:selected").val()+" "+arguments[0]+" "+prot+" "+"<?php echo $_SESSION["user"]; ?>" });   }
 $(".ref").click(function() {
-		document.getElementById($(this).attr('id')+'ref').submit();
-		 //console.log($(this).attr('id')+'ref');
-		});
+					//console.log("session before","<?php print session_id(); ?>");
+					if($(this).attr('id')=="Login")
+					{ 
+						$.post("sessionout.php",function(data){ 
+						document.getElementById('Login'+'ref').submit();
+						//console.log("session after",data);
+						});
+						//console.log("login");
+						
+					} else {
+					document.getElementById($(this).attr('id')+'ref').submit();
+					}
+		 //console.log($(this).attr('id'));
+		});	
 		SS();
 </script>
 

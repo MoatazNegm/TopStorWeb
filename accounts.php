@@ -3,7 +3,7 @@
  if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/Login.php');}
 ?>
 <html lang="en">
-<?php session_start(); ?>
+<?php ?>
     <meta charset="UTF-8">
     <title>Pilot</title>
     <!--META TAGS-->
@@ -39,7 +39,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item ref" href="#" id="changepassword">Change Password</a>
-                    <a class="dropdown-item" href="Login.php">Logout</a>
+                    <a class="dropdown-item ref" href="#" id="Login">Logout</a>
                 </div>
             </li>
         </ul>
@@ -70,7 +70,7 @@
         <div class="col-md-1 main-menu">
             <ul class="nav flex-column" role="tablist">
                 <li class="nav-item accounts">
-                    <a class="ref nav-link active" id="accounts" data-toggle="tab" href="#" role="tab">
+                    <a class="ref nav-link ref active" id="accounts" data-toggle="tab" href="#" role="tab">
                         <div></div>
                         Accounts</a>
                 </li>
@@ -308,6 +308,9 @@
         </div>
     </div>
 </div>
+<form id="Loginref" action="Login.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
 <form id="changepasswordref" action="changepassword.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
@@ -328,6 +331,8 @@
 </form>
 <form id="configref" action="config.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+
+</form>
 
 <!--JAVA SCRIPT-->
 <!--JQUERY SCROPT-->
@@ -357,8 +362,19 @@
 			var proptimenew="33:333:33";
 			var DNS=1;
 				$(".ref").click(function() {
-		document.getElementById($(this).attr('id')+'ref').submit();
-		 //console.log($(this).attr('id')+'ref');
+					console.log("session before","<?php print session_id(); ?>");
+					if($(this).attr('id')=="Login")
+					{ 
+						$.post("sessionout.php",function(data){ 
+						document.getElementById('Login'+'ref').submit();
+						console.log("session after",data);
+						});
+						//console.log("login");
+						
+					} else {
+					document.getElementById($(this).attr('id')+'ref').submit();
+					}
+		 //console.log($(this).attr('id'));
 		});
 		function SS(){ 
 				

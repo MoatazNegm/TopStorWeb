@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -23,7 +24,7 @@
 <body>
 
 <main>
-<?php   session_start();  session_commit(); ?>
+<?php   session_destroy(); session_start();  session_commit(); ?>
     <nav class="navbar">
         <div class="col-md-12">
             <a class="navbar-brand" href="index.html"><img src="assets/images/logo.png"></a>

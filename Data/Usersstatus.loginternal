@@ -1,1 +1,2 @@
-userdel: zizo home directory (/p1/zizo) not found
+usermod: user 'admin' does not exist
+Failed to add entry for user admin.
