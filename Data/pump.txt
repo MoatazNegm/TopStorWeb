@@ -1,9 +1,1 @@
-<<<<<<< HEAD
-GetPoolVollist a
-=======
-<<<<<<< HEAD
 HostgetIPs a
-=======
-DGsetPool addcache admin dhcp15666 scsi-36001405cb34e6b2b0764d3fb0780b910
->>>>>>> 3d6d05e0996a1b8a628291f2c99b56c989e8786e
->>>>>>> 70e960eba27d936f696c4547d14fe95b6c2491f3

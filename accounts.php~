@@ -227,8 +227,12 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-2 col-form-label">IP Address</label>
-                            <div class="col-5">
+                            <div class="col-2">
                                 <input id="IPAddress" class="form-control ip_address" type="text"  placeholder="xxx.xxx.xxx.xxx">
+                            </div>
+                            <label class="col-1 col-form-label">Subnet</label>
+                            <div class="col-2">
+                                <input class="form-control" type="number" id="Subnet" min="0" max="30" >
                             </div>
                         </div>
                         <div class="form-group row">
@@ -366,7 +370,7 @@
 					if($(this).attr('id')=="Login")
 					{ 
 						$.post("sessionout.php",function(data){ 
-						//document.getElementById('Login'+'ref').submit();
+						document.getElementById('Login'+'ref').submit();
 						console.log("session after",data);
 						});
 						//console.log("login");
@@ -444,6 +448,7 @@
 						var jdata=jQuery.parseJSON(data);
 						$("#BoxName").val(jdata.name); $("#IPAddress").val(jdata.addr); $("#Gateway").val(jdata.rout);
 						$("#DNS").val(jdata.dns);
+						$("Subnet").val(jdata.subnet);
 						
 						proptime=proptimenew;
 						refresherprop=refresherprop-1;
@@ -664,7 +669,7 @@
 			});
 			$("#DNSsubmit").click(function (){ 
 				//$("form").validator("validate");
-						$.post("./pump.php", { req:"HostManualconfig", name:$("#BoxName").val()+" "+$("#IPAddress").val()+" "+$("#Gateway").val()+" "+$("#DNS").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+						$.post("./pump.php", { req:"HostManualconfig", name:$("#BoxName").val()+" "+$("#IPAddress").val()+" "+$("#Gateway").val()+" "+$("#DNS").val()+" "+$("#Subnet").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 						setTimeout(function(){ refresherprop=4},3000);					
 						
 						
