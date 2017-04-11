@@ -1,1 +1,1 @@
-UnixListUsers a
+GenPatch config1 admin
