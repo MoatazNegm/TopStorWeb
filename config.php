@@ -319,7 +319,7 @@ fclose($myfile);
                     </form>
                 </div>
                 <div class="tab-pane " id="firmware" role="tabpanel">
-                    <div class="dropzone upload-drop-zone clickthis" id="drop-zone">
+                    <div class=" upload-drop-zone clickthis" id="drop-zone">
                     	
 								<div class=" col-sm-12" id="previews">
 							
@@ -633,7 +633,7 @@ SS();
 			var droppls = new Dropzone("#drop-zone",{ url: "upload.php",
 			previewsContainer: '#previews',
 			uploadMultiple: false,
-			maxFilesize: 5,
+			maxFilesize: 500,
 			clickable: ".clickthis"
 			});
 			droppls.on("success", function(file,msg) { 
