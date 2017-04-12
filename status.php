@@ -367,7 +367,7 @@
 			};
 			
 			$.ajax({
-				url : "Data/msgs.txt",
+				url : "msgs.txt",
 				dataType: "text",
 				success : function (data) {
 					

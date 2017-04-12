@@ -6,8 +6,8 @@
  fclose($myfile); 
  $msgcode = array_shift($msgformat); 
  print $msgcode;
- $myfile = fopen("Data/msgs.txt","r");
- $msglinesall = fread($myfile,filesize("Data/msgs.txt"));
+ $myfile = fopen("msgs.txt","r");
+ $msglinesall = fread($myfile,filesize("msgs.txt"));
  fclose($myfile); 
  $msglines = explode("\n",$msglinesall);
 # $msglines = array_reverse($msglines);
