@@ -1,1 +1,1 @@
-[{"host":"Abdobox","uPool":"p1","class":"Abdobox_p1","Pool":"Abdobox:p1"}]
+[{"host":"Abdobox","uPool":"p1","class":"Abdobox_p1","Pool":"Abdobox:p1","name":"fw","volsize":"4096","volact":"0.039062","available":"4095.9","useddata":"0.09375","usedsnaps":"0","crdate":"12-Apr-2017","compress":"1.00x","dedup":"on","quota":"4096","protocol":"CIFS"}]
