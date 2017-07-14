@@ -1,1 +1,1 @@
-GenPatch config1 admin
+fixchart

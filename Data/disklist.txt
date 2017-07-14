@@ -1,1 +1,1 @@
-[{"id":"1","name":"scsi-360014059b14d75e6de347848247c5f8b","host":"dhcp2886","pool":"p1","size":"8","grouptype":"stripe","poolsize":"7.69","InGroupDisk1":"notavailable","InGroupDisk2":"notavailable"}]
+[{"id":"1","name":"scsi-360014054c8039aa1c694673ac5536d23","host":"dhcp10859","pool":"p1","size":"8","grouptype":"stripe","poolsize":"7.66","InGroupDisk1":"notavailable","InGroupDisk2":"notavailable"}]

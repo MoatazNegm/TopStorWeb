@@ -1,0 +1,20 @@
+20170602 13:18:29 I-V4.1.0-1 Beginning execution on dhcp10859...
+20170602 13:18:29 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
+20170602 13:18:29 W-If somewhere else, move it or define in collectl.conf
+20170602 13:18:29 I-First log rollover will be: 20170603 00:00:00
+20170602 13:18:29 I-Waiting 433031 usecs for time alignment
+20170602 13:18:40 F-Error: a daemonized collectl already running
+20170602 13:21:11 I-V4.1.0-1 Beginning execution on dhcp10859...
+20170602 13:21:11 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
+20170602 13:21:11 W-If somewhere else, move it or define in collectl.conf
+20170602 13:21:11 I-First log rollover will be: 20170603 00:00:00
+20170602 13:21:11 I-Waiting 8145547 usecs for time alignment
+20170602 13:21:22 F-Error: a daemonized collectl already running
+20170602 13:21:22 F-Error: a daemonized collectl already running
+20170602 15:35:41 I-V4.1.0-1 Beginning execution on dhcp10859...
+20170602 15:35:41 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
+20170602 15:35:41 W-If somewhere else, move it or define in collectl.conf
+20170602 15:35:41 I-First log rollover will be: 20170603 00:00:00
+20170602 15:35:41 I-Waiting 8055571 usecs for time alignment
+20170602 15:35:59 F-Error: a daemonized collectl already running
+20170602 15:35:59 F-Error: a daemonized collectl already running

@@ -20,14 +20,17 @@
     <link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <link href="assets/js/chartist-js-develop/dist/chartist.min.css" rel="stylesheet" type="text/css">
+    
     	<link rel="stylesheet" href="css/jquery.jqplot.css">
-   
+   	
 		
 
     <!--CUSTOME CSS-->
     <link href="assets/css/main.css" rel="stylesheet" type="text/css">
    
 </head>
+
+
 <body>
 <!--NAVBAR-->
 <nav class="navbar">
@@ -118,6 +121,11 @@
                                 <div></div>
                                 <span>Logs</span></a>
                         </li>
+								<li class="nav-item netserv">
+                            <a class="nav-link " data-toggle="tab" href="#netserv" role="tab">
+                                <div></div>
+                                <span>Detailed services</span></a>
+                        </li>                    
                     </ul>
                 </div>
             </div>
@@ -229,6 +237,10 @@
                         </div>
                     </div>
                 </div>
+					 <div class="tab-pane " id="netserv" role="tabpanel">
+					 <iframe frameborder="0" src="/netdata/index2.html" style="width: 100%; height: 60rem"> </iframe>
+     				    
+                </div>            
             </div>
         </div>
     </div>
