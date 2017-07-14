@@ -238,7 +238,7 @@
                     </div>
                 </div>
 					 <div class="tab-pane " id="netserv" role="tabpanel">
-					 <iframe frameborder="0" src="/netdata/index2.html" style="width: 100%; height: 60rem"> </iframe>
+					 <iframe frameborder="0" src="/netdata/index.html" style="width: 100%; height: 60rem"> </iframe>
      				    
                 </div>            
             </div>
