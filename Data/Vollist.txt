@@ -1,1 +1,1 @@
-[{"host":"dhcp10859","uPool":"p1","class":"dhcp10859_p1","Pool":"dhcp10859:p1","name":"nfSystem","volsize":"9216","volact":"0.039062","available":"7840","useddata":"0.09375","usedsnaps":"0","crdate":"17-Apr-2017","compress":"1.00x","dedup":"on","quota":"9216","protocol":"NFS"}]
+]

@@ -1,5 +1,5 @@
 <div class="row Logs dialogbox"> 
-
+<?php include "/usr/share/netdata/web/index.html" ?>
 
 							<div class=" col-sm-offset-- col-sm-12" >
 								<div class="boxx statusbox colorize" Data-tag=".statusbox" Data-id="statusbox" id="Popuplog">

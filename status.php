@@ -21,7 +21,6 @@
 
     <link href="assets/js/chartist-js-develop/dist/chartist.min.css" rel="stylesheet" type="text/css">
     
-    	<link rel="stylesheet" href="css/jquery.jqplot.css">
    	
 		
 
@@ -112,7 +111,7 @@
                 <div class="tab-pane active" id="status" role="tabpanel">
                     <ul class="nav flex-column" role="tablist">
                         <li class="nav-item servicestatus">
-                            <a class="nav-link active" data-toggle="tab" href="#servicestatus" role="tab">
+                            <a id="sstatus" class="nav-link active" data-toggle="tab" href="#servicestatus" role="tab">
                                 <div></div>
                                 <span>Service Status</span></a>
                         </li>
@@ -121,11 +120,6 @@
                                 <div></div>
                                 <span>Logs</span></a>
                         </li>
-								<li class="nav-item netserv">
-                            <a class="nav-link " data-toggle="tab" href="#netserv" role="tab">
-                                <div></div>
-                                <span>Detailed services</span></a>
-                        </li>                    
                     </ul>
                 </div>
             </div>
@@ -133,53 +127,8 @@
         <div class="col-md-9 main-content">
             <div class="tab-content">
                 <div class="tab-pane active" id="servicestatus" role="tabpanel">
-                    <form class="dr-form">
-                        <div class="form-group row">
-                            <label class="col-2 col-form-label">Select date</label>
-                            <div class="col-4">
-                                <input id="dater2" class="form-control" type="datetime-local">
-                            </div>
-                            <p class="col-3 col-form-label">System Monitor</p>
-                        </div>
-                    </form>
-                    <div class="row ">
-                    	 <div class="demo-container">
-                        <div class="demo-placeholder" id="CPU"></div>
-                        <h1>CPU Utilization</h1>
-                      </div>
-                    </div>
-                     <div class="row ">
-                    	 <div class="demo-container">
-                        <div class="demo-placeholder" id="MEM"></div>
-                        <h1>Memory Utilization</h1>
-                      </div>
-                    </div>
-                     <div class="row ">
-                    	 <div class="demo-container">
-                        <div class="demo-placeholder" id="NET"></div>
-                        <h1>Network Throughput</h1>
-                      </div>
-                    </div>
-                     <div class="row ">
-                    	 <div class="demo-container">
-                        <div class="demo-placeholder" id="DIO"></div>
-                        <h1>Storage I/O per second </h1>
-                      </div>
-                    </div>
-                     <div class="row ">
-                    	 <div class="demo-container">
-                        <div class="demo-placeholder" id="DTH"></div>
-                        <h1>Storage Throughput K Byte per second </h1>
-                      </div>
-                    </div>
-                     <div class="row ">
-                    	 <div class="demo-container">
-                        <div class="demo-placeholder" id="DRP"></div>
-                        <h1>Storage read percentage of I/O request per second</h1>
-                      </div>
-                    </div>
-                   
-                   
+		<?php include "netdata/demo.html" ?>
+
                 </div>
                 <div class="tab-pane " id="Logspanel" role="tabpanel">
                     <form class="dr-form">
@@ -237,10 +186,6 @@
                         </div>
                     </div>
                 </div>
-					 <div class="tab-pane " id="netserv" role="tabpanel">
-					 <iframe frameborder="0" src="/netdata/index.html" style="width: 100%; height: 60rem"> </iframe>
-     				    
-                </div>            
             </div>
         </div>
     </div>
@@ -281,9 +226,6 @@
 //script src="assets/js/chartist-js-develop/dist/chartist.min.js"></script>
 
 <script src="assets/js/dropzen.js"></script>
-<script src='js/jquery.jqplot.min.js'></script>
-<script src='js/excanvas.min.js'></script>
-<script src="js/jqplot.dateAxisRenderer.min.js"></script>
 <script src="assets/js/main.js"></script>
 
 <!--CUSTOM JS-->
@@ -320,6 +262,7 @@
 			var activepage=0; var lastpage=-1;
 			
 			$(".bg-success").show();$(".bg-danger").hide();$(".bg-warning").hide();
+ $("#sstatus").click(function(){ NETDATA.unpause(); });
 	$(".ref").click(function() {
 					//console.log("session before","<?php print session_id(); ?>");
 					if($(this).attr('id')=="Login")
@@ -409,27 +352,6 @@
 					});
 				}
 			};
-//		var plot1 = $.jqplot('chart1',dl);
-//			$("#Stimec").timepicker({
-//					appendWidgetTo: 'body',
-//					minuteStep: 1,
-//					showMeridian: false,
-//			});
-
-//			$("#Stime").timepicker({
-//								appendWidgetTo: 'body',
-//               minuteStep: 1,
-//								showMeridian: false,
-//			});
-//			$('.input-daterange').datepicker({
-//				format: "mm/dd/yyyy",
-//				weekStart: 6,
-//				startDate: "1/1/2014",
-//				todayBtn: "linked",
-//				keyboardNavigation: false,
-//				autoclose: true,
-//				todayHighlight: true
-//			});
 			$(".SS").hide(); $(".Logs").hide(); $(".finish").hide();
 			$("#dater2").change(function(){
 				$("#nothing").text("Please wait"); $("#found").hide();
@@ -690,45 +612,6 @@
 		
 	}
 }
-	function drawnow(name,title,miny,maxy,series) {
-  // we have an empty data array here, but use the "dataRenderer"
-  // option to tell the plot to get data from our renderer.
-	if(plotflag[series] > 0) { plots[series].destroy();
-	} else { plotflag[series] = 1; }
-			   plots[series] = $.jqplot(name,[plotpls[series]],{
-				  title: title,
-				  seriesDefaults: {
-							  rendererOptions: {
-								  smooth: true
-							  },
-							  showMarker: false,
-				   },
-				  axesDefaults: {
-					rendererOptions: {
-								baselineWidth: 1.5,
-								baselineColor: '#444444',
-								drawBaseline: false
-							},
-						
-					},
-				  axes:{
-					xaxis:{
-						renderer:$.jqplot.DateAxisRenderer,
-						  tickOptions:{formatString:'%H:%M:%S'},
-						  tickInterval:'60 second'
-						},
-					yaxis: {
-						min: miny,
-						max: maxy,
-						 
-						},
-					}	
-					
-			  });
-				
-	}
-	
-	
 	
 	
 	function updatelogarea(){
