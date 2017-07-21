@@ -1,97 +1,141 @@
 <script>  var netdataNoBootstrap = true;</script>
 <script type="text/javascript" src="dashboard.js?v20170105-7"></script>
-<div class="col-sm-3">
-<div style="text-align: center;">
-    <div data-netdata="netdata.server_cpu"
+<div class ="netdata-chart-row" style="text-align: left;">
+<div  style="margin-left: 2rem; border-radius: 20px; border:1px solid #f6f5f3 ;display: inline-block;" 
+     class="netdatai-container-easypiechart"  
+            data-netdata="system.io"
+	    data-chart-library="easypiechart"
+            data-width="11%"
+	    data-before="0"
+	    data-dimensions="in"
+            data-after="-360"
+            data-points="360"
+            data-title="Disk Read"
+            data-colors="#FF5555"
+	    role="application"
+             >
+</div>
+<div  style="margin-left: 1rem; border-radius: 20px; border:1px solid #f6f5f3 ;display: inline-block;" 
+     class="netdatai-container-easypiechart"  
+            data-netdata="system.io"
+	    data-chart-library="easypiechart"
+            data-width="11%"
+	    data-before="0"
+	    data-dimensions="out"
+            data-after="-360"
+            data-points="360"
+            data-title="Disk write"
+            data-colors="#FF5555"
+	    role="application"
+             >
+</div>
+<div  style="margin-left: 1rem; border-radius: 20px; border:1px solid #f6f5f3 ;display: inline-block;" 
+     class="netdatai-container-gauge"  
+            data-netdata="netdata.server_cpu"
             data-chart-library="gauge"
-            data-width="100%"
+            data-width="20%"
             data-after="-60"
             data-points="60"
             data-title="CPU"
             data-units="%"
             data-colors="#FF5555"
-            ></div>
-    <br/>
-    <div data-netdata="netdata.server_cpu"
-            data-chart-library="dygraph"
-            data-dygraph-theme="sparkline"
-            data-width="100%"
-            data-height="30px"
-            data-after="-60"
-            data-points="60"
-            data-colors="#FF5555"
-            ></div>
-    </div>
+            >
 </div>
-<div class="col-sm-3">
-<div style="text-align: center;">
-    <div data-netdata="netdata.plugin_proc_modules"
-            data-dimensions="meminfo"
+<div  style="margin-left: 1rem; border-radius: 20px; border:1px solid #f6f5f3 ;display: inline-block;" 
+     class="netdatai-container-gauge"  
+            data-netdata="system.ram"
             data-chart-library="gauge"
-            data-width="100%"
+	    data-dimensions="used|buffers|active|wired"
+            data-width="20%"
             data-after="-60"
             data-points="60"
-            data-title="DiskIOs"
-            data-units="iops"
+            data-title="Used RAM"
+	    data-append-options="percentage"
+            data-units="%"
             data-colors="#FF5555"
-            ></div>
-    <br/>
-    <div data-netdata="netdata.server_cpu"
-            data-dimensions="system"
-            data-chart-library="dygraph"
-            data-dygraph-theme="sparkline"
-            data-width="100%"
-            data-height="30px"
-            data-after="-60"
-            data-points="60"
-            data-colors="#FF5555"
-            ></div>
-    </div>
+            >
 </div>
-<div class="col-sm-2">
-<div style="text-align: center;">
-    <div data-netdata="netdata.server_cpu"
-            data-chart-library="gauge"
-            data-width="100%"
-            data-after="-60"
-            data-points="60"
-            data-title="DiskIOs"
-            data-units="iops"
+<div  style="margin-left: 1rem; border-radius: 20px; border:1px solid #f6f5f3 ;display: inline-block;" 
+     class="netdatai-container-easypiechart"  
+            data-netdata="system.ipv4"
+	    data-chart-library="easypiechart"
+            data-width="11%"
+	    data-before="0"
+	    data-dimensions="received"
+            data-after="-360"
+            data-points="360"
+            data-title="IPv4 Inbound"
             data-colors="#FF5555"
-            ></div>
-    <br/>
-    <div data-netdata="netdata.server_cpu"
-            data-chart-library="dygraph"
-            data-dygraph-theme="sparkline"
-            data-width="100%"
-            data-height="30px"
-            data-after="-60"
-            data-points="60"
-            data-colors="#FF5555"
-            ></div>
-    </div>
+	    role="application"
+             >
 </div>
-
-<div class="col-sm-2">
-<div style="text-align: center;">
-    <div data-netdata="netdata.server_cpu"
-            data-chart-library="gauge"
-            data-width="100%"
-            data-after="-60"
-            data-points="60"
-            data-title="DiskIOs"
-            data-units="iops"
+<div  style="margin-left: 1rem; border-radius: 20px; border:1px solid #f6f5f3 ;display: inline-block;" 
+     class="netdatai-container-easypiechart"  
+            data-netdata="system.ipv4"
+	    data-chart-library="easypiechart"
+            data-width="11%"
+	    data-before="0"
+	    data-dimensions="sent"
+            data-after="-360"
+            data-points="360"
+            data-title="IPv4 Outbound"
             data-colors="#FF5555"
-            ></div>
-    <br/>
-    <div data-netdata="netdata.server_cpu"
+	    role="application"
+             >
+</div>
+<br/>
+<div  style="margin-left: 4rem; border-radius: 20px; border:1px solid #f6f5f3 ;display: inline-block;" 
+     class="netdata-container"  
+            data-netdata="system.load"
             data-chart-library="dygraph"
-            data-dygraph-theme="sparkline"
-            data-width="100%"
-            data-height="30px"
-            data-after="-60"
-            data-points="60"
-            data-colors="#FF5555"
-            ></div>
+            data-width="86.7%"
+	    data-height="50px"
+            data-after="-360"
+	    data-colors role="application"
+            >
+</div>
+<br/>
+<div  style="margin-left: 4rem; border-radius: 20px; border:1px solid #f6f5f3 ;display: inline-block;" 
+     class="netdata-container"  
+            data-netdata="system.cpu"
+            data-chart-library="dygraph"
+            data-width="86.7%"
+	    data-height="50px"
+            data-after="-360"
+	    data-colors role="application"
+            >
+</div>
+<br/>
+<div  style="margin-left: 4rem; border-radius: 20px; border:1px solid #f6f5f3 ;display: inline-block;" 
+     class="netdata-container"  
+            data-netdata="system.io"
+            data-chart-library="dygraph"
+            data-width="86.7%"
+	    data-height="50px"
+            data-after="-360"
+	    data-colors role="application"
+            >
+</div>
+<br/>
+<div  style="margin-left: 4rem; border-radius: 20px; border:1px solid #f6f5f3 ;display: inline-block;" 
+     class="netdata-container"  
+            data-netdata="system.ram"
+            data-chart-library="dygraph"
+            data-width="86.7%"
+	    data-height="50px"
+            data-after="-360"
+	    data-colors role="application"
+            >
+</div>
+<br/>
+<div  style="margin-left: 4rem; border-radius: 20px; border:1px solid #f6f5f3 ;display: inline-block;" 
+     class="netdata-container"  
+            data-netdata="system.ipv4"
+            data-chart-library="dygraph"
+            data-width="86.7%"
+	    data-height="50px"
+            data-after="-360"
+	    data-colors role="application"
+            >
 </div>
 </div>

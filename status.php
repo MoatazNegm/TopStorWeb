@@ -731,6 +731,7 @@ $("#Disks").change(function(){
 		 topresentlog();
 		 		$("#close-success").click(function() { $(".bg-success").hide(); });
 		SS();
+$(".netdata-chart-row").click(function(){ NETDATA.start(); });
 		</script>
 	<!-----	<script src="assets/js/main.js"></script>
 ----->

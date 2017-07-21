@@ -5834,7 +5834,7 @@ var NETDATA = window.NETDATA || {};
         state.element_chart.appendChild(state.gaugeChartLabel);
 
         var titlefontsize = Math.round(valuefontsize / 2);
-        var titletop = 0;
+        var titletop = 10;
         state.gaugeChartTitle = document.createElement('span');
         state.gaugeChartTitle.className = 'gaugeChartTitle';
         state.gaugeChartTitle.innerText = state.title;

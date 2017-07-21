@@ -5477,6 +5477,7 @@ var NETDATA = window.NETDATA || {};
 
         var titlefontsize = Math.round(valuefontsize * 1.6 / 3);
         var titletop = Math.round(valuetop - (titlefontsize * 2) - (size / 40));
+	titletop=10
         state.easyPieChartTitle = document.createElement('span');
         state.easyPieChartTitle.className = 'easyPieChartTitle';
         state.easyPieChartTitle.innerText = state.title;
