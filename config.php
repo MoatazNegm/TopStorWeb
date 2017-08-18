@@ -319,6 +319,11 @@ fclose($myfile);
                     </form>
                 </div>
                 <div class="tab-pane " id="firmware" role="tabpanel">
+                	  <div class="firmwarestatus">
+                	  <div class="form-group row" style="margin-left: 1rem;"><label class="col-5 ">Software version:</label><strong id="soft">hi</strong></div>
+                	  <div class="form-group row" style="margin-left: 1rem;"><label class="col-4 ">Available versions:</label><div class="col-3"><select size="3" id="softs" class="form-control"></select></div></div>
+                	  <div class="form-group row" style="margin-left: 1rem;"><button type="button"  class="btn btn-submit offset-4 col-3">Submit</button></div>
+                	  </div>
                     <div class=" upload-drop-zone clickthis" id="drop-zone">
                     	
 								<div class=" col-sm-12" id="previews">
@@ -328,7 +333,7 @@ fclose($myfile);
 
 
                     </div>
-                    <button type="button"  class="btn btn-submit col-3">Submit</button>
+                    
                 </div>
             </div>
         </div>
@@ -651,6 +656,17 @@ SS();
 				$("div.dz-message").text("Problem uploading the file");
 				$(".dz-success-mark").hide();$(".dz-error-mark").show();
 				
+			});
+			$.get("requestversion.php", { file: 'Data/userpriv.txt' }, function(data){ 
+							 ggdata=data;
+							 $("#soft").text(data)
+			});
+			$.get("requestversionall.php", { file: 'Data/userpriv.txt' }, function(data){ 
+							var seloption ="";
+							var ggdata=data.split(',');
+							$.each(ggdata,function(i){ seloption +='<option value="'+ggdata[i]+'">'+ggdata[i]+'</option>'});
+							$("#softs").append(seloption);
+							 console.log("gdataall ",data)
 			});
 			$("#close-success").click(function() { $(".bg-success").hide(); });
 			SS();
