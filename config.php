@@ -320,10 +320,9 @@ fclose($myfile);
                 </div>
                 <div class="tab-pane " id="firmware" role="tabpanel">
                 	  <div class="firmwarestatus">
-                	  <div style="display: block;"><label class="col-6 ">Software version:</label><strong id="soft">hi</strong></div>
-                	  <label class="col-6 "style="display: block;">Partner type</label>
-                	  <label class="col-6 "style="display: block;">Partner type</label>
-                	  <button type="button"  class="btn btn-submit col-3">Submit</button>
+                	  <div class="form-group row" style="margin-left: 1rem;"><label class="col-5 ">Software version:</label><strong id="soft">hi</strong></div>
+                	  <div class="form-group row" style="margin-left: 1rem;"><label class="col-4 ">Available versions:</label><div class="col-3"><select size="3" id="softs" class="form-control"></select></div></div>
+                	  <div class="form-group row" style="margin-left: 1rem;"><button type="button"  class="btn btn-submit offset-4 col-3">Submit</button></div>
                 	  </div>
                     <div class=" upload-drop-zone clickthis" id="drop-zone">
                     	
@@ -660,7 +659,14 @@ SS();
 			});
 			$.get("requestversion.php", { file: 'Data/userpriv.txt' }, function(data){ 
 							 ggdata=data;
-							 console.log("gdata ",data)
+							 $("#soft").text(data)
+			});
+			$.get("requestversionall.php", { file: 'Data/userpriv.txt' }, function(data){ 
+							var seloption ="";
+							var ggdata=data.split(',');
+							$.each(ggdata,function(i){ seloption +='<option value="'+ggdata[i]+'">'+ggdata[i]+'</option>'});
+							$("#softs").append(seloption);
+							 console.log("gdataall ",data)
 			});
 			$("#close-success").click(function() { $(".bg-success").hide(); });
 			SS();
