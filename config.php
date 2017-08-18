@@ -319,6 +319,12 @@ fclose($myfile);
                     </form>
                 </div>
                 <div class="tab-pane " id="firmware" role="tabpanel">
+                	  <div class="firmwarestatus">
+                	  <div style="display: block;"><label class="col-6 ">Software version:</label><strong id="soft">hi</strong></div>
+                	  <label class="col-6 "style="display: block;">Partner type</label>
+                	  <label class="col-6 "style="display: block;">Partner type</label>
+                	  <button type="button"  class="btn btn-submit col-3">Submit</button>
+                	  </div>
                     <div class=" upload-drop-zone clickthis" id="drop-zone">
                     	
 								<div class=" col-sm-12" id="previews">
@@ -328,7 +334,7 @@ fclose($myfile);
 
 
                     </div>
-                    <button type="button"  class="btn btn-submit col-3">Submit</button>
+                    
                 </div>
             </div>
         </div>
@@ -651,6 +657,10 @@ SS();
 				$("div.dz-message").text("Problem uploading the file");
 				$(".dz-success-mark").hide();$(".dz-error-mark").show();
 				
+			});
+			$.get("requestversion.php", { file: 'Data/userpriv.txt' }, function(data){ 
+							 ggdata=data;
+							 console.log("gdata ",data)
 			});
 			$("#close-success").click(function() { $(".bg-success").hide(); });
 			SS();
