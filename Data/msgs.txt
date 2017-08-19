@@ -229,7 +229,7 @@ Replica1053: : : Adding proxy license : this device ......
 Replica1054: : : Success adding proxy license : for proxy : 
 Replica1055: : : Adding Alias : for this device ......
 Replica1056: : : Success adding Alias : to this device
-Upsa1010: : : Start updating from version : to version :
+Upsa1010: : : Start updating fromm version : to version :
 Upnv1010: : : Update file is not valid
 Upfa1010: : : Failed updating from version : to version :
 Upsu1010: : : Success updating from version : to version :
