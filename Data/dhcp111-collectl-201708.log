@@ -15,3 +15,20 @@
 20170818 19:11:35 I-First log rollover will be: 20170819 00:00:00
 20170818 19:11:35 I-Waiting 4376772 usecs for time alignment
 20170818 19:11:47 F-Error: a daemonized collectl already running
+20170819 03:13:23 I-V4.1.0-1 Beginning execution on dhcp111...
+20170819 03:13:23 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
+20170819 03:13:23 W-If somewhere else, move it or define in collectl.conf
+20170819 03:13:23 I-First log rollover will be: 20170820 00:00:00
+20170819 03:13:23 I-Waiting 6618032 usecs for time alignment
+20170820 12:45:22 I-V4.1.0-1 Beginning execution on dhcp111...
+20170820 12:45:22 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
+20170820 12:45:22 W-If somewhere else, move it or define in collectl.conf
+20170820 12:45:22 I-First log rollover will be: 20170821 00:00:00
+20170820 12:45:22 I-Waiting 7047225 usecs for time alignment
+20170820 12:45:36 F-Error: a daemonized collectl already running
+20170820 13:49:34 I-V4.1.0-1 Beginning execution on dhcp111...
+20170820 13:49:34 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
+20170820 13:49:34 W-If somewhere else, move it or define in collectl.conf
+20170820 13:49:34 I-First log rollover will be: 20170821 00:00:00
+20170820 13:49:35 I-Waiting 4984683 usecs for time alignment
+20170820 13:49:47 F-Error: a daemonized collectl already running
