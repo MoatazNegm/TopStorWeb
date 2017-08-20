@@ -664,7 +664,7 @@ SS();
 			$.get("requestversionall.php", { file: 'Data/userpriv.txt' }, function(data){ 
 							var seloption ="";
 							var ggdata=data.split(',');
-							$.each(ggdata,function(i){ seloption +='<option value="'+ggdata[i]+'">'+ggdata[i]+'</option>'});
+							$.each(ggdata,function(i){ if(ggdata[i] !="") seloption ='<option value="'+ggdata[i]+'">'+ggdata[i]+'</option>'+seloption});
 							$("#softs").append(seloption);
 							 console.log("gdataall ",data)
 			});
