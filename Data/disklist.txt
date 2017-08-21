@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 ]
+=======
+[{"id":"1","name":"scsi-36001405366721eb657745f3a7be566dd","host":"dhcp111","pool":"p1","size":"8","grouptype":"stripe","poolsize":"7.69","InGroupDisk1":"notavailable","InGroupDisk2":"notavailable"}]
+>>>>>>> 97ca8c743696305f4c078f11e3a63c3b543e6342
