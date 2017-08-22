@@ -230,6 +230,7 @@ Replica1054: : : Success adding proxy license : for proxy :
 Replica1055: : : Adding Alias : for this device ......
 Replica1056: : : Success adding Alias : to this device
 Upsa1010: : : Start updating from version : to version :
+Upfe1010: : : Fetching new firmware from QuickStor
 Upnv1010: : : Update file is not valid
 Upfa1010: : : Failed updating from version : to version :
 Upsu1010: : : Success updating from version : to version :
