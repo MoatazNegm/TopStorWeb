@@ -600,7 +600,7 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
 div.btn-submit { margin-top: 0; }
 .NotComplete { background: lightyellow; border: 1px solid red;}
 .NotComplete:focus { background: lightyellow; border: 1px solid red;}
-.upload-drop-zone { height: 30rem; border-width: 2px ; margin-bottom: 1rem; }
+.upload-drop-zone { height: 10rem; border-width: 2px ; margin-bottom: 1rem; }
 .upload-drop-zone { width: 80%; color: #ccc; border-style: dashed; border-color: #ccc; line-height: 3rem; text-align: center } 
 .upload-drop-zone.drop { color: #222; border-color: #222; }
 span { text-align: center;}

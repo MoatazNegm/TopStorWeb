@@ -320,11 +320,16 @@ fclose($myfile);
                 </div>
                 <div class="tab-pane " id="firmware" role="tabpanel">
                 	  <div class="firmwarestatus">
-                	  <div class="form-group row" style="margin-left: 1rem;"><label class="col-5 ">Software version:</label><strong id="soft">hi</strong></div>
-                	  <div class="form-group row" style="margin-left: 1rem;"><label class="col-4 ">Available versions:</label><div class="col-3"><select size="3" id="softs" class="form-control"></select></div></div>
-                	  <div class="form-group row" style="margin-left: 1rem;"><button type="button"  class="btn btn-submit offset-4 col-3">Submit</button></div>
+                	  <div class="form-group row" style="margin-left: 1rem;"><label class="col-6 ">Software version:</label><strong id="soft">hi</strong></div>
+                	  <div class="form-group row" style="margin-left: 1rem;"><label class="col-5 ">Available versions:</label><div class="col-3"><select size="3" id="softs" class="form-control"></select></div>
+  <button type="button" id="ApplyAvailable" class="btn btn-submit col-3" style="margin-top: 0px; cursor: pointer;">Apply</button>
+ </div>
+                	  <div class="form-group row" style="margin-left: 1rem;"><label class="col-3 ">Apply from url:</label><div class="col-5"><input id="urlapp" class="form-control" type="text"></div>
+<button type="button" id="Applyurl" class="btn btn-submit col-3" style="margin-top:0px; cursor: pointer;">Apply</button>
+</div>
+
                 	  </div>
-                    <div class=" upload-drop-zone clickthis" id="drop-zone">
+                    <div class=" upload-drop-zone clickthis" id="drop-zone"style="cursor: pointer;">
                     	
 								<div class=" col-sm-12" id="previews">
 							
@@ -670,6 +675,14 @@ SS();
 			});
 			$("#close-success").click(function() { $(".bg-success").hide(); });
 			SS();
+$("#ApplyAvailable").click(function(){
+ 
+				$.post("./pump.php", { req:"ApplyFw", name:$("#softs").val()}, function (data1){});
+});
+$("#Applyurl").click(function(){
+  console.log("Applyurl");
+				$.post("./pump.php", { req:"Applyurl", name:$("#urlapp").val()}, function (data1){});
+});
 		
 	</script>
 </body>
