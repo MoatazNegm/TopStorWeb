@@ -676,8 +676,8 @@ SS();
 			$("#close-success").click(function() { $(".bg-success").hide(); });
 			SS();
 $("#ApplyAvailable").click(function(){
+				$.post("./pump.php", { req:"ApplyFw", name:$("#urlapp").val()+" <?php echo $_SESSION["user"]; ?>"});
  
-				$.post("./pump.php", { req:"ApplyFw", name:$("#softs").val()}, function (data1){});
 });
 $("#Applyurl").click(function(){
   console.log("Applyurl");
