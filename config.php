@@ -681,7 +681,7 @@ $("#ApplyAvailable").click(function(){
 });
 $("#Applyurl").click(function(){
   console.log("Applyurl");
-				$.post("./pump.php", { req:"Applyurl", name:$("#urlapp").val()}, function (data1){});
+				$.post("./pump.php", { req:"Applyurl", name:$("#urlapp").val()+" <?php echo $_SESSION["user"]; ?>"});
 });
 		
 	</script>
