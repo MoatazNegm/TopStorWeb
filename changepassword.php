@@ -80,6 +80,12 @@
 		var passcheck="22:333:33";
 		var passchecknew="323:3443:34"
 		var passchanged=0;
+		$(document).keypress(
+			function(event){
+				if(event.which == '13') {
+					event.preventDefault();
+				}
+			});
 		function refreshall(){
 			$.get("requestdatein.php", { file: "Data/userpass.txtupdated" }, function(data){
 				var objdate = jQuery.parseJSON(data);
