@@ -478,3 +478,4 @@ td { padding: 0.1rem;}
 #lang a { color : darkred; }
 input { text-align: center; }
 .table td.tdlog { padding-top: 0.1rem; padding-bottom: 0.1rem;}
+button { cursor : pointer ; }

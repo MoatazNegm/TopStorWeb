@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 [{"id":"1","name":"scsi-3600140565f683fd28a445d1af03ec2b4","host":"dhcp20519","pool":"p1","p1":"size","8":"grouptype","stripe":"poolsize","InGroupDisk1":"notavailable","InGroupDisk2":"notavailable"}]
+=======
+[{"id":"1","name":"scsi-360014057d773f1789a144e8a47dcd719","host":"dhcp21246","pool":"free","size":"8","grouptype":"free","poolsize":"0","InGroupDisk1":"notavailable","InGroupDisk2":"notavailable"}]
+>>>>>>> dedd323d021fb876d78cff279250da497d8ccc0d
