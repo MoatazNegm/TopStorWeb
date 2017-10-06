@@ -1,1 +1,1 @@
-[{"host":"dhcp20519","uPool":"p1","class":"dhcp20519_p1","Pool":"dhcp20519:p1","name":"firmmezo","volsize":"5120","volact":"0.039062","available":"5119.9","useddata":"0.09375","usedsnaps":"0","crdate":"6-Oct-2017","compress":"1.00x","dedup":"on","quota":"5120","protocol":"CIFS"}]
+[{"host":"dhcp20519","uPool":"p1","class":"dhcp20519_p1","Pool":"dhcp20519:p1","name":"firmmezo","volsize":"5120","volact":"64.074","available":"5055.9","useddata":"64.055","usedsnaps":"0","crdate":"6-Oct-2017","compress":"1.00x","dedup":"on","quota":"5120","protocol":"CIFS"}]
