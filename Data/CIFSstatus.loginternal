@@ -1,4 +1,1 @@
-umount: /p1/wezi: target is busy.
-        (In some cases useful info about processes that use
-         the device is found by lsof(8) or fuser(1))
-cannot unmount '/p1/wezi': umount failed
+cannot create 'p1/firmmezo': dataset already exists

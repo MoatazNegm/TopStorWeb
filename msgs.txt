@@ -229,6 +229,9 @@ Replica1053: : : Adding proxy license : this device ......
 Replica1054: : : Success adding proxy license : for proxy : 
 Replica1055: : : Adding Alias : for this device ......
 Replica1056: : : Success adding Alias : to this device
+Upnu1010: : : Software Upgrade autocheck system software is latest version 
+Updo1010: : : Start downloading system software version :  
+Upfd1010: : : Finished downloading system software version :  
 Upsa1010: : : Start updating from version : to version :
 Upnv1010: : : Update file is not valid
 Upfa1010: : : Failed updating from version : to version :
