@@ -1,1 +1,1 @@
-[{"stamp":"host","dhcp20519":"dhcp20519","class":"dhcp20519","dhcp20519_":"name","pool":"onlyname","father":"creation","10/13/17":"time","00:00":"sender"}]
+[{"stamp":"host","class":"_","name":"pool","onlyname":"father","creation":"10/27/17","time":"00:00","sender":"receiver"}]

@@ -1,2 +1,2 @@
-usermod: user 'admin' does not exist
-Failed to add entry for user admin.
+userdel: mezo mail spool (/var/spool/mail/mezo) not found
+userdel: mezo home directory (/p1/mezo) not found

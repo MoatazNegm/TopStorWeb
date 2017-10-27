@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+	<?php include "header.html"; ?>
+	<body>
+
+		
+<!------------  NAV Bar --------------->
+		<div class="container-fluid">
+			<div class="row">
+				<div class="img-logo ">
+					<div class="col-sm-3">
+						<a class="pull-left logoimg" href="#">
+							<img src="img/logo2.png" height="200" width="200" class="img-responsive"> 
+						</a>
+					</div>
+					<div class="col-sm-6">
+						<h1 class="text-center maintext"><strong>Flex Storage</strong></h1>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="">
+					<div class=" col-sm-1 leftPane">
+						<ul class="nav nav-pills nav-stacked">
+							<li  ><a href="accounts.html" ><br>Accounts</a></li>
+							<li><a href="status.html"  ><br>Status</a></li>
+							<li><a href="Protocol.html" ><br>Protocol</a></li>
+							<li><a href="replication.html" ><br>replication</a></li>
+							<li class="active"><a href="Pools.html"  ><br>Pools</a></li>
+							<li><a href="config.html"  ><br>config</a></li>
+						</ul>
+					</div>
+					<div class="col-sm-11 rightPane">
+						<ul>
+							<li><a href="#" class="DiskGroupa"><h4 id="DiskGroups"><span>Disk Groups</span></h4></a></li>
+							<li><a href="#" class="SnapShotsa"><h4 id="SnapShots"><span>SnapShots</span></h4></a></li>
+						</ul>
+
+						<div class="row DiskGroups">
+							<div class=" col-sm-offset-1 col-sm-10">
+								<div class="box ">
+									<div class="row">
+									
+										<h2 class="configTitle">Active Directory</h2>
+									</div>									
+									<div class="row">
+										<div id="s" class="col-sm-offset-2 col-sm-8">
+											<ul class=" row">
+												<li id="runningdik1" class=" col-sm-1"></li>
+												<li id="runningdik1" class=" col-sm-offset-1 col-sm-1"></li>
+												<li id="runningdik1" class="col-sm-offset-1 col-sm-1"></li>
+												<li id="runningdik1" class="col-sm-offset-1 col-sm-1"></li>
+												<li id="runningdik1" class="col-sm-offset-1 col-sm-1"></li>
+												<li id="runningdik1" class="col-sm-offset-1 col-sm-1"></li>
+											</ul>
+										</div>
+									</div>
+									<form class="form-horizontal row" role="form">
+											<div class="  col-sm-offset-1 col-sm-5">
+												<div class="form-group row">
+													<table id="raidtabl" class="table table-condensed">
+														<tbody class="center-block"> <strong>raw space = 5 x 100= 500GB</strong> </tbody>
+														<th>
+															<td><strong>free space</strong></td>
+															<td><strong>Select</strong></td>
+														</th>
+														<tr>
+															<td ><strong>RAID 1</strong></td>
+															<td>200GB</td>
+															<td> 
+																<div class="">
+																	<label>
+																		<input type="radio" class="radiocontrol" name="Raidselect" id="raid1" value="raid1" checked>
+																	</label>
+																</div>
+															</td>
+														</tr>
+														<tr>
+															<td><strong>RAID 5</strong></td>
+															<td>400GB</td>
+															<td> 
+																<div class="">
+																	<label>
+																		<input type="radio" class="radiocontrol" name="Raidselect" id="raid5" value="raid5" >
+																	</label>
+																</div>
+															</td>
+														</tr>
+														<tr>
+															<td><strong>RAID 6 Enh.</strong></td>
+															<td>300GB</td>
+															<td> 
+																<div class="">
+																	<label>
+																		<input type="radio" class="radiocontrol" name="Raidselect" id="raid6" value="raid6" >
+																	</label>
+																</div>
+															</td>
+														</tr>
+													</table>
+													<div class="row">
+														<button type="button" class="btn btn-default col-sm-offset-3 col-sm-7 " data-toggle="tooltip" data-placement="top" title="submit values">Submit</button>
+													</div>
+												</div>
+											</div>
+											<div class=" col-sm-offset-1 col-sm-4">
+												<div class=" form-group row ">
+													<div id="emptydiv" class="col-sm-12 separator">
+													</div>
+													<div class=" separator col-sm-12">
+														<textarea class="form-control" rows="3"></textarea>
+													</div>
+													<div id="emptydiv" class="col-sm-12"></div>
+													<div class="row">
+														<button type="button" class="btn btn-default col-sm-offset-2 col-sm-9  finish" data-toggle="tooltip" data-placement="bottom" title="close window">Finish</button>
+													</div>
+												</div>
+											</div>
+									</form>
+								</div>	
+							</div>
+						</div>
+						
+						<div class="row SnapShots">
+							<div class=" col-sm-offset-1 col-sm-10">
+								<div class="box ">
+									<div class="row">
+										<h2 class="configTitle">Active Directory</h2>
+									</div>									
+									<form class="form-horizontal " role="form">
+										<div class="row">
+											<div class="  col-sm-7 ">
+												<div class=" form-group row">
+													<label  for="Pool" class=" col-sm-1 control-label">Pool</label>
+													<div class=" col-sm-2">
+														<select  id="Pool" class="form-control ">
+															<option>High</option><option>Low</option>
+														</select>
+													</div>
+												<label  for="Vol" class="col-sm-offset-1 col-sm-1 control-label">Volume</label>
+													<div class=" col-sm-3">
+														<select  id="Vol" class="form-control ">
+															<option>Vol1</option><option>Vol2</option>
+														</select>
+													</div>
+												<label  for="Enabled" class="col-sm-offset-1 col-sm-1 control-label">Enabled</label>
+													<div class=" col-sm-2">
+														<select  id="Enabled" class="form-control ">
+															<option>Yes</option><option>No</option>
+														</select>
+													</div>
+
+												</div>
+												<div class=" form-group row"></div>
+												<div class="form-group row">
+													<div class=" boxoffields col-sm-offset-1 col-sm-2">
+														<span>Period</span>
+														<div class="radio">
+																<label>
+																<input type="radio" name="Period" id="Once" value="Once">Once
+																</label>
+														</div>
+														<div class="radio">
+																<label>
+																	<input type="radio" name="Period" id="Hourly" value="Hourly">Hourly
+																</label>
+														</div>
+														<div class="radio">
+																<label>
+																	<input type="radio" name="Period" id="Minutely" value="Minutely">Minutely
+																</label>
+														</div>
+														<div class="radio">
+																<label>
+																	<input type="radio" name="Period" id="Weekly" value="Weekly">Weekly
+																</label>
+														</div>
+
+													</div>
+													<div class= "col-sm-offset-1 col-sm-8">
+														<div class=" form-group row " id="Onceset">
+															<label  for="DTime" class=" control-label"> Date and Time</label>
+															<div class="row">
+																<div class="col-sm-5">
+																	<input  id="DTime" class=" col-sm-2 form-control ">
+																	</input>
+																</div>
+															</div>
+															
+														</div>
+														<div id="Hourlyset">
+															<div class=" form-group row ">
+																<div class="col-sm-4">
+																	<label  for="Hour" class=" col-sm-offset-1 control-label"> Start from: </label>
+																	<input  id="STime" class="  form-control ">
+																	</input>
+																</div>
+																<div class="col-sm-3">
+																	<label  for="STime" class=" col-sm-offset-2 control-label"> Every...hours</label>
+																	<input  id="Hour" class="  form-control ">
+																	</input>
+																</div>
+															</div>
+														</div>
+														<div id="Minutelyset">
+															<div class=" form-group row ">
+																<div class="col-sm-4">
+																	<label  for="SMinute" class=" col-sm-offset-1 control-label"> Start from: </label>
+																	<input  id="SMinute" class="  form-control ">
+																	</input>
+																</div>
+																<div class="col-sm-3">
+																	<label  for="Minute" class=" col-sm-offset-2 control-label"> Every..Min</label>
+																	<input  id="Minute" class="  form-control ">
+																	</input>
+																</div>
+															</div>
+														</div>
+														<div id="Weeklyset">
+															<div class=" form-group row ">
+																<div class="col-sm-4">
+																	<label  for="SWeek" class=" col-sm-offset-1 control-label"> Start from: </label>
+																	<input  id="SWeek" class="  form-control ">
+																	</input>
+																</div>
+																<div class="col-sm-4">
+																	<label  for="Week" class=" col-sm-offset-2 control-label"> Every..Wday</label>
+																	<select  id="Week" class="  form-control ">
+																		<option>Sunday</option><option>Saturday</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+
+													</div>
+												</div>
+											</div>
+											<div class=" col-sm-5">
+												<div class=" form-group row">
+													<div id="chartCIFS" class="box2" ></div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class=" col-sm-6">
+												<div class=" form-group row">
+													<button type="button" class="btn btn-default col-sm-offset-5 col-sm-6 " data-toggle="tooltip" data-placement="bottom" title="close window">submit</button>
+												</div>
+											</div>
+											<div class=" col-sm-6">
+												<div class="form-group row ">
+														<button type="button" class="btn btn-default col-sm-offset-3 col-sm-6 finish" data-toggle="tooltip" data-placement="top" title="submit values">Finish</button>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>				
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			
+		<div class="row">
+			<footer class="footer"> Errors
+			</footer>
+		</div>
+		<script src="jquery/jquery.js"></script>
+		<script src="jquery-ui/jquery-ui.js"></script>
+		<script src="jquery/jquery.datetimepicker.js"></script>
+		<script src="Bootstrap/js/bootstrap.min.js"></script>
+		<script>
+		
+			var config = 1;
+			
+			$(".DiskGroups").hide(); $(".SnapShots").hide(); 
+			$("#DiskGroups").click(function (){ 
+				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); $(".DiskGroups").show(); };});
+			$("#SnapShots").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/snapshot.png')").text("SnapShots"); $(".SnapShots").show();};});
+			$(".finish").click(function (){ config = 1; $(".DiskGroups").hide(); $(".SnapShots").hide();});
+			$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();
+			$("#DTime").datetimepicker({step: 15});
+			$("#STime").datetimepicker({step: 15});$("#Hour").datetimepicker({ datepicker: false, format:'H'});
+			$("#SMinute").datetimepicker({step: 15});$("#Minute").datetimepicker({ datepicker: false, format:'i', step:2});
+			$("#SWeek").datetimepicker({step: 15});
+			$("#Once").change(function() {
+				$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();
+				$("#Onceset").show();
+			});
+			$("#Hourly").change(function() {
+				$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();
+				$("#Hourlyset").show();
+			});
+			$("#Minutely").change(function() {
+				$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();
+				$("#Minutelyset").show();
+			});
+			$("#Weekly").change(function() {
+				$("#Onceset").hide();$("#Hourlyset").hide();$("#Minutelyset").hide();$("#Weeklyset").hide();
+				$("#Weeklyset").show();
+			})
+			
+		</script>
+
+	</body>
+
+</html>

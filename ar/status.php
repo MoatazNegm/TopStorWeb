@@ -1,62 +1,317 @@
 <!DOCTYPE html>
-<?php session_start(); 
- if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/ar/Login.php');}
- 
-?>
-<html>
+<?php session_start();
+ if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:Login.php');}
 
-	<?php $men=2; include "header.html"; ?>
-	
-							<li><a href="#" class="SSa rightli"><h4 id="SS"><span>حالة الخدمة</span></h4></a></li>
-							<li><a href="#" class="Logsa rightli"><h4 id="Logs"><span>السجلات</span></h4></a></li>
-						</ul>
-						<?php include "SS.php" ?>
-						<?php include "Logs.php" ?>
-					</div>
-				</div>
-			
-			</div>
-			<div class="row">
-			<div id="chart1"></div>	
-			<footer class="footer"> مشكلات
-			</footer>
-		</div>
-	</div>
-	</div>
-	
-	
-		
-		<script src='../js/jquery.jqplot.min.js'></script>
-		<script src='../js/excanvas.min.js'></script>
-		<script src="../js/jqplot.dateAxisRenderer.min.js"></script>
-		<script src='../js/bootstrap-datepicker.js'></script>
-		<script src="../js/bootstrap-timepicker.js"></script>
-		
-		
+?>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>َQuickStor</title>
+    <!--META TAGS-->
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" type="image/png" href="../assets/images/Qonly.png">
+
+    <!--BOOTSTRAP CSS STYLE-->
+     <link href="../assets/css/tether.min.css" rel="stylesheet" type="text/css">
+    <link href="../assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+    <!--Font Awesome css-->
+    <link href="../assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <link href="../assets/js/chartist-js-develop/dist/chartist.min.css" rel="stylesheet" type="text/css">
+
+
+
+
+    <!--CUSTOME CSS-->
+    <link href="../assets/css/main.css" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body>
+<!--NAVBAR-->
+<nav class="navbar">
+    <!--<div class="container row">-->
+    <div class="col-md-12">
+        <a class="navbar-brand" href="index.html"><img src="../assets/images/logo.png"></a>
+        <ul class="navbar-nav pull-right">
+            <li class="nav-item dropdown user-dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span><img src="../assets/images/user-icon.png"> </span><?php echo $_SESSION["user"] ?>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item ref" href="#" id="changepassword">كلمة السر</a>
+                    <a class="dropdown-item ref" href="#" id="Login">خروج</a>
+                </div>
+            </li>
+        </ul>
+        <!--</div>-->
+    </div>
+</nav>
+<!--MESSAGES-->
+<div class="dr-messages">
+    <div class="bg-warning">
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="bg-danger">
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="bg-success"><div id="texthere"></div>
+        <button type="button" id="close-success" style="margin-top: -2.4rem" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+<!--BODY CONTENT-->
+<main class="col-md-12">
+    <div class="row">
+        <div class="col-md-1 main-menu">
+            <ul class="nav flex-column" role="tablist">
+                <li class="nav-item accounts">
+                    <a class=" ref nav-link " id="accounts" href="#" role="tab">
+                        <div></div>
+                        الحسابات</a>
+                </li>
+                <li class="nav-item status">
+                    <a class="nav-link ref active" data-toggle="tab" href="#" id="status" role="tab">
+                        <div></div>
+                        الحالة</a>
+                </li>
+                <li class="nav-item protocol">
+                    <a class="ref nav-link" id="protocol" href="#" role="tab">
+                        <div></div>
+                        لغة الاتصال</a>
+                </li>
+                <li class="nav-item replication">
+                    <a class="nav-link ref" href="#" id="replication" role="tab">
+                        <div></div>
+                        التوزيع</a>
+                </li>
+                <li class="nav-item pools">
+                    <a class="ref nav-link" id="pools" href="#" role="tab">
+                        <div></div>
+                        الحوايات</a>
+                </li>
+                <li class="nav-item config">
+                    <a class="nav-link ref" href="#" id="config" role="tab">
+                        <div></div>
+                        الإعدادات</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-2 second-menu">
+            <div class="tab-content">
+                <div class="tab-pane active" id="status" role="tabpanel">
+                    <ul class="nav flex-column" role="tablist">
+                        <li class="nav-item servicestatus">
+                            <a id="sstatus" class="nav-link active" data-toggle="tab" href="#servicestatus" role="tab">
+                                <div></div>
+                                <span>حالة الخدمات</span></a>
+                        </li>
+                        <li id="Logs" class="nav-item  logs">
+                            <a class="nav-link" data-toggle="tab" href="#Logspanel" role="tab">
+                                <div></div>
+                                <span>السجل</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 main-content">
+            <div class="tab-content">
+                <div class="tab-pane active" id="servicestatus" role="tabpanel">
+		<?php include "netdata/demo.html" ?>
+
+                </div>
+                <div class="tab-pane " id="Logspanel" role="tabpanel">
+                    <form class="dr-form">
+                        <div class="form-group row">
+                            <label class="col-1 col-form-label">التاريخ</label>
+                            <div class="col-3" style="padding-left: 0px;">
+                                <input id="dater" class="form-control form-control-sm" type="datetime-local" style="font-size: 13px;">
+                            </div>
+                            <div class="col-3 logs-check">
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input msgtype" id="INFO" type="checkbox" value="option1" checked>معلومات
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline ">
+                                    <label class="form-check-label">
+                                        <input id="Warning" class="form-check-input msgtype" type="checkbox" value="option2" checked>تحذير
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input id="Error" class="form-check-input msgtype" type="checkbox" value="option2" checked>أخطاء
+                                    </label>
+                                </div>
+                            </div>
+                            <label class="col-1 col-form-label" style="padding-right: 0px; maring-right: -2rem;">خطوط</label>
+                            <div class="col-1" style="margin-top: 0.2rem; margin-left: -2.5rem; ">
+                                <input id="lines" min="5" max="50" value="10" class="form-control form-control-sm " type="number">
+                            </div>
+                            <div class="col-2 text-right msgtype" style="margin-top: 0.4rem;">
+                                <a href="#"><img src="../assets/images/refresh.png"> </a>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row table-responsive">
+                        <table  class="col-12 table  dr-table-show">
+                            <thead>
+                            <tr class="row">
+										  <th class="text-left col-3" style="padding-left: 2rem; ">التاريخا و الوقت</th>
+                                <th class="text-center col-2">مستخدم</th>
+                                <th class="text-center col-7">تاريخ</th>
+
+                            </tr>
+                            </thead>
+                            <tbody id="Logdetails">
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row col-md-12">
+                        <div class=" text-right">
+                            <a id="pprev" href="#"><img src="../assets/images/previous.png"></a>
+                            <a id="pnext" href="#"><img src="../assets/images/next.png"> </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<form id="Loginref" action="Login.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="changepasswordref" action="changepassword.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="accountsref" action="accounts.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="statusref" action="status.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="protocolref" action="protocol.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="replicationref" action="replication.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="poolsref" action="pools.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+<form id="configref" action="config.php" method="post">
+	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+</form>
+
+<!--JAVA SCRIPT-->
+<!--JQUERY SCROPT-->
+<script src="../assets/js/jquery.min.js"></script>
+
+<!--BOOTSTRAP SCRIPT-->
+<script src="../assets/js/tether.min.js"></script>
+<script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+
+//script src="assets/js/chartist-js-develop/dist/chartist.min.js"></script>
+
+<script src="../assets/js/dropzen.js"></script>
+<script src="../assets/js/main.js"></script>
+
+<!--CUSTOM JS-->
 		<script>
 			var msgdata= "no no no";
 			var msgs="no data";
 			var datalogf = [];
 			var betweend = [];
+			var plots=[];
 			var oldSdatec="1"; var oldEdatec="2";
 			var newSdatec="3"; var newEdatec="4";
 			var datemod="";
-			var plotflag = 0;
+			var plotflag = [];
+			var requeststats = 0;
 			var config = 1;
 			var disktime="23:3434:34534";
 			var disktimenew="34543:43543:34";
-			var logtime="34543:43543:34"; var logtimenew="32423:er:34";
+			var logtime="slkdj"; var logtimenew="34543:43543:34";
 			var dl =[[[0,0]],[[0,0]]];
-			var plotbw; var plotrs; var plotws; var plotsvct; var plotqlen; var plotdl;
-			var traffictime = "55:55:55";
-			var trafficnewtime = "new 3444";
+			var plotpls=[[0,0]]; var plotrs; var plotws; var plotsvct; var plotqlen; var plotdl;
+			var traffictime = "0";
+			var trafficnewtime = traffictime;
+			var logstatus=[];
+			var logcache=3;
+			var obj=[];
 			var disksval="hi"
+			var dater;
+			var liner;
+			var dater2;
+			var statsdata="initial";
+			var page=0;
+			var reqpage=0;
+			var counter = 1;
+			var activepage=0; var lastpage=-1;
+
+			$(".bg-success").show();$(".bg-danger").hide();$(".bg-warning").hide();
+ $("#sstatus").click(function(){ NETDATA.unpause(); });
+	$(".ref").click(function() {
+					//console.log("session before","<?php print session_id(); ?>");
+					if($(this).attr('id')=="Login")
+					{
+						$.post("../sessionout.php",function(data){
+						document.getElementById('Login'+'ref').submit();
+						//console.log("session after",data);
+						});
+						//console.log("login");
+
+					} else {
+					document.getElementById($(this).attr('id')+'ref').submit();
+					}
+		 //console.log($(this).attr('id'));
+		});
+			$.get("../requestdatein.php", { file: 'Data/ctr.logupdated' }, function(data){
+
+					var objdate=jQuery.parseJSON(data);
+
+					trafficnewtime=objdate.updated;
+					traffictime=trafficnewtime;
+				});
+			function parse(str) {
+									 var weekday= [ "Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday" ];
+									var months = [ "January", "February", "March", "April", "May", "June",
+               "July", "August", "September", "October", "November", "December" ];
+                  	var y = str.substr(0,4),
+										m = str.substr(4,2) - 1,
+										d = str.substr(6,2);
+									var D = new Date(y,m,d);
+									//return(D.getFullYear() == y && D.getMonth() == m && D.getDate() == d) ? D : 'invalid date';
+									return weekday[D.getDay()]+" "+D.getDate()+"-"+months[D.getMonth()]+"-"+D.getFullYear();
+								}
+
+					function infochange() {
+
+				$(".datarow").hide();
+				if($("#INFO").is(":checked")) { $(".info").show(); }
+				if($("#Warning").is(":checked")) { $(".warning").show(); }
+				if($("#Error").is(":checked")) { $(".error").show(); }
+			};
+	     $(".msgtype").click(function() { topresentlog(); infochange(); });
+
 			var sineRenderer = function() {
 				//var data = [[]];
 				for (var i=0; i<13; i+=0.5) {
 					dl[0].push([i, Math.sin(i)]);
 				}
-				
+
 				return dl;
 			};
 			function searchmsg (strarr,str) {
@@ -65,552 +320,421 @@
 				};
 				return -1;
 			};
-			
+
 			$.ajax({
-				url : "Data/msgs.txt",
+				url : "msgs.txt",
 				dataType: "text",
 				success : function (data) {
-					
+
 					 msgdata=data;
 					msgs=msgdata.split("\n");
 						}
 				});
-			
+
 			function refreshList(req,listid,fileloc) {
-				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
+				$.get("../requestdatein.php", { file: fileloc+"updated" }, function(data){
 					var cdata=jQuery.parseJSON(data);
 					disktimenew=cdata.updated;
 				});
 				if(disktimenew!=disktime)
-				{ 
+				{
 					disktime=disktimenew;
 					$(listid+' option').remove();
-					$.get("requestdata.php", { file: fileloc }, function(data){
+					$.get("../requestdata.php", { file: fileloc }, function(data){
 						var jdata = jQuery.parseJSON(data);
 						//console.log(data);
-						
+
 						$.each(jdata, function(i,v) {
 						//	console.log(i,k);
-							 $(listid).append($('<option>').text(i).val(v)); 
-							
+							 $(listid).append($('<option>').text(i).val(v));
+
 						});
 					});
 				}
 			};
+			$(".SS").hide(); $(".Logs").hide(); $(".finish").hide();
+			$("#dater2").change(function(){
+				$("#nothing").text("Please wait"); $("#found").hide();
+			});
+			function SS(){
 
-//			var plot1 = $.jqplot('chart1',dl);
-			$("#Stimec").timepicker({
-					 
-					appendWidgetTo: '#startime',
-					minuteStep: 1,
-					showMeridian: false,
-			});
-
-			$("#Stime").timepicker({
-								appendWidgetTo: '#startimel',
-                minuteStep: 1,
-								showMeridian: false,
-			}); 
-			$('.input-daterange').datepicker({
-				container:"#datecont",
-				format: "mm/dd/yyyy",
-				weekStart: 6,
-				startDate: "1/1/2014",
-				todayBtn: "linked",
-				keyboardNavigation: false,
-				autoclose: true,
-				todayHighlight: true
-			});
-			$(".SS").hide(); $(".Logs").hide(); 
-			// arabic fixes
-			$("#startime").click( function(){
-				$("#startime div").css("top","100%");
-				$("#startime div tbody tr:nth-child(1) td:nth-child(3) a").data("action","incrementHour");
-				$("#startime div tbody tr:nth-child(1) td:nth-child(1) a").data("action","incrementMinute");
-				$("#startime div tbody tr:nth-child(3) td:nth-child(3) a").data("action","decrementHour");
-				$("#startime div tbody tr:nth-child(3) td:nth-child(1) a").data("action","decrementMinute");
-				$("#startime div tbody tr:nth-child(2) td:nth-child(1) input").val($("#Stimec").val().split(":")[1]);
-				$("#startime div tbody tr:nth-child(2) td:nth-child(3) input").val($("#Stimec").val().split(":")[0]);
-				if( $(".minc").hasClass("minc") == false ) {
-					$(".bootstrap-timepicker-hour").addClass("minc");
-					$(".bootstrap-timepicker-minute").addClass("hrc");
-					$(".minc").removeClass("bootstrap-timepicker-hour");
-					$(".hrc ").removeClass("bootstrap-timepicker-minute");
-					$(".hrc").addClass("bootstrap-timepicker-hour ");
-					$(".minc").addClass("bootstrap-timepicker-minute");
-				}
-			});
-			$("#startimel").click( function(){
-				$("#startimel div").css("top","100%");
-				$("#startimel div tbody tr:nth-child(1) td:nth-child(3) a").data("action","incrementHour");
-				$("#startimel div tbody tr:nth-child(1) td:nth-child(1) a").data("action","incrementMinute");
-				$("#startimel div tbody tr:nth-child(3) td:nth-child(3) a").data("action","decrementHour");
-				$("#startimel div tbody tr:nth-child(3) td:nth-child(1) a").data("action","decrementMinute");
-				$("#startimel div tbody tr:nth-child(2) td:nth-child(3) input").val($("#Stime").val().split(":")[0]);
-				$("#startimel div tbody tr:nth-child(2) td:nth-child(1) input").val($("#Stime").val().split(":")[1]);
-				if( $(".min").hasClass("min") == false ) {
-					
-					$(".bootstrap-timepicker-hour").addClass("min");
-					$(".bootstrap-timepicker-minute").addClass("hr");
-					$(".min").removeClass("bootstrap-timepicker-hour");
-					$(".hr ").removeClass("bootstrap-timepicker-minute");
-					$(".hr").addClass("bootstrap-timepicker-hour ");
-					$(".min").addClass("bootstrap-timepicker-minute");
-				}
-			
-			
-			});
-			$("#Sdatec , #Edatec, #Sdate, #Edate").click(function (){ 
-				$(".datepicker").css("left","49%");
-				$(".datepicker").css("top","39%");
-				$(".datepicker").css("background","rgba(0,0,0,0)");
-				$(".datepicker").css("border","rgba(0,0,0,0)");
-				$(".datepicker").css("box-shadow","none");
-			});
-			$("#Edatec, #Sdatec, #Edate, #Sdate").change(function(){
-				$(".datepicker").remove();
-			});
-			$("#SS").click(function (){ 
-				if(config == 1 ) { 
-					var userpriv="false";
+				   var alltabsAcco=0;var alltabsStat=0;var alltabsProt=0;var alltabsRepli=0;var alltabsPool=0;var alltabsUP=0;
+				   var userprivAccoAD="false"; var userprivAccoBU="false"; var userprivAccoEr="false";
+					var userprivStatSC="false"; var userprivStatLo="false";
+					var userprivProtCI="false"; var userprivProtNF="false";
+					var userprivRepliPa="false"; var userprivRepliSe="false"; var userprivRepliRe="false";
+					var userprivPoolDG="false"; var userprivPoolSS="false";
+					var userprivUserPrivileges="false"; var userprivUpload="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
-					$.get("requestdata.php", { file: '../Data/userpriv.txt' },function(data){ 
+					if(curuser!="admin"){
+					$.get("../requestdata.php", { file: 'Data/userpriv.txt' },function(data){
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
-								userpriv=gdata[prot].Service_Charts
+								userprivAccoAD=gdata[prot].Active_Directory; userprivAccoBU=gdata[prot].Box_Users; userprivAccoEr=gdata[prot].Error
+								userprivStatSC=gdata[prot].Service_Charts;userprivStatLo=gdata[prot].Logs;
+								userprivProtCI=gdata[prot].CIFS; userprivProtNF=gdata[prot].NFS;
+								userprivRepliPa=gdata[prot].Partners; userprivRepliRe=gdata[prot].Replication; userprivRepliSe=gdata[prot].Senders;
+								userprivPoolDG=gdata[prot].DiskGroups; userprivPoolSS=gdata[prot].SnapShots;
+								userprivUserPrivileges=gdata[prot].UserPrivilegesch;userprivUpload=gdata[prot].Uploadch;
+
 							}
 						};
-						if( userpriv=="true" | curuser=="admin" ) {
-							config= 0; $("h2").css("background-image","url('../img/SS.png')").text("حالة الخدمة"); $(".SS").show();updatechartarea(); 
-						} 
+						if(userprivAccoAD!="true") { $(".activeDirectory").hide(); $("#activeDirectory").hide(); alltabsAcco=1;}
+						if(userprivAccoBU!="true") { $(".boxUsers").hide(); $("#boxUsers").hide(); alltabsAcco=alltabsAcco+1;}
+						if(userprivAccoEr!="true") { $(".boxProperties").hide(); $("#boxProperties").hide(); alltabsAcco=alltabsAcco+1;}
+						if(alltabsAcco==3) { $(".accounts").hide()}
+						if(userprivStatSC!="true") { $(".servicestatus").hide(); $("#servicestatus").hide(); alltabsStat=1;} 	else { $(".servicestatus").show(); $("#servicestatus").show();}
+						if(userprivStatLo!="true") { $("#Logs").hide(); $("#Logspanel").hide();alltabsStat=alltabsStat+1;}
+						if(alltabsStat==2) { $(".status").hide();}
+						if(userprivProtCI!="true") { $(".cifs").hide(); $("#cifspane").hide(); alltabsProt=1;}
+						if(userprivProtNF!="true") { $(".nfs").hide(); $("#nfspane").hide(); alltabsProt=alltabsProt+1;}
+						if(alltabsProt==2) { $(".protocol").hide()}
+						if(userprivRepliPa!="true") { $(".partner").hide(); $("#partner").hide(); alltabsRepli=1;}
+						if(userprivRepliSe!="true") { $(".sender").hide(); $("#sender").hide(); alltabsRepli=alltabsRepli+1;}
+						if(userprivRepliRe!="true") { $(".recive").hide(); $("#receiver").hide(); alltabsRepli=alltabsRepli+1;}
+						if(alltabsRepli==3) { $(".replication").hide()}
+						if(userprivPoolDG!="true") { $(".diskGroups").hide(); $("#diskGroups").hide(); alltabsPool=1;}
+						if(userprivPoolSS!="true") { $(".snapshots").hide(); $("#snapshots").hide(); alltabsPool=alltabsPool+1;}
+						if(alltabsPool==2) { $(".pools").hide()}
+						if(userprivUserPrivileges!="true") { $(".userPrivlliges").hide(); $("#userPrivlliges").hide(); alltabsUP=1;}
+						if(userprivUpload!="true") { $(".firmware").hide(); $("#firmware").hide(); alltabsUP=alltabsUP+1;}
+						if(alltabsUP==2) { $(".config").hide()}
+
 					});
 				};
+			};
+
+
+			$("#lines").change(function(){
+				   topresentlog();updatelogarea(); infochange();
+
 			});
-			
-			$("#Logs").click(function (){ 
-				if(config== 1){ 
+
+			$("#dater").change(function(){
+				   topresentlog(); updatelogarea(); infochange();
+
+
+			});
+			$("#pnext").click(function(){
+				var date=new Date($("td.last").text());
+				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2)+"T"+("0" + date.getUTCHours()).slice(-2)+":"+("0" +date.getUTCMinutes()).slice(-2)+":"+("0" + date.getUTCSeconds()).slice(-2))
+				dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+date.getFullYear()+"T"+("0" + date.getUTCHours()).slice(-2)+":"+("0" +date.getUTCMinutes()).slice(-2)+":"+("0" + date.getUTCSeconds()).slice(-2)
+
+				dater=$("#dater").val()
+					$("#dater").change();
+
+			});
+			$("#pprev").click(function(){
+				if (activepage > 0 ) { activepage = activepage-1; logstatus[activepage]=50 }
+
+			});
+			$("#refresh").click(function(){
+				$("#Logdetails tr.datarow").remove();
+				activepage=0; page=0; lastpage=-1
+				logstatus=[];
+				for (var i=0; i<logcache; i+=1) {
+						    updatelogarea(20);
+								logstatus[i]=10;
+								logtime[i]="3434TREYLKTRJ";
+							}
+			});
+
+			$("#Logs").click(function (){
+
 					var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
-					$.get("requestdata.php", { file: '../Data/userpriv.txt' },function(data){ 
+					$.get("../requestdata.php", { file: 'Data/userpriv.txt' },function(data){
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
 								userpriv=gdata[prot].Logs
 							}
 						};
-					
-						if( userpriv=="true" | curuser=="admin" ) {
-							config = 0; $("h2").css("background-image","url('../img/logs.png')").text("السجلات");logtime="4466:44:34534";updatelogarea(); $(".Logs").show();
-						}
-					});
-				};
-			});
-			$(".finish").click(function (){ config = 1; $(".SS").hide(); $(".Logs").hide();});
-	function refreshall() {
-		$.get("requestdata3.php", { file: '../Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
-		refreshList("GetDisklist","#Disks","../Data/disklist.txt");
-		$(".datepicker").css("top","39%");
-		$(".datepicker").css("left","49%");
-		updatechartarea();
-		updatelogarea();
-		}
-	function updatechartarea(){
-		var chartarea = "";
-		var maxy = 0;var bwmaxy = 0;var rsmaxy = 0;var wsmaxy = 0;var svctmaxy = 0;var qlenmaxy = 0; var totalio = 0;
-		var miny = 1000000;var bwminy = 1000000;var rsminy = 1000000;var wsminy = 1000000;var svctminy = 1000000;var qlenminy = 1000000;
-		var tm ,splitstime;
-		var tm2 , tme ,splitstimee;
-	
-		
-		var qlen=[[]];var rs=[[]];var ws=[[]];var dl=[[]];var bw=[[]];var svct=[[]];
-		var seriesarr="";
-		todayd=new Date();
-		startd=new Date ($("#Sdatec").val()); //
-		endd=new Date ($("#Edatec").val()); //
-		if ( endd > todayd) { endd = todayd ; };
-		newSdatec = startd.toDateString() ;
-		newEdatec = endd.toDateString() ;
-		if ( newSdatec == oldSdatec  && newEdatec == oldEdatec ) {//  console.log("check new log");
-			if (endd => todayd) { 
-				$.get("requestdate.php", { file: '../Data/ctr.log.'+datemod }, function(data){
-				var objdate = jQuery.parseJSON(data);
-				trafficnewtime=objdate.timey;
-				});
-			}
 
-		} else {
-			//console.log("will do something");
-			betweend = [];
-			//oldSdatec = startd.toString();
-			//oldEdatec = endd.toString();
-			startd.setDate(startd.getDate() + 1)
-			endd.setDate(endd.getDate() + 1) 
-			while (startd <= endd) {
-				fixbetween=startd.toISOString().split("T")[0].split("-");
-				formatfix=fixbetween[0].split("20")[1]+fixbetween[1]+fixbetween[2]
-				betweend.push(formatfix);
-				startd.setDate(startd.getDate() + 1);
-				//console.log (betweend);
-			}
-		
-			nufiles=betweend.length
-			datemod=betweend[(nufiles-1)];
-			
-		  trafficnewtime="newtime"
-		  traffictime="oldtime"
-		}	
-		
-			if( traffictime == trafficnewtime ) { //console.log("traffic not changed"); 
-			} 
-			else { 
-				count=1;
-				//console.log("traffic changed");
-				if ( oldEdatec != newEdatec || oldSdatec != newSdatec ) {
-				//console.log("new limits",oldEdatec,newEdatec,oldSdatec,newSdatec);
-					oldSdatec = newSdatec ;
-					oldEdatec = newEdatec ;
-					datalogf = [];
-					betweend.forEach(function(datelog){
-						$.get("requestdata.php", { file: '../Data/ctr.log.'+datelog }, function(data){
-							if ( count == 1 ) {
-								datalogf = jQuery.parseJSON(data);
-								disks=datalogf.device.length
-								count=count+1;
-							} else {
-								tmpdatalogf = jQuery.parseJSON(data);
-								if (datalogf.device.length == tmpdatalogf.device.length) {
-									for ( var k in datalogf.device) {
-									datalogf.device[k].stats[0].Dates.push(tmpdatalogf.device[k].stats[0].Dates[0]);
-									}
-								}
+						if(userpriv=="true" | curuser=="admin" ) {
+
+					   for (var i=0; i<logcache; i+=1) {
+						    updatelogarea(i);
+								logstatus[i]=10;
 							}
-						});
-					})
-				};
-				//console.log ("traffic changed");
-				if ( endd => todayd) {
-					$.get("requestlog.php", { file: '../Data/ctr.log.'+datemod }, function(data){
-						tmpdatalogf = jQuery.parseJSON(data);
-						if (datalogf.device.length == tmpdatalogf.device.length) {
-							for ( var k in datalogf.device) {
-								datalogf.device[k].stats[0].Dates.pop();
-								datalogf.device[k].stats[0].Dates.push(tmpdatalogf.device[k].stats[0].Dates[0]);
+					    for (var i=0; i<20; i+=1) {
+
+								plotflag[i]=0;
 							}
+
+
+						    config = 0; $("h2").css("background-image","url('../img/logs.png')").text("Logs"); $(".ullis").hide(); $(".finish").show();$(".Logs").show(); topresentlog();
 						}
 					});
+
+			});
+			$(".finish").click(function (){
+				for (var i=0; i<logcache; i+=1) { logstatus[i]=0 } config = 1; $(".SS").hide(); $(".Logs").hide();$(".finish").hide();$(".ullis").show();});
+	function refreshall() {
+
+		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data);});
+		presentlog();
+		counter=counter+1;
+		if(counter > 2 ) { topresentlog(); updatelogarea(); infochange(); counter = 1; }
+		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
+
+			var date
+			if($("#dater2").val() == "") {
+				date = new Date
+			//	$("#dater2").val(date2.getFullYear() + '-' + ("0" + (date2.getMonth() + 1)).slice(-2) + '-' + ("0" + (date2.getDate() + 0)).slice(-2))
+				$("#dater2").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) + "T23:59:00")
+
+			}
+			var dater2=new Date($("#dater2").val())
+			var dater3=dater2.getFullYear() + ("0" + (dater2.getMonth() + 1)).slice(-2) +  ("0" + (dater2.getDate() + 0)).slice(-2)
+
+
+			chartplease(dater3);
+
+
+
+
+	}
+	function topresentlog() {
+	var date
+
+			if( $("#dater").val() == "") {
+				date = new Date
+				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) + "T23:59:00")
+			}
+		///dateri=date.getFullYear()+'/' +("0" + (date.getDate() + 0)).slice(-2)+'/'+("0" + (date.getMonth() + 1)).slice(-2)+"T"+("0" + date.getUTCHours()).slice(-2)+":"+("0" +date.getUTCMinutes()).slice(-2)+":"+("0" + date.getUTCSeconds()).slice(-2)
+		date=new Date($("#dater").val());
+		dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+date.getFullYear()+"T"+("0" + date.getUTCHours()).slice(-2)+":"+("0" +date.getUTCMinutes()).slice(-2)+":"+("0" + date.getUTCSeconds()).slice(-2)
+
+			liner=$("#lines").val();
+
+			for (var i=0; i< logstatus.length; i+=1) {
+			 $.post("../pump.php", { req:"GetLog", name: dater+' '+liner+' '+"<?php echo $_SESSION["user"]; ?>"},function(){});
+
+
+				updatelogarea();
+			presentlog();
+			infochange();
+
 				}
 
-				traffictime=trafficnewtime; 
-				
-					var device = $("#Disks").val();
-					var deviceobj=[];
-					deviceobj= $.grep(datalogf.device,function(e){return e.name==device});
-					
-					for (var k in deviceobj[0].stats[0].Dates) { 
-						for (var y in deviceobj[0].stats[0].Dates[k].times) {
-							//console.log(deviceobj[0].stats[0].Dates[k].times[y]);	
-							 tm=new Date ($("#Sdatec").val()); //console.log("pre",tm);
-							 stime=$("#Stimec").val(); splitstime=stime.split(":")
-							 tm.setHours(splitstime[0],splitstime[1],0);
-							 tme=new Date($("#Edatec").val());
-							 stimee="23:59"; splitstimee=stimee.split(":")
-							 tme.setHours(splitstimee[0],splitstimee[1],0);
-							 tm2= new Date (deviceobj[0].stats[0].Dates[k].Date+" "+deviceobj[0].stats[0].Dates[k].times[y].time);
-							 //console.log("post",tm); 
-							
-							if((new Date(tm) < new Date(tm2)) && (new Date(tme) > new Date(deviceobj[0].stats[0].Dates[k].Date)) ) {
-									//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].bw );
-									bw[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].bw]);
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].bw) > bwmaxy ) { bwmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].bw);}
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].bw) < bwminy ) { bwminy = Number(deviceobj[0].stats[0].Dates[k].times[y].bw);}
-									
-									//dl[0].push([y,y]);
-									//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].rs );
-									rs[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].rs]);
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].rs) > rsmaxy ) { rsmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].rs);}
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].rs) < rsminy ) { rsminy = Number(deviceobj[0].stats[0].Dates[k].times[y].rs);}
-									//dl[0].push([y,y]);
-							
-									//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].ws );
-									ws[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].ws]);
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].ws) > wsmaxy ) { wsmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].ws);}
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].ws) < wsminy ) { wsminy = Number(deviceobj[0].stats[0].Dates[k].times[y].ws);}
-									//dl[0].push([y,y]);
-						
-									//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].svct );
-									svct[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].svct]);
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].svct) > svctmaxy ) { svctmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].svct);}
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].svct) < svctminy ) { svctminy = Number(deviceobj[0].stats[0].Dates[k].times[y].svct);}
-									//dl[0].push([y,y]);
-									//console.log(k,y,tm2,deviceobj[0].stats[0].Dates[k].times[y].qlen );
-									qlen[0].push([tm2, deviceobj[0].stats[0].Dates[k].times[y].qlen]);
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].qlen) > qlenmaxy ) { qlenmaxy = Number(deviceobj[0].stats[0].Dates[k].times[y].qlen);}
-									if ( Number(deviceobj[0].stats[0].Dates[k].times[y].qlen) < qlenminy ) {qlenminy = Number(deviceobj[0].stats[0].Dates[k].times[y].qlen);}
-									//dl[0].push([y,y]);
+			}
 
-									totalio= Number(deviceobj[0].stats[0].Dates[k].times[y].rs ) + Number (deviceobj[0].stats[0].Dates[k].times[y].ws);
-									if ( totalio > maxy ) { maxy = totalio;}
-									if ( totalio < miny ) { miny = totalio;}
-									dl[0].push([tm2,totalio]);
-									
-							};
-						};
-					};
-					if(plotflag > 0) { plotbw.destroy();plotrs.destroy();plotws.destroy();plotsvct.destroy();plotqlen.destroy();plotdl.destroy(); };
-					//plotbw.destroy();
-				
-					bwmaxy = Number(bwmaxy+1); bwminy = Number(bwminy -1);rsmaxy = Number(rsmaxy+1); rsminy = Number(rsminy -1);
-					wsmaxy = Number(wsmaxy+1); wsminy = Number(wsminy -1);svctmaxy = Number(svctmaxy+1); svctminy = Number(svctminy -1);
-					qlenmaxy = Number(qlenmaxy+1); qlenminy = Number(qlenminy -1);
-				//	plotbw.destroy();
-					var sercolr="#455B5B";
-					//console.log("plotting");
-					plotbw = $.jqplot('bwchart',[bw[0]], {
-						title: "Bandwidth",
-						seriesDefaults: {
-						showMarker:false},axes: {yaxis: {min:bwminy ,max:bwmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,//tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
-						tickOptions:{formatString:'%#H:%#M'}, min:tm }},
-						series: [
-								{
-										color: sercolr,
-									//	negativeColor: 'rgba(100,50,50,.6)',
-										showMarker: false,
-										showLine: true,
-										fill: false,
-										fillAndStroke: false,
-										markerOptions: {
-												style: 'filledCircle',
-												size: 8
-										},
-										rendererOptions: {
-												smooth: true
-										}
-								}]
-					});
-					plotrs = $.jqplot('rschart',[rs[0]], {
-						title: "Read IO/s",
-						seriesDefaults: {
-						showMarker:false},axes: {yaxis: {min:rsminy ,max:rsmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'} , min:tm }},
-						series: [
-								{
-										color: sercolr,
-										negativeColor: 'rgba(100,50,50,.6)',
-										showMarker: false,
-										showLine: true,
-										fill: false,
-										fillAndStroke: false,
-										markerOptions: {
-												style: 'filledCircle',
-												size: 8
-										},
-										rendererOptions: {
-												smooth: true
-										}
-								}]
-					});
-					plotws = $.jqplot('wschart',[ws[0]], {
-						title: "Write IO/s",
-						seriesDefaults: {
-						showMarker:false},axes: {yaxis: {min:wsminy ,max:wsmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,//tickOptions:{formatString:'%b %#d, %#H:%#M'}}},
-							tickOptions:{formatString:'%#H:%#M'}, min:tm }},
-						series: [
-								{
-										color: sercolr,
-										negativeColor: 'rgba(100,50,50,.6)',
-										showMarker: false,
-										showLine: true,
-										fill: false,
-										fillAndStroke: false,
-										markerOptions: {
-												style: 'filledCircle',
-												size: 8
-										},
-										rendererOptions: {
-												smooth: true
-										}
-								}]
-					});
-					plotsvct = $.jqplot('svctchart',[svct[0]], {
-						title: "Latency ms",
-						seriesDefaults: {
-						showMarker:false},axes: {yaxis: {min:svctminy ,max:svctmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'}, min:tm }},
-						series: [
-								{
-										color: sercolr,
-										negativeColor: 'rgba(100,50,50,.6)',
-										showMarker: false,
-										showLine: true,
-										fill: false,
-										fillAndStroke: false,
-										markerOptions: {
-												style: 'filledCircle',
-												size: 8
-										},
-										rendererOptions: {
-												smooth: true
-										}
-								}]
-					});
-					plotqlen = $.jqplot('qlenchart',[qlen[0]], {
-						title: "Queue length",
-						seriesDefaults: {
-			showMarker:false},axes: {yaxis: {min:qlenminy ,max:qlenmaxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'}, min:tm }},
-			series: [
-					{
-							color: sercolr,
-							negativeColor: 'rgba(100,50,50,.6)',
-							showMarker: false,
-							showLine: true,
-							fill: false,
-							fillAndStroke: false,
-							markerOptions: {
-									style: 'filledCircle',
-									size: 8
-							},
-							rendererOptions: {
-									smooth: true
-							}
-					}]
+	function chartplease(datern) {
+		//$.post("requeststats.php", { date: datern, time: 0 });
+		$.get("../requestdatein.php", { file: 'Data/ctr.logupdated' }, function(data){
+
+					var objdate=jQuery.parseJSON(data);
+
+
+					trafficnewtime=objdate.updated;
 		});
-					plotdl = $.jqplot('totaliochart',[dl[0]], {
-						title: "Total IO/s",
-						seriesDefaults: {
-						showMarker:false},axes: {yaxis: {min:miny ,max:maxy}, xaxis:{renderer: $.jqplot.DateAxisRenderer,tickOptions:{formatString:'%#H:%#M'}, min:tm }},
-						series: [
-								{
-							color: sercolr,
-							negativeColor: 'rgba(100,50,50,.6)',
-							showMarker: false,
-							showLine: true,
-							fill: false,
-							fillAndStroke: false,
-							markerOptions: {
-									style: 'filledCircle',
-									size: 8
-							},
-							rendererOptions: {
-									smooth: true
+		if(traffictime == trafficnewtime) { //console.log("traffic not changed");
+
+			if (requeststats==0) {
+
+				$.post("../requeststats.php", { date: datern, time: 0 });
+
+				requeststats=1;
+
+			}
+		} else {
+			traffictime = trafficnewtime
+
+
+			$.get("../requestdata.php", { file: 'Data/ctr.log' }, function(data){
+				datalogf = jQuery.parseJSON(data);
+			 	if (datalogf[0].nothing == 0) {
+
+
+					$("#nothing").text("Nothing to Display"); $("#found").hide();
+				}
+				else {
+
+				$("#nothing").text(parse(datern)); $("#found").show();
+
+						var xax=[]; var yax=[];
+						//plotpls=[[0,0]];
+						plotpls[0] = [0,0];
+						for (var i=0; i<50; i++) {
+							plotpls[0].push([datalogf[i].time,datalogf[i].cpu]);
+							xax.push(datalogf[i].time); yax.push(datalogf[i].cpu);
+						}
+						plotpls[0].shift(1); plotpls[0].shift(1);
+						drawnow("CPU","CPU Utilization %",Math.min.apply(null,yax),Math.max.apply(null,yax),0);
+				var xax=[]; var yax=[];
+					plotpls[1] = [0,0];
+					for (var i=0; i<50; i++) {
+					plotpls[1].push([datalogf[i].time,datalogf[i].mem]);
+					xax.push(datalogf[i].time); yax.push(datalogf[i].mem);
+					}
+					plotpls[1].shift(1); plotpls[1].shift(1);
+					drawnow("MEM","Memory Used %",Math.min.apply(null,yax),Math.max.apply(null,yax),1);
+							var xax=[]; var yax=[];
+							plotpls[2] = [0,0];
+							for (var i=0; i<50; i++) {
+							plotpls[2].push([datalogf[i].time,datalogf[i].nettotkb]);
+							xax.push(datalogf[i].time); yax.push(datalogf[i].nettotkb);
 							}
-					}]
-		});
-					plotflag = 1;
-				};
-		
+							plotpls[2].shift(1); plotpls[2].shift(1);
+							drawnow("NET","Network Throughput (Kb)",Math.min.apply(null,yax),Math.max.apply(null,yax),2);
+			   var xax=[]; var yax=[];
+				plotpls[3] = [0,0];
+				for (var i=0; i<50; i++) {
+				plotpls[3].push([datalogf[i].time,datalogf[i].deskiops]);
+				xax.push(datalogf[i].time); yax.push(datalogf[i].deskiops);
+				}
+				plotpls[3].shift(1); plotpls[3].shift(1);
+				drawnow("DIO","Storage IOPs ",Math.min.apply(null,yax),Math.max.apply(null,yax),3);
+							var xax=[]; var yax=[];
+							plotpls[4] = [0,0];
+							for (var i=0; i<50; i++) {
+							plotpls[4].push([datalogf[i].time,datalogf[i].deskthrouput]);
+							xax.push(datalogf[i].time); yax.push(datalogf[i].deskthrouput);
+							}
+							plotpls[4].shift(1); plotpls[4].shift(1);
+							drawnow("DTH","Storage Throughput (kb) ",Math.min.apply(null,yax),Math.max.apply(null,yax),4);
+							   var xax=[]; var yax=[];
+				plotpls[5] = [0,0];
+				for (var i=0; i<50; i++) {
+				plotpls[5].push([datalogf[i].time,datalogf[i].deskreadpercent]);
+				xax.push(datalogf[i].time); yax.push(datalogf[i].deskreadpercent);
+				}
+				plotpls[5].shift(1); plotpls[5].shift(1);
+				drawnow("DRP","Storage read % ",Math.min.apply(null,yax),Math.max.apply(null,yax),5);
+
+		}
+
+			});
+
+		requeststats=0;
+
 	}
-	
-					
-			
-			
-	
+}
+
+
 	function updatelogarea(){
-		var logarea = "";
+
 		var tm, splitstime;
 		var tm2; var tme, splitstimee;
-		$.get("requestdate.php", { file: '../Data/currentinfo2.log' }, function(data){
+		var rqpg
+		rqpg=liner;
+		ii=1;
+
+		$.get("../requestdate.php", { file: 'Data/Logs.logupdated' }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			logtimenew=objdate.timey;
 		});
-		if(logtimenew!=logtime) {
+		if(logtimenew!=logtime ) {
 			logtime=logtimenew;
-		$("#Logdetails tr.datarow").remove();
-		$.get("requestdata.php", { file: '../Data/currentinfo2.log' }, function(data){
-			var obj = jQuery.parseJSON(data);
-			for (var k in obj) { 
-					 
-					 tm=new Date ($("#Sdate").val()); //console.log("pre",tm);
-						 stime=$("#Stime").val(); splitstime=stime.split(":")
-						 tm.setHours(splitstime[0],splitstime[1],0);
-						 tme=new Date($("#Edate").val());
-						 stimee="23:59"; splitstimee=stimee.split(":")
-						 tme.setHours(splitstimee[0],splitstimee[1],0);  
-					 tm2= new Date (obj[k].Date+" "+obj[k].time); 
-					if((new Date(tm) < new Date(tm2)) && (new Date(tme) > new Date(obj[k].Date)) > 0) {
-						var objdata=obj[k].data;
-						var codes; var msgcode; var jofcode; var themsg; var themsgarr;
-						if(typeof obj[k].code != 'undefined'){
-							codes=obj[k].code.split("@");
-							msgcode=codes[0];
-							jofcode=0;
-							jofcode=searchmsg(msgs,msgcode);
-							console.log("jofcode",jofcode);
-							themsg=msgs[jofcode];
-							themsgarr=themsg.split(":");
-							codes.push(".");
-							objdata=""
-							for (i=1; i < themsgarr.length ;i++) {
-								 objdata=objdata+themsgarr[i]+" "+codes[i]+" ";
-							 }
-							//console.log("codes",codes);
-							//console.log("themsgarr",themsgarr);
-						}
-						if($("#INFO").is(":checked")) {
-							if(obj[k].msg == "info") { 
-								logarea=logarea+obj.Date+" "+obj[k].time+" info: "+objdata+"\n";
-								$("#Logdetails").append('<tr class="datarow" style="color:blue;"><td class="Volname col-sm-3"data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >' +obj[k].Date+' '+obj[k].time+'</td><td class="col-sm-1" data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+obj[k].user+'</td><td class="col-sm-7"  data-toggle="popover" rel="popover" data-trigger="hover" data-container="body" data-content='+objdata+' >'+objdata+'</td></tr>');
-								//console.log(Number(Date.parse($("#Stime").val()) - Date.parse(obj.Dates[k].times[y].time))/1000/60/60/24);
-							}
-						};
-						if($("#Warning").is(":checked")) {
-							
-							if(obj[k].msg == "warning") { 
-								logarea=logarea+obj[k].Date+" "+obj[k].time+" warning: "+objdata+"\n";
-								$("#Logdetails").append('<tr class="datarow" style="color:orange;"><td class="Volname col-sm-3">'+obj[k].Date+' '+obj[k].time+'</td><td class="col-sm-1">'+obj[k].user+'</td><td class="col-sm-7">'+objdata+'</td></tr>');
-								//console.log(Number(Date.parse($("#Stime").val()) - Date.parse(obj.Dates[k].times[y].time)));
-							}
-						}
-						if($("#Error").is(":checked")) {
-							if(obj[k].msg == "error") { 
-								logarea=logarea+obj[k].Date+" "+obj[k].time+" error: "+objdata+"\n";
-								$("#Logdetails").append('<tr class="datarow" style="color:red;"><td class="Volname col-sm-3">'+obj[k].Date+' '+obj[k].time+'</td><td class="col-sm-1">'+obj[k].user+'</td><td class="col-sm-7">'+objdata+'</td></tr>');
-								
-							}
-						}
-						
-					}
-				
-			};
-			$("#logsarea").val(logarea);	
-			$("td").css("padding","0.1rem");
-			$('[data-toggle="popover"]').popover({ placement: "bottom",html: false,
-                    animation: false,});
-		});
-		
+			$.get("../requestdata.php", { file: 'Data/Logs.log'+liner}, function(data){
+
+			obj[ii] = jQuery.parseJSON(data);
+			});
 		}
 	}
-		$(".datep").datepicker().on("changeDate",function(e){
-			logtime="44:44:34";updatelogarea();
-		});
-		$(".timep").change(function(){
-			logtime="44:44:34";updatelogarea();
-		});
+	function presentlog() {
+		var logarea = "";
+		var color;
+		config=1;
+		var ii=1;
 
-		$(".datec").datepicker().on("changeDate	",function(e){
-					traffictime="44:44:34";updatechartarea();											
-		});
+		$("#Logdetails tr.datarow").remove();
+		var y="between";
+				for (var k in obj[ii]) {
+							var objdata=obj[ii][k].data;
+							var codes; var msgcode; var jofcode; var themsg; var themsgarr;
+							if(typeof obj[ii][k].code != 'undefined'){
+								codes=obj[ii][k].code.split("@");
+								msgcode=codes[0];
+								jofcode=0;
+								jofcode=searchmsg(msgs,msgcode);
+								//console.log("jofcode",jofcode);
+								themsg=msgs[jofcode];
+								try { themsgarr=themsg.split(":"); } catch(err) { updatelogarea();}
+								codes.push(".");
+								objdata=""
+								for (i=1; i < themsgarr.length ;i++) {
+									 objdata=objdata+themsgarr[i]+" "+codes[i]+" ";
+								 }
+								//console.log("codes",codes);
+								//console.log("themsgarr",themsgarr);
+							}
+							logarea=logarea+obj[ii][k].Date+" "+obj[ii][k].time+" "+obj[ii][k].msg+": "+objdata+obj[ii][k].code+"\n";
+							y="between"
+							if (k == 0) { y="first"; };
+							if (k == (obj[ii].length-1)) {y="last";};
+							if(obj[ii][k].msg == "info") { color="blue"}; if(obj[ii][k].msg == "warning") { color="yellow"}; if(obj[ii][k].msg == "error") { color="red"}
+							$("#Logdetails").append('<tr style="padding-left: 2rem; color:'+color+'" class="row datarow '+obj[ii][k].msg+'" ><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-3 text-left tdlog Volname '+y+' '+obj[ii][k].msg+' " data-toggle="popover" rel="popover" data-trigger="hover" data-container="body"  >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td style="margin-left: -1.7rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-2 text-center tdlog '+obj[ii][k].msg+' "  data-content='+objdata+' >'+obj[ii][k].user+'</td><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-7 text-center tdlog '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
+
+
+										infochange();
+
+
+
+				};
+
+	}
+
+
+
+//		$(".datec").datepicker().on("changeDate",function(e){
+//					traffictime="44:44:34";
+//		});
 		$(".timec").change(function(){
-					traffictime="44:44:34";updatechartarea();											
+					traffictime="44:44:34";
 		});
 $("#Disks").change(function(){
-			traffictime="disk changes";updatechartarea();
+			traffictime="disk changes";
 		});
-		$(".traffic").change( function () { traffictime="44:44:34"; updatechartarea();});
-		$(".checkboxy").change (function(){ updatelogarea();});
-		refreshList("GetDisklist","#Disks","../Data/disklist.txt");
-		$.post("./pump.php", { req:"GetDisklist", name: "../Data/disklist.txt"},function(){});
-		setInterval('refreshall()', 200); // Loop every 1000 milliseconds (i.e. 1 second)
+		$(".traffic").change( function () { traffictime="44:44:34";
+			});
+		$(".checkboxy").change (function(){ updatelogarea();
+			});
+		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
+		$.post("../pump.php", { req:"GetDisklist", name: "Data/disklist.txt"},function(){});
+		setInterval('refreshall()', 500); // Loop every 1000 milliseconds (i.e. 1 second)
 		//console.log("<?php print $_REQUEST["idd"]; print session_id(); ?>");
-		
+
 		$('[data-toggle="popover"]').popover({
 										html: true,
                     animation: false,
                     content: "TO BE ANNOUNCED",
                     placement: "bottom"
-			
-			
-			});
-		</script>
- 
-	</body>
 
+
+			});
+
+
+		function starting() {
+				$(".ullis").hide();
+				if(config == 1 ) {
+						var userprivss="false"; var userprivlogs="false";
+						var curuser="<?php echo $_SESSION["user"] ?>";
+						if (curuser !="admin") {
+							$.get("../requestdata.php", { file: 'Data/userpriv.txt' },function(data){
+								var gdata = jQuery.parseJSON(data);
+								for (var prot in gdata){
+									if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+										userprivss=gdata[prot].Service_Charts;
+										userprivlogs=gdata[prot].Logs;
+									}
+								};
+
+								if( userprivss =="true") { $("#SS").show(); } else { $("#SS").hide(); } ; if( userprivlogs =="true") { $("#Logs").show(); } else { $("#Logs").hide(); };;
+						});
+					}
+					$(".ullis").show();
+			}
+		}
+		 topresentlog();
+		 		$("#close-success").click(function() { $(".bg-success").hide(); });
+		SS();
+$(".netdata-chart-row").click(function(){ NETDATA.start(); });
+		</script>
+	<!-----	<script src="../assets/js/main.js"></script>
+----->
+
+</body>
 </html>

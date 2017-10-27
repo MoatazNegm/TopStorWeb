@@ -1,5 +1,5 @@
-Unlin11000: Problem while adding user : 
-Unlin11001: : : Problem while adding user : 
+Unlin11000: Problem while deleting user : 
+Unlin11001: : : Problem while deleting user : 
 Unlin1000:User : is deleted
 Unlin1010: : : User : is deleted
 Unlin1001: Deleting user : 

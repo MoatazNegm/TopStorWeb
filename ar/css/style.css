@@ -33,15 +33,23 @@ body {
 .leftPane {
 	border: 5px ridge;
 	height: 43rem; 
-	
-
-
 
 }
+
 .rightPane {
 	background-color: #3e4146; /* Old browsers */
 	
 
+}
+.boxy {
+ height: 42rem;
+ padding: 1rem;
+ }
+.colorpane {
+	border: 5px ridge;
+	height: 43rem; 
+	text-align: center;
+	
 }
 .leftPane {
 	background-color: lightgrey;
@@ -65,26 +73,26 @@ ul.nav-stacked li {
 }
 
 ul.nav-stacked li a {
-	background-image:url('../../img/accounts2.png');
+	background-image:url('../img/accounts2.png');
     background-repeat: no-repeat;
     background-size: 3rem 2rem;
 	background-position: center .8rem;
 	text-align: center;
 }
 ul.nav-stacked li:nth-child(2) a{
-	background-image:url('../../img/status.png');
+	background-image:url('../img/status.png');
 }
 ul.nav-stacked li:nth-child(3) a{
-	background-image:url('../../img/protocol.png');
+	background-image:url('../img/protocol.png');
 }
 ul.nav-stacked li:nth-child(4) a{
-	background-image:url('../../img/replication.png');
+	background-image:url('../img/replication.png');
 }
 ul.nav-stacked li:nth-child(5) a{
-	background-image:url('../../img/diskconfig.png');
+	background-image:url('../img/diskconfig.png');
 }
 ul.nav-stacked li:nth-child(6) a{
-	background-image:url('../../img/configuration.png');
+	background-image:url('../img/configuration.png');
 }
 .rightPane a {
 	display: inline-block;
@@ -104,6 +112,7 @@ h4 span {
 	position: absolute;
 	width: 100%;
 	bottom: 0;
+	color: bluelight;
 	
 	text-align: center;
 }
@@ -121,56 +130,56 @@ h4 span {
 	transform:scale(1.2); /* Standard syntax */
 }
 .Proxya {
-	background-image:url('../../img/Proxy.png');
+	background-image:url('../img/Proxy.png');
 }
 .ADa {
-	background-image:url('../../img/AD.png');
+	background-image:url('../img/AD.png');
 }
 .UnLina {
-	background-image:url('../../img/linux.png');
+	background-image:url('../img/linux.png');
 }
 .Futurea {
-	background-image:url('../../img/future.png');
+	background-image:url('../img/future.png');
 }
 .SSa {
-	background-image:url('../../img/SS.png');
+	background-image:url('../img/SS.png');
 }
 .Logsa {
-	background-image:url('../../img/logs.png');
+	background-image:url('../img/logs.png');
 }
 .CIFSa {
-	background-image:url('../../img/cifs.png');
+	background-image:url('../img/cifs.png');
 }
 .NFSa {
-	background-image:url('../../img/nfs.png');
+	background-image:url('../img/nfs.png');
 }
 .ISCSIa {
-	background-image:url('../../img/iscsi2.png');
+	background-image:url('../img/iscsi2.png');
 }
 .DiskGroupa {
-	background-image:url('../../img/diskconfigs.png');
+	background-image:url('../img/diskconfigs.png');
 }
 .SnapShotsa {
-	background-image:url('../../img/snapshot.png');
+	background-image:url('../img/snapshot.png');
 }
 .UserPrivilegesa {
-	background-image:url('../../img/Priv.png');
+	background-image:url('../img/Priv.png');
 }
 .Uploada {
-	background-image:url('../../img/Uploadfirmware.png');
+	background-image:url('../img/Uploadfirmware.png');
 }
 .Colourizea {
-	background-image:url('../../img/colourize.png');
+	background-image:url('../img/colourize.png');
 }
 .Partnersa {
-	background-image:url('../../img/Partners.png');
+	background-image:url('../img/Partners.png');
 }
 
 .Replicatea {
-	background-image:url('../../img/receivers.png');
+	background-image:url('../img/receivers.png');
 }
 .Sendersa {
-	background-image:url('../../img/senders.png');
+	background-image:url('../img/senders.png');
 }
 
 .modal {
@@ -201,12 +210,12 @@ h4 span {
 	padding: 0;
 }
 h2 {
-	margin:0 0 1.5rem 0;
-	background-image:url('../../img/future.png');
+	margin:0 0 1.0hrem 0;
+	background-image:url('../img/future.png');
 	background-repeat:no-repeat;
 	background-position:1.2rem top;
-	background-size: 4rem 4rem;
-	color: #145014;
+	background-size: 3rem 3rem;
+	
 
 	
 }
@@ -220,7 +229,8 @@ h2 {
 }
 .configTitle {
 	text-align: center;
-	height: 4rem;
+	margin: 2px;
+/*	height: 4rem; */
 }
 .boxoffields { 
 	
@@ -305,7 +315,7 @@ h2 {
 		margin-top: 2rem;
 }
 #runningdik1{
-	background-image:url('../../img/disks.png');
+	background-image:url('../img/disks.png');
 	background-repeat: no-repeat;
   background-size: 4rem 9rem;
 	background-position: center .8rem;
@@ -333,18 +343,17 @@ h2 {
 .separatortop {
 	margin-top: .5rem;
 }
+.separatortbot {
+	margin-bottom: .5rem;
+}
 .NNmodal-dialog, #modalcontainer {
 			position: fixed;
 			left: 50%;
 			top : -2% ;
 			width: 20	rem ;
 } 
-#samplebox {
-	position: relative;
-	left: 38%;
-	margin-top: 2rem;
-	width : 15rem;
-	height: 3rem;
+#sbox {
+	
 	border: solid 2px;
 	color: red;
 	background-color: green;
@@ -425,24 +434,24 @@ p.Priv { font-size : 1.1rem;
 input.checkboxy {  margin-top: 0.2rem;
 				display: inline;
 			}
-input.checkboxyar { 
-				margin-top: 0 px;
-				margin-bottom: 0 px;
-				display: inline;
-			}
-
 .upload-drop-zone { height: 30rem; border-width: 2px ; margin-bottom: 1rem; }
 .upload-drop-zone { width: 80%; color: #ccc; border-style: dashed; border-color: #ccc; line-height: 3rem; text-align: center } 
 .upload-drop-zone.drop { color: #222; border-color: #222; }
 .progress { padding: 0px; margin-bottom: 0px; }
 .h3msg { margin-top: 0px; margin-bottom: 0.3rem; font-size: 2.3rem;}
-#Logdetails { margin-left: 0.5rem;}
+#Logdetails2 { margin-left: 0.5rem;}
 .panel-body { padding-top: 0.2rem;}
 td { padding: 0.1rem;}
 .popover{
     max-width:800px;
    
 }
+ .popover-content {
+      background-color: coral;
+      font-size: 70%;
+      color: #FFFFFF;
+      padding: 0;
+  }
 #Replicatestatus {
 	width: 94%;
 	margin-left: 1.4rem;
@@ -461,31 +470,12 @@ td { padding: 0.1rem;}
 {
  margin-left: 2rem;
 }
-#prox.checkbox, .partnc {
- padding-top: 0px;
- padding-left: 0px;
-}
-#prox.checkbox label{
- padding-left: 0px;
-}
-#Proxy {
- margin-top: 1.8rem;
-}
-.bootstrap-timepicker-widget.dropdown-menu.open {
-	top: 1px;
-	width: 10%;
-}
 
-#Volumnamedetails {
-margin-left: 0.2 rem;
-}
-#Volumnamedetails .panel-body .row div {
-
-border-left: 10px solid transparent;
-border-color: transparent;
-}
 #lang {
 	margin-right: 1rem;
 	color: darkred; 
 }
 #lang a { color : darkred; }
+input { text-align: center; }
+.table td.tdlog { padding-top: 0.1rem; padding-bottom: 0.1rem;}
+button { cursor : pointer ; }

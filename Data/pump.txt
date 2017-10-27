@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-GetLog 10/06/2017T21:59:00 10 admin
-=======
-ApplyFw QS1.45
->>>>>>> dedd323d021fb876d78cff279250da497d8ccc0d
+fixchart
