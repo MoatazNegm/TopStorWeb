@@ -190,28 +190,28 @@
         </div>
     </div>
 </main>
-<form id="Loginref" action="Login.php" method="post">
+<form id="Loginref" action="ar/Login.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
-<form id="changepasswordref" action="changepassword.php" method="post">
+<form id="changepasswordref" action="ar/changepassword.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
-<form id="accountsref" action="accounts.php" method="post">
+<form id="accountsref" action="ar/accounts.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
 <form id="arstatusref" action="arstatus.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
-<form id="protocolref" action="protocol.php" method="post">
+<form id="protocolref" action="ar/protocol.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
-<form id="replicationref" action="replication.php" method="post">
+<form id="replicationref" action="ar/replication.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
-<form id="poolsref" action="pools.php" method="post">
+<form id="poolsref" action="ar/pools.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
-<form id="configref" action="config.php" method="post">
+<form id="configref" action="ar/config.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
 
