@@ -167,7 +167,7 @@
                         <table  class="col-12 table  dr-table-show">
                             <thead>
                             <tr class="row">
-										  <th class="text-left col-3" style="padding-left: 2rem; ">تاريخ  توقيت</th>
+										  <th class="text-left col-3" style="padding-left: 2rem; " dir="rtl">توقيت &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; تاريخ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                                 <th class="text-center col-2">مستخدم</th>
                                 <th class="text-center col-7">معلومات</th>
 
