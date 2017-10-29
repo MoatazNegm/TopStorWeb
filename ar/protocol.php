@@ -67,38 +67,38 @@
 <main class="col-md-12">
     <div class="row">
         <div class="col-md-1 main-menu">
-            <ul class="nav flex-column" role="tablist">
-                <li class="nav-item accounts">
-                    <a class="ref nav-link " id="accounts" href="#" role="tab">
-                        <div></div>
-                        Accounts</a>
-                </li>
-                <li class="nav-item status">
-                    <a class=" ref nav-link " id="status" href="#" role="tab">
-                        <div></div>
-                        Status</a>
-                </li>
-                <li class="nav-item protocol">
-                    <a class="ref nav-link active" id="protocol" data-toggle="tab" href="#" role="tab">
-                        <div></div>
-                        Protocol</a>
-                </li>
-                <li class="nav-item replication">
-                    <a class="nav-link ref" href="#" id="replication" role="tab">
-                        <div></div>
-                        Replication</a>
-                </li>
-                <li class="nav-item pools">
-                    <a class="ref nav-link" id="pools" href="#" role="tab">
-                        <div></div>
-                        Pools</a>
-                </li>
-                <li class="nav-item config">
-                    <a class="nav-link ref" href="#" id="config" role="tab">
-                        <div></div>
-                        Config</a>
-                </li>
-            </ul>
+          <ul class="nav flex-column" role="tablist">
+              <li class="nav-item accounts">
+                  <a class="ref nav-link " id="accounts" data-toggle="tab" href="#" role="tab">
+                      <div></div>
+                      الحسابات</a>
+              </li>
+              <li class="nav-item status">
+                  <a class="ref nav-link " id="arstatus" href="#" role="tab">
+                      <div></div>
+                    الحالة  </a>
+              </li>
+              <li class="nav-item protocol">
+                  <a class=" ref nav-link active" id="protocol" href="#" role="tab">
+                      <div></div>
+                       لغة الاتصال</a>
+              </li>
+              <li class="nav-item replication">
+                  <a class="nav-link ref" href="#" id="replication" role="tab">
+                      <div></div>
+                      التوزيع</a>
+              </li>
+              <li class="nav-item pools">
+                  <a class=" ref nav-link" id="pools"  href="#" role="tab">
+                      <div></div>
+                      الحاويات</a>
+              </li>
+              <li class="nav-item config">
+                  <a class="nav-link ref" href="#" id="config" role="tab">
+                      <div></div>
+                      الاعدادات</a>
+              </li>
+          </ul>
         </div>
         <div class="col-md-2 second-menu">
             <div class="tab-content">
