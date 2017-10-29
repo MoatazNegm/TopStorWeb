@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Pilot</title>
+    <title>QuickStor</title>
     <!--META TAGS-->
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
@@ -616,7 +616,7 @@
 <form id="accountsref" action="accounts.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
-<form id="statusref" action="status.php" method="post">
+<form id="../statusref" action="../arstatus.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
 <form id="protocolref" action="protocol.php" method="post">
@@ -698,7 +698,7 @@
 					var userprivUserPrivileges="false"; var userprivUpload="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
 					if(curuser!="admin"){
-					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){
+					$.get("../requestdata.php", { file: 'Data/userpriv.txt' },function(data){
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
@@ -751,7 +751,7 @@
 			};
 			function refreshPartnerlist(listid,fileloc) {
 
-				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
+				$.get("../requestdatein.php", { file: fileloc+"updated" }, function(data){
 					var cdata=jQuery.parseJSON(data);
 					partnernew=cdata.updated;
 				});
@@ -761,7 +761,7 @@
 					partner=partnernew;
 					$(listid+' tr').remove();
 					$(".partnervariable").remove();
-					$.get("requestdata.php", { file: fileloc }, function(data){
+					$.get("../requestdata.php", { file: fileloc }, function(data){
 						var jdata = jQuery.parseJSON(data);
 
 
@@ -782,7 +782,7 @@
 
 			function refreshProxy(listid,fileloc,showtime,listid2,listid3) {
 
-				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
+				$.get("../requestdatein.php", { file: fileloc+"updated" }, function(data){
 					var cdata=jQuery.parseJSON(data);
 					replivalnew[showtime]=cdata.updated;
 				});
@@ -793,7 +793,7 @@
 
 					replival[showtime]=replivalnew[showtime];
 
-					$.get("requestdata.php", { file: fileloc }, function(data){
+					$.get("../requestdata.php", { file: fileloc }, function(data){
 						var jdata = jQuery.parseJSON(data);
 
 
@@ -809,7 +809,7 @@
 
 			function refreshReplicatelist(listid,fileloc,showtime,way) {
 
-				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
+				$.get("../requestdatein.php", { file: fileloc+"updated" }, function(data){
 					var cdata=jQuery.parseJSON(data);
 					replivalnew[showtime]=cdata.updated;
 				});
@@ -821,7 +821,7 @@
 					replival[showtime]=replivalnew[showtime];
 					$(listid+' option').remove();
 
-					$.get("requestdata.php", { file: fileloc }, function(data){
+					$.get("../requestdata.php", { file: fileloc }, function(data){
 						var jdata = jQuery.parseJSON(data);
 
 
@@ -840,11 +840,11 @@
 				refreshPartnerlist("#Partnerlist","Data/Partnerslist.txt");
 				if($("#partner").hasClass("active") && status !="Partners") {
 					 status="Partners";
-				//	$.get("requestdata2.php", { file: 'Data/Partnersstatus.log' }, function(data){ $("#Partnersstatus").val(data);});
+				//	$.get("../requestdata2.php", { file: 'Data/Partnersstatus.log' }, function(data){ $("#Partnersstatus").val(data);});
 					//refreshPartnerlist("#Partnerlist","Data/Partnerslist.txt");
 				};
 				if($(".Replicate").is(":visible")) {
-					$.get("requestdata2.php", { file: 'Data/Replicatestatus.log' }, function(data){ $("#Replicatestatus").val(data);});
+					$.get("../requestdata2.php", { file: 'Data/Replicatestatus.log' }, function(data){ $("#Replicatestatus").val(data);});
 					refreshReplicatelist("#Partner","Data/Partnerslist.txt","receiver","receiver");
 				};
 				if($("#sender").hasClass("active") && status !="Senders") {
@@ -852,7 +852,7 @@
 					  status="Senders";
 					  partner="checkpartners";
 					  listupdated["Volsend"]="newlist"
-				//	$.get("requestdata2.php", { file: 'Data/Replicatestatus.log' }, function(data){ $("#Sendersstatus").val(data);});
+				//	$.get("../requestdata2.php", { file: 'Data/Replicatestatus.log' }, function(data){ $("#Sendersstatus").val(data);});
 					//refreshReplicatelist("#Partnersend","Data/Partnerslist.txt","sender","sender");
 				};
 				if($("#receiver").hasClass("active") && status !="Receivers") {
@@ -861,11 +861,11 @@
 					 partner="checkpartners";
 					  snaponce("#Oncename","#shortname","#goodname","#Oncename");
 					  listupdated["Volrec"]="newlist"
-				//	$.get("requestdata2.php", { file: 'Data/Replicatestatus.log' }, function(data){ $("#Sendersstatus").val(data);});
+				//	$.get("../requestdata2.php", { file: 'Data/Replicatestatus.log' }, function(data){ $("#Sendersstatus").val(data);});
 					//refreshReplicatelist("#Partnersend","Data/Partnerslist.txt","sender","sender");
 				};
 				if($(".Proxy").is(":visible")) {
-					$.get("requestdata2.php", { file: 'Data/Proxystatus.log' }, function(data){ $("#Proxystatus").val(data);});
+					$.get("../requestdata2.php", { file: 'Data/Proxystatus.log' }, function(data){ $("#Proxystatus").val(data);});
 
 
 				};
@@ -873,7 +873,7 @@
 
 				if(status==3) {
 
-					$.get("requestdata.php", { file: "Data/poolstatus.txt" },function(data){
+					$.get("../requestdata.php", { file: "Data/poolstatus.txt" },function(data){
 						var jdata = jQuery.parseJSON(data);
 						if(jdata.status=="ok") {
 							$("#"+jdata.raid).attr("checked","checked");
@@ -916,8 +916,8 @@
 										listupdated.push(update);
 										listupdated[update]="hello first time"
 							}
-				if(syscounter2==1000){$.post("./pump.php", { req: req, name:"a" }, function (data1){});};
-					$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
+				if(syscounter2==1000){$.post("../pump.php", { req: req, name:"a" }, function (data1){});};
+					$.get("../requestdatein.php", { file: fileloc+"updated" }, function(data){
 					var objdate = jQuery.parseJSON(data);
 					requiredtime[showtime]=objdate.updated;
 
@@ -927,7 +927,7 @@
 					listupdated[update]=requiredtime[showtime];
 					//$(listid+" tr.variable").remove();
 
-					$.get("requestdata.php", { file: fileloc }, function(data){
+					$.get("../requestdata.php", { file: fileloc }, function(data){
 
 						var gdata = jQuery.parseJSON(data);
 
@@ -990,7 +990,7 @@
 				var userpriv="false";
 
 					var curuser="<?php echo $_SESSION["user"] ?>";
-				$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){
+				$.get("../requestdata.php", { file: 'Data/userpriv.txt' },function(data){
 					var gdata = jQuery.parseJSON(data);
 					for (var prot in gdata){
 						if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
@@ -1007,7 +1007,7 @@
 				if(config== 1){
 					var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
-					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){
+					$.get("../requestdata.php", { file: 'Data/userpriv.txt' },function(data){
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
@@ -1025,7 +1025,7 @@
 				if(config== 1){
 					var userpriv="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
-					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){
+					$.get("../requestdata.php", { file: 'Data/userpriv.txt' },function(data){
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
 							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
@@ -1044,7 +1044,7 @@
 
 								var userpriv="false";
 								var curuser="<?php echo $_SESSION["user"] ?>";
-								$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){
+								$.get("../requestdata.php", { file: 'Data/userpriv.txt' },function(data){
 									var gdata = jQuery.parseJSON(data);
 									for (var prot in gdata){
 										if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
@@ -1182,55 +1182,55 @@
 			}
 
 		$("#Proxy").change(function() { if($("#Proxy").is(":checked") == true ) {
-				$.get("requestport.php", function(data){
+				$.get("../requestport.php", function(data){
 					$("#Port").val(data);
 			  });
 				$("#passphrase").show();
 				} else {$("#passphrase").hide(); $("#Port").val("<?php echo rand(15000,16000) ?>");}
 			});
-		function AddPartner(){ $.post("./pump.php", { req:"PartnerAdd", name:$('#Partn').val()+" "+$('#type').val()+" "+$("#Proxy").is(":checked")+" "+$("#Pass").val()+" "+$("#Port").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+		function AddPartner(){ $.post("../pump.php", { req:"PartnerAdd", name:$('#Partn').val()+" "+$('#type').val()+" "+$("#Proxy").is(":checked")+" "+$("#Pass").val()+" "+$("#Port").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 	 };
 
-		$("#AddLicense").click( function (){ $.post("./pump.php", { req:"LicenseAdd", name:$('#License').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+		$("#AddLicense").click( function (){ $.post("../pump.php", { req:"LicenseAdd", name:$('#License').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 	 });
 
-		$("#AddProxy").click( function (){ $.post("./pump.php", { req:"ProxyAdd", name:$('#Proxyurl').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+		$("#AddProxy").click( function (){ $.post("../pump.php", { req:"ProxyAdd", name:$('#Proxyurl').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 	 });
-	 function AddAlias(){ $.post("./pump.php", { req:"AliasAdd", name:$('#Alias').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+	 function AddAlias(){ $.post("../pump.php", { req:"AliasAdd", name:$('#Alias').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 	 };
 
-		$("#DelPartner").click( function (){ $.post("./pump.php", { req:"PartnerDel", name:$("#Partnerlist").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+		$("#DelPartner").click( function (){ $.post("../pump.php", { req:"PartnerDel", name:$("#Partnerlist").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 		});
 
-		function DelPartner(k){ $.post("./pump.php", { req:"PartnerDel", name:k+" "+"<?php echo $_SESSION["user"]; ?>" });
+		function DelPartner(k){ $.post("../pump.php", { req:"PartnerDel", name:k+" "+"<?php echo $_SESSION["user"]; ?>" });
 		};
 
 
-		$("#DeleteSnapshot").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotDelete", name:$("#Pool").val()+" "+$("#Replicatelist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+		$("#DeleteSnapshot").click( function (){ $.post("../pump.php", { req:"RemoteSnapShotDelete", name:$("#Pool").val()+" "+$("#Replicatelist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 });
 			});
-		$("#DeleteSnapshotsend").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotDelete", name:$("#Pool").val()+" "+$("#Senderslist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-				 });
-			});
-
-		$("#RollbackSnapshotsend").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotRollback", name:$("#Pool").val()+" "+$("#Senderslist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-
-				 });
-			});
-		$("#RollbackSnapshot").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotRollback", name:$("#Pool").val()+" "+$("#Replicatelist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-
+		$("#DeleteSnapshotsend").click( function (){ $.post("../pump.php", { req:"RemoteSnapShotDelete", name:$("#Pool").val()+" "+$("#Senderslist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 });
 			});
 
-		$("#DeleteHourly").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotPeriodDelete", name:$("#Hourlylist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+		$("#RollbackSnapshotsend").click( function (){ $.post("../pump.php", { req:"RemoteSnapShotRollback", name:$("#Pool").val()+" "+$("#Senderslist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+
+				 });
+			});
+		$("#RollbackSnapshot").click( function (){ $.post("../pump.php", { req:"RemoteSnapShotRollback", name:$("#Pool").val()+" "+$("#Replicatelist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+
+				 });
+			});
+
+		$("#DeleteHourly").click( function (){ $.post("../pump.php", { req:"RemoteSnapShotPeriodDelete", name:$("#Hourlylist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 refresh2("Replicatestatus");
 				 });
 			});
-		$("#DeleteMinutely").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotPeriodDelete", name:$("#Minutelylist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+		$("#DeleteMinutely").click( function (){ $.post("../pump.php", { req:"RemoteSnapShotPeriodDelete", name:$("#Minutelylist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 refresh2("Replicatestatus");
 				 });
 			});
-		$("#DeleteWeekly").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotPeriodDelete", name:$("#Weeklylist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+		$("#DeleteWeekly").click( function (){ $.post("../pump.php", { req:"RemoteSnapShotPeriodDelete", name:$("#Weeklylist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 refresh2("Replicatestatus");
 				 });
 			});
@@ -1247,7 +1247,7 @@
 				oper =oper+" "+$("#Poolrec").val()+" "+$("#Volrec").val();
 				console.log("period",oper,$("#partnercrec").val(),snapsel)
 
-				$.post("./pump.php", { req:"RemoteSnapshotCreate"+snapsel, name: oper+" "+$("#partnercrec").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+				$.post("../pump.php", { req:"RemoteSnapshotCreate"+snapsel, name: oper+" "+$("#partnercrec").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 refresh2("Snapsstatus");
 				 });
 			};
@@ -1257,11 +1257,11 @@
 		});
 
 
-            function SnapshotDelete(k){console.log("highere",k); $.post("./pump.php", { req:"SnapShotDelete", name:$("#Poolsend").val()+" "+k+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+            function SnapshotDelete(k){console.log("highere",k); $.post("../pump.php", { req:"SnapShotDelete", name:$("#Poolsend").val()+" "+k+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 status="refresh"
 				 });
 		};
-		function SnapshotRollback(k){ $.post("./pump.php", { req:"SnapShotRollback", name:$("#Poolsend").val()+" "+k+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+		function SnapshotRollback(k){ $.post("../pump.php", { req:"SnapShotRollback", name:$("#Poolsend").val()+" "+k+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 status="refresh"
 				 });
 			};
@@ -1275,15 +1275,15 @@
 							}
 
 
-				if(syscounter2==1000){$.post("./pump.php", { req: request, name:"a" }); }
-				$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
+				if(syscounter2==1000){$.post("../pump.php", { req: request, name:"a" }); }
+				$.get("../requestdatein.php", { file: fileloc+"updated" }, function(data){
 					var objdate = jQuery.parseJSON(data);
 					Vollisttimenew=objdate.updated;
 
 				});
 				if(listupdated[update] != Vollisttimenew) {
 					listupdated[update]=Vollisttimenew;
-					$.get("requestdata.php", { file: fileloc }, function(data){
+					$.get("../requestdata.php", { file: fileloc }, function(data){
 						var gdata = jQuery.parseJSON(data);
 							partnerrefresh=0;
 							partnerrefreshrec=0;
@@ -1318,7 +1318,7 @@
 				};
 
 			}
-			function SnapshotPeriodDelete(k){ $.post("./pump.php", { req:"RemoteSnapShotPeriodDelete", name:k+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+			function SnapshotPeriodDelete(k){ $.post("../pump.php", { req:"RemoteSnapShotPeriodDelete", name:k+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 partnerrefresh=0;
 				 });
 			};
@@ -1334,7 +1334,7 @@
 				}
 				oper =oper+" "+$("#Pool option:selected").val()+" "+$("#Vol option:selected").val();
 				console.log(oper,snapsel);
-				$.post("./pump.php", { req:"SnapshotCreate"+snapsel, name: oper+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+				$.post("../pump.php", { req:"SnapshotCreate"+snapsel, name: oper+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 				 refresh2("Snapsstatus"); $("#Vol").change();
 				 });
 			};
@@ -1367,17 +1367,17 @@
 
 
 			setInterval("refreshall()",500);
-			$.post("./pump.php", { req:"Partnerslist" });
-			//$.post("./pump.php", { req: "GetPoolperiodlist", name:"a" });
-			$.post("./pump.php", { req: "GetPoolVollist", name:"a" });
-			$.post("./pump.php", { req: "GetSnaplist", name:"a" });
+			$.post("../pump.php", { req:"Partnerslist" });
+			//$.post("../pump.php", { req: "GetPoolperiodlist", name:"a" });
+			$.post("../pump.php", { req: "GetPoolVollist", name:"a" });
+			$.post("../pump.php", { req: "GetSnaplist", name:"a" });
 			function starting() {
 				$(".ullis").hide();
 				if(config == 1 ) {
 						var userprivPartners="false"; var userprivReplicate="false";var userprivSenders="false"; var userprivProxy="false";
 						var curuser="<?php echo $_SESSION["user"] ?>";
 						if (curuser !="admin") {
-							$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){
+							$.get("../requestdata.php", { file: 'Data/userpriv.txt' },function(data){
 								var gdata = jQuery.parseJSON(data);
 								for (var prot in gdata){
 									if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
