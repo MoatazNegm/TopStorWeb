@@ -107,7 +107,7 @@ fclose($myfile);
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="bg-success"><div id="texthere"></div>
+    <div class="bg-success"><div id="texthere" dir="rtl"></div>
         <button type="button" id="close-success" style="margin-top: -2.4rem" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -131,7 +131,7 @@ fclose($myfile);
               <li class="nav-item protocol">
                   <a class=" ref nav-link " id="protocol" href="#" role="tab">
                       <div></div>
-                       لغة الاتصال</a>
+                       المجلدات</a>
               </li>
               <li class="nav-item replication">
                   <a class="nav-link ref" href="#" id="replication" role="tab">
@@ -551,7 +551,7 @@ function SS(){
 				DNS=1;
 
 				//$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
-				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ if(data!=oldcurrentinfo){oldcurrentinfo=data;  $(".dr-messages").show();$(".bg-success").show(); $("#texthere").text(data);}});
+				$.get("requestdata3.php", { file: '../Data/currentinfo2.log2' }, function(data){ if(data!=oldcurrentinfo){oldcurrentinfo=data;  $(".dr-messages").show();$(".bg-success").show(); $("#texthere").text(data);}});
 SS();
 				//refresh2('Privstatus');
 			 if($("#userPrivlliges").hasClass("active")) {

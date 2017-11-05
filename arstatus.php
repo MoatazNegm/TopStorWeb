@@ -63,7 +63,7 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="bg-success"><div id="texthere"></div>
+    <div class="bg-success"><div id="texthere" dir="rtl"></div>
         <button type="button" id="close-success" style="margin-top: -2.4rem" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -87,7 +87,7 @@
                 <li class="nav-item protocol">
                     <a class="ref nav-link" id="protocol" href="#" role="tab">
                         <div></div>
-                        لغة الاتصال</a>
+                        المجلدات</a>
                 </li>
                 <li class="nav-item replication">
                     <a class="nav-link ref" href="#" id="replication" role="tab">
@@ -113,7 +113,7 @@
                         <li class="nav-item servicestatus">
                             <a id="sstatus" class="nav-link active" data-toggle="tab" href="#servicestatus" role="tab">
                                 <div></div>
-                                <span>حالة الخدمات</span></a>
+                                <span>مراقبة الخدمات</span></a>
                         </li>
                         <li id="Logs" class="nav-item  logs">
                             <a class="nav-link" data-toggle="tab" href="#Logspanel" role="tab">
@@ -473,7 +473,7 @@
 				for (var i=0; i<logcache; i+=1) { logstatus[i]=0 } config = 1; $(".SS").hide(); $(".Logs").hide();$(".finish").hide();$(".ullis").show();});
 	function refreshall() {
 
-		$.get("ar/requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data);});
+		$.get("ar/requestdata3.php", { file: '../Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data);});
 		presentlog();
 		counter=counter+1;
 		if(counter > 2 ) { topresentlog(); updatelogarea(); infochange(); counter = 1; }

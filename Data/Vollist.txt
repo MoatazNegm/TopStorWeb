@@ -1,1 +1,1 @@
-[{"host":"uPool","class":"_","Pool":":"}]
+[{"host":"dhcp29383","uPool":"p1","class":"dhcp29383_p1","Pool":"dhcp29383:p1","name":"forall","volsize":"1024","volact":"1.0566","available":"1023.4","useddata":"0.57812","usedsnaps":"0","crdate":"5-Nov-2017","compress":"2.46x","dedup":"on","quota":"1024","protocol":"CIFS"}]

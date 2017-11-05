@@ -57,7 +57,7 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="bg-success"><div id="texthere"></div>
+    <div class="bg-success"><div id="texthere" dir="rtl"></div>
         <button type="button" id="close-success" style="margin-top: -2.4rem" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -81,7 +81,7 @@
               <li class="nav-item protocol">
                   <a class=" ref nav-link active" id="protocol" href="#" role="tab">
                       <div></div>
-                       لغة الاتصال</a>
+                       المجلدات</a>
               </li>
               <li class="nav-item replication">
                   <a class="nav-link ref" href="#" id="replication" role="tab">
@@ -107,12 +107,12 @@
                         <li class="nav-item cifs">
                             <a class="nav-link active" data-toggle="tab" href="#cifspane" role="tab">
                                 <div></div>
-                                <span>تساهم ويندوز</span></a>
+                                <span>مجلدات ويندوز</span></a>
                         </li>
                         <li class="nav-item nfs">
                             <a class="nav-link" data-toggle="tab" href="#nfspane" role="tab">
                                 <div></div>
-                                <span>تساهم لينكس</span></a>
+                                <span>مجلدات لينكس</span></a>
                         </li>
                     </ul>
                 </div>
@@ -375,14 +375,14 @@
 			function refreshall() {
 				if($("#cifspane").hasClass('active'))  { if (prot !="CIFS") { olddata="oldnfs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); Vollisttime2="skldjfadks"; prot="CIFS";}};
 				if($("#nfspane").hasClass('active') ) { if (prot !="NFS") { olddata="oldcifs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove();prot="NFS"; Vollisttime2="ndfsfsn";}};
-				$.get("../requestdate.php", { file: 'Data/currentinfo2.log2' }, function(data){
+				$.get("../requestdate.php", { file: '../Data/currentinfo2.log2' }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			currentinfo2timenew=objdate.timey;
 		});
 		 		if(currentinfo2timenew!=currentinfo2time) {
 		 			currentinfo2time=currentinfo2timenew;
 		 			$(".bg-success").show().fadeIn('slow');
-					$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data);});
+					$.get("requestdata3.php", { file: '../Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data);});
 
 					//console.log("loghi")
 				}

@@ -57,7 +57,7 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="bg-success"><div id="texthere"></div>
+    <div class="bg-success"><div id="texthere" dir="rtl"></div>
         <button type="button" id="close-success" style="margin-top: -2.4rem" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -81,7 +81,7 @@
               <li class="nav-item protocol">
                   <a class=" ref nav-link " id="protocol" href="#" role="tab">
                       <div></div>
-                       لغة الاتصال</a>
+                      المجلدات</a>
               </li>
               <li class="nav-item replication">
                   <a class="nav-link ref active" href="#" id="replication" role="tab">
@@ -268,7 +268,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-2 col-form-label">المدة</label>
+                            <label class="col-2 col-form-label">التكرار</label>
                             <div class="col-5">
                                 <ul class="nav nav-pills" role="tablist">
                                     <li class="nav-item">
@@ -616,7 +616,7 @@
 <form id="accountsref" action="accounts.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
-<form id="../statusref" action="../arstatus.php" method="post">
+<form id="../arstatusref" action="../arstatus.php" method="post">
 	<input type="hidden" name="idd" value="<?php print session_id();?>" >
 </form>
 <form id="protocolref" action="protocol.php" method="post">
@@ -836,7 +836,7 @@
 			};
 
 			function refreshall() { //check pool status
-			$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ if(data!=oldcurrentinfo){oldcurrentinfo=data;  $(".dr-messages").show();$(".bg-success").show(); $("#texthere").text(data);}});
+			$.get("requestdata3.php", { file: '../Data/currentinfo2.log2' }, function(data){ if(data!=oldcurrentinfo){oldcurrentinfo=data;  $(".dr-messages").show();$(".bg-success").show(); $("#texthere").text(data);}});
 				refreshPartnerlist("#Partnerlist","Data/Partnerslist.txt");
 				if($("#partner").hasClass("active") && status !="Partners") {
 					 status="Partners";

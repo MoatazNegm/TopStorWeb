@@ -58,8 +58,8 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="bg-success"><div id="texthere"></div>
-        <button type="button" id="close-success" style="margin-top: -2.4rem" class="close" aria-label="Close">
+    <div class="bg-success"><div id="texthere" dir="rtl"></div>
+        <button type="button" id="close-success" style="margin-top: -2.4rem" class="close" aria-label="Close" dir="rtl">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -82,7 +82,7 @@
                 <li class="nav-item protocol">
                     <a class=" ref nav-link" id="protocol" href="#" role="tab">
                         <div></div>
-                         لغة الاتصال</a>
+                         المجلدات</a>
                 </li>
                 <li class="nav-item replication">
                     <a class="nav-link ref" href="#" id="replication" role="tab">
@@ -461,7 +461,7 @@
 					refreshUserList();
 
 				//	$.get("requestdata2.php", { file: 'Data/HostManualconfigstatus.log' }, function(data){ $(".bg-success").text(data);});
-				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("bg-success").text(data);});
+				$.get("requestdata3.php", { file: '../Data/currentinfo2.log2' }, function(data){ $("bg-success").text(data);});
 			//	console.log("AD is visible : " , $(".AD").is(":visible"));
 				if($(".AD").is(":visible"))
 				{
@@ -480,7 +480,7 @@
 					$.get("../requestdata2.php", { file: 'Data/Usersstatus.log' }, function(data){ $("#UnLinstatus").val(data);});
 					refreshUserList();
 				}
-				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data);});
+				$.get("requestdata3.php", { file: '../Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data);});
 			}
 			function refresh4(request,field) {
 				if(DNS > 0) {
