@@ -1,1 +1,1 @@
-]
+[{"host":"dhcp14509","uPool":"p1","class":"dhcp14509_p1","Pool":"dhcp14509:p1","name":"hihihi","volsize":"8192","volact":"6.4224","available":"7867.3","useddata":"6.4062","usedsnaps":"0","crdate":"20-Mar-2018","compress":"1.01x","dedup":"on","quota":"8192","protocol":"CIFS"}]
