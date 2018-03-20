@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+	<?php include "header.html"; ?>
+	<body>
+
+		
+<!------------  NAV Bar --------------->
+		<div class="container-fluid">
+			<div class="row">
+				<div class="img-logo ">
+					<div class="col-sm-3">
+						<a class="pull-left logoimg" href="#">
+							<img src="img/logo2.png" height="200" width="200" class="img-responsive"> 
+						</a>
+					</div>
+					<div class="col-sm-6">
+						<h1 class="text-center maintext"><strong>Flex Storage</strong></h1>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="">
+					<div class=" col-sm-1 leftPane">
+						<ul class="nav nav-pills nav-stacked">
+							<li><a href="accounts.html" ><br>Accounts</a></li>
+							<li><a href="status.html"  ><br>Status</a></li>
+							<li class="active"><a href="Protocol.html" ><br>Protocol</a></li>
+							<li><a href="replication.html" ><br>replication</a></li>
+							<li><a href="Pools.html"  ><br>Pools</a></li>
+							<li><a href="config.html"  ><br>config</a></li>
+						</ul>
+					</div>
+					<div class="col-sm-11 rightPane">
+						<ul>
+							<li><a href="#" class="CIFSa"><h4 id="CIFS"><span>CIFS</span></h4></a></li>
+							<li><a href="#" class="NFSa"><h4 id="NFS"><span>NFS</span></h4></a></li>
+							<li><a href="#" class="ISCSIa"><h4 id="ISCSI"><span>ISCSI</span></h4></a></li>
+						</ul>
+
+						<div class="row CIFS">
+							
+							<div class=" col-sm-offset-1 col-sm-10">
+								<div class="box ">
+									<div class="row">
+										<h2 class="configTitle">Active Directory</h2>
+									</div>									
+									<form class="form-horizontal " role="form">
+										<div class="row">
+											<div class="  col-sm-6 ">
+												<div class=" form-group row">
+													<label  for="Pool" class="col-sm-3 control-label">Pool</label>
+													<div class=" col-sm-9">
+														<select  id="Pool" class="form-control ">
+															<option>High</option><option>Low</option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group row">
+													<label  for="Volumes" class="col-sm-3 control-label">Volumes</label>
+													<div class=" col-sm-9">
+														<select  id="Volumes" class="form-control ">
+															<option>Home</option><option>GlobalShared</option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group row">
+													<label  for="Enable" class="col-sm-3 control-label">Enabled</label>
+													<div class=" col-sm-9">
+														<select  id="Enabble" class="form-control ">
+															<option>Yes</option><option>No</option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class=" col-sm-6">
+												<div class=" form-group row">
+													<div id="chartCIFS" class="box2" ></div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class=" col-sm-6">
+												<div class=" form-group row">
+													<button type="button" class="btn btn-default col-sm-offset-5 col-sm-6 " data-toggle="tooltip" data-placement="bottom" title="close window">submit</button>
+												</div>
+											</div>
+											<div class=" col-sm-6">
+												<div class="form-group row ">
+														<button type="button" class="btn btn-default col-sm-offset-3 col-sm-6 finish" data-toggle="tooltip" data-placement="top" title="submit values">Finish</button>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>				
+							</div>
+						</div>
+						<div class="row NFS">
+							
+							<div class=" col-sm-offset-1 col-sm-10">
+								<div class="box ">
+									<div class="row">
+										<h2 class="configTitle">Active Directory</h2>
+									</div>									
+									<form class="form-horizontal " role="form">
+										<div class="row">
+											<div class="  col-sm-6 ">
+												<div class=" form-group row">
+													<label  for="Pool" class="col-sm-3 control-label">Pool</label>
+													<div class=" col-sm-9">
+														<select  id="Pool" class="form-control ">
+															<option>High</option><option>Low</option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group row">
+													<label  for="Volumes" class="col-sm-3 control-label">Volumes</label>
+													<div class=" col-sm-9">
+														<select  id="Volumes" class="form-control ">
+															<option>Home</option><option>GlobalShared</option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group row">
+													<label  for="Enable" class="col-sm-3 control-label">Enabled</label>
+													<div class=" col-sm-9">
+														<select  id="Enabble" class="form-control ">
+															<option>Yes</option><option>No</option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class=" col-sm-6">
+												<div class=" form-group row">
+													<div id="chartNFS" class="box2" ></div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class=" col-sm-6">
+												<div class=" form-group row">
+													<button type="button" class="btn btn-default col-sm-offset-5 col-sm-6 " data-toggle="tooltip" data-placement="bottom" title="close window">submit</button>
+												</div>
+											</div>
+											<div class=" col-sm-6">
+												<div class="form-group row ">
+														<button type="button" class="btn btn-default col-sm-offset-3 col-sm-6 finish" data-toggle="tooltip" data-placement="top" title="submit values">Finish</button>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>				
+							</div>
+						</div>
+						<div class="row ISCSI">
+							
+							<div class=" col-sm-offset-1 col-sm-10">
+								<div class="box ">
+									<div class="row">
+										<h2 class="configTitle">Active Directory</h2>
+									</div>									
+									<form class="form-horizontal " role="form">
+										<div class="row">
+											<div class=" col-sm-2 ">
+												<div class=" form-group row">
+													<label  for="Client" class="col-sm-3 control-label">Client</label>
+													<div class=" col-sm-9">
+														<input type="text" id="User" class="form-control " placeholder="Client Name">
+													</div>
+												</div>
+												<div class=" form-group row ">
+													<label  for="UserList" class="col-sm-3 control-label"></label>
+													<div class=" col-sm-9">
+														<select multiple size""3"" id="UserList" class="form-control " ><option>user1</option><option>user2</option><option>user3</option>
+													</select>
+													</div>
+												</div>
+											</div>
+											<div class= "col-sm-1">	
+												<div class="form-group row">
+													<button type="button" class="btn btn-default  col-sm-10 addclient"  data-toggle="tooltip" data-placement="top" title="add client">Add Client</button>
+												</div>
+												<div class="form-group row">
+													<button type="button" class="btn btn-default  col-sm-10 remclient"  data-toggle="tooltip" data-placement="top" title="remove client">Remove</button>
+												</div>
+											</div>
+											<div class=" col-sm-3">
+												<div class=" form-group row middlemargin">
+													<button type="button" class="btn btn-default  col-sm-12 " data-toggle="tooltip" data-placement="bottom" title="Assign luns">assign</button>
+												</div>
+											</div>
+											<div class=" col-sm-2 ">
+												<div class=" form-group row">
+													<label  for="IQN" class="col-sm-2 control-label ">IQN</label>
+													<div class=" col-sm-9">
+														<input type="text" id="IQN" class="form-control " placeholder="xxxxxxxxxxxxxxx">
+													</div>
+												</div>
+												<div class=" form-group row ">
+													<label  for="UserList" class="col-sm-2 control-label"></label>
+													<div class=" col-sm-9">
+														<select multiple size""3"" id="UserList" class="form-control " ><option>user1</option><option>user2</option><option>user3</option>
+													</select>
+													</div>
+												</div>
+											</div>
+											<div class= "col-sm-1">	
+												<div class="form-group row">
+													<button type="button" class="btn btn-default  col-sm-10 addiqn"  data-toggle="tooltip" data-placement="top" title="add client">Add IQN</button>
+												</div>
+												<div class="form-group row">
+													<button type="button" class="btn btn-default  col-sm-10 remiqn"  data-toggle="tooltip" data-placement="top" title="remove IQN">delete</button>
+												</div>
+											</div>
+											<div class=" col-sm-3">
+												<div class=" form-group row">
+													<div id="chartISCSI" class="box2" ></div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class=" col-sm-offset-1 col-sm-2 ">
+												<div class=" form-group row ">
+													<label  for="UserList" class="col-sm-3 control-label"></label>
+													<div class=" col-sm-9">
+														<select multiple size""3"" id="UserList" class="form-control " ><option>user1</option><option>user2</option><option>user3</option>
+													</select>
+													</div>
+												</div>
+											</div>
+											<div class=" col-sm-3">
+												<div class=" form-group row middlemargin">
+													<button type="button" class="btn btn-default  col-sm-12 " data-toggle="tooltip" data-placement="bottom" title="Assign luns">assign</button>
+												</div>
+										</div>
+											<div class=" col-sm-2 ">
+												<div class=" form-group row ">
+													<div class=" col-sm-9">
+														<select multiple size""3"" id="UserList" class="form-control " ><option>user1</option><option>user2</option><option>user3</option>
+													</select>
+													</div>
+												</div>
+											</div>
+											<div class= "col-sm-1">	
+												<div class="form-group row">
+												</div>
+												<div class="form-group row">
+													<button type="button" class="btn btn-default  col-sm-10 remiqn"  data-toggle="tooltip" data-placement="top" title="remove IQN">delete</button>
+												</div>
+											</div>
+											<div class=" col-sm-3">
+												<div class="form-group row">
+												</div>
+												<div class="form-group row ">
+														<button type="button" class="btn btn-default col-sm-offset-1 col-sm-9 finish" data-toggle="tooltip" data-placement="top" title="submit values">Finish</button>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>				
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+			
+		<div class="row">
+			<footer class="footer"> Errors
+			</footer>
+		</div>
+
+
+
+			<!-- Don't touch this! -->
+
+		<script src="jquery/jquery.js"></script>
+		<script src="jquery-ui/jquery-ui.js"></script>
+		<script src="jquery/jquery.datetimepicker.js"></script>
+		<script src="Bootstrap/js/bootstrap.min.js"></script>
+    <script class="include" type="text/javascript" src="jqplot/jquery.jqplot.min.js"></script>
+<!-- End Don't touch this! -->
+
+<!-- Additional plugins go here -->
+
+    <script class="include" language="javascript" type="text/javascript" src="jqplot/plugins/jqplot.pieRenderer.min.js"></script>
+
+
+<!-- End additional plugins -->
+		<script>
+			function plotchart(chart){
+				var data = [
+					['Heavy Industry', 12],['Retail', 9], ['Light Industry', 14], 
+					['Out of home', 16],['Commuting', 7], ['Orientation', 9]
+				];
+				var plot1 = jQuery.jqplot (chart, [data], 
+					{ 
+						seriesDefaults: {
+							// Make this a pie chart.
+							renderer: jQuery.jqplot.PieRenderer, 
+							rendererOptions: {
+								// Put data labels on the pie slices.
+								// By default, labels show the percentage of the slice.
+								showDataLabels: true
+							}
+						}, 
+						legend: { show:false, location: 'e'},
+						grid: { background: "transparent", borderColor: "transparent", shadow: false }
+					}
+				);
+			}
+			
+			var config = 1;
+			$(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();
+			$("#CIFS").click(function (){ 
+				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".CIFS").show(); plotchart('chartCIFS'); };});
+			$("#NFS").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/nfs.png')").text("NFS"); $(".NFS").show(); plotchart('chartNFS');};});
+			$("#ISCSI").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ISCSI").show(); plotchart('chartISCSI');};});
+			$(".finish").click(function (){ config = 1; $(".CIFS").hide(); $(".NFS").hide(); $(".ISCSI").hide();});
+			
+		</script>
+	<script class="" type="text/javascript">
+	
+</script>
+
+	</body>
+
+</html>

@@ -1,0 +1,4 @@
+useradd: warning: the home directory already exists.
+Not copying any file from skel directory into it.
+Creating mailbox file: File exists
+Failed to add entry for user mezo.
