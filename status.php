@@ -254,7 +254,9 @@
 			var disksval="hi"
 			var dater;
 			var liner;
+			var linerfact=2;
 			var dater2;
+			var msgtype="";
 			var statsdata="initial";
 			var page=0;
 			var reqpage=0;
@@ -300,9 +302,10 @@
 					function infochange() {
 				
 				$(".datarow").hide();
-				if($("#INFO").is(":checked")) { $(".info").show(); }
-				if($("#Warning").is(":checked")) { $(".warning").show(); }
-				if($("#Error").is(":checked")) { $(".error").show(); }
+				msgtype=""
+				if($("#INFO").is(":checked")) { msgtype=msgtype+"info"; $(".info").show(); }
+				if($("#Warning").is(":checked")) { msgtype=msgtype+"warning"; $(".warning").show(); }
+				if($("#Error").is(":checked")) { msgtype=msgtype+"error"; $(".error").show(); }
 			};
 	     $(".msgtype").click(function() { topresentlog(); infochange(); });
 			
@@ -417,17 +420,13 @@
 							
 			});
 			$("#pnext").click(function(){  
-				var date=new Date($("td.last").text());
-				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2)+"T"+("0" + date.getUTCHours()).slice(-2)+":"+("0" +date.getUTCMinutes()).slice(-2)+":"+("0" + date.getUTCSeconds()).slice(-2)) 	
-				dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+date.getFullYear()+"T"+("0" + date.getUTCHours()).slice(-2)+":"+("0" +date.getUTCMinutes()).slice(-2)+":"+("0" + date.getUTCSeconds()).slice(-2) 	
-				
-				dater=$("#dater").val()
-					$("#dater").change();
+				linerfact=1
+				//dater=$("#dater").val()
+				//$("#dater").change();
 							
 			});
 			$("#pprev").click(function(){  
-				if (activepage > 0 ) { activepage = activepage-1; logstatus[activepage]=50 }
-				
+				linerfact=-1	
 			});
 			$("#refresh").click(function(){ 
 				$("#Logdetails tr.datarow").remove();
@@ -496,30 +495,65 @@
 		
 		
 	}
+	var data2;
 	function topresentlog() {
 	var date
 	
 			if( $("#dater").val() == "") { 
 				date = new Date
-				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) + "T23:59:00") 
+				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) +"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2)) 
 			} 		
 		///dateri=date.getFullYear()+'/' +("0" + (date.getDate() + 0)).slice(-2)+'/'+("0" + (date.getMonth() + 1)).slice(-2)+"T"+("0" + date.getUTCHours()).slice(-2)+":"+("0" +date.getUTCMinutes()).slice(-2)+":"+("0" + date.getUTCSeconds()).slice(-2) 	
-		date=new Date($("#dater").val());		
-		dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+date.getFullYear()+"T"+("0" + date.getUTCHours()).slice(-2)+":"+("0" +date.getUTCMinutes()).slice(-2)+":"+("0" + date.getUTCSeconds()).slice(-2) 	
+		if(linerfact==-1) {
+				linerfact=2
+				date=new Date($("td.first").text());
+				dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+date.getFullYear()+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2) 	
+				$.get("./pumpy.php", { req:"readlog.py", name:dater+' -'+liner+' '+msgtype+' '+"<?php echo $_SESSION["user"]; ?>"},
+					function(data){  
+					obj[1]=jQuery.parseJSON(data)
+					date= new Date(obj[1][1].Date+' '+obj[1][1].time)
+				console.log("-date",obj[1].length)
+				if(obj[1].length < 11) {
+					date = new Date
+					$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) +"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2)) 
 
-			liner=$("#lines").val();
-	
-			for (var i=0; i< logstatus.length; i+=1) { 
-			 $.post("./pump.php", { req:"GetLog", name: dater+' '+liner+' '+"<?php echo $_SESSION["user"]; ?>"},function(){}); 
-
+					
+				} else { $("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) +"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2)) 
+				}	
+				});
 				
-				updatelogarea();
-			presentlog();
-			infochange();
+			
+				
+		}
+		if(linerfact==1){
+			linerfact=2
+				date=new Date($("td.last").text());
+				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2)+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2)) 	
+				dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+date.getFullYear()+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2) 	
+				$.get("./pumpy.php", { req:"readlog.py", name:dater+' '+liner+' '+msgtype+' '+"<?php echo $_SESSION["user"]; ?>"},
+					function(data){  
+					obj[1]=jQuery.parseJSON(data)
+				});
+		}
+		if(linerfact==2) {
+				
+				date=new Date($("#dater").val());		
+				dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+date.getFullYear()+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2) 	
+				liner=$("#lines").val();
+				$.get("./pumpy.php", { req:"readlog.py", name:dater+' '+liner+' '+msgtype+' '+"<?php echo $_SESSION["user"]; ?>"},
+					function(data){  
+					obj[1]=jQuery.parseJSON(data)
+				});
+			//	updatelogarea();
+				
 							
-				}
+				
 			
 			}
+			presentlog();
+			infochange();
+	}
+			
 
 	function chartplease(datern) {
 		//$.post("requeststats.php", { date: datern, time: 0 });
@@ -613,28 +647,69 @@
 	}
 }
 	
-	
-	function updatelogarea(){
+	function updatelogarea() {}
+	function updatelogarea2(){
 		
 		var tm, splitstime;
 		var tm2; var tme, splitstimee;
 		var rqpg
 		rqpg=liner;
 		ii=1;
-    
-		$.get("requestdate.php", { file: 'Data/Logs.logupdated' }, function(data){
+  
+		$.get("requestdate.php", { file: 'Data/Logs2.log' }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			logtimenew=objdate.timey;
 		});
 		if(logtimenew!=logtime ) {
 			logtime=logtimenew;			
-			$.get("requestdata.php", { file: 'Data/Logs.log'+liner}, function(data){
-	
-			obj[ii] = jQuery.parseJSON(data);
+			$.get("requestdata.php", { file: 'Data/Logs2.log'+liner}, function(data){
+			obj[ii] = data
 			});
 		}
 	}
 	function presentlog() {
+		var logarea = "";
+		var color;
+		config=1;
+		var ii=1;
+	
+		$("#Logdetails tr.datarow").remove();
+		var y="between";
+				for (var k in obj[ii]) { 
+							var objdata=obj[ii][k].data;
+							var codes; var msgcode; var jofcode; var themsg; var themsgarr;
+							if(typeof obj[ii][k].code != 'undefined'){
+								codes=obj[ii][k].code.split("@");
+								msgcode=codes[0];
+								jofcode=0;
+								jofcode=searchmsg(msgs,msgcode);
+								//console.log("jofcode",jofcode);
+								themsg=msgs[jofcode];
+								try { themsgarr=themsg.split(":"); } catch(err) { updatelogarea();}
+								codes.push(".");
+								objdata=""
+								for (i=1; i < themsgarr.length ;i++) {
+									 objdata=objdata+themsgarr[i]+" "+codes[i]+" ";
+								 }
+								//console.log("codes",codes);
+								//console.log("themsgarr",themsgarr);
+							}
+							logarea=logarea+obj[ii][k].Date+" "+obj[ii][k].time+" "+obj[ii][k].msg+": "+objdata+obj[ii][k].code+"\n";
+							y="between"
+							if (k == 0) { y="first"; };
+							if (k == (obj[ii].length-1)) {y="last";};
+							if(obj[ii][k].msg == "info") { color="blue"}; if(obj[ii][k].msg == "warning") { color="#cce11a"}; if(obj[ii][k].msg == "error") { color="red"}						
+							$("#Logdetails").append('<tr style="padding-left: 2rem; color:'+color+'" class="row datarow '+obj[ii][k].msg+'" ><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-3 text-left tdlog Volname '+y+' '+obj[ii][k].msg+' " data-toggle="popover" rel="popover" data-trigger="hover" data-container="body"  >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td style="margin-left: -1.7rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-2 text-center tdlog '+obj[ii][k].msg+' "  data-content='+objdata+' >'+obj[ii][k].user+'</td><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-7 text-center tdlog '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
+							
+							
+										infochange();			
+							
+						
+					
+				};
+	
+	}
+	function presentlog2() {
 		var logarea = "";
 		var color;
 		config=1;

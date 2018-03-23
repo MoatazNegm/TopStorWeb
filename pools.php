@@ -921,6 +921,7 @@ else { imgf="disk-image.png" }
 		if(disks[k].grouptype.indexOf("raidz2") >=0) {nclass="raid2"}
 		if(disks[k].grouptype.indexOf("raidz3") >=0) {nclass="raid3"}
 		$(".disk"+k).addClass(nclass)
+  		console.log(disks[k].grouptype,nclass)
 	/*	$(".disk"+k).addClass(disks[k].diskstatus)
 	*/		if(disks[k].grouptype.indexOf("stripe") >=0 ) {
 					$("#poolmsg").text("Pool p1 is running on disk: "+k); $("#poolsize").text(disks[k].poolsize+"GB")
