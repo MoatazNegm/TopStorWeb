@@ -1,4 +1,2 @@
-useradd: warning: the home directory already exists.
-Not copying any file from skel directory into it.
-Creating mailbox file: File exists
-Failed to add entry for user mezo.
+userdel: mezo mail spool (/var/spool/mail/mezo) not found
+userdel: mezo home directory (/p1/mezo) not found
