@@ -1,1 +1,1 @@
-[{"host":"dhcp32456","uPool":"p1","class":"dhcp32456_p1","Pool":"dhcp32456:p1","name":"hi","volsize":"3072","volact":"0.039062","available":"3071.9","useddata":"0.09375","usedsnaps":"0","crdate":"4-Apr-2018","compress":"1.00x","dedup":"on","quota":"3072","protocol":"CIFS"}]
+[{"host":"dhcp11268","uPool":"p1","class":"dhcp11268_p1","Pool":"dhcp11268:p1","name":"hi","volsize":"1024","volact":"0.039062","available":"1023.9","useddata":"0.09375","usedsnaps":"0","crdate":"5-Apr-2018","compress":"1.00x","dedup":"on","quota":"1024","protocol":"CIFS"}]
