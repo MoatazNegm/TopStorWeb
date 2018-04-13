@@ -1,1 +1,1 @@
-[{"host":"dhcp11268","uPool":"p1","class":"dhcp11268_p1","Pool":"dhcp11268:p1","name":"hi","volsize":"1024","volact":"0.039062","available":"1023.9","useddata":"0.09375","usedsnaps":"0","crdate":"5-Apr-2018","compress":"1.00x","dedup":"on","quota":"1024","protocol":"CIFS"}]
+]

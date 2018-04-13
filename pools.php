@@ -838,6 +838,7 @@
 												 $(altbut).show();$(comp).removeClass("NotComplete")
 						};
 			};
+			var jdata=''
 			
 			function refreshall() { //check pool status
 			
@@ -847,11 +848,12 @@
 				if (panesel == "diskgroup") { 
 				if(getdisk==1 ){getdisk=2; $.post("./pump.php", { req: "GetDisklist", name:"a" },function(data){ getdisk=0;}); }
 				
-					$.get("requestdata.php", { file: "Data/disklist.txt" },function(data){
-						if(data!=olddiskpool) {
-							
+					$.get("gump.php", { req: "run", name:"--prefix"  },function(data){
 						
-						var jdata = jQuery.parseJSON(data);
+						if(data!=olddiskpool) {
+						
+						jdata = jQuery.parseJSON(data)
+						console.log('jdata',jdata);
 						if(typeof jdata =='object') {
 							console.log("changed")	
 								$("#DG tr").hide(); 
@@ -860,9 +862,12 @@
 						var k;
 						 $(".disk-image").remove();	
 						 $("#diskimg").html('');
+						for (var item in jdata){
+							console.log('item',item,jdata[item])
+						}
 						for (var disk in jdata){
-					/*		disks.push(jdata[disk].id)
-					*/		k=jdata[disk].id; 
+							
+							k=jdata[disk].id; 
 							disks[jdata[disk].id]=[]
 							disks[jdata[disk].id]["name"]=jdata[disk].name;
 							disks[jdata[disk].id]["host"]=jdata[disk].host;
