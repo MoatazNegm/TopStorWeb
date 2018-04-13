@@ -862,9 +862,52 @@
 						var k;
 						 $(".disk-image").remove();	
 						 $("#diskimg").html('');
-						for (var item in jdata){
-							console.log('item',item,jdata[item])
-						}
+						disks=[];
+						
+						disks=[];
+						kdata=[]
+						$.each(jdata,function(kk,vv){
+								kdata.push(jdata[kk].replace("['",'').replace("]'",'').replace("'",'').split(',')[0].split('/'))
+						});
+						$.each(kdata,function(kk,vv){
+							
+							if(kdata[kk].indexOf('disk') > 0 && kdata[kk].indexOf('raid') > 0 && kdata[kk].indexOf('status') > 0) {
+									
+									disks[kdata[kk][5]]=[]
+									
+									disks[kdata[kk][5]]["group"]=kdata[kk][3]
+									disks[kdata[kk][5]]['status']=jdata[kk].replace("[",'').replace("]",'').replace("'",'').split(',')[1]
+									disks[kdata[kk][5]]["id"]=kdata[kk][5]
+								}
+							if(kdata[kk].indexOf('disk') > 0 && kdata[kk].indexOf('free') > 0 && kdata[kk].indexOf('fromhost') > 0) {
+									
+									disks[kdata[kk][3]]=[]
+									
+									disks[kdata[kk][3]]["group"]='-1'
+									disks[kdata[kk][3]]['status']='available'
+									disks[kdata[kk][3]]["id"]=kdata[kk][3]
+									disks[kdata[kk][3]]["host"]=jdata[kk].split('-')[1].replace("']",'')
+								}
+						})
+						$.each(kdata,function(kk,vv){
+							if(kdata[kk].indexOf('disk') > 0 && kdata[kk].indexOf('raid') > 0 && kdata[kk].indexOf('fromhost') > 0) {
+								console.log(jdata[kk])
+								$.each(disks,function(k,v) {
+									console.log('id',disks[k]["id"])
+									if(disks[k]["id"]==kdata[kk][5]){
+										disks[k]["host"]=jdata[kk].split('-')[1].replace("']",'')
+									}
+
+
+								})
+								
+							}
+							if(disks[kk]["status"]=="OFFLINE") { imgf="invaliddisk.png" }
+							else { imgf="disk-image.png" }	
+							$("#diskimg").append('<div class="'+disks[kk]["status"]+'" ><a id="'+kk+'" href="javascript:diskclick(\''+kk+'\')"> <img class="img-fluid disk-image disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a href="javascript:diskclick(\''+kk+'\')"><p class="psize">'+disks[kk]["size"]+'GB</p></a><p class="pimage">disk'+kk+'</p><p class="ppimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["group"]+'</p>')
+							disks[kk]["selected"]=0;	
+						
+						})
 						for (var disk in jdata){
 							
 							k=jdata[disk].id; 
@@ -881,12 +924,8 @@
 							disks[jdata[disk].id]["class"]="empty";
 							disks[jdata[disk].id]["diskstatus"]=jdata[disk].diskstatus;
 							ppoolstate=jdata[disk].poolstatus;
-if(jdata[disk].diskstatus =="AVAIL" ) { disks[k]["diskstatus"]='Spare'}
-if(disks[k]["diskstatus"].indexOf("OFFLINE") >= 0) { imgf="invaliddisk.png" }
-else { imgf="disk-image.png" }
-							
-							$("#diskimg").append('<div class="'+disks[k]["diskstatus"]+'" ><a id="'+k+'" href="javascript:diskclick(\''+k+'\')"> <img class="img-fluid disk-image disk'+k+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a href="javascript:diskclick(\''+k+'\')"><p class="psize">'+disks[k]["size"]+'GB</p></a><p class="pimage">disk'+k+'</p><p class="ppimage p'+disks[k]["diskstatus"]+'">'+disks[k]["diskstatus"]+'</p><p class="pimage">'+disks[k]["grouptype"]+'</p>')
-							disks[k]["selected"]=0;			
+
+									
 			
 						}
 						setstatus();
