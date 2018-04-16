@@ -610,7 +610,7 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
 .InGroup {   background : blue; }
 .FreeDisk {  background: green; }
 .stripe { background: red; }
-.spare { background: yellow; }
+.spares { background: yellow; }
 .cache { background: gray; }
 .log  { background: darkblue; }
 .mirror,.raid1,.raid2,.raid3 { background: blue; }

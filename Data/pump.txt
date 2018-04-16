@@ -1,1 +1,1 @@
-GetPoolperiodlist a
+DGsetPool delspecial admin dhcp10061 scsi-36001405d3c1f9130c644f44a2f965800 3
