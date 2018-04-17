@@ -1138,7 +1138,7 @@
 					if(runningroup.includes('stripe') ){
 						poolmsg="Pool p1 can be expanded by adding disk"+dd["1"].id+" (no redundancy) or mirrored. please select from below"
 						$("#poolmsg").text(poolmsg);
-						$("#Addstriped").show();
+						$("#Addstriped").show(); $("#Addreadcache").show(); $("#Addwritecache").show()
 						$("#AddStripesize").text(maxspace+"GB"); if(minspace > 0) {$("#Attachmirrored").show(); $("#Attachmirroredsize").text(minspace+"GB")};
 						console.log('11hi',possiblenotstripe, dd[1])
 					}
@@ -1171,7 +1171,7 @@
 					poolmsg="Pool p1 can be expanded by adding disk"
 					for(ddk in dd) { if(ddk >= 0){ maxspace=maxspace+parseInt(dd[ddk].size);poolmsg=poolmsg+dd[ddk].id+", "}}
 					$("#poolmsg").text(poolmsg.slice(0,-2)+" (no redundancy)  please select from below");
-					$("#Addstriped").show();
+					$("#Addstriped").show();$("#Addreadcache").show();$("#Addwritecache").show()
 					$("#AddStripesize").text(maxspace+"GB"); 
 				}
 				if(runningroup.includes('stripe') !=true  && possiblenotstripe==2) {
