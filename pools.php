@@ -1040,8 +1040,8 @@
 
 				$("#poolmsg").text("remove the "+dd["1"].grouptype.replace("'",'')+" disk"+dd["1"].id);
 				selectingdisks="spare"
-				if(dd["1"].grouptype=="cache"){selectingdisks="read cache"}
-				if(dd["1"].grouptype=="log"){selectingdisks="read/write cache"}
+				if(dd["1"].grouptype.includes("cache")){selectingdisks="read cache"}
+				if(dd["1"].grouptype.includes("log")){selectingdisks="read/write cache"}
 				$("#Delspecial").show();$("#typeofdisk").text(selectingdisks);
 				console.log('3hi',possiblenotstripe, dd[1])
 			}
@@ -1292,6 +1292,7 @@
 	function diskclick(id) { 
 		  var selectingdisks;
 		  syscounter2=800
+		  if(disks[id].grouptype.includes("stripe") || disks[id].grouptype.includes("mirror") || disks[id].grouptype.includes("raid")){ return;}
 				$(".disk"+id).toggleClass("SelectedFree"); 
 				if($(".disk"+id).hasClass("SelectedFree")) {
 					disks[id]["selected"]=1;
@@ -1320,11 +1321,12 @@
 			setaction();
 		}
 		
-	function toggleDiskselect(dd,sel,webclass) {
+	function toggleDiskselect(ddd,sel,webclass) {
 		var nextdisk="notavailable"
+		console.log("ddd=",ddd,sel,webclass,dd)
 		for (k in disks){
 		
-			if (disks[k]["group"]==dd) {
+			if (disks[k]["group"]==ddd) {
 				if(sel==1){ 
 					$(".disk"+k).addClass(webclass); disks[k]["selected"]=1;
 				} 
