@@ -601,7 +601,7 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
 	text-align:center;
 	width:4.4rem;
 }
-.pOFFLINE { text-align:center; width: 4.4rem; color: red; font-weight: bold;}
+.pOFFLINE, .pFAULT { text-align:center; width: 4.4rem; color: red; font-weight: bold;}
 .pONLINE {  text-align:center; width:4.4rem; color: blue; }
 .pSpare {   text-align:center; width:4.4rem; color: blue; }
 .pfree { text-align:center; width:4.4rem; color: green; }
@@ -614,7 +614,7 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
 .cache { background: gray; }
 .log  { background: darkblue; }
 .mirror,.raid1,.raid2,.raid3 { background: blue; }
-.OFFLINE { animation: opacity 2s ease-in-out infinite;
+.OFFLINE, .FAULT { animation: opacity 2s ease-in-out infinite;
 	   opacity: 1;
 }
 #poolstate { 

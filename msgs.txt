@@ -2,10 +2,10 @@ Difa1: : : Disk : failed
 Dist2: : : Start replacing Disk : by the spare disk : 
 Disu2: : : Success replacing Disk : by the spare disk : 
 Dist3: : : Start removing Disk : from system database 
-Disu3: : : Success removing Disk : . It is no longer used.
-Diwa4: : : Disk : is removed from system 
+Disu3: : : Success removing Disk : . from system : It is no longer used.
+Diwa4: : : Disk : is removed from system :
 Disu4: : : Success deleting absent disk : from system database
-Dist5: : : Start offlineing disk :. Please add a spare disk urgently
+Dist5: : : Start offlineing disk :. Please add a spare disk urgently so system :
 Disu5: : : Success to set disk : to be offline, please add a spare disk urgently
 Unlin11000: Problem while deleting user :
 Unlin11001: : : Problem while deleting user :

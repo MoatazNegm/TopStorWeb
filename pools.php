@@ -881,6 +881,10 @@
 							disks[kdata[kk][5]]['status']=disks[kdata[kk][5]]['status'].replace("'",'').replace(" ",'')
 							disks[kdata[kk][5]]["id"]=kdata[kk][5]
 						}
+
+					if(kdata[kk].indexOf('disk') > 0 && kdata[kk].indexOf('free') > 0 && kdata[kk].indexOf('status') > 0) {
+                                                        disks[kdata[kk][3]]['status']=jdata[kk].replace("[",'').replace("]",'').replace("'",'').split(',')[1].replace("'",'')
+					}
 					if(kdata[kk].indexOf('disk') > 0 && kdata[kk].indexOf('free') > 0 && kdata[kk].indexOf('fromhost') > 0) {
 							
 							disks[kdata[kk][3]]=[]
@@ -939,7 +943,7 @@
 				})
 				
 				$.each(disks,function(kk,vv){
-					if(disks[kk]["status"]=="OFFLINE") { imgf="invaliddisk.png" }
+					if(disks[kk]["status"].includes("OFFLINE") || disks[kk]["status"].includes("FAULT") ) { imgf='invaliddisk.png" style="height:7rem; width:5.1rem;"' }
 					else { imgf="disk-image.png" }	
 					$("#diskimg").append('<div class="'+disks[kk]["status"].replace("'",'').replace(" ",'')+'" ><a id="'+kk+'" href="javascript:diskclick(\''+kk+'\')"> <img class="img-fluid disk-image disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a href="javascript:diskclick(\''+kk+'\')"><p class="psize">'+disks[kk]["size"].replace("'",'').replace(" ",'')+'</p></a><p class="pimage">disk'+kk+'</p><p class="ppimage p'+disks[kk]["status"].replace("'",'').replace(" ",'')+'">'+disks[kk]["status"].replace("'",'').replace(" ",'')+'</p><p class="pimage">'+disks[kk]["grouptype"].replace("'",'').replace(" ",'')+'</p>')
 					disks[kk]["selected"]=0;	
