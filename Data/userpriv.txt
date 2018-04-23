@@ -1,1 +1,0 @@
-[{"user":"mezo","Active_Directory":"true","Service_Charts":"false","NFS":"false","SnapShots":"false","Box_Users":"false","Logs":"false","UserPrivilegesch":"false","Error":"false","CIFS":"false","DiskGroups":"false","Partners":"false","Senders":"false","Replication":"false","Uploadch":"false","administrator":"admin"}]
