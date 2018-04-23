@@ -1,0 +1,1 @@
+[{"period":"Minutely","father":"test5","t1":"1","t2":"3","t3":"na","t4":"na"},{"period":"Weekly","father":"test5","t1":"19","t2":"51","t3":"Sat","t4":"4"},{"period":"hourly","father":"test5","t1":"6","t2":"6","t3":"3","t4":"na"},{"period":"hourly","father":"test5","t1":"3","t2":"4","t3":"4","t4":"na"},{"period":"Minutely","father":"test5","t1":"3","t2":"4","t3":"na","t4":"na"}]

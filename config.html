@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pilot</title>
+    <!--META TAGS-->
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" type="image/png" href="assets/images/Qonly.png">
+
+    <!--BOOTSTRAP CSS STYLE-->
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+    <!--Font Awesome css-->
+    <link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!--CUSTOME CSS-->
+    <link href="assets/css/main.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<!--NAVBAR-->
+<nav class="navbar">
+    <!--<div class="container row">-->
+    <div class="col-md-12">
+        <a class="navbar-brand" href="index.html"><img src="assets/images/logo.png"></a>
+        <ul class="navbar-nav pull-right">
+            <li class="nav-item dropdown user-dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span><img src="assets/images/user-icon.png"> </span>Admin
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="changepassword.html">Change Password</a>
+                    <a class="dropdown-item" href="login.html">Logout</a>
+                </div>
+            </li>
+        </ul>
+        <!--</div>-->
+    </div>
+</nav>
+<!--MESSAGES-->
+<div class="dr-messages">
+    <div class="bg-warning">Your changes may be not saved
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="bg-danger">Your changes hasn't been saved
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="bg-success">Your changes has been saved
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+<!--BODY CONTENT-->
+<main class="col-md-12">
+    <div class="row">
+        <div class="col-md-1 main-menu">
+            <ul class="nav flex-column" role="tablist">
+                <li class="nav-item accounts">
+                    <a class="nav-link " href="index.html" role="tab">
+                        <div></div>
+                        Accounts</a>
+                </li>
+                <li class="nav-item status">
+                    <a class="nav-link " href="status.html" role="tab">
+                        <div></div>
+                        Status</a>
+                </li>
+                <li class="nav-item protocol">
+                    <a class="nav-link" href="protocol.html" role="tab">
+                        <div></div>
+                        Protocol</a>
+                </li>
+                <li class="nav-item replication">
+                    <a class="nav-link" href="replication.html" role="tab">
+                        <div></div>
+                        Replication</a>
+                </li>
+                <li class="nav-item pools">
+                    <a class="nav-link" href="pools.html" role="tab">
+                        <div></div>
+                        Pools</a>
+                </li>
+                <li class="nav-item config">
+                    <a class="nav-link active" data-toggle="tab" href="#config" role="tab">
+                        <div></div>
+                        Config</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-2 second-menu">
+            <div class="tab-content">
+                <div class="tab-pane active" id="config" role="tabpanel">
+                    <ul class="nav flex-column" role="tablist">
+                        <li class="nav-item userPrivlliges">
+                            <a class="nav-link active" data-toggle="tab" href="#userPrivlliges" role="tab">
+                                <div></div>
+                                <span>User
+                                Privlliges</span></a>
+                        </li>
+
+                        <li class="nav-item firmware">
+                            <a class="nav-link" data-toggle="tab" href="#firmware" role="tab">
+                                <div></div>
+                                <span>FirmWare Upgrade</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 main-content">
+            <div class="tab-content">
+                <div class="tab-pane active" id="userPrivlliges" role="tabpanel">
+                    <form class="dr-form">
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label">User</label>
+                            <div class="col-5">
+                                <select class="form-control">
+                                    <option>tepo</option>
+                                    <option>mezo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group justify-content-md-center user-privillages-border">
+                            <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input">
+                                            Active Directory
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input">
+                                            Service Charts
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input">
+                                            NFS
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input">
+                                            SnapShots
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input">
+                                            Box Users
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input">
+                                            Logs
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input">
+                                            ISCSI
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input">
+                                            User Privileges
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input">
+                                            Box Properties
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input">
+                                            CIFS
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input">
+                                            Disk Groups
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input">
+                                            Partners
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input">
+                                            Senders
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input">
+                                            Proxy License
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input">
+                                            Replication
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input">
+                                            Firmware
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="">
+                            <button type="submit" class="btn btn-submit col-3">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane " id="firmware" role="tabpanel">
+                    <form action="/file-upload"
+                          class="dropzone"
+                          id="my-awesome-dropzone">
+
+
+                    </form>
+                    <button type="submit" class="btn btn-submit col-3">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!--JAVA SCRIPT-->
+<!--JQUERY SCROPT-->
+<script src="assets/js/jquery.min.js"></script>
+
+<!--BOOTSTRAP SCRIPT-->
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
+<script src="assets/js/chartist-js-develop/dist/chartist.min.js"></script>
+
+<script src="assets/js/dropzen.js"></script>
+
+<!--CUSTOM JS-->
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>
