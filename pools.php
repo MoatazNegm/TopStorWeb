@@ -850,7 +850,7 @@
 		if (panesel == "diskgroup") { 
 		
 			$.get("gump.php", { req: "run", name:"--prefix"  },function(data){
-				
+	console.log('data=',data)			
 				if(data!=olddiskpool) {
 				
 				jdata = jQuery.parseJSON(data)
@@ -948,10 +948,21 @@
 					$("#diskimg").append('<div class="'+disks[kk]["status"].replace("'",'').replace(" ",'')+'" ><a id="'+kk+'" href="javascript:diskclick(\''+kk+'\')"> <img class="img-fluid disk-image disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a href="javascript:diskclick(\''+kk+'\')"><p class="psize">'+disks[kk]["size"].replace("'",'').replace(" ",'')+'</p></a><p class="pimage">disk'+kk+'</p><p class="ppimage p'+disks[kk]["status"].replace("'",'').replace(" ",'')+'">'+disks[kk]["status"].replace("'",'').replace(" ",'')+'</p><p class="pimage">'+disks[kk]["grouptype"].replace("'",'').replace(" ",'')+'</p>')
 					disks[kk]["selected"]=0;	
 				});
-				pool['alloc']=pool['alloc'].replace('G','').replace('T','000').replace('K','/1000000').replace('M','/1000')
-				pool['empty']=pool['empty'].replace('G','').replace('T','000').replace('K','/1000000').replace('M','/1000')
-				pool['size']=pool['size'].replace('G','').replace('T','000').replace('K','/1000000').replace('M','/1000')
-					
+                                alloc=parseFloat(pool['alloc'])
+				if(pool['alloc'].includes('T')){ alloc=alloc*1000 }
+				if(pool['alloc'].includes('M')){ alloc=alloc/1000 }
+				if(pool['alloc'].includes('K')){ alloc=alloc/1000000 }
+				pool['alloc']=alloc
+                                empy=parseFloat(pool['empty'])
+				if(pool['empty'].includes('T')){ empy=empy*1000 }
+				if(pool['empty'].includes('M')){ empy=empy/1000 }
+				if(pool['empty'].includes('K')){ empy=empy/1000000 }
+				pool['empty']=empy
+                                empy=parseFloat(pool['size'])
+				if(pool['size'].includes('T')){ empy=empy*1000 }
+				if(pool['size'].includes('M')){ empy=empy/1000 }
+				if(pool['size'].includes('K')){ empy=empy/1000000 }
+			        pool['size']=empy	
 				
 				setstatus();
 			}

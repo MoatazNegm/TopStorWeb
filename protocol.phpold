@@ -21,7 +21,7 @@
 
     <!--CUSTOME CSS-->
     <link href="assets/css/main.css" rel="stylesheet" type="text/css">
-    <link href="assets/css/jquery.jqplot.min.css" rel="stylesheet" type="text/css">
+    	<link rel="stylesheet" type="text/css" href="css/jquery.jqplot.css" />
 
 </head>
 <body>
@@ -320,23 +320,12 @@
 			var currentinfo2timenew=0;currentinfo2time=34;
 			var olddata="hi";
 			var olddiskpool="hihi";
-			var jdata="hihihihi"
 			var chartdata = [];
 			var voldirty=1;
 			var Vollock=0;
 			var prot="kssl";
 			var plotb;
 				$(".bg-successold").show();$(".bg-danger").hide();$(".bg-warning").hide();
-     function normsize(s){
-     var sizeinbytes=parseFloat(s)
-     if (s.includes('K')) { sizeinbytes=sizeinbytes/1000 }
-     else if (s.includes('M')) { sizeinbytes=sizeinbytes }
-     else if (s.includes('G')) { sizeinbytes=sizeinbytes*1000 }
-     else if (s.includes('T')) { sizeinbytes=sizeinbytes*1000000 }
-     else if (s.includes('P')) { sizeinbytes=sizeinbytes*1000000000 }
-     else  { sizeinbytes=sizeinbytes/1000000 }
-     return parseInt(sizeinbytes)
-     }
 				function SS(){ 
 				
 				   var alltabsAcco=0;var alltabsStat=0;var alltabsProt=0;var alltabsRepli=0;var alltabsPool=0;var alltabsUP=0;
@@ -386,8 +375,8 @@
 				};
 			};
 			function refreshall() {
-				if($("#cifspane").hasClass('active'))  { if (prot !="CIFS") { olddiskpool="oldnfs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); Vollisttime2="skldjfadks"; prot="CIFS";}};
-				if($("#nfspane").hasClass('active') ) { if (prot !="NFS") { olddiskpool="oldcifs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove();prot="NFS"; Vollisttime2="ndfsfsn";}};
+				if($("#cifspane").hasClass('active'))  { if (prot !="CIFS") { olddata="oldnfs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); Vollisttime2="skldjfadks"; prot="CIFS";}};
+				if($("#nfspane").hasClass('active') ) { if (prot !="NFS") { olddata="oldcifs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove();prot="NFS"; Vollisttime2="ndfsfsn";}};
 				$.get("requestdate.php", { file: 'Data/currentinfo2.log2' }, function(data){
 			var objdate = jQuery.parseJSON(data);
 			currentinfo2timenew=objdate.timey;
@@ -415,69 +404,81 @@
 			}
 			
 			
+	//		function refresh3(textareaid) {
+				
+	//				$.get("requestdata2.php", { file: 'Data/'+Protocol+'status.log' }, function(data){
+	//				$(textareaid).val(data);
+	//				});
 			
-function refreshList2(req,listid,filelocfrom,show) {
- var fileloc=filelocfrom;
- var request=req;
- var others=0
- fileloc = filelocfrom ; request= request ; 
- $.get("gump.php", { req: 'run', name:'--prefix' }, function(data){
-  if(data==olddiskpool) { return; }
-   jdata = jQuery.parseJSON(data);
-  kdata = []
-  $.each(jdata,function(kk,vv){
-   kdata.push(jdata[kk].replace("['",'').replace("]'",'').replace("'",'').split(',')[0].split('/'))
-  });
-  if(typeof jdata=='object') {
-   olddiskpool=data;
-   $(listid+' option').remove();
-   $(listid+' tr').remove();
-   $("#Volumedetails tr.variable").remove();
-   chartdata=[];
-   pools = [];
-   vols = [];
-   name="sldkfjasdl;jewlkjd;ald"
-   $.each(kdata, function(k,v){
-    if ( kdata[k].indexOf("pool") > 0 && kdata[k].indexOf("size") >0 && kdata[k].indexOf("disk") < 0 ) {
-     poolsize=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'')
-     poolsize=normsize(poolsize)
-    }
-    if ( kdata[k].indexOf("pool") > 0 && kdata[k].indexOf("name") >0 && kdata[k].indexOf("disk") < 0 ) {
-     name=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'')
-     hosty=kdata[k][0]
-     $("#Pool2"+prot).append($('<option class="variable2">').text(name).val(hosty+'_'+name));
-    }
-   });					
-   $.each(kdata, function(k,v){
-    if ( kdata[k].indexOf("vol") > 0 && kdata[k].length > 3 && kdata[k].indexOf(prot) < 0 ) {
-     volslashes=jdata[k].replace("[",'').replace("']",'').replace("'",'').split(',')[1].replace("'",'').split('/')
-     volslashes[1]=normsize(volslashes[1])
-     others=others+volslashes[1]
-     poolsize=poolsize-volslashes[1]
-    }
-    if ( kdata[k].indexOf("vol") > 0 && kdata[k].indexOf(prot) > 0 ) {
-     console.log('kdata==',kdata[k])
-     name=kdata[k][3]
-     volslashes=jdata[k].replace("[",'').replace("']",'').replace("'",'').split(',')[1].replace("'",'').split('/')
-     volslashes[0]=normsize(volslashes[0])
-     volslashes[1]=normsize(volslashes[1])
-     poolsize=poolsize-volslashes[1]
-     $(listid).append('<tr onclick="rowisclicked(this)" class="variable trow '+name+'"><td style="padding-left: 2rem; " class="Volname tcol">'+name+'</td><td class="text-center tcol">'+volslashes[0]+'</td><td class="text-center tcol">'+volslashes[1]+'</td><td class=" text-center tcol">'+volslashes[2]+'</td><td class=" text-center tcol">'+volslashes[3]+'</td><td class="text-center"><a href="javascript:voldel(\''+name+'\')"><img src="assets/images/delete.png" alt="can\'t upload delete icon"></a></td></tr>');
-    chartdata.push([name,volslashes[1]]);
-    }
+	//		}	;
+	//		function volumetable(i,v) {
+	//			var res = i.split("_");
+	//			$("#Volumetable").append('<tr class="trow" onclick="rowisclicked(this)" ><td style="padding-left: 2rem; " class="Volname tcol" >'+v+'</td><td class="tcol">'+res[0]+'</td><td class="tcol">'+res[1]+'</td><td class="tcol">'+res[2]+'</td></tr>');
+	//			chartdata.push([v,parseFloat(res[0])]);
+	//		};
+	//		function volumetabledetails(i,v) {
+	//			var res = i.split("_");
+	//			$("#Volumedetails > tbody").append('<tr class="trow" onclick="rowisclicked(this)"><td style="padding-left: 2rem; " class=" tcol">'+res[0]+'</td><td class=" tcol">'+res[1]+'</td><td class=" tcol">'+res[2]+'</td><td class=" tcol">'+res[3]+'</td><td class=" tcol" >'+res[4]+'</td><td class=" tcol">'+res[5]+'</td><td class=" tcol">'+res[6]+'</td><td class=" tcol">'+res[7]+'</td></tr>');
+	//		};
+			
+			function refreshList2(req,listid,filelocfrom,show) {
+				var fileloc=filelocfrom;
+				var request=req;
+				
+				fileloc = filelocfrom ; request= request ; 
+			//	if(syscounter2==1000){ }
+				$.get("gump.php", { req: 'run', name:'--prefix' }, function(data){
+					if(data==olddiskpool) { return; }
+					var jdata = jQuery.parseJSON(data);
+					kdata = []
+					$.each(jdata,function(kk,vv){
+					 kdata.push(jdata[kk].replace("[",'').replace("'",'').split(',')[0].split('/'))
+});
+                                        if(typeof jdata=='object') {
+					olddiskpool=data;
+					$(listid+' option').remove();
+					$(listid+' tr').remove();
+					$("#Volumedetails tr.variable").remove();
+					chartdata=[];
+					pools = [];
+					vols = [];
+					return;
+					for (var proty in gdata){
+								
+					 if ($.inArray(jdata[proty].class,pools) < 0 ) { 
+									
+									pools.push(gdata[proty].class);
+									$("#Pool2"+prot).append($('<option class="variable2">').text(gdata[proty].Pool).val(gdata[proty].class));
+									chartdata.push(gdata[proty].class);
+										
+										chartdata[gdata[proty].class]=[];
 
-    console.log("tochart",chartdata)
+									console.log("to push",gdata[proty].class);										
+										console.log("changed chartdata",chartdata)
+									} 
+									if(gdata[proty].protocol==prot){
+									//if ( gdata[prot].Pool == $("#Pool2 option:selected").val() ) {
+										//$("#Vol2").append($('<option class="variable" >').text(gdata[prot].name).val(gdata[prot].name).addClass(gdata[prot].class));
+										
+									console.log("to push in chartdata",gdata[proty].name,parseFloat(gdata[proty].volsize),gdata[proty].class,chartdata)
+									$(listid).append('<tr onclick="rowisclicked(this)" class="variable trow '+gdata[proty].class+'"><td style="padding-left: 2rem; " class="Volname tcol">'+gdata[proty].name+'</td><td class="text-center tcol">'+gdata[proty].volsize+'</td><td class="text-center tcol">'+gdata[proty].volact+'</td><td class=" text-center tcol">'+gdata[proty].usedsnaps+'</td><td class=" text-center tcol">'+gdata[proty].compress+'</td><td class="text-center"><a href="javascript:voldel(\''+gdata[proty].name+'\')"><img src="assets/images/delete.png" alt="can\'t upload delete icon"></a></td></tr>');
+									chartdata[gdata[proty].class].push([gdata[proty].name,parseFloat(gdata[proty].volsize)]);
+								}
+							
+								//else $("#Pool2").append($('<option class="variable2">').text(gdata[prot].Pool).val(gdata[prot].class));
+							}
+							console.log("tochart",chartdata)
 							//$("#Pool2"+prot).change()
-   });
-   if (plotb) {plotb.destroy();}
-   //plotchart(['chart'+prot,chartdata("#Pool2"+prot+"").val()]);
-   chartdata.push(['free',poolsize]);
-   chartdata.push(['others',others]);
-   plotchart('chart'+prot,chartdata);
-  }
- });
-}
+							//pools = [];
+							console.log(chartdata);
+							if (plotb) {plotb.destroy();}
+								plotchart('chart'+prot,chartdata[$("#Pool2"+prot+"").val()]);
+							
+					}
+					});
 	
+			}
+			;
 			
 			function SelectPanelNFS(s) {
 				var selection = s;
@@ -541,7 +542,6 @@ function refreshList2(req,listid,filelocfrom,show) {
 							renderer: jQuery.jqplot.PieRenderer, 
 							rendererOptions: {
 								// Put data labels on the pie slices.
- 								//diameter: 50,
 								// By default, labels show the percentage of the slice.
 								showDataLabels: true
 								
