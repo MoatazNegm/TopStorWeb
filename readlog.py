@@ -1,4 +1,4 @@
-#!/bin/python3.6
+#!/usr/bin/python3.6
 import sys, datetime
 readl=[]
 datey=sys.argv[1]
@@ -19,16 +19,22 @@ def file_read_from_head(fname,fromd,nlines):
     if (ldate <= mydate):
      line=line.replace("\n","").split(" ")
      if line[2] in msgtype:
-      alllines.append({"Date":line[0],"time":line[1],"msg":line[2],"user":line[3],"code":line[4],"stamp":line[5]}) 
-      x-=1
+      try:
+       alllines.append({"Date":line[0],"time":line[1],"msg":line[2],"user":line[3],"code":line[4],"stamp":line[5]}) 
+       x-=1
+      except: 
+       pass
      if(x<0):
       break;
    else:
     if (ldate >= mydate):
      line=line.replace("\n","").split(" ")
      if line[2] in msgtype:
-      alllines.append({"Date":line[0],"time":line[1],"msg":line[2],"user":line[3],"code":line[4],"stamp":line[5]}) 
-      x+=1
+      try: 
+       alllines.append({"Date":line[0],"time":line[1],"msg":line[2],"user":line[3],"code":line[4],"stamp":line[5]}) 
+       x+=1
+      except: 
+       pass
      if(x>0):
       alllines=reversed(alllines)
       break;

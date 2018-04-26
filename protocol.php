@@ -457,7 +457,7 @@ function refreshList2(req,listid,filelocfrom,show) {
     }
     if ( kdata[k].indexOf("vol") > 0 && kdata[k].indexOf(prot) > 0 ) {
      console.log('kdata==',kdata[k])
-     name=kdata[k][3]
+     name=kdata[k][kdata[k].indexOf("vol")+1]
      volslashes=jdata[k].replace("[",'').replace("']",'').replace("'",'').split(',')[1].replace("'",'').split('/')
      volslashes[0]=normsize(volslashes[0])
      volslashes[1]=normsize(volslashes[1])
