@@ -363,6 +363,7 @@
 			var refresheruser=2;
 			var userpass="hi";
 			var proptime="55:55:55";
+			var olddata=0
 			var proptimenew="33:333:33";
 			var DNS=1;
 				$(".ref").click(function() {
@@ -460,7 +461,7 @@
 				DNS=1;
 				
 					updateprop();
-					refreshUserList();
+					
 					
 				//	$.get("requestdata2.php", { file: 'Data/HostManualconfigstatus.log' }, function(data){ $(".bg-success").text(data);});
 				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("bg-success").text(data);});
@@ -511,63 +512,28 @@
 			}	;
 			function refreshUserList(){
 				var jdata;
-				if(refresheruser > 0){
-					$.post("./pump.php", { req:"UnixListUsers", name:"a" }); 
-						refresheruser=refresheruser-1
-					$.get("requestdata.php", { file: 'Data/listusers.txt' }, function(data){
-						jdata = jQuery.parseJSON(data);
-						$("#UserList tr").remove(); 
-						for(var key in jdata){ 
-							if(jdata[key] == "o") {  
-  								$("#UserList").append('<tr class="dontdelete" > ><td class="col-4">'+key+'</td><td class="text-center"><a href="javascript:userPassword(\''+key+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td class="text-center"><a class="UnixDelUser" val="'+key+'" href="javascript:auserdel(\''+key+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+					//$.post("./pump.php", { req:"UnixListUsers", name:"a" });
+				$.get("gump.php", { req: 'run', name:'--prefix' }, function(data){
+				  if(data==olddata) { return; }
+				   jdata = jQuery.parseJSON(data);
+				  kdata = []
+					if(typeof jdata=='object') {
+						olddiskpool=data;
+						$.each(jdata,function(kk,vv){
+							kdata.push(jdata[kk].replace("['",'').replace("]'",'').replace("'",'').split(',')[0].split('/'))
+						});
+						$("#UserList tr").remove();
+						$.each(kdata, function(k,v){
+							if ( kdata[k].indexOf("user") > 0 ) {
+								//userid=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'')
+								username=kdata[k][kdata[k].indexOf("user")+1].replace("'",'').replace(' ','')
+								$("#UserList").append('<tr class="dontdelete" > ><td class="col-4">'+username+'</td><td class="text-center"><a href="javascript:userPassword(\''+username+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td class="text-center"><a class="UnixDelUser" val="'+username+'" href="javascript:auserdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
 							}
-						}
-					});
-				}
+						});
+					}
+				});
 			}
-			function refreshUserListold() {
-				var jdata;
-				if(refresheruser > 0){
-					$.post("./pump.php", { req:"UnixListUsers", name:"a" }); 
-					refresheruser=refresheruser-1
-					$.get("requestdata.php", { file: 'Data/listusers.txt' }, function(data){
-						jdata = jQuery.parseJSON(data);
-						if(Number($("#UserList tr").length)+1 > 0 ) {
-							$("#UserList tr").each(function (i,v) { 
-								for(var key in jdata){ 
-									if (key == this.value) {
-										 $(this).toggleClass("dontdelete"); jdata[key]="inin"; 
-										 
-									} else {
-										if(jdata[key] == "o") {  
-  											$("#UserList").append('<tr class="dontdelete" > ><td class="col-4">'+key+'</td><td class="text-center"><a href="#" data-toggle="modal" data-target="#userEditing"><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td class="text-center"><a href="#"><img src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
-											console.log("hi",key)											
-						 }
-										;
-									} 
-								}
-							});
-						}	
-					
-									
-					for (var key in jdata ) { 
-						
-//						if(jdata[key] == "o") {  
- // 											$("#UserList").append('<tr class="dontdelete" > ><td class="col-4">'+key+'</td><td class="text-center"><a href="#" data-toggle="modal" data-target="#userEditing"><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td class="text-center"><a href="#"><img src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
-//<td class="text-center"><a href="#" data-toggle="modal" data-target="#userEditing"><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td>
-//<td class="text-center"><a href="#"><img src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');							
-//			console.log("hi",key)											
-//						}
-					}				
-				});							;
-					$("#UserList tr").not(".dontdelete").remove();
-					
-					
-				}		
-			};
-//			setInterval('refresh()', 1000); // Loop every 1000 milliseconds (i.e. 1 second)
-//			setInterval('refreshUserList()', 5000); // Loop every 10000 milliseconds (i.e. 1 second)
-			//refreshUserList();
+			
 			var config = 1;
 			
 			$("#AD").click(function (){ 
@@ -682,7 +648,7 @@
 					$.post("./pump.php", { req:"DomainChangeWorkgrp", name:$("#DomName").val()+" "+$("#Admin").val()+" "+"\""+$("#Pass").val()+"\""+" "+$("#DCserver").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
 				} 
 			});
-			refreshall();
+			
 			function starting() {
 				$(".ullis").hide();
 				if(config == 1 ) {
