@@ -1,1 +1,1 @@
-[{"stamp":"1525053893","period":"hourly","father":"common","pool":"p1","t1":"5","t2":"4","t3":"3","t4":"na"}]
+[{"stamp":"period","father":"pool","t1":"t2","t3":"t4"}]
