@@ -557,7 +557,7 @@ function SS(){
 								
 				//$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ if(data!=oldcurrentinfo){oldcurrentinfo=data;  $(".dr-messages").show();$(".bg-success").show(); $("#texthere").text(data);}});
-SS();
+//SS();
 				//refresh2('Privstatus');
 				
 				$.get("gump.php", { req: 'run', name:'--prefix' }, function(data){
@@ -684,7 +684,7 @@ SS();
 							 console.log("gdataall ",data)
 			});
 			$("#close-success").click(function() { $(".bg-success").hide(); });
-			SS();
+		//	SS();
 $("#ApplyAvailable").click(function(){
 				$.post("./pump.php", { req:"ApplyFw", name:$("#softs").val()+" <?php echo $_SESSION["user"]; ?>"});
  
