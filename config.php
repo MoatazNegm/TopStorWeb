@@ -384,6 +384,9 @@ fclose($myfile);
 			var proptime="55:55:55";
 			var proptimenew="33:333:33";
 			var oldcurrentinfo="";
+			var olddata=0;
+			var kdata=[]
+			var jdata=[]
 			var ggdata=[];
 			var DNS=1;
 			var whichul=0;
@@ -415,6 +418,8 @@ function SS(){
 					var userprivUserPrivileges="false"; var userprivUpload="false";
 					var curuser="<?php echo $_SESSION["user"] ?>";
 					if(curuser!="admin"){
+						
+					
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
@@ -552,36 +557,56 @@ function SS(){
 								
 				//$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ if(data!=oldcurrentinfo){oldcurrentinfo=data;  $(".dr-messages").show();$(".bg-success").show(); $("#texthere").text(data);}});
-SS();
+//SS();
 				//refresh2('Privstatus');
-			 if($("#userPrivlliges").hasClass("active")) {
-					refreshUserList();
-					var objdate;
-					$.get("requestdatein.php", { file: 'Data/userprivdate.txt' }, function(data){ 
-					var objdate = jQuery.parseJSON(data);
-					proptimenew=objdate.updated });
+				
+				$.get("gump.php", { req: 'run', name:'--prefix' }, function(data){
+					if(data==olddata) { return; }
+					olddata=data
 					
-					if(proptimenew == proptime) { }
-					else {
-						proptime=proptimenew;
-						
-					 ;
-						$.get("requestdata.php", { file: 'Data/userpriv.txt' }, function(data){ 
-							 ggdata=jQuery.parseJSON(data)
-							
-							
-							for (var prot in ggdata){
-								if(ggdata[prot].user==$("#UserList option:selected").val()) {
-									
-									
-									$.each(ggdata[prot], function(key,value){  if(value=="true") $("#"+key).prop('checked',true); console.log("true is", key);});
-								}
-							}
-						});
-						
-					}
-				}
+					jdata = jQuery.parseJSON(data);
+					kdata = []
+					$.each(jdata,function(kk,vv){
+					kdata.push(jdata[kk].replace("['",'').replace("]'",'').replace("'",'').split(',')[0].split('/'))
+					});
+					$("#UserList option").remove();
 
+					$.each(kdata, function(k,v){
+											
+						if ( kdata[k].indexOf("user") > 0 ) {
+								//userid=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'')
+							username=kdata[k][kdata[k].indexOf("user")+1].replace("'",'').replace(' ','')
+							$("#UserList").append($("<option class='dontdelete'>").text(username).val(username));
+						}
+						//$.each(kdata,function(k,v){ 
+											
+						if (kdata[k].indexOf('hostfw') > 0 ) {
+							var fwlist=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'').split('/')
+							console.log('fwlist',fwlist)
+							$("#soft").text(fwlist[0])					
+						}
+			
+						//});
+					});	
+					$.each(kdata, function(k,v){
+						if ( kdata[k].indexOf("userpriv") > 0 ) {
+							
+							
+							/// KDATA should be : [ 'dhcpxxx,'host',priv,'username','ActiveDirectory;WaterMark;.....']
+							if( kdata[k][kdata[k].indexOf("userpriv")+1].replace("'",'').replace(' ','') ==$("#UserList option:selected").val()) {
+								
+							var privvalue=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'').split('/')
+							var privindex=kdata[k][kdata[k].indexOf("userpriv")+2].replace("'",'').replace(' ','').split(';')
+							
+							$.each(privindex, function(k,v){  if(privvalue[k]=="true") { $("#"+privindex[k]).prop('checked',true); console.log(privindex[k],privvalue[k]);}});
+		
+							}
+						
+						
+						}
+					});
+				});
+				
 			}
 			function refresh2(textareaid) {
 				
@@ -589,37 +614,7 @@ SS();
 					$('#'+textareaid).val(data);
 					});
 			}	;
-			function refreshUserList() {
-				var jdata;
-				
-				$.post("./pump.php", { req:"UnixListUsers", name:"a" }, function (data1){ 
-					
-					$.get("requestdata.php", { file: 'Data/listusers.txt' }, function(data){
-						jdata = jQuery.parseJSON(data);
-						if(Number($("#UserList option").length)+1 > 0 ) {
-							$("#UserList option").each(function (i,v) { 
-								for(var key in jdata) { 
-									if ( key == this.value) {
-										 $(this).toggleClass("dontdelete"); jdata[key]="inin"; 
-									} else { 
-										;
-									} 
-								}
-
-							});
-						}
-						
-						for (var key in jdata ) { 
-							if(jdata[key] == "o") { $("#UserList").append($("<option class='dontdelete'>").text(key).val(key)); }
-						}
-					});
-												
-												;
-					$("#UserList option").not(".dontdelete").remove();
-					$("#UserList option").toggleClass("dontdelete");
-					
-				});	
-			};
+			
 			$("#SubmitPriv").click( function (){ 
 				console.log("hi")
 				sm="user"+" "+$("#UserList option:selected").val()+" ";
@@ -630,10 +625,27 @@ SS();
 	 });
 			$("#UserList").change(function(){
 				$(".checkboxy").each(function(){ $(this).prop("checked",false)});
-				proptime="44:54333:232";
+				$.each(kdata, function(k,v){
+					if ( kdata[k].indexOf("userpriv") > 0 ) {
+						
+						
+						/// KDATA should be : [ 'dhcpxxx,'host',priv,'username','ActiveDirectory;WaterMark;.....']
+						if( kdata[k][kdata[k].indexOf("userpriv")+1].replace("'",'').replace(' ','') ==$("#UserList option:selected").val()) {
+							
+						var privvalue=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'').split('/')
+						var privindex=kdata[k][kdata[k].indexOf("userpriv")+2].replace("'",'').replace(' ','').split(';')
+						
+						$.each(privindex, function(k,v){  if(privvalue[k]=="true") { $("#"+privindex[k]).prop('checked',true); console.log(privindex[k],privvalue[k]);}});
+	
+						}
+					
+					
+					}
+				});
+				//proptime="44:54333:232";
 				});
 			setInterval('refreshall()', 2000);
-			refreshUserList();
+			//refreshUserList();
 			refreshall();
  
 		
@@ -662,10 +674,8 @@ SS();
 				$(".dz-success-mark").hide();$(".dz-error-mark").show();
 				
 			});
-			$.get("requestversion.php", { file: 'Data/userpriv.txt' }, function(data){ 
-							 ggdata=data;
-							 $("#soft").text(data)
-			});
+			
+			
 			$.get("requestversionall.php", { file: 'Data/userpriv.txt' }, function(data){ 
 							var seloption ="";
 							var ggdata=data.split(',');
@@ -674,7 +684,7 @@ SS();
 							 console.log("gdataall ",data)
 			});
 			$("#close-success").click(function() { $(".bg-success").hide(); });
-			SS();
+		//	SS();
 $("#ApplyAvailable").click(function(){
 				$.post("./pump.php", { req:"ApplyFw", name:$("#softs").val()+" <?php echo $_SESSION["user"]; ?>"});
  
