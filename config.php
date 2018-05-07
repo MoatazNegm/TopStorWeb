@@ -570,12 +570,23 @@ SS();
 					kdata.push(jdata[kk].replace("['",'').replace("]'",'').replace("'",'').split(',')[0].split('/'))
 					});
 					$("#UserList option").remove();
+
 					$.each(kdata, function(k,v){
+											
 						if ( kdata[k].indexOf("user") > 0 ) {
 								//userid=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'')
 							username=kdata[k][kdata[k].indexOf("user")+1].replace("'",'').replace(' ','')
 							$("#UserList").append($("<option class='dontdelete'>").text(username).val(username));
 						}
+						//$.each(kdata,function(k,v){ 
+											
+						if (kdata[k].indexOf('hostfw') > 0 ) {
+							var fwlist=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'').split('/')
+							console.log('fwlist',fwlist)
+							$("#soft").text(fwlist[0])					
+						}
+			
+						//});
 					});	
 					$.each(kdata, function(k,v){
 						if ( kdata[k].indexOf("userpriv") > 0 ) {
@@ -663,10 +674,8 @@ SS();
 				$(".dz-success-mark").hide();$(".dz-error-mark").show();
 				
 			});
-			$.get("requestversion.php", { file: 'Data/userpriv.txt' }, function(data){ 
-							 ggdata=data;
-							 $("#soft").text(data)
-			});
+			
+			
 			$.get("requestversionall.php", { file: 'Data/userpriv.txt' }, function(data){ 
 							var seloption ="";
 							var ggdata=data.split(',');
