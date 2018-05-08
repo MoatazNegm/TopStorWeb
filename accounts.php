@@ -459,29 +459,25 @@
 			}
 			function refreshall() {
 				DNS=1;
-				
 					updateprop();
 					
 					
-				//	$.get("requestdata2.php", { file: 'Data/HostManualconfigstatus.log' }, function(data){ $(".bg-success").text(data);});
 				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("bg-success").text(data);});
 			//	console.log("AD is visible : " , $(".AD").is(":visible"));
 				if($(".AD").is(":visible"))
 				{
 					$.get("requestdata2.php", { file: 'Data/DomainChangestatus.log' }, function(data){ $("#ADstatus").val(data);});
 				}
-				else if($(".Future").is(":visible"))
+				if($(".Future").is(":visible"))
 				{
-
+;
 //					updateprop();
 //					$.get("requestdata2.php", { file: 'Data/HostManualconfigstatus.log' }, function(data){ $(".bg-success").text(data);});
 					
 				}
-				else if($(".UnLin").is(":visible"))
+				if($(".Unlin").is(":visible"))
 				{		
 				refreshUserList()		
-					$.get("requestdata2.php", { file: 'Data/Usersstatus.log' }, function(data){ $("#UnLinstatus").val(data);});
-					refreshUserList();
 				}
 				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data);});
 			}
@@ -516,6 +512,7 @@
 				$.get("gump.php", { req: 'run', name:'--prefix' }, function(data){
 				  if(data==olddata) { return; }
 				   jdata = jQuery.parseJSON(data);
+                                   olddata=data
 				  kdata = []
 					if(typeof jdata=='object') {
 						olddiskpool=data;
