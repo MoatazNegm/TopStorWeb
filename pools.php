@@ -949,7 +949,7 @@
 					$.each(kdata,function(kk,vv){
 						
 										
-						if(kdata[kk].indexOf('disk') > 0 && kdata[kk].indexOf('raid') > 0 && kdata[kk].indexOf('status') > 0 && kdata[kk].indexOf("stub") <0) {
+						if(kdata[kk].indexOf('disk') > 0  && kdata[kk].indexOf('status') > 0 && kdata[kk].indexOf("stub") <0) {
 								disks[kdata[kk][6]]=[]
 								disks[kdata[kk][6]]["group"]=kdata[kk][4]
 								disks[kdata[kk][6]]['status']=jdata[kk].replace("[",'').replace("]",'').replace("'",'').split(',')[1]
@@ -1015,9 +1015,9 @@
 					})
 					
 					$.each(disks,function(kk,vv){
-						if(disks[kk]["status"].includes("OFFLINE") || disks[kk]["status"].includes("FAULT") ) { imgf='invaliddisk.png" style="height:7rem; width:5.1rem;"' }
-						else { imgf="disk-image.png" }	
-						$("#diskimg").append('<div class="'+disks[kk]["status"].replace("'",'').replace(" ",'')+'" ><a id="'+kk+'" href="javascript:diskclick(\''+kk+'\')"> <img class="img-fluid disk-image disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a href="javascript:diskclick(\''+kk+'\')"><p class="psize">'+disks[kk]["size"].replace("'",'').replace(" ",'')+'</p></a><p class="pimage">disk'+kk+'</p><p class="ppimage p'+disks[kk]["status"].replace("'",'').replace(" ",'')+'">'+disks[kk]["status"].replace("'",'').replace(" ",'')+'</p><p class="pimage">'+disks[kk]["grouptype"].replace("'",'').replace(" ",'')+'</p>')
+						if(disks[kk]["name"].includes("'-'") || disks[kk]["status"].includes("OFFLINE") || disks[kk]["status"].includes("FAULT") ) { clickdisk=''; imgf='invaliddisk.png" style="height:7rem; width:5.1rem;"' }
+						else { clickdisk="javascript:diskclick('"+kk+"')"; clickdisk="href="+clickdisk; imgf="disk-image.png" }	
+						$("#diskimg").append('<div class="'+disks[kk]["status"].replace("'",'').replace(" ",'')+'" ><a id="'+kk+'"'+clickdisk+' > <img class="img-fluid disk-image disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a '+clickdisk+'><p class="psize">'+disks[kk]["size"].replace("'",'').replace(" ",'')+'</p></a><p class="pimage">disk'+kk+'</p><p class="ppimage p'+disks[kk]["status"].replace("'",'').replace(" ",'')+'">'+disks[kk]["status"].replace("'",'').replace(" ",'')+'</p><p class="pimage">'+disks[kk]["grouptype"].replace("'",'').replace(" ",'')+'</p>')
 						disks[kk]["selected"]=0;	
 					});
 					
