@@ -218,38 +218,89 @@
                 </div>
                 <div class="tab-pane Future" id="boxProperties" role="tabpanel"> 
                  
-                    <form class="dr-form">
+                           <form class="dr-form">
                         <div class="form-group row">
                             <label class="col-2 col-form-label">BoxName</label>
                             <div class="col-5">
                                 <input id="BoxName" class="form-control" type="text">
                             </div>
+                            <div class="alert alert-dismissible alert-info">
+                       <strong>currently</strong> xxxxxxxxxx
+                      </div>
+                            
                         </div>
+                       
+                        
+                        
                         <div class="form-group row">
                             <label class="col-2 col-form-label">IP Address</label>
                             <div class="col-2">
-                                <input id="IPAddress" class="form-control ip_address" type="text"  placeholder="xxx.xxx.xxx.xxx">
+                                <input id="IPAddress" class="form-control ip_address" type="text"  >
                             </div>
                             <label class="col-1 col-form-label">Subnet</label>
                             <div class="col-2">
                                 <input class="form-control" type="number" id="Subnet" min="0" max="30" >
                             </div>
+                            <div class="alert alert-dismissible alert-info">
+                  <strong>currently</strong> 192.168.1.1 <strong>/</strong> xx
+                      </div>
                         </div>
+                         <div class="form-group row">
+                            <label class="col-2 col-form-label">momagenent address</label>
+                            <div class="col-2">
+                                <input id="dns1" class="form-control ip_address" type="text" >
+                            </div>
+                            <label class="col-1 col-form-label">null</label>
+                            <div class="col-2">
+                                <input class="form-control" type="text" id="dns2"  >
+                            </div>
+                             <div class="alert alert-dismissible alert-info">
+                       <strong>currently</strong> 127.0.0.1 <strong>/</strong> xxxx
+                      </div>
+                        </div>
+                        
                         <div class="form-group row">
                             <label class="col-2 col-form-label">Gateway</label>
                             <div class="col-5">
-                                <input id="Gateway" class="form-control ip_address" type="text" placeholder="xxx.xxx.xxx.xxx">
+                                <input id="Gateway" class="form-control ip_address" type="text" >
                             </div>
+                            <div class="alert alert-dismissible alert-info">
+                       <strong>currently</strong> xxxxxxxxxxx
+                      </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-2 col-form-label">DNS</label>
-                            <div class="col-5">
-                                <input id="DNS" class="form-control ip_address" type="text" placeholder="xxx.xxx.xxx.xxx">
+                            <label class="col-2 col-form-label">DNS 1</label>
+                            <div class="col-2">
+                                <input id="dns1" class="form-control ip_address" type="text" >
                             </div>
+                            <label class="col-1 col-form-label">DNS 2</label>
+                            <div class="col-2">
+                                <input class="form-control" type="text" id="dns2"  >
+                            </div>
+                            <div class="alert alert-dismissible alert-info">
+                       <strong>currently</strong> xxxxx <strong>/</strong> xxxxx 
+                      </div>
                         </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label">data port address</label>
+                            <div class="col-5">
+                                <input id="Gateway" class="form-control ip_address" type="text" >
+                            </div>
+                            <div class="alert alert-dismissible alert-info">
+                       <strong>currently</strong> xxx.xxx.xx.x.xx
+                      </div>
+                        </div>
+                        
                         <div class="">
-                            <button id="DNSsubmit" type="button" style="cursor: pointer;"class="btn btn-submit col-3">Submit</button>
+                            <button id="DNSsubmit" type="button" style="cursor: pointer;"class="btn btn-submit col-3" >Submit
+
+                                
+<div class="load-7">
+    <div class="square"></div>
+</div>
+                            </button>
                         </div>
+                        
                     </form>
                 </div>
             </div>
