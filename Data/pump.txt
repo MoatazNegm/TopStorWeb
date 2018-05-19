@@ -1,1 +1,1 @@
-DGsetPool attachmirror admin dhcp11004 scsi-36001405f7d9134275e04e9896ad7295d 36001405912281fa11904f02b262511ab 1 stripe
+GetPoolVollist a

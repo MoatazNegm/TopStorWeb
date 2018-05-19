@@ -868,18 +868,26 @@
 						kdata.push(jdata[k].replace("['",'').replace("]'",'').replace("'",'').split(',')[0].split('/'))
 				});
 				$.each(kdata,function(kk,vv){
-						if(kdata[kk].indexOf('disk') < 0 && kdata[kk].indexOf('raid') < 0 && kdata[kk].indexOf('vol') < 0 && kdata[kk].indexOf('name') > 0) {
-							pools[kdata[kk][2].replace("'",'').replace(" ",'')]=[]
+						if(kdata[kk].indexOf('pool') > 0 && kdata[kk].indexOf('disk') < 0 && kdata[kk].indexOf('vol') < 0 && kdata[kk].indexOf('name') > 0) {
+poolar=[]
+							poolar["name"]=jdata[kk].replace("[",'').replace("]",'').replace("'",'').split(',')[1]
+							poolar["prop"]=[]
+							pools.push(poolar)
 						}
 					});
 				$.each(kdata,function(kk,vv){
 					if(kdata[kk].indexOf('pool') > 0 && kdata[kk].indexOf('disk') < 0 && kdata[kk].indexOf('raid') < 0 && kdata[kk].indexOf('vol') < 0  && kdata[kk].indexOf("stub") <0 && kdata[kk].indexOf("snapperiod") <0) {
 						poolval=jdata[kk].replace("[",'').replace("]",'').replace("'",'').split(',')[1]
 						poolval=poolval.replace("'",'').replace(' ','')
-						pools[kdata[kk][2].replace("'",'').replace(" ",'')][kdata[kk][3].replace("'",'').replace(" ",'')]=poolval
+						poolname=kdata[kk][kdata[kk].indexOf('pool')+1]
+						$.each(pools,function(k,v){
+						 if(pools[k]["name"].includes(poolname) > 0 ){
+							pools[k]["prop"][kdata[kk][3].replace("'",'').replace(" ",'')]=poolval
+}
+});
 					}
 				});
-				pool=pools["p1"]
+				pool=pools[0]["prop"]
 				if (panesel.includes("snapshot")) {
 					$(".variable2").remove()
 					$(".variable3").remove()
@@ -949,7 +957,7 @@
 					$.each(kdata,function(kk,vv){
 						
 										
-						if(kdata[kk].indexOf('disk') > 0  && kdata[kk].indexOf('status') > 0 && kdata[kk].indexOf("stub") <0) {
+						if(kdata[kk].indexOf('disk') > 0  && kdata[kk].indexOf('status') > 0 && kdata[kk].indexOf("free") <0) {
 								disks[kdata[kk][6]]=[]
 								disks[kdata[kk][6]]["group"]=kdata[kk][4]
 								disks[kdata[kk][6]]['status']=jdata[kk].replace("[",'').replace("]",'').replace("'",'').split(',')[1]
