@@ -849,7 +849,7 @@
 			
 				jdata = jQuery.parseJSON(data)
 				
-				if(typeof jdata =='object') {
+				if(typeof jdata =='object' && data.includes("stub")> 0) {
 						$("#DG tr").hide(); 
 					olddiskpool=data
 					releasesel=0
@@ -887,7 +887,7 @@ poolar=[]
 });
 					}
 				});
-				pool=pools[0]["prop"]
+				if(pools.length > 0 ) {pool=pools[0]["prop"];}
 				if (panesel.includes("snapshot")) {
 					$(".variable2").remove()
 					$(".variable3").remove()
