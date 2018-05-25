@@ -51,6 +51,9 @@ CIFS1004: Success creating volume :
 CIFS1005: Deleting : .....
 CIFS1006: Prolbem deleting :
 CIFS1007: Success deleting :
+Partst01: : : Partner : booted with ip :  wait till complete joining cluster
+Partsu01: : : Partner : completed joining cluster with ip : 
+Partst02: : : Partner : is down
 Partner1000: Adding partner : ......
 Partner1001: Partner : already exists
 Partner1002: Success adding partner : of type :
