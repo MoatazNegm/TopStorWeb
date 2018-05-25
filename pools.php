@@ -847,7 +847,6 @@
 		$.get("gump.php", { req: "run", name:"--prefix"  },function(data){
 			if(data!=olddiskpool) {
 			
-			console.log('data=',data)
 				jdata = jQuery.parseJSON(data)
 				
 				if(typeof jdata =='object' && data.includes("stub")> 0) {
