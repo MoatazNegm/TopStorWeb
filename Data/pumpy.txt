@@ -1,0 +1,1 @@
+readlog.py 06/04/2018T20:19:00 10 infowarningerror admin
