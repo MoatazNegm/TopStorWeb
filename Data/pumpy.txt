@@ -1,1 +1,1 @@
-readlog.py 05/25/2018T20:26:36 10 infowarningerror admin
+readlog.py 06/04/2018T17:25:33 10 admin
