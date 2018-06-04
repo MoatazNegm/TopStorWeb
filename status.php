@@ -223,7 +223,7 @@
 <script src="assets/js/tether.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 
-//script src="assets/js/chartist-js-develop/dist/chartist.min.js"></script>
+<script src="assets/js/chartist-js-develop/dist/chartist.min.js"></script>
 
 <script src="assets/js/dropzen.js"></script>
 <script src="assets/js/main.js"></script>
