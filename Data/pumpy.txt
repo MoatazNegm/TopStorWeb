@@ -1,5 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 readlog.py 06/04/2018T20:19:00 10 infowarningerror admin
 =======
 readlog.py 06/04/2018T17:25:33 10 admin
 >>>>>>> 6e0593a37ec9f61756a9c9347beb8ac6b3c3f347
+=======
+readlog.py 06/04/2018T21:26:47 10 infowarningerror admin
+>>>>>>> 9dedc7528d663e6f8fe99dcae3a1c98a6ca48d00
