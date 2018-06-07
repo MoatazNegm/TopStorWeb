@@ -489,7 +489,7 @@
 			var dater3=dater2.getFullYear() + ("0" + (dater2.getMonth() + 1)).slice(-2) +  ("0" + (dater2.getDate() + 0)).slice(-2)
 			
 			
-			chartplease(dater3);
+//			chartplease(dater3);
 			
 		
 		

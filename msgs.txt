@@ -14,6 +14,8 @@ Unlin1010: : : User : is deleted
 Unlin1001: Deleting user :
 Unlin1004: : : Deleting user :
 Unlin1003:User : is added
+Unlin1006: : : Users are synced
+Unlin1005: : : syncing users
 Unlin1011: Changing user password for :
 Unlin1012: : : Changing user password for :
 Unlin1013: : : problem occurred while changing password for user :
@@ -54,6 +56,10 @@ CIFS1007: Success deleting :
 Partst01: : : Partner : booted with ip :  wait till complete joining cluster
 Partsu01: : : Partner : completed joining cluster with ip : 
 Partst02: : : Partner : is down
+Partst03: : : Partner : booting with ip : as standalone. please wait ... 
+Partsu03: : : Partner : booted with ip : as a standalone.
+Partst04: : : Partner : booting with ip : as a cluster node please wait ... 
+Partsu04: : : Partner : booted with ip : as a cluster node.
 Partner1000: Adding partner : ......
 Partner1001: Partner : already exists
 Partner1002: Success adding partner : of type :
