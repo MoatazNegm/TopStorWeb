@@ -233,6 +233,7 @@
 			var msgdata= "no no no";
 			var msgs="no data";
 			var datalogf = [];
+ 			var oldtexthere='hihihi';
 			var betweend = [];
 			var plots=[];
 			var oldSdatec="1"; var oldEdatec="2";
@@ -472,7 +473,9 @@
 				for (var i=0; i<logcache; i+=1) { logstatus[i]=0 } config = 1; $(".SS").hide(); $(".Logs").hide();$(".finish").hide();$(".ullis").show();});
 	function refreshall() {
 		
-		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data);});
+		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data); 
+		if (oldtexthere != data) { oldtexthere=data; linerfact=-1; }
+	});
 		presentlog();
 		counter=counter+1;
 		if(counter > 2 ) { topresentlog(); updatelogarea(); infochange(); counter = 1; }
