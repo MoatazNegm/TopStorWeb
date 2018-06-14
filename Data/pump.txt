@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 GetPoolVollist a hihihi
+=======
+GetDisklist Data/disklist.txt
+>>>>>>> 372a73ed3dc96669171591a4373c4aceb3107430
