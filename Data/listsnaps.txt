@@ -1,1 +1,9 @@
+<<<<<<< HEAD
 [{"stamp":"host","class":"_","name":"pool","onlyname":"father","creation":"06/12/18","time":"00:00","sender":"receiver"}]
+=======
+<<<<<<< HEAD
+[{"stamp":"host","class":"_","name":"pool","onlyname":"father","creation":"06/15/18","time":"00:00","sender":"receiver"}]
+=======
+[{"stamp":"host","class":"_","name":"pool","onlyname":"father","creation":"06/11/18","time":"00:00","sender":"receiver"}]
+>>>>>>> 372a73ed3dc96669171591a4373c4aceb3107430
+>>>>>>> d86dd126a68d1795dadff5ad4c62dae36797151e

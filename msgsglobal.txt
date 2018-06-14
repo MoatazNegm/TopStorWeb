@@ -1,0 +1,259 @@
+Difa1: : : from : Disk : failed in system : 
+Dist2: : : from : Start replacing Disk : by the spare disk : in system : 
+Disu2: : : from : Success replacing Disk : by the spare disk : in system :
+Dist3: : : from : Start removing Disk : in : from system database 
+Disu3: : : from : Success removing Disk :  from system : It is no longer used.
+Diwa4: : : from : Disk : is removed from system :
+Disu4: : : from : Success deleting absent disk : from system database
+Dist5: : : from : Start offlineing disk :. Please add a spare disk urgently so system :
+Disu5: : : from : Success to set disk : to be offline, please add a spare disk urgently
+Unlin11000: Problem while deleting user :
+Unlin11001: : : from : Problem while deleting user :
+Unlin1000:User : is deleted
+Unlin1010: : : from : User : is deleted
+Unlin1001: Deleting user :
+Unlin1004: : : from : Deleting user :
+Unlin1003:User : is added
+Unlin1006: : : from : Users are synced
+Unlin1005: : : from : syncing users
+Unlin1011: Changing user password for :
+Unlin1012: : : from : Changing user password for :
+Unlin1013: : : from : problem occurred while changing password for user :
+Unlin1014: problem occurred while changing password for user :
+Unlin1015: : : from : Success changing password for user :
+Unlin1016: Success changing password for user :
+Unlin1017: Adding user : ......
+Unlin1018: : : from : Adding user :
+Unlin1019: Problem occurred while adding user :
+Unlin1020: : : from : Problem occurred while adding user :
+Unlin1021: Success adding user :
+Unlin1022: : : from : Success adding user :
+Domain1000: Changing Domain to :
+Domain1001: Problem changing to Domain :
+Domain1101: Problem, Domain : is not found
+Domain1002: Success.. Device joined Domain :
+Domain1003: : : from : Changing Domain to :
+Domain1004: : : from : Problem changing to Domain :
+Domain1104: : : from : Problem, Domain : is not found
+Domain1005: : : from : Success.. Device joined Domain :
+Domain1010: Changing Domain to WorkGroup :
+Domain1011: Success...changing to workgroup :
+Domain1012: : : from : Changing Domain to WorkGroup :
+Domain1013: : : from : Success...changing to workgroup :
+Domain1014: Changing to Domain : is cancelled. Please configure storage first
+Domain1015: : : from : Changing to Domain : is cancelled. Please configure storage first
+HostManual1000: Changing Device name and IPs
+HostManual1001: All changes are done. Please, wait till they take effect.
+HostManual1002: : : from : Changing System name and IPs
+HostManual1003: : : from : Changed Device System name and IPs to name: ip: gateway: dns:
+CIFS1001: Creating Volume : ....
+CIFS1002: Volume : already exists
+CIFS1003: Problem occurred while creating volume :
+CIFS1004: Success creating volume :
+CIFS1005: Deleting : .....
+CIFS1006: Prolbem deleting :
+CIFS1007: Success deleting :
+Partst01: : : from : Partner : booted with ip :  wait till complete joining cluster
+Partsu01: : : from : Partner : completed joining cluster with ip : 
+Partst02: : : from : Partner : is down
+Partst03: : : from : Partner : booting with ip : as standalone. please wait ... 
+Partsu03: : : from : Partner : booted with ip : as a standalone.
+Partst04: : : from : Partner : booting with ip : as a cluster node please wait ... 
+Partsu04: : : from : from : Partner : booted with ip : as a cluster node.
+Partst05: : : from : A report from : is raised that some node is down
+Partsu05: : : from : A report from : that action is being taken due to lost node
+Partner1000: Adding partner : ......
+Partner1001: Partner : already exists
+Partner1002: Success adding partner : of type :
+Partner1003: Deleting partner : ......
+Partner1004: Success deleting partner :
+Partner1005: : : from : Deleting partner : ......
+Partner1006: : : from : Success deleting partner :
+Partner1007: : : from : Adding partner : ......
+Partner1008: : : from : Partner : already exists
+Partner1009: : : from : Success adding partner : of type :
+Replica1000: Deleting snapshot : .......
+Replica1001: Problem while deleting snapshot :
+Replica1002: Success deleting snapshot :
+Replica1003: Deleting period : ........
+Replica1004: Problem occurred while deleting period :
+Replica1005: Success deleting period :
+Replica1006: Rolling back snapshot : ......
+Replica1007: Problem occurred while rolling back snapshot :
+DGst5: : : from : Deleting Pool : ......
+DGsu5: : : from : Success deleting Pool :
+DGfa5: : : from : Failed deleting Pool :
+DG1st6: : : from : Creating Pool : using disk: ......
+DG1fa6: : : from : Problem while creating Pool : using disk:
+DG1su6: : : from : Success creating Pool : with single disk:
+DGst7: : : from : Attaching Disk: to  group : as a mirror .....
+DGfa7: : : from : Problem attaching Disk: to  group : as a mirror
+DGsu7: : : from : Success attaching Disk: to  group : as a mirror
+DGst8: : : from : Adding Disk: as a spare.....
+DGsu8: : : from : Success adding Disk: as a spare
+DGfa8: : : from : Failed adding Disk: as a spare
+DGst9: : : from : Deleting special Disk: .....
+DGsu9: : : from : Success deleting special Disk:
+DGfa9: : : from : Failed deleting special Disk:
+DGst10: : : from : Adding Disk: as a read cache.....
+DGsu10: : : from : Success adding Disk: as a read cache
+DGfa10: : : from : Failed adding Disk: as a read cache
+DGst11: : : from : Adding Disk: as a read/write cache.....
+DGsu11: : : from : Success adding Disk: as a read/write cache
+DGfa11: : : from : Failed adding Disk: as a read/write cache
+DGst12: : : from : Adding triple redundancy array to Pool :  using disks:.....
+DGsu12: : : from : Success adding triple redundancy array to Pool :  using disks:
+DGfa12: : : from : Failed adding triple redundancy array to Pool :  using disks:
+DGst13: : : from : Creating redundant Pool : using triple parity array of disk: ......
+DGsu13: : : from : Success creating redundant Pool : using triple parity array of disk:
+DGfa13: : : from : Failed creating redundant Pool : using triple parity array of disk:
+DGst14: : : from : Adding a dual parity array to  pool: using disks: .....
+DGsu14: : : from : Success adding a dual parity array to  pool: using disks:
+DGfa14: : : from : Failed adding a dual parity array to  pool: using disks:
+DGst15: : : from : Creating redundant Pool : using dual parity array of disk: ......
+DGsu15: : : from : Success creating redundant Pool : using dual parity array of disk:
+DGfa15: : : from : Failed creating redundant Pool : using dual parity array of disk:
+DGst16: : : from : Adding a single parity array to  pool: using disks: ......
+DGsu16: : : from : Success adding a single parity array to  pool: using disks:
+DGfa16: : : from : Failed adding a single parity array to  pool: using disks:
+DGst17: : : from : Creating redundant Pool : using single parity array of disk: ......
+DGsu17: : : from : Success creating redundant Pool : using single parity array of disk:
+DGfa17: : : from : Failed creating redundant Pool : using single parity array of disk:
+DGst18: : : from : Adding new space to  pool : using disks: ......
+DGsu18: : : from : Success adding new space to  pool : using disks:
+DGfa18: : : from : Failed adding new space to  pool : using disks:
+DGst19: : : from : Creating redundant Pool : using mirror array of disk: ......
+DGsu19: : : from : Success creating redundant Pool : using mirror array of disk:
+DGfa19: : : from : Failed creating redundant Pool : using mirror array of disk:
+DGst20: : : from : Adding a mirror array to pool: using disks: ......
+DGsu20: : : from : Success adding a mirror array to pool: using disks:
+DGfa20: : : from : Failed adding a mirror array to pool: using disks:
+DGst21: : : from : Creating non-redundant Pool : using disks: ......
+DGsu21: : : from : Success creating non-redundant Pool : using disks:
+DGfa21: : : from : Failed creating non-redundant Pool : using disks:
+Replica1008: Success in Rollback of snapshot :
+Replica1009: Adding Hourly replication schedule ......
+Replica1010: Problem occurred adding Hourly replication schedule
+Replica1011: Success adding Hourly replication schedule : for partner : on volume :
+Replica1012: Starting one time manual replication .....
+Replica1013: Manually replicating volume : to partner : ....
+Replica1014: Failed manually replicating volume : to partner : with error :
+Replica1015: Success manually replicating volume : to partner :
+Replica1016: Adding Minutely replication schedule ......
+Replica1017: Problem occurred adding Minutely replication schedule
+Replica1018: Success adding Minutely replication schedule : for partner : on volume :
+Replica1019: Adding Weekly replication schedule ......
+Replica1020: Problem occurred adding Weekly replication schedule
+Replica1021: Success adding Weekly replication schedule : for partner : on volume :
+Replica1022: Adding Alias : for this device ......
+Replica1023: Success adding Alias : to this device
+Replica1024: Adding proxy license : this device ......
+Replica1025: Success adding proxy license : for proxy :
+Replica1026: Adding proxy :
+Replica1027: Success adding proxy : for the license :
+Snap1000: Deleting snapshot : .......
+Snap1001: Problem while deleting snapshot :
+Snap1002: Success deleting snapshot :
+Snap1003: Deleting period : ........
+Snap1004: Problem occurred while deleting period :
+Snap1005: Success deleting period :
+Snap1006: Rolling back snapshot : ......
+Snap1007: Problem occurred while rolling back snapshot :
+Snap1008: Success in Rollback of snapshot :
+Snap1009: Adding Hourly Snapshot schedule ......
+Snap1010: Problem occurred adding Hourly Snapshot schedule
+Snap1011: Success adding Hourly Snapshot schedule :
+Snap1012: Starting one time manual snapshot .....
+Snap1013: Manually snapshot volume :
+Snap1014: Failed manually snaphsot volume :
+Snap1015: Success manually snapshot :
+Snap1016: Adding Minutely snapshot schedule for : ......
+Snap1017: Problem occurred adding Minutely snapshot schedule for :
+Snap1018: Success adding Minutely snapshost schedule : for volume :
+Snap1019: Adding Weekly snapshot schedule for : ......
+Snap1020: Problem occurred adding Weekly snapshot schedule for :
+Snap1021: Success adding Weekly snapshot schedule : for volume :
+Priv1000: Changing perivileges of user : ........
+Priv1001: Success changing privileges of user :
+Priv1002: : : from : Changing perivileges of user : ........
+Priv1003: : : from : Success changing privileges of user :
+Replivol1000: : : from : Receiving new snapshot for volume : from partner :
+Replidf1000: : : from : Receiving new Snapshot for volume : from partner :
+NFS1000: : : from :  Deleting volume :
+NFS1001: : : from : Problem occurred while deleting volume :
+NFS1002: : : from : Success deleting :
+NFS1003: : : from : volume : already exists
+NFS1004: : : from : Creating volume :
+NFS1005: : : from : Problem occurred while creating volume :
+NFS1006: : : from : Success creating volume :
+Snap1022: : : from : Deleting Snapshot :
+Snap1023: : : from : Problem while deleting snapshot :
+Snap1024: Success in deleting snapshot :
+Snap1025: : : from : Success in deleting snapshot :
+Snap1026: : : from : Adding snapshot :
+Snap1027: Problem occurred while creating Snapshot :
+Snap1028: : : from : Problem occurred while creating Snapshot :
+Snap1029: Success creating Snapshot :
+Snap1030: : : from : Success creating Snapshot :
+Snap1031: : : from : Adding Weekly snapshot schedule for : ......
+Snap1032: : : from : Problem occurred adding Weekly snapshot schedule for :
+Snap1033: : : from : Success adding Weekly snapshot schedule : for volume :
+Snap1034: : : from : Adding Minutely snapshot schedule for : ......
+Snap1035: : : from : Problem occurred adding Minutely snapshot schedule for :
+Snap1036: : : from : Success adding Minutely snapshost schedule : for volume :
+Snap1037: : : from : Adding Hourly Snapshot schedule ......
+Snap1038: : : from : Problem occurred adding Hourly Snapshot schedule
+Snap1039: : : from : Success adding Hourly Snapshot schedule :
+Snap1040: : : from : Rolling back snapshot : ......
+Snap1041: : : from : Problem occurred while rolling back snapshot :
+Snap1042: : : from : Success in Rollback of snapshot :
+Snap1043: : : from : Deleting period : ........
+Snap1044: : : from : Problem occurred while deleting period :
+Snap1045: : : from : Success deleting period :
+Snap1046: : : from : Failed to find a host for the snapshot
+Repli1001: : : from : Problem occurred while receiving the snapshot : from :
+Repli1002: : : from : Success in receiving the snapshot : from :
+Repli1003: : : from : Sending Replication : to partner :
+Repli1005: : : from : Problem occurred while Sending replication  : to partner :
+Repli1006: : : from : Success sending Snapshot : to partner :
+Replica1030: : : from : Adding Weekly replication schedule ......
+Replica1031: : : from : Problem occurred adding Weekly replication schedule
+Replica1032: : : from : Success adding Weekly replication schedule : for partner : on volume :
+Replica1033: : : from : Manually replicating volume : to partner : ....
+Replica1034: : : from : Failed manually replicating volume : to partner : with error :
+Replica1035: : : from : Success manually replicating volume : to partner :
+Replica1036: : : from : Adding Minutely replication schedule ......
+Replica1037: : : from : Problem occurred adding Minutely replication schedule
+Replica1038: : : from : Success adding Minutely replication schedule : for partner : on volume :
+Replica1039: : : from : Adding Hourly replication schedule ......
+Replica1040: : : from : Problem occurred adding Hourly replication schedule
+Replica1041: : : from : Success adding Hourly replication schedule : for partner : on volume :
+Replica1042: : : from : Rolling back snapshot : ......
+Replica1043: : : from : Problem occurred while rolling back snapshot :
+Replica1044: : : from : Success in Rollback of snapshot :
+Replica1045: : : from : Deleting period : ........
+Replica1046: : : from : Problem occurred while deleting period :
+Replica1047: : : from : Success deleting period :
+Replica1048: : : from : Deleting snapshot : .......
+Replica1049: : : from : Problem while deleting snapshot :
+Replica1050: : : from : Success deleting snapshot :
+Replica1151: : : from : Start replication from host : to : for :
+Replica1152: : : from : Failed replication from host : to : for :
+Replica1153: : : from : Success replication from host : to : for :
+Reinit1000: : : from : Initializing new session with partners
+ReClose1000: : : from : Closing session
+Replica1051: Adding proxy :
+Replica1052: Success adding proxy : for the license :
+Replica1053: : : from : Adding proxy license : this device ......
+Replica1054: : : from : Success adding proxy license : for proxy :
+Replica1055: : : from : Adding Alias : for this device ......
+Replica1056: : : from : Success adding Alias : to this device
+Upcr1010: : : from : Software Upgrade autocheck cannot reach online repository
+Upnu1010: : : from : Autocheck software confirms system is latest version
+Updo1010: : : from : Start downloading system software version :
+Upfd1010: : : from : Finished downloading system software version :
+Upsa1010: : : from : Start updating from version : to version :
+Upfe1010: : : from : Fetching new firmware from QuickStor
+Upnv1010: : : from : Update file is not valid
+Upfa1010: : : from : Failed updating from version : to version :
+Upsu1010: : : from : Success updating from version : to version :
