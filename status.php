@@ -774,7 +774,7 @@ $("#Disks").change(function(){
 		$(".checkboxy").change (function(){ updatelogarea();
 			});
 		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
-		$.post("./pump.php", { req:"GetDisklist", name: "Data/disklist.txt"},function(){});
+		$.post("./pump.php", { req:"GetDisklist", name: "Data/disklist.txt", passwd:"hi"},function(){});
 		setInterval('refreshall()', 500); // Loop every 1000 milliseconds (i.e. 1 second)
 		//console.log("<?php print $_REQUEST["idd"]; print session_id(); ?>");
 		
