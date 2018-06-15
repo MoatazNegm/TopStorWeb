@@ -1,9 +1,1 @@
-<<<<<<< HEAD
-[]
-=======
-<<<<<<< HEAD
-[{"id":"0","name":"scsi-36001405a4e96921b09c42129e7aadb4e","host":"dhcp12013","size":"8","diskstatus":"ONLINE","pool":"free","poolstatus":"ONLINE","poolsize":"","poolfree":"","grouptype":"free","InGroupDisk1":"notavailable","InGroupDisk2":"notavailable"},{"id":"0","name":"scsi-36001405a4e96921b09c42129e7aadb4e","host":"dhcp31481","size":"8","diskstatus":"ONLINE","pool":"free","poolstatus":"ONLINE","poolsize":"","poolfree":"","grouptype":"free","InGroupDisk1":"notavailable","InGroupDisk2":"notavailable"}]
-=======
-[{"id":"0","name":"scsi-3600140537bcd2e3c86f4482ab02aacee","host":"dhcp31481","size":"8","diskstatus":"free","pool":"free","poolstatus":"ONLINE","poolsize":"","poolfree":"","grouptype":"free","InGroupDisk1":"notavailable","InGroupDisk2":"notavailable"},{"id":"0","name":"scsi-3600140537bcd2e3c86f4482ab02aacee","host":"dhcp12013","size":"8","diskstatus":"free","pool":"free","poolstatus":"ONLINE","poolsize":"","poolfree":"","grouptype":"free","InGroupDisk1":"notavailable","InGroupDisk2":"notavailable"}]
->>>>>>> 372a73ed3dc96669171591a4373c4aceb3107430
->>>>>>> d86dd126a68d1795dadff5ad4c62dae36797151e
+[{"id":"0","name":"scsi-3600140544009c44031a4ed9862d39293","host":"dhcp12013","size":"8","diskstatus":"free","pool":"free","poolstatus":"na","poolsize":"","poolfree":"","grouptype":"free","InGroupDisk1":"notavailable","InGroupDisk2":"notavailable"},{"id":"0","name":"scsi-3600140544009c44031a4ed9862d39293","host":"dhcp12013","size":"8","diskstatus":"free","pool":"free","poolstatus":"na","poolsize":"","poolfree":"","grouptype":"free","InGroupDisk1":"notavailable","InGroupDisk2":"notavailable"},{"id":"1","name":"scsi-3600140585380ec3e51c4e81bae734f56","host":"dhcp12013","size":"8","diskstatus":"free","pool":"free","poolstatus":"na","poolsize":"","poolfree":"","grouptype":"free","InGroupDisk1":"notavailable","InGroupDisk2":"notavailable"},{"id":"1","name":"scsi-3600140585380ec3e51c4e81bae734f56","host":"dhcp12013","size":"8","diskstatus":"free","pool":"free","poolstatus":"na","poolsize":"","poolfree":"","grouptype":"free","InGroupDisk1":"notavailable","InGroupDisk2":"notavailable"}]
