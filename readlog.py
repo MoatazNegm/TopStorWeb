@@ -18,9 +18,9 @@ def file_read_from_head(fname,fromd,nlines):
    if(x > 0):
     if (ldate <= mydate):
      line=line.replace("\n","").split(" ")
-     if line[2] in msgtype:
+     if line[3] in msgtype:
       try:
-       alllines.append({"Date":line[0],"time":line[1],"msg":line[2],"user":line[3],"code":line[4],"stamp":line[5]}) 
+       alllines.append({"Date":line[0],"time":line[1],"fromhost":line[2], "msg":line[3],"user":line[4],"code":line[5],"stamp":line[6]}) 
        x-=1
       except: 
        pass
@@ -29,9 +29,9 @@ def file_read_from_head(fname,fromd,nlines):
    else:
     if (ldate >= mydate):
      line=line.replace("\n","").split(" ")
-     if line[2] in msgtype:
+     if line[3] in msgtype:
       try: 
-       alllines.append({"Date":line[0],"time":line[1],"msg":line[2],"user":line[3],"code":line[4],"stamp":line[5]}) 
+       alllines.append({"Date":line[0],"time":line[1],"fromhost":line[2], "msg":line[3],"user":line[4],"code":line[5],"stamp":line[6]}) 
        x+=1
       except: 
        pass
@@ -41,7 +41,7 @@ def file_read_from_head(fname,fromd,nlines):
  return list(alllines)
 
 mydate=datetime.datetime.strptime(datey,"%m/%d/%YT%H:%M:%S")
-readl=file_read_from_head('Data/TopStor.log',mydate,count)
+readl=file_read_from_head('Data/TopStorglobal.log',mydate,count)
 jsondisk=str(readl).replace("\'","\"")
 jsondisk=jsondisk.replace(': "',':"')
 jsondisk=jsondisk.replace(', "',',"')
