@@ -63,9 +63,9 @@ Partst02: : : from : Partner : is down
 Partst03: : : from : Partner : booting with ip : as standalone. please wait ... 
 Partsu03: : : from : Partner : booted with ip : as a standalone.
 Partst04: : : from : Partner : booting with ip : as a cluster node please wait ... 
-Partsu04: : : from : from : Partner : booted with ip : as a cluster node.
-Partst05: : : from : A report from : is raised that some node is down
-Partsu05: : : from : A report from : that action is being taken due to lost node
+Partsu04: : : from : Partner : booted with ip : as a cluster node.
+Partst05: : : from : Partner : raised alert that some node is down
+Partsu05: : : from : Partner : is taking action due to lost node
 Partner1000: Adding partner : ......
 Partner1001: Partner : already exists
 Partner1002: Success adding partner : of type :

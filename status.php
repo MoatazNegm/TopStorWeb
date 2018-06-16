@@ -168,8 +168,9 @@
                             <thead>
                             <tr class="row">
 										  <th class="text-left col-3" style="padding-left: 2rem; ">Date and time</th>                                
-                                <th class="text-center col-2">user</th>
-                                <th class="text-center col-7">Data</th>
+                                <th class="text-center col-1">User</th>
+                                <th class="text-center col-2">Host</th>
+                                <th class="text-center col-6">Data</th>
                                 
                             </tr>
                             </thead>
@@ -326,7 +327,7 @@
 			};
 			
 			$.ajax({
-				url : "msgs.txt",
+				url : "msgsglobal.txt",
 				dataType: "text",
 				success : function (data) {
 					
@@ -691,7 +692,7 @@
 								jofcode=searchmsg(msgs,msgcode);
 								//console.log("jofcode",jofcode);
 								themsg=msgs[jofcode];
-								try { themsgarr=themsg.split(":"); } catch(err) { updatelogarea();}
+								try { themsgarr=themsg.split(":"); xfrom=themsgarr.indexOf(' from '); if (xfrom > -1) { themsgarr.splice(xfrom,1);} } catch(err) { updatelogarea();}
 								codes.push(".");
 								objdata=""
 								for (i=1; i < themsgarr.length ;i++) {
@@ -705,7 +706,7 @@
 							if (k == 0) { y="first"; };
 							if (k == (obj[ii].length-1)) {y="last";};
 							if(obj[ii][k].msg == "info") { color="blue"}; if(obj[ii][k].msg == "warning") { color="#cce11a"}; if(obj[ii][k].msg == "error") { color="red"}						
-							$("#Logdetails").append('<tr style="padding-left: 2rem; color:'+color+'" class="row datarow '+obj[ii][k].msg+'" ><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-3 text-left tdlog Volname '+y+' '+obj[ii][k].msg+' " data-toggle="popover" rel="popover" data-trigger="hover" data-container="body"  >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td style="margin-left: -1.7rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-2 text-center tdlog '+obj[ii][k].msg+' "  data-content='+objdata+' >'+obj[ii][k].user+'</td><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-7 text-center tdlog '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
+							$("#Logdetails").append('<tr style="padding-left: 3.9rem; color:'+color+'" class="row datarow '+obj[ii][k].msg+'" ><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-3 text-left tdlog Volname '+y+' '+obj[ii][k].msg+' " data-toggle="popover" rel="popover" data-trigger="hover" data-container="body"  >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td style="margin-left: -1.2rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-1 text-left tdlog '+obj[ii][k].msg+' "  data-content='+objdata+' >'+obj[ii][k].user+'</td><td style="margin-left: 0rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-2 text-center tdlog'+obj[ii].msg+' " data-content='+objdata+' >'+obj[ii][k].fromhost+'</td><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-6 text-center tdlog '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
 							
 							
 										infochange();			
