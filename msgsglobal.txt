@@ -1,3 +1,7 @@
+Actst1000: : : from : Volumes info are synced
+Actsu1000: : : from : syncing volumes info
+Actst1001: : : from : logs are synced
+Actsu1001: : : from : syncing logs
 Difa1: : : from : Disk : failed in system : 
 Dist2: : : from : Start replacing Disk : by the spare disk : in system : 
 Disu2: : : from : Success replacing Disk : by the spare disk : in system :
