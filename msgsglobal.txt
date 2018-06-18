@@ -188,7 +188,7 @@ NFS1001: : : from : Problem occurred while deleting volume :
 NFS1002: : : from : Success deleting :
 NFS1003: : : from : volume : already exists
 NFS1004: : : from : Creating volume :
-NFS1005: : : from : Problem Volume name : is registered in system. Please check for lost hosts/volumes
+NFS1005: : : from : Volume name : is registered in system. Please check for lost hosts/volumes
 NFS1006: : : from : Problem occurred while creating volume :
 NFS1007: : : from : Success creating volume :
 Snap1022: : : from : Deleting Snapshot :

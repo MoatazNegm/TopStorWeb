@@ -397,8 +397,7 @@
 		 			$(".bg-success").show().fadeIn('slow');
 					$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data);});
 					
-					console.log("loghi")
-				}
+					}
 					refreshList2("GetPoolVollist","#Volumetable"+prot,"Data/Vollist.txt","Volumes");
 					//refresh3("#statusarea3");
 				if(syscounter2==1000) { syscounter2=0; } else { syscounter2=syscounter2+1; }
@@ -423,13 +422,17 @@ function refreshList2(req,listid,filelocfrom,show) {
  fileloc = filelocfrom ; request= request ; 
  $.get("gump.php", { req: 'run', name:'--prefix' }, function(data){
   if(data==olddiskpool) { return; }
-   jdata = jQuery.parseJSON(data);
+  jdata = jQuery.parseJSON(data);
+  if(typeof jdata !='object' || data.includes("stub")<= 0) { 
+   console.log(' md not ready')
+   return; }
+  olddiskpool=data;
+  console.log('md changed')
   kdata = []
   $.each(jdata,function(kk,vv){
    kdata.push(jdata[kk].replace("['",'').replace("]'",'').replace("'",'').split(',')[0].split('/'))
   });
   if(typeof jdata=='object') {
-   olddiskpool=data;
    $(listid+' option').remove();
    $(listid+' tr').remove();
    $("#Volumedetails tr.variable").remove();
@@ -456,7 +459,6 @@ function refreshList2(req,listid,filelocfrom,show) {
      poolsize=poolsize-volslashes[1]
     }
     if ( kdata[k].indexOf("vol") > 0 && kdata[k].indexOf(prot) > 0 ) {
-     console.log('kdata==',kdata[k])
      name=kdata[k][kdata[k].indexOf("vol")+1]
      volslashes=jdata[k].replace("[",'').replace("']",'').replace("'",'').split(',')[1].replace("'",'').split('/')
      volslashes[0]=normsize(volslashes[0])
@@ -466,7 +468,6 @@ function refreshList2(req,listid,filelocfrom,show) {
     chartdata.push([name,volslashes[1]]);
     }
 
-    console.log("tochart",chartdata)
 							//$("#Pool2"+prot).change()
    });
    if (plotb) {plotb.destroy();}
