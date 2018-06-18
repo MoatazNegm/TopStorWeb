@@ -654,7 +654,7 @@ function refreshList2(req,listid,filelocfrom,show) {
 				 });
 			
 			});
-			function createvol() {  var req="";$.post("./pump.php", { req:"VolumeCreate"+prot+"", name:$("#Pool2"+prot+" option:selected").val()+" "+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+			function createvol() {  var req="";$.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:$("#Pool2"+prot+" option:selected").val()+" "+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
 
 				 });
 			
@@ -688,7 +688,7 @@ function refreshList2(req,listid,filelocfrom,show) {
 			}
 		}
 		$("#close-success").click(function() { $(".bg-success").hide(); });
-		function voldel() {   $.post("./pump.php", { req:"VolumeDelete"+prot, name:$("#Pool2"+prot+" option:selected").val()+" "+arguments[0]+" "+prot+" "+"<?php echo $_SESSION["user"]; ?>" });   }
+		function voldel() {   $.post("./pump.php", { req:"VolumeDelete"+prot+".py", name:$("#Pool2"+prot+" option:selected").val()+" "+arguments[0]+" "+prot+" "+"<?php echo $_SESSION["user"]; ?>" });   }
 $(".ref").click(function() {
 					//console.log("session before","<?php print session_id(); ?>");
 					if($(this).attr('id')=="Login")
