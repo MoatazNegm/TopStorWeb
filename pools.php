@@ -721,6 +721,7 @@
 			var pool=[];
 			var jdata;
 			var gdata;
+			var raids=[];
 			var poolsel='0'
 			var	volsel='0'
 			var releasesel=0;
@@ -955,11 +956,16 @@ poolar=[]
 				if(panesel=="diskgroup") {
 					
 					$.each(kdata,function(kk,vv){
+						if(kdata[kk].indexOf('raid') > 0 && kdata[kk].indexOf('status') > 0 && kdata[kk].indexOf('disk') < 0) {
+		raids[kdata[kk][4]]=jdata[kk].replace("[",'').replace("]",'').replace("'",'').split(',')[1].replace("'",'')
+									}	
+});
+					$.each(kdata,function(kk,vv){
 						
-										
 						if(kdata[kk].indexOf('disk') > 0  && kdata[kk].indexOf('status') > 0 && kdata[kk].indexOf("free") <0) {
 								disks[kdata[kk][6]]=[]
 								disks[kdata[kk][6]]["group"]=kdata[kk][4]
+								disks[kdata[kk][6]]["groupst"]=raids[kdata[kk][4]]
 								disks[kdata[kk][6]]['status']=jdata[kk].replace("[",'').replace("]",'').replace("'",'').split(',')[1]
 								disks[kdata[kk][6]]['status']=disks[kdata[kk][6]]['status'].replace("'",'').replace(" ",'')
 								disks[kdata[kk][6]]["id"]=kdata[kk][6]
@@ -969,10 +975,11 @@ poolar=[]
 						}
 						if(kdata[kk].indexOf('disk') > 0 && kdata[kk].indexOf('free') > 0 && kdata[kk].indexOf('fromhost') > 0 && kdata[kk].indexOf("stub") <0) {
 								
-								disks[kdata[kk][3]]=[]
 								
+								disks[kdata[kk][3]]=[]
 								disks[kdata[kk][3]]["group"]='-1'
 								disks[kdata[kk][3]]["grouptype"]=' '
+								disks[kdata[kk][3]]["groupst"]='nogroupst'
 								disks[kdata[kk][3]]['status']='free'
 								disks[kdata[kk][3]]["id"]=kdata[kk][3]
 								disks[kdata[kk][3]]["host"]=jdata[kk].split('-')[1].replace("']",'')
@@ -1023,9 +1030,11 @@ poolar=[]
 					})
 					
 					$.each(disks,function(kk,vv){
+						diskimg='disk-image'
+						if(disks[kk].groupst.includes('DEGRADE')) { diskimg='DEGRADED' }
 						if(disks[kk]["name"].includes("'-'") || disks[kk]["status"].includes("OFFLINE") || disks[kk]["status"].includes("FAULT") ) { clickdisk=''; imgf='invaliddisk.png" style="height:7rem; width:5.1rem;"' }
 						else { clickdisk="javascript:diskclick('"+kk+"')"; clickdisk="href="+clickdisk; imgf="disk-image.png" }	
-						$("#diskimg").append('<div class="'+disks[kk]["status"].replace("'",'').replace(" ",'')+'" ><a id="'+kk+'"'+clickdisk+' > <img class="img-fluid disk-image disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a '+clickdisk+'><p class="psize">'+disks[kk]["size"].replace("'",'').replace(" ",'')+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"].replace("'",'').replace(" ",'')+'">'+disks[kk]["status"].replace("'",'').replace(" ",'')+'</p><p class="pimage">'+disks[kk]["grouptype"].replace("'",'').replace(" ",'')+'</p><p class="pimage">'+disks[kk]["host"].replace("'",'').replace(" ",'')+'</p>')
+						$("#diskimg").append('<div class="'+disks[kk]["status"].replace("'",'').replace(" ",'')+'" ><a id="'+kk+'"'+clickdisk+' > <img class="img-fluid '+ diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a '+clickdisk+'><p class="psize">'+disks[kk]["size"].replace("'",'').replace(" ",'')+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"].replace("'",'').replace(" ",'')+'">'+disks[kk]["status"].replace("'",'').replace(" ",'')+'</p><p class="pimage">'+disks[kk]["grouptype"].replace("'",'').replace(" ",'')+'</p><p class="pimage">'+disks[kk]["host"].replace("'",'').replace(" ",'')+'</p>')
 						disks[kk]["selected"]=0;	
 					});
 					
