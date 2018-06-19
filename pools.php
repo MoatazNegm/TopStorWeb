@@ -1004,6 +1004,7 @@ poolar=[]
 						}
 						if(kdata[kk].indexOf('disk') > 0 && kdata[kk].indexOf('free') > 0 && kdata[kk].indexOf('size') > 0) {
 							$.each(disks,function(k,v) {
+console.log('disks=',disks[k])
 								if(disks[k]["id"]==kdata[kk][3]){
 									disks[k]["size"]=jdata[kk].replace("[",'').replace("]",'').replace("'",'').split(',')[1].replace('GB','').replace('TB','000')
 									disks[k]["size"]=disks[k]["size"].replace("'",'').replace(" ",'')
