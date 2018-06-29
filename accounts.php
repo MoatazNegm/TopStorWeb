@@ -5,7 +5,7 @@
 <html lang="en">
 <?php ?>
     <meta charset="UTF-8">
-    <title>Pilot</title>
+    <title>php ::</title>
     <!--META TAGS-->
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
