@@ -127,6 +127,10 @@
                       <a class="hostmember" style="display: inline;" href="javascript:hostclick(1)">dhcp20407</a>
                       <a class="hostmember" href="javascript:hostclick(2)">dhcp31481</a>
                 </div>
+                <div id="poollist" class="col-12  " style="margin-top: 0.4rem;">
+                      <a class="poolmember" style="display: inline;" href="javascript:hostclick(1)">dhcp20407</a>
+                      <a class="poolmember" href="javascript:hostclick(2)">dhcp31481</a>
+                </div>
                     <div style="display: inline-flex; " id="diskimg">
                        
                     </div>
@@ -874,6 +878,7 @@ function refreshall() { //check pool status
     $(".disk-image").remove();	
     $("#diskimg").html('');
     $('.hostmember').remove()
+    $('.poolmember').remove()
     disks=[];
     kdata=[];
     pools=[];
@@ -891,6 +896,7 @@ function refreshall() { //check pool status
      });
     });
     $.each(pools,function(k,v){
+     $('#poollist').append($('<a class="poolmember" style="display: inline; " href="javascript:poolclick(\''+pools[k]["name"]+'\')">'+pools[k]["name"]+'</a>'));	
      pools[k]['alloc']=normsize(pools[k]['alloc'])
      pools[k]['empty']=normsize(pools[k]['empty'])
      pools[k]['size']=normsize(pools[k]['size'])
@@ -936,11 +942,12 @@ function refreshall() { //check pool status
     }
     else { clickdisk="javascript:diskclick('"+kk+"')"; clickdisk="href="+clickdisk; imgf="disk-image.png" 
     }	
-    $("#diskimg").append('<div class="disks '+disks[kk]['host']+' '+disks[kk]["status"]+'" ><a id="'+kk+'"'+clickdisk+' > <img class="img-fluid '+ diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a '+clickdisk+'><p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>')
+    $("#diskimg").append('<div class="disks '+disks[kk]['host']+' '+disks[kk]['pool']+' '+disks[kk]["status"]+'" ><a id="'+kk+'"'+clickdisk+' > <img class="img-fluid '+ diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a '+clickdisk+'><p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>')
     disks[kk]["selected"]=0;	
   });
   $(".disks").hide()
   $("."+currenthost).show()
+  $("."+currentpool).show()
   setstatus();
   if(ppoolstate.indexOf("DEGRADE") >=0) { 
   $("#poolstate").text("Pool is DEGRADED") ; $("#poolstate").removeClass("poolOnline");$("#poolstate").addClass("poolDegrade")
@@ -1375,6 +1382,11 @@ function setaction() {
 	}
         function hostclick(name) {
              currenthost=name;
+             $('.disks').hide()
+             $('.'+name).show()
+        }
+        function poolclick(name) {
+             currentpool=name;
              $('.disks').hide()
              $('.'+name).show()
         }
