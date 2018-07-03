@@ -714,8 +714,6 @@
 			var runningpool=0;
 			var runningroup=0;
 			var dd=[];
-                        var raids=[]
-                        var selecteddisks=[]
 			var olddiskpool=0;
 			var oldcurrentinfo="";
 			var disks=[];
@@ -814,7 +812,7 @@
 				$("#Pool option.variable2").remove();
 						chartdata=[];
 						$.each(pool,function(k,v){
-							$("#Pool").append($('<option class="variable2">').text(pools[k].name).val(pools[k].name));
+							$("#Pool").append($('<option class="variable2">').text(pool[k].name).val(pool[k].name));
 							//chartdata.push(gdata[prot].class);
 										//chartdata[gdata[prot].class]=[];
 							
@@ -840,229 +838,266 @@
 			};
 			
 			
-function refreshall() { //check pool status
+	function refreshall() { //check pool status
 	
- $.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ 
-  if(data!=oldcurrentinfo){oldcurrentinfo=data;  $(".bg-success").show(); $("#texthere").text(data);}
- });
- if($("#diskGroupspane").hasClass('active'))  { 
-  if (panesel !="diskgroup") { 
-   olddiskpool="kdajfd"; syscounter2=1000; Vollisttime2="skldjfadks"; panesel="diskgroup";
-  }
- };
- if($("#snapshotspane").hasClass('active')) { 
-  if (panesel !="snapshot") { 
-   olddiskpool="ldksfj";syscounter2=1000; Vollisttime2="skldjfadks"; panesel="snapshot"; snaponce("#Oncename","#shortname","#goodname","#Oncename");
-  }
- };
- change=0
- $.get("gump2.php", { req: "myhost/current", name:""  },function(data){
-  if(data==olddiskpool) {return;}
-  else {
-   jdata = jQuery.parseJSON(data)
-   if(typeof jdata =='object' ) {
-    $("#DG tr").hide(); 
-    olddiskpool=data
-    releasesel=0
-    oldreleasesel=0
-    disks=[];
-    var k;
-    $(".disk-image").remove();	
-    $("#diskimg").html('');
-    disks=[];
-    kdata=[];
-    pools=[];
-    pool=[];
-    $.each(jdata,function(k,v){
-     pools.push(jdata[k])
-    });
-    $.each(pools,function(k,v){
-     pools[k]['alloc']=normsize(pools[k]['alloc'])
-     pools[k]['empty']=normsize(pools[k]['empty'])
-     pools[k]['size']=normsize(pools[k]['size'])
-     $.each(pools[k]["raidlist"],function(kk,vv){
-      toraids=pools[k]["raidlist"][kk]
-      toraids.pool=pools[k]["name"]
-      raids.push(toraids)
-      $.each(pools[k]["raidlist"][kk]["disklist"], function(kkk,vvv){
-       thedisk=pools[k]["raidlist"][kk]["disklist"][kkk]
-       disks.push({"id":kk,
-	"pool":pools[k]["name"],
-	"groupst":pools[k]["raidlist"][kk]["status"],
-	"status":thedisk["status"],
-	"grouptype":pools[k]["raidlist"][kk]["name"],
-	"host":thedisk["host"],
-	"name":thedisk["name"],
-	"size":thedisk["size"].replace('GB','').replace('TB','000'),
-	"selected":0 
-       });
-      });
-     });
-    });
-   }
-  }
-  $("#Vol").change();	
-  kdata=[]
-  $.each(kdata,function(k,v){	
-   if(kdata[k].indexOf('snapperiod') > 0){
-    periodlashes=jdata[k].replace("[",'').replace("']",'').replace("'",'').split(',')[1].replace("'",'').split('/')
-    switch(periodlashes[0].replace("'",'').replace(" ",'')){
-     case "hourly": $("#Hourlylist").append('<tr class="variable4 periods '+periodlashes[1].replace("'",'').replace(" ",'')+' '+kdata[k][0].replace("'",'').replace(" ",'')+'_'+kdata[k][kdata[k].indexOf('pool')+1].replace("'",'').replace(" ",'')+' '+periodlashes[0].replace("'",'').replace(" ",'')+' '+'"><td class="text-center">'+periodlashes[4].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+periodlashes[3].replace("'",'').replace(" ",'')+ "</td><td class='text-center'>"+ periodlashes[2].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+kdata[k][kdata[k].indexOf('snapperiod')+1].replace("'",'').replace(" ",'')+"</td><td class='text-center'><a href='javascript:SnapshotPeriodDelete(\""+kdata[k][kdata[k].indexOf('snapperiod')+1].replace("'",'').replace(" ",'')+"\")'><img src='assets/images/delete.png'</td></tr>");	 break;
-     case "Minutely": $("#Minutelylist").append('<tr class="variable4 periods '+periodlashes[1].replace("'",'').replace(" ",'')+' '+kdata[k][0].replace("'",'').replace(" ",'')+'_'+kdata[k][kdata[k].indexOf('pool')+1].replace("'",'').replace(" ",'')+' '+periodlashes[0].replace("'",'').replace(" ",'')+' '+'"><td class="text-center">'+periodlashes[3].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+periodlashes[2].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+kdata[k][kdata[k].indexOf('snapperiod')+1].replace("'",'').replace(" ",'')+"</td><td class='text-center'><a href='javascript:SnapshotPeriodDelete(\""+kdata[k][kdata[k].indexOf('snapperiod')+1].replace("'",'').replace(" ",'')+"\")'><img src='assets/images/delete.png'</td></tr>");	 break;
-     case "Weekly" : $("#Weeklylist").append('<tr class="variable4 periods '+periodlashes[1].replace("'",'').replace(" ",'')+' '+kdata[k][0].replace("'",'').replace(" ",'')+'_'+kdata[k][kdata[k].indexOf('pool')+1].replace("'",'').replace(" ",'')+' '+periodlashes[0].replace("'",'').replace(" ",'')+' '+'"><td class="text-center">'+periodlashes[3].replace("'",'').replace(" ",'')+":"+periodlashes[4].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+periodlashes[5].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+periodlashes[2].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+kdata[k][kdata[k].indexOf('snapperiod')+1].replace("'",'').replace(" ",'')+"</td><td class='text-center'><a href='javascript:SnapshotPeriodDelete(\""+kdata[k][kdata[k].indexOf('snapperiod')+1].replace("'",'').replace(" ",'')+"\")'><img src='assets/images/delete.png'</td></tr>");	 break;
+		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ if(data!=oldcurrentinfo){oldcurrentinfo=data;  $(".bg-success").show(); $("#texthere").text(data);}});
+		if($("#diskGroupspane").hasClass('active'))  { if (panesel !="diskgroup") { olddiskpool="kdajfd"; syscounter2=1000; Vollisttime2="skldjfadks"; panesel="diskgroup";}};
+		if($("#snapshotspane").hasClass('active')) { if (panesel !="snapshot") { olddiskpool="ldksfj";syscounter2=1000; Vollisttime2="skldjfadks"; panesel="snapshot"; snaponce("#Oncename","#shortname","#goodname","#Oncename");}};
+		
+	
+		$.get("gump.php", { req: "run", name:"--prefix"  },function(data){
+			if(data!=olddiskpool) {
 			
-    }
-   }	
-  });
-  $.each(disks,function(kk,vv){
-   diskimg='disk-image'
-   if(disks[kk].groupst.includes('DEGRADE')) { diskimg='DEGRADED' }
-    if(disks[kk]["name"].includes("'-'") || disks[kk]["status"].includes("OFFLINE") || disks[kk]["status"].includes("FAULT") ) { clickdisk=''; imgf='invaliddisk.png" style="height:7rem; width:5.1rem;"' 
-    }
-    else { clickdisk="javascript:diskclick('"+kk+"')"; clickdisk="href="+clickdisk; imgf="disk-image.png" 
-    }	
-    $("#diskimg").append('<div class="'+disks[kk]["status"]+'" ><a id="'+kk+'"'+clickdisk+' > <img class="img-fluid '+ diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a '+clickdisk+'><p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["host"]+'</p>')
-    disks[kk]["selected"]=0;	
-  });
-  setstatus();
-  if(ppoolstate.indexOf("DEGRADE") >=0) { 
-   $("#poolstate").text("Pool is DEGRADED") ; $("#poolstate").removeClass("poolOnline");$("#poolstate").addClass("poolDegrade")
-  }
-  else { 
-   $("#poolstate").text("Pool is online");
-   $("#poolstate").removeClass("poolDegrade"); $("#poolstate").addClass("poolOnline"); 
-  }
-  if(ppoolstate.indexOf("na") >=0) { $("#poolstate").text("") }
-  if (panesel == "snapshot") {
-   if($("#snapshotsOnce").hasClass('active'))  { ;if (snapsel !="Once") {times["snaps"]="hithihi"; syscounter2=1000; Vollisttime2="skldjfadks"; snapsel="Once";
-  }};
-  if($("#snapshotsHourly").hasClass('active'))  { ;if (snapsel !="Hourly") { syscounter2=1000; Vollisttime2="skldjfadks"; snapsel="Hourly";
-  }};
-  if($("#snapshotsMinutely").hasClass('active'))  { ;if (snapsel !="Minutely") { syscounter2=1000; Vollisttime2="skldjfadks"; snapsel="Minutely";}};
-  if($("#snapshotsWeekly").hasClass('active'))  { ;if (snapsel !="Weekly") { syscounter2=1000; Vollisttime2="skldjfadks"; snapsel="Weekly";}};				
-  }
- });
+				jdata = jQuery.parseJSON(data)
+				
+				if(typeof jdata =='object' && data.includes("stub")> 0) {
+						$("#DG tr").hide(); 
+					olddiskpool=data
+					releasesel=0
+					oldreleasesel=0
+				disks=[];
+				var k;
+				 $(".disk-image").remove();	
+				 $("#diskimg").html('');
+				disks=[];
+				
+				disks=[];
+				kdata=[];
+				pools=[];
+				pool=[];
+				$.each(jdata,function(k,v){
+						kdata.push(jdata[k].replace("['",'').replace("]'",'').replace("'",'').split(',')[0].split('/'))
+				});
+				$.each(kdata,function(kk,vv){
+						if(kdata[kk].indexOf('pool') > 0 && kdata[kk].indexOf('disk') < 0 && kdata[kk].indexOf('vol') < 0 && kdata[kk].indexOf('name') > 0) {
+poolar=[]
+							poolar["name"]=jdata[kk].replace("[",'').replace("]",'').replace("'",'').split(',')[1]
+							poolar["prop"]=[]
+							pools.push(poolar)
+						}
+					});
+				$.each(kdata,function(kk,vv){
+					if(kdata[kk].indexOf('pool') > 0 && kdata[kk].indexOf('disk') < 0 && kdata[kk].indexOf('raid') < 0 && kdata[kk].indexOf('vol') < 0  && kdata[kk].indexOf("stub") <0 && kdata[kk].indexOf("snapperiod") <0) {
+						poolval=jdata[kk].replace("[",'').replace("]",'').replace("'",'').split(',')[1]
+						poolval=poolval.replace("'",'').replace(' ','')
+						poolname=kdata[kk][kdata[kk].indexOf('pool')+1]
+						$.each(pools,function(k,v){
+						 if(pools[k]["name"].includes(poolname) > 0 ){
+							pools[k]["prop"][kdata[kk][3].replace("'",'').replace(" ",'')]=poolval
 }
+});
+					}
+				});
+				if(pools.length > 0 ) {pool=pools[0]["prop"];}
+				if (panesel.includes("snapshot")) {
+					$(".variable2").remove()
+					$(".variable3").remove()
+					$(".variable4").remove()
+					$.each(kdata,function(k,v){	
+						if ( kdata[k].indexOf("stub") > 0 ) {
+							releasesel=1;
+							
+							
+							
+						}
+						if ( kdata[k].indexOf("pool") > 0 && kdata[k].indexOf("name") >0 && kdata[k].indexOf("disk") < 0 && kdata[k].indexOf("vol") <0 && kdata[k].indexOf("stub") <0) {
+							name=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'')
+							hosty=kdata[k][0]
+							//pool[kdata[k][2]]=pool[kdata[k][2]].replace("'",'').replace(" ",'')
+							$("#Pool").append($('<option class="variable2">').text(name).val(hosty+'_'+name));
+							
+						}
+						
+						
+						if (kdata[k].indexOf("vol") > 0 && kdata[k].indexOf("snapshot") <0 && kdata[k].indexOf("stub") <0) {
+						 
+						 volname=kdata[k][4]
+						 volslashes=jdata[k].replace("[",'').replace("']",'').replace("'",'').split(',')[1].replace("'",'').split('/')
+						 volslashes[0]=normsize(volslashes[0])
+						 volslashes[1]=normsize(volslashes[1])
+						 $("#Vol").append($('<option class="variable3 '+kdata[k][2]+'">').text(volname).val(volname));
+						}
+						if (kdata[k].indexOf("snapshot") > 0 && kdata[k].indexOf("stub") <0) {
+							
+							
+							snapslashes=jdata[k].replace("[",'').replace("']",'').replace("'",'').split(',')[1].replace("'",'').split('/')
+							d=new Date(snapslashes[0])
+							
+							
+							$(".Snaplist").append('<tr class="variable4 snaps '+kdata[k][0]+'_'+kdata[k][2]+' '+kdata[k][4]+'"><td class="text-center">'+d.getDate()+'/'+(parseInt(d.getMonth())+1)+'/'+d.getFullYear()+"</td><td class='text-center'>"+ d.getHours()+':'+d.getMinutes()+"</td><td class='text-center'>"+kdata[k][6]+"</td><td class='text-center'>"+snapslashes[1]+"</td><td class='text-center'>"+snapslashes[2]+'</td><td class="text-center"><a href="javascript:SnapshotDelete(\''+kdata[k][2]+'/'+kdata[k][4]+'@'+kdata[k][6]+'\')"><img src="assets/images/delete.png"</td><td class="text-center"><a href="javascript:SnapshotRollback(\''+kdata[k][2]+'/'+kdata[k][4]+'@'+kdata[k][6]+'\')"><img src="assets/images/return.png" alt="can\'t upload delete icon"></a></td></tr>');
+							
+						}
+					});
+					
+					
+					
+					$("#Vol").change();	
+					//switch (gdata[prot].period) {
+							
+								//case "hourly": $("#Hourlylist").append('<tr class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'"><td class="text-center">'+gdata[prot].t3+"</td><td class='text-center'>"+gdata[prot].t2+ "</td><td class='text-center'>"+ gdata[prot].t1+"</td><td class='text-center'>"+gdata[prot].stamp+"</td><td class='text-center'><a href='javascript:SnapshotPeriodDelete(\""+gdata[prot].stamp+"\")'><img src='assets/images/delete.png'</td></tr>");	 break;
+								//case "Minutely": $("#Minutelylist").append('<tr class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'"><td class="text-center">'+gdata[prot].t2+"</td><td class='text-center'>"+gdata[prot].t1+"</td><td class='text-center'>"+gdata[prot].stamp+"</td><td class='text-center'><a href='javascript:SnapshotPeriodDelete(\""+gdata[prot].stamp+"\")'><img src='assets/images/delete.png'</td></tr>");	 break;
+								//case "Weekly" : $("#Weeklylist").append('<tr class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'"><td class="text-center">'+gdata[prot].t4+"</td><td class='text-center'>"+gdata[prot].t2+":"+gdata[prot].t3+"</td><td class='text-center'>"+gdata[prot].t1+"</td><td class='text-center'>"+gdata[prot].stamp+"</td><td class='text-center'><a href='javascript:SnapshotPeriodDelete(\""+gdata[prot].stamp+"\")'><img src='assets/images/delete.png'</td></tr>");	 break;
 
-function setstatus() {
- runningpool=0;
- for (k in disks) {
-  nclass=disks[k].grouptype
-  if(disks[k].grouptype.includes("mirror") ) {nclass="mirror"}
-  if(disks[k].grouptype.includes("stripe") ) {nclass="stripe"}
-  if(disks[k].grouptype.includes("raidz1") ) {nclass="raid1"}
-  if(disks[k].grouptype.includes("raidz2") ) {nclass="raid2"}
-  if(disks[k].grouptype.includes("raidz3") ) {nclass="raid3"}
-  if(disks[k].grouptype.includes("spare") ) {nclass="spares"}
-  if(disks[k].grouptype.includes("log") ) {nclass="log"}
-  if(disks[k].grouptype.includes("cache") ) {nclass="cache"}
-  $(".disk"+k).addClass(nclass)
-  if(disks[k].grouptype.includes("stripe")==true ) {
-   $("#poolmsg").text("Pool p1 is running on disk: "+k); $("#poolsize").text(parseFloat(pools["size"]))
-   $("#Pooldelete").show();
-  }
- }
- setaction();
-}		
-selecteddisks=[]
-function setaction() {
- selecteddisks=[]
- console.log('hi')
- $.each(disks, function(k,v){
-  if(disks[k]['selected'] > 0) selecteddisks.push(disks[k]);
- });
- $("#DG tr").hide();
- switch (selecteddisks.length){
-  case 0: break;
-// if only one disk 
-  case 1:
-   switch (selecteddisks[0]["grouptype"]) {
-// if only free with a pool exists
-    case 'free':
-     if (pools.length > 1) {
-      $("#Addreadcache").show()
-      $("#Addwritecache").show()
-      $("#Addspare").show()
-      israidstripe=0
-      $.each(raids,function(k,v){
-       if(raids[k]["name"].includes('stripe') > 0 ) { israidstripe=1 }
-      });
-      if (israidstripe==1){
-       $("#Addstriped").show()
-      }
-     }
-// if only free with no pool exists
-     else { 
-      $("#striped").show()
-     }
-    break;
-   }
-   break;
-// if only two disks 
-  case 2:
-   switch (selecteddisks[0]["grouptype"]+selecteddisks[1]["grouptype"]) {
-// if free + free and pool exists 
-    case 'freefree':
-     if (pools.length > 1) {
-      $("#Addmirror").show()
-     }
-// if free + free and no pool exists 
-     else {
-      $("#mirror").show()
-     }
-    break; 
-// if free + mirror 
-    case 'freemirror':
-    case 'mirrorfree':
-     $("#Attachmirrored").show()
-    break;
-// if free + stripe 
-    case 'freestripe':
-    case 'stripefree':
-     $("#Addstriped").show()
-    break;
-   }  
-  break;
-// if 3 disks 
-  case 3:
-   switch (selecteddisks[0]["grouptype"]+selecteddisks[1]["grouptype"]+selecteddisks[1]["grouptype"]) {
-// if free + free +free and pool exists 
-    case 'freefreefree':
-     if (pools.length > 1) {
-      $("#Addmirror").show()
-      $("#addraid-SingleRed").show()
-     }
-// if free + free +free and no pool exists 
-     else {
-      $("#mirror").show()
-      $("#raid-SingleRed").show()
-     }
-    break; 
-   }
-  break;   
-//  if 4 or more disks 
-  default:
-   switch (selecteddisks[0]["grouptype"]+selecteddisks[1]["grouptype"]+selecteddisks[1]["grouptype"]) {
-// if free + free +free+free and pool exists 
-    case 'freefreefreefree':
-     if (pools.length > 1) {
-      $("#Addmirror").show()
-      $("#addraid-SingleRed").show()
-      $("#addraid-DualRed").show()
-     }
-// if free + free +free+free and no pool exists 
-     else {
-      $("#mirror").show()
-      $("#raid-SingleRed").show()
-      $("#raid-DualRed").show()
-     }
-    break; 
-   }
-  break;   
- } 
-} 
-     
-	function setaction2()	{
+					$.each(kdata,function(k,v){	
+						if(kdata[k].indexOf('snapperiod') > 0){
+							periodlashes=jdata[k].replace("[",'').replace("']",'').replace("'",'').split(',')[1].replace("'",'').split('/')
+							console.log(k,periodlashes)
+							switch(periodlashes[0].replace("'",'').replace(" ",'')){
+								case "hourly": $("#Hourlylist").append('<tr class="variable4 periods '+periodlashes[1].replace("'",'').replace(" ",'')+' '+kdata[k][0].replace("'",'').replace(" ",'')+'_'+kdata[k][kdata[k].indexOf('pool')+1].replace("'",'').replace(" ",'')+' '+periodlashes[0].replace("'",'').replace(" ",'')+' '+'"><td class="text-center">'+periodlashes[4].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+periodlashes[3].replace("'",'').replace(" ",'')+ "</td><td class='text-center'>"+ periodlashes[2].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+kdata[k][kdata[k].indexOf('snapperiod')+1].replace("'",'').replace(" ",'')+"</td><td class='text-center'><a href='javascript:SnapshotPeriodDelete(\""+kdata[k][kdata[k].indexOf('snapperiod')+1].replace("'",'').replace(" ",'')+"\")'><img src='assets/images/delete.png'</td></tr>");	 break;
+								case "Minutely": $("#Minutelylist").append('<tr class="variable4 periods '+periodlashes[1].replace("'",'').replace(" ",'')+' '+kdata[k][0].replace("'",'').replace(" ",'')+'_'+kdata[k][kdata[k].indexOf('pool')+1].replace("'",'').replace(" ",'')+' '+periodlashes[0].replace("'",'').replace(" ",'')+' '+'"><td class="text-center">'+periodlashes[3].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+periodlashes[2].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+kdata[k][kdata[k].indexOf('snapperiod')+1].replace("'",'').replace(" ",'')+"</td><td class='text-center'><a href='javascript:SnapshotPeriodDelete(\""+kdata[k][kdata[k].indexOf('snapperiod')+1].replace("'",'').replace(" ",'')+"\")'><img src='assets/images/delete.png'</td></tr>");	 break;
+								case "Weekly" : $("#Weeklylist").append('<tr class="variable4 periods '+periodlashes[1].replace("'",'').replace(" ",'')+' '+kdata[k][0].replace("'",'').replace(" ",'')+'_'+kdata[k][kdata[k].indexOf('pool')+1].replace("'",'').replace(" ",'')+' '+periodlashes[0].replace("'",'').replace(" ",'')+' '+'"><td class="text-center">'+periodlashes[3].replace("'",'').replace(" ",'')+":"+periodlashes[4].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+periodlashes[5].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+periodlashes[2].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+kdata[k][kdata[k].indexOf('snapperiod')+1].replace("'",'').replace(" ",'')+"</td><td class='text-center'><a href='javascript:SnapshotPeriodDelete(\""+kdata[k][kdata[k].indexOf('snapperiod')+1].replace("'",'').replace(" ",'')+"\")'><img src='assets/images/delete.png'</td></tr>");	 break;
+			
+							}
+							
+						}	
+					})
+											
+				}
+				if(panesel=="diskgroup") {
+					
+					$.each(kdata,function(kk,vv){
+						if(kdata[kk].indexOf('raid') > 0 && kdata[kk].indexOf('status') > 0 && kdata[kk].indexOf('disk') < 0) {
+		raids[kdata[kk][4]]=jdata[kk].replace("[",'').replace("]",'').replace("'",'').split(',')[1].replace("'",'')
+									}	
+});
+					$.each(kdata,function(kk,vv){
+						
+						if(kdata[kk].indexOf('disk') > 0  && kdata[kk].indexOf('status') > 0 && kdata[kk].indexOf("free") <0) {
+								disks[kdata[kk][6]]=[]
+								disks[kdata[kk][6]]["group"]=kdata[kk][4]
+								disks[kdata[kk][6]]["groupst"]=raids[kdata[kk][4]]
+								disks[kdata[kk][6]]['status']=jdata[kk].replace("[",'').replace("]",'').replace("'",'').split(',')[1]
+								disks[kdata[kk][6]]['status']=disks[kdata[kk][6]]['status'].replace("'",'').replace(" ",'')
+								disks[kdata[kk][6]]["id"]=kdata[kk][6]
+							}
+						if(kdata[kk].indexOf('disk') > 0 && kdata[kk].indexOf('free') > 0 && kdata[kk].indexOf('status') > 0 && kdata[kk].indexOf("stub") <0) {
+								disks[kdata[kk][3]]['status']=jdata[kk].replace("[",'').replace("]",'').replace("'",'').split(',')[1].replace("'",'')
+						}
+						if(kdata[kk].indexOf('disk') > 0 && kdata[kk].indexOf('free') > 0 && kdata[kk].indexOf('fromhost') > 0 && kdata[kk].indexOf("stub") <0) {
+								
+								
+								disks[kdata[kk][3]]=[]
+								disks[kdata[kk][3]]["group"]='-1'
+								disks[kdata[kk][3]]["grouptype"]=' '
+								disks[kdata[kk][3]]["groupst"]='nogroupst'
+								disks[kdata[kk][3]]['status']='free'
+								disks[kdata[kk][3]]["id"]=kdata[kk][3]
+								disks[kdata[kk][3]]["host"]=jdata[kk].split('-')[1].replace("']",'')
+							}
+					})
+					
+					$.each(kdata,function(kk,vv){
+						if(kdata[kk].indexOf('disk') > 0 && kdata[kk].indexOf('raid') > 0 && kdata[kk].indexOf('fromhost') > 0) {
+							$.each(disks,function(k,v) {
+								if(disks[k]["id"]==kdata[kk][6]){
+									disks[k]["host"]=jdata[kk].split('-')[1].replace("']",'')
+								}
+							})
+						}
+						if(kdata[kk].indexOf('disk') > 0 && kdata[kk].indexOf('raid') > 0 && kdata[kk].indexOf('size') > 0) {
+							$.each(disks,function(k,v) {
+								if(disks[k]["id"]==kdata[kk][6]){
+									disks[k]["size"]=jdata[kk].replace("[",'').replace("]",'').replace("'",'').split(',')[1].replace('GB','').replace('TB','000')
+									disks[k]["size"]=disks[k]["size"].replace("'",'').replace(" ",'')
+								}
+							})
+						}
+						if(kdata[kk].indexOf('disk') > 0 && kdata[kk].indexOf('free') > 0 && kdata[kk].indexOf('size') > 0) {
+							$.each(disks,function(k,v) {
+console.log('disks=',disks[k])
+								if(disks[k]["id"]==kdata[kk][3]){
+									disks[k]["size"]=jdata[kk].replace("[",'').replace("]",'').replace("'",'').split(',')[1].replace('GB','').replace('TB','000')
+									disks[k]["size"]=disks[k]["size"].replace("'",'').replace(" ",'')
+								}
+							})
+						}
+						if(kdata[kk].indexOf('raid') > 0 && kdata[kk].indexOf('type') > 0) {
+							$.each(disks,function(k,v) {
+								if(disks[k]["group"]==kdata[kk][4]){
+									disks[k]["grouptype"]=jdata[kk].replace("[",'').replace("]",'').replace("'",'').split(',')[1]
+									disks[k]["grouptype"]=disks[k]["grouptype"].replace("'",'').replace(" ",'')
+								}
+							})
+						}
+						if(kdata[kk].indexOf('disk') > 0  && kdata[kk].indexOf('uuid') > 0) {
+							$.each(disks,function(k,v) {
+								if(disks[k]["id"]==kdata[kk][parseInt(kdata[kk].indexOf('disk'))+1]){
+									disks[k]["name"]=jdata[kk].replace("[",'').replace("]",'').replace("'",'').split(',')[1]
+								}
+							})
+							
+						}
+						
+					})
+					
+					$.each(disks,function(kk,vv){
+						diskimg='disk-image'
+						if(disks[kk].groupst.includes('DEGRADE')) { diskimg='DEGRADED' }
+						if(disks[kk]["name"].includes("'-'") || disks[kk]["status"].includes("OFFLINE") || disks[kk]["status"].includes("FAULT") ) { clickdisk=''; imgf='invaliddisk.png" style="height:7rem; width:5.1rem;"' }
+						else { clickdisk="javascript:diskclick('"+kk+"')"; clickdisk="href="+clickdisk; imgf="disk-image.png" }	
+						$("#diskimg").append('<div class="'+disks[kk]["status"].replace("'",'').replace(" ",'')+'" ><a id="'+kk+'"'+clickdisk+' > <img class="img-fluid '+ diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a '+clickdisk+'><p class="psize">'+disks[kk]["size"].replace("'",'').replace(" ",'')+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"].replace("'",'').replace(" ",'')+'">'+disks[kk]["status"].replace("'",'').replace(" ",'')+'</p><p class="pimage">'+disks[kk]["grouptype"].replace("'",'').replace(" ",'')+'</p><p class="pimage">'+disks[kk]["host"].replace("'",'').replace(" ",'')+'</p>')
+						disks[kk]["selected"]=0;	
+					});
+					
+					$.each(pool,function(kk,vv){
+						pool[kk]['alloc']=normsize(pool[kk]['alloc'])
+						pool[kk]['empty']=normsize(pool[kk]['empty'])
+						pool[kk]['size']=normsize(pool[kk]['size'])
+					});
+					setstatus();
+				}
+				else {
+					//refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
+					
+				
+				}
+			}
+		} 
+	
+		});
+		if(ppoolstate.indexOf("DEGRADE") >=0) { 
+			$("#poolstate").text("Pool is DEGRADED") ; $("#poolstate").removeClass("poolOnline");$("#poolstate").addClass("poolDegrade")}
+		else { 
+			$("#poolstate").text("Pool is online");
+			$("#poolstate").removeClass("poolDegrade"); $("#poolstate").addClass("poolOnline"); }
+		if(ppoolstate.indexOf("na") >=0) { $("#poolstate").text("") }
+		if (panesel == "snapshot") {
+			//refreshList("GetSnaplist",".Snaplist","Data/listsnaps.txt","snaps","snaps");
+			//refreshList("GetPoolperiodlist","#all","Data/periodlist.txt","periods","periods")
+			//refreshList3("GetPoolVollist","#Vol","Data/Vollist.txt");
+			if($("#snapshotsOnce").hasClass('active'))  { ;if (snapsel !="Once") {times["snaps"]="hithihi"; syscounter2=1000; Vollisttime2="skldjfadks"; snapsel="Once";}};
+			if($("#snapshotsHourly").hasClass('active'))  { ;if (snapsel !="Hourly") { syscounter2=1000; Vollisttime2="skldjfadks"; snapsel="Hourly";}};
+			if($("#snapshotsMinutely").hasClass('active'))  { ;if (snapsel !="Minutely") { syscounter2=1000; Vollisttime2="skldjfadks"; snapsel="Minutely";}};
+			if($("#snapshotsWeekly").hasClass('active'))  { ;if (snapsel !="Weekly") { syscounter2=1000; Vollisttime2="skldjfadks"; snapsel="Weekly";}};				
+		
+		}
+	}
+	function setstatus() {
+		runningpool=0;
+	
+		for (k in disks) {
+			nclass=disks[k].grouptype
+			if(disks[k].grouptype.includes("mirror") ) {nclass="mirror"}
+			if(disks[k].grouptype.includes("stripe") ) {nclass="stripe"}
+			if(disks[k].grouptype.includes("raidz1") ) {nclass="raid1"}
+			if(disks[k].grouptype.includes("raidz2") ) {nclass="raid2"}
+			if(disks[k].grouptype.includes("raidz3") ) {nclass="raid3"}
+			if(disks[k].grouptype.includes("spare") ) {nclass="spares"}
+			if(disks[k].grouptype.includes("log") ) {nclass="log"}
+			if(disks[k].grouptype.includes("cache") ) {nclass="cache"}
+			
+			$(".disk"+k).addClass(nclass)
+ 			if(disks[k].grouptype.includes("stripe")==true ) {
+					$("#poolmsg").text("Pool p1 is running on disk: "+k); $("#poolsize").text(parseFloat(pool["size"]))
+					$("#Pooldelete").show();
+					runningpool=pool["name"].replace("'",'');
+					
+			}
+		
+		}
+		setaction();
+	}		
+	function setaction()	{
 		var freedisk=0;
 		var possiblenotstripe=0;
 		var foundselected=0;
@@ -1082,7 +1117,7 @@ function setaction() {
 					
 				}
 				if(disks[k].group != -1){ 
-					runningpool=pools["name"];
+					runningpool=pool["name"].replace("'",'');
 					selectingdisks=disks[k].grouptype;
 					if(selectingdisks=="cache"){ selectingdisks="read cache"}
 					if(selectingdisks=="log"){ selectingdisks="read/write cache"}
@@ -1190,7 +1225,7 @@ function setaction() {
 						if(disks[ddk].grouptype!=" " && ddk >= 0){
 							maxspace=maxspace+parseInt(disks[ddk].size.replace('GB','').replace('TB','000'))
 							if(parseInt(dd["1"].size) >= parseInt(disks[ddk].size) ) { sparevalid=1;}							
-							if (parseFloat(pools["size"])<=minspace) { minspace=parseFloat(pools["size"]); } else { minspace=0;}
+							if (parseFloat(pool["size"])<=minspace) { minspace=parseFloat(pool["size"]); } else { minspace=0;}
 							if(disks[ddk].grouptype.includes("mirror") ==true || disks[ddk].grouptype.includes("stripe")==true) {dd["2"]=disks[ddk]}
 							
 						}
@@ -1278,7 +1313,7 @@ function setaction() {
 													
 						}
 					}
-					for(ddk in disks) { if(disks[ddk].group!=-1){ maxspace=parseInt(pools["size"])}}
+					for(ddk in disks) { if(disks[ddk].group!=-1){ maxspace=parseInt(pool["size"])}}
 					$("#addraid-SingleRed").show();$("#addraid-DualRed").show();
 					$("#poolmsg").text(poolmsg.slice(0,-2)+" please select from below");
 					$("#addSingleRed").text((maxspace+(minspace*3))+"GB"); $("#adddualraid").text((maxspace+(minspace*2))+"GB");
@@ -1296,7 +1331,7 @@ function setaction() {
 													
 						}
 					}
-					for(ddk in disks) { if(disks[ddk].group != -1){ maxspace=parseInt(pools['size'])}}
+					for(ddk in disks) { if(disks[ddk].group != -1){ maxspace=parseInt(pool['size'])}}
 					$("#addraid-SingleRed").show();$("#addraid-DualRed").show();$("#addraid-TripleRed").show();
 					$("#poolmsg").text(poolmsg.slice(0,-2)+" please select from below");
 					$("#addSingleRed").text((maxspace+(minspace*(diskcount-1)))+"GB"); $("#adddualraid").text((maxspace+(minspace*(diskcount-2)))+"GB"); $("#addtripleraid").text((maxspace+(minspace*(diskcount-3)))+"GB"); 
@@ -1336,7 +1371,7 @@ function setaction() {
 						
 					}
 					selectingdisks=selectingdisks.slice(0,-1)+" in "+disks[id]['grouptype'].split('-')[0].replace("'",'')+','
-					$("#poolsize").text(parseFloat(pools["size"]));
+					$("#poolsize").text(parseFloat(pool["size"]));
 					$(".disk"+id).addClass(disks[id].grouptype);
 											
 				}				

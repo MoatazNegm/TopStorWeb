@@ -881,13 +881,9 @@ function refreshall() { //check pool status
      pools[k]['empty']=normsize(pools[k]['empty'])
      pools[k]['size']=normsize(pools[k]['size'])
      $.each(pools[k]["raidlist"],function(kk,vv){
-      toraids=pools[k]["raidlist"][kk]
-      toraids.pool=pools[k]["name"]
-      raids.push(toraids)
       $.each(pools[k]["raidlist"][kk]["disklist"], function(kkk,vvv){
        thedisk=pools[k]["raidlist"][kk]["disklist"][kkk]
        disks.push({"id":kk,
-	"pool":pools[k]["name"],
 	"groupst":pools[k]["raidlist"][kk]["status"],
 	"status":thedisk["status"],
 	"grouptype":pools[k]["raidlist"][kk]["name"],
@@ -944,124 +940,48 @@ function refreshall() { //check pool status
  });
 }
 
-function setstatus() {
- runningpool=0;
- for (k in disks) {
-  nclass=disks[k].grouptype
-  if(disks[k].grouptype.includes("mirror") ) {nclass="mirror"}
-  if(disks[k].grouptype.includes("stripe") ) {nclass="stripe"}
-  if(disks[k].grouptype.includes("raidz1") ) {nclass="raid1"}
-  if(disks[k].grouptype.includes("raidz2") ) {nclass="raid2"}
-  if(disks[k].grouptype.includes("raidz3") ) {nclass="raid3"}
-  if(disks[k].grouptype.includes("spare") ) {nclass="spares"}
-  if(disks[k].grouptype.includes("log") ) {nclass="log"}
-  if(disks[k].grouptype.includes("cache") ) {nclass="cache"}
-  $(".disk"+k).addClass(nclass)
-  if(disks[k].grouptype.includes("stripe")==true ) {
-   $("#poolmsg").text("Pool p1 is running on disk: "+k); $("#poolsize").text(parseFloat(pools["size"]))
-   $("#Pooldelete").show();
-  }
- }
- setaction();
-}		
-selecteddisks=[]
-function setaction() {
- selecteddisks=[]
- console.log('hi')
- $.each(disks, function(k,v){
-  if(disks[k]['selected'] > 0) selecteddisks.push(disks[k]);
- });
- $("#DG tr").hide();
- switch (selecteddisks.length){
-  case 0: break;
-// if only one disk 
-  case 1:
-   switch (selecteddisks[0]["grouptype"]) {
-// if only free with a pool exists
-    case 'free':
-     if (pools.length > 1) {
-      $("#Addreadcache").show()
-      $("#Addwritecache").show()
-      $("#Addspare").show()
-      israidstripe=0
-      $.each(raids,function(k,v){
-       if(raids[k]["name"].includes('stripe') > 0 ) { israidstripe=1 }
-      });
-      if (israidstripe==1){
-       $("#Addstriped").show()
-      }
-     }
-// if only free with no pool exists
-     else { 
-      $("#striped").show()
-     }
-    break;
-   }
-   break;
-// if only two disks 
-  case 2:
-   switch (selecteddisks[0]["grouptype"]+selecteddisks[1]["grouptype"]) {
-// if free + free and pool exists 
-    case 'freefree':
-     if (pools.length > 1) {
-      $("#Addmirror").show()
-     }
-// if free + free and no pool exists 
-     else {
-      $("#mirror").show()
-     }
-    break; 
-// if free + mirror 
-    case 'freemirror':
-    case 'mirrorfree':
-     $("#Attachmirrored").show()
-    break;
-// if free + stripe 
-    case 'freestripe':
-    case 'stripefree':
-     $("#Addstriped").show()
-    break;
-   }  
-  break;
-// if 3 disks 
-  case 3:
-   switch (selecteddisks[0]["grouptype"]+selecteddisks[1]["grouptype"]+selecteddisks[1]["grouptype"]) {
-// if free + free +free and pool exists 
-    case 'freefreefree':
-     if (pools.length > 1) {
-      $("#Addmirror").show()
-      $("#addraid-SingleRed").show()
-     }
-// if free + free +free and no pool exists 
-     else {
-      $("#mirror").show()
-      $("#raid-SingleRed").show()
-     }
-    break; 
-   }
-  break;   
-//  if 4 or more disks 
-  default:
-   switch (selecteddisks[0]["grouptype"]+selecteddisks[1]["grouptype"]+selecteddisks[1]["grouptype"]) {
-// if free + free +free+free and pool exists 
-    case 'freefreefreefree':
-     if (pools.length > 1) {
-      $("#Addmirror").show()
-      $("#addraid-SingleRed").show()
-      $("#addraid-DualRed").show()
-     }
-// if free + free +free+free and no pool exists 
-     else {
-      $("#mirror").show()
-      $("#raid-SingleRed").show()
-      $("#raid-DualRed").show()
-     }
-    break; 
-   }
-  break;   
- } 
-} 
-     
+	function setstatus() {
+		runningpool=0;
+	
+		for (k in disks) {
+			nclass=disks[k].grouptype
+			if(disks[k].grouptype.includes("mirror") ) {nclass="mirror"}
+			if(disks[k].grouptype.includes("stripe") ) {nclass="stripe"}
+			if(disks[k].grouptype.includes("raidz1") ) {nclass="raid1"}
+			if(disks[k].grouptype.includes("raidz2") ) {nclass="raid2"}
+			if(disks[k].grouptype.includes("raidz3") ) {nclass="raid3"}
+			if(disks[k].grouptype.includes("spare") ) {nclass="spares"}
+			if(disks[k].grouptype.includes("log") ) {nclass="log"}
+			if(disks[k].grouptype.includes("cache") ) {nclass="cache"}
+			
+			$(".disk"+k).addClass(nclass)
+ 			if(disks[k].grouptype.includes("stripe")==true ) {
+					$("#poolmsg").text("Pool p1 is running on disk: "+k); $("#poolsize").text(parseFloat(pools["size"]))
+					$("#Pooldelete").show();
+					//runningpool=pools["name"];
+					
+			}
+		
+		}
+		setaction();
+	}		
+        function setaction() {
+         selecteddisks=[]
+       	 console.log('hi')
+         $.each(disks, function(k,v){
+          if(disks[k]['selected'] > 0) selecteddisks.push(disks[k]);
+         });
+         if (selecteddisks.length == 1)
+          // if free is selected 
+          if (selected.grouptype=='free'){
+           if pools.length > 1 {
+            $.each(raids,function(k,v) {
+             if (raids.name.includes('mirror') >0 ) {
+             }
+           }
+          } 
+         }   
+        }
 	function setaction2()	{
 		var freedisk=0;
 		var possiblenotstripe=0;
