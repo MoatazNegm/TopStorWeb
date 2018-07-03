@@ -123,8 +123,9 @@
         <div class="col-md-9 main-content">
             <div class="tab-content">
                 <div class="tab-pane active" id="diskGroups" role="tabpanel">
-                <div class="col-2 pull-right text-right msgtype" style="margin-top: 0.4rem;">
-                      <a href="javascript:if(getdisk==0) {getdisk=1};"><img src="assets/images/refresh.png"> </a>
+                <div class="col-12  " style="margin-top: 0.4rem;">
+                      <a style="display: inline;" href="javascript:hostclick(1)">dhcp20407</a>
+                      <a href="javascript:hostclick(2)">dhcp31481</a>
                 </div>
                     <div style="display: inline-flex; " id="diskimg">
                        
@@ -856,7 +857,7 @@ function refreshall() { //check pool status
   }
  };
  change=0
- $.get("gump2.php", { req: "myhost/current", name:""  },function(data){
+ $.get("gump2.php", { req: "hosts/current", name:""  },function(data){
   if(data==olddiskpool) {return;}
   else {
    jdata = jQuery.parseJSON(data)
@@ -886,7 +887,7 @@ function refreshall() { //check pool status
       raids.push(toraids)
       $.each(pools[k]["raidlist"][kk]["disklist"], function(kkk,vvv){
        thedisk=pools[k]["raidlist"][kk]["disklist"][kkk]
-       disks.push({"id":kk,
+       disks.push({"id":kkk,
 	"pool":pools[k]["name"],
 	"groupst":pools[k]["raidlist"][kk]["status"],
 	"status":thedisk["status"],
@@ -967,9 +968,14 @@ function setstatus() {
 selecteddisks=[]
 function setaction() {
  selecteddisks=[]
+ dd=[]
  console.log('hi')
+ dd.push('hi')
  $.each(disks, function(k,v){
-  if(disks[k]['selected'] > 0) selecteddisks.push(disks[k]);
+  if(disks[k]['selected'] > 0) {
+   selecteddisks.push(disks[k]);
+   dd.push(disks[k])
+  }
  });
  $("#DG tr").hide();
  switch (selecteddisks.length){
@@ -993,7 +999,8 @@ function setaction() {
      }
 // if only free with no pool exists
      else { 
-      $("#striped").show()
+      $("#Poolcreate").show()
+      $("#poolmsg").text("Pool p1 with no redundancy can be created from disk : "+dd["1"].id+" please choose below to create it"); $("#crpoolsize").text(parseFloat(dd["1"].size)+"GB")
      }
     break;
    }
@@ -1029,12 +1036,10 @@ function setaction() {
 // if free + free +free and pool exists 
     case 'freefreefree':
      if (pools.length > 1) {
-      $("#Addmirror").show()
       $("#addraid-SingleRed").show()
      }
 // if free + free +free and no pool exists 
      else {
-      $("#mirror").show()
       $("#raid-SingleRed").show()
      }
     break; 
@@ -1042,23 +1047,27 @@ function setaction() {
   break;   
 //  if 4 or more disks 
   default:
-   switch (selecteddisks[0]["grouptype"]+selecteddisks[1]["grouptype"]+selecteddisks[1]["grouptype"]) {
+   allfree=1
+   $.each(selecteddisks,function(k,v){
+    if (selecteddisks[k]["grouptype"].includes('free') < 0){
+     allfree=0
+    }
+   });
+   switch (allfree) {
 // if free + free +free+free and pool exists 
-    case 'freefreefreefree':
+    case 1:
      if (pools.length > 1) {
-      $("#Addmirror").show()
       $("#addraid-SingleRed").show()
       $("#addraid-DualRed").show()
      }
 // if free + free +free+free and no pool exists 
      else {
-      $("#mirror").show()
       $("#raid-SingleRed").show()
       $("#raid-DualRed").show()
      }
     break; 
    }
-  break;   
+  break;
  } 
 } 
      
@@ -1351,32 +1360,10 @@ function setaction() {
 	function diskclick(id) { 
 		  var selectingdisks;
 		  syscounter2=800
-		  if(disks[id].grouptype.includes("stripe") || disks[id].grouptype.includes("mirror") || disks[id].grouptype.includes("raid")){ return;}
 				$(".disk"+id).toggleClass("SelectedFree"); 
 				if($(".disk"+id).hasClass("SelectedFree")) {
 					disks[id]["selected"]=1;
-					if(disks[id]["group"]!=-1) {
-						for (k in disks) {
-							
-							if (k != id) {
-							
-								if(disks[k]["grouptype"]!=" "){
-									disks[k]["selected"]=0;
-									$(".disk"+k).removeClass("SelectedFree");
-									
-								}
-							}
-						}				
-					}
 				} else { disks[id]["selected"]=0; 	}
-				if(disks[id]["grouptype"]!=" " && disks[id]["grouptype"].includes("spare") ==false && disks[id]["grouptype"].includes("cache") == false && disks[id]["grouptype"].includes("log")==false ) {
-				   
-					selectingdisks=disks[id]["group"]
-					if (selectingdisks > 0 ){
-						toggleDiskselect(selectingdisks,disks[id]["selected"],"SelectedFree");
-							
-					}
-				}						
 			setaction();
 		}
 		
