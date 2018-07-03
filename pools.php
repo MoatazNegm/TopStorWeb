@@ -138,6 +138,8 @@
                     <h1 id="poolmsg" style="margin-top:0.5rem;">No pool is created... Please create a pool by selecting disks </h1>
                     <h2 id="poolstate"></h2>
                     
+                    <div style="display: inline-flex; " id="freeimg">
+                    </div>
                     <div id="requesttable" class="row table-responsive">
                         <table class="col-12 table  dr-table-show">
                             <thead>
@@ -877,6 +879,8 @@ function refreshall() { //check pool status
     var k;
     $(".disk-image").remove();	
     $("#diskimg").html('');
+    $("#freeimg").html('');
+    
     $('.hostmember').remove()
     $('.poolmember').remove()
     disks=[];
@@ -936,13 +940,19 @@ function refreshall() { //check pool status
    }	
   });
   $.each(disks,function(kk,vv){
+   if (disks[kk].pool.includes('free')>0 ){
+    diskdiv='freeimg'
+   }
+   else {
+    diskdiv='diskimg'
+   }
    diskimg='disk-image'
     if(disks[kk].groupst.includes('DEGRADE')) { diskimg='DEGRADED' }
     if(disks[kk]["name"].includes("'-'") || disks[kk]["status"].includes("OFFLINE") || disks[kk]["status"].includes("FAULT") ) { clickdisk=''; imgf='invaliddisk.png" style="height:7rem; width:5.1rem;"' 
     }
     else { clickdisk="javascript:diskclick('"+kk+"')"; clickdisk="href="+clickdisk; imgf="disk-image.png" 
     }	
-    $("#diskimg").append('<div class="disks '+disks[kk]['host']+' '+disks[kk]['pool']+' '+disks[kk]["status"]+'" ><a id="'+kk+'"'+clickdisk+' > <img class="img-fluid '+ diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a '+clickdisk+'><p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>')
+    $("#"+diskdiv).append('<div class="disks '+disks[kk]['host']+' '+disks[kk]['pool']+' '+disks[kk]["status"]+'" ><a id="'+kk+'"'+clickdisk+' > <img class="img-fluid '+ diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a '+clickdisk+'><p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>')
     disks[kk]["selected"]=0;	
   });
   $(".disks").hide()
