@@ -123,9 +123,9 @@
         <div class="col-md-9 main-content">
             <div class="tab-content">
                 <div class="tab-pane active" id="diskGroups" role="tabpanel">
-                <div class="col-12  " style="margin-top: 0.4rem;">
-                      <a style="display: inline;" href="javascript:hostclick(1)">dhcp20407</a>
-                      <a href="javascript:hostclick(2)">dhcp31481</a>
+                <div id="hostslist" class="col-12  " style="margin-top: 0.4rem;">
+                      <a class="hostmember" style="display: inline;" href="javascript:hostclick(1)">dhcp20407</a>
+                      <a class="hostmember" href="javascript:hostclick(2)">dhcp31481</a>
                 </div>
                     <div style="display: inline-flex; " id="diskimg">
                        
@@ -722,9 +722,12 @@
 			var disks=[];
 			var pools=[];
 			var pool=[];
+                        var currenthost='hihi';
+                        var currentpool='hihihiA';
 			var jdata;
 			var gdata;
 			var raids=[];
+			var hosts=[];
 			var poolsel='0'
 			var	volsel='0'
 			var releasesel=0;
@@ -857,7 +860,7 @@ function refreshall() { //check pool status
   }
  };
  change=0
- $.get("gump2.php", { req: "hosts/current", name:""  },function(data){
+ $.get("gump2.php", { req: "hosts", name:"--prefix"  },function(data){
   if(data==olddiskpool) {return;}
   else {
    jdata = jQuery.parseJSON(data)
@@ -870,12 +873,22 @@ function refreshall() { //check pool status
     var k;
     $(".disk-image").remove();	
     $("#diskimg").html('');
+    $('.hostmember').remove()
     disks=[];
     kdata=[];
     pools=[];
     pool=[];
     $.each(jdata,function(k,v){
-     pools.push(jdata[k])
+     hosts.push(jdata[k])
+    });
+    $.each(hosts,function(r,s){
+     hosts[r]['name']=hosts[r]['name'].replace('hosts/','').replace('/current','')
+     $('#hostslist').append($('<a class="hostmember" style="display: inline; " href="javascript:hostclick(\''+hosts[r]["name"]+'\')">'+hosts[r]["name"]+'</a>'));	
+     $.each(hosts[r]['prop'],function(rr,ss){
+      topool=hosts[r]['prop'][rr]
+      topool['host']=hosts[r]['name']
+      pools.push(topool)
+     });
     });
     $.each(pools,function(k,v){
      pools[k]['alloc']=normsize(pools[k]['alloc'])
@@ -888,14 +901,15 @@ function refreshall() { //check pool status
       $.each(pools[k]["raidlist"][kk]["disklist"], function(kkk,vvv){
        thedisk=pools[k]["raidlist"][kk]["disklist"][kkk]
        disks.push({"id":kkk,
-	"pool":pools[k]["name"],
-	"groupst":pools[k]["raidlist"][kk]["status"],
-	"status":thedisk["status"],
-	"grouptype":pools[k]["raidlist"][kk]["name"],
-	"host":thedisk["host"],
-	"name":thedisk["name"],
-	"size":thedisk["size"].replace('GB','').replace('TB','000'),
-	"selected":0 
+  "pool":pools[k]["name"],
+  "groupst":pools[k]["raidlist"][kk]["status"],
+ "status":thedisk["status"],
+ "grouptype":pools[k]["raidlist"][kk]["name"],
+ "fromhost":thedisk["host"],
+ "host":pools[k]["host"],
+ "name":thedisk["name"],
+ "size":thedisk["size"].replace('GB','').replace('TB','000'),
+ "selected":0 
        });
       });
      });
@@ -917,17 +931,19 @@ function refreshall() { //check pool status
   });
   $.each(disks,function(kk,vv){
    diskimg='disk-image'
-   if(disks[kk].groupst.includes('DEGRADE')) { diskimg='DEGRADED' }
+    if(disks[kk].groupst.includes('DEGRADE')) { diskimg='DEGRADED' }
     if(disks[kk]["name"].includes("'-'") || disks[kk]["status"].includes("OFFLINE") || disks[kk]["status"].includes("FAULT") ) { clickdisk=''; imgf='invaliddisk.png" style="height:7rem; width:5.1rem;"' 
     }
     else { clickdisk="javascript:diskclick('"+kk+"')"; clickdisk="href="+clickdisk; imgf="disk-image.png" 
     }	
-    $("#diskimg").append('<div class="'+disks[kk]["status"]+'" ><a id="'+kk+'"'+clickdisk+' > <img class="img-fluid '+ diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a '+clickdisk+'><p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["host"]+'</p>')
+    $("#diskimg").append('<div class="disks '+disks[kk]['host']+' '+disks[kk]["status"]+'" ><a id="'+kk+'"'+clickdisk+' > <img class="img-fluid '+ diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a '+clickdisk+'><p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>')
     disks[kk]["selected"]=0;	
   });
+  $(".disks").hide()
+  $("."+currenthost).show()
   setstatus();
   if(ppoolstate.indexOf("DEGRADE") >=0) { 
-   $("#poolstate").text("Pool is DEGRADED") ; $("#poolstate").removeClass("poolOnline");$("#poolstate").addClass("poolDegrade")
+  $("#poolstate").text("Pool is DEGRADED") ; $("#poolstate").removeClass("poolOnline");$("#poolstate").addClass("poolDegrade")
   }
   else { 
    $("#poolstate").text("Pool is online");
@@ -1357,6 +1373,11 @@ function setaction() {
 			if(possiblenotstripe==0 && runningpool==0) { $("#DG tr").hide(); $("#poolmsg").text("No pool is created... Please create a pool by selecting disks")};
 		}
 	}
+        function hostclick(name) {
+             currenthost=name;
+             $('.disks').hide()
+             $('.'+name).show()
+        }
 	function diskclick(id) { 
 		  var selectingdisks;
 		  syscounter2=800
