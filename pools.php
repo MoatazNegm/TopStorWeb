@@ -124,12 +124,8 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="diskGroups" role="tabpanel">
                 <div id="hostslist" class="col-12  " style="margin-top: 0.4rem;">
-                      <a class="hostmember" style="display: inline;" href="javascript:hostclick(1)">dhcp20407</a>
-                      <a class="hostmember" href="javascript:hostclick(2)">dhcp31481</a>
                 </div>
                 <div id="poollist" class="col-12  " style="margin-top: 0.4rem;">
-                      <a class="poolmember" style="display: inline;" href="javascript:hostclick(1)">dhcp20407</a>
-                      <a class="poolmember" href="javascript:hostclick(2)">dhcp31481</a>
                 </div>
                     <div style="display: inline-flex; " id="diskimg">
                        
@@ -727,6 +723,8 @@
 			var oldcurrentinfo="";
 			var disks=[];
 			var pools=[];
+			var volumes=[];
+			var snapshots=[];
 			var pool=[];
                         var currenthost='hihi';
                         var currentpool='hihihiA';
@@ -880,13 +878,19 @@ function refreshall() { //check pool status
     $(".disk-image").remove();	
     $("#diskimg").html('');
     $("#freeimg").html('');
-    
     $('.hostmember').remove()
     $('.poolmember').remove()
+    $("#Vol option.volume").remove();
+    $("#Pool option.pool").remove();
+    $(".Snaplist td").remove()
     disks=[];
     kdata=[];
     pools=[];
     pool=[];
+    hosts=[]
+    volumes=[]
+    snapshots=[]
+    p=0
     $.each(jdata,function(k,v){
      hosts.push(jdata[k])
     });
@@ -897,6 +901,9 @@ function refreshall() { //check pool status
       topool=hosts[r]['prop'][rr]
       topool['host']=hosts[r]['name']
       pools.push(topool)
+      if (topool.name.includes('free') < 1 ){
+       $("#Pool").append($('<option class="pool ">').text(topool.name).val(topool.name));
+      }
      });
     });
     $.each(pools,function(k,v){
@@ -904,6 +911,16 @@ function refreshall() { //check pool status
      pools[k]['alloc']=normsize(pools[k]['alloc'])
      pools[k]['empty']=normsize(pools[k]['empty'])
      pools[k]['size']=normsize(pools[k]['size'])
+     $.each(pools[k]["volumes"],function(kk,vv){
+      tovol=pools[k]['volumes'][kk]
+      volumes.push(tovol) 
+      $("#Vol").append($('<option class="volume '+tovol.pool+'">').text(tovol.name).val(kk));
+      $.each(tovol["snapshots"],function(kkk,vvv){
+       tosnap=tovol["snapshots"][kkk]
+       snapshots.push(tosnap)
+       $(".Snaplist").append('<tr class="snapshot '+kk+'"><td class="text-center">'+tosnap.creation+"</td><td class='text-center'>"+tosnap.time+"</td><td class='text-center'>"+tosnap.name+"</td><td class='text-center'>"+tosnap.volume+"</td><td class='text-center'>"+tosnap.refcompressratio+'</td><td class="text-center"><a href="javascript:SnapshotDelete(\''+tosnap.name+'\')"><img src="assets/images/delete.png"</td><td class="text-center"><a href="javascript:SnapshotRollback(\''+tosnap.name+'\')"><img src="assets/images/return.png" alt="can\'t upload delete icon"></a></td></tr>');
+      });
+     });
      $.each(pools[k]["raidlist"],function(kk,vv){
       toraids=pools[k]["raidlist"][kk]
       toraids.pool=pools[k]["name"]
@@ -999,11 +1016,12 @@ function setstatus() {
  setaction();
 }		
 selecteddisks=[]
+dcomp=[]
 function setaction() {
  selecteddisks=[]
  dd=[]
  console.log('hi')
- dd.push('hi')
+ dd.push({'grouptype':'hi'})
  $.each(disks, function(k,v){
   if(disks[k]['selected'] > 0) {
    selecteddisks.push(disks[k]);
@@ -1011,11 +1029,18 @@ function setaction() {
   }
  });
  $("#DG tr").hide();
- switch (selecteddisks.length){
+ dcomp=[]
+ $.each(dd,function(k,v){
+  if(dd[k].grouptype.includes('mirror') > 0 ) { dcomp.push('mirror')};
+  if(dd[k].grouptype.includes('stripe') > 0 ) { dcomp.push('stripe')}
+  if(dd[k].grouptype.includes('free') > 0 ) { dcomp.push('free')}
+ });
+ console.log('dcomp',dcomp)
+ switch (dd.length-1){
   case 0: break;
 // if only one disk 
   case 1:
-   switch (selecteddisks[0]["grouptype"]) {
+   switch (dcomp[0]) {
 // if only free with a pool exists
     case 'free':
      if (pools.length > 1) {
@@ -1040,7 +1065,7 @@ function setaction() {
    break;
 // if only two disks 
   case 2:
-   switch (selecteddisks[0]["grouptype"]+selecteddisks[1]["grouptype"]) {
+   switch (dcomp[0]+dcomp[1]) {
 // if free + free and pool exists 
     case 'freefree':
      if (pools.length > 1) {
@@ -1052,12 +1077,10 @@ function setaction() {
      }
     break; 
 // if free + mirror 
-    case 'freemirror':
     case 'mirrorfree':
      $("#Attachmirrored").show()
     break;
 // if free + stripe 
-    case 'freestripe':
     case 'stripefree':
      $("#Addstriped").show()
     break;
@@ -1065,7 +1088,7 @@ function setaction() {
   break;
 // if 3 disks 
   case 3:
-   switch (selecteddisks[0]["grouptype"]+selecteddisks[1]["grouptype"]+selecteddisks[1]["grouptype"]) {
+   switch (dcomp[0]+dcomp[1]+dcomp[2]) {
 // if free + free +free and pool exists 
     case 'freefreefree':
      if (pools.length > 1) {
@@ -1081,8 +1104,8 @@ function setaction() {
 //  if 4 or more disks 
   default:
    allfree=1
-   $.each(selecteddisks,function(k,v){
-    if (selecteddisks[k]["grouptype"].includes('free') < 0){
+   $.each(dcomp,function(k,v){
+    if (dcomp[k].includes('free') < 0){
      allfree=0
     }
    });
@@ -1933,24 +1956,12 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 				$("#Weeklyset").show();$("#SnapshotCreatediv").show();
 			});
 			$("#Vol").change(function() {
-				//Vollisttime="44:333:222";
-				poolsel=$("#Pool option:selected").val();
+				var selection=$("#Vol option:selected").val();
 				
-				if(releasesel!=1) { return; }
-				if(oldreleasesel==0){ oldreleasesel=releasesel; $("#Vol").val(volsel) }
-				volsel=$("#Vol option:selected").val()
-				//times= { "snaps":"30:43:433", "periods":"30:43:433" };
-				
-				$(".variable4").hide();
-				if(volsel!=""){
-				
-				
-				if(panesel=="snapshot") {
-					$("."+poolsel+"."+volsel).show();
-					
-				//$(" tr.variable").remove();
-				}
-				}
+				$(".snapshot").hide();
+		         //	$("#Snapshot").prop("selectedIndex",'-1');
+				$(".snapshot."+selection).show();
+				//$('#Vol option.'+selection+':first').prop('selected', true);
 				
 			});
 			
@@ -1959,11 +1970,11 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 				
 				var selection=$("#Pool option:selected").val();
 				
+				$(".volume").hide();
+		         	$("#Vol").prop("selectedIndex",'-1');
+				$(".volume."+selection).show();
 				$('#Vol option.'+selection+':first').prop('selected', true);
-				$(".vvariable").hide();
-				$(".vvariable."+selection).show();
-					
-					$("#Vol").change();
+				$("#Vol").change();
 		/*			if(plotflag > 0 ) {
 										plotb.destroy();
 									}
