@@ -325,6 +325,8 @@
 			var voldirty=1;
 			var Vollock=0;
 			var prot="kssl";
+                        var pools=[];
+			var volumes=[];
 			var plotb;
 				$(".bg-successold").show();$(".bg-danger").hide();$(".bg-warning").hide();
      function normsize(s){
@@ -337,6 +339,14 @@
      else  { sizeinbytes=sizeinbytes/1000000 }
      return parseInt(sizeinbytes)
      }
+ function createvol() { 
+  var thepool=$("#Pool2"+prot).val()
+  $.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G ", passwd:"<?php echo $_SESSION["user"]; ?> "+pools[thepool].host }, function (data){
+ });
+};
+		function voldel() {  
+  var thepool=$("#Pool2"+prot).val()
+ $.post("./pump.php", { req:"VolumeDelete"+prot+".py", name:pools[thepool].name+" "+arguments[0]+" "+prot+" "+"<?php echo $_SESSION["user"]; ?>", passwd: pools[thepool].host });   }
 				function SS(){ 
 				
 				   var alltabsAcco=0;var alltabsStat=0;var alltabsProt=0;var alltabsRepli=0;var alltabsPool=0;var alltabsUP=0;
@@ -420,60 +430,60 @@ function refreshList2(req,listid,filelocfrom,show) {
  var request=req;
  var others=0
  fileloc = filelocfrom ; request= request ; 
- $.get("gump.php", { req: 'run', name:'--prefix' }, function(data){
-  if(data==olddiskpool) { return; }
-  jdata = jQuery.parseJSON(data);
-  if(typeof jdata !='object' || data.includes("stub")<= 0) { 
-   console.log(' md not ready')
-   return; }
-  olddiskpool=data;
-  console.log('md changed')
-  kdata = []
-  $.each(jdata,function(kk,vv){
-   kdata.push(jdata[kk].replace("['",'').replace("]'",'').replace("'",'').split(',')[0].split('/'))
-  });
-  if(typeof jdata=='object') {
-   $(listid+' option').remove();
-   $(listid+' tr').remove();
-   $("#Volumedetails tr.variable").remove();
-   chartdata=[];
-   pools = [];
-   vols = [];
-   name="sldkfjasdl;jewlkjd;ald"
-   $.each(kdata, function(k,v){
-    if ( kdata[k].indexOf("pool") > 0 && kdata[k].indexOf("size") >0 && kdata[k].indexOf("disk") < 0 ) {
-     poolsize=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'')
-     poolsize=normsize(poolsize)
-    }
-    if ( kdata[k].indexOf("pool") > 0 && kdata[k].indexOf("name") >0 && kdata[k].indexOf("disk") < 0 ) {
-     name=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'')
-     hosty=kdata[k][0]
-     $("#Pool2"+prot).append($('<option class="variable2">').text(name).val(hosty+'_'+name));
-    }
-   });					
-   $.each(kdata, function(k,v){
-    if ( kdata[k].indexOf("vol") > 0 && kdata[k].length > 3 && kdata[k].indexOf(prot) < 0 ) {
-     volslashes=jdata[k].replace("[",'').replace("']",'').replace("'",'').split(',')[1].replace("'",'').split('/')
-     volslashes[1]=normsize(volslashes[1])
-     others=others+volslashes[1]
-     poolsize=poolsize-volslashes[1]
-    }
-    if ( kdata[k].indexOf("vol") > 0 && kdata[k].indexOf(prot) > 0 ) {
-     name=kdata[k][kdata[k].indexOf("vol")+1]
-     volslashes=jdata[k].replace("[",'').replace("']",'').replace("'",'').split(',')[1].replace("'",'').split('/')
-     volslashes[0]=normsize(volslashes[0])
-     volslashes[1]=normsize(volslashes[1])
-     poolsize=poolsize-volslashes[1]
-     $(listid).append('<tr onclick="rowisclicked(this)" class="variable trow '+name+'"><td style="padding-left: 2rem; " class="Volname tcol">'+name+'</td><td class="text-center tcol">'+volslashes[0]+'</td><td class="text-center tcol">'+volslashes[1]+'</td><td class=" text-center tcol">'+volslashes[2]+'</td><td class=" text-center tcol">'+volslashes[3]+'</td><td class="text-center"><a href="javascript:voldel(\''+name+'\')"><img src="assets/images/delete.png" alt="can\'t upload delete icon"></a></td></tr>');
-    chartdata.push([name,volslashes[1]]);
-    }
-
-							//$("#Pool2"+prot).change()
-   });
+ $.get("gump2.php", { req: 'hosts', name:'--prefix' }, function(data){
+  if(data==olddiskpool) {return;}
+  else {
+   jdata = jQuery.parseJSON(data)
+   if(typeof jdata =='object' ) {
+    olddiskpool=data
+    releasesel=0
+    oldreleasesel=0
+    disks=[];
+    var k;
+    $(".Pool2"+prot+" option").remove();	
+    $(listid+" tr").remove();
+    disks=[];
+    kdata=[];
+    pools=[];
+    pool=[];
+    hosts=[]
+    volumes=[]
+    snapshots=[]
+    p=0
+    $.each(jdata,function(k,v){
+     hosts.push(jdata[k])
+    });
+    $.each(hosts,function(r,s){
+     hosts[r]['name']=hosts[r]['name'].replace('hosts/','').replace('/current','')
+     $('#hostslist').append($('<a class="hostmember" style="display: inline; " href="javascript:hostclick(\''+hosts[r]["name"]+'\')">'+hosts[r]["name"]+'</a>'));	
+     $.each(hosts[r]['prop'],function(rr,ss){
+      topool=hosts[r]['prop'][rr]
+      topool['host']=hosts[r]['name']
+      pools.push(topool)
+      if (topool.name.includes('free') < 1 ){
+       $("#Pool2"+prot).append($('<option class="pool ">').text(topool.name).val(rr));
+       chartdata.push([topool.name,normsize(topool.alloc)]);
+       chartdata.push(['free',normsize(topool.empty)]);
+      }
+     });
+    });
+    $.each(pools,function(k,v){
+     $('#poollist').append($('<a class="poolmember" style="display: inline; " href="javascript:poolclick(\''+pools[k]["name"]+'\')">'+pools[k]["name"]+'</a>'));	
+     pools[k]['alloc']=normsize(pools[k]['alloc'])
+     pools[k]['empty']=normsize(pools[k]['empty'])
+     pools[k]['size']=normsize(pools[k]['size'])
+     $.each(pools[k]["volumes"],function(kk,vv){
+      tovol=pools[k]['volumes'][kk]
+      volumes.push(tovol) 
+      $(listid).append('<tr onclick="rowisclicked(this)" class="variable trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="can\'t upload delete icon"></a></td></tr>');
+     chartdata.push([tovol.name,normsize(tovol.quota)]);
+     });
+    });
+   }
    if (plotb) {plotb.destroy();}
    //plotchart(['chart'+prot,chartdata("#Pool2"+prot+"").val()]);
-   chartdata.push(['free',poolsize]);
-   chartdata.push(['others',others]);
+   //chartdata.push(['free',poolsize]);
+   //chartdata.push(['others',others]);
    plotchart('chart'+prot,chartdata);
   }
  });
@@ -495,23 +505,6 @@ function refreshList2(req,listid,filelocfrom,show) {
 									
 									break;
 					default:  $("#createvol").hide();
-							var fileloc= "Data/Vollist.txt";
-							$("#Volumedetails tbody tr.variable").remove();
-							$.get("requestdata.php", { file: fileloc }, function(data){
-								var jdata = jQuery.parseJSON(data);
-								for (var prot in gdata){
-									if(gdata[prot].protocol==Protocol) {
-										if(gdata[prot].name==selection){
-											//f ( gdata[prot].Pool == $("#Pool2 option:selected").val() ) {
-												
-												$("#Volumedetails tbody").append('<tr onclick="rowisclicked(this)" class="variable trow'+gdata[prot].class+'" ><td class="Volname tcol ">'+gdata[prot].volsize+'</td><td class="tcol">'+gdata[prot].volact+'</td><td class="tcol">'+gdata[prot].usedsnaps+'</td><td class="tcol">'+gdata[prot].useddata+'</td><td class="tcol">'+gdata[prot].crdate+'</td><td class="tcol">'+gdata[prot].available+'</td><td class="tcol">'+gdata[prot].compress+'</td><td class="tcol">'+gdata[prot].dedup+'</td></tr>');
-											//}
-										}
-									}
-								}
-							});
-							$("#Volumnamedetails").text(selection+" details");
-							$("#Voldetails").show();
 							break;
 							
 							
@@ -655,11 +648,6 @@ function refreshList2(req,listid,filelocfrom,show) {
 				 });
 			
 			});
-			function createvol() {  var req="";$.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:$("#Pool2"+prot+" option:selected").val()+" "+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
-
-				 });
-			
-			};
 			$("#refreshb").click(function(){
 				prot=345325
 				Vollisttime=4523452
@@ -689,7 +677,7 @@ function refreshList2(req,listid,filelocfrom,show) {
 			}
 		}
 		$("#close-success").click(function() { $(".bg-success").hide(); });
-		function voldel() {   $.post("./pump.php", { req:"VolumeDelete"+prot+".py", name:$("#Pool2"+prot+" option:selected").val()+" "+arguments[0]+" "+prot+" "+"<?php echo $_SESSION["user"]; ?>" });   }
+
 $(".ref").click(function() {
 					//console.log("session before","<?php print session_id(); ?>");
 					if($(this).attr('id')=="Login")
