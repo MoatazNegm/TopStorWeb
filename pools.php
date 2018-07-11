@@ -1880,7 +1880,6 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 					if(userpriv=="true" | curuser=="admin" ) { 
 					
 					
-				//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
 					$.post("./pump.php", { req: "DGsetPool.py", name:"attachmirror " + "<?php echo $_SESSION["user"] ?>"+" "+dd["1"].host+" "+dd["2"].name+" "+dd["1"].name+" "+dd["1"].id+" "+dd["2"]["grouptype"].replace("'",''), passwd:pool.name.replace("'",'')});
 					
 					syscounter2=980;  
