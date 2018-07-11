@@ -449,6 +449,8 @@ function refreshList2(req,listid,filelocfrom,show) {
     hosts=[]
     volumes=[]
     snapshots=[]
+    chartdata=[]
+    if (plotb) {plotb.destroy();}
     p=0
     $.each(jdata,function(k,v){
      hosts.push(jdata[k])
@@ -475,7 +477,7 @@ function refreshList2(req,listid,filelocfrom,show) {
      $.each(pools[k]["volumes"],function(kk,vv){
       tovol=pools[k]['volumes'][kk]
       volumes.push(tovol) 
-      $(listid).append('<tr onclick="rowisclicked(this)" class="variable trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="can\'t upload delete icon"></a></td></tr>');
+      $("#Volumetable"+tovol['prot']).append('<tr onclick="rowisclicked(this)" class="variable trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="can\'t upload delete icon"></a></td></tr>');
      chartdata.push([tovol.name,normsize(tovol.quota)]);
      });
     });
