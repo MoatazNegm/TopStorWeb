@@ -1436,6 +1436,7 @@ function setaction() {
              $('.disks').hide()
              $('.disks.'+currenthost+'.'+name).show()
              $('.disks.'+currenthost+'.pree').show()
+             $('.disks.busy').hide()
         }
 	function diskclick(id) { 
 		  var selectingdisks;
