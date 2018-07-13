@@ -1,1 +1,1 @@
-DGsetPool.py addspare admin dhcp12013 scsi-360014059fc8e729f3e64b30b18df84b1 2 pdhcp20407 dhcp12013
+GetSnaplist a hihihihi
