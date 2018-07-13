@@ -960,7 +960,7 @@ function refreshall() { //check pool status
    }	
   });
   $.each(disks,function(kk,vv){
-   if (disks[kk].pool.includes('free')>0 ){
+   if (disks[kk].currentpool=='pree' ){
     diskdiv='freeimg'
    }
    else {
@@ -1047,7 +1047,7 @@ function setaction() {
    switch (dcomp[0]) {
 // if only free with a pool exists
     case 'free':
-     if (currentpool.includes('pree') < 1) {
+     if (currentpool!='pree') {
       $("#Addreadcache").show()
       $("#Addwritecache").show()
       $("#Addspare").show()
@@ -1057,6 +1057,7 @@ function setaction() {
       });
       if (israidstripe==1){
        $("#Addstriped").show()
+       $("#Attachmirrored").show()
       }
      }
 // if only free with no pool exists
@@ -1072,7 +1073,7 @@ function setaction() {
    switch (dcomp[0]+dcomp[1]) {
 // if free + free and pool exists 
     case 'freefree':
-     if (currentpool.includes('pree') < 1) {
+     if (currentpool!='pree') {
       $("#Addmirror").show()
      }
 // if free + free and no pool exists 
@@ -1081,12 +1082,13 @@ function setaction() {
      }
     break; 
 // if free + mirror 
-    case 'mirrorfree':
-     $("#Attachmirrored").show()
-    break;
+//    case 'mirrorfree':
+//     $("#Attachmirrored").show()
+//    break;
 // if free + stripe 
     case 'stripefree':
      $("#Addstriped").show()
+     $("#Attachmirrored").show()
     break;
    }  
   break;
@@ -1095,7 +1097,7 @@ function setaction() {
    switch (dcomp[0]+dcomp[1]+dcomp[2]) {
 // if free + free +free and pool exists 
     case 'freefreefree':
-     if (currentpool.includes('pree') < 1 ) {
+     if (currentpool!='pree' ) {
       $("#addraid-SingleRed").show()
      }
 // if free + free +free and no pool exists 
@@ -1109,14 +1111,14 @@ function setaction() {
   default:
    allfree=1
    $.each(dcomp,function(k,v){
-    if (dcomp[k].includes('free') < 0){
+    if (dcomp[k]=='free'){
      allfree=0
     }
    });
    switch (allfree) {
 // if free + free +free+free and pool exists 
     case 1:
-     if (currentpool.includes('pree') < 1) {
+     if (currentpool!='pree') {
       $("#addraid-SingleRed").show()
       $("#addraid-DualRed").show()
      }
@@ -1429,6 +1431,7 @@ function setaction() {
         }
         function poolclick(name) {
              currentpool=name;
+             pool=name
 	     $(".SelectedFree").removeClass("SelectedFree")
 	     $.each(disks,function(k,v){ disks[k]["selected"]=0 });
 	     dcomp=[]
@@ -1894,7 +1897,7 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 					if(userpriv=="true" | curuser=="admin" ) { 
 					
 					
-					$.post("./pump.php", { req: "DGsetPool.py", name:"attachmirror " + "<?php echo $_SESSION["user"] ?>"+" "+dd["1"].host+" "+dd["2"].name+" "+dd["1"].name+" "+dd["1"].id+" "+dd["2"]["grouptype"].replace("'",''), passwd:pool+' '+currenthost});
+					$.post("./pump.php", { req: "DGsetPool.py", name:"attachmirror " + "<?php echo $_SESSION["user"] ?>"+" "+dd["1"].host+" "+dd["1"].name+" "+dd["1"].id+" "+dd["2"].name+" "+dd["2"].id, passwd:currentpool+' '+currenthost});
 					
 					syscounter2=980;  
 									
