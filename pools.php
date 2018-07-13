@@ -725,7 +725,7 @@
 			var pools=[];
 			var volumes=[];
 			var snapshots=[];
-			var pool=[];
+			var pool='dkjfdldas';
                         var currenthost='hihi';
                         var currentpool='hihihiA';
 			var jdata;
@@ -886,7 +886,6 @@ function refreshall() { //check pool status
     disks=[];
     kdata=[];
     pools=[];
-    pool=[];
     hosts=[]
     volumes=[]
     snapshots=[]
@@ -921,23 +920,28 @@ function refreshall() { //check pool status
        $(".Snaplist").append('<tr class="snapshot '+kk+'"><td class="text-center">'+tosnap.creation+"</td><td class='text-center'>"+tosnap.time+"</td><td class='text-center'>"+tosnap.name+"</td><td class='text-center'>"+tosnap.quota+"</td><td class='text-center'>"+tosnap.refcompressratio+'</td><td class="text-center"><a href="javascript:SnapshotDelete(\''+tosnap.name+'\')"><img src="assets/images/delete.png"</td><td class="text-center"><a href="javascript:SnapshotRollback(\''+tosnap.name+'\')"><img src="assets/images/return.png" alt="can\'t upload delete icon"></a></td></tr>');
       });
      });
-    $("#Pool").change();	
+    // $("#Pool").change();	
      $.each(pools[k]["raidlist"],function(kk,vv){
       toraids=pools[k]["raidlist"][kk]
       toraids.pool=pools[k]["name"]
       raids.push(toraids)
       $.each(pools[k]["raidlist"][kk]["disklist"], function(kkk,vvv){
        thedisk=pools[k]["raidlist"][kk]["disklist"][kkk]
+       dskstatus=thedisk['status']
+       $.each(disks,function(r,v){
+        if (disks[r]['status'].includes('free') < 1 && disks[r]['name'].includes(thedisk['name']) > 0) {  dskstatus='busy' }
+        if (disks[r]['pool'].includes('free') > 0 && disks[r]['name'].includes(thedisk['name']) > 0 && dskstatus.includes('free') < 1) {  disks[r]['status']='busy' }
+       });
        disks.push({"id":kkk,
-  "pool":pools[k]["name"],
-  "groupst":pools[k]["raidlist"][kk]["status"],
- "status":thedisk["status"],
- "grouptype":pools[k]["raidlist"][kk]["name"],
- "fromhost":thedisk["host"],
- "host":pools[k]["host"],
- "name":thedisk["name"],
- "size":thedisk["size"].replace('GB','').replace('TB','000'),
- "selected":0 
+        "pool":pools[k]["name"],
+        "groupst":pools[k]["raidlist"][kk]["status"],
+        "status":dskstatus,
+        "grouptype":pools[k]["raidlist"][kk]["name"],
+        "fromhost":thedisk["host"],
+        "host":pools[k]["host"],
+        "name":thedisk["name"],
+        "size":thedisk["size"].replace('GB','').replace('TB','000'),
+        "selected":0 
        });
       });
      });
@@ -974,7 +978,7 @@ function refreshall() { //check pool status
   });
   $(".disks").hide()
   $("."+currenthost).show()
-  $("."+currentpool).show()
+  $("."+pool).show()
   setstatus();
   if(ppoolstate.indexOf("DEGRADE") >=0) { 
   $("#poolstate").text("Pool is DEGRADED") ; $("#poolstate").removeClass("poolOnline");$("#poolstate").addClass("poolDegrade")
@@ -1419,7 +1423,7 @@ function setaction() {
              $('.'+name).show()
         }
         function poolclick(name) {
-             currentpool=name;
+             pool=name;
              $('.disks').hide()
              $('.'+name).show()
         }
@@ -1526,7 +1530,7 @@ function setaction() {
 			if(userpriv=="true" | curuser=="admin" ) { 
 			
 		//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"addlog " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id, passwd:pool.name.replace("'",'')});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"addlog " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id, passwd:pool+' '+currenthost});
 			syscounter2=980;  
 							
 			}
@@ -1546,7 +1550,7 @@ function setaction() {
 			if(userpriv=="true" | curuser=="admin" ) { 
 			
 		//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"addcache " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id , passwd:pool.name.replace("'",'')});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"addcache " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id , passwd:pool+' '+currenthost});
 			syscounter2=980;  
 							
 			}
@@ -1566,7 +1570,7 @@ function setaction() {
 			if(userpriv=="true" | curuser=="admin" ) { 
 			
 		//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"addspare " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id+" ", passwd: pool.name.replace("'",'')});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"addspare " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id+" ", passwd: pool+' '+currenthost});
 			syscounter2=980;  
 							
 			}
@@ -1587,7 +1591,7 @@ function setaction() {
 			if(userpriv=="true" | curuser=="admin" ) { 
 			
 		//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"delspecial " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id, passwd:pool.name.replace("'",'')});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"delspecial " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id, passwd:pool+' '+currenthost});
 			syscounter2=0;  
 							
 			}
@@ -1607,7 +1611,7 @@ function setaction() {
 			if(userpriv=="true" | curuser=="admin" ) { 
 			
 		//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"Single " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id,passwd:"nopool"});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"Single " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id,passwd:"nopool"+' '+currenthost});
 			syscounter2=980;  
 							
 			}
@@ -1634,7 +1638,7 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 			}
 			
 		//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity3 " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:pool.name.replace("'",'') });
+			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity3 " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:pool+' '+currenthost});
 			
 			syscounter2=980;  
 							
@@ -1663,7 +1667,7 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 			}
 			
 		//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"parity3 " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:"nopool" });
+			$.post("./pump.php", { req: "DGsetPool.py", name:"parity3 " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:"nopool"+' '+currenthost });
 			
 			syscounter2=980;  
 							
@@ -1692,7 +1696,7 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 			}
 			
 		//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity2 " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:pool.name.replace("'",'') });
+			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity2 " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:pool+' '+currenthost});
 			
 			syscounter2=980;  
 							
@@ -1721,7 +1725,7 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 			}
 			
 		//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"parity2 " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:"nopool" });
+			$.post("./pump.php", { req: "DGsetPool.py", name:"parity2 " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:"nopool" +' '+currenthost});
 			
 			syscounter2=980;  
 							
@@ -1750,7 +1754,7 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 			}
 			
 		//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:pool.name.replace("'",'') });
+			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:pool+' '+currenthost });
 			
 			syscounter2=980;  
 							
@@ -1781,7 +1785,7 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 			}
 			
 		//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"parity " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:"nopool" });
+			$.post("./pump.php", { req: "DGsetPool.py", name:"parity " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:"nopool"+currenthost });
 			
 			syscounter2=980;  
 							
@@ -1810,7 +1814,7 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 			}
 			
 		//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"add " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:"nopool" });
+			$.post("./pump.php", { req: "DGsetPool.py", name:"add " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:"nopool"+' '+currenthost });
 			
 			syscounter2=980;  
 							
@@ -1835,7 +1839,7 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 			}
 			
 		//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"stripeset " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:"nopool" });
+			$.post("./pump.php", { req: "DGsetPool.py", name:"stripeset " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:"nopool"+' '+currenthost });
 			
 			syscounter2=980;  
 							
@@ -1858,7 +1862,7 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 			
 			
 		//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"addmirror " + "<?php echo $_SESSION["user"] ?>"+" "+dd["1"].host+" "+dd["1"].name+":"+dd["1"].id+" "+dd["2"].name+":"+dd["2"].id, passwd:pool.name.replace("'",'')});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"addmirror " + "<?php echo $_SESSION["user"] ?>"+" "+dd["1"].host+" "+dd["1"].name+":"+dd["1"].id+" "+dd["2"].name+":"+dd["2"].id, passwd:pool+' '+currenthost});
 			
 			syscounter2=980;  
 							
@@ -1880,7 +1884,7 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 					if(userpriv=="true" | curuser=="admin" ) { 
 					
 					
-					$.post("./pump.php", { req: "DGsetPool.py", name:"attachmirror " + "<?php echo $_SESSION["user"] ?>"+" "+dd["1"].host+" "+dd["2"].name+" "+dd["1"].name+" "+dd["1"].id+" "+dd["2"]["grouptype"].replace("'",''), passwd:pool.name.replace("'",'')});
+					$.post("./pump.php", { req: "DGsetPool.py", name:"attachmirror " + "<?php echo $_SESSION["user"] ?>"+" "+dd["1"].host+" "+dd["2"].name+" "+dd["1"].name+" "+dd["1"].id+" "+dd["2"]["grouptype"].replace("'",''), passwd:pool+' '+currenthost});
 					
 					syscounter2=980;  
 									
@@ -1905,7 +1909,7 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 					
 					
 				//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-					$.post("./pump.php", { req: "DGsetPool.py", name:"mirror " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+":"+dd[1].id+" "+dd[2].name+":"+dd[2].id, passwd: "nopool"});
+					$.post("./pump.php", { req: "DGsetPool.py", name:"mirror " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+":"+dd[1].id+" "+dd[2].name+":"+dd[2].id, passwd: "nopool"+' '+currenthost});
 					
 					syscounter2=980;  
 									
@@ -1996,7 +2000,7 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 				
 		
 
-		$("#submitdiskgroup").click( function (){ $.post("./pump.php", { req:"DGsetPool.py", name:$('input[name=Raidselect]:checked').val()+" "+$('input[name=Raidselect]:checked').attr("id")+" "+"<?php echo $_SESSION["user"]; ?>", passwd:"hihihihi" }, function (data){
+		$("#submitdiskgroup").click( function (){ $.post("./pump.php", { req:"DGsetPool.py", name:$('input[name=Raidselect]:checked').val()+" "+$('input[name=Raidselect]:checked').attr("id")+" "+"<?php echo $_SESSION["user"]; ?>", passwd:"hihihihi"+currenthost }, function (data){
 				 refresh2("DGstatus");
 		});
 	 });
