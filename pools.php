@@ -906,7 +906,7 @@ function refreshall() { //check pool status
      });
     });
     $.each(pools,function(k,v){
-     $('#poollist').append($('<a class="poolmember" style="display: inline; " href="javascript:poolclick(\''+pools[k]["name"]+'\')">'+pools[k]["name"]+'</a>'));	
+     $('#poollist').append($('<a class="poolmember '+pools[k]['host']+'" style="display: inline; " href="javascript:poolclick(\''+pools[k]["name"]+'\')">'+pools[k]["name"]+'</a>'));	
      pools[k]['alloc']=normsize(pools[k]['alloc'])
      pools[k]['empty']=normsize(pools[k]['empty'])
      pools[k]['size']=normsize(pools[k]['size'])
@@ -920,7 +920,6 @@ function refreshall() { //check pool status
        $(".Snaplist").append('<tr class="snapshot '+kk+'"><td class="text-center">'+tosnap.creation+"</td><td class='text-center'>"+tosnap.time+"</td><td class='text-center'>"+tosnap.name+"</td><td class='text-center'>"+tosnap.quota+"</td><td class='text-center'>"+tosnap.refcompressratio+'</td><td class="text-center"><a href="javascript:SnapshotDelete(\''+tosnap.name+'\')"><img src="assets/images/delete.png"</td><td class="text-center"><a href="javascript:SnapshotRollback(\''+tosnap.name+'\')"><img src="assets/images/return.png" alt="can\'t upload delete icon"></a></td></tr>');
       });
      });
-    // $("#Pool").change();	
      $.each(pools[k]["raidlist"],function(kk,vv){
       toraids=pools[k]["raidlist"][kk]
       toraids.pool=pools[k]["name"]
@@ -941,7 +940,7 @@ function refreshall() { //check pool status
         "host":pools[k]["host"],
         "name":thedisk["name"],
         "size":thedisk["size"].replace('GB','').replace('TB','000'),
-        "selected":0 
+        "selected":'0' 
        });
       });
      });
@@ -977,6 +976,7 @@ function refreshall() { //check pool status
     disks[kk]["selected"]=0;	
   });
   $(".disks").hide()
+  $(".poolmember").hide()
   $("."+currenthost).show()
   $("."+pool).show()
   setstatus();
@@ -1047,7 +1047,7 @@ function setaction() {
    switch (dcomp[0]) {
 // if only free with a pool exists
     case 'free':
-     if (pools.length > 1) {
+     if (currentpool.includes('pree') < 1) {
       $("#Addreadcache").show()
       $("#Addwritecache").show()
       $("#Addspare").show()
@@ -1072,7 +1072,7 @@ function setaction() {
    switch (dcomp[0]+dcomp[1]) {
 // if free + free and pool exists 
     case 'freefree':
-     if (pools.length > 1) {
+     if (currentpool.includes('pree') < 1) {
       $("#Addmirror").show()
      }
 // if free + free and no pool exists 
@@ -1095,7 +1095,7 @@ function setaction() {
    switch (dcomp[0]+dcomp[1]+dcomp[2]) {
 // if free + free +free and pool exists 
     case 'freefreefree':
-     if (pools.length > 1) {
+     if (currentpool.includes('pree') < 1 ) {
       $("#addraid-SingleRed").show()
      }
 // if free + free +free and no pool exists 
@@ -1116,7 +1116,7 @@ function setaction() {
    switch (allfree) {
 // if free + free +free+free and pool exists 
     case 1:
-     if (pools.length > 1) {
+     if (currentpool.includes('pree') < 1) {
       $("#addraid-SingleRed").show()
       $("#addraid-DualRed").show()
      }
@@ -1419,13 +1419,23 @@ function setaction() {
 	}
         function hostclick(name) {
              currenthost=name;
+	     $(".SelectedFree").removeClass("SelectedFree")
+	     $.each(disks,function(k,v){ disks[k]["selected"]=0 });
+	     dcomp=[]
+             $("#DG tr").hide()
              $('.disks').hide()
-             $('.'+name).show()
+             $('.poolmember').hide()
+             $('.poolmember.'+name).show()
         }
         function poolclick(name) {
-             pool=name;
+             currentpool=name;
+	     $(".SelectedFree").removeClass("SelectedFree")
+	     $.each(disks,function(k,v){ disks[k]["selected"]=0 });
+	     dcomp=[]
+             $("#DG tr").hide()
              $('.disks').hide()
-             $('.'+name).show()
+             $('.disks.'+currenthost+'.'+name).show()
+             $('.disks.'+currenthost+'.pree').show()
         }
 	function diskclick(id) { 
 		  var selectingdisks;
@@ -1861,7 +1871,6 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 			if(userpriv=="true" | curuser=="admin" ) { 
 			
 			
-		//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
 			$.post("./pump.php", { req: "DGsetPool.py", name:"addmirror " + "<?php echo $_SESSION["user"] ?>"+" "+dd["1"].host+" "+dd["1"].name+":"+dd["1"].id+" "+dd["2"].name+":"+dd["2"].id, passwd:pool+' '+currenthost});
 			
 			syscounter2=980;  
@@ -1907,8 +1916,7 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 				
 					if(userpriv=="true" | curuser=="admin" ) { 
 					
-					
-				//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
+				 console.log('hi')	
 					$.post("./pump.php", { req: "DGsetPool.py", name:"mirror " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+":"+dd[1].id+" "+dd[2].name+":"+dd[2].id, passwd: "nopool"+' '+currenthost});
 					
 					syscounter2=980;  
