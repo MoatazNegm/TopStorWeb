@@ -928,8 +928,8 @@ function refreshall() { //check pool status
        thedisk=pools[k]["raidlist"][kk]["disklist"][kkk]
        dskstatus=thedisk['status']
        $.each(disks,function(r,v){
-        if (disks[r]['status'].includes('free') < 1 && disks[r]['name'].includes(thedisk['name']) > 0) {  dskstatus='busy' }
-        if (disks[r]['pool'].includes('free') > 0 && disks[r]['name'].includes(thedisk['name']) > 0 && dskstatus.includes('free') < 1) {  disks[r]['status']='busy' }
+        if (disks[r]['status']!='free' && disks[r]['status']!='busy' && disks[r]['name']==thedisk['name']) {  dskstatus='busy' }
+	if (disks[r]['name']==thedisk['name'] && dskstatus!='busy' && dskstatus!='free') {  disks[r]['status']='busy' }
        });
        disks.push({"id":kkk,
         "pool":pools[k]["name"],
