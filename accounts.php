@@ -437,7 +437,7 @@
 
 			$(".bg-success").show();$(".bg-danger").hide();$(".bg-warning").hide();
 			function updateprop() {
-				if (refresherprop > 0) { $.post("./pump.php", { req:"HostgetIPs", name:"a" });}				
+				if (refresherprop > 0) { $.post("./pump.php", { req:"HostgetIPs", name:"a", passwd:"" });}				
 				if (refresherprop > 0) {  	
 				$.get("requestdate.php", { file: 'Data/Hostprop.txt' },function(data){ 
 						var jdata=jQuery.parseJSON(data);
@@ -508,7 +508,6 @@
 			}	;
 			function refreshUserList(){
 				var jdata;
-					//$.post("./pump.php", { req:"UnixListUsers", name:"a" });
 				$.get("gump.php", { req: 'run', name:'--prefix' }, function(data){
 				  if(data==olddata) { return; }
 				   jdata = jQuery.parseJSON(data);
@@ -599,14 +598,14 @@
 				 refresheruser=3
 				 });
 			});
-			$("a.UnixDelUser").click(function (e){ e.preventDefault(); $.post("./pump.php", { req:"UnixDelUser", name:$(this).val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+			$("a.UnixDelUser").click(function (e){ e.preventDefault(); $.post("./pump.php", { req:"UnixDelUser", name:$(this).val()+" "+"<?php echo $_SESSION["user"]; ?>", passwd:"" }, function (data){
 				 //refreshUserList();
 				 console.log("hi", $(this).val());
 				 refresheruser=3 
 				 });
 			});
 			
-			function auserdel(){ $.post("./pump.php", { req:"UnixDelUser", name:arguments[0]+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+			function auserdel(){ $.post("./pump.php", { req:"UnixDelUser", name:arguments[0]+" "+"<?php echo $_SESSION["user"]; ?>", passwd:"" }, function (data){
 				 //refreshUserList();
 				 console.log("hi", arguments[0]);
 				 refresheruser=3 
@@ -632,17 +631,17 @@
 			});
 			$("#DNSsubmit").click(function (){ 
 				//$("form").validator("validate");
-						$.post("./pump.php", { req:"HostManualconfig", name:$("#BoxName").val()+" "+$("#IPAddress").val()+" "+$("#Gateway").val()+" "+$("#DNS").val()+" "+$("#Subnet").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+						$.post("./pump.php", { req:"HostManualconfig", name:$("#BoxName").val()+" "+$("#IPAddress").val()+" "+$("#Gateway").val()+" "+$("#DNS").val()+" "+$("#Subnet").val()+" "+"<?php echo $_SESSION["user"]; ?>", passwd:"" });
 						setTimeout(function(){ refresherprop=4},3000);					
 						
 						
 			});
 			$("#ADsubmit").click( function() {
 				if($("#Domtype").val()=="Domain") {
-					$.post("./pump.php", { req:"DomainChange", name:$("#DomName").val()+" "+$("#Admin").val()+" "+"\""+$("#Pass").val()+"\""+" "+$("#DCserver").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+					$.post("./pump.php", { req:"DomainChange", name:$("#DomName").val()+" "+$("#Admin").val()+" "+"\""+$("#Pass").val()+"\""+" "+$("#DCserver").val()+" "+"<?php echo $_SESSION["user"]; ?>", passwd:"" });
 				} 
 				else {
-					$.post("./pump.php", { req:"DomainChangeWorkgrp", name:$("#DomName").val()+" "+$("#Admin").val()+" "+"\""+$("#Pass").val()+"\""+" "+$("#DCserver").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+					$.post("./pump.php", { req:"DomainChangeWorkgrp", name:$("#DomName").val()+" "+$("#Admin").val()+" "+"\""+$("#Pass").val()+"\""+" "+$("#DCserver").val()+" "+"<?php echo $_SESSION["user"]; ?>", passwd:"" });
 				} 
 			});
 			
