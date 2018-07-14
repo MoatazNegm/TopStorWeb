@@ -741,11 +741,11 @@
       		var ppoolstate="na";
 			function normsize(s){
 				 var sizeinbytes=parseFloat(s)
-				 if (s.includes('K')) { sizeinbytes=sizeinbytes/1000 }
-				 else if (s.includes('M')) { sizeinbytes=sizeinbytes }
-				 else if (s.includes('G')) { sizeinbytes=sizeinbytes*1000 }
-				 else if (s.includes('T')) { sizeinbytes=sizeinbytes*1000000 }
-				 else if (s.includes('P')) { sizeinbytes=sizeinbytes*1000000000 }
+				 if (s.includes('K')) { sizeinbytes=sizeinbytes/1000000 }
+				 else if (s.includes('M')) { sizeinbytes=sizeinbytes/1000 }
+				 else if (s.includes('G')) { sizeinbytes=sizeinbytes }
+				 else if (s.includes('T')) { sizeinbytes=sizeinbytes*1000 }
+				 else if (s.includes('P')) { sizeinbytes=sizeinbytes*1000000 }
 				 else  { sizeinbytes=sizeinbytes/1000000 }
 				 return parseInt(sizeinbytes)
 			}
@@ -939,7 +939,7 @@ function refreshall() { //check pool status
         "fromhost":thedisk["host"],
         "host":pools[k]["host"],
         "name":thedisk["name"],
-        "size":thedisk["size"].replace('GB','').replace('TB','000'),
+        "size":normsize(thedisk["size"]),
         "selected":'0' 
        });
       });
