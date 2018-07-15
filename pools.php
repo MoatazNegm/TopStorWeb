@@ -339,7 +339,7 @@
                                     <input type="radio" class="form-check-input" name="diskRadios">
                                 </td>
                                 <td class="text-center">Add to existing stripe(no redundancy)</td>
-                                <td id="AddStripesize" class="sizegb text-center">97.9GB</td>
+                                <td id="Addstripedsize" class="sizegb text-center">97.9GB</td>
                                 <td class="text-center"><a href="javascript:pooladdstripe()"><img
                                         src="assets/images/plus-symbol-in-a-rounded-black-square.png"
                                         alt="can't upload Create icon"></a>
@@ -723,11 +723,14 @@
 			var oldcurrentinfo="";
 			var disks=[];
 			var pools=[];
+			var selecteddisks=[];
+			var dcomp=[];
 			var volumes=[];
 			var snapshots=[];
 			var pool='dkjfdldas';
                         var currenthost='hihi';
                         var currentpool='hihihiA';
+                        var icurrentpool=-1;
 			var jdata;
 			var gdata;
 			var raids=[];
@@ -906,7 +909,7 @@ function refreshall() { //check pool status
      });
     });
     $.each(pools,function(k,v){
-     $('#poollist').append($('<a class="poolmember '+pools[k]['host']+'" style="display: inline; " href="javascript:poolclick(\''+pools[k]["name"]+'\')">'+pools[k]["name"]+'</a>'));	
+     $('#poollist').append($('<a class="poolmember '+pools[k]['host']+'" style="display: inline; " href="javascript:poolclick(\''+pools[k]["name"]+'\','+k+')">'+pools[k]["name"]+'</a>'));	
      pools[k]['alloc']=normsize(pools[k]['alloc'])
      pools[k]['empty']=normsize(pools[k]['empty'])
      pools[k]['size']=normsize(pools[k]['size'])
@@ -960,7 +963,7 @@ function refreshall() { //check pool status
    }	
   });
   $.each(disks,function(kk,vv){
-   if (disks[kk].currentpool=='pree' ){
+   if (disks[kk].pool=='pree' ){
     diskdiv='freeimg'
    }
    else {
@@ -1019,8 +1022,6 @@ function setstatus() {
  }
  setaction();
 }		
-selecteddisks=[]
-dcomp=[]
 function setaction() {
  selecteddisks=[]
  dd=[]
@@ -1038,8 +1039,10 @@ function setaction() {
   if(dd[k].grouptype.includes('mirror') > 0 ) { dcomp.push('mirror')};
   if(dd[k].grouptype.includes('stripe') > 0 ) { dcomp.push('stripe')}
   if(dd[k].grouptype.includes('free') > 0 ) { dcomp.push('free')}
+  if(dd[k].grouptype.includes('spare') > 0 ) { dcomp.push('special'); $("#typeofdisk").text('spare') }
+  if(dd[k].grouptype.includes('cache') > 0 ) { dcomp.push('special'); $("#typeofdisk").text('cache') }
+  if(dd[k].grouptype.includes('logs') > 0 ) { dcomp.push('special'); $("#typeofdisk").text('logs') }
  });
- console.log('dcomp',dcomp)
  switch (dd.length-1){
   case 0: break;
 // if only one disk 
@@ -1051,20 +1054,16 @@ function setaction() {
       $("#Addreadcache").show()
       $("#Addwritecache").show()
       $("#Addspare").show()
-      israidstripe=0
-      $.each(raids,function(k,v){
-       if(raids[k]["name"].includes('stripe') > 0 ) { israidstripe=1 }
-      });
-      if (israidstripe==1){
-       $("#Addstriped").show()
-       $("#Attachmirrored").show()
-      }
      }
 // if only free with no pool exists
      else { 
       $("#Poolcreate").show()
       $("#poolmsg").text("Pool p1 with no redundancy can be created from disk : "+dd["1"].id+" please choose below to create it"); $("#crpoolsize").text(parseFloat(dd["1"].size)+"GB")
      }
+    break;
+// if only spare with a pool exists
+    case 'special':
+      $("#Delspecial").show()
     break;
    }
    break;
@@ -1074,10 +1073,12 @@ function setaction() {
 // if free + free and pool exists 
     case 'freefree':
      if (currentpool!='pree') {
+      $("#Addmirrorsize").text(parseFloat(dd[1].size+dd[2].size+pools[icurrentpool].size));
       $("#Addmirror").show()
      }
 // if free + free and no pool exists 
      else {
+      $("#mirrorsize").text(parseFloat(dd[1].size+dd[2].size));
       $("#mirror").show()
      }
     break; 
@@ -1087,7 +1088,9 @@ function setaction() {
 //    break;
 // if free + stripe 
     case 'stripefree':
+     $("#Addstripedsize").text(parseFloat(pools[icurrentpool].size+dd[2].size));
      $("#Addstriped").show()
+     $("#Attachmirroredsize").text(parseFloat(pools[icurrentpool].size));
      $("#Attachmirrored").show()
     break;
    }  
@@ -1270,7 +1273,7 @@ function setaction() {
 						poolmsg="Pool p1 can be expanded by adding disk"+dd["1"].id+" (no redundancy) or mirrored. please select from below"
 						$("#poolmsg").text(poolmsg);
 						$("#Addstriped").show(); $("#Addreadcache").show(); $("#Addwritecache").show()
-						$("#AddStripesize").text(maxspace+"GB"); if(minspace > 0) {$("#Attachmirrored").show(); $("#Attachmirroredsize").text(minspace+"GB")};
+						$("#Addstripedsize").text(maxspace+"GB"); if(minspace > 0) {$("#Attachmirrored").show(); $("#Attachmirroredsize").text(minspace+"GB")};
 						
 					}
 					if(runningroup.includes('mirror')  && minspace > 0) {
@@ -1429,8 +1432,9 @@ function setaction() {
              $('.poolmember').hide()
              $('.poolmember.'+name).show()
         }
-        function poolclick(name) {
+        function poolclick(name,k) {
              currentpool=name;
+             icurrentpool=k;
              pool=name
 	     $(".SelectedFree").removeClass("SelectedFree")
 	     $.each(disks,function(k,v){ disks[k]["selected"]=0 });
@@ -1440,6 +1444,11 @@ function setaction() {
              $('.disks.'+currenthost+'.'+name).show()
              $('.disks.'+currenthost+'.pree').show()
              $('.disks.busy').hide()
+             if (name != 'pree'){
+	      $("#poolname").text(currentpool)
+	      $("#poolsize").text(pools[icurrentpool].size)
+	      $("#Pooldelete").show();
+             }
         }
 	function diskclick(id) { 
 		  var selectingdisks;
@@ -1604,7 +1613,6 @@ function setaction() {
 		
 			if(userpriv=="true" | curuser=="admin" ) { 
 			
-		//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
 			$.post("./pump.php", { req: "DGsetPool.py", name:"delspecial " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id, passwd:pool+' '+currenthost});
 			syscounter2=0;  
 							
@@ -1822,13 +1830,7 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 			};
 		
 			if(userpriv=="true" | curuser=="admin" ) { 
-			var stripeset=dd["1"].host+" "
-			for(k in dd) {
-				if(k>0){if(dd[k].grouptype==" ") {stripeset=stripeset+dd[k].name+":"+dd[k].id+" "	}	}	
-			}
-			
-		//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"add " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:"nopool"+' '+currenthost });
+			$.post("./pump.php", { req: "DGsetPool.py", name:"add " +"<?php echo $_SESSION["user"] ?>"+' '+currenthost+' '+dd[2].name+' '+dd[2].id,passwd:currentpool+' '+currenthost });
 			
 			syscounter2=980;  
 							
@@ -2030,7 +2032,8 @@ stripeset=stripeset+dd[k].name+":"+dd[k].id+" "
 				
 					if(userpriv=="true" | curuser=="admin" ) { 
 						
-						$.post("./pump.php", { req:"DGdestroyPool "+runningpool+" "+"<?php echo $_SESSION["user"]; ?>", passwd:"hihihi" });
+						$.post("./pump.php", { req:"DGdestroyPool.py "+currentpool+" "+"<?php echo $_SESSION["user"]; ?>", passwd:currenthost });
+ 
 						syscounter2=980
 					}
 				});
