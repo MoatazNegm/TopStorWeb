@@ -892,7 +892,7 @@ function refreshall() { //check pool status
     hosts=[]
     volumes=[]
     snapshots=[]
-    currenthost=''
+    currenthost='hohoho'
     currentpool='na'
     p=0
     $.each(jdata,function(k,v){
@@ -1092,8 +1092,10 @@ function setaction() {
     case 'stripefree':
      $("#Addstripedsize").text(parseFloat(pools[icurrentpool].size+dd[2].size));
      $("#Addstriped").show()
-     $("#Attachmirroredsize").text(parseFloat(pools[icurrentpool].size));
-     $("#Attachmirrored").show()
+     if(dd[1].size <= dd[2].size){
+      $("#Attachmirroredsize").text(parseFloat(pools[icurrentpool].size));
+      $("#Attachmirrored").show()
+     }
     break;
    }  
   break;
