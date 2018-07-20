@@ -614,10 +614,10 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
 .cache { background: gray; }
 .log  { background: darkblue; }
 .mirror,.raid1,.raid2,.raid3 { background: blue; }
-.OFFLINE, .FAULT { animation: opacity 2s ease-in-out infinite;
+.OFFLINE, .FAULT, .Removed { animation: opacity 2s ease-in-out infinite;
 	   opacity: 1;
 }
-.DEGRADED { animation: opacity 2s ease-in-out infinite; 
+.DEGRADED, .Warning { animation: opacity 2s ease-in-out infinite; 
 			opacity 1; 
     		margin-right: 30px;
     		margin-top: 30px;
