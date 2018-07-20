@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 [{"stamp":"host","class":"_","name":"pool","onlyname":"father","creation":"07/16/18","time":"00:00","sender":"receiver"}]
+=======
+[{"stamp":"host","class":"_","name":"pool","onlyname":"father","creation":"07/13/18","time":"00:00","sender":"receiver"}]
+>>>>>>> f2b2a6cbe007e91dacd065a1ddfebcd0f979ba47
