@@ -932,6 +932,8 @@ function refreshall() { //check pool status
       $.each(pools[k]["raidlist"][kk]["disklist"], function(kkk,vvv){
        thedisk=pools[k]["raidlist"][kk]["disklist"][kkk]
        dskstatus=thedisk['status']
+       dskchange=thedisk['changeop']
+       console.log(thedisk,dskchange)
        $.each(disks,function(r,v){
         if (disks[r]['status']!='free' && disks[r]['status']!='busy' && disks[r]['name']==thedisk['name']) {  dskstatus='busy' }
 	if (disks[r]['name']==thedisk['name'] && dskstatus!='busy' && dskstatus!='free') {  disks[r]['status']='busy' }
@@ -940,6 +942,7 @@ function refreshall() { //check pool status
         "pool":pools[k]["name"],
         "groupst":pools[k]["raidlist"][kk]["status"],
         "status":dskstatus,
+        "changeop":dskchange,
         "grouptype":pools[k]["raidlist"][kk]["name"],
         "fromhost":thedisk["host"],
         "host":pools[k]["host"],
@@ -973,11 +976,11 @@ function refreshall() { //check pool status
    }
    diskimg='disk-image'
     if(disks[kk].groupst.includes('DEGRADE')) { diskimg='DEGRADED' }
-    if(disks[kk]["status"].includes('Remove') || disks[kk]["name"].includes("'-'") || disks[kk]["status"].includes("OFFLINE") || disks[kk]["status"].includes("FAULT") ) { clickdisk=''; imgf='invaliddisk.png" style="height:7rem; width:5.1rem;"' 
+    if(disks[kk]["changeop"].includes('Remove') || disks[kk]["name"].includes("'-'") || disks[kk]["status"].includes("OFFLINE") || disks[kk]["status"].includes("FAULT") ) { clickdisk=''; imgf='invaliddisk.png" style="height:7rem; width:5.1rem;"' 
     }
     else { clickdisk="javascript:diskclick('"+kk+"')"; clickdisk="href="+clickdisk; imgf="disk-image.png" 
     }	
-    $("#"+diskdiv).append('<div class="disks '+disks[kk]['host']+' '+disks[kk]['pool']+' '+disks[kk]["status"]+'" ><a id="'+kk+'"'+clickdisk+' > <img class="img-fluid '+ diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a '+clickdisk+'><p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>')
+    $("#"+diskdiv).append('<div class="disks '+disks[kk]['host']+' '+disks[kk]['pool']+' '+disks[kk]["changeop"]+'" ><a id="'+kk+'"'+clickdisk+' > <img class="img-fluid '+ diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a '+clickdisk+'><p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>')
     disks[kk]["selected"]=0;	
   });
   $(".disks").hide()
