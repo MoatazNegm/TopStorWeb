@@ -718,7 +718,6 @@
 			var runningroup=0;
 			var dd=[];
                         var raids=[]
-                        var selecteddisks=[]
 			var olddiskpool=0;
 			var oldcurrentinfo="";
 			var disks=[];
