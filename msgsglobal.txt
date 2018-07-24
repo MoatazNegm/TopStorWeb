@@ -18,6 +18,7 @@ Diwa4: : : from : Disk : is removed from system :
 Disu4: : : from : Success deleting absent disk : from system database
 Dist5: : : from : Start offlineing disk :. Please add a spare disk urgently so system :
 Disu5: : : from : Success to set disk : to be offline, please add a spare disk urgently
+Dist3: : : from : Removing Disk : in : from pool database 
 Unlin11000: Problem while deleting user :
 Unlin11001: : : from : Problem while deleting user :
 Unlin1000:User : is deleted
