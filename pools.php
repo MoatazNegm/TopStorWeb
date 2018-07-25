@@ -913,7 +913,7 @@ function refreshall() { //check pool status
      $('#poollist').append($('<a class="poolmember '+pools[k]['host']+'" style="display: inline; " href="javascript:poolclick(\''+pools[k]["name"]+'\','+k+')">'+pools[k]["name"]+'</a>'));	
      pools[k]['alloc']=normsize(pools[k]['alloc'])
      pools[k]['empty']=normsize(pools[k]['empty'])
-     pools[k]['size']=normsize(pools[k]['size'])
+     pools[k]['size']=normsize(pools[k]['used'])+normsize(pools[k]['available'])
      $.each(pools[k]["volumes"],function(kk,vv){
       tovol=pools[k]['volumes'][kk]
       volumes.push(tovol) 
