@@ -891,8 +891,8 @@ function refreshall() { //check pool status
     hosts=[]
     volumes=[]
     snapshots=[]
-    currenthost='hohoho'
-    currentpool='na'
+    //currenthost='hohoho'
+    //currentpool='na'
     p=0
     $.each(jdata,function(k,v){
      hosts.push(jdata[k])
@@ -979,13 +979,15 @@ function refreshall() { //check pool status
     }
     else { clickdisk="javascript:diskclick('"+kk+"')"; clickdisk="href="+clickdisk; imgf="disk-image.png" 
     }	
-    $("#"+diskdiv).append('<div class="disks '+disks[kk]['host']+' '+disks[kk]['pool']+' '+disks[kk]["changeop"]+'" ><a id="'+kk+'"'+clickdisk+' > <img class="img-fluid '+ diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a '+clickdisk+'><p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>')
+    $("#"+diskdiv).append('<div class="disks '+disks[kk]['host']+' '+disks[kk]['pool']+' '+disks[kk]["status"]+' '+disks[kk]["changeop"]+'" ><a id="'+kk+'"'+clickdisk+' > <img class="img-fluid '+ diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a '+clickdisk+'><p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>')
     disks[kk]["selected"]=0;	
   });
-  $(".disks").hide()
   $(".poolmember").hide()
   $("."+currenthost).show()
-  $("."+pool).show()
+  $(".disks").hide()
+  $(".disks."+currenthost+"."+currentpool).show()
+  $(".disks.free."+currenthost).show()
+  $(".busy").hide()
   setstatus();
   if(ppoolstate.indexOf("DEGRADE") >=0) { 
   $("#poolstate").text("Pool is DEGRADED") ; $("#poolstate").removeClass("poolOnline");$("#poolstate").addClass("poolDegrade")
