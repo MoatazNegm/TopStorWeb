@@ -19,6 +19,10 @@ Disu4: : : from : Success deleting absent disk : from system database
 Dist5: : : from : Start offlineing disk :. Please add a spare disk urgently so system :
 Disu5: : : from : Success to set disk : to be offline, please add a spare disk urgently
 Dist3: : : from : Removing Disk : in : from pool database 
+Zpst01: : : from : scanning for disk pools to present
+Zpsu01: : : from : finished scanning for disk pools to present
+Zpst02: : : from : activating pool : 
+Zpsu02: : : from : finished activating pool : 
 Unlin11000: Problem while deleting user :
 Unlin11001: : : from : Problem while deleting user :
 Unlin1000:User : is deleted
