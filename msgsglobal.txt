@@ -78,6 +78,8 @@ Partst04: : : from : Partner : booting with ip : as a cluster node please wait .
 Partsu04: : : from : Partner : booted with ip : as a cluster node.
 Partst05: : : from : Partner : raised alert that some node is down
 Partsu05: : : from : Partner : is taking action due to lost node
+Partst06: : : from : started checking and syncing this partner active pools 
+Partsu06: : : from : finished checking and syncing this partner active pools 
 Partner1000: Adding partner : ......
 Partner1001: Partner : already exists
 Partner1002: Success adding partner : of type :
