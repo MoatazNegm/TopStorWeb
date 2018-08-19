@@ -23,6 +23,8 @@ Zpst01: : : from : scanning for disk pools to present
 Zpsu01: : : from : finished scanning for disk pools to present : 
 Zpst02: : : from : activating pool : 
 Zpsu02: : : from : finished activating pool : 
+Zpst03: : : from : syncing my pools  
+Zpsu03: : : from : finished syncing my pools 
 Unlin11000: Problem while deleting user :
 Unlin11001: : : from : Problem while deleting user :
 Unlin1000:User : is deleted
