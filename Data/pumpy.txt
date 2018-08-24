@@ -1,9 +1,1 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-readlog.py 07/18/2018T15:08:12 10 infowarningerror admin
-=======
-readlog.py 07/13/2018T20:35:35 10 infowarningerror admin
->>>>>>> f2b2a6cbe007e91dacd065a1ddfebcd0f979ba47
-=======
-readlog.py 07/23/2018T18:50:26 10 infowarningerror admin
->>>>>>> 704d7852bdd06979fff22a611fdf9da26c1d2f76
+readlog.py 08/24/2018T16:51:59 10 infowarningerror admin

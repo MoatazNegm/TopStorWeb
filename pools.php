@@ -133,264 +133,363 @@
                     
                     <h1 id="poolmsg" style="margin-top:0.5rem;">No pool is created... Please create a pool by selecting disks </h1>
                     <h2 id="poolstate"></h2>
-                    
-                    <div style="display: inline-flex; " id="freeimg">
-                    </div>
-                    <div id="requesttable" class="row table-responsive">
-                        <table class="col-12 table  dr-table-show">
-                            <thead>
-                            <tr>
-                                <th class="text-center">Select</th>
-                                <th class="text-center">Name</th>
-                                <th class="text-center">Usable Space</th>
-                                <th class="text-center">Create</th>
-                                <th class="text-center">Delete</th>
-                            </tr>
-                            </thead>
-                            <tbody id="DG">
-                               <tr id="Pooldelete" style="font-size: 2rem; background: lightgrey;height: 12rem; text-align: center;">
-                                <td class="text-center poolcrdel ">
-                                    <div  class="poolcrdel"> Running Pool </div>
-                                </td>
-                                <td id="poolname" class="poolcrdel text-center">p1</td>
-                                <td id="poolsize" class="poolcrdel text-center">20G</td>
-                               <td></td>
-                                <td  class="poolcrdel" ><a href="javascript:pooldelete()"><div type="button"  class=" btn btn-danger ">Delete Pool</div></a></td>
-                            	</tr>
-										<tr id="Poolcreate" style="font-size: 2rem; background: lightgrey;height: 12rem; text-align: center;">
-                                <td class="text-center poolcrdel ">
-                                    <div  class="poolcrdel"> Running Pool </div>
-                                </td>
-                                <td id="poolname" class="poolcrdel text-center">p1</td>
-                                <td id="crpoolsize" class="poolcrdel text-center">20G</td>
-                                <td  class="poolcrdel"><a  href="javascript:poolcreatesingle()"><div type="button" class=" btn btn-submit ">Create Pool</div></a></td>
-										  <td></td>                              
-                            	</tr>
+                                    
+<!--start code -->
+ <!--==========================
+  ============================-->
+    
+            <div class="container">
+                <div class="row">
+  <!--بداية العنوان الرئيسي الاول -->
+<div class="col-lg-6 col-md-6  "style="border-right:  2px solid rgb(24, 81, 130);">
+    <h4 style="    padding-left: 5%;">Disk Grops</h4>
 
-                            <tr id="Addspare">
-                                <td class="text-center ">
-                                    <input type="radio" class="form-check-input" name="diskRadios" checked="checked">
-                                </td>
-                                <td class="text-center">Spare</td>
-                                <td class="text-center"></td>
-                                <td class="text-center"><a href="javascript:pooladdspare()"><img
-                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
-                                        alt="can't upload Create icon"></a>
-                                </td>
-                               
-                            </tr>
-                            <tr id="Addreadcache">
-                                <td class="text-center ">
-                                    <input type="radio" class="form-check-input" name="diskRadios" checked="checked">
-                                </td>
-                                <td class="text-center">read cache</td>
-                                <td class="text-center"></td>
-                                <td class="text-center"><a href="javascript:pooladdcache()"><img
-                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
-                                        alt="can't upload Create icon"></a>
-                                </td>
-                               
-                            </tr>
-                            <tr id="Addwritecache">
-                                <td class="text-center ">
-                                    <input type="radio" class="form-check-input" name="diskRadios" checked="checked">
-                                </td>
-                                <td class="text-center">Read Write Cache</td>
-                                <td class="text-center"></td>
-                                <td class="text-center"><a href="javascript:pooladdlog()"><img
-                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
-                                        alt="can't upload Create icon"></a>
-                                </td>
-                               
-                            </tr>
-                            
-                            <tr id="Delspecial">
-                                <td class="text-center ">
-                                    <input type="radio" class="form-check-input" name="diskRadios" checked="checked">
-                                </td>
-                                <td id="typeofdisk" class="text-center">role</td>
-                                <td class="text-center"></td>
-                                <td class="text-center"><div href="#">remove it</div>
-                                </td>
-                                <td class="text-center"><a href="javascript:pooldelspecial()"><img src="assets/images/delete.png"
-                                                                         alt="can't upload delete icon"></a>
-                                </td>
-                            </tr>
-                            <tr id="mirror">
-                                <td class="text-center">
-                                    <input type="radio" class="form-check-input" name="diskRadios">
-                                </td>
-                                <td class="text-center">Mirror</td>
-                                <td id="Mirrorsize" class="sizegb text-center">97.9GB</td>
-                                <td class="text-center"><a href="javascript:poolcreatemirror()"><img
-                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
-                                        alt="can't upload Create icon"></a>
-                                </td>
-                                
-                            </tr>
-                            
-                            <tr id="Addmirror">
-                                <td class="text-center">
-                                    <input type="radio" class="form-check-input" name="diskRadios">
-                                </td>
-                                <td class="text-center">add mirrored pair of disks</td>
-                                <td id="Addmirrorsize" class="sizegb text-center">97.9GB</td>
-                                <td class="text-center"><a href="javascript:pooladdmirror()"><img
-                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
-                                        alt="can't upload Create icon"></a>
-                                </td>
-                                
-                            </tr>
-                            <tr id="Attachmirrored">
-                                <td class="text-center">
-                                    <input type="radio" class="form-check-input" name="diskRadios">
-                                </td>
-                                <td class="text-center">add mirrored disk</td>
-                                <td id="Attachmirroredsize" class="sizegb text-center">97.9GB</td>
-                                <td class="text-center"><a href="javascript:poolattachemirror()"><img
-                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
-                                        alt="can't upload Create icon"></a>
-                                </td>
-                                
-                            </tr>
-                            <tr id="striped">
-                                <td class="text-center">
-                                    <input type="radio" class="form-check-input" name="diskRadios">
-                                </td>
-                                <td class="text-center">striped(no redundancy)</td>
-                                <td id="Stripesize" class="sizegb text-center">97.9GB</td>
-                                <td class="text-center"><a href="javascript:poolcreatestripe()"><img
-                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
-                                        alt="can't upload Create icon"></a>
-                                </td>
-                                
-                            </tr>
-                            
-                            <tr id="raid-SingleRed">
-                                <td class="text-center">
-                                    <input type="radio" class="form-check-input" name="diskRadios">
-                                </td>
-                                <td class="text-center">Single Redundancy</td>
-                                <td id="SingleRed" class="sizegb text-center">97.9GB</td>
-                                <td class="text-center"><a href="javascript:poolcreateraidsingle()"><img
-                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
-                                        alt="can't upload Create icon"></a>
-                                </td>
-                                
-                            </tr>
-                            <tr id="addraid-SingleRed">
-                                <td class="text-center">
-                                    <input type="radio" class="form-check-input" name="diskRadios">
-                                </td>
-                                <td class="text-center">Single Redundancy</td>
-                                <td id="addSingleRed" class="sizegb text-center">97.9GB</td>
-                                <td class="text-center"><a href="javascript:pooladdraidsingle()"><img
-                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
-                                        alt="can't upload Create icon"></a>
-                                </td>
-                                
-                            </tr>
-                            <tr id="addraid-DualRed">
-                                <td class="text-center">
-                                    <input type="radio" class="form-check-input" name="diskRadios">
-                                </td>
-                                <td class="text-center">Dual-Redundancy</td>
-                                <td id="addDualRed" class="sizegb text-center">97.9GB</td>
-                                <td class="text-center"><a href="javascript:pooladdraiddual()"><img
-                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
-                                        alt="can't upload Create icon"></a>
-                                </td>
-                             </tr>
-                             <tr id="addraid-TripleRed">
-                                <td class="text-center">
-                                    <input type="radio" class="form-check-input" name="diskRadios">
-                                </td>
-                                <td class="text-center">Triple-Redundancy</td>
-                                <td id="addtripleraid" class="sizegb text-center">97.9GB</td>
-                                <td class="text-center"><a href="javascript:pooladdraidtriple()"><img
-                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
-                                        alt="can't upload Create icon"></a>
-                                </td>
-                             </tr>
-                             <tr id="raid-DualRed">
-                                <td class="text-center">
-                                    <input type="radio" class="form-check-input" name="diskRadios">
-                                </td>
-                                <td class="text-center">Dual-Redundancy</td>
-                                <td id="DualRed" class="sizegb text-center">97.9GB</td>
-                                <td class="text-center"><a href="javascript:poolcreateraiddual()"><img
-                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
-                                        alt="can't upload Create icon"></a>
-                                </td>
-                             </tr>
-                             <tr id="raid-TripleRed">
-                                <td class="text-center">
-                                    <input type="radio" class="form-check-input" name="diskRadios">
-                                </td>
-                                <td class="text-center">Triple-Redundancy</td>
-                                <td id="tripleraid" class="sizegb text-center">97.9GB</td>
-                                <td class="text-center"><a href="javascript:poolcreateraidtriple()"><img
-                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
-                                        alt="can't upload Create icon"></a>
-                                </td>
-                             </tr>
-                              <tr id="Addstriped">
-                                <td class="text-center">
-                                    <input type="radio" class="form-check-input" name="diskRadios">
-                                </td>
-                                <td class="text-center">Add to existing stripe(no redundancy)</td>
-                                <td id="Addstripedsize" class="sizegb text-center">97.9GB</td>
-                                <td class="text-center"><a href="javascript:pooladdstripe()"><img
-                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
-                                        alt="can't upload Create icon"></a>
-                                </td>
-                                
-                            </tr>
-                             <tr id="splitmirror">
-                                <td class="text-center poolcrdel">
-                                    <input type="radio" class=" form-check-input" name="diskRadios">
-                                </td>
-                                <td class="text-center poolcrdel ">Split Mirror</td>
-                                <td id="MirrorSize" class="sizgb poolcrdel text-center">97.9GB</td>
-                                <td class="text-center poolcrdel "><a href="#"><img
-                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
-                                        alt="can't upload Create icon"></a>
-                                </td>
-                                <td class="text-center"><a href="#"><div type="button" class=" btn btn-submit" >Split Mirror<div></a>
-                                </td>
-                            </tr>
-                            <tr id="readcache">
-                                <td class="text-center">
-                                    <input type="radio" class="form-check-input" name="diskRadios">
-                                </td>
-                                <td class="text-center">read only cache</td>
-                                <td class="text-center" class="sizegb text-center">97.9GB</td>
-                                <td class="text-center"><a href="#"><img
-                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
-                                        alt="can't upload Create icon"></a>
-                                </td>
-                                <td class="text-center"><a href="#"><img src="assets/images/delete.png"
-                                                                         alt="can't upload delete icon"></a>
-                                </td>
-                            </tr>
-                              </tr>
-                            <tr id="readwritecache">
-                                <td class="text-center">
-                                    <input type="radio" class="form-check-input" name="diskRadios">
-                                </td>
-                                <td class="text-center">read/write mirrored cache</td>
-                                <td class="text-center" class="sizegb text-center">97.9GB</td>
-                                <td class="text-center"><a href="#"><img
-                                        src="assets/images/plus-symbol-in-a-rounded-black-square.png"
-                                        alt="can't upload Create icon"></a>
-                                </td>
-                                <td class="text-center"><a href="#"><img src="assets/images/delete.png"
-                                                                         alt="can't upload delete icon"></a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+    <section class="text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-sm-6 a412">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
                     </div>
+
+                </div>
+                <div class="col-lg-3 col-sm-6 a412">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>42 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a412">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>45 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a412">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>50 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a412">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>56 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a412">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="partion">
+        <section class="text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-6 a412">
+                        <div>
+                            <img class="img412" src="assets/images/disk-image.png" />
+                            <h6>30 G</h6>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-3 col-sm-6 a412">
+                        <div>
+                            <img class="img412" src="assets/images/disk-image.png" />
+                            <h6>65 G</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 a412">
+                        <div>
+                            <img class="img412" src="assets/images/disk-image.png" />
+                            <h6>80 G</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 a412">
+                        <div>
+                            <img class="img412" src="assets/images/disk-image.png" />
+                            <h6>40 G</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 a412">
+                        <div>
+                            <img class="img412" src="assets/images/disk-image.png" />
+                            <h6>49 G</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 a412">
+                        <div>
+                            <img class="img412" src="assets/images/disk-image.png" />
+                            <h6>20 G</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<!--نهاية العنوان الرئيسي الاول -->
+
+                    
+<!--بداية العنوان الرئيسي الثانى -->
+<div class="col-lg-6 col-md-6 ">
+    <h4 style="padding-left: 5%;">Disk Grops</h4>
+
+    <section class="text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-sm-6 a412">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>70 G</h6>
+                    </div>
+
+                </div>
+                <div class="col-lg-3 col-sm-6 a412">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>45 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a412">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>46 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a412">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>49 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a412">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>10 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a412">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>98 G</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="partion">
+
+        <section class="text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-6 a412">
+                        <div>
+                            <img class="img412" src="assets/images/disk-image.png" />
+                            <h6>44 G</h6>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-3 col-sm-6 a412">
+                        <div>
+                            <img class="img412" src="assets/images/disk-image.png" />
+                            <h6>45 G</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 a412">
+                        <div>
+                            <img class="img412" src="assets/images/disk-image.png" />
+                            <h6>47 G</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 a412">
+                        <div>
+                            <img class="img412" src="assets/images/disk-image.png" />
+                            <h6>40 G</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 a412">
+                        <div>
+                            <img class="img412" src="assets/images/disk-image.png" />
+                            <h6>60 G</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 a412">
+                        <div>
+                            <img class="img412" src="assets/images/disk-image.png" />
+                            <h6>64 G</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!--نهاية العنوان الرئيسي الثانى -->
+                    
+<!--بداية العنوان الفرعي الاول -->
+<div class="col-lg-6 col-md-6 "style=" border: 2px solid rgb(24, 81, 130);"
+>
+    <h4 style="padding-left: 5%;">Disk Grops</h4>
+    <section class="text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+
+                </div>
+                
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!--نهاية العنوان الفرعي الاول -->
+                    
+<!--بداية العنوان الفرعي الثانى -->
+<div class="col-lg-6 col-md-6 "  style="
+    border-bottom: 2px solid rgb(24, 81, 130);
+    border-right: 2px solid rgb(24, 81, 130);
+    border-top: 2px solid rgb(24, 81, 130);
+">
+    <h4 style="padding-left: 5%;">Disk Grops </h4>
+    <section class="text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+                    
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 a413">
+                    <div>
+                        <img class="img412" src="assets/images/disk-image.png" />
+                        <h6>40 G</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!--نهاية العنوان الفرعي الثانى -->
+       
+                    
+<!--end code -->
+                  
                 
                 </div>
                 <div class="tab-pane " id="snapshots" role="tabpanel">

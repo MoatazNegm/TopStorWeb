@@ -1,9 +1,1 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-DGsetPool.py mirror admin dhcp12013 scsi-360014059ab6c9e627ae4a6caf34015b8:0 scsi-36001405a7c848bdf4a845bb83c8c6afe:7 nopool dhcp12013
-=======
-GetSnaplist a hihihihi
->>>>>>> f2b2a6cbe007e91dacd065a1ddfebcd0f979ba47
-=======
-GetDisklist Data/disklist.txt hi
->>>>>>> 704d7852bdd06979fff22a611fdf9da26c1d2f76
+HostgetIPs a
