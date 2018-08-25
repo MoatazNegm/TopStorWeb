@@ -225,7 +225,7 @@
                                 <input id="BoxName" class="form-control" type="text">
                             </div>
                             <div class="alert alert-dismissible alert-info">
-                       <strong>currently</strong> xxxxxxxxxx
+                       <strong id="cBoxName"></strong>
                       </div>
                             
                         </div>
@@ -242,55 +242,57 @@
                                 <input class="form-control" type="number" id="Subnet" min="0" max="30" >
                             </div>
                             <div class="alert alert-dismissible alert-info">
-                  <strong>currently</strong> 192.168.1.1 <strong>/</strong> xx
+                  <strong id="cIPAddress">currently</strong><strong>/</strong><strong id="cSubnet"></strong>
                       </div>
                         </div>
-                         <div class="form-group row">
-                            <label class="col-2 col-form-label">momagenent address</label>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label">Management Address</label>
+                            <div class="col-2">
+                                <input id="Mgmt" class="form-control ip_address" type="text"  >
+                            </div>
+                            <label class="col-1 col-form-label">Subnet</label>
+                            <div class="col-2">
+                                <input class="form-control" type="number" id="MgmtSub" min="0" max="30" >
+                            </div>
+                            <div class="alert alert-dismissible alert-info">
+                  <strong id="cMgmt">currently</strong>
+                      </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label">Gateway</label>
+                            <div class="col-2">
+                                <input id="Gateway" class="form-control ip_address" type="text" >
+                            </div>
+  			    <div class="col-3">
+			    </div>
+                            <div class="alert alert-dismissible alert-info">
+                       <strong id="cGateway">currently</strong>
+                      </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label">DNS</label>
                             <div class="col-2">
                                 <input id="dns1" class="form-control ip_address" type="text" >
                             </div>
-                            <label class="col-1 col-form-label">null</label>
-                            <div class="col-2">
-                                <input class="form-control" type="text" id="dns2"  >
-                            </div>
-                             <div class="alert alert-dismissible alert-info">
-                       <strong>currently</strong> 127.0.0.1 <strong>/</strong> xxxx
-                      </div>
-                        </div>
-                        
-                        <div class="form-group row">
-                            <label class="col-2 col-form-label">Gateway</label>
-                            <div class="col-5">
-                                <input id="Gateway" class="form-control ip_address" type="text" >
-                            </div>
+  			    <div class="col-3">
+			    </div>
                             <div class="alert alert-dismissible alert-info">
-                       <strong>currently</strong> xxxxxxxxxxx
+                       <strong id="cdns1">currently</strong> 
                       </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-2 col-form-label">DNS 1</label>
+                            <label class="col-2 col-form-label">Data link</label>
                             <div class="col-2">
-                                <input id="dns1" class="form-control ip_address" type="text" >
+                                <input id="DataIP" class="form-control ip_address" type="text"  >
                             </div>
-                            <label class="col-1 col-form-label">DNS 2</label>
+                            <label class="col-1 col-form-label">Subnet</label>
                             <div class="col-2">
-                                <input class="form-control" type="text" id="dns2"  >
+                                <input class="form-control" type="number" id="DataSub" min="0" max="30" >
                             </div>
                             <div class="alert alert-dismissible alert-info">
-                       <strong>currently</strong> xxxxx <strong>/</strong> xxxxx 
+                  <strong id="cDataIP">currently</strong><strong>/</strong><strong id="cDataSub"></strong>
                       </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-2 col-form-label">data port address</label>
-                            <div class="col-5">
-                                <input id="Gateway" class="form-control ip_address" type="text" >
-                            </div>
-                            <div class="alert alert-dismissible alert-info">
-                       <strong>currently</strong> xxx.xxx.xx.x.xx
-                      </div>
-                        </div>
-                        
                         <div class="">
                             <button id="DNSsubmit" type="button" style="cursor: pointer;"class="btn btn-submit col-3" >Submit
 
@@ -498,9 +500,10 @@
 				if(proptimenew===proptime){;} else {
 					$.get("requestdata.php", { file: 'Data/Hostprop.txt' },function(data){ 
 						var jdata=jQuery.parseJSON(data);
-						$("#BoxName").val(jdata.name); $("#IPAddress").val(jdata.addr); $("#Gateway").val(jdata.rout);
-						$("#DNS").val(jdata.dns);
-						$("#Subnet").val(jdata.subnet);
+						$("#cBoxName").text(jdata.name); $("#cIPAddress").text(jdata.addr); $("#cGateway").text(jdata.rout);
+						$("#cdns1").text(jdata.dns);
+						$("#cSubnet").text(jdata.hostsubnet);
+						$("#cMgmt").text(jdata.mgmtip+'/'+jdata.mgmtsubnet);
 						
 						proptime=proptimenew;
 						refresherprop=refresherprop-1;
