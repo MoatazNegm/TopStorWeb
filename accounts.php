@@ -220,7 +220,7 @@
                  
                            <form class="dr-form">
                         <div class="form-group row">
-                            <label class="col-2 col-form-label">BoxName</label>
+                            <label class="col-2 col-form-label">Unit Name</label>
                             <div class="col-5">
                                 <input id="BoxName" class="form-control" type="text">
                             </div>
@@ -233,7 +233,7 @@
                         
                         
                         <div class="form-group row">
-                            <label class="col-2 col-form-label">IP Address</label>
+                            <label class="col-2 col-form-label"> Unit Address</label>
                             <div class="col-2">
                                 <input id="IPAddress" class="form-control ip_address" type="text"  >
                             </div>
@@ -242,11 +242,11 @@
                                 <input class="form-control" type="number" id="Subnet" min="0" max="30" >
                             </div>
                             <div class="alert alert-dismissible alert-info">
-                  <strong id="cIPAddress">currently</strong><strong>/</strong><strong id="cSubnet"></strong>
+                  <strong id="cIPAddress">Not set</strong><strong>/</strong><strong id="cSubnet"></strong>
                       </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-2 col-form-label">Management Address</label>
+                            <label class="col-2 col-form-label">Cluster Management Address</label>
                             <div class="col-2">
                                 <input id="Mgmt" class="form-control ip_address" type="text"  >
                             </div>
@@ -255,7 +255,7 @@
                                 <input class="form-control" type="number" id="MgmtSub" min="0" max="30" >
                             </div>
                             <div class="alert alert-dismissible alert-info">
-                  <strong id="cMgmt">currently</strong>
+                  <strong id="cMgmt">Not set</strong>
                       </div>
                         </div>
                         <div class="form-group row">
@@ -266,7 +266,7 @@
   			    <div class="col-3">
 			    </div>
                             <div class="alert alert-dismissible alert-info">
-                       <strong id="cGateway">currently</strong>
+                       <strong id="cGateway">Not set</strong>
                       </div>
                         </div>
                         <div class="form-group row">
@@ -277,11 +277,11 @@
   			    <div class="col-3">
 			    </div>
                             <div class="alert alert-dismissible alert-info">
-                       <strong id="cdns1">currently</strong> 
+                       <strong id="cdns1">Not set</strong> 
                       </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-2 col-form-label">Data link</label>
+                            <label class="col-2 col-form-label">Data Address</label>
                             <div class="col-2">
                                 <input id="DataIP" class="form-control ip_address" type="text"  >
                             </div>
@@ -290,17 +290,21 @@
                                 <input class="form-control" type="number" id="DataSub" min="0" max="30" >
                             </div>
                             <div class="alert alert-dismissible alert-info">
-                  <strong id="cDataIP">currently</strong><strong>/</strong><strong id="cDataSub"></strong>
+                  <strong id="cDataIP">Not set</strong><strong>/</strong><strong id="cDataSub"></strong>
                       </div>
                         </div>
-                        <div class="">
-                            <button id="DNSsubmit" type="button" style="cursor: pointer;"class="btn btn-submit col-3" >Submit
-
-                                
-<div class="load-7">
-    <div class="square"></div>
-</div>
+                        <div class="row">
+                            <button  id="DNSsubmit" type="button" style="cursor: pointer;"class="btn btn-submit col-3" >Submit
+			    </button>
+                            <button hidden id="wait" type="button" class="btn btn-submit col-12 ">
                             </button>
+                            <div class="load-wrapp col-12">    
+			     <div class="load-7 ">
+                              <div class="square-holder" >
+				<div class="square"></div>
+			       </div>
+			     </div>
+                            </div>
                         </div>
                         
                     </form>
@@ -418,6 +422,7 @@
 			var proptime="55:55:55";
 			var olddata=0
 			var proptimenew="33:333:33";
+			var hostips={} 
 			var DNS=1;
 				$(".ref").click(function() {
 					console.log("session before","<?php print session_id(); ?>");
@@ -500,6 +505,7 @@
 				if(proptimenew===proptime){;} else {
 					$.get("requestdata.php", { file: 'Data/Hostprop.txt' },function(data){ 
 						var jdata=jQuery.parseJSON(data);
+					        hostips=jdata
 						$("#cBoxName").text(jdata.name); $("#cIPAddress").text(jdata.addr); $("#cGateway").text(jdata.rout);
 						$("#cdns1").text(jdata.dns);
 						$("#cSubnet").text(jdata.hostsubnet);
@@ -685,7 +691,22 @@
 			});
 			$("#DNSsubmit").click(function (){ 
 				//$("form").validator("validate");
-						$.post("./pump.php", { req:"HostManualconfig", name:$("#BoxName").val()+" "+$("#IPAddress").val()+" "+$("#Gateway").val()+" "+$("#DNS").val()+" "+$("#Subnet").val()+" "+"<?php echo $_SESSION["user"]; ?>", passwd:"" });
+						if($("#BoxName").val().length > 3) {
+							hostips['name']=$("#BoxName").val(); $("#BoxName").removeClass("NotComplete"); 
+							}
+							else
+							 $("#BoxName").addClass("NotComplete")
+
+						if($("#IPAddress").val().length > 3) hostips['addr']=$("#IPAddress").val();
+						if($("#Subnet").val().length > 0) hostips['hostsubnet']=$("#Subnet").val();
+						if($("#Mgmt").val().length > 3) hostips['mgmtip']=$("#Mgmt").val();
+						if($("#MgmtSub").val().length > 0) hostips['mgmtsubnet']=$("#MgmtSub").val();
+						if($("#Gateway").val().length > 3) hostips['rout']=$("#Gateway").val();
+						if($("#dns1").val().length > 3) hostips['dns']=$("#dns1").val();
+						if($("#DataIP").val().length > 3) hostips['dataip']=$("#DataIP").val();
+						if($("#DataSub").val().length > 0) hostips['dataipsubnet']=$("#DataSub").val();
+console.log('hi',hostips)
+						$.post("./pump.php", { req:"HostManualconfig.py", name:JSON.stringify(hostips), passwd:"<?php echo $_SESSION["user"]; ?>" });
 						setTimeout(function(){ refresherprop=4},3000);					
 						
 						
