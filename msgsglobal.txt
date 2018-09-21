@@ -65,6 +65,8 @@ HostManual1001: All changes are done. Please, wait till they take effect.
 HostManual1002: : : from : Changing System name and IPs
 HostManual1003: : : from : Changed Device System name and IPs to name: ip: gateway: dns:
 HostManual1004: : : from : Changing System :  to new parameters
+HostManual1st5: : : from : Start changing system name from :  to :
+HostManual1su5: : : from : Succss changing system name from :  to :
 CIFS1001: Creating Volume : ....
 CIFS1002: Volume : already exists
 CIFS1003: Problem occurred while creating volume :

@@ -744,7 +744,7 @@ console.log('hi',hostips)
 		}
 	
 			
-		setInterval('refreshall()',500);
+		setInterval('refreshall()',5000);
 				$("#close-success").click(function() { $(".bg-success").hide(); });
 				$("#userpass").click(function (){   
 					$("#idduserpass").val("<?php  echo session_id() ?>");
