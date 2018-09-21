@@ -67,6 +67,10 @@ HostManual1003: : : from : Changed Device System name and IPs to name: ip: gatew
 HostManual1004: : : from : Changing System :  to new parameters
 HostManual1st5: : : from : Start changing system name from :  to :
 HostManual1su5: : : from : Succss changing system name from :  to :
+HostManual1st6: : : from : Start changing system IP address from :  to :
+HostManual1su6: : : from : Success changing system IP address from :  to : please reboot system urgently
+HostManual1st7: : : from : Start changing cluster managment address from :  to :
+HostManual1su7: : : from : Success changing cluster managment address from :  to :
 CIFS1001: Creating Volume : ....
 CIFS1002: Volume : already exists
 CIFS1003: Problem occurred while creating volume :
