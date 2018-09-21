@@ -239,7 +239,7 @@
                             </div>
                             <label class="col-1 col-form-label">Subnet</label>
                             <div class="col-2">
-                                <input class="form-control" type="number" id="Subnet" min="0" max="30" >
+                                <input class="form-control" type="number" id="Subnet" min="0" max="32" value="24" step=8>
                             </div>
                             <div class="alert alert-dismissible alert-info">
                   <strong id="cIPAddress">Not set</strong><strong>/</strong><strong id="cSubnet"></strong>
@@ -252,7 +252,7 @@
                             </div>
                             <label class="col-1 col-form-label">Subnet</label>
                             <div class="col-2">
-                                <input class="form-control" type="number" id="MgmtSub" min="0" max="30" >
+                                <input class="form-control" type="number" id="MgmtSub" min="8" max="32" value="24" step=8>
                             </div>
                             <div class="alert alert-dismissible alert-info">
                   <strong id="cMgmt">Not set</strong>
