@@ -219,7 +219,10 @@
                 <div class="tab-pane Future" id="boxProperties" role="tabpanel"> 
                  
                            <form class="dr-form">
+                        <div id="hostlist" class="form-group row">
+ 			</div>
                         <div class="form-group row">
+			
                             <label class="col-2 col-form-label">Unit Name</label>
                             <div class="col-5">
                                 <input id="BoxName" class="form-control" type="text">
@@ -423,8 +426,11 @@
 			var olddata=0;
 			var propdata='hi';
 			var proptimenew="33:333:33";
+			var prop={};
+			var selprop=0
 			var hostips={} 
 			var DNS=1;
+			
 				$(".ref").click(function() {
 					console.log("session before","<?php print session_id(); ?>");
 					if($(this).attr('id')=="Login")
@@ -499,6 +505,13 @@
  				$.get("gump2.php", { req: "prop", name:"--prefix"  },function(data){ if(propdata==data){;} else {
 				console.log(data)
 				propdata=data
+				prop2=$.parseJSON(propdata)
+                                 	
+    				$.each(prop2,function(r,s){
+				 prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
+     				$('#hostlist').append($('<a class="col-2 hostmember text-center" " href="javascript:hostclick(\''+prop2[r]["id"]+'\')">'+prop["name"]+'</a>'));	
+				hostclick(selprop)
+				});
 				}
 				});
 				if (refresherprop > 0) { $.post("./pump.php", { req:"HostgetIPs", name:"a", passwd:"" });}				
@@ -512,10 +525,10 @@
 					$.get("requestdata.php", { file: 'Data/Hostprop.txt' },function(data){ 
 						var jdata=jQuery.parseJSON(data);
 					        hostips=jdata
-						$("#cBoxName").text(jdata.name); $("#cIPAddress").text(jdata.addr); $("#cGateway").text(jdata.rout);
-						$("#cdns1").text(jdata.dns);
-						$("#cSubnet").text(jdata.hostsubnet);
-						$("#cMgmt").text(jdata.mgmtip+'/'+jdata.mgmtsubnet);
+						$("#cBoxName").text(prop["name"]); $("#cIPAddress").text(prop.addr); $("#cGateway").text(prop.rout);
+						$("#cdns1").text(prop.dns);
+						$("#cSubnet").text(prop.hostsubnet);
+						$("#cMgmt").text(prop.mgmtip+'/'+jdata.mgmtsubnet);
 						
 						proptime=proptimenew;
 						refresherprop=refresherprop-1;
@@ -597,7 +610,10 @@
 			}
 			
 			var config = 1;
-			
+			function hostclick(r){
+				 prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
+			         selprop=r
+			}
 			$("#AD").click(function (){ 
 				if(config == 1 ) { 
 					var userpriv="false";
