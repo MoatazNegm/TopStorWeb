@@ -22,8 +22,10 @@ try:
   hosts=[]
   for x in mylist:
    ll=[]
-   ll.append(x[1])
-   hostsdic={'id':str(hostid),'name':x[0],'prop':x[1]}
+   #xx=str(x[1]).replace('{','{"').replace('}','"}').replace(':','":"').repalce(',','","')
+   xx=x[1]
+   ll.append(xx)
+   hostsdic={'id':str(hostid),'name':x[0],'prop':xx}
    hosts.append(hostsdic)
   print(str(hosts).replace('"','').replace("'",'"'))
  else:

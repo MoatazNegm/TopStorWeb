@@ -515,26 +515,14 @@
 				}
 				});
 				if (refresherprop > 0) { $.post("./pump.php", { req:"HostgetIPs", name:"a", passwd:"" });}				
-				if (refresherprop > 0) {  	
-				$.get("requestdate.php", { file: 'Data/Hostprop.txt' },function(data){ 
-						var jdata=jQuery.parseJSON(data);
-						proptimenew=jdata.timey;
-					});
 				
-				if(proptimenew===proptime){;} else {
-					$.get("requestdata.php", { file: 'Data/Hostprop.txt' },function(data){ 
-						var jdata=jQuery.parseJSON(data);
-					        hostips=jdata
 						$("#cBoxName").text(prop["name"]); $("#cIPAddress").text(prop.addr); $("#cGateway").text(prop.rout);
 						$("#cdns1").text(prop.dns);
 						$("#cSubnet").text(prop.hostsubnet);
-						$("#cMgmt").text(prop.mgmtip+'/'+jdata.mgmtsubnet);
+						$("#cMgmt").text(prop.mgmtip+'/'+prop.mgmtsubnet);
 						
 						proptime=proptimenew;
 						refresherprop=refresherprop-1;
-					});
-				}
-			 }
 			}
 			function refreshall() {
 				DNS=1;
@@ -613,6 +601,10 @@
 			function hostclick(r){
 				 prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
 			         selprop=r
+						$("#cBoxName").text(prop["name"]); $("#cIPAddress").text(prop.addr); $("#cGateway").text(prop.rout);
+						$("#cdns1").text(prop.dns);
+						$("#cSubnet").text(prop.hostsubnet);
+						$("#cMgmt").text(prop.mgmtip+'/'+prop.mgmtsubnet);
 			}
 			$("#AD").click(function (){ 
 				if(config == 1 ) { 
