@@ -290,10 +290,10 @@
                             </div>
                             <label class="col-1 col-form-label">Subnet</label>
                             <div class="col-2">
-                                <input class="form-control" type="number" id="DataSub" min="0" max="30" >
+                                <input class="form-control" type="number" id="DataSub" min=8 value=24 max=32 step=8>
                             </div>
                             <div class="alert alert-dismissible alert-info">
-                  <strong id="cDataIP">Not set</strong><strong>/</strong><strong id="cDataSub"></strong>
+                  <strong id="cDataIP">Not set</strong>
                       </div>
                         </div>
                         <div class="row">
@@ -427,6 +427,7 @@
 			var propdata='hi';
 			var proptimenew="33:333:33";
 			var prop={};
+			var prop2={};
 			var selprop=0
 			var hostips={} 
 			var DNS=1;
@@ -506,8 +507,9 @@
 				console.log(data)
 				propdata=data
 				prop2=$.parseJSON(propdata)
-                                 	
+                             	
     				$.each(prop2,function(r,s){
+ 				 prop2[r]['name']=prop2[r]['name'].replace('prop/','')
 				 prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
      				$('#hostlist').append($('<a class="col-2 hostmember text-center" " href="javascript:hostclick(\''+prop2[r]["id"]+'\')">'+prop["name"]+'</a>'));	
 				hostclick(selprop)
@@ -518,8 +520,9 @@
 				
 						$("#cBoxName").text(prop["name"]); $("#cIPAddress").text(prop.addr); $("#cGateway").text(prop.rout);
 						$("#cdns1").text(prop.dns);
-						$("#cSubnet").text(prop.hostsubnet);
+						$("#cSubnet").text(prop.addrsubnet);
 						$("#cMgmt").text(prop.mgmtip+'/'+prop.mgmtsubnet);
+						if(propdata.includes('dataip'))$("#cDataIP").text(prop.dataip+'/'+prop.dataipsubnet);
 						
 						proptime=proptimenew;
 						refresherprop=refresherprop-1;
@@ -603,7 +606,7 @@
 			         selprop=r
 						$("#cBoxName").text(prop["name"]); $("#cIPAddress").text(prop.addr); $("#cGateway").text(prop.rout);
 						$("#cdns1").text(prop.dns);
-						$("#cSubnet").text(prop.hostsubnet);
+						$("#cSubnet").text(prop.addrsubnet);
 						$("#cMgmt").text(prop.mgmtip+'/'+prop.mgmtsubnet);
 			}
 			$("#AD").click(function (){ 
@@ -710,15 +713,12 @@
 							}
 							else
 							 $("#BoxName").addClass("NotComplete")
-
-						if($("#IPAddress").val().length > 3) hostips['addr']=$("#IPAddress").val();
-						if($("#Subnet").val().length > 0) hostips['hostsubnet']=$("#Subnet").val();
-						if($("#Mgmt").val().length > 3) hostips['mgmtip']=$("#Mgmt").val();
-						if($("#MgmtSub").val().length > 0) hostips['mgmtsubnet']=$("#MgmtSub").val();
+hostips['hostname']=prop2[selprop]['name']
+						if($("#IPAddress").val().length > 3) { hostips['addr']=$("#IPAddress").val(); hostips['addrsubnet']=$("#Subnet").val(); }
+						if($("#Mgmt").val().length > 3) { hostips['mgmtip']=$("#Mgmt").val(); hostips['mgmtsubnet']=$("#MgmtSub").val();}
 						if($("#Gateway").val().length > 3) hostips['rout']=$("#Gateway").val();
 						if($("#dns1").val().length > 3) hostips['dns']=$("#dns1").val();
-						if($("#DataIP").val().length > 3) hostips['dataip']=$("#DataIP").val();
-						if($("#DataSub").val().length > 0) hostips['dataipsubnet']=$("#DataSub").val();
+						if($("#DataIP").val().length > 3){ hostips['dataip']=$("#DataIP").val(); hostips['dataipsubnet']=$("#DataSub").val();}
 console.log('hi',hostips)
 						$.post("./pump.php", { req:"HostManualconfig.py", name:JSON.stringify(hostips), passwd:"<?php echo $_SESSION["user"]; ?>" });
 						setTimeout(function(){ refresherprop=4},3000);					
