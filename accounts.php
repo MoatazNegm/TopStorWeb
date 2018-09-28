@@ -420,7 +420,8 @@
 			var refresheruser=2;
 			var userpass="hi";
 			var proptime="55:55:55";
-			var olddata=0
+			var olddata=0;
+			var propdata='hi';
 			var proptimenew="33:333:33";
 			var hostips={} 
 			var DNS=1;
@@ -495,6 +496,11 @@
 
 			$(".bg-success").show();$(".bg-danger").hide();$(".bg-warning").hide();
 			function updateprop() {
+ 				$.get("gump2.php", { req: "prop", name:"--prefix"  },function(data){ if(propdata==data){;} else {
+				console.log(data)
+				propdata=data
+				}
+				});
 				if (refresherprop > 0) { $.post("./pump.php", { req:"HostgetIPs", name:"a", passwd:"" });}				
 				if (refresherprop > 0) {  	
 				$.get("requestdate.php", { file: 'Data/Hostprop.txt' },function(data){ 
