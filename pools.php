@@ -830,6 +830,7 @@
                         var currentpool='hihihiA';
                         var icurrentpool=-1;
 			var jdata;
+			var aliasname=''
 			var gdata;
 			var raids=[];
 			var hosts=[];
@@ -917,25 +918,6 @@
 					});
 				};
 			};	
-			function refreshList33333(request,listid,fileloc) {
-					
-				$(listid+" option.vvariable").remove();
-				$("#Pool option.variable2").remove();
-						chartdata=[];
-						$.each(pool,function(k,v){
-							$("#Pool").append($('<option class="variable2">').text(pools[k].name).val(pools[k].name));
-							//chartdata.push(gdata[prot].class);
-										//chartdata[gdata[prot].class]=[];
-							
-						
-							$(listid).append($('<option class="vvariable '+gdata[prot].class+'">').text(gdata[prot].name).val(gdata[prot].name));
-							
-						});
-						$("#Pool").change()
-							pools = [];
-					
-				
-			};
 
 			function snaponce(txtin,but,altbut,comp){
 				
@@ -998,7 +980,8 @@ function refreshall() { //check pool status
     });
     $.each(hosts,function(r,s){
      hosts[r]['name']=hosts[r]['name'].replace('hosts/','').replace('/current','')
-     $('#hostslist').append($('<a class="hostmember" style="display: inline; " href="javascript:hostclick(\''+hosts[r]["name"]+'\')">'+hosts[r]["name"]+'</a>'));	
+     $.get("gump2.php", { req: "alias/"+hosts[r]['name'], name:""  },function(data){ aliasname=data 
+     $('#hostslist').append($('<a class="hostmember" style="display: inline; " href="javascript:hostclick(\''+hosts[r]["name"]+'\')">'+aliasname+'</a>'));	
      $.each(hosts[r]['prop'],function(rr,ss){
       topool=hosts[r]['prop'][rr]
       topool['host']=hosts[r]['name']
@@ -1007,6 +990,7 @@ function refreshall() { //check pool status
        $("#Pool").append($('<option class="pool ">').text(topool.name).val(topool.name));
       }
      });
+   });
     });
     $.each(pools,function(k,v){
      $('#poollist').append($('<a class="poolmember '+pools[k]['host']+'" style="display: inline; " href="javascript:poolclick(\''+pools[k]["name"]+'\','+k+')">'+pools[k]["name"]+'</a>'));	
