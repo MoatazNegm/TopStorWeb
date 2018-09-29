@@ -1068,7 +1068,18 @@ function refreshall() { //check pool status
 					}	
 				});
 			var diskdiv2
+			var diskcount=0
+			var diskpoolcount={}
+			var rowcount={}
 			$.each(disks,function(kk,vv){
+
+					if(disks[kk].pool in diskpoolcount){
+					 diskpoolcount[disks[kk].pool]=diskpoolcount[disks[kk].pool]+1;
+
+				 }	else {
+						diskpoolcount[disks[kk].pool]=7;
+						rowcount[disks[kk].pool]=0
+					}
 				if (disks[kk].pool=='pree' ){
 					diskdiv='freeimg'
 					diskdiv2='freeimg2'
@@ -1084,16 +1095,29 @@ function refreshall() { //check pool status
 						else { clickdisk="javascript:diskclick('"+kk+"')"; clickdisk="href="+clickdisk; imgf="disk-image.png" 
 						}	
 				$("#"+diskdiv).append('<div class="disks '+disks[kk]['host']+' '+disks[kk]['pool']+' '+disks[kk]["status"]+' '+disks[kk]["changeop"]+'" ><a id="i'+kk+'"'+clickdisk+' > <img class="img-fluid '+ diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a '+clickdisk+'><p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>')
-				 $("#"+diskdiv2).append(
-      '<div class="row disks '+disks[kk]['host']+' '+disks[kk]['pool']+' '+disks[kk]['status']+' '+disks[kk]['changeop']+'">'
+					if (6/(diskpoolcount[disks[kk].pool])<1){
+				  diskpoolcount[disks[kk].pool]=1
+						rowcount[disks[kk].pool]=rowcount[disks[kk].pool]+1
+				  $("#"+diskdiv2).append(
+      '<div id="diskrow'+disks[kk].pool+rowcount[disks[kk].pool]+'" class="row  disks '+disks[kk]['host']+' '+disks[kk]['pool']+' '+disks[kk]['status']+' '+disks[kk]['changeop']+'">'
       +'   <div class="col-lg-3 col-sm-6 a413">'
       +'  <a id="'+kk+'" '+clickdisk+'>'
       +'     <img class="img412 '+diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" />'
       +'  <p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>'
       +'  </a>'
       +'    </div>'
-					);
-					disks[kk]["selected"]=0;	
+					 );
+					} else {
+				  $("#diskrow"+disks[kk].pool+rowcount[disks[kk].pool]).append(
+      '<div class="col-lg-3 col-sm-6 a413">'
+      +'  <a id="'+kk+'" '+clickdisk+'>'
+      +'     <img class="img412 '+diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" />'
+      +'  <p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>'
+      +'  </a>'
+						+'    </div>'
+					 );
+					}
+				disks[kk]["selected"]=0;	
 			});
 			$(".poolmember").hide()
 				$("."+currenthost).show()
