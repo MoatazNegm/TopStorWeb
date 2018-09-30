@@ -584,6 +584,7 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
    text-align: center;
    width: 4.4rem;
    margin-bottom: 0;
+	  margin-left: -0.5rem;
    font-size: 0.8rem;
    line-height: .9em;
 }
@@ -596,8 +597,8 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
 .psize { 
 	font-weight: bold;
 	color: darkblue;
-	margin-top: -3.2rem;
-	margin-bottom: 2rem;
+	margin-top: -2.4rem;
+	margin-left: -0.5rem;
 	text-align:center;
 	width:4.4rem;
 }

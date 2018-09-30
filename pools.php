@@ -942,8 +942,9 @@ function refreshall() { //check pool status
 						$("#diskimg").html('');
 						$("#freeimg").html('');
 						$('.hostmember').remove()
-							$('.poolmember').remove()
-							$("#Vol option.volume").remove();
+						$('.poolfree').remove()
+						$('.poolmember').remove()
+						$("#Vol option.volume").remove();
 						$("#Pool option.pool").remove();
 						$(".Snaplist td").remove()
 						disks=[];
@@ -976,34 +977,15 @@ function refreshall() { //check pool status
 						});
 						if( pooldiv < 1) pooldiv=12;
 						else pooldiv=Math.floor(12/pooldiv);
-
-						$.each(pools,function(k,v){
-							$('#poollist').append($('<a class="poolmember '+pools[k]['host']+'" style="display: inline; " href="javascript:poolclick(\''+pools[k]["name"]+'\','+k+')">'+pools[k]["name"]+'</a>'));	
-							if(pools[k]['name'].includes('pree')){ thename='no pools'
-							} else {
-								thename=pools[k]['name']+':'+k
-							}
-							$('#poollist2').append($( 
-			   '<div class="row poolmember '+pools[k]['host']+'">'
-						+'<div class="col-lg-'+pooldiv+' col-md-'+pooldiv+' "style="border:  2px solid rgb(24, 81, 130);">'
-      +'<h4 style="    padding-left: 5%;">'+thename+'</h4>'
-      +'<section class="text-center">'
-      +' <div id="diskimg2" class="container">'
-      +'  </div>'
-      +' </section>'
-      +'</div>'
-      +'</div>'
-      +'</div>'
-					));
 						$('#poollist3').append($( 
-			   '<div class="row poolmember '+pools[k]['host']+'">'
+ 			  '<div class="row poolfree">'
       +'<div class="col-lg-12 col-md-12 "  style="'
       +'border-bottom: 2px solid rgb(24, 81, 130);'
       +'border-right: 2px solid rgb(24, 81, 130);'
       +'border-left: 2px solid rgb(24, 81, 130);'
       +'border-top: 2px solid rgb(24, 81, 130);'
       +'">'
-      +'<h4 style="padding-left: 5%;">Disk Sico </h4>'
+      +'<h7 style="padding-left: 5%;">Free Disks </h7>'
       +'<section class="text-center">'
       +' <div id="freeimg2" class="container">'
       +' </div>'
@@ -1011,48 +993,69 @@ function refreshall() { //check pool status
       +'</div>'
       +'</div>'
       +'</div>'
-					));
-										pools[k]['alloc']=normsize(pools[k]['alloc'])
-								pools[k]['empty']=normsize(pools[k]['empty'])
-								pools[k]['size']=normsize(pools[k]['used'])+normsize(pools[k]['available'])
-								$.each(pools[k]["volumes"],function(kk,vv){
-									tovol=pools[k]['volumes'][kk]
-										volumes.push(tovol) 
-										$("#Vol").append($('<option class="volume '+tovol.pool+'">').text(tovol.name).val(kk));
-									$.each(tovol["snapshots"],function(kkk,vvv){
-										tosnap=tovol["snapshots"][kkk]
-											snapshots.push(tosnap)
-											$(".Snaplist").append('<tr class="snapshot '+kk+'"><td class="text-center">'+tosnap.creation+"</td><td class='text-center'>"+tosnap.time+"</td><td class='text-center'>"+tosnap.name+"</td><td class='text-center'>"+tosnap.quota+"</td><td class='text-center'>"+tosnap.refcompressratio+'</td><td class="text-center"><a href="javascript:SnapshotDelete(\''+tosnap.name+'\')"><img src="assets/images/delete.png"</td><td class="text-center"><a href="javascript:SnapshotRollback(\''+tosnap.name+'\')"><img src="assets/images/return.png" alt="can\'t upload delete icon"></a></td></tr>');
+  				));
+
+						$.each(pools,function(k,v){
+							$('#poollist').append($('<a class="poolmember '+pools[k]['host']+'" style="display: inline; " href="javascript:poolclick(\''+pools[k]["name"]+'\','+k+')">'+pools[k]["name"]+'</a>'));	
+							if(pools[k]['name'].includes('pdhcp')){
+								thename=pools[k]['name'].replace('pdchp','')+':'+k
+							 $('#poollist2').append($( 
+ 			   '<div class="row poolmember '+pools[k]['host']+'">'
+ 						+'<div class="col-lg-'+pooldiv+' col-md-'+pooldiv+' "style="border-right:  2px solid rgb(24, 81, 130); border-left: 2px solid rgb(24,81,130);">'
+       +'<h7 style="    padding-left: 5%;">'+thename+'</h7>'
+       +'<section class="text-center">'
+       +' <div id="diskimg2" class="container">'
+       +'  </div>'
+       +' </section>'
+       +'</div>'
+       +'</div>'
+       +'</div>'
+ 					 ));
+						 }
+							pools[k]['alloc']=normsize(pools[k]['alloc'])
+							pools[k]['empty']=normsize(pools[k]['empty'])
+							pools[k]['size']=normsize(pools[k]['used'])+normsize(pools[k]['available'])
+							$.each(pools[k]["volumes"],function(kk,vv){
+								tovol=pools[k]['volumes'][kk]
+								volumes.push(tovol) 
+								$("#Vol").append($('<option class="volume '+tovol.pool+'">').text(tovol.name).val(kk));
+							 $.each(tovol["snapshots"],function(kkk,vvv){
+									tosnap=tovol["snapshots"][kkk]
+									snapshots.push(tosnap)
+									$(".Snaplist").append('<tr class="snapshot '+kk+'"><td class="text-center">'+tosnap.creation+"</td><td class='text-center'>"+tosnap.time+"</td><td class='text-center'>"+tosnap.name+"</td><td class='text-center'>"+tosnap.quota+"</td><td class='text-center'>"+tosnap.refcompressratio+'</td><td class="text-center"><a href="javascript:SnapshotDelete(\''+tosnap.name+'\')"><img src="assets/images/delete.png"</td><td class="text-center"><a href="javascript:SnapshotRollback(\''+tosnap.name+'\')"><img src="assets/images/return.png" alt="can\'t upload delete icon"></a></td></tr>');
+							 });
+						 });
+						 $.each(pools[k]["raidlist"],function(kk,vv){
+								toraids=pools[k]["raidlist"][kk]
+								toraids.pool=pools[k]["name"]
+								raids.push(toraids)
+								$.each(pools[k]["raidlist"][kk]["disklist"], function(kkk,vvv){
+									thedisk=pools[k]["raidlist"][kk]["disklist"][kkk]
+									dskstatus=thedisk['status']
+									dskchange=thedisk['changeop']
+									console.log(thedisk,dskchange)
+									$.each(disks,function(r,v){
+										if (disks[r]['status']!='free' && disks[r]['status']!='busy' && disks[r]['name']==thedisk['name']) {  dskstatus='busy' }
+										if (disks[r]['name']==thedisk['name'] && dskstatus!='busy' && dskstatus!='free') {  disks[r]['status']='busy' }
+									});
+									disks.push({"id":kkk,
+										"pool":pools[k]["name"],
+										"groupst":pools[k]["raidlist"][kk]["status"],
+										"status":dskstatus,
+										"changeop":dskchange,
+										"grouptype":pools[k]["raidlist"][kk]["name"],
+										"fromhost":thedisk["host"],
+										"host":pools[k]["host"],
+										"name":thedisk["name"],
+										"size":normsize(thedisk["size"]),
+	"selected":'0' 
 									});
 								});
-							$.each(pools[k]["raidlist"],function(kk,vv){
-								toraids=pools[k]["raidlist"][kk]
-									toraids.pool=pools[k]["name"]
-									raids.push(toraids)
-									$.each(pools[k]["raidlist"][kk]["disklist"], function(kkk,vvv){
-										thedisk=pools[k]["raidlist"][kk]["disklist"][kkk]
-											dskstatus=thedisk['status']
-											dskchange=thedisk['changeop']
-											console.log(thedisk,dskchange)
-											$.each(disks,function(r,v){
-												if (disks[r]['status']!='free' && disks[r]['status']!='busy' && disks[r]['name']==thedisk['name']) {  dskstatus='busy' }
-													if (disks[r]['name']==thedisk['name'] && dskstatus!='busy' && dskstatus!='free') {  disks[r]['status']='busy' }
-											});
-										disks.push({"id":kkk,
-											"pool":pools[k]["name"],
-											"groupst":pools[k]["raidlist"][kk]["status"],
-											"status":dskstatus,
-											"changeop":dskchange,
-											"grouptype":pools[k]["raidlist"][kk]["name"],
-											"fromhost":thedisk["host"],
-											"host":pools[k]["host"],
-											"name":thedisk["name"],
-											"size":normsize(thedisk["size"]),
-	"selected":'0' 
-										});
-									});
 							});
 						});
+
+
+
 					}
 			}
 			kdata=[]
@@ -1124,6 +1127,7 @@ function refreshall() { //check pool status
 				$(".disks").hide()
 				$(".disks."+currenthost+"."+currentpool).show()
 				$(".disks.free."+currenthost).show()
+				$(".disks.free").show()
 				$(".busy").hide()
 				setstatus();
 			if(ppoolstate.indexOf("DEGRADE") >=0) { 
@@ -1584,6 +1588,7 @@ function hostclick(name) {
 	dcomp=[]
 		$("#DG tr").hide()
 		$('.disks').hide()
+		$('.disks.free').show()
 		$('.poolmember').hide()
 		$('.poolmember.'+name).show()
 }
