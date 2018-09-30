@@ -133,8 +133,8 @@ if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Locati
 		   </div>
     </div>
    </div>
-		 <div id="poollist2"class="container ">
-			 <div class="row" >
+		 <div class="container ">
+			 <div id="poollist2" class="row" >
 		<!--بداية العنوان الرئيسي الاول -->
      <div class="col-lg-6 col-md-6 poolmember "style="border-right:  2px solid rgb(24, 81, 130);">
       <h4 style="    padding-left: 5%;">Disk Grops</h4>
@@ -938,6 +938,8 @@ function refreshall() { //check pool status
 							oldreleasesel=0
 							disks=[];
 						var k;
+						$("#poollist2 div").remove();
+						$("#poollist3 div").remove();
 						$(".disk-image").remove();	
 						$("#diskimg").html('');
 						$("#freeimg").html('');
@@ -996,25 +998,30 @@ function refreshall() { //check pool status
       +'</div>'
       +'</div>'
   				));
-
+      var poolcount=12/pooldiv
+						$.each(pools,function(k,v){
+							if(pools[k]['name'].includes('pdhcp')){
+						  $('#poollist2').append( 
+ 						'<div id="'+pools[k]['name']+'" class="col-lg-'+pooldiv+' col-md-'+pooldiv+' "style="border-right:  2px solid rgb(24, 81, 130); border-left: 2px solid rgb(24,81,130);"></div>'
+						  );
+							}
+						});
 						$.each(pools,function(k,v){
 							$('#poollist').append($('<a class="poolmember '+pools[k]['host']+'" style="display: inline; " href="javascript:poolclick(\''+pools[k]["name"]+'\','+k+')">'+pools[k]["name"]+'</a>'));	
 							if(pools[k]['name'].includes('pdhcp')){
 								thename=pools[k]['name'].replace('pdchp','')+':'+k
-							 $('#poollist2').append($( 
- 			   '<div class="row poolmember '+pools[k]['host']+'">'
- 						+'<div class="col-lg-'+pooldiv+' col-md-'+pooldiv+' "style="border-right:  2px solid rgb(24, 81, 130); border-left: 2px solid rgb(24,81,130);">'
-       +'<h7 style="    padding-left: 5%;">'+thename+'</h7>'
+							 $('#'+pools[k]['name']).append( 
+       '<a href="javascript:poolclick(\''+pools[k]["name"]+'\','+k+')"><h7 style="padding-left: 5%;">'+thename.replace('pdhcp','')+'</h7></a>'
        +'<section class="text-center">'
        +' <div class="container">'
-       +'  <div id="diskimg2" class="row">'
+       +'  <div id="diskimg2_'+k+'" class="row">'
        +'  </div>'
        +' </div>'
        +' </section>'
        +'</div>'
        +'</div>'
        +'</div>'
- 					 ));
+ 					 );
 						 }
 							pools[k]['alloc']=normsize(pools[k]['alloc'])
 							pools[k]['empty']=normsize(pools[k]['empty'])
@@ -1044,6 +1051,7 @@ function refreshall() { //check pool status
 									});
 									disks.push({"id":kkk,
 										"pool":pools[k]["name"],
+										"poolid":k,
 										"groupst":pools[k]["raidlist"][kk]["status"],
 										"status":dskstatus,
 										"changeop":dskchange,
@@ -1092,7 +1100,7 @@ function refreshall() { //check pool status
 				}
 				else {
 					diskdiv='diskimg'
-					diskdiv2='diskimg2'
+					diskdiv2='diskimg2_'
 				}
 				diskimg='disk-image'
 					if(disks[kk].groupst.includes('DEGRADE')) { diskimg='DEGRADED' }
@@ -1100,9 +1108,17 @@ function refreshall() { //check pool status
 						}
 						else { clickdisk="javascript:diskclick('"+kk+"')"; clickdisk="href="+clickdisk; imgf="disk-image.png" 
 						}	
-				  $("#"+diskdiv2).append(
-      '<div id="diskrow'+disks[kk].pool+'" class="col-1  disks '+disks[kk]['host']+' '+disks[kk]['pool']+' '+disks[kk]['status']+' '+disks[kk]['changeop']+'">'
-      +'   <div class="a413">'
+				   var poolid=''
+							var col=1
+				  if(diskdiv2.includes('disk'))
+						{ 
+							poolid=disks[kk]['poolid'];
+							col=poolcount;
+						}
+				  $("#"+diskdiv2+poolid).append(
+      '<div id="disk'+disks[kk].pool+'" class="col-'+col+' disks '+disks[kk]['host']+' '+disks[kk]['pool']+' '+disks[kk]['status']+' '+disks[kk]['changeop']+'">'
+      +'   <div class="">'
+						/*      +'   <div class="a413">' */
       +'  <a id="'+kk+'" '+clickdisk+'>'
       +'     <img class="img412 '+diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" />'
       +'  <p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>'
@@ -1580,6 +1596,7 @@ function hostclick(name) {
 		$('.disks.free').show()
 		$('.poolmember').hide()
 		$('.poolmember.'+name).show()
+		$('.disks.'+currenthost).show()
 }
 function poolclick(name,k) {
 	currentpool=name;
@@ -1590,7 +1607,7 @@ function poolclick(name,k) {
 	dcomp=[]
 		$("#DG tr").hide()
 		$('.disks').hide()
-		$('.disks.'+currenthost+'.'+name).show()
+		$('.disks.'+currenthost).show()
 		$('.disks.'+currenthost+'.pree').show()
 		$('.disks.busy').hide()
 		if (name != 'pree'){
