@@ -979,7 +979,7 @@ function refreshall() { //check pool status
 						else pooldiv=Math.floor(12/pooldiv);
 						$('#poollist3').append($( 
  			  '<div class="row poolfree">'
-      +'<div class="col-lg-12 col-md-12 "  style="'
+      +'<div class="col  "  style="'
       +'border-bottom: 2px solid rgb(24, 81, 130);'
       +'border-right: 2px solid rgb(24, 81, 130);'
       +'border-left: 2px solid rgb(24, 81, 130);'
@@ -987,7 +987,9 @@ function refreshall() { //check pool status
       +'">'
       +'<h7 style="padding-left: 5%;">Free Disks </h7>'
       +'<section class="text-center">'
-      +' <div id="freeimg2" class="container">'
+      +' <div  class="container">'
+						+'    <div id="freeimg2" class="row">'
+      +'    </div>'
       +' </div>'
       +'</section>'
       +'</div>'
@@ -1004,8 +1006,10 @@ function refreshall() { //check pool status
  						+'<div class="col-lg-'+pooldiv+' col-md-'+pooldiv+' "style="border-right:  2px solid rgb(24, 81, 130); border-left: 2px solid rgb(24,81,130);">'
        +'<h7 style="    padding-left: 5%;">'+thename+'</h7>'
        +'<section class="text-center">'
-       +' <div id="diskimg2" class="container">'
+       +' <div class="container">'
+       +'  <div id="diskimg2" class="row">'
        +'  </div>'
+       +' </div>'
        +' </section>'
        +'</div>'
        +'</div>'
@@ -1075,12 +1079,11 @@ function refreshall() { //check pool status
 			var diskpoolcount={}
 			var rowcount={}
 			$.each(disks,function(kk,vv){
-
 					if(disks[kk].pool in diskpoolcount){
 					 diskpoolcount[disks[kk].pool]=diskpoolcount[disks[kk].pool]+1;
 
 				 }	else {
-						diskpoolcount[disks[kk].pool]=7;
+						diskpoolcount[disks[kk].pool]=60
 						rowcount[disks[kk].pool]=0
 					}
 				if (disks[kk].pool=='pree' ){
@@ -1098,28 +1101,15 @@ function refreshall() { //check pool status
 						else { clickdisk="javascript:diskclick('"+kk+"')"; clickdisk="href="+clickdisk; imgf="disk-image.png" 
 						}	
 				$("#"+diskdiv).append('<div class="disks '+disks[kk]['host']+' '+disks[kk]['pool']+' '+disks[kk]["status"]+' '+disks[kk]["changeop"]+'" ><a id="i'+kk+'"'+clickdisk+' > <img class="img-fluid '+ diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" alt="can\'t upload disk images"></a><a '+clickdisk+'><p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>')
-					if (6/(diskpoolcount[disks[kk].pool])<1){
-				  diskpoolcount[disks[kk].pool]=1
-						rowcount[disks[kk].pool]=rowcount[disks[kk].pool]+1
 				  $("#"+diskdiv2).append(
-      '<div id="diskrow'+disks[kk].pool+rowcount[disks[kk].pool]+'" class="row  disks '+disks[kk]['host']+' '+disks[kk]['pool']+' '+disks[kk]['status']+' '+disks[kk]['changeop']+'">'
-      +'   <div class="col-lg-3 col-sm-6 a413">'
+      '<div id="diskrow'+disks[kk].pool+'" class="col-1  disks '+disks[kk]['host']+' '+disks[kk]['pool']+' '+disks[kk]['status']+' '+disks[kk]['changeop']+'">'
+      +'   <div class="a413">'
       +'  <a id="'+kk+'" '+clickdisk+'>'
       +'     <img class="img412 '+diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" />'
       +'  <p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>'
       +'  </a>'
       +'    </div>'
 					 );
-					} else {
-				  $("#diskrow"+disks[kk].pool+rowcount[disks[kk].pool]).append(
-      '<div class="col-lg-3 col-sm-6 a413">'
-      +'  <a id="'+kk+'" '+clickdisk+'>'
-      +'     <img class="img412 '+diskimg+' disk'+kk+'" src="assets/images/'+imgf+'" />'
-      +'  <p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>'
-      +'  </a>'
-						+'    </div>'
-					 );
-					}
 				disks[kk]["selected"]=0;	
 			});
 			$(".poolmember").hide()
