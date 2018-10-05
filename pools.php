@@ -986,8 +986,9 @@ function refreshall() { //check pool status
       +'border-right: 2px solid rgb(24, 81, 130);'
       +'border-left: 2px solid rgb(24, 81, 130);'
       +'border-top: 2px solid rgb(24, 81, 130);'
+						+'margin-top: -0.08rem;'
       +'">'
-      +'<h7 style="padding-left: 5%;">Free Disks </h7>'
+      +'<a href="javascript:poolclick(\'pree\',1)"><h7 style="padding-left: 5%;">Free Disks </h7></a>'
       +'<section class="text-center">'
       +' <div  class="container">'
 						+'    <div id="freeimg2" class="row">'
@@ -999,15 +1000,20 @@ function refreshall() { //check pool status
       +'</div>'
   				));
       var poolcount=12/pooldiv
+		    if(pooldiv < 2) { pooldiv=2 }
+						var poolcount=1
+						var pooltop
 						$.each(pools,function(k,v){
 							if(pools[k]['name'].includes('pdhcp')){
-						  $('#poollist2').append( 
- 						'<div id="'+pools[k]['name']+'" class="col-lg-'+pooldiv+' col-md-'+pooldiv+' "style="border-right:  2px solid rgb(24, 81, 130); border-left: 2px solid rgb(24,81,130);"></div>'
+        if(poolcount < 7) { pooltop='' }
+								else { pooltop='border-top: 1px solid rgb(24,81,130);' }
+								poolcount=poolcount+1
+						  $('#poollist2').append(
+ 						'<div id="'+pools[k]['name']+'" class="col-lg-'+pooldiv+' col-md-'+pooldiv+' "style="border-right:  1px solid rgb(24, 81, 130); border-left: 1px solid rgb(24,81,130);border-bottom: 1px solid rgb(24, 81, 130); margin: -0.04rem; '+pooltop+'"></div>'
 						  );
 							}
 						});
 						$.each(pools,function(k,v){
-							$('#poollist').append($('<a class="poolmember '+pools[k]['host']+'" style="display: inline; " href="javascript:poolclick(\''+pools[k]["name"]+'\','+k+')">'+pools[k]["name"]+'</a>'));	
 							if(pools[k]['name'].includes('pdhcp')){
 								thename=pools[k]['name'].replace('pdchp','')+':'+k
 							 $('#'+pools[k]['name']).append( 
