@@ -1114,6 +1114,7 @@ function refreshall() { //check pool status
 						}
 						else { clickdisk="javascript:diskclick('"+kk+"')"; clickdisk="href="+clickdisk; imgf="disk-image.png" 
 						}	
+				  if(disks[kk]["status"].includes("busy")){ clickdisk=''; }
 				   var poolid=''
 							var col=1
 				  if(diskdiv2.includes('disk'))
