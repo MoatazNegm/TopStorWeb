@@ -26,6 +26,7 @@ try:
    xx=x[1]
    ll.append(xx)
    hostsdic={'id':str(hostid),'name':x[0],'prop':xx}
+   hostid=hostid+1
    hosts.append(hostsdic)
   print(str(hosts).replace('"','').replace("'",'"'))
  else:

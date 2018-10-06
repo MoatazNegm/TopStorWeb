@@ -507,7 +507,7 @@
 				console.log(data)
 				propdata=data
 				prop2=$.parseJSON(propdata)
-                             	
+                                $("#hostlist a").remove();
     				$.each(prop2,function(r,s){
  				 prop2[r]['name']=prop2[r]['name'].replace('prop/','')
 				 prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
