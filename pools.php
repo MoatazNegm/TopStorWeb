@@ -792,6 +792,7 @@ var currenthost='hihi';
 var currentpool='hihihiA';
 var icurrentpool=-1;
 var jdata;
+var poolcount=0
 var gdata;
 var raids=[];
 var hosts=[];
@@ -999,15 +1000,14 @@ function refreshall() { //check pool status
       +'</div>'
       +'</div>'
   				));
-      var poolcount=12/pooldiv
-		    if(pooldiv < 2) { pooldiv=2 }
-						var poolcount=1
+						if(pooldiv < 2 ) { pooldiv=2 } 
+						poolcount=0
 						var pooltop
 						$.each(pools,function(k,v){
 							if(pools[k]['name'].includes('pdhcp')){
-        if(poolcount < 7) { pooltop='' }
-								else { pooltop='border-top: 1px solid rgb(24,81,130);' }
 								poolcount=poolcount+1
+        if(poolcount < 6) { pooltop='' }
+								else { pooltop='border-top: 1px solid rgb(24,81,130);' }
 						  $('#poollist2').append(
  						'<div id="'+pools[k]['name']+'" class="col-lg-'+pooldiv+' col-md-'+pooldiv+' "style="border-right:  1px solid rgb(24, 81, 130); border-left: 1px solid rgb(24,81,130);border-bottom: 1px solid rgb(24, 81, 130); margin: -0.04rem; '+pooltop+'"></div>'
 						  );
