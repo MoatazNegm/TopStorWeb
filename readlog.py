@@ -4,8 +4,12 @@ readl=[]
 datey=sys.argv[1]
 count=sys.argv[2]
 msgtype=sys.argv[3]
-def file_read_from_head(fname,fromd,nlines):
+msglevel=sys.argv[4]
+def file_read_from_head(fname,fromd,nlines,msglevel=0):
  alllines=[]
+ with open('msgsglobal.txt') as f:
+  valid=[y.split(':')[0] for y in f.readlines() if y.split(':')[1]>=msglevel];
+
  with open(fname) as f:
   x=int(nlines)
   if (x < 0):
@@ -16,7 +20,7 @@ def file_read_from_head(fname,fromd,nlines):
    ldate1=line.split(" ")[0]+"T"+line.split(" ")[1]
    ldate=datetime.datetime.strptime(ldate1,"%m/%d/%YT%H:%M:%S")
    if(x > 0):
-    if (ldate <= mydate):
+    if (ldate <= mydate and any(yy in str(line) for yy in valid)):
      line=line.replace("\n","").split(" ")
      if line[3] in msgtype:
       try:
@@ -41,7 +45,8 @@ def file_read_from_head(fname,fromd,nlines):
  return list(alllines)
 
 mydate=datetime.datetime.strptime(datey,"%m/%d/%YT%H:%M:%S")
-readl=file_read_from_head('Data/TopStorglobal.log',mydate,count)
+readl=file_read_from_head('Data/TopStorglobal.log',mydate,count,msglevel)
+print('Data/TopStorglobal.log',mydate,count,msglevel)
 jsondisk=str(readl).replace("\'","\"")
 jsondisk=jsondisk.replace(': "',':"')
 jsondisk=jsondisk.replace(', "',',"')

@@ -20,6 +20,8 @@
   $msgfarr = explode(":",$msglines[$pos]); 
   $msgf = "";
   array_shift($msgfarr);
+  $level=array_shift($msgfarr);
+  if($level < 1) { exit();}; 
   array_push($msgformat," ");
   for ($w = 0; $w < count($msgfarr); $w++) {
    $msgf .= $msgfarr[$w] . $msgformat[$w] ; 

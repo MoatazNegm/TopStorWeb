@@ -158,8 +158,12 @@
                             <div class="col-1" style="margin-top: 0.2rem; margin-left: -2.5rem; ">
                                 <input id="lines" min="5" max="50" value="10" class="form-control form-control-sm " type="number">
                             </div>
-                            <div class="col-2 text-right msgtype" style="margin-top: 0.4rem;">
-                                <a href="#"><img src="assets/images/refresh.png"> </a>
+			    <div class="col-2">
+			     <select id="levelid" class="form-control">
+				<option value=0>detailed</option>
+				<option value=1>medium</option>
+				<option value=2>brief</option>
+                             </select>
                             </div>
                         </div>
                     </form>
@@ -256,10 +260,12 @@
 			var disksval="hi"
 			var dater;
 			var liner;
+			var neededlevel=1;
 			var linerfact=2;
 			var dater2;
 			var msgtype="";
 			var statsdata="initial";
+			var themsg2
 			var page=0;
 			var reqpage=0;
 			var counter = 1;
@@ -512,7 +518,7 @@
 				linerfact=2
 				date=new Date($("td.first").text());
 				dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+date.getFullYear()+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2) 	
-				$.get("./pumpy.php", { req:"readlog.py", name:dater+' -'+liner+' '+msgtype+' '+"<?php echo $_SESSION["user"]; ?>"},
+				$.get("./pumpy.php", { req:"readlog.py", name:dater+' -'+liner+' '+msgtype+' '+neededlevel+' '+"<?php echo $_SESSION["user"]; ?>"},
 					function(data){  
 					obj[1]=jQuery.parseJSON(data)
 					date= new Date(obj[1][1].Date+' '+obj[1][1].time)
@@ -534,7 +540,7 @@
 				date=new Date($("td.last").text());
 				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2)+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2)) 	
 				dater=("0" + (date.l() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+date.getFullYear()+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2) 	
-				$.get("./pumpy.php", { req:"readlog.py", name:dater+' '+liner+' '+msgtype+' '+"<?php echo $_SESSION["user"]; ?>"},
+				$.get("./pumpy.php", { req:"readlog.py", name:dater+' '+liner+' '+msgtype+' '+neededlevel+' '+"<?php echo $_SESSION["user"]; ?>"},
 					function(data){  
 					obj[1]=jQuery.parseJSON(data)
 				});
@@ -545,7 +551,7 @@
 				dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+date.getFullYear()+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2) 	
 				liner=$("#lines").val();
  				
-				$.get("./pumpy.php", { req:"readlog.py", name:dater+' '+liner+' '+msgtype+' '+"<?php echo $_SESSION["user"]; ?>"},
+				$.get("./pumpy.php", { req:"readlog.py", name:dater+' '+liner+' '+msgtype+' '+neededlevel+' '+"<?php echo $_SESSION["user"]; ?>"},
 					function(data){  
 					console.log('data=',data)
 					obj[1]=jQuery.parseJSON(data)
@@ -677,6 +683,7 @@
 	function presentlog() {
 		var logarea = "";
 		var color;
+		var level;
 		config=1;
 		var ii=1;
 	
@@ -691,8 +698,10 @@
 								jofcode=0;
 								jofcode=searchmsg(msgs,msgcode);
 								//console.log("jofcode",jofcode);
-								themsg=msgs[jofcode];
+								if(jofcode > -1)themsg=msgs[jofcode];
 								try { themsgarr=themsg.split(":"); xfrom=themsgarr.indexOf(' from '); if (xfrom > -1) { themsgarr.splice(xfrom,1);} } catch(err) { updatelogarea();}
+level=themsgarr[1]
+themsgarr.splice(1,1)
 								codes.push(".");
 								objdata=""
 								for (i=1; i < themsgarr.length ;i++) {
@@ -767,6 +776,11 @@
 		$(".timec").change(function(){
 					traffictime="44:44:34";											
 		});
+$("#levelid").val(neededlevel)
+$("#levelid").change(function(){
+  neededlevel=$("#levelid").val()
+});
+$("#levelid").change()
 $("#Disks").change(function(){
 			traffictime="disk changes";
 		});
