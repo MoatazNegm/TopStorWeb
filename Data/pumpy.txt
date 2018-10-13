@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 readlog.py 10/13/2018T18:08:01 10 infowarningerror 1 admin
+=======
+readlog.py 10/13/2018T18:32:30 10 infowarningerror 0 admin
+>>>>>>> 6fe6273d99d31378d28e61b88cd97f57ccf94611
