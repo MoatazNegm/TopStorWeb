@@ -501,7 +501,7 @@
 			$("#userpassform").submit();
 			})
 
-			$(".bg-success").show();$(".bg-danger").hide();$(".bg-warning").hide();
+			$(".bg-success").hide();$(".bg-danger").hide();$(".bg-warning").hide();
 			function updateprop() {
  				$.get("gump2.php", { req: "prop", name:"--prefix"  },function(data){ if(propdata==data){;} else {
 				console.log(data)

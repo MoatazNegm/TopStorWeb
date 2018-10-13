@@ -721,5 +721,29 @@ h4{    color: #333;}
 }
 
 
-
+.bg-success { 
+ -webkit-animation: seconds 1.0s forwards;
+ -webkit-animation-iteration-count: 1;
+ -webkit-animation-delay: 5s;
+ animation: seconds 1.0s forwards;
+ animation-iteration-count: 1;
+ animation-delay: 5s;
+}
+@-webkit-keyframes seconds{
+ 0% {
+ opacity: 1;
+ }
+ 100% { 
+ opacity: 0;
+ }
+}
+@keyframes seconds{
+ 0% {
+ opacity: 1;
+ }
+ 100% { 
+ opacity: 0;
+ }
+}
+ 
 /*end code*/

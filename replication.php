@@ -671,7 +671,7 @@
 			var status=0;
 			var syscounter=10;
 			var syscounter2=1000;
-		$(".bg-success").show();$(".bg-danger").hide();$(".bg-warning").hide();	
+		$(".bg-success").hide();$(".bg-danger").hide();$(".bg-warning").hide();	
 		$(".ref").click(function() {
 					//console.log("session before","<?php print session_id(); ?>");
 					if($(this).attr('id')=="Login")
@@ -836,7 +836,7 @@
 			};
 
 			function refreshall() { //check pool status
-			$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ if(data!=oldcurrentinfo){oldcurrentinfo=data;  $(".dr-messages").show();$(".bg-success").show(); $("#texthere").text(data);}});
+			$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ if(data!=oldcurrentinfo && data != ''){oldcurrentinfo=data;  $(".dr-messages").show();$(".bg-success").show(); $("#texthere").text(data);}});
 				refreshPartnerlist("#Partnerlist","Data/Partnerslist.txt");
 				if($("#partner").hasClass("active") && status !="Partners") {
 					 status="Partners";

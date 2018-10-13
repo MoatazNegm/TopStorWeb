@@ -176,7 +176,7 @@
                             </tr>
                             </thead>
                             <tbody id="VolumetableCIFS">
-                            <tr>
+                            <tr style="display: none;">
                                 <td class="text-center">p1</td>
                                 <td class="text-center">5000MB</td>
                                 <td class="text-center">150MB</td>
@@ -328,7 +328,7 @@
                         var pools=[];
 			var volumes=[];
 			var plotb;
-				$(".bg-successold").show();$(".bg-danger").hide();$(".bg-warning").hide();
+				$(".bg-success").hide();$(".bg-successold").hide();$(".bg-danger").hide();$(".bg-warning").hide();
      function normsize(s){
      var sizeinbytes=parseFloat(s)
      if (s.includes('K')) { sizeinbytes=sizeinbytes/1000 }
@@ -404,8 +404,11 @@
 		});
 		 		if(currentinfo2timenew!=currentinfo2time) {
 		 			currentinfo2time=currentinfo2timenew;
-		 			$(".bg-success").show().fadeIn('slow');
-					$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data);});
+					$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){if(data != '') { 
+   $(".bg-success").show();
+   $("#texthere").text(data);
+   }
+ });
 					
 					}
 					refreshList2("GetPoolVollist","#Volumetable"+prot,"Data/Vollist.txt","Volumes");
@@ -463,7 +466,7 @@ function refreshList2(req,listid,filelocfrom,show) {
       topool['host']=hosts[r]['name']
       pools.push(topool)
       if (topool.name.includes('free') < 1 ){
-       $("#Pool2"+prot).append($('<option class="pool ">').text(topool.name).val(rr));
+       $("#Pool2"+prot).append($('<option class="pool ">').text(topool.name.replace('pdhcp','')).val(rr));
        chartdata.push([topool.name,normsize(topool.alloc)]);
        chartdata.push(['free',normsize(topool.empty)]);
       }

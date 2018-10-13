@@ -53,17 +53,7 @@
 </nav>
 <!--MESSAGES-->
 <div class="dr-messages">
-    <div class="bg-warning">Your changes may be not saved
-        <button type="button" class="close" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="bg-danger">Your changes hasn't been saved
-        <button type="button" class="close" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="bg-success"><div id="texthere"></div>
+    <div class="bg-success" style="display:none;"><div id="texthere"></div>
         <button type="button" id="close-success" style="margin-top: -2.4rem" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -271,7 +261,7 @@
 			var counter = 1;
 			var activepage=0; var lastpage=-1;
 			
-			$(".bg-success").show();$(".bg-danger").hide();$(".bg-warning").hide();
+			$(".bg-success").hide();$("#texthere").text("welcome to Quickstor interface");$(".bg-danger").hide();$(".bg-warning").hide();
  $("#sstatus").click(function(){ NETDATA.unpause(); });
 	$(".ref").click(function() {
 					//console.log("session before","<?php print session_id(); ?>");
@@ -480,8 +470,9 @@
 				for (var i=0; i<logcache; i+=1) { logstatus[i]=0 } config = 1; $(".SS").hide(); $(".Logs").hide();$(".finish").hide();$(".ullis").show();});
 	function refreshall() {
 		
-		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data); 
+		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ if( data != '' ) { $("#texthere").text(data); 
 		if (oldtexthere != data) { oldtexthere=data; linerfact=-1; }
+	    }
 	});
 		presentlog();
 		counter=counter+1;

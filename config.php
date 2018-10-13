@@ -391,7 +391,7 @@ fclose($myfile);
 			var DNS=1;
 			var whichul=0;
 			var upresult=0;
-			$(".bg-success").show();$(".bg-danger").hide();$(".bg-warning").hide();	
+			$(".bg-success").hide();$(".bg-danger").hide();$(".bg-warning").hide();	
 			$(".ref").click(function() {
 					//console.log("session before","<?php print session_id(); ?>");
 					if($(this).attr('id')=="Login")
@@ -556,7 +556,7 @@ function SS(){
 				DNS=1;
 								
 				//$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
-				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ if(data!=oldcurrentinfo){oldcurrentinfo=data;  $(".dr-messages").show();$(".bg-success").show(); $("#texthere").text(data);}});
+				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ if(data!=oldcurrentinfo && data != ''){oldcurrentinfo=data;  $(".dr-messages").show();$(".bg-success").show(); $("#texthere").text(data);}});
 SS();
 				//refresh2('Privstatus');
 				
