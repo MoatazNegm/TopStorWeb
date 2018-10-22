@@ -258,6 +258,7 @@
 			var themsg2
 			var page=0;
 			var reqpage=0;
+			var timechanged=0;
 			var counter = 1;
 			var activepage=0; var lastpage=-1;
 			
@@ -413,17 +414,20 @@
 			});
 			
 			$("#dater").change(function(){
+				   timechanged=1
 				   topresentlog(); updatelogarea(); infochange();
 				 
 							
 			});
 			$("#pnext").click(function(){  
+				timechanged=1
 				linerfact=1
 				//dater=$("#dater").val()
 				//$("#dater").change();
 							
 			});
 			$("#pprev").click(function(){  
+				timechanged=1
 				linerfact=-1	
 			});
 			$("#refresh").click(function(){ 
@@ -508,7 +512,9 @@
 		if(linerfact==-1) {
 				linerfact=2
 				date=new Date($("td.first").text());
-				dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+date.getFullYear()+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2) 	
+				var datefullyear;
+				datefullyear=date.getFullYear()
+				dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+datefullyear+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2) 	
 				$.get("./pumpy.php", { req:"readlog.py", name:dater+' -'+liner+' '+msgtype+' '+neededlevel+' '+"<?php echo $_SESSION["user"]; ?>"},
 					function(data){  
 					obj[1]=jQuery.parseJSON(data)
@@ -539,7 +545,10 @@
 		if(linerfact==2) {
 				
 				date=new Date($("#dater").val());		
-				dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+date.getFullYear()+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2) 	
+				var datefullyear;
+				datefullyear=date.getFullYear()
+				if ( timechanged < 1 ) { datefullyear=date.getFullYear()+1 }
+				dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+datefullyear+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2) 	
 				liner=$("#lines").val();
  				
 				$.get("./pumpy.php", { req:"readlog.py", name:dater+' '+liner+' '+msgtype+' '+neededlevel+' '+"<?php echo $_SESSION["user"]; ?>"},
@@ -705,7 +714,7 @@ themsgarr.splice(1,1)
 							y="between"
 							if (k == 0) { y="first"; };
 							if (k == (obj[ii].length-1)) {y="last";};
-							if(obj[ii][k].msg == "info") { color="blue"}; if(obj[ii][k].msg == "warning") { color="#cce11a"}; if(obj[ii][k].msg == "error") { color="red"}						
+							if(obj[ii][k].msg == "info") { color="blue"}; if(obj[ii][k].msg == "warning") { color="#cabc55"}; if(obj[ii][k].msg == "error") { color="red"}						
 							$("#Logdetails").append('<tr style="padding-left: 3.9rem; color:'+color+'" class="row datarow '+obj[ii][k].msg+'" ><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-3 text-left tdlog Volname '+y+' '+obj[ii][k].msg+' " data-toggle="popover" rel="popover" data-trigger="hover" data-container="body"  >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td style="margin-left: -1.2rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-1 text-left tdlog '+obj[ii][k].msg+' "  data-content='+objdata+' >'+obj[ii][k].user+'</td><td style="margin-left: 0rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-2 text-center tdlog'+obj[ii].msg+' " data-content='+objdata+' >'+obj[ii][k].fromhost+'</td><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-6 text-center tdlog '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
 							
 							
