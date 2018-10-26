@@ -516,7 +516,7 @@
 				});
 				}
 				});
-				if (refresherprop > 0) { $.post("./pump.php", { req:"HostgetIPs", name:"a", passwd:"" });}				
+				if (refresherprop > 0) { $.post("./pump.php", { req:"HostgetIPs.py", name:"a", passwd:"" });}				
 				
 						$("#cBoxName").text(prop["name"]); $("#cIPAddress").text(prop.addr); $("#cGateway").text(prop.rout);
 						$("#cdns1").text(prop.dns);
