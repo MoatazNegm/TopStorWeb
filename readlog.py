@@ -1,5 +1,6 @@
 #!/usr/bin/python3.6
 import sys, datetime
+from subprocess import check_output
 readl=[]
 datey=sys.argv[1]
 count=sys.argv[2]
@@ -44,6 +45,12 @@ def file_read_from_head(fname,fromd,nlines,msglevel=0):
       break;
  return list(alllines)
 
+x=check_output(['pgrep','readlog.py'])
+x=str(x).replace("b'","").replace("'","").split('\\n')
+x=[y for y in x if y != '']
+if(len(x) > 1 ):
+ print('process still running',len(x))
+ exit()
 mydate=datetime.datetime.strptime(datey,"%m/%d/%YT%H:%M:%S")
 readl=file_read_from_head('Data/TopStorglobal.log',mydate,count,msglevel)
 print('Data/TopStorglobal.log',mydate,count,msglevel)
