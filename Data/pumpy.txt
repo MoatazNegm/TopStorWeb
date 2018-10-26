@@ -1,1 +1,1 @@
-readlog.py 10/13/2018T18:32:30 10 infowarningerror 0 admin
+readlog.py 10/26/2019T14:39:37 10 infowarningerror 1 admin
