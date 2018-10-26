@@ -125,7 +125,7 @@ if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Locati
 		<div class="tab-pane active" id="diskGroups" role="tabpanel">
    <div class="container">
     <div class="row">
-		   <div id="hostslist" class="row" style="margin-top: 0.4rem;">
+		   <div id="hostslist" class="" style="margin-top: 0.4rem;">
 		   </div>
     </div>
     <div class="row">
