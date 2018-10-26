@@ -125,11 +125,11 @@ if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Locati
 		<div class="tab-pane active" id="diskGroups" role="tabpanel">
    <div class="container">
     <div class="row">
-		   <div id="hostslist" class="col-12  " style="margin-top: 0.4rem;">
+		   <div id="hostslist" class="row" style="margin-top: 0.4rem;">
 		   </div>
     </div>
     <div class="row">
-		   <div id="poollist" class="col-12  " style="margin-top: 0.4rem;">
+		   <div id="poollist" class="row " style="margin-top: 0.4rem;">
 		   </div>
     </div>
    </div>
@@ -964,7 +964,7 @@ function refreshall() { //check pool status
 						});
 						$.each(hosts,function(r,s){
 							hosts[r]['name']=hosts[r]['name'].replace('hosts/','').replace('/current','')
-								$('#hostslist').append($('<a class="hostmember" style="display: inline; " href="javascript:hostclick(\''+hosts[r]["name"]+'\')">'+hosts[r]["name"]+'</a>'));	
+								$('#hostslist').append($('<a class="hostmember col-4" href="javascript:hostclick(\''+hosts[r]["name"]+'\')">'+hosts[r]["name"]+'</a>'));	
 							$.each(hosts[r]['prop'],function(rr,ss){
 								topool=hosts[r]['prop'][rr]
 									topool['host']=hosts[r]['name']
