@@ -1,1 +1,1 @@
-HostgetIPs a
+GetSnaplist a hihihihi
