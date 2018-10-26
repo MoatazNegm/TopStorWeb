@@ -23,6 +23,7 @@ Zpsu01:0: : from :: finished scanning for disk pools to present :
 Zpst01:0: : from :: scanning for disk pools to present
 Zpst02:0: : from :: activating pool : 
 Zpsu02:2: : from :: finished activating pool : 
+Zpfa02:2: : from :: pool : cannot be activated, it misses drives.
 Zpst03:0: : from :: syncing my pools  
 Zpsu03:0: : from :: finished syncing my pools 
 Unlin11000: Problem while deleting user :
