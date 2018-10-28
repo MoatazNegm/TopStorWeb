@@ -11,7 +11,7 @@ Diwa1:1: : from :: Disk : status changed to :
 Difa1:1: : from :: Disk : failed in system : 
 Dist2:0: : from :: Start replacing Disk : by the spare disk : in system : 
 Disu2:1: : from :: Success replacing Disk : by the spare disk : in system :
-Difa2:1: : from :: Failed replacing Disk : by the spare disk : in system :
+Difa2:0: : from :: Disk : cannot be replaced now by the spare disk : in system :
 Dist3:0: : from :: Start removing Disk : in : from system database 
 Disu3:1: : from :: Success removing Disk :  from system : It is no longer used.
 Diwa4:1: : from :: Disk : is removed from system :
