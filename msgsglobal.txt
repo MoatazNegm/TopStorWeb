@@ -20,6 +20,7 @@ Dist5:0 : : from :: Start offlineing disk :. Please add a spare disk urgently so
 Disu5:1: : from :: Success to set disk : to be offline, please add a spare disk urgently
 Dist3:0: : from :: Removing Disk : in : from pool database 
 Zpsu01:0: : from :: finished scanning for disk pools to present : 
+Zpwa01:0: : from :: still scanning the pool : 
 Zpst01:0: : from :: scanning for disk pools to present
 Zpst02:0: : from :: activating pool : 
 Zpsu02:2: : from :: finished activating pool : 
