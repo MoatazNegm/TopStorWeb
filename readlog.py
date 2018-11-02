@@ -45,17 +45,17 @@ def file_read_from_head(fname,fromd,nlines,msglevel=0):
       break;
  return list(alllines)
 
-x=check_output(['pgrep','readlog.py'])
+x=check_output(['pgrep','-c', 'readlog'])
 x=str(x).replace("b'","").replace("'","").split('\\n')
-x=[y for y in x if y != '']
-if(len(x) > 1 ):
- print('process still running',len(x))
+if(x[0]!= '1'):
+ print('readlogdisable')
  exit()
-mydate=datetime.datetime.strptime(datey,"%m/%d/%YT%H:%M:%S")
-readl=file_read_from_head('Data/TopStorglobal.log',mydate,count,msglevel)
-print('Data/TopStorglobal.log',mydate,count,msglevel)
-jsondisk=str(readl).replace("\'","\"")
-jsondisk=jsondisk.replace(': "',':"')
-jsondisk=jsondisk.replace(', "',',"')
-jsondisk=jsondisk.replace(', {',',{')
-print(jsondisk)
+else:
+ mydate=datetime.datetime.strptime(datey,"%m/%d/%YT%H:%M:%S")
+ readl=file_read_from_head('Data/TopStorglobal.log',mydate,count,msglevel)
+ #print('Data/TopStorglobal.log',mydate,count,msglevel)
+ jsondisk=str(readl).replace("\'","\"")
+ jsondisk=jsondisk.replace(': "',':"')
+ jsondisk=jsondisk.replace(', "',',"')
+ jsondisk=jsondisk.replace(', {',',{')
+ print(jsondisk)
