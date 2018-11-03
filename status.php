@@ -517,6 +517,7 @@
 				dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+datefullyear+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2) 	
 				$.get("./pumpy.php", { req:"readlog.py", name:dater+' -'+liner+' '+msgtype+' '+neededlevel+' '+"<?php echo $_SESSION["user"]; ?>"},
 					function(data){  
+                                        if (data.includes('readlog')>0) {return}
 					obj[1]=jQuery.parseJSON(data)
 					date= new Date(obj[1][1].Date+' '+obj[1][1].time)
 				console.log("-date",obj[1].length)
@@ -539,6 +540,7 @@
 				dater=("0" + (date.l() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+date.getFullYear()+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2) 	
 				$.get("./pumpy.php", { req:"readlog.py", name:dater+' '+liner+' '+msgtype+' '+neededlevel+' '+"<?php echo $_SESSION["user"]; ?>"},
 					function(data){  
+                                        if (data.includes('readlog')>0) {return}
 					obj[1]=jQuery.parseJSON(data)
 				});
 		}
@@ -553,6 +555,7 @@
  				
 				$.get("./pumpy.php", { req:"readlog.py", name:dater+' '+liner+' '+msgtype+' '+neededlevel+' '+"<?php echo $_SESSION["user"]; ?>"},
 					function(data){  
+                                        if (data.includes('readlog')>0) {return}
 					console.log('data=',data)
 					obj[1]=jQuery.parseJSON(data)
 					console.log('obj=',obj[1])
