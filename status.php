@@ -225,6 +225,7 @@
 
 <!--CUSTOM JS-->
 		<script>
+			var topresent=0;
 			var msgdata= "no no no";
 			var msgs="no data";
 			var datalogf = [];
@@ -306,7 +307,7 @@
 				if($("#Warning").is(":checked")) { msgtype=msgtype+"warning"; $(".warning").show(); }
 				if($("#Error").is(":checked")) { msgtype=msgtype+"error"; $(".error").show(); }
 			};
-	     $(".msgtype").click(function() { topresentlog(); infochange(); });
+	     $(".msgtype").click(function() { if(topresent==0){topresentlog();}; infochange(); });
 			
 			var sineRenderer = function() {
 				//var data = [[]];
@@ -409,13 +410,13 @@
 		    
 			
 			$("#lines").change(function(){
-				   topresentlog();updatelogarea(); infochange();
+				   if(topresent==0){topresentlog();};updatelogarea(); infochange();
 							
 			});
 			
 			$("#dater").change(function(){
 				   timechanged=1
-				   topresentlog(); updatelogarea(); infochange();
+				   if(topresent==0){topresentlog();}; updatelogarea(); infochange();
 				 
 							
 			});
@@ -465,7 +466,7 @@
 							}
 						
 							
-						    config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".ullis").hide(); $(".finish").show();$(".Logs").show(); topresentlog();
+						    config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".ullis").hide(); $(".finish").show();$(".Logs").show(); if(topresent==0){topresentlog();};
 						}
 					});
 				
@@ -480,7 +481,7 @@
 	});
 		presentlog();
 		counter=counter+1;
-		if(counter > 2 ) { topresentlog(); updatelogarea(); infochange(); counter = 1; }
+		if(counter > 2 ) { if(topresent==0){topresentlog();}; updatelogarea(); infochange(); counter = 1; }
 		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		
 			var date
@@ -501,9 +502,11 @@
 		
 	}
 	var data2;
-	function topresentlog() {
+	function topresentlog(){
 	var date
-	
+	console.log('before',topresent)
+	topresent=1;
+	console.log('after',topresent)
 			if( $("#dater").val() == "") { 
 				date = new Date
 				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) +"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2)) 
@@ -520,7 +523,6 @@
                                         if (data.includes('readlog')>0) {return}
 					obj[1]=jQuery.parseJSON(data)
 					date= new Date(obj[1][1].Date+' '+obj[1][1].time)
-				console.log("-date",obj[1].length)
 				if(obj[1].length < 11) {
 					date = new Date
 					$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) +"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2)) 
@@ -556,9 +558,7 @@
 				$.get("./pumpy.php", { req:"readlog.py", name:dater+' '+liner+' '+msgtype+' '+neededlevel+' '+"<?php echo $_SESSION["user"]; ?>"},
 					function(data){  
                                         if (data.includes('readlog')>0) {return}
-					console.log('data=',data)
 					obj[1]=jQuery.parseJSON(data)
-					console.log('obj=',obj[1])
 				});
 			//	updatelogarea();
 				
@@ -568,6 +568,7 @@
 			}
 			presentlog();
 			infochange();
+			topresent=0;
 	}
 			
 
@@ -695,7 +696,7 @@
 				for (var k in obj[ii]) { 
 							var objdata=obj[ii][k].data;
 							var codes; var msgcode; var jofcode; var themsg; var themsgarr;
-							if(typeof obj[ii][k].code != 'undefined'){
+							if(typeof obj[ii][k].code != 'undefined' && obj[ii][k].msglevel>=neededlevel){
 								codes=obj[ii][k].code.split("@");
 								msgcode=codes[0];
 								jofcode=0;
@@ -793,7 +794,7 @@ $("#Disks").change(function(){
 			});
 		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		$.post("./pump.php", { req:"GetDisklist", name: "Data/disklist.txt", passwd:"hi"},function(){});
-		setInterval('refreshall()', 500); // Loop every 1000 milliseconds (i.e. 1 second)
+		setInterval('refreshall()', 1500); // Loop every 1000 milliseconds (i.e. 1 second)
 		//console.log("<?php print $_REQUEST["idd"]; print session_id(); ?>");
 		
 		$('[data-toggle="popover"]').popover({
@@ -827,7 +828,7 @@ $("#Disks").change(function(){
 					$(".ullis").show();
 			}
 		}
-		 topresentlog();
+		 if(topresent==0){topresentlog();};
 		 		$("#close-success").click(function() { $(".bg-success").hide(); });
 		SS();
 $(".netdata-chart-row").click(function(){ NETDATA.start(); });

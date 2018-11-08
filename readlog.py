@@ -16,47 +16,44 @@ def file_read_from_head(fname,mydate,nlines,msglevel=0):
    linelist=f
   else:
    linelist=reversed(list(f));
-  mystamp=mydate.timestamp()
+  mystamp=int(mydate.timestamp())
   for line in linelist: 
-   ldate=int(line.split(" ")[6])
+   linesplit=line.replace("\n","").split(" ")
+   ldate=int(linesplit[6])
    if(x > 0):
-    if (ldate <= mystamp and any(yy in str(line) for yy in valid)):
-     line=line.replace("\n","").split(" ")
-     if line[3] in msgtype:
-      try:
-       alllines.append({"Date":line[0],"time":line[1],"fromhost":line[2], "msg":line[3],"user":line[4],"code":line[5],"stamp":line[6]}) 
-       x-=1
-       if(x<0):
-        break;
-      except: 
-       pass
+    #if (ldate <= mystamp and any(yy in str(line) for yy in valid)):
+    #print(x,ldate,mystamp, ldate-int(mystamp),linesplit[5].split('@')[0])
+    if (ldate <= mystamp and linesplit[5].split('@')[0] in str(valid)):
+     if linesplit[3] in msgtype:
+      alllines.append({"msglevel":msglevel,"Date":linesplit[0],"time":linesplit[1],"fromhost":linesplit[2], "msg":linesplit[3],"user":linesplit[4],"code":linesplit[5],"stamp":linesplit[6]}) 
+      x-=1
+      if(x<=0):
+       return list(alllines)
    else:
-    if (ldate >= mystamp):
-     line=line.replace("\n","").split(" ")
+    if (ldate >= mystamp and linesplit[5].split('@')[0] in str(valid)):
      if line[3] in msgtype:
-      try: 
-       alllines.append({"Date":line[0],"time":line[1],"fromhost":line[2], "msg":line[3],"user":line[4],"code":line[5],"stamp":line[6]}) 
-       x+=1
-      except: 
-       pass
-     if(x>0):
-      alllines=reversed(alllines)
-      break;
+      alllines.append({"msglevel":msglevel,"Date":linesplit[0],"time":linesplit[1],"fromhost":linesplit[2], "msg":linesplit[3],"user":linesplit[4],"code":linesplit[5],"stamp":linesplit[6]}) 
+      x+=1
+      if(x>0):
+       alllines=reversed(alllines)
+       return list(alllines)
  return list(alllines)
-try:
- x=check_output(['pgrep','-c', 'readlog'])
- x=str(x).replace("b'","").replace("'","").split('\\n')
- if(x[0]!= '1'):
-  print('readlogdisable')
-  exit()
- else:
-  mydate=datetime.datetime.strptime(datey,"%m/%d/%YT%H:%M:%S")
-  readl=file_read_from_head('Data/TopStorglobal.log',mydate,count,msglevel)
-  #print('Data/TopStorglobal.log',mydate,count,msglevel)
-  jsondisk=str(readl).replace("\'","\"")
-  jsondisk=jsondisk.replace(': "',':"')
-  jsondisk=jsondisk.replace(', "',',"')
-  jsondisk=jsondisk.replace(', {',',{')
-  print(jsondisk)
-except:
- pass
+
+dont=1
+#try:
+# x=check_output(['pgrep','-c', 'readlog'])
+# x=str(x).replace("b'","").replace("'","").split('\\n')
+# if(x[0]!= '1'):
+#  print('readlogdisable')
+#  dont=0
+#except:
+ # pass
+if(dont == 1):
+ mydate=datetime.datetime.strptime(datey,"%m/%d/%YT%H:%M:%S")
+ readl=file_read_from_head('Data/TopStorglobal.log',mydate,count,msglevel)
+ #print('Data/TopStorglobal.log',mydate,count,msglevel)
+ jsondisk=str(readl).replace("\'","\"")
+ jsondisk=jsondisk.replace(': "',':"')
+ jsondisk=jsondisk.replace(', "',',"')
+ jsondisk=jsondisk.replace(', {',',{')
+ print(jsondisk)
