@@ -1112,7 +1112,8 @@ function refreshall() { //check pool status
 					if(disks[kk].groupst.includes('DEGRADE')) { diskimg='DEGRADED' }
 						if(disks[kk]["changeop"].includes('Remove') || disks[kk]["name"].includes("'-'") || disks[kk]["status"].includes("OFFLINE") || disks[kk]["status"].includes("FAULT") ) { clickdisk=''; imgf='invaliddisk.png" style="height:7rem; width:5.1rem;"' 
 						}
-						else { clickdisk="javascript:diskclick('"+kk+"')"; clickdisk="href="+clickdisk; imgf="disk-image.png" 
+						//else { clickdisk="javascript:diskclick('"+kk+"')"; clickdisk="href="+clickdisk; imgf="disk-image.png"; imgf="invaliddisk.png" 
+						else { clickdisk="javascript:diskclick('"+kk+"')"; clickdisk="href="+clickdisk; imgf="disk-image.png";  
 						}	
 				  if(disks[kk]["status"].includes("busy")){ clickdisk=''; }
 				   var poolid=''
@@ -2096,6 +2097,7 @@ function poolcreatemirror() {
 
 			syscounter2=980;  
 
+			console.log('reqq: "DGsetPool.py", name:"mirror "' + '<?php echo $_SESSION["user"] ?> '+dd[1].host+' '+dd[1].name+':'+dd[1].id+' '+dd[2].name+':'+dd[2].id+', passwd: '+nopool+' '+currenthost+'};')
 		}
 	});
 
