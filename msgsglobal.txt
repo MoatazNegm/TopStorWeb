@@ -44,12 +44,15 @@ Unlin1015:2: : from :: Success changing password for user :
 Unlin1016: Success changing password for user :
 Unlin1017: Adding user : ......
 Unlin1018:1: : from :: Adding user :
+Unlin1018:1: : from :: Adding user : (syncing)
 Unlin1019: Problem occurred while adding user :
 Unlin1020:2: : from :: Problem occurred while adding user :
 Unlin1021:2: : from :: User : already exists
+Unlin10211:2: : from :: User : already exists so deleting accoount to sync new data
 Unlin1022:2: : from :: Success adding user :
+Unlin10222:0: : from :: Success adding user : (syncing)
 Unlin1023:2: : from :: user : will not have a home directory
-Unlin1024:2: : from :: user : will have a : as a home directory
+Unlin1024:2: : from :: user : will have a home directory in vol :
 Domain1000: Changing Domain to :
 Domain1001: Problem changing to Domain :
 Domain1101: Problem, Domain : is not found
