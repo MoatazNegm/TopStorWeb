@@ -578,23 +578,23 @@
 			}	;
 			function refreshUserList(){
 				var jdata;
-				$.get("gump.php", { req: 'run', name:'--prefix' }, function(data){
+				$.get("gump.php", { req: 'usersinfo', name:'--prefix' }, function(data){
 				  if(data==olddata) { return; }
 				   jdata = jQuery.parseJSON(data);
                                    olddata=data
 				  kdata = []
 					if(typeof jdata=='object') {
+						console.log('users=',jdata)
 						olddiskpool=data;
 						$.each(jdata,function(kk,vv){
 							kdata.push(jdata[kk].replace("['",'').replace("]'",'').replace("'",'').split(',')[0].split('/'))
 						});
 						$("#UserList tr").remove();
 						$.each(kdata, function(k,v){
-							if ( kdata[k].indexOf("user") > 0 ) {
+						//	if ( kdata[k].indexOf("user") > 0 ) {
 								//userid=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'')
-								username=kdata[k][kdata[k].indexOf("user")+1].replace("'",'').replace(' ','')
+								username=kdata[k][1]
 								$("#UserList").append('<tr class="dontdelete" > ><td class="col-4">'+username+'</td><td class="text-center"><a href="javascript:userPassword(\''+username+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td class="text-center"><a class="UnixDelUser" val="'+username+'" href="javascript:auserdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
-							}
 						});
 					}
 				});
