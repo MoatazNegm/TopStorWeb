@@ -46,8 +46,10 @@ Unlin1017: Adding user : ......
 Unlin1018:1: : from :: Adding user :
 Unlin1019: Problem occurred while adding user :
 Unlin1020:2: : from :: Problem occurred while adding user :
-Unlin1021: Success adding user :
+Unlin1021:2: : from :: User : already exists
 Unlin1022:2: : from :: Success adding user :
+Unlin1023:2: : from :: user : will not have a home directory
+Unlin1024:2: : from :: user : will have a : as a home directory
 Domain1000: Changing Domain to :
 Domain1001: Problem changing to Domain :
 Domain1101: Problem, Domain : is not found
