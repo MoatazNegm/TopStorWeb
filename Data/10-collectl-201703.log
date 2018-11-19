@@ -1,7 +1,0 @@
-20170304 10:17:01 I-V4.1.0-1 Beginning execution on 10...
-20170304 10:17:01 W--sx disabled because 'lspci' not in /usr/bin/lspci or '/usr/sbin' or '/usr/bin'
-20170304 10:17:01 W-If somewhere else, move it or define in collectl.conf
-20170304 10:17:01 I-First log rollover will be: 20170305 00:00:00
-20170304 10:17:02 I-Waiting 7860155 usecs for time alignment
-20170304 10:17:20 F-Error: a daemonized collectl already running
-20170304 10:17:25 F-Error: a daemonized collectl already running
