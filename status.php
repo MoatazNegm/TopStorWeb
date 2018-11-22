@@ -100,15 +100,15 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="status" role="tabpanel">
                     <ul class="nav flex-column" role="tablist">
-                        <li class="nav-item servicestatus">
-                            <a id="sstatus" class="nav-link active" data-toggle="tab" href="#servicestatus" role="tab">
-                                <div></div>
-                                <span>Service Status</span></a>
-                        </li>
-                        <li id="Logs" class="nav-item  logs">
+                        <li id="Logs" class="nav-item  active logs">
                             <a class="nav-link" data-toggle="tab" href="#Logspanel" role="tab">
                                 <div></div>
                                 <span>Logs</span></a>
+                        </li>
+                        <li class="nav-item servicestatus">
+                            <a id="sstatus" class="nav-link " data-toggle="tab" href="#servicestatus" role="tab">
+                                <div></div>
+                                <span>Service Status</span></a>
                         </li>
                     </ul>
                 </div>
@@ -116,11 +116,11 @@
         </div>
         <div class="col-md-9 main-content">
             <div class="tab-content">
-                <div class="tab-pane active" id="servicestatus" role="tabpanel">
+                <div class="tab-pane " id="servicestatus" role="tabpanel">
 		<?php include "netdata/demo.html" ?>
 
                 </div>
-                <div class="tab-pane " id="Logspanel" role="tabpanel">
+                <div class="tab-pane active" id="Logspanel" role="tabpanel">
                     <form class="dr-form">
                         <div class="form-group row">
                             <label class="col-1 col-form-label">Date</label>
