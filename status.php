@@ -520,9 +520,17 @@
 				dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+datefullyear+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2) 	
 				$.get("./pumpy.php", { req:"readlog.py", name:dater+' -'+liner+' '+msgtype+' '+neededlevel+' '+"<?php echo $_SESSION["user"]; ?>"},
 					function(data){  
-                                        if (data.includes('readlog')>0) {return}
-					obj[1]=jQuery.parseJSON(data)
-					date= new Date(obj[1][1].Date+' '+obj[1][1].time)
+					var reprint=1
+                                        if (data.includes('readlog')>0) {reprint=0}
+					try {
+					obj[1]=jQuery.parseJSON(data);
+					}
+					catch(err) { console.log(err); reprint=0 }
+					try{
+					date= new Date(obj[1][1].Date+' '+obj[1][1].time);
+					}
+					catch(err){ console.log(obj[1]);reprint=0;}
+				if(reprint == 1) {
 				if(obj[1].length < 11) {
 					date = new Date
 					$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) +"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2)) 
@@ -530,6 +538,7 @@
 					
 				} else { $("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) +"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2)) 
 				}	
+				};
 				});
 				
 			
