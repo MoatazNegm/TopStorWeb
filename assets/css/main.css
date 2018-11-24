@@ -721,13 +721,14 @@ h4{    color: #333;}
 }
 
 
-.bg-success { 
+.bg-success2 { 
  -webkit-animation: seconds 1.0s forwards;
  -webkit-animation-iteration-count: 1;
  -webkit-animation-delay: 5s;
  animation: seconds 1.0s forwards;
  animation-iteration-count: 1;
  animation-delay: 5s;
+ z-index: 10;
 }
 @-webkit-keyframes seconds{
  0% {
