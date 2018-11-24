@@ -2203,7 +2203,7 @@ function pooldelete(){
 
 if(userpriv=="true" | curuser=="admin" ) { 
 
-	$.post("./pump.php", { req:"DGdestroyPool.py "+currentpool+" "+"<?php echo $_SESSION["user"]; ?>", passwd:currenthost });
+	$.post("./pump.php", { req:"DGdestroyPool.py ", name:currentpool+" "+"<?php echo $_SESSION["user"]; ?>", passwd:currenthost });
 
 	syscounter2=980
 }
