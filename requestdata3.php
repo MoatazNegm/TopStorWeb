@@ -20,11 +20,8 @@
  if ($pos >= 0 ) { 
   $msgf="";
   $msgfarr = explode(":",$msglines[$pos]); 
-  print_r($msgfarr);
-  print_r($msgformat);
   array_shift($msgfarr);
   $level=array_shift($msgfarr);
-   print $level."\n" ;
   if($level < 0) { exit();}; 
   #array_push($msgformat," ");
   $msgfformcount=count($msgformat);
