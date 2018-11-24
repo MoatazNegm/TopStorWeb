@@ -479,7 +479,7 @@
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){
 		if(data!=oldcurrentinfo && data != ''){linerfact=-1;oldcurrentinfo=data;  $(".bg-success").fadeIn(800); $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
 	});
-		presentlog();
+		topresentlog();
 		counter=counter+1;
 		if(counter > 2 ) { if(topresent==0){topresentlog();}; updatelogarea(); infochange(); counter = 1; }
 		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
@@ -502,9 +502,10 @@
 		
 	}
 	var data2;
+	var reprint=1
 	function topresentlog(){
 	var date
-	console.log('before',topresent)
+	console.log('before',linerfact)
 	topresent=1;
 	console.log('after',topresent)
 			if( $("#dater").val() == "") { 
@@ -520,7 +521,7 @@
 				dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+datefullyear+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2) 	
 				$.get("./pumpy.php", { req:"readlog.py", name:dater+' -'+liner+' '+msgtype+' '+neededlevel+' '+"<?php echo $_SESSION["user"]; ?>"},
 					function(data){  
-					var reprint=1
+					reprint=1;
                                         if (data.includes('readlog')>0) {reprint=0}
 					try {
 					obj[1]=jQuery.parseJSON(data);
@@ -530,14 +531,12 @@
 					date= new Date(obj[1][1].Date+' '+obj[1][1].time);
 					}
 					catch(err){ console.log(obj[1]);reprint=0;}
-				if(reprint == 1) {
 				if(obj[1].length < 11) {
 					date = new Date
 					$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) +"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2)) 
 
 					
 				} else { $("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) +"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2)) 
-				}	
 				};
 				});
 				
@@ -551,8 +550,12 @@
 				dater=("0" + (date.l() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+date.getFullYear()+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2) 	
 				$.get("./pumpy.php", { req:"readlog.py", name:dater+' '+liner+' '+msgtype+' '+neededlevel+' '+"<?php echo $_SESSION["user"]; ?>"},
 					function(data){  
-                                        if (data.includes('readlog')>0) {return}
-					obj[1]=jQuery.parseJSON(data)
+					reprint=1;
+                                        if (data.includes('readlog')>0) {reprint=0}
+					try {
+					obj[1]=jQuery.parseJSON(data);
+					}
+					catch(err) { console.log(err); reprint=0 }
 				});
 		}
 		if(linerfact==2) {
@@ -566,8 +569,12 @@
  				
 				$.get("./pumpy.php", { req:"readlog.py", name:dater+' '+liner+' '+msgtype+' '+neededlevel+' '+"<?php echo $_SESSION["user"]; ?>"},
 					function(data){  
-                                        if (data.includes('readlog')>0) {return}
-					obj[1]=jQuery.parseJSON(data)
+					reprint=1;
+                                        if (data.includes('readlog')>0) {reprint=0}
+					try {
+					obj[1]=jQuery.parseJSON(data);
+					}
+					catch(err) { console.log(err); reprint=0 }
 				});
 			//	updatelogarea();
 				
@@ -575,9 +582,11 @@
 				
 			
 			}
+			if(reprint == 1) {
 			presentlog();
 			infochange();
 			topresent=0;
+			};
 	}
 			
 
