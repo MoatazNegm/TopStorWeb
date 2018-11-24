@@ -915,7 +915,7 @@ function snaponce(txtin,but,altbut,comp){
 function refreshall() { //check pool status
 
 	$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ 
-		if(data!=oldcurrentinfo && data != ''){oldcurrentinfo=data;  $(".bg-success").show(); $("#texthere").text(data);}
+		if(data!=oldcurrentinfo && data != ''){oldcurrentinfo=data;  $(".bg-success").fadeIn(800); $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
 	});
 	if($("#diskGroupspane").hasClass('active'))  { 
 		if (panesel !="diskgroup") { 

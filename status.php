@@ -53,7 +53,7 @@
 </nav>
 <!--MESSAGES-->
 <div class="dr-messages">
-    <div class="bg-success" style="display:none;"><div id="texthere"></div>
+    <div class="bg-success" ><div id="texthere"></div>
         <button type="button" id="close-success" style="margin-top: -2.4rem" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -235,6 +235,7 @@
 			var oldSdatec="1"; var oldEdatec="2";
 			var newSdatec="3"; var newEdatec="4";
 			var datemod="";
+			var oldcurrentinfo="dlafsj";
 			var plotflag = [];
 			var requeststats = 0;
 			var config = 1;
@@ -475,9 +476,8 @@
 				for (var i=0; i<logcache; i+=1) { logstatus[i]=0 } config = 1; $(".SS").hide(); $(".Logs").hide();$(".finish").hide();$(".ullis").show();});
 	function refreshall() {
 		
-		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ if( data != '' ) { $("#texthere").text(data); 
-		if (oldtexthere != data) { oldtexthere=data; linerfact=-1; }
-	    }
+		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){
+		if(data!=oldcurrentinfo && data != ''){linerfact=-1;oldcurrentinfo=data;  $(".bg-success").fadeIn(800); $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
 	});
 		presentlog();
 		counter=counter+1;

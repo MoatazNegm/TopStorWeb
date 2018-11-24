@@ -1,5 +1,5 @@
 <?php 
-# $_GET["file"]="Data/currentinfo2.log2";
+ $_GET["file"]="Data/currentinfo2.log2";
  $myfile = fopen($_GET["file"],"r");
  $content = fread($myfile,filesize($_GET["file"]));
  $msgformat = explode("@",$content);
@@ -18,19 +18,21 @@
   if(  is_numeric($isfound)  ) {  $pos = $l; };
  };
  if ($pos >= 0 ) { 
+  $msgf="";
   $msgfarr = explode(":",$msglines[$pos]); 
-  $msgf = "";
-  #array_shift($msgfarr);
+  print_r($msgfarr);
+  print_r($msgformat);
+  array_shift($msgfarr);
   $level=array_shift($msgfarr);
+   print $level."\n" ;
   if($level < 0) { exit();}; 
-  array_push($msgformat," ");
+  #array_push($msgformat," ");
   $msgfformcount=count($msgformat);
   for ($w = 0; $w < count($msgfarr); $w++) {
-   $msgf .=$msgfarr[$w];
    if(array_key_exists($w,$msgformat)==1) {
-#   $msgf .= $msgfarr[$w] . $msgformat[$w] ; 
     $msgf .= $msgformat[$w] ; 
    };
+   $msgf .=$msgfarr[$w];
   };
  };
  
