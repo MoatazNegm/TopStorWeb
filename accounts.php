@@ -442,7 +442,7 @@
  $(".params").val(myid)
 
 			$.get("./pumpy.php", { req:"chkuser2.py", name:myname+" "+myid},function(data){ 
-	var data2=data.replace(" ","").replace('\n','');
+         var data2=data.replace(" ","").replace('\n','');
 	if (myid != data2) { 
 	   console.log('username',myname)
            console.log('myid,data2',myid,'and',data2)

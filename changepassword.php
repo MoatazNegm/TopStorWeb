@@ -79,7 +79,7 @@
 		var passchanged=0;
  var myid="<?php echo $_REQUEST['myid'] ?>";
  var myname="<?php echo $_REQUEST['name'] ?>";
-			$.get("./pumpy.php", { req:"etcdget.py", name:"logged/"+myname},function(data){ 
+			$.get("./pumpy.php", { req:"chkuser2.py", name:myname+" "+myid},function(data){ 
 	var data2=data.replace(" ","").replace('\n','');
 	if (myid != data2) { 
 	   console.log('username',myname)
