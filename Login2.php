@@ -72,21 +72,10 @@
  $isuser="Data/isuser.txt";
  $timeone=filemtime($isuser);
  shell_exec("./pump.sh "."UnixPrepUser"." ".$usern."chk ".$passwd);
- session_start();
-
- if($usern === "mezo") { ;} else { ;}
-  if( $_REQUEST["idd"] != session_id()) {  header('Location:/Login.php');}
-  
- if (empty($_SESSION['count'])) {
-   $_SESSION['count'] = 1;
-} else {
-   $_SESSION['count']++;
-}
- //session_commit();
-
 ?>
 <form id="accounts" action="accounts.php" method="post">
-	<input type="hidden" name="idd" value="<?php session_regenerate_id(); $_SESSION["user"]=$_POST["userName"]; session_commit();print session_id();?>" >
+ <input class='' type="hidden" name='name' value="<?php echo $usern ; ?>" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 
 <!--JAVA SCRIPT-->
@@ -96,32 +85,23 @@
 <!--BOOTSTRAP SCRIPT-->
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 <script>
-	var nochange=2;
+console.log('name','<?php echo $usern ?>');
 	
 	function loopingauth() { 
-		if( nochange > 1 ) {
-			
-			$.post("./pump.php", { req: "UnixChkUser", name:"<?php echo $usern ?>"+" chk "+"<?php echo $passwd ?>" , passwd:''}, function (data1){
-				$.get("requestdata.php", { file: 'Data/isuser.txt' }, function(data){
-					var objdate = jQuery.parseJSON(data);
-					var isuser=objdate.name;
-					var isok=objdate.status;
-					nochange=nochange+1;
-					if (isuser==="<?php print $usern ?>" && isok == "ok" ) { 
-						
-						$("#state").val("OK");
-						//console.log("<?php print session_id();?>");
-						document.getElementById('accounts').submit();
+			$.get("./pumpy.php", { req:"chkuser.py", name:"<?php echo $usern ?>"+" chk "+"<?php echo $passwd ?>"},function(data){ console.log('usertoken',data);
+			var data2=data
+			if (data.includes('command')> 0 ) { data2='hi' };
+			if (data2.length > 7 ) {
+						$(".params").val(data2.replace(' ','').replace('\n',''));
+			document.getElementById('accounts').submit();
 					} else {
-						//console.log("<?php print $usern ?>"," | ", isuser);
-						if( nochange > 10 ) {window.location = "/Login.php";}
+			window.location = "/Login.php";
 					};
 					
-				});
 			});
 		}
-	}
-	setInterval('loopingauth()', 500)
+//	setInterval('loopingauth()', 500)
+  loopingauth();
 	
 	
 			

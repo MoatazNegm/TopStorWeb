@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-<?php session_start(); 
- if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/Login.php');}
-?>
 <html lang="en">
 <?php ?>
     <meta charset="UTF-8">
@@ -35,10 +32,10 @@
             <li class="nav-item dropdown user-dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span><img src="assets/images/user-icon.png"> </span><?php echo $_SESSION["user"] ?>
+                    <span><img src="assets/images/user-icon.png"> </span><strong><span id="usrnm">myname</span></strong>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item ref" href="#" id="changepassword">Change Password</a>
+                    <a class="dropdown-item ref" href="#" id="pass">Change Password</a>
                     <a class="dropdown-item ref" href="#" id="Login">Logout</a>
                 </div>
             </li>
@@ -373,29 +370,36 @@
     </div>
 </div>
 <form id="Loginref" action="Login.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
-<form id="changepasswordref" action="changepassword.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+<form id="passref" action="changepassword.php" method="post">
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="accountsref" action="accounts.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="statusref" action="status.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="protocolref" action="protocol.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="replicationref" action="replication.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="poolsref" action="pools.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="configref" action="config.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
-
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 
 <!--JAVA SCRIPT-->
@@ -431,9 +435,22 @@
 			var selprop=0
 			var hostips={} 
 			var DNS=1;
-			
+ var myid="<?php echo $_REQUEST['myid'] ?>";
+ var myname="<?php echo $_REQUEST['name'] ?>";
+ $(".myname").val(myname)
+ $("#usrnm").text(myname)
+ $(".params").val(myid)
+
+			$.get("./pumpy.php", { req:"chkuser2.py", name:myname+" "+myid},function(data){ 
+	var data2=data.replace(" ","").replace('\n','');
+	if (myid != data2) { 
+	   console.log('username',myname)
+           console.log('myid,data2',myid,'and',data2)
+		document.getElementById('Login'+'ref').submit();
+ 	}		;
+				});
 				$(".ref").click(function() {
-					console.log("session before","<?php print session_id(); ?>");
+					console.log("session before","<?php echo'hi'; ?>");
 					if($(this).attr('id')=="Login")
 					{ 
 						$.post("sessionout.php",function(data){ 
@@ -443,6 +460,7 @@
 						//console.log("login");
 						
 					} else {
+					console.log('id',$(this).attr('id')+'ref');
 					document.getElementById($(this).attr('id')+'ref').submit();
 					}
 		 //console.log($(this).attr('id'));
@@ -456,12 +474,12 @@
 					var userprivRepliPa="false"; var userprivRepliSe="false"; var userprivRepliRe="false";
 					var userprivPoolDG="false"; var userprivPoolSS="false";
 					var userprivUserPrivileges="false"; var userprivUpload="false";
-					var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 					if(curuser!="admin"){
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
-							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							if(gdata[prot].user==myname) {
 								userprivAccoAD=gdata[prot].Active_Directory; userprivAccoBU=gdata[prot].Box_Users; userprivAccoEr=gdata[prot].Error
 								userprivStatSC=gdata[prot].Service_Charts;userprivStatLo=gdata[prot].Logs;
 								userprivProtCI=gdata[prot].CIFS; userprivProtNF=gdata[prot].NFS;
@@ -497,7 +515,7 @@
 			};
 		
 			$("#userpass").click(function (){   
-			$("#idduserpass").val("<?php  echo session_id() ?>");
+			$("#idduserpass").val("<?php  echo 'hi'?>");
 			$("#userpassform").submit();
 			})
 
@@ -612,11 +630,11 @@
 			$("#AD").click(function (){ 
 				if(config == 1 ) { 
 					var userpriv="false";
-					var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
-							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							if(gdata[prot].user==myname) {
 								userpriv=gdata[prot].Active_Directory
 								
 							}
@@ -632,11 +650,11 @@
 			});
 			$("#navUnLin").click(function (){ 
 					var userpriv="false";
-					var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
-							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							if(gdata[prot].user==myname) {
 								userpriv=gdata[prot].Box_Users
 							}
 						};
@@ -651,11 +669,11 @@
 			$("#navboxProperties").click(function (){ 				
 				
 					var userpriv="false";
-					var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
-							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							if(gdata[prot].user==myname) {
 								userpriv=gdata[prot].Error
 							}
 						};
@@ -670,31 +688,31 @@
 				 
 			});
 		
-			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val(), passwd:$("#UserPass").val()+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){
+			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val(), passwd:$("#UserPass").val()+" "+myname}, function (data){
 				 //refreshUserList(); 
 				 refresheruser=3
 				 });
 			});
-			$("a.UnixDelUser").click(function (e){ e.preventDefault(); $.post("./pump.php", { req:"UnixDelUser", name:$(this).val()+" "+"<?php echo $_SESSION["user"]; ?>", passwd:"" }, function (data){
+			$("a.UnixDelUser").click(function (e){ e.preventDefault(); $.post("./pump.php", { req:"UnixDelUser", name:$(this).val()+" "+myname, passwd:"" }, function (data){
 				 //refreshUserList();
 				 console.log("hi", $(this).val());
 				 refresheruser=3 
 				 });
 			});
 			
-			function auserdel(){ $.post("./pump.php", { req:"UnixDelUser", name:arguments[0]+" "+"<?php echo $_SESSION["user"]; ?>", passwd:"" }, function (data){
+			function auserdel(){ $.post("./pump.php", { req:"UnixDelUser", name:arguments[0]+" "+myname, passwd:"" }, function (data){
 				 //refreshUserList();
 				 console.log("hi", arguments[0]);
 				 refresheruser=3 
 				 });
 			};
 			function userPassword(){ userpass=arguments[0];  $("#userEditing").modal('show') };
-			function changePassword(){ $.post("./pump.php", { req:"UnixChangePass", name:"'"+userpass+"'", passwd:arguments[0]+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){});
+			function changePassword(){ $.post("./pump.php", { req:"UnixChangePass", name:"'"+userpass+"'", passwd:arguments[0]+" "+myname}, function (data){});
 				refresheruser=1;			
 			};
 
 
-				$(".ChPass").click(function (){ $.post("./pump.php",{ req:"UnixChangePass", name:$("#chpass").val(), passwd:"'"+userpass+"'"+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){});
+				$(".ChPass").click(function (){ $.post("./pump.php",{ req:"UnixChangePass", name:$("#chpass").val(), passwd:"'"+userpass+"'"+" "+myname});
 				refresheruser=1;
 				
 			});
@@ -720,17 +738,17 @@ hostips['hostname']=prop2[selprop]['name']
 						if($("#dns1").val().length > 3) hostips['dns']=$("#dns1").val();
 						if($("#DataIP").val().length > 3){ hostips['dataip']=$("#DataIP").val(); hostips['dataipsubnet']=$("#DataSub").val();}
 console.log('hi',hostips)
-						$.post("./pump.php", { req:"HostManualconfig.py", name:JSON.stringify(hostips), passwd:"<?php echo $_SESSION["user"]; ?>" });
+						$.post("./pump.php", { req:"HostManualconfig.py", name:JSON.stringify(hostips), passwd:myname });
 						setTimeout(function(){ refresherprop=4},3000);					
 						
 						
 			});
 			$("#ADsubmit").click( function() {
 				if($("#Domtype").val()=="Domain") {
-					$.post("./pump.php", { req:"DomainChange", name:$("#DomName").val()+" "+$("#Admin").val()+" "+"\""+$("#Pass").val()+"\""+" "+$("#DCserver").val()+" "+"<?php echo $_SESSION["user"]; ?>", passwd:"" });
+					$.post("./pump.php", { req:"DomainChange", name:$("#DomName").val()+" "+$("#Admin").val()+" "+"\""+$("#Pass").val()+"\""+" "+$("#DCserver").val()+" "+myname, passwd:"" });
 				} 
 				else {
-					$.post("./pump.php", { req:"DomainChangeWorkgrp", name:$("#DomName").val()+" "+$("#Admin").val()+" "+"\""+$("#Pass").val()+"\""+" "+$("#DCserver").val()+" "+"<?php echo $_SESSION["user"]; ?>", passwd:"" });
+					$.post("./pump.php", { req:"DomainChangeWorkgrp", name:$("#DomName").val()+" "+$("#Admin").val()+" "+"\""+$("#Pass").val()+"\""+" "+$("#DCserver").val()+" "+myname, passwd:"" });
 				} 
 			});
 			
@@ -738,12 +756,12 @@ console.log('hi',hostips)
 				$(".ullis").hide();
 				if(config == 1 ) {
 						var userprivad="false"; var userprivunlin="false"; var userprivfuture="false";
-						var curuser="<?php echo $_SESSION["user"] ?>";
+						var curuser=myname;
 						if (curuser !="admin") {
 							$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 								var gdata = jQuery.parseJSON(data);
 								for (var prot in gdata){
-									if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+									if(gdata[prot].user==myname) {
 										userprivad=gdata[prot].Active_Directory;
 										userprivunlin=gdata[prot].Box_Users;
 										userprivfuture=gdata[prot].Error;
@@ -761,7 +779,7 @@ console.log('hi',hostips)
 		setInterval('refreshall()',5000);
 				$("#close-success").click(function() { $(".bg-success").hide(); });
 				$("#userpass").click(function (){   
-					$("#idduserpass").val("<?php  echo session_id() ?>");
+					$("#idduserpass").val("<?php  echo 'hi' ?>");
 					$("#userpassform").submit();
 	
 				});

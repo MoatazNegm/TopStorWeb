@@ -24,7 +24,6 @@
 <body>
 
 <main>
-<?php   session_destroy(); session_start();  session_commit(); ?>
     <nav class="navbar">
         <div class="col-md-12">
             <a class="navbar-brand" href="index.html"><img src="assets/images/logo.png"></a>
@@ -53,7 +52,7 @@
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                             <div class="input-group-addon"><img src="assets/images/user-login.png"></div>
                             <input name="userName" type="text" class="form-control">
-                            <input type="hidden" name="idd" value="<?php print session_id();?>" >
+                            <input type="hidden" name="idd" value=0 >
                         </div>
                     </div>
                     <div class="form-group  ">

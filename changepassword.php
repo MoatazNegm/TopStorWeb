@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-<?php session_start(); 
- if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/Login.php');}
-?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -47,7 +44,7 @@
 
     <section>
         <div>
-            <h1 class="text-center">Change Password of user <?php  echo $_SESSION["user"] ?> </h1>
+            <h1 class="text-center">Change Password of user <span id="myname"></span> </h1>
             <div class="col-md-4 offset-md-4">
                 <form class="dr-form">
                     <div class="form-group  ">
@@ -80,6 +77,16 @@
 		var passcheck="22:333:33";
 		var passchecknew="323:3443:34"
 		var passchanged=0;
+ var myid="<?php echo $_REQUEST['myid'] ?>";
+ var myname="<?php echo $_REQUEST['name'] ?>";
+			$.get("./pumpy.php", { req:"etcdget.py", name:"logged/"+myname},function(data){ 
+	var data2=data.replace(" ","").replace('\n','');
+	if (myid != data2) { 
+	   console.log('username',myname)
+           console.log('myid,data2',myid,'and',data2)
+		document.getElementById('Login'+'ref').submit();
+ 	}		;
+				});
 		$(document).keypress(
 			function(event){
 				if(event.which == '13') {
@@ -94,7 +101,7 @@
 			if(passchanged==1 && passchecknew != passcheck) { $("#logagain").submit(); }
 			else  {  passcheck=passchecknew; }
 		}
- $("#head2").text("Change <?php echo $_SESSION["user"] ?> Password");
+ $("#head2").text("Change "+myname+" Password");
  $("#wrong").show(); $("#change").hide();$("#changed").hide();
  $(".passin").keyup(function(){
 	 
@@ -108,8 +115,7 @@
 	});
  $("#change").click(function() {
 	 var passchecknew="34:433:43534";
-	 $.post("./pump.php", { req:"UnixChangePass", name:"'"+$("#userPassword1").val()+"'", passwd:"<?php echo $_SESSION["user"]; ?>"+" "+"<?php echo $_SESSION["user"]; ?>"}, function (data){});
-	 //console.log("'"+$("#userPassword1").val()+"'","<?php echo $_SESSION["user"]; ?>");
+	 $.post("./pump.php", { req:"UnixChangePass", name:"'"+$("#userPassword1").val()+"'", passwd:myname+" "+myname}, function (data){});
 	 passchanged=1;
 	 $("#change").hide(); $("#changed").show();
 	 
