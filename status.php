@@ -274,6 +274,7 @@
  $("#usrnm").text(myname)
  $(".params").val(myid)
 
+function chkuser(){
 			$.get("./pumpy.php", { req:"chkuser2.py", name:myname+" "+myid},function(data){ 
          var data2=data.replace(" ","").replace('\n','');
 	if (myid != data2) { 
@@ -282,6 +283,9 @@
 //		document.getElementById('Login'+'ref').submit();
  	}		;
 				});
+}
+chkuser();
+
 				$(".ref").click(function() {
 					console.log("session before","<?php echo'hi'; ?>");
 					if($(this).attr('id')=="Login")
@@ -523,6 +527,7 @@
 	var data2;
 	var reprint=1
 	function topresentlog(){
+if($("#Logspanel").hasClass('active')<=0) { return ; }
 	var date
 	console.log('before',linerfact)
 	topresent=1;
@@ -545,11 +550,14 @@
 					try {
 					obj[1]=jQuery.parseJSON(data);
 					}
-					catch(err) { console.log(err); reprint=0 }
+					catch(err) { reprint=0 }
 					try{
 					date= new Date(obj[1][1].Date+' '+obj[1][1].time);
 					}
-					catch(err){ console.log(obj[1]);reprint=0;}
+					catch(err){ //console.log(obj[1]);
+						reprint=0;}
+			console.log('reprint:',reprint,'data:',data)
+			if (reprint==1){
 				if(obj[1].length < 11) {
 					date = new Date
 					$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) +"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2)) 
@@ -557,6 +565,7 @@
 					
 				} else { $("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) +"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2)) 
 				};
+			}
 				});
 				
 			
@@ -574,7 +583,8 @@
 					try {
 					obj[1]=jQuery.parseJSON(data);
 					}
-					catch(err) { console.log(err); reprint=0 }
+					catch(err) { //console.log(err); 
+					reprint=0 }
 				});
 		}
 		if(linerfact==2) {
@@ -593,7 +603,8 @@
 					try {
 					obj[1]=jQuery.parseJSON(data);
 					}
-					catch(err) { console.log(err); reprint=0 }
+					catch(err) { //console.log(err); 
+					reprint=0 }
 				});
 			//	updatelogarea();
 				
@@ -831,7 +842,8 @@ $("#Disks").change(function(){
 			});
 		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		$.post("./pump.php", { req:"GetDisklist", name: "Data/disklist.txt", passwd:"hi"},function(){});
-		setInterval('refreshall()', 1500); // Loop every 1000 milliseconds (i.e. 1 second)
+		setInterval('refreshall()', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
+		setInterval('chkuser()', 300000); // Loop every 1000 milliseconds (i.e. 1 second)
 		
 		$('[data-toggle="popover"]').popover({
 										html: true,
@@ -867,7 +879,7 @@ $("#Disks").change(function(){
 		 if(topresent==0){topresentlog();};
 		 		$("#close-success").click(function() { $(".bg-success").hide(); });
 		SS();
-//$(".netdata-chart-row").click(function(){ NETDATA.start(); });
+$(".netdata-chart-row").click(function(){ NETDATA.start(); });
 		</script>
 	<!-----	<script src="assets/js/main.js"></script>
 ----->
