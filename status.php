@@ -280,19 +280,17 @@ function chkuser(){
 	if (myid != data2) { 
 	   console.log('username',myname)
            console.log('myid,data2',myid,'and',data2)
-//		document.getElementById('Login'+'ref').submit();
+		document.getElementById('Login'+'ref').submit();
  	}		;
 				});
 }
 chkuser();
 
 				$(".ref").click(function() {
-					console.log("session before","<?php echo'hi'; ?>");
 					if($(this).attr('id')=="Login")
 					{ 
 						$.post("sessionout.php",function(data){ 
 						document.getElementById('Login'+'ref').submit();
-						console.log("session after",data);
 						});
 						//console.log("login");
 						
