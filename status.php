@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<?php session_start(); 
- if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/Login.php');}
- 
-?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -40,7 +36,7 @@
             <li class="nav-item dropdown user-dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span><img src="assets/images/user-icon.png"> </span><?php echo $_SESSION["user"] ?>
+                    <span><img src="assets/images/user-icon.png"> </span><strong><span id="usrnm">myname</span></strong>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item ref" href="#" id="changepassword">Change Password</a>
@@ -117,7 +113,7 @@
         <div class="col-md-9 main-content">
             <div class="tab-content">
                 <div class="tab-pane " id="servicestatus" role="tabpanel">
-		<?php include "netdata/demo.html" ?>
+	<?php include "netdata/demo.html" ?>
 
                 </div>
                 <div class="tab-pane active" id="Logspanel" role="tabpanel">
@@ -186,28 +182,36 @@
     </div>
 </main>
 <form id="Loginref" action="Login.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="changepasswordref" action="changepassword.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="accountsref" action="accounts.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="statusref" action="status.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="protocolref" action="protocol.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="replicationref" action="replication.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="poolsref" action="pools.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="configref" action="config.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 
 <!--JAVA SCRIPT-->
@@ -264,23 +268,38 @@
 			var counter = 1;
 			var activepage=0; var lastpage=-1;
 			
-			$(".bg-success").hide();$("#texthere").text("welcome to Quickstor interface");$(".bg-danger").hide();$(".bg-warning").hide();
- $("#sstatus").click(function(){ NETDATA.unpause(); });
-	$(".ref").click(function() {
-					//console.log("session before","<?php print session_id(); ?>");
+ var myid="<?php echo $_REQUEST['myid'] ?>";
+ var myname="<?php echo $_REQUEST['name'] ?>";
+ $(".myname").val(myname)
+ $("#usrnm").text(myname)
+ $(".params").val(myid)
+
+			$.get("./pumpy.php", { req:"chkuser2.py", name:myname+" "+myid},function(data){ 
+         var data2=data.replace(" ","").replace('\n','');
+	if (myid != data2) { 
+	   console.log('username',myname)
+           console.log('myid,data2',myid,'and',data2)
+//		document.getElementById('Login'+'ref').submit();
+ 	}		;
+				});
+				$(".ref").click(function() {
+					console.log("session before","<?php echo'hi'; ?>");
 					if($(this).attr('id')=="Login")
 					{ 
 						$.post("sessionout.php",function(data){ 
 						document.getElementById('Login'+'ref').submit();
-						//console.log("session after",data);
+						console.log("session after",data);
 						});
 						//console.log("login");
 						
 					} else {
+					console.log('id',$(this).attr('id')+'ref');
 					document.getElementById($(this).attr('id')+'ref').submit();
 					}
 		 //console.log($(this).attr('id'));
-		});		
+		});
+			$(".bg-success").hide();$("#texthere").text("welcome to Quickstor interface");$(".bg-danger").hide();$(".bg-warning").hide();
+ $("#sstatus").click(function(){ NETDATA.unpause(); });
 			$.get("requestdatein.php", { file: 'Data/ctr.logupdated' }, function(data){
 				
 					var objdate=jQuery.parseJSON(data);
@@ -369,12 +388,12 @@
 					var userprivRepliPa="false"; var userprivRepliSe="false"; var userprivRepliRe="false";
 					var userprivPoolDG="false"; var userprivPoolSS="false";
 					var userprivUserPrivileges="false"; var userprivUpload="false";
-					var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 					if(curuser!="admin"){
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
-							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							if(gdata[prot].user==myname) {
 								userprivAccoAD=gdata[prot].Active_Directory; userprivAccoBU=gdata[prot].Box_Users; userprivAccoEr=gdata[prot].Error
 								userprivStatSC=gdata[prot].Service_Charts;userprivStatLo=gdata[prot].Logs;
 								userprivProtCI=gdata[prot].CIFS; userprivProtNF=gdata[prot].NFS;
@@ -446,11 +465,11 @@
 			$("#Logs").click(function (){ 
 				
 					var userpriv="false";
-					var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
-							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							if(gdata[prot].user==myname) {
 								userpriv=gdata[prot].Logs
 							}
 						};
@@ -519,7 +538,7 @@
 				var datefullyear;
 				datefullyear=date.getFullYear()
 				dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+datefullyear+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2) 	
-				$.get("./pumpy.php", { req:"readlog.py", name:dater+' -'+liner+' '+msgtype+' '+neededlevel+' '+"<?php echo $_SESSION["user"]; ?>"},
+				$.get("./pumpy.php", { req:"readlog.sh", name:dater+' -'+liner+' '+msgtype+' '+neededlevel+' '+myname},
 					function(data){  
 					reprint=1;
                                         if (data.includes('readlog')>0) {reprint=0}
@@ -548,7 +567,7 @@
 				date=new Date($("td.last").text());
 				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2)+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2)) 	
 				dater=("0" + (date.l() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+date.getFullYear()+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2) 	
-				$.get("./pumpy.php", { req:"readlog.py", name:dater+' '+liner+' '+msgtype+' '+neededlevel+' '+"<?php echo $_SESSION["user"]; ?>"},
+				$.get("./pumpy.php", { req:"readlog.sh", name:dater+' '+liner+' '+msgtype+' '+neededlevel+' '+myname},
 					function(data){  
 					reprint=1;
                                         if (data.includes('readlog')>0) {reprint=0}
@@ -567,7 +586,7 @@
 				dater=("0" + (date.getMonth() + 1)).slice(-2)+'/'+("0" + (date.getDate() + 0)).slice(-2)+'/'+datefullyear+"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2) 	
 				liner=$("#lines").val();
  				
-				$.get("./pumpy.php", { req:"readlog.py", name:dater+' '+liner+' '+msgtype+' '+neededlevel+' '+"<?php echo $_SESSION["user"]; ?>"},
+				$.get("./pumpy.php", { req:"readlog.sh", name:dater+' '+liner+' '+msgtype+' '+neededlevel+' '+myname},
 					function(data){  
 					reprint=1;
                                         if (data.includes('readlog')>0) {reprint=0}
@@ -813,7 +832,6 @@ $("#Disks").change(function(){
 		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		$.post("./pump.php", { req:"GetDisklist", name: "Data/disklist.txt", passwd:"hi"},function(){});
 		setInterval('refreshall()', 1500); // Loop every 1000 milliseconds (i.e. 1 second)
-		//console.log("<?php print $_REQUEST["idd"]; print session_id(); ?>");
 		
 		$('[data-toggle="popover"]').popover({
 										html: true,
@@ -829,12 +847,12 @@ $("#Disks").change(function(){
 				$(".ullis").hide();
 				if(config == 1 ) {
 						var userprivss="false"; var userprivlogs="false";
-						var curuser="<?php echo $_SESSION["user"] ?>";
+						var curuser=myname;
 						if (curuser !="admin") {
 							$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 								var gdata = jQuery.parseJSON(data);
 								for (var prot in gdata){
-									if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+									if(gdata[prot].user==myname) {
 										userprivss=gdata[prot].Service_Charts;
 										userprivlogs=gdata[prot].Logs;
 									}
@@ -849,7 +867,7 @@ $("#Disks").change(function(){
 		 if(topresent==0){topresentlog();};
 		 		$("#close-success").click(function() { $(".bg-success").hide(); });
 		SS();
-$(".netdata-chart-row").click(function(){ NETDATA.start(); });
+//$(".netdata-chart-row").click(function(){ NETDATA.start(); });
 		</script>
 	<!-----	<script src="assets/js/main.js"></script>
 ----->

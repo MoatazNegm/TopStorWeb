@@ -66,6 +66,10 @@
             </div>
         </div>
     </section>
+<form id="Loginref" action="Login.php" method="post" style="display: none;">
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
+</form>
 </main>
 <!--JAVA SCRIPT-->
 <!--JQUERY SCROPT-->

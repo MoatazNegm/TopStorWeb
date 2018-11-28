@@ -69,8 +69,6 @@
 <?php 
  $usern=$_POST["userName"];
  $passwd=$_POST["userPassword"];
- $isuser="Data/isuser.txt";
- $timeone=filemtime($isuser);
  shell_exec("./pump.sh "."UnixPrepUser"." ".$usern."chk ".$passwd);
 ?>
 <form id="accounts" action="accounts.php" method="post">
