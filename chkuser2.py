@@ -7,10 +7,10 @@ y=[]
 z=[]
 x=etcdget.etcdget('updlogged/'+sys.argv[1])
 z.append(sys.argv[2])
-y.append(float(x[0]))
+y.append(x[0])
 cmdline=['./pump.sh','UnixChkUser2']+sys.argv[1:]
 result=subprocess.run(cmdline,stdout=subprocess.PIPE)
-while float(z[0]) > 100 or str(y[0])==str(x):
+while float(z[0]) > 100 and str(y[0])==str(x[0]):
  time.sleep(2)
  y=etcdget.etcdget('updlogged/'+sys.argv[1])
  z=etcdget.etcdget('logged/'+sys.argv[1])

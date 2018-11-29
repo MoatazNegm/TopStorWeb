@@ -72,6 +72,18 @@
 </form>
 </main>
 <!--JAVA SCRIPT-->
+<div class="modal " tabindex="-1" id="overlay" role="dialog">
+ <div class="modal-dialog modal-dialog-centred" role="document">
+  <div class="modal-content">
+   <div class="modal-header">
+    <h4 class="modal-title text-center">Login TimeOut</h4>
+   </div>
+   <div class="modal-body">
+    <p> please click mouse or press a key to keep logged on</p>
+   </div>
+  </div>
+ </div>
+</div>
 <!--JQUERY SCROPT-->
 <script src="assets/js/jquery.min.js"></script>
 
@@ -81,16 +93,45 @@
 		var passcheck="22:333:33";
 		var passchecknew="323:3443:34"
 		var passchanged=0;
+ var mydate;
+ var myidhash;
+ var mytimer;
+ var mymodal;
+ var idletill=480000;
+ var modaltill=idletill-120000
  var myid="<?php echo $_REQUEST['myid'] ?>";
+ myidhash=myid;
  var myname="<?php echo $_REQUEST['name'] ?>";
-			$.get("./pumpy.php", { req:"chkuser2.py", name:myname+" "+myid},function(data){ 
-	var data2=data.replace(" ","").replace('\n','');
+ $(".myname").val(myname)
+ $("#usrnm").text(myname)
+ $(".params").val(myid);
+//$("#overlay").modal('show');
+function timeron() {
+ mytimer=setTimeout(function() { 
+	document.getElementById('Login'+'ref').submit();
+	console.log('timout');
+		},idletill);
+ mymodal=setTimeout(function() { 
+	console.log('modaltimeout');
+	$("#overlay").modal('show')
+		},modaltill);
+}
+timeron();
+function timerrst() { clearTimeout(mytimer); clearTimeout(mymodal);$("#overlay").modal('hide'); timeron(); }
+function chkuser() {
+			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid},function(data){ 
+         var data2=data.replace(" ","").replace('\n','');
 	if (myid != data2) { 
 	   console.log('username',myname)
            console.log('myid,data2',myid,'and',data2)
 		document.getElementById('Login'+'ref').submit();
  	}		;
 				});
+};
+chkuser();
+				$("html").click(function(){
+mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser();myidhash=mydate;console.log(myidhash); } timerrst();});
+				$("html").keypress(function(){mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser(); myidhash=mydate;};timerrst();});
 		$(document).keypress(
 			function(event){
 				if(event.which == '13') {
