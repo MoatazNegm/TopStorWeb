@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<?php session_start(); 
- if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/Login.php');}
- 
-?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -34,7 +30,7 @@
             <li class="nav-item dropdown user-dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span><img src="assets/images/user-icon.png"> </span><?php echo $_SESSION["user"] ?>
+                    <span><img src="assets/images/user-icon.png"> </span><strong><span id="usrnm">myname</span></strong>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item ref" href="#" id="changepassword">Change Password</a>
@@ -272,31 +268,51 @@
     </div>
 </main>
 <form id="Loginref" action="Login.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="changepasswordref" action="changepassword.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="accountsref" action="accounts.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="statusref" action="status.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="protocolref" action="protocol.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="replicationref" action="replication.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="poolsref" action="pools.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="configref" action="config.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 
 <!--JAVA SCRIPT-->
+<div class="modal " tabindex="-1" id="overlay" role="dialog">
+ <div class="modal-dialog modal-dialog-centred" role="document">
+  <div class="modal-content">
+   <div class="modal-header">
+    <h4 class="modal-title text-center">Login TimeOut</h4>
+   </div>
+   <div class="modal-body">
+    <p> please click mouse or press a key to keep logged on</p>
+   </div>
+  </div>
+ </div>
+</div>
 <!--JQUERY SCROPT-->
 <script src="assets/js/jquery.min.js"></script>
 
@@ -328,6 +344,45 @@
                         var pools=[];
 			var volumes=[];
 			var plotb;
+ var mydate;
+ var myidhash;
+ var mytimer;
+ var mymodal;
+ var idletill=480000;
+ var modaltill=idletill-120000
+ var myid="<?php echo $_REQUEST['myid'] ?>";
+ myidhash=myid;
+ var myname="<?php echo $_REQUEST['name'] ?>";
+ $(".myname").val(myname)
+ $("#usrnm").text(myname)
+ $(".params").val(myid);
+//$("#overlay").modal('show');
+function timeron() {
+ mytimer=setTimeout(function() { 
+	document.getElementById('Login'+'ref').submit();
+	console.log('timout');
+		},idletill);
+ mymodal=setTimeout(function() { 
+	console.log('modaltimeout');
+	$("#overlay").modal('show')
+		},modaltill);
+}
+timeron();
+function timerrst() { clearTimeout(mytimer); clearTimeout(mymodal);$("#overlay").modal('hide'); timeron(); }
+function chkuser() {
+			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid},function(data){ 
+         var data2=data.replace(" ","").replace('\n','');
+	if (myid != data2) { 
+	   console.log('username',myname)
+           console.log('myid,data2',myid,'and',data2)
+		document.getElementById('Login'+'ref').submit();
+ 	}		;
+				});
+};
+chkuser();
+				$("html").click(function(){
+mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser();myidhash=mydate;console.log(myidhash); } timerrst();});
+				$("html").keypress(function(){mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser(); myidhash=mydate;};timerrst();});
 				$(".bg-success").hide();$(".bg-successold").hide();$(".bg-danger").hide();$(".bg-warning").hide();
      function normsize(s){
      var sizeinbytes=parseFloat(s)
@@ -341,12 +396,12 @@
      }
  function createvol() { 
   var thepool=$("#Pool2"+prot).val()
-  $.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G ", passwd:"<?php echo $_SESSION["user"]; ?> "+pools[thepool].host }, function (data){
+  $.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G ", passwd:myname+" "+pools[thepool].host }, function (data){
  });
 };
 		function voldel() {  
   var thepool=$("#Pool2"+prot).val()
- $.post("./pump.php", { req:"VolumeDelete"+prot+".py", name:pools[thepool].name+" "+arguments[0]+" "+prot+" "+"<?php echo $_SESSION["user"]; ?>", passwd: pools[thepool].host });   }
+ $.post("./pump.php", { req:"VolumeDelete"+prot+".py", name:pools[thepool].name+" "+arguments[0]+" "+prot+" "+myname, passwd: pools[thepool].host });   }
 				function SS(){ 
 				
 				   var alltabsAcco=0;var alltabsStat=0;var alltabsProt=0;var alltabsRepli=0;var alltabsPool=0;var alltabsUP=0;
@@ -356,12 +411,12 @@
 					var userprivRepliPa="false"; var userprivRepliSe="false"; var userprivRepliRe="false";
 					var userprivPoolDG="false"; var userprivPoolSS="false";
 					var userprivUserPrivileges="false"; var userprivUpload="false";
-					var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 					if(curuser!="admin"){
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
-							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							if(gdata[prot].user==myname) {
 								userprivAccoAD=gdata[prot].Active_Directory; userprivAccoBU=gdata[prot].Box_Users; userprivAccoEr=gdata[prot].Error
 								userprivStatSC=gdata[prot].Service_Charts;userprivStatLo=gdata[prot].Logs;
 								userprivProtCI=gdata[prot].CIFS; userprivProtNF=gdata[prot].NFS;
@@ -480,7 +535,7 @@ function refreshList2(req,listid,filelocfrom,show) {
      $.each(pools[k]["volumes"],function(kk,vv){
       tovol=pools[k]['volumes'][kk]
       volumes.push(tovol) 
-      $("#Volumetable"+tovol['prot']).append('<tr onclick="rowisclicked(this)" class="variable trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="can\'t upload delete icon"></a></td></tr>');
+      $("#Volumetable"+tovol['prot']).append('<tr onclick="rowisclicked(this)" class="variable trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
      chartdata.push([tovol.name,normsize(tovol.quota)]);
      });
     });
@@ -496,8 +551,8 @@ function refreshList2(req,listid,filelocfrom,show) {
 	
 			
 			function SelectPanelNFS(s) {
-				var selection = s;
-				if (selection == "o") { selection = $("#Vol2 option:selected").val(); };
+				var selection ="s";
+				if (selection == "o") { selection = $('#Vol2 option:selected').val(); };
 				
 				$(".Paneloption").hide();
 				switch(selection) {
@@ -559,11 +614,11 @@ function refreshList2(req,listid,filelocfrom,show) {
 			$("#CIFS").click(function (){ 
 				if(config == 1 ) {
 					var userpriv="false";
-					var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
-							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							if(gdata[prot].user==myname) {
 								userpriv=gdata[prot].CIFS
 							}
 						};
@@ -584,11 +639,11 @@ function refreshList2(req,listid,filelocfrom,show) {
 			$("#NFS").click(function (){
 				if(config== 1){  
 					var userpriv="false";
-					var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
-							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							if(gdata[prot].user==myname) {
 								userpriv=gdata[prot].NFS
 							}
 						};
@@ -608,11 +663,11 @@ function refreshList2(req,listid,filelocfrom,show) {
 			$("#ISCSI").click(function (){  
 				if(config== 1){ 
 					var userpriv="false";
-					var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
-							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							if(gdata[prot].user==myname) {
 								userpriv=gdata[prot].ISCSI
 							}
 						};
@@ -644,11 +699,11 @@ function refreshList2(req,listid,filelocfrom,show) {
 				}
 			});
 			SelectPanelNFS("o");
-			$("#VoldeleteButton").click( function (){ $.post("./pump.php", { req:"VolumeDelete"+prot, name:$(".Pool2"+prot+" option:selected").val()+" "+$("tr.success td.Volname").text()+" "+Protocol+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+			$("#VoldeleteButton").click( function (){ $.post("./pump.php", { req:"VolumeDelete"+prot, name:$(".Pool2"+prot+" option:selected").val()+" "+$("tr.success td.Volname").text()+" "+Protocol+" "+myname}, function (data){
 				 
 				 });
 			});
-			$(".createvololdoldold").click(function (){  var req="";$.post("./pump.php", { req:"VolumeCreate"+prot+"", name:$("#Pool2"+prot+" option:selected").val()+" "+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+			$(".createvololdoldold").click(function (){  var req="";$.post("./pump.php", { req:"VolumeCreate"+prot+"", name:$("#Pool2"+prot+" option:selected").val()+" "+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+myname }, function (data){
 
 				 });
 			
@@ -664,12 +719,12 @@ function refreshList2(req,listid,filelocfrom,show) {
 				$(".ullis").hide();
 				if(config == 1 ) {
 						var userprivcifs="false"; var userprivnfs="false";
-						var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 						if (curuser !="admin") {
 							$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 								var gdata = jQuery.parseJSON(data);
 								for (var prot in gdata){
-									if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+									if(gdata[prot].user==myname) {
 										userprivcifs=gdata[prot].CIFS;
 										userprivnfs=gdata[prot].NFS;
 									}
@@ -684,14 +739,9 @@ function refreshList2(req,listid,filelocfrom,show) {
 		$("#close-success").click(function() { $(".bg-success").hide(); });
 
 $(".ref").click(function() {
-					//console.log("session before","<?php print session_id(); ?>");
 					if($(this).attr('id')=="Login")
 					{ 
-						$.post("sessionout.php",function(data){ 
 						document.getElementById('Login'+'ref').submit();
-						//console.log("session after",data);
-						});
-						//console.log("login");
 						
 					} else {
 					document.getElementById($(this).attr('id')+'ref').submit();

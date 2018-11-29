@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<?php session_start(); 
- if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/Login.php');}
- 
-?>
 <?php
 if( $_FILES['file']['name'] != "" )
 {
@@ -84,7 +80,7 @@ fclose($myfile);
             <li class="nav-item dropdown user-dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span><img src="assets/images/user-icon.png"> </span><?php echo $_SESSION["user"] ?>
+                    <span><img src="assets/images/user-icon.png"> </span><strong><span id="usrnm">myname</span></strong>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item ref" href="#" id="changepassword">Change Password</a>
@@ -345,30 +341,50 @@ fclose($myfile);
     </div>
 </main>
 <form id="Loginref" action="Login.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="changepasswordref" action="changepassword.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="accountsref" action="accounts.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="statusref" action="status.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="protocolref" action="protocol.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="replicationref" action="replication.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="poolsref" action="pools.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="configref" action="config.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <!--JAVA SCRIPT-->
+<div class="modal " tabindex="-1" id="overlay" role="dialog">
+ <div class="modal-dialog modal-dialog-centred" role="document">
+  <div class="modal-content">
+   <div class="modal-header">
+    <h4 class="modal-title text-center">Login TimeOut</h4>
+   </div>
+   <div class="modal-body">
+    <p> please click mouse or press a key to keep logged on</p>
+   </div>
+  </div>
+ </div>
+</div>
 <!--JQUERY SCROPT-->
 <script src="assets/js/jquery.min.js"></script>
 
@@ -391,16 +407,50 @@ fclose($myfile);
 			var DNS=1;
 			var whichul=0;
 			var upresult=0;
+ var mydate;
+ var myidhash;
+ var mytimer;
+ var mymodal;
+ var idletill=480000;
+ var modaltill=idletill-120000
+ var myid="<?php echo $_REQUEST['myid'] ?>";
+ myidhash=myid;
+ var myname="<?php echo $_REQUEST['name'] ?>";
+ $(".myname").val(myname)
+ $("#usrnm").text(myname)
+ $(".params").val(myid);
+//$("#overlay").modal('show');
+function timeron() {
+ mytimer=setTimeout(function() { 
+	document.getElementById('Login'+'ref').submit();
+	console.log('timout');
+		},idletill);
+ mymodal=setTimeout(function() { 
+	console.log('modaltimeout');
+	$("#overlay").modal('show')
+		},modaltill);
+}
+timeron();
+function timerrst() { clearTimeout(mytimer); clearTimeout(mymodal);$("#overlay").modal('hide'); timeron(); }
+function chkuser() {
+			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid},function(data){ 
+         var data2=data.replace(" ","").replace('\n','');
+	if (myid != data2) { 
+	   console.log('username',myname)
+           console.log('myid,data2',myid,'and',data2)
+		document.getElementById('Login'+'ref').submit();
+ 	}		;
+				});
+};
+chkuser();
+				$("html").click(function(){
+mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser();myidhash=mydate;console.log(myidhash); } timerrst();});
+				$("html").keypress(function(){mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser(); myidhash=mydate;};timerrst();});
 			$(".bg-success").hide();$(".bg-danger").hide();$(".bg-warning").hide();	
 			$(".ref").click(function() {
-					//console.log("session before","<?php print session_id(); ?>");
 					if($(this).attr('id')=="Login")
 					{ 
-						$.post("sessionout.php",function(data){ 
 						document.getElementById('Login'+'ref').submit();
-						//console.log("session after",data);
-						});
-						//console.log("login");
 						
 					} else {
 					document.getElementById($(this).attr('id')+'ref').submit();
@@ -416,14 +466,14 @@ function SS(){
 					var userprivRepliPa="false"; var userprivRepliSe="false"; var userprivRepliRe="false";
 					var userprivPoolDG="false"; var userprivPoolSS="false";
 					var userprivUserPrivileges="false"; var userprivUpload="false";
-					var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 					if(curuser!="admin"){
 						
 					
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
-							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							if(gdata[prot].user==myname) {
 								userprivAccoAD=gdata[prot].Active_Directory; userprivAccoBU=gdata[prot].Box_Users; userprivAccoEr=gdata[prot].Error
 								userprivStatSC=gdata[prot].Service_Charts;userprivStatLo=gdata[prot].Logs;
 								userprivProtCI=gdata[prot].CIFS; userprivProtNF=gdata[prot].NFS;
@@ -461,13 +511,13 @@ function SS(){
 				$(".ullis").hide();
 				
 						var userprivUserPrivileges="false"; var userprivColourize="false";var userprivUpload="false";
-						var curuser="<?php echo $_SESSION["user"] ?>";
+						var curuser=myname;
 						
 						if (curuser !="admin") {
 							$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 								var gdata = jQuery.parseJSON(data);
 								for (var prot in gdata){
-									if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+									if(gdata[prot].user==myname) {
 										userprivUserPrivileges=gdata[prot].UserPrivilegesch;
 										userprivColourize=gdata[prot].Colourizech;
 										userprivUpload=gdata[prot].Uploadch;
@@ -488,12 +538,12 @@ function SS(){
 			$("#UserPrivileges").click(function (){  
 				if(whichul==0) {
 					var userpriv="false";
-						var curuser="<?php echo $_SESSION["user"] ?>";
+						var curuser=myname;
 						whichul="#UserPrivileges";
 						$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 							var gdata = jQuery.parseJSON(data);
 							for (var prot in gdata){
-								if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+								if(gdata[prot].user==myname) {
 									userpriv=gdata[prot].UserPrivilegesch
 								}
 							};
@@ -507,12 +557,12 @@ function SS(){
 			$("#Upload").click(function () {
 				if(whichul == 0) {
 					var userpriv="false";
-					var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 					whichul="#Upload";
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
-							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							if(gdata[prot].user==myname) {
 								userpriv=gdata[prot].Uploadch
 							}
 						};
@@ -530,12 +580,12 @@ function SS(){
 			$("#Colourize").click(function (){   
 				if(whichul==0) {
 					var userpriv="false";
-					var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 					whichul="#Colourize";
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
-							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							if(gdata[prot].user==myname) {
 								userpriv=gdata[prot].Colourizech
 							}
 						};
@@ -543,7 +593,7 @@ function SS(){
 					if( userpriv=="true" | curuser=="admin" ) {
 						
 						
-						$("#iddcolor").val("<?php $men=7; echo session_id() ?>");
+						$("#iddcolor").val("<?php $men=7; ?>");
 						$("#Colorpls").submit();
 	//					$("h2").css("background-image","url('img/Priv.png')").text("User Privileges");  $("option.variable").remove(); proptime="44:333:22";; $(".UserPrivileges").show();refreshall();
 					}
@@ -555,56 +605,30 @@ function SS(){
 			function refreshall() {
 				DNS=1;
 								
-				//$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("footer").text(data);});
 				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ if(data!=oldcurrentinfo && data != ''){oldcurrentinfo=data;  $(".dr-messages").show();$(".bg-success").show(); $("#texthere").text(data);}});
 SS();
-				//refresh2('Privstatus');
+				$.get("requestversion.php",function(data){
+				 $("#soft").text(data)					
+				});
 				
-				$.get("gump.php", { req: 'run', name:'--prefix' }, function(data){
+				$.get("gump2.php", { req: 'usersinfo', name:'--prefix' }, function(data){
 					if(data==olddata) { return; }
 					olddata=data
 					
 					jdata = jQuery.parseJSON(data);
 					kdata = []
 					$.each(jdata,function(kk,vv){
-					kdata.push(jdata[kk].replace("['",'').replace("]'",'').replace("'",'').split(',')[0].split('/'))
+					var user={};
+
+					user['name']=jdata[kk]['name'].replace("usersinfo/",'')
+					kdata.push(user)
+							
 					});
 					$("#UserList option").remove();
 
 					$.each(kdata, function(k,v){
-											
-						if ( kdata[k].indexOf("user") > 0 ) {
-								//userid=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'')
-							username=kdata[k][kdata[k].indexOf("user")+1].replace("'",'').replace(' ','')
-							$("#UserList").append($("<option class='dontdelete'>").text(username).val(username));
-						}
-						//$.each(kdata,function(k,v){ 
-											
-						if (kdata[k].indexOf('hostfw') > 0 ) {
-							var fwlist=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'').split('/')
-							console.log('fwlist',fwlist)
-							$("#soft").text(fwlist[0])					
-						}
-			
-						//});
+							$("#UserList").append($("<option class='dontdelete'>").text(kdata[k]['name']).val(kdata[k]['name']));
 					});	
-					$.each(kdata, function(k,v){
-						if ( kdata[k].indexOf("userpriv") > 0 ) {
-							
-							
-							/// KDATA should be : [ 'dhcpxxx,'host',priv,'username','ActiveDirectory;WaterMark;.....']
-							if( kdata[k][kdata[k].indexOf("userpriv")+1].replace("'",'').replace(' ','') ==$("#UserList option:selected").val()) {
-								
-							var privvalue=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'').split('/')
-							var privindex=kdata[k][kdata[k].indexOf("userpriv")+2].replace("'",'').replace(' ','').split(';')
-							
-							$.each(privindex, function(k,v){  if(privvalue[k]=="true") { $("#"+privindex[k]).prop('checked',true); console.log(privindex[k],privvalue[k]);}});
-		
-							}
-						
-						
-						}
-					});
 				});
 				
 			}
@@ -619,7 +643,7 @@ SS();
 				console.log("hi")
 				sm="user"+" "+$("#UserList option:selected").val()+" ";
 				$(".checkboxy").each(function (){ sm=sm+$(this).attr('id')+" "+$(this).prop('checked')+" ";});
-				$.post("./pump.php", { req:"Priv", name:sm+" "+"administrator "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+				$.post("./pump.php", { req:"Priv", name:sm+" "+"administrator "+myname }, function (data){
 				 //refresh2("#statusarea2");
 		});
 	 });
@@ -662,7 +686,7 @@ SS();
 				upresult="success";
 				droppls.disable();
 				//console.log("file",file,"name",file.name,"path",file.mozFullPath);
-				$.post("./pump.php", { req:"GenPatch", name:file.name+" <?php echo $_SESSION["user"]; ?>"});
+				$.post("./pump.php", { req:"GenPatch", name:file.name+" "+myname});
 				$(".dz-success-mark").show();$(".dz-error-mark").hide();
 				$("div.dz-message").text("File is uploaded.. please, allow some minutes for upgrade");
 				
@@ -686,12 +710,12 @@ SS();
 			$("#close-success").click(function() { $(".bg-success").hide(); });
 			SS();
 $("#ApplyAvailable").click(function(){
-				$.post("./pump.php", { req:"ApplyFw", name:$("#softs").val()+" <?php echo $_SESSION["user"]; ?>"});
+				$.post("./pump.php", { req:"ApplyFw", name:$("#softs").val()+" "+myname});
  
 });
 $("#Applyurl").click(function(){
   console.log("Applyurl");
-				$.post("./pump.php", { req:"Applyurl", name:$("#urlapp").val()+" <?php echo $_SESSION["user"]; ?>"});
+				$.post("./pump.php", { req:"Applyurl", name:$("#urlapp").val()+" "+myname});
 });
 		
 	</script>

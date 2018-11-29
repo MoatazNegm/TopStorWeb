@@ -461,6 +461,7 @@
 //$("#overlay").modal('show');
 function timeron() {
  mytimer=setTimeout(function() { 
+	document.getElementById('Login'+'ref').submit();
 	console.log('timout');
 		},idletill);
  mymodal=setTimeout(function() { 
@@ -471,7 +472,7 @@ function timeron() {
 timeron();
 function timerrst() { clearTimeout(mytimer); clearTimeout(mymodal);$("#overlay").modal('hide'); timeron(); }
 function chkuser() {
-			$.get("./pumpy.php", { req:"chkuser2.py", name:myname+" "+myid},function(data){ 
+			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid},function(data){ 
          var data2=data.replace(" ","").replace('\n','');
 	if (myid != data2) { 
 	   console.log('username',myname)
@@ -485,14 +486,9 @@ chkuser();
 mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser();myidhash=mydate;console.log(myidhash); } timerrst();});
 				$("html").keypress(function(){mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser(); myidhash=mydate;};timerrst();});
 				$(".ref").click(function() {
-					console.log("session before","<?php echo'hi'; ?>");
 					if($(this).attr('id')=="Login")
 					{ 
-						$.post("sessionout.php",function(data){ 
 						document.getElementById('Login'+'ref').submit();
-						console.log("session after",data);
-						});
-						//console.log("login");
 						
 					} else {
 					console.log('id',$(this).attr('id')+'ref');

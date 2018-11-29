@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<?php session_start(); 
- if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/Login.php');}
-?>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -34,7 +30,7 @@
             <li class="nav-item dropdown user-dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span><img src="assets/images/user-icon.png"> </span><?php echo $_SESSION["user"] ?>
+                    <span><img src="assets/images/user-icon.png"> </span><strong><span id="usrnm">myname</span></strong>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item ref" href="#" id="changepassword">Change Password</a>
@@ -608,31 +604,51 @@
     </div>
 </main>
 <form id="Loginref" action="Login.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="changepasswordref" action="changepassword.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="accountsref" action="accounts.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="statusref" action="status.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="protocolref" action="protocol.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="replicationref" action="replication.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="poolsref" action="pools.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="configref" action="config.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 
 <!--JAVA SCRIPT-->
+<div class="modal " tabindex="-1" id="overlay" role="dialog">
+ <div class="modal-dialog modal-dialog-centred" role="document">
+  <div class="modal-content">
+   <div class="modal-header">
+    <h4 class="modal-title text-center">Login TimeOut</h4>
+   </div>
+   <div class="modal-body">
+    <p> please click mouse or press a key to keep logged on</p>
+   </div>
+  </div>
+ </div>
+</div>
 <!--JQUERY SCROPT-->
 <script src="assets/js/jquery.min.js"></script>
 
@@ -671,16 +687,50 @@
 			var status=0;
 			var syscounter=10;
 			var syscounter2=1000;
+ var mydate;
+ var myidhash;
+ var mytimer;
+ var mymodal;
+ var idletill=480000;
+ var modaltill=idletill-120000
+ var myid="<?php echo $_REQUEST['myid'] ?>";
+ myidhash=myid;
+ var myname="<?php echo $_REQUEST['name'] ?>";
+ $(".myname").val(myname)
+ $("#usrnm").text(myname)
+ $(".params").val(myid);
+//$("#overlay").modal('show');
+function timeron() {
+ mytimer=setTimeout(function() { 
+	document.getElementById('Login'+'ref').submit();
+	console.log('timout');
+		},idletill);
+ mymodal=setTimeout(function() { 
+	console.log('modaltimeout');
+	$("#overlay").modal('show')
+		},modaltill);
+}
+timeron();
+function timerrst() { clearTimeout(mytimer); clearTimeout(mymodal);$("#overlay").modal('hide'); timeron(); }
+function chkuser() {
+			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid},function(data){ 
+         var data2=data.replace(" ","").replace('\n','');
+	if (myid != data2) { 
+	   console.log('username',myname)
+           console.log('myid,data2',myid,'and',data2)
+		document.getElementById('Login'+'ref').submit();
+ 	}		;
+				});
+};
+chkuser();
+				$("html").click(function(){
+mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser();myidhash=mydate;console.log(myidhash); } timerrst();});
+				$("html").keypress(function(){mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser(); myidhash=mydate;};timerrst();});
 		$(".bg-success").hide();$(".bg-danger").hide();$(".bg-warning").hide();	
 		$(".ref").click(function() {
-					//console.log("session before","<?php print session_id(); ?>");
 					if($(this).attr('id')=="Login")
 					{ 
-						$.post("sessionout.php",function(data){ 
 						document.getElementById('Login'+'ref').submit();
-						//console.log("session after",data);
-						});
-						//console.log("login");
 						
 					} else {
 					document.getElementById($(this).attr('id')+'ref').submit();
@@ -696,12 +746,12 @@
 					var userprivRepliPa="false"; var userprivRepliSe="false"; var userprivRepliRe="false";
 					var userprivPoolDG="false"; var userprivPoolSS="false";
 					var userprivUserPrivileges="false"; var userprivUpload="false";
-					var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 					if(curuser!="admin"){
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
-							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							if(gdata[prot].user==myname) {
 								userprivAccoAD=gdata[prot].Active_Directory; userprivAccoBU=gdata[prot].Box_Users; userprivAccoEr=gdata[prot].Error
 								userprivStatSC=gdata[prot].Service_Charts;userprivStatLo=gdata[prot].Logs;
 								userprivProtCI=gdata[prot].CIFS; userprivProtNF=gdata[prot].NFS;
@@ -989,11 +1039,11 @@
 			$("#Partners").click(function (){
 				var userpriv="false";
 				
-					var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 				$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 					var gdata = jQuery.parseJSON(data);
 					for (var prot in gdata){
-						if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+						if(gdata[prot].user==myname) {
 							userpriv=gdata[prot].Partners
 						}
 					};
@@ -1006,11 +1056,11 @@
 			$("#Receiver").click(function (){ 
 				if(config== 1){ 
 					var userpriv="false";
-					var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
-							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							if(gdata[prot].user==myname) {
 								userpriv=gdata[prot].Replication
 							}
 						};
@@ -1024,11 +1074,11 @@
 			$("#Senders").click(function (){ 
 				if(config== 1){ 
 					var userpriv="false";
-					var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 						var gdata = jQuery.parseJSON(data);
 						for (var prot in gdata){
-							if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+							if(gdata[prot].user==myname) {
 								userpriv=gdata[prot].Senders
 							}
 						};
@@ -1043,11 +1093,11 @@
 							if(config== 1){
 								 
 								var userpriv="false";
-								var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 								$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 									var gdata = jQuery.parseJSON(data);
 									for (var prot in gdata){
-										if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+										if(gdata[prot].user==myname) {
 											userpriv=gdata[prot].Proxylic
 										}
 									};
@@ -1188,49 +1238,49 @@
 				$("#passphrase").show(); 
 				} else {$("#passphrase").hide(); $("#Port").val("<?php echo rand(15000,16000) ?>");} 
 			});
-		function AddPartner(){ $.post("./pump.php", { req:"PartnerAdd", name:$('#Partn').val()+" "+$('#type').val()+" "+$("#Proxy").is(":checked")+" "+$("#Pass").val()+" "+$("#Port").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+		function AddPartner(){ $.post("./pump.php", { req:"PartnerAdd", name:$('#Partn').val()+" "+$('#type').val()+" "+$("#Proxy").is(":checked")+" "+$("#Pass").val()+" "+$("#Port").val()+" "+myname });
 	 };
 	 
-		$("#AddLicense").click( function (){ $.post("./pump.php", { req:"LicenseAdd", name:$('#License').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+		$("#AddLicense").click( function (){ $.post("./pump.php", { req:"LicenseAdd", name:$('#License').val()+" "+myname });
 	 });
 
-		$("#AddProxy").click( function (){ $.post("./pump.php", { req:"ProxyAdd", name:$('#Proxyurl').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+		$("#AddProxy").click( function (){ $.post("./pump.php", { req:"ProxyAdd", name:$('#Proxyurl').val()+" "+myname });
 	 });
-	 function AddAlias(){ $.post("./pump.php", { req:"AliasAdd", name:$('#Alias').val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+	 function AddAlias(){ $.post("./pump.php", { req:"AliasAdd", name:$('#Alias').val()+" "+myname });
 	 };
 
-		$("#DelPartner").click( function (){ $.post("./pump.php", { req:"PartnerDel", name:$("#Partnerlist").val()+" "+"<?php echo $_SESSION["user"]; ?>" });
+		$("#DelPartner").click( function (){ $.post("./pump.php", { req:"PartnerDel", name:$("#Partnerlist").val()+" "+myname });
 		});
 		
-		function DelPartner(k){ $.post("./pump.php", { req:"PartnerDel", name:k+" "+"<?php echo $_SESSION["user"]; ?>" });
+		function DelPartner(k){ $.post("./pump.php", { req:"PartnerDel", name:k+" "+myname });
 		};
 
 			
-		$("#DeleteSnapshot").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotDelete", name:$("#Pool").val()+" "+$("#Replicatelist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+		$("#DeleteSnapshot").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotDelete", name:$("#Pool").val()+" "+$("#Replicatelist option:selected").val()+" "+myname }, function (data){
 				 });
 			});
-		$("#DeleteSnapshotsend").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotDelete", name:$("#Pool").val()+" "+$("#Senderslist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+		$("#DeleteSnapshotsend").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotDelete", name:$("#Pool").val()+" "+$("#Senderslist option:selected").val()+" "+myname}, function (data){
 				 });
 			});
 		
-		$("#RollbackSnapshotsend").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotRollback", name:$("#Pool").val()+" "+$("#Senderslist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+		$("#RollbackSnapshotsend").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotRollback", name:$("#Pool").val()+" "+$("#Senderslist option:selected").val()+" "+myname }, function (data){
 				 
 				 });
 			});	
-		$("#RollbackSnapshot").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotRollback", name:$("#Pool").val()+" "+$("#Replicatelist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+		$("#RollbackSnapshot").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotRollback", name:$("#Pool").val()+" "+$("#Replicatelist option:selected").val()+" "+myname}, function (data){
 				 
 				 });
 			});	
 
-		$("#DeleteHourly").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotPeriodDelete", name:$("#Hourlylist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+		$("#DeleteHourly").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotPeriodDelete", name:$("#Hourlylist option:selected").val()+" "+myname }, function (data){
 				 refresh2("Replicatestatus"); 
 				 });
 			});
-		$("#DeleteMinutely").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotPeriodDelete", name:$("#Minutelylist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+		$("#DeleteMinutely").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotPeriodDelete", name:$("#Minutelylist option:selected").val()+" "+myname }, function (data){
 				 refresh2("Replicatestatus"); 
 				 });
 			});
-		$("#DeleteWeekly").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotPeriodDelete", name:$("#Weeklylist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+		$("#DeleteWeekly").click( function (){ $.post("./pump.php", { req:"RemoteSnapShotPeriodDelete", name:$("#Weeklylist option:selected").val()+" "+myname }, function (data){
 				 refresh2("Replicatestatus"); 
 				 });
 			});
@@ -1247,7 +1297,7 @@
 				oper =oper+" "+$("#Poolrec").val()+" "+$("#Volrec").val();
 				console.log("period",oper,$("#partnercrec").val(),snapsel)
 				
-				$.post("./pump.php", { req:"RemoteSnapshotCreate"+snapsel, name: oper+" "+$("#partnercrec").val()+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+				$.post("./pump.php", { req:"RemoteSnapshotCreate"+snapsel, name: oper+" "+$("#partnercrec").val()+" "+myname }, function (data){
 				 refresh2("Snapsstatus"); 
 				 });
 			};
@@ -1257,11 +1307,11 @@
 		});
 			
 			
-            function SnapshotDelete(k){console.log("highere",k); $.post("./pump.php", { req:"SnapShotDelete", name:$("#Poolsend").val()+" "+k+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+            function SnapshotDelete(k){console.log("highere",k); $.post("./pump.php", { req:"SnapShotDelete", name:$("#Poolsend").val()+" "+k+" "+myname }, function (data){
 				 status="refresh"	
 				 });
 		};
-		function SnapshotRollback(k){ $.post("./pump.php", { req:"SnapShotRollback", name:$("#Poolsend").val()+" "+k+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+		function SnapshotRollback(k){ $.post("./pump.php", { req:"SnapShotRollback", name:$("#Poolsend").val()+" "+k+" "+myname }, function (data){
 				 status="refresh"	
 				 });
 			};	
@@ -1318,7 +1368,7 @@
 				};
 		
 			}
-			function SnapshotPeriodDelete(k){ $.post("./pump.php", { req:"RemoteSnapShotPeriodDelete", name:k+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+			function SnapshotPeriodDelete(k){ $.post("./pump.php", { req:"RemoteSnapShotPeriodDelete", name:k+" "+myname}, function (data){
 				 partnerrefresh=0;
 				 });
 			};
@@ -1334,7 +1384,7 @@
 				}
 				oper =oper+" "+$("#Pool option:selected").val()+" "+$("#Vol option:selected").val();
 				console.log(oper,snapsel);
-				$.post("./pump.php", { req:"SnapshotCreate"+snapsel, name: oper+" "+"<?php echo $_SESSION["user"]; ?>" }, function (data){
+				$.post("./pump.php", { req:"SnapshotCreate"+snapsel, name: oper+" "+myname }, function (data){
 				 refresh2("Snapsstatus"); $("#Vol").change();	
 				 });
 			};
@@ -1375,12 +1425,12 @@
 				$(".ullis").hide();
 				if(config == 1 ) {
 						var userprivPartners="false"; var userprivReplicate="false";var userprivSenders="false"; var userprivProxy="false";
-						var curuser="<?php echo $_SESSION["user"] ?>";
+					var curuser=myname;
 						if (curuser !="admin") {
 							$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 								var gdata = jQuery.parseJSON(data);
 								for (var prot in gdata){
-									if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+									if(gdata[prot].user==myname) {
 										userprivPartners=gdata[prot].Partners;
 										userprivReplicate=gdata[prot].Replication;
 										userprivSenders=gdata[prot].Senders;

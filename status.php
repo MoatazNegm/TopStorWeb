@@ -275,7 +275,7 @@
  $(".params").val(myid)
 
 function chkuser(){
-			$.get("./pumpy.php", { req:"chkuser2.py", name:myname+" "+myid},function(data){ 
+			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid},function(data){ 
          var data2=data.replace(" ","").replace('\n','');
 	if (myid != data2) { 
 	   console.log('username',myname)
@@ -289,10 +289,7 @@ chkuser();
 				$(".ref").click(function() {
 					if($(this).attr('id')=="Login")
 					{ 
-						$.post("sessionout.php",function(data){ 
 						document.getElementById('Login'+'ref').submit();
-						});
-						//console.log("login");
 						
 					} else {
 					console.log('id',$(this).attr('id')+'ref');

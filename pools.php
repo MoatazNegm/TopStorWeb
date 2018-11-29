@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-<?php session_start(); 
-if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/Login.php');}
-?>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -35,7 +32,7 @@ if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Locati
 			<li class="nav-item dropdown user-dropdown">
 		<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
 			 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				<span><img src="assets/images/user-icon.png"> </span><?php echo $_SESSION["user"] ?>
+                    <span><img src="assets/images/user-icon.png"> </span><strong><span id="usrnm">myname</span></strong>
 		</a>
 		<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 				<a class="dropdown-item ref" href="#" id="changepassword">Change Password</a>
@@ -725,30 +722,50 @@ if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Locati
 		</div>
 </main>
 <form id="Loginref" action="Login.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="changepasswordref" action="changepassword.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="accountsref" action="accounts.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="statusref" action="status.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="protocolref" action="protocol.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="replicationref" action="replication.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="poolsref" action="pools.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
 </form>
 <form id="configref" action="config.php" method="post">
-	<input type="hidden" name="idd" value="<?php print session_id();?>" >
-
+ <input class='myname' type="hidden" name='name' value="hi" >
+ <input class='params' type="hidden" name="myid" value=1>
+</form>
 <!--JAVA SCRIPT-->
+<div class="modal " tabindex="-1" id="overlay" role="dialog">
+ <div class="modal-dialog modal-dialog-centred" role="document">
+  <div class="modal-content">
+   <div class="modal-header">
+    <h4 class="modal-title text-center">Login TimeOut</h4>
+   </div>
+   <div class="modal-body">
+    <p> please click mouse or press a key to keep logged on</p>
+   </div>
+  </div>
+ </div>
+</div>
 <!--JQUERY SCROPT-->
 <script src="assets/js/jquery.min.js"></script>
 
@@ -803,6 +820,45 @@ var oldreleasesel=0;
 var ddk;
 var minspace; var maxspace;
 var ppoolstate="na";
+ var mydate;
+ var myidhash;
+ var mytimer;
+ var mymodal;
+ var idletill=480000;
+ var modaltill=idletill-120000
+ var myid="<?php echo $_REQUEST['myid'] ?>";
+ myidhash=myid;
+ var myname="<?php echo $_REQUEST['name'] ?>";
+ $(".myname").val(myname)
+ $("#usrnm").text(myname)
+ $(".params").val(myid);
+//$("#overlay").modal('show');
+function timeron() {
+ mytimer=setTimeout(function() { 
+	document.getElementById('Login'+'ref').submit();
+	console.log('timout');
+		},idletill);
+ mymodal=setTimeout(function() { 
+	console.log('modaltimeout');
+	$("#overlay").modal('show')
+		},modaltill);
+}
+timeron();
+function timerrst() { clearTimeout(mytimer); clearTimeout(mymodal);$("#overlay").modal('hide'); timeron(); }
+function chkuser() {
+			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid},function(data){ 
+         var data2=data.replace(" ","").replace('\n','');
+	if (myid != data2) { 
+	   console.log('username',myname)
+           console.log('myid,data2',myid,'and',data2)
+		document.getElementById('Login'+'ref').submit();
+ 	}		;
+				});
+};
+chkuser();
+				$("html").click(function(){
+mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser();myidhash=mydate;console.log(myidhash); } timerrst();});
+				$("html").keypress(function(){mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser(); myidhash=mydate;};timerrst();});
 function normsize(s){
 	var sizeinbytes=parseFloat(s)
 		if (s.includes('K')) { sizeinbytes=sizeinbytes/1000000 }
@@ -817,10 +873,8 @@ $(".ref").click(function() {
 
 	if($(this).attr('id')=="Login")
 	{ 
-		$.post("sessionout.php",function(data){ 
 			document.getElementById('Login'+'ref').submit();
 
-		});
 
 	} else {
 		document.getElementById($(this).attr('id')+'ref').submit();
@@ -841,12 +895,12 @@ function SS(){
 	var userprivRepliPa="false"; var userprivRepliSe="false"; var userprivRepliRe="false";
 	var userprivPoolDG="false"; var userprivPoolSS="false";
 	var userprivUserPrivileges="false"; var userprivUpload="false";
-	var curuser="<?php echo $_SESSION["user"] ?>";
+	var curuser=myname;
 	if(curuser!="admin"){
 		$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 			var gdata = jQuery.parseJSON(data);
 			for (var prot in gdata){
-				if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+				if(gdata[prot].user==myname) {
 					userprivAccoAD=gdata[prot].Active_Directory; userprivAccoBU=gdata[prot].Box_Users; userprivAccoEr=gdata[prot].Error
 						userprivStatSC=gdata[prot].Service_Charts;userprivStatLo=gdata[prot].Logs;
 					userprivProtCI=gdata[prot].CIFS; userprivProtNF=gdata[prot].NFS;
@@ -1715,11 +1769,11 @@ $("[class*='xdsoft']").hide();
 $(".DiskGroups").hide(); $(".SnapShots").hide(); 
 function pooladdlog(){
 	var userpriv="false";
-	var curuser="<?php echo $_SESSION["user"] ?>";
+	var curuser=myname;
 	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 		var gdata = jQuery.parseJSON(data);
 		for (var prot in gdata){
-			if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+			if(gdata[prot].user==myname) {
 				userpriv=gdata[prot].DiskGroups
 			}
 		};
@@ -1727,7 +1781,7 @@ function pooladdlog(){
 		if(userpriv=="true" | curuser=="admin" ) { 
 
 			//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"addlog " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id, passwd:currentpool+' '+currenthost});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"addlog " + myname+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id, passwd:currentpool+' '+currenthost});
 			syscounter2=980;  
 
 		}
@@ -1735,11 +1789,11 @@ function pooladdlog(){
 };
 function pooladdcache(){
 	var userpriv="false";
-	var curuser="<?php echo $_SESSION["user"] ?>";
+	var curuser=myname;
 	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 		var gdata = jQuery.parseJSON(data);
 		for (var prot in gdata){
-			if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+			if(gdata[prot].user==myname) {
 				userpriv=gdata[prot].DiskGroups
 			}
 		};
@@ -1747,7 +1801,7 @@ function pooladdcache(){
 		if(userpriv=="true" | curuser=="admin" ) { 
 
 			//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"addcache " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id , passwd:currentpool+' '+currenthost});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"addcache " +myname+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id , passwd:currentpool+' '+currenthost});
 			syscounter2=980;  
 
 		}
@@ -1755,18 +1809,18 @@ function pooladdcache(){
 };
 function pooladdspare(){
 	var userpriv="false";
-	var curuser="<?php echo $_SESSION["user"] ?>";
+	var curuser=myname;
 	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 		var gdata = jQuery.parseJSON(data);
 		for (var prot in gdata){
-			if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+			if(gdata[prot].user==myname) {
 				userpriv=gdata[prot].DiskGroups
 			}
 		};
 
 		if(userpriv=="true" | curuser=="admin" ) { 
 
-			$.post("./pump.php", { req: "DGsetPool.py", name:"addspare " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id+" ", passwd: currentpool+' '+currenthost});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"addspare " + myname+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id+" ", passwd: currentpool+' '+currenthost});
 			syscounter2=980;  
 
 		}
@@ -1775,18 +1829,18 @@ function pooladdspare(){
 
 function pooldelspecial(){
 	var userpriv="false";
-	var curuser="<?php echo $_SESSION["user"] ?>";
+	var curuser=myname;
 	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 		var gdata = jQuery.parseJSON(data);
 		for (var prot in gdata){
-			if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+			if(gdata[prot].user==myname) {
 				userpriv=gdata[prot].DiskGroups
 			}
 		};
 
 		if(userpriv=="true" | curuser=="admin" ) { 
 
-			$.post("./pump.php", { req: "DGsetPool.py", name:"delspecial " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id, passwd:pool+' '+currenthost});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"delspecial " + myname+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id, passwd:pool+' '+currenthost});
 			syscounter2=0;  
 
 		}
@@ -1794,18 +1848,18 @@ function pooldelspecial(){
 };
 function poolcreatesingle(){
 	var userpriv="false";
-	var curuser="<?php echo $_SESSION["user"] ?>";
+	var curuser=myname;
 	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 		var gdata = jQuery.parseJSON(data);
 		for (var prot in gdata){
-			if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+			if(gdata[prot].user==myname) {
 				userpriv=gdata[prot].DiskGroups
 			}
 		};
 
 		if(userpriv=="true" | curuser=="admin" ) { 
 
-			$.post("./pump.php", { req: "DGsetPool.py", name:"Single " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id,passwd:"nopool"+' '+currenthost});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"Single " + myname+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id,passwd:"nopool"+' '+currenthost});
 			syscounter2=980;  
 
 		}
@@ -1813,11 +1867,11 @@ function poolcreatesingle(){
 };
 function pooladdraidtriple(){
 	var userpriv="false";
-	var curuser="<?php echo $_SESSION["user"] ?>";
+	var curuser=myname;
 	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 		var gdata = jQuery.parseJSON(data);
 		for (var prot in gdata){
-			if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+			if(gdata[prot].user==myname) {
 				userpriv=gdata[prot].DiskGroups
 			}
 		};
@@ -1832,7 +1886,7 @@ function pooladdraidtriple(){
 				}
 
 			//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity3 " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:currentpool+' '+currenthost});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity3 " + myname+" "+stripeset,passwd:currentpool+' '+currenthost});
 
 			syscounter2=980;  
 
@@ -1843,11 +1897,11 @@ function pooladdraidtriple(){
 }
 function poolcreateraidtriple(){
 	var userpriv="false";
-	var curuser="<?php echo $_SESSION["user"] ?>";
+	var curuser=myname;
 	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 		var gdata = jQuery.parseJSON(data);
 		for (var prot in gdata){
-			if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+			if(gdata[prot].user==myname) {
 				userpriv=gdata[prot].DiskGroups
 			}
 		};
@@ -1861,7 +1915,7 @@ function poolcreateraidtriple(){
 				}
 
 			//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"parity3 " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:"nopool"+' '+currenthost });
+			$.post("./pump.php", { req: "DGsetPool.py", name:"parity3 " + myname+" "+stripeset,passwd:"nopool"+' '+currenthost });
 
 			syscounter2=980;  
 
@@ -1872,11 +1926,11 @@ function poolcreateraidtriple(){
 }
 function pooladdraiddual(){
 	var userpriv="false";
-	var curuser="<?php echo $_SESSION["user"] ?>";
+	var curuser=myname;
 	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 		var gdata = jQuery.parseJSON(data);
 		for (var prot in gdata){
-			if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+			if(gdata[prot].user==myname) {
 				userpriv=gdata[prot].DiskGroups
 			}
 		};
@@ -1890,7 +1944,7 @@ function pooladdraiddual(){
 				}
 
 			//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity2 " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:currentpool+' '+currenthost});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity2 " + myname+" "+stripeset,passwd:currentpool+' '+currenthost});
 
 			syscounter2=980;  
 
@@ -1901,11 +1955,11 @@ function pooladdraiddual(){
 }
 function poolcreateraiddual(){
 	var userpriv="false";
-	var curuser="<?php echo $_SESSION["user"] ?>";
+	var curuser=myname;
 	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 		var gdata = jQuery.parseJSON(data);
 		for (var prot in gdata){
-			if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+			if(gdata[prot].user==myname) {
 				userpriv=gdata[prot].DiskGroups
 			}
 		};
@@ -1918,7 +1972,7 @@ function poolcreateraiddual(){
 					}		
 				}
 
-			$.post("./pump.php", { req: "DGsetPool.py", name:"parity2 " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:"nopool" +' '+currenthost});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"parity2 " + myname+" "+stripeset,passwd:"nopool" +' '+currenthost});
 
 			syscounter2=980;  
 
@@ -1929,11 +1983,11 @@ function poolcreateraiddual(){
 }
 function pooladdraidsingle(){
 	var userpriv="false";
-	var curuser="<?php echo $_SESSION["user"] ?>";
+	var curuser=myname;
 	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 		var gdata = jQuery.parseJSON(data);
 		for (var prot in gdata){
-			if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+			if(gdata[prot].user==myname) {
 				userpriv=gdata[prot].DiskGroups
 			}
 		};
@@ -1947,7 +2001,7 @@ function pooladdraidsingle(){
 				}
 
 			//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:currentpool+' '+currenthost });
+			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity " + myname+" "+stripeset,passwd:currentpool+' '+currenthost });
 
 			syscounter2=980;  
 
@@ -1960,11 +2014,11 @@ function pooladdraidsingle(){
 }
 function poolcreateraidsingle(){
 	var userpriv="false";
-	var curuser="<?php echo $_SESSION["user"] ?>";
+	var curuser=myname;
 	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 		var gdata = jQuery.parseJSON(data);
 		for (var prot in gdata){
-			if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+			if(gdata[prot].user==myname) {
 				userpriv=gdata[prot].DiskGroups
 			}
 		};
@@ -1977,7 +2031,7 @@ function poolcreateraidsingle(){
 					}		
 				}
 
-			$.post("./pump.php", { req: "DGsetPool.py", name:"parity " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:"nopool "+currenthost });
+			$.post("./pump.php", { req: "DGsetPool.py", name:"parity " + myname+" "+stripeset,passwd:"nopool "+currenthost });
 
 			syscounter2=980;  
 
@@ -1990,17 +2044,17 @@ function poolcreateraidsingle(){
 }
 function pooladdstripe(){
 	var userpriv="false";
-	var curuser="<?php echo $_SESSION["user"] ?>";
+	var curuser=myname;
 	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 		var gdata = jQuery.parseJSON(data);
 		for (var prot in gdata){
-			if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+			if(gdata[prot].user==myname) {
 				userpriv=gdata[prot].DiskGroups
 			}
 		};
 
 		if(userpriv=="true" | curuser=="admin" ) { 
-			$.post("./pump.php", { req: "DGsetPool.py", name:"add " +"<?php echo $_SESSION["user"] ?>"+' '+currenthost+' '+dd[2].name+' '+dd[2].id,passwd:currentpool+' '+currenthost });
+			$.post("./pump.php", { req: "DGsetPool.py", name:"add " +myname+' '+currenthost+' '+dd[2].name+' '+dd[2].id,passwd:currentpool+' '+currenthost });
 
 			syscounter2=980;  
 
@@ -2009,11 +2063,11 @@ function pooladdstripe(){
 };
 function poolcreatestripe(){
 	var userpriv="false";
-	var curuser="<?php echo $_SESSION["user"] ?>";
+	var curuser=myname;
 	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 		var gdata = jQuery.parseJSON(data);
 		for (var prot in gdata){
-			if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+			if(gdata[prot].user==myname) {
 				userpriv=gdata[prot].DiskGroups
 			}
 		};
@@ -2026,7 +2080,7 @@ function poolcreatestripe(){
 					}
 				});
 
-			$.post("./pump.php", { req: "DGsetPool.py", name:"stripeset " + "<?php echo $_SESSION["user"] ?>"+" "+stripeset,passwd:"nopool"+' '+currenthost });
+			$.post("./pump.php", { req: "DGsetPool.py", name:"stripeset " + myname+" "+stripeset,passwd:"nopool"+' '+currenthost });
 
 			syscounter2=980;  
 
@@ -2036,11 +2090,11 @@ function poolcreatestripe(){
 function pooladdmirror(){
 
 	var userpriv="false";
-	var curuser="<?php echo $_SESSION["user"] ?>";
+	var curuser=myname;
 	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 		var gdata = jQuery.parseJSON(data);
 		for (var prot in gdata){
-			if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+			if(gdata[prot].user==myname) {
 				userpriv=gdata[prot].DiskGroups
 			}
 		};
@@ -2048,7 +2102,7 @@ function pooladdmirror(){
 		if(userpriv=="true" | curuser=="admin" ) { 
 
 
-			$.post("./pump.php", { req: "DGsetPool.py", name:"addmirror " + "<?php echo $_SESSION["user"] ?>"+" "+dd["1"].host+" "+dd["1"].name+":"+dd["1"].id+" "+dd["2"].name+":"+dd["2"].id, passwd:currentpool+' '+currenthost});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"addmirror " + myname+" "+dd["1"].host+" "+dd["1"].name+":"+dd["1"].id+" "+dd["2"].name+":"+dd["2"].id, passwd:currentpool+' '+currenthost});
 
 			syscounter2=980;  
 
@@ -2058,11 +2112,11 @@ function pooladdmirror(){
 function poolattachemirror(){
 
 	var userpriv="false";
-	var curuser="<?php echo $_SESSION["user"] ?>";
+	var curuser=myname;
 	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 		var gdata = jQuery.parseJSON(data);
 		for (var prot in gdata){
-			if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+			if(gdata[prot].user==myname) {
 				userpriv=gdata[prot].DiskGroups
 			}
 		};
@@ -2070,7 +2124,7 @@ function poolattachemirror(){
 		if(userpriv=="true" | curuser=="admin" ) { 
 
 
-			$.post("./pump.php", { req: "DGsetPool.py", name:"attachmirror " + "<?php echo $_SESSION["user"] ?>"+" "+dd["1"].host+" "+dd["1"].name+" "+dd["1"].id+" "+dd["2"].name+" "+dd["2"].id, passwd:currentpool+' '+currenthost});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"attachmirror " + myname+" "+dd["1"].host+" "+dd["1"].name+" "+dd["1"].id+" "+dd["2"].name+" "+dd["2"].id, passwd:currentpool+' '+currenthost});
 
 			syscounter2=980;  
 
@@ -2082,22 +2136,21 @@ function poolattachemirror(){
 }
 function poolcreatemirror() {
 	var userpriv="false";
-	var curuser="<?php echo $_SESSION["user"] ?>";
+	var curuser=myname;
 	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 		var gdata = jQuery.parseJSON(data);
 		for (var prot in gdata){
-			if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+			if(gdata[prot].user==myname) {
 				userpriv=gdata[prot].DiskGroups
 			}
 		};
 
 		if(userpriv=="true" | curuser=="admin" ) { 
 
-			$.post("./pump.php", { req: "DGsetPool.py", name:"mirror " + "<?php echo $_SESSION["user"] ?>"+" "+dd[1].host+" "+dd[1].name+":"+dd[1].id+" "+dd[2].name+":"+dd[2].id, passwd: "nopool"+' '+currenthost});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"mirror " + myname+" "+dd[1].host+" "+dd[1].name+":"+dd[1].id+" "+dd[2].name+":"+dd[2].id, passwd: "nopool"+' '+currenthost});
 
 			syscounter2=980;  
 
-			console.log('reqq: "DGsetPool.py", name:"mirror "' + '<?php echo $_SESSION["user"] ?> '+dd[1].host+' '+dd[1].name+':'+dd[1].id+' '+dd[2].name+':'+dd[2].id+', passwd: '+nopool+' '+currenthost+'};')
 		}
 	});
 
@@ -2105,11 +2158,11 @@ function poolcreatemirror() {
 $("#SnapShots").click(function (){ 
 	if(config== 1){ 
 		var userpriv="false";
-		var curuser="<?php echo $_SESSION["user"] ?>";
+		var curuser=myname;
 		$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 			var gdata = jQuery.parseJSON(data);
 			for (var prot in gdata){
-				if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+				if(gdata[prot].user==myname) {
 					userpriv=gdata[prot].SnapShots
 				}
 			};
@@ -2185,25 +2238,25 @@ function diskgetsize(fileloc,spanid1,spanid2,spanid3) {
 
 
 
-$("#submitdiskgroup").click( function (){ $.post("./pump.php", { req:"DGsetPool.py", name:$('input[name=Raidselect]:checked').val()+" "+$('input[name=Raidselect]:checked').attr("id")+" "+"<?php echo $_SESSION["user"]; ?>", passwd:"hihihihi"+currenthost }, function (data){
+$("#submitdiskgroup").click( function (){ $.post("./pump.php", { req:"DGsetPool.py", name:$('input[name=Raidselect]:checked').val()+" "+$('input[name=Raidselect]:checked').attr("id")+" "+myname, passwd:"hihihihi"+currenthost }, function (data){
 	refresh2("DGstatus");
 });
 });
 
 function pooldelete(){
 	var userpriv="false";
-	var curuser="<?php echo $_SESSION["user"] ?>";
+	var curuser=myname;
 	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 		var gdata = jQuery.parseJSON(data);
 		for (var prot in gdata){
-			if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+			if(gdata[prot].user==myname) {
 				userpriv=gdata[prot].DiskGroups
 }
 };
 
 if(userpriv=="true" | curuser=="admin" ) { 
 
-	$.post("./pump.php", { req:"DGdestroyPool.py ", name:currentpool+" "+"<?php echo $_SESSION["user"]; ?>", passwd:currenthost });
+	$.post("./pump.php", { req:"DGdestroyPool.py ", name:currentpool+" "+myname, passwd:currenthost });
 
 	syscounter2=980
 }
@@ -2211,31 +2264,31 @@ if(userpriv=="true" | curuser=="admin" ) {
 };
 
 
-$("#DeleteSnapshot").click( function (){ $.post("./pump.php", { req:"SnapShotDelete", name:$("#Pool").val()+" "+$("#Snaplist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>",passwd:"hihihi" }, function (data){
+$("#DeleteSnapshot").click( function (){ $.post("./pump.php", { req:"SnapShotDelete", name:$("#Pool").val()+" "+$("#Snaplist option:selected").val()+" "+myname ,passwd:"hihihi" }, function (data){
 	refresh2("Snapsstatus"); $("#Vol").change();	
 });
 });
-$("#RollbackSnapshot").click( function (){ $.post("./pump.php", { req:"SnapShotRollback", name:$("#Pool").val()+" "+$("#Snaplist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>" , passwd: "hihihi" }, function (data){
+$("#RollbackSnapshot").click( function (){ $.post("./pump.php", { req:"SnapShotRollback", name:$("#Pool").val()+" "+$("#Snaplist option:selected").val()+" "+myname , passwd: "hihihi" }, function (data){
 	refresh2("Snapsstatus"); $("#Vol").change();	
 });
 });	
-function SnapshotDelete(k){ $.post("./pump.php", { req:"SnapShotDelete", name:$("#Pool").val()+" "+k+" "+"<?php echo $_SESSION["user"]; ?>", passwd:"hihihi" }, function (data){
+function SnapshotDelete(k){ $.post("./pump.php", { req:"SnapShotDelete", name:$("#Pool").val()+" "+k+" "+myname, passwd:"hihihi" }, function (data){
 	refresh2("Snapsstatus"); $("#Vol").change();	
 });
 };
-function SnapshotRollback(k){ $.post("./pump.php", { req:"SnapShotRollback", name:$("#Pool").val()+" "+k+" "+"<?php echo $_SESSION["user"]; ?>" , passwd:"hihihih"}, function (data){
+function SnapshotRollback(k){ $.post("./pump.php", { req:"SnapShotRollback", name:$("#Pool").val()+" "+k+" "+myname , passwd:"hihihih"}, function (data){
 	refresh2("Snapsstatus"); $("#Vol").change();	
 });
 };	
-function SnapshotPeriodDelete(k){ $.post("./pump.php", { req:"SnapShotPeriodDelete", name:k+" "+"<?php echo $_SESSION["user"]; ?>",passwd:"hihihi" }, function (data){
+function SnapshotPeriodDelete(k){ $.post("./pump.php", { req:"SnapShotPeriodDelete", name:k+" "+myname,passwd:"hihihi" }, function (data){
 	refresh2("Snapsstatus"); $("#Vol").change();	
 });
 };
-$("#DeleteMinutely").click( function (){ $.post("./pump.php", { req:"SnapShotPeriodDelete", name:$("#Minutelylist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>", passwd:"hihihih" }, function (data){
+$("#DeleteMinutely").click( function (){ $.post("./pump.php", { req:"SnapShotPeriodDelete", name:$("#Minutelylist option:selected").val()+" "+myname, passwd:"hihihih" }, function (data){
 	refresh2("Snapsstatus"); $("#Vol").change();	
 });
 });
-$("#DeleteWeekly").click( function (){ $.post("./pump.php", { req:"SnapShotPeriodDelete", name:$("#Weeklylist option:selected").val()+" "+"<?php echo $_SESSION["user"]; ?>", passwd:"hihihih" }, function (data){
+$("#DeleteWeekly").click( function (){ $.post("./pump.php", { req:"SnapShotPeriodDelete", name:$("#Weeklylist option:selected").val()+" "+myname, passwd:"hihihih" }, function (data){
 	refresh2("Snapsstatus"); $("#Vol").change();	
 });
 });
@@ -2251,7 +2304,7 @@ function SnapshotCreate(){
 }
 oper =oper+" "+$("#Pool option:selected").val()+" "+$("#Vol option:selected").val();
 
-$.post("./pump.php", { req:"SnapshotCreate"+snapsel, name: oper+" "+"<?php echo $_SESSION["user"]; ?>", passwd:"hihihih" }, function (data){
+$.post("./pump.php", { req:"SnapshotCreate"+snapsel, name: oper+" "+myname, passwd:"hihihih" }, function (data){
 	refresh2("Snapsstatus"); $("#Vol").change();	
 });
 };
@@ -2288,12 +2341,12 @@ function starting() {
 	$(".ullis").hide();
 	if(config == 1 ) {
 		var userprivDiskGroups="false"; var userprivSnapShots="false";
-		var curuser="<?php echo $_SESSION["user"] ?>";
+		var curuser=myname;
 		if (curuser !="admin") {
 			$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
 				var gdata = jQuery.parseJSON(data);
 				for (var prot in gdata){
-					if(gdata[prot].user=="<?php echo $_SESSION["user"] ?>") {
+					if(gdata[prot].user==myname) {
 						userprivDiskGroups=gdata[prot].DiskGroups;
 						userprivSnapShots=gdata[prot].SnapShots;
 }
