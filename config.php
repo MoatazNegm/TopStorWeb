@@ -397,6 +397,7 @@ fclose($myfile);
 <script src="assets/js/main.js"></script>
 <script>
 			var needupdate=1
+ 			var oldtexthere='hihihi';
 			var proptime="55:55:55";
 			var proptimenew="33:333:33";
 			var oldcurrentinfo="";
@@ -423,10 +424,8 @@ fclose($myfile);
 function timeron() {
  mytimer=setTimeout(function() { 
 	document.getElementById('Login'+'ref').submit();
-	console.log('timout');
 		},idletill);
  mymodal=setTimeout(function() { 
-	console.log('modaltimeout');
 	$("#overlay").modal('show')
 		},modaltill);
 }
@@ -436,15 +435,13 @@ function chkuser() {
 			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid},function(data){ 
          var data2=data.replace(" ","").replace('\n','');
 	if (myid != data2) { 
-	   console.log('username',myname)
-           console.log('myid,data2',myid,'and',data2)
 		document.getElementById('Login'+'ref').submit();
  	}		;
 				});
 };
 chkuser();
 				$("html").click(function(){
-mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser();myidhash=mydate;console.log(myidhash); } timerrst();});
+mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser();myidhash=mydate; } timerrst();});
 				$("html").keypress(function(){mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser(); myidhash=mydate;};timerrst();});
 			$(".bg-success").hide();$(".bg-danger").hide();$(".bg-warning").hide();	
 			$(".ref").click(function() {
@@ -455,7 +452,6 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 					} else {
 					document.getElementById($(this).attr('id')+'ref').submit();
 					}
-		 //console.log($(this).attr('id'));
 		});	
 function SS(){ 
 				
@@ -604,8 +600,9 @@ function SS(){
 			
 			function refreshall() {
 				DNS=1;
-								
-				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ if(data!=oldcurrentinfo && data != ''){oldcurrentinfo=data;  $(".dr-messages").show();$(".bg-success").show(); $("#texthere").text(data);}});
+		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){
+		if(data!=oldcurrentinfo && data != ''){linerfact=-1;oldcurrentinfo=data;  $(".bg-success").fadeIn(800); $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
+	});						
 SS();
 				$.get("requestversion.php",function(data){
 				 $("#soft").text(data)					
@@ -614,60 +611,46 @@ SS();
 				$.get("gump2.php", { req: 'usersinfo', name:'--prefix' }, function(data){
 					if(data==olddata) { return; }
 					olddata=data
-					
 					jdata = jQuery.parseJSON(data);
 					kdata = []
 					$.each(jdata,function(kk,vv){
 					var user={};
-
-					user['name']=jdata[kk]['name'].replace("usersinfo/",'')
+					var userprop=jdata[kk]['prop'].split('/');
+user['name']=jdata[kk]['name'].replace("usersinfo/",'')
+$.each(userprop,function(k,v){
+ if (userprop[k].includes('-') > 0) {
+  user[userprop[k].split('-')[0]]=userprop[k].split('-')[1]
+ }
+});
 					kdata.push(user)
 							
 					});
 					$("#UserList option").remove();
 
 					$.each(kdata, function(k,v){
-							$("#UserList").append($("<option class='dontdelete'>").text(kdata[k]['name']).val(kdata[k]['name']));
+							$("#UserList").append($("<option class='dontdelete'>").text(kdata[k]['name']).val(k));
 					});	
+	$("#UserList").change();
 				});
 				
 			}
-			function refresh2(textareaid) {
-				
-				$.get("requestdata2.php", { file: 'Data/'+textareaid+'.log' }, function(data){
-					$('#'+textareaid).val(data);
-					});
-			}	;
 			
 			$("#SubmitPriv").click( function (){ 
-				console.log("hi")
-				sm="user"+" "+$("#UserList option:selected").val()+" ";
-				$(".checkboxy").each(function (){ sm=sm+$(this).attr('id')+" "+$(this).prop('checked')+" ";});
-				$.post("./pump.php", { req:"Priv", name:sm+" "+"administrator "+myname }, function (data){
-				 //refresh2("#statusarea2");
+				sm="user"+"_"+$("#UserList option:selected").text()+"/";
+				$(".checkboxy").each(function (){ sm=sm+$(this).attr('id')+"-"+$(this).prop('checked')+"/";});
+				$.post("./pump.php", { req:"Priv", name:sm+myname }, function (data){
 		});
 	 });
-			$("#UserList").change(function(){
+		$("#UserList").change(function(){
 				$(".checkboxy").each(function(){ $(this).prop("checked",false)});
-				$.each(kdata, function(k,v){
-					if ( kdata[k].indexOf("userpriv") > 0 ) {
-						
-						
-						/// KDATA should be : [ 'dhcpxxx,'host',priv,'username','ActiveDirectory;WaterMark;.....']
-						if( kdata[k][kdata[k].indexOf("userpriv")+1].replace("'",'').replace(' ','') ==$("#UserList option:selected").val()) {
-							
-						var privvalue=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'').split('/')
-						var privindex=kdata[k][kdata[k].indexOf("userpriv")+2].replace("'",'').replace(' ','').split(';')
-						
-						$.each(privindex, function(k,v){  if(privvalue[k]=="true") { $("#"+privindex[k]).prop('checked',true); console.log(privindex[k],privvalue[k]);}});
-	
-						}
-					
-					
-					}
-				});
-				//proptime="44:54333:232";
-				});
+		$.each(kdata[$("#UserList").val()], function(k,v){
+		  if (v=='true'){
+		   $("#"+k).prop("checked",true);
+		  } else {
+		   $("#"+k).prop("checked",false);
+		  }
+	});	
+});
 			setInterval('refreshall()', 2000);
 			//refreshUserList();
 			refreshall();
@@ -685,7 +668,6 @@ SS();
 			droppls.on("success", function(file,msg) { 
 				upresult="success";
 				droppls.disable();
-				//console.log("file",file,"name",file.name,"path",file.mozFullPath);
 				$.post("./pump.php", { req:"GenPatch", name:file.name+" "+myname});
 				$(".dz-success-mark").show();$(".dz-error-mark").hide();
 				$("div.dz-message").text("File is uploaded.. please, allow some minutes for upgrade");
@@ -705,7 +687,6 @@ SS();
 							var ggdata=data.split(',');
 							$.each(ggdata,function(i){ if(ggdata[i] !="") seloption ='<option value="'+ggdata[i]+'">'+ggdata[i]+'</option>'+seloption});
 							$("#softs").append(seloption);
-							 console.log("gdataall ",data)
 			});
 			$("#close-success").click(function() { $(".bg-success").hide(); });
 			SS();
