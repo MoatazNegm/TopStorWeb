@@ -333,7 +333,7 @@
 			var Vollisttime2 = 4444;
 			var Vollisttimenew = 5555;
 			var syscounter2=1000;
-			var currentinfo2timenew=0;currentinfo2time=34;
+			var oldcurrentinfo="dkasjf";
 			var olddata="hi";
 			var olddiskpool="hihi";
 			var jdata="hihihihi"
@@ -437,19 +437,9 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 			function refreshall() {
 				if($("#cifspane").hasClass('active'))  { if (prot !="CIFS") { olddiskpool="oldnfs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); Vollisttime2="skldjfadks"; prot="CIFS";}};
 				if($("#nfspane").hasClass('active') ) { if (prot !="NFS") { olddiskpool="oldcifs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove();prot="NFS"; Vollisttime2="ndfsfsn";}};
-				$.get("requestdate.php", { file: 'Data/currentinfo2.log2' }, function(data){
-			var objdate = jQuery.parseJSON(data);
-			currentinfo2timenew=objdate.timey;
-		});
-		 		if(currentinfo2timenew!=currentinfo2time) {
-		 			currentinfo2time=currentinfo2timenew;
-					$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){if(data != '') { 
-   $(".bg-success").show();
-   $("#texthere").text(data);
-   }
- });
-					
-					}
+		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){
+		if(data!=oldcurrentinfo && data != ''){linerfact=-1;oldcurrentinfo=data;  $(".bg-success").fadeIn(800); $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
+	});
 					refreshList2("GetPoolVollist","#Volumetable"+prot,"Data/Vollist.txt","Volumes");
 					//refresh3("#statusarea3");
 				if(syscounter2==1000) { syscounter2=0; } else { syscounter2=syscounter2+1; }

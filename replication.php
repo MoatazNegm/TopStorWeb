@@ -681,7 +681,7 @@
 			var partnerrefresh=0;
 			var listupdated=[];
 			var partnerrefreshrec=0;
-			var oldcurrentinfo;
+			var oldcurrentinfo='dklfjd';
 			var snapsel="";
 			var pools = [];
 			var status=0;
@@ -870,7 +870,9 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 			};
 
 			function refreshall() { //check pool status
-			$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ if(data!=oldcurrentinfo && data != ''){oldcurrentinfo=data;  $(".dr-messages").show();$(".bg-success").show(); $("#texthere").text(data);}});
+		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){
+		if(data!=oldcurrentinfo && data != ''){linerfact=-1;oldcurrentinfo=data;  $(".bg-success").fadeIn(800); $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
+	});
 				refreshPartnerlist("#Partnerlist","Data/Partnerslist.txt");
 				if($("#partner").hasClass("active") && status !="Partners") {
 					 status="Partners";

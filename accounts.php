@@ -446,6 +446,7 @@
 			var selprop=0
 			var hostips={} 
 			var DNS=1;
+			var oldcurrentinfo='dlkfajsdl;';
  var mydate;
  var myidhash;
  var mytimer;
@@ -562,6 +563,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 			}
 			function refreshall() {
 				DNS=1;
+				refreshUserList();
 					updateprop();
 					
 					
@@ -582,7 +584,9 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 				{		
 				refreshUserList()		
 				}
-				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("#texthere").text(data);});
+		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){
+		if(data!=oldcurrentinfo && data != ''){linerfact=-1;oldcurrentinfo=data;  $(".bg-success").fadeIn(800); $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
+	});
 			}
 			function refresh4(request,field) {
 				if(DNS > 0) {
