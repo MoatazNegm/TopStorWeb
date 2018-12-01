@@ -325,13 +325,13 @@
             <div class="modal-body">
                 <form class="dr-form">
                      <div class="form-group row">
-                        <label class="col-3 col-form-label">Password</label>
+                       <label class="col-3 col-form-label">Password</label>
                         <div class="col-9">
-                            <input id="chpass"class="form-control" type="password">
+                         <input id="chpass"class="form-control" type="password">
                         </div>
-                    </div>
-                    <div class="text-right">
-                        <button type="button" class="btn btn-submit ChPass col-5"  data-dismiss="modal" aria-label="Close">Save</button>
+                       </div>
+                       <div class="text-right">
+                       <button type="button" id="ChPasssubmit" class="btn btn-submit ChPass col-5"  data-dismiss="modal" aria-label="Close">Save</button>
                     </div>
                 </form>
             </div>
@@ -737,13 +737,18 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 				 refresheruser=3 
 				 });
 			};
-			function userPassword(){ userpass=arguments[0];  $("#userEditing").modal('show') };
+			function userPassword(){ userpass=arguments[0];  $("#userEditing").modal('show') ;console.log('userpass:',userpass);}
+                        $("#iChPasssubmit").click(function(){
+			changePassword(mypass)
+			});
 			function changePassword(){ $.post("./pump.php", { req:"UnixChangePass", name:"'"+userpass+"'", passwd:arguments[0]+" "+myname}, function (data){});
 				refresheruser=1;			
 			};
 
 
-				$(".ChPass").click(function (){ $.post("./pump.php",{ req:"UnixChangePass", name:$("#chpass").val(), passwd:"'"+userpass+"'"+" "+myname});
+				$(".ChPass").click(function (){ 
+					console.log('ChPasssubmit',userpass,$("#chpass").val());
+				$.post("./pump.php",{ req:"UnixChangePass", name:"'"+$("#chpass").val()+"'", passwd:userpass+" "+myname});
 				refresheruser=1;
 				
 			});

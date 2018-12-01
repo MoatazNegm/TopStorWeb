@@ -40,11 +40,9 @@ Unlin1003:User : is added
 Unlin1006:0: : from :: Users are synced
 Unlin1005:0: : from :: syncing users
 Unlin1011: Changing user password for :
-Unlin1012:1: : from :: Changing user password for :
+Unlin1012:1: : from :: Changing password for user :
 Unlin1013:2: : from :: problem occurred while changing password for user :
-Unlin1014: problem occurred while changing password for user :
 Unlin1015:2: : from :: Success changing password for user :
-Unlin1016: Success changing password for user :
 Unlin1017: Adding user : ......
 Unlin1018:1: : from :: Adding user :
 Unlin1018:1: : from :: Adding user : (syncing)
