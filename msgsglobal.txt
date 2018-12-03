@@ -19,7 +19,7 @@ Disu4:0: : from :: Success deleting absent disk : from system database
 Dist5:0 : : from :: Start offlineing disk :. Please add a spare disk urgently so system :
 Disu5:1: : from :: Success to set disk : to be offline, please add a spare disk urgently
 Dist3:0: : from :: Removing Disk : in : from pool database 
-Zpsu01:0: : from :: finished scanning for disk pools to present : 
+Zpsu01:0: : from : finished scanning for disk pools to present : 
 Zpwa01:0: : from :: Still scanning the pool : 
 Zpst01:0: : from :: scanning for disk pools to present
 Zpst02:0: : from :: activating pool : 
@@ -98,7 +98,7 @@ Partsu04:2: : from :: Partner : booted with ip : as a cluster node.
 Partst05:2: : from :: Partner : raised alert that some node is down
 Partsu05:0: : from :: Partner : is taking action due to lost node
 Partst06:0: : from :: started checking and syncing this partner active pools 
-Partsu06:0: : from :: finished checking and syncing this partner active pools 
+Partsu06:0: : from : finished checking and syncing this partner active pools 
 Partner1000: Adding partner : ......
 Partner1001: Partner : already exists
 Partner1002: Success adding partner : of type :

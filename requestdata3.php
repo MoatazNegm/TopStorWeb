@@ -20,10 +20,13 @@
  if ($pos >= 0 ) { 
   $msgf="";
   $msgfarr = explode(":",$msglines[$pos]); 
+  #print $msglines[$pos];
   array_shift($msgfarr);
   $level=array_shift($msgfarr);
   if($level < 0) { exit();}; 
   #array_push($msgformat," ");
+  #print_r($msgformat);
+  #print_r($msgfarr);
   $msgfformcount=count($msgformat);
   for ($w = 0; $w < count($msgfarr); $w++) {
    if(array_key_exists($w,$msgformat)==1) {
