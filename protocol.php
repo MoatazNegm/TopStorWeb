@@ -173,14 +173,6 @@
                             </thead>
                             <tbody id="VolumetableCIFS">
                             <tr style="display: none;">
-                                <td class="text-center">p1</td>
-                                <td class="text-center">5000MB</td>
-                                <td class="text-center">150MB</td>
-                                <td class="text-center">150MB</td>
-                                <td class="text-center">70 %</td>
-                                <td class="text-center"><a href="#"><img src="assets/images/delete.png"
-                                                                         alt="can't upload delete icon"></a>
-                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -240,24 +232,6 @@
                             </thead>
                             <tbody id="VolumetableNFS">
                             <tr>
-                                <td class="">p1</td>
-                                <td class="text-center">5000MB</td>
-                                <td class="text-center">150MB</td>
-                                <td class="text-center">150MB</td>
-                                <td class="text-center">70 %</td>
-                                <td class="text-center"><a href="#"><img src="assets/images/delete.png"
-                                                                         alt="can't upload delete icon"></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">p1</td>
-                                <td class="text-center">5000MB</td>
-                                <td class="text-center">150MB</td>
-                                <td class="text-center">150MB</td>
-                                <td class="text-center">70 %</td>
-                                <td class="text-center"><a href="#"><img src="assets/images/delete.png"
-                                                                         alt="can't upload delete icon"></a>
-                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -392,7 +366,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
      else if (s.includes('T')) { sizeinbytes=sizeinbytes*1000000 }
      else if (s.includes('P')) { sizeinbytes=sizeinbytes*1000000000 }
      else  { sizeinbytes=sizeinbytes/1000000 }
-     return parseInt(sizeinbytes)
+     return parseFloat(sizeinbytes)
      }
  function createvol() { 
   var thepool=$("#Pool2"+prot).val()
@@ -505,7 +479,8 @@ function refreshList2(req,listid,filelocfrom,show) {
      $('#poollist').append($('<a class="poolmember" style="display: inline; " href="javascript:poolclick(\''+pools[k]["name"]+'\')">'+pools[k]["name"]+'</a>'));	
      pools[k]['alloc']=normsize(pools[k]['alloc'])
      pools[k]['empty']=normsize(pools[k]['empty'])
-     pools[k]['size']=normsize(pools[k]['size'])
+     //pools[k]['size']=normsize(pools[k]['size'])
+     pools[k]['size']=normsize(pools[k]['available'])+normsize(pools[k]['used'])
      $.each(pools[k]["volumes"],function(kk,vv){
       tovol=pools[k]['volumes'][kk]
       volumes.push(tovol) 
