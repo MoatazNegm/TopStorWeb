@@ -113,7 +113,6 @@
         <div class="col-md-9 main-content">
             <div class="tab-content">
                 <div class="tab-pane " id="servicestatus" role="tabpanel">
-	<?php include "netdata/demo.html" ?>
 
                 </div>
                 <div class="tab-pane active" id="Logspanel" role="tabpanel">
@@ -298,7 +297,7 @@ chkuser();
 		 //console.log($(this).attr('id'));
 		});
 			$(".bg-success").hide();$("#texthere").text("welcome to Quickstor interface");$(".bg-danger").hide();$(".bg-warning").hide();
- $("#sstatus").click(function(){ NETDATA.unpause(); });
+ $("#sstatus").click(function(){ ; });
 			$.get("requestdatein.php", { file: 'Data/ctr.logupdated' }, function(data){
 				
 					var objdate=jQuery.parseJSON(data);
@@ -858,7 +857,6 @@ $("#Disks").change(function(){
 		 if(topresent==0){topresentlog();};
 		 		$("#close-success").click(function() { $(".bg-success").hide(); });
 		SS();
-$(".netdata-chart-row").click(function(){ NETDATA.start(); });
 		</script>
 	<!-----	<script src="assets/js/main.js"></script>
 ----->
