@@ -18,7 +18,12 @@ Diwa4:1: : from :: Disk : is removed from system :
 Disu4:0: : from :: Success deleting absent disk : from system database
 Dist5:0 : : from :: Start offlineing disk :. Please add a spare disk urgently so system :
 Disu5:1: : from :: Success to set disk : to be offline, please add a spare disk urgently
-Dist3:0: : from :: Removing Disk : in : from pool database 
+Dist6:0: : from :: Start attaching Disk :  to stripe : in pool : in system : 
+Disu6:1: : from :: Success attaching Disk :  to stripe : in pool : in system : 
+Difa6:0: : from :: Failed attaching Disk :  to stripe : in pool : in system : 
+Dist7:0: : from :: Start Automatic Re-Attach of disk : to pool :
+Difa7:0: : from :: Failed Automatic Re-Attach of disk : to pool :
+Disu7:0: : from :: Success Automatic Re-Attach of disk : to pool :
 Zpsu01:0: : from : finished scanning for disk pools to present : 
 Zpwa01:0: : from :: Still scanning the pool : 
 Zpst01:0: : from :: scanning for disk pools to present
