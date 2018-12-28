@@ -19,6 +19,7 @@
  };
  if ($pos >= 0 ) { 
   $msgf="";
+  #print($msglines[$pos]);
   $msgfarr = explode(":",$msglines[$pos]); 
   #print $msglines[$pos];
   array_shift($msgfarr);
@@ -32,6 +33,8 @@
    if(array_key_exists($w,$msgformat)==1) {
     $msgf .= $msgformat[$w] ; 
    };
+   if ($msgfarr[$w] =="") 
+       array_splice($msgformat,$w+1,0,"");
    $msgf .=$msgfarr[$w];
   };
  };
