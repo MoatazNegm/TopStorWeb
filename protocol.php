@@ -130,15 +130,6 @@
                          
                         </div>
                         <div class="form-group row">
-                            <label class="col-3 col-form-label">Volumes</label>
-                            <div class="col-5">
-                                <select id="Vol2CIFS" class="form-control">
-                                    <option class="Complete" value="newoption" >New</option>
-                                    <option class="Complete" value="alloption">All</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
                             <label class="col-3 col-form-label">Vol name</label>
                             <div class="col-5">
                                 <input id="volnameCIFS" class="form-control" type="text">
@@ -155,6 +146,9 @@
                             <div id="createvolCIFS" type="button" class="createvol btn btn-submit col-5">Create Volume</div>
                         </a>
                     </div>
+		   <div clas="col-5">
+                    <canvas id="myChartCIFS" style="max-width: 500px;">hellomezo</canvas>
+                   </div>
 						  <div  class="" class="col-4 chart"  >
 								<div class="" id="chartCIFS" ></div>
 						  </div>                  
@@ -297,6 +291,7 @@
 <script language="javascript" type="text/javascript" src="js/excanvas.js"></script>
 <script class="include" language="javascript" type="text/javascript" src="js/jqplot.pieRenderer.min.js"></script>
 <!--CUSTOM JS-->
+<script src="assets/js/Chart.js"></script>
 <script>
 	var pools = [];
 			var plotflag = 0;
@@ -312,9 +307,12 @@
 			var olddiskpool="hihi";
 			var jdata="hihihihi"
 			var chartdata = [];
+			var datachart1 = [];
+			var datachart2 = [];
 			var voldirty=1;
 			var Vollock=0;
 			var prot="kssl";
+			var myChart='1';
                         var pools=[];
 			var volumes=[];
 			var plotb;
@@ -409,7 +407,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 				};
 			};
 			function refreshall() {
-				if($("#cifspane").hasClass('active'))  { if (prot !="CIFS") { olddiskpool="oldnfs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); Vollisttime2="skldjfadks"; prot="CIFS";}};
+				if($("#cifspane").hasClass('active'))  { if (prot !="CIFS") { olddiskpool="oldnfs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); $(".variable2").remove(); Vollisttime2="skldjfadks"; prot="CIFS";}};
 				if($("#nfspane").hasClass('active') ) { if (prot !="NFS") { olddiskpool="oldcifs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove();prot="NFS"; Vollisttime2="ndfsfsn";}};
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){
 		if(data!=oldcurrentinfo && data != ''){linerfact=-1;oldcurrentinfo=data;  $(".bg-success").fadeIn(800); $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
@@ -456,6 +454,8 @@ function refreshList2(req,listid,filelocfrom,show) {
     volumes=[]
     snapshots=[]
     chartdata=[]
+    datachart1=[]
+    datachart2=[]
     if (plotb) {plotb.destroy();}
     p=0
     $.each(jdata,function(k,v){
@@ -469,9 +469,11 @@ function refreshList2(req,listid,filelocfrom,show) {
       topool['host']=hosts[r]['name']
       pools.push(topool)
       if (topool.name.includes('free') < 1 ){
-       $("#Pool2"+prot).append($('<option class="pool ">').text(topool.name.replace('pdhcp','')).val(rr));
-       chartdata.push([topool.name,normsize(topool.alloc)]);
+       $("#Pool2"+prot).append($('<option class="pool variable2">').text(topool.name.replace('pdhcp','')).val(rr));
+       //chartdata.push([topool.name,normsize(topool.alloc)]);
        chartdata.push(['free',normsize(topool.empty)]);
+       datachart1.push('free');
+       datachart2.push(normsize(topool.empty));
       }
      });
     });
@@ -484,16 +486,20 @@ function refreshList2(req,listid,filelocfrom,show) {
      $.each(pools[k]["volumes"],function(kk,vv){
       tovol=pools[k]['volumes'][kk]
       volumes.push(tovol) 
-      $("#Volumetable"+tovol['prot']).append('<tr onclick="rowisclicked(this)" class="variable trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
+      $("#Volumetable"+tovol['prot']).append('<tr onclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
      chartdata.push([tovol.name,normsize(tovol.quota)]);
-     });
+     datachart1.push(tovol.name);
+     datachart2.push(normsize(tovol.quota));
     });
-   }
-   if (plotb) {plotb.destroy();}
+   });
+   };
+   if (myChart!='1') {myChart.destroy();}
    //plotchart(['chart'+prot,chartdata("#Pool2"+prot+"").val()]);
    //chartdata.push(['free',poolsize]);
    //chartdata.push(['others',others]);
-   plotchart('chart'+prot,chartdata);
+   //plotchart('chart'+prot,chartdata);
+   console.log('hi')
+   plotchart('chart'+prot,datachart1,datachart2);
   }
  });
 }
@@ -535,7 +541,29 @@ function refreshList2(req,listid,filelocfrom,show) {
 				if( counter == 0 ){  $("#disableddiv2").show(); $("#Voldelete").hide();  
 				} else { $("#Voldelete").show(); $("#disableddiv2").hide(); };
 			}
-			function plotchart(chart,data){
+			function plotchart(chart,data1,data2){
+		         var ctx= document.getElementById("myChart"+prot).getContext('2d');
+			 myChart = new Chart(ctx, {
+                             type: 'pie',
+			     titel: 'sizes',
+                             data: {
+				labels: data1,
+				datasets: [{
+				  data: data2,
+				  backgroundColor: [ 
+					'rgba(255,99,132)',
+					'rgba(54,162,235',
+					'rgba(255,206,86)',
+					'rgba(75,192,192)',
+					'rgba(153,102,255)',
+					'rgba(255,159,64)',
+				 ]
+				}]
+			      }
+			});
+			}
+		
+			function plotchart2(chart,data){
 				
 				 plotb = jQuery.jqplot (chart, [data], 
 					{ 
