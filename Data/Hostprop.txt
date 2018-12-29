@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"hostname":"dhcp9861","name":"dhcp9861","addr":"10.11.11.243","addrsubnet":"24","rout":"10.11.11.253","dns":"10.11.11.253","mgmtip":"0","mgmtsubnet":"0"}
+=======
+{"hostname":"dhcp95200","name":"dhcp95200","addr":"10.11.11.241","addrsubnet":"24","rout":"10.11.11.253","dns":"10.11.11.253","mgmtip":"0","mgmtsubnet":"0"}
+>>>>>>> d5d80f8d67225e8c15b1b3a7532f965c31160089
