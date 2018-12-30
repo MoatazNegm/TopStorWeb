@@ -7,7 +7,7 @@ Rawa1:1: : from :: Raid : status changed to :
 Posu0:1: : from :: Pool : status changed to : 
 Powa1:1: : from :: Pool : status changed to : 
 Disu0:1: : from :: Disk : status changed to : 
-Diwa1:1: : from :: Disk : status changed to : 
+Diwa1:1: : from :: Pool : is degraded  
 Difa1:1: : from :: Disk : failed in system : 
 Dist2:0: : from :: Start replacing Disk : by the spare disk : in system : 
 Disu2:1: : from :: Success replacing Disk : by the spare disk : in system :
