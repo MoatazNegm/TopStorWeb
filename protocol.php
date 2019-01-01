@@ -459,8 +459,8 @@ function refreshList2(req,listid,filelocfrom,show) {
      $.each(hosts[r]['prop'],function(rr,ss){
       topool=hosts[r]['prop'][rr]
       topool['host']=hosts[r]['name']
-      pools.push(topool)
       if (topool.name.includes('ree') < 1 ){
+       pools.push(topool)
        $("#Pool2"+prot).append($('<option class="pool variable2">').text(topool.name.replace('pdhcp','')).val(rr));
        //chartdata.push([topool.name,normsize(topool.alloc)]);
        chartdata.push(['free',normsize(topool.empty)]);
