@@ -7,7 +7,7 @@ Rawa1:1: : from :: Raid : status changed to :
 Posu0:1: : from :: Pool : status changed to : 
 Powa1:1: : from :: Pool : status changed to : 
 Disu0:1: : from :: Disk : status changed to : 
-Diwa1:1: : from :: Disk : status changed to : 
+Diwa1:1: : from :: Pool : is degraded  
 Difa1:1: : from :: Disk : failed in system : 
 Dist2:0: : from :: Start replacing Disk : by the spare disk : in system : 
 Disu2:1: : from :: Success replacing Disk : by the spare disk : in system :
@@ -23,7 +23,7 @@ Disu6:1: : from :: Success attaching Disk :  to stripe : in pool : in system :
 Difa6:0: : from :: Failed attaching Disk :  to stripe : in pool : in system : 
 Dist7:0: : from :: Start Automatic Re-Attach of disk : to pool :
 Difa7:0: : from :: Failed Automatic Re-Attach of disk : to pool :
-Disu7:0: : from :: Success Automatic Re-Attach of disk : to pool :
+Disu7:1: : from :: Success Automatic Re-Attach of disk : to pool :
 Zpsu01:0: : from : finished scanning for disk pools to present : 
 Zpwa01:0: : from :: Still scanning the pool : 
 Zpst01:0: : from :: scanning for disk pools to present

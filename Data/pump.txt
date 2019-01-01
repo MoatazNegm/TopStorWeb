@@ -1,1 +1,1 @@
-GetDisklist Data/disklist.txt hi
+UnixChkUser2 admin 1546099867

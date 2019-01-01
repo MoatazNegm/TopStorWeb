@@ -183,15 +183,6 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-3 col-form-label">Volumes</label>
-                            <div class="col-5">
-                                <select id="Vol2NFS" class="form-control">
-                                    <option class="Complete" value="newoption">--New--</option>
-                                    <option class="Complete" value="alloption">--All--</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
                             <label class="col-3 col-form-label">Vol name</label>
                             <div class="col-5">
                                 <input id="volnameNFS" class="form-control" type="text">
@@ -208,7 +199,8 @@
                         </a>
                         
                     </div>
-                    <div  class="" class="col-6 chart"  >
+                    <div  class="" class="col-5 chart"  >
+                    <canvas id="myChartNFS" style="max-width: 500px;">hellomezo</canvas>
 								<div class="" id="chartNFS" ></div>
 						  </div>                  
                     <h1>created volumes:</h1>
@@ -444,7 +436,7 @@ function refreshList2(req,listid,filelocfrom,show) {
     oldreleasesel=0
     disks=[];
     var k;
-    $(".Pool2"+prot+" option").remove();	
+    $(".variable2").remove();	
     $(listid+" tr").remove();
     disks=[];
     kdata=[];
@@ -468,7 +460,7 @@ function refreshList2(req,listid,filelocfrom,show) {
       topool=hosts[r]['prop'][rr]
       topool['host']=hosts[r]['name']
       pools.push(topool)
-      if (topool.name.includes('free') < 1 ){
+      if (topool.name.includes('ree') < 1 ){
        $("#Pool2"+prot).append($('<option class="pool variable2">').text(topool.name.replace('pdhcp','')).val(rr));
        //chartdata.push([topool.name,normsize(topool.alloc)]);
        chartdata.push(['free',normsize(topool.empty)]);
@@ -513,9 +505,6 @@ function refreshList2(req,listid,filelocfrom,show) {
 				switch(selection) {
 					case "newoption" :  $("#createvol").show(); break;
 					case "alloption" : $("tr.success").removeClass("success");rowisclicked(); $("#createvol").hide(); $("#Vollist").show(); 
-									 if(plotflag > 0 ) {
-										plotb.destroy();
-									}
 										plotchart('chartNFS',chartdata[$(".Pool2").val()]);
 									
 									break;
