@@ -15,7 +15,9 @@
  $msgf = "no error code found";
  for ($l = 0; $l < count($msglines); $l++) {
   $isfound = strpos ($msglines[$l], $msgcode);
-  if(  is_numeric($isfound)  ) {  $pos = $l; };
+  if(is_numeric($isfound) > 0) {  $pos = $l; 
+  } else { 
+   $x=fopen("Data/msgnotfound",'w'); fwrite($x,$msgcode); }; 
  };
  if ($pos >= 0 ) { 
   $msgf="";
