@@ -2262,7 +2262,9 @@ console.log($("#Pool").val(),k,myname,'hihihi')
 //	refresh2("Snapsstatus"); $("#Vol").change();	
 });
 };
-function SnapshotRollback(k){ $.post("./pump.php", { req:"SnapShotRollback", name:$("#Pool").val()+" "+k+" "+myname , passwd:"hihihih"}, function (data){
+function SnapshotRollback(k){ 
+  console.log($("#Pool").val(),k,myname,'hihihi')
+ $.post("./pump.php", { req:"SnapShotRollback.py ", name:$("#Pool").val()+" "+$("#Vol").val()+" "+k+" "+myname , passwd:"hihihih"}, function (data){
 //	refresh2("Snapsstatus"); $("#Vol").change();	
 });
 };	
