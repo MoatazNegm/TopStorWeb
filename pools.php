@@ -1007,7 +1007,7 @@ function refreshall() { //check pool status
 								topool=hosts[r]['prop'][rr]
 									topool['host']=hosts[r]['name']
 									pools.push(topool)
-									if (topool.name.includes('free') < 1 ){
+									if (topool.name.includes('ree') < 1 ){
 										$("#Pool").append($('<option class="pool ">').text(topool.name).val(topool.name));
 									}
 							});
@@ -1073,7 +1073,7 @@ function refreshall() { //check pool status
 							$.each(pools[k]["volumes"],function(kk,vv){
 								tovol=pools[k]['volumes'][kk]
 								volumes.push(tovol) 
-								$("#Vol").append($('<option class="volume '+tovol.pool+'">').text(tovol.name).val(kk));
+								$("#Vol").append($('<option class="volume '+tovol.pool+'">').text(tovol.name).val(tovol.name));
 							 $.each(tovol["snapshots"],function(kkk,vvv){
 									tosnap=tovol["snapshots"][kkk]
 									snapshots.push(tosnap)
@@ -2249,23 +2249,25 @@ if(userpriv=="true" | curuser=="admin" ) {
 
 
 $("#DeleteSnapshot").click( function (){ $.post("./pump.php", { req:"SnapShotDelete", name:$("#Pool").val()+" "+$("#Snaplist option:selected").val()+" "+myname ,passwd:"hihihi" }, function (data){
-	refresh2("Snapsstatus"); $("#Vol").change();	
+i//	refresh2("Snapsstatus"); $("#Vol").change();	
 });
 });
 $("#RollbackSnapshot").click( function (){ $.post("./pump.php", { req:"SnapShotRollback", name:$("#Pool").val()+" "+$("#Snaplist option:selected").val()+" "+myname , passwd: "hihihi" }, function (data){
-	refresh2("Snapsstatus"); $("#Vol").change();	
+//	refresh2("Snapsstatus"); $("#Vol").change();	
 });
 });	
-function SnapshotDelete(k){ $.post("./pump.php", { req:"SnapShotDelete", name:$("#Pool").val()+" "+k+" "+myname, passwd:"hihihi" }, function (data){
-	refresh2("Snapsstatus"); $("#Vol").change();	
+function SnapshotDelete(k){ 
+console.log($("#Pool").val(),k,myname,'hihihi')
+	$.post("./pump.php", { req:"SnapShotDelete.py", name:$("#Pool").val()+" "+" "+$("#Vol").val()+" "+k+" "+myname, passwd:"hihihi" }, function (data){
+//	refresh2("Snapsstatus"); $("#Vol").change();	
 });
 };
 function SnapshotRollback(k){ $.post("./pump.php", { req:"SnapShotRollback", name:$("#Pool").val()+" "+k+" "+myname , passwd:"hihihih"}, function (data){
-	refresh2("Snapsstatus"); $("#Vol").change();	
+//	refresh2("Snapsstatus"); $("#Vol").change();	
 });
 };	
 function SnapshotPeriodDelete(k){ $.post("./pump.php", { req:"SnapShotPeriodDelete", name:k+" "+myname,passwd:"hihihi" }, function (data){
-	refresh2("Snapsstatus"); $("#Vol").change();	
+//	refresh2("Snapsstatus"); $("#Vol").change();	
 });
 };
 $("#DeleteMinutely").click( function (){ $.post("./pump.php", { req:"SnapShotPeriodDelete", name:$("#Minutelylist option:selected").val()+" "+myname, passwd:"hihihih" }, function (data){
@@ -2287,9 +2289,9 @@ function SnapshotCreate(){
 	case "Weekly" : oper = $("#Stime").val()+" "+$("#Week option:selected").val()+" "+$("#KeepWeekly").val(); break;
 }
 oper =oper+" "+$("#Pool option:selected").val()+" "+$("#Vol option:selected").val();
-
-$.post("./pump.php", { req:"SnapshotCreate"+snapsel, name: oper+" "+myname, passwd:"hihihih" }, function (data){
-	refresh2("Snapsstatus"); $("#Vol").change();	
+console.log(snapsel,oper+" "+myname)
+$.post("./pump.php", { req:"SnapshotCreate.py "+snapsel, name: oper+" "+myname, passwd:"hihihih" }, function (data){
+//	refresh2("Snapsstatus"); $("#Vol").change();	
 });
 };
 
