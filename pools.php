@@ -789,6 +789,7 @@ var status=0;
 var olddata=[];
 var panesel="hifirst";
 var snapsel="hihi";
+var oldsnapsel='nononon';
 var syscounter=10;
 var syscounter2=1000;
 var getdisk=0;
@@ -804,6 +805,7 @@ var selecteddisks=[];
 var dcomp=[];
 var volumes=[];
 var snapshots=[];
+var snapperiod=[];
 var pool='dkjfdldas';
 var currenthost='hihi';
 var currentpool='hihihiA';
@@ -918,25 +920,6 @@ $("#deletePool").hide();$("#submitdiskgroup").hide();$(".finish").hide();$("#Sna
 					});
 				};
 			};
-function refreshList33333(request,listid,fileloc) {
-
-	$(listid+" option.vvariable").remove();
-	$("#Pool option.variable2").remove();
-	chartdata=[];
-	$.each(pool,function(k,v){
-		$("#Pool").append($('<option class="variable2">').text(pools[k].name).val(pools[k].name));
-		//chartdata.push(gdata[prot].class);
-		//chartdata[gdata[prot].class]=[];
-
-
-		$(listid).append($('<option class="vvariable '+gdata[prot].class+'">').text(gdata[prot].name).val(gdata[prot].name));
-
-	});
-	$("#Pool").change()
-		pools = [];
-
-
-};
 
 function snaponce(txtin,but,altbut,comp){
 
@@ -951,7 +934,6 @@ function snaponce(txtin,but,altbut,comp){
 
 
 function refreshall() { //check pool status
-
 	$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ 
 		if(data!=oldcurrentinfo && data != ''){oldcurrentinfo=data;  $(".bg-success").fadeIn(800); $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
 	});
@@ -965,6 +947,16 @@ function refreshall() { //check pool status
 			olddiskpool="ldksfj";syscounter2=1000; Vollisttime2="skldjfadks"; panesel="snapshot"; snaponce("#Oncename","#shortname","#goodname","#Oncename");
 		}
 	};
+        if($("#snapshotsHourly").hasClass('active') > 0 ) { snapsel='Hourly';}
+        else if($("#snapshotsOnce").hasClass('active') > 0) { snapsel='Once' }
+        else if($("#snapshotsMinutely").hasClass('active') > 0) { snapsel='Minutely' }
+        else if($("#snapshotsWeekly").hasClass('active') > 0) { snapsel='Weekly' }
+        if (oldsnapsel!=snapsel){
+	 oldsnapsel=snapsel
+	$(".snapperiod").hide()
+	$(".snapperiod."+snapsel+"."+$("#Vol").val()).show()
+	}
+
 	change=0
 		$.get("gump2.php", { req: "hosts", name:"--prefix"  },function(data){
 			if(data==olddiskpool) {return;}
@@ -988,12 +980,16 @@ function refreshall() { //check pool status
 						$("#Vol option.volume").remove();
 						$("#Pool option.pool").remove();
 						$(".Snaplist td").remove()
+						$(".snapperiod").remove()
+						oldsnapsel='change'
+						
 						disks=[];
 						kdata=[];
 						pools=[];
 						hosts=[]
 						volumes=[]
 						snapshots=[]
+						snapperiod=[]
 							//currenthost='hohoho'
 							//currentpool='na'
 						p=0
@@ -1074,6 +1070,28 @@ function refreshall() { //check pool status
 								tovol=pools[k]['volumes'][kk]
 								volumes.push(tovol) 
 								$("#Vol").append($('<option class="volume '+tovol.pool+'">').text(tovol.name).val(tovol.name));
+							 $.each(tovol["snapperiod"],function(kkk,vvv){
+      snapperiod.push(tovol["snapperiod"][kkk])
+ lash=tovol["snapperiod"][kkk][1].split("%")
+ lash0=tovol["snapperiod"][kkk][0].split("/")
+ ppool=lash0[1]
+ pvol=lash0[2]
+ pstamp=lash0[3]
+ info=lash[7].split('.')
+ if (info[0].includes("hourly") > 0){
+  at=info[2]; every=info[3]; keep=info[1] 
+  $("#Hourlylist").append('<tr class=" snapperiod Hourly '+ppool+' '+pvol+' '+pstamp+'"><td class="text-center">'+every+"</td><td class='text-center'>"+at+ "</td><td class='text-center'>"+keep+"</td><td class='text-center'>"+pstamp+"</td><td class='text-center'><a href='javascript:SnapshotPeriodDelete(\""+pstamp+"\")'><img src='assets/images/delete.png'</td></tr>");
+ }
+ if (info[0].includes("inutely") > 0){
+   every=info[2]; keep=info[1] 
+  $("#Minutelylist").append('<tr class=" snapperiod  Minutely '+ppool+' '+pvol+' '+pstamp+'"><td class="text-center">'+every+"</td><td class='text-center'>"+keep+"</td><td class='text-center'>"+pstamp+"</td><td class='text-center'><a href='javascript:SnapshotPeriodDelete(\""+pstamp+"\")'><img src='assets/images/delete.png'</td></tr>");
+ }
+ console.log('info0',info[0])
+ if (info[0].includes("eekly") > 0){
+  minhr=info[2]+":"+info[3] ; every=info[4]; keep=info[1]; 
+  $("#Weeklylist").append('<tr class=" snapperiod Weekly '+ppool+' '+pvol+' '+pstamp+'"><td class="text-center">'+minhr+"</td><td class='text-center'>"+every+ "</td><td class='text-center'>"+keep+"</td><td class='text-center'>"+pstamp+"</td><td class='text-center'><a href='javascript:SnapshotPeriodDelete(\""+pstamp+"\")'><img src='assets/images/delete.png'</td></tr>");
+ }
+});
 							 $.each(tovol["snapshots"],function(kkk,vvv){
 									tosnap=tovol["snapshots"][kkk]
 									snapshots.push(tosnap)
@@ -1082,6 +1100,8 @@ function refreshall() { //check pool status
 						 });
 $(".snapshot").hide()
 $(".snapshot."+$("#Vol").val()).show()
+$(".snapperiod").hide()
+$(".snapperiod."+snapsel+$("#Vol").val()).show()
 						 $.each(pools[k]["raidlist"],function(kk,vv){
 								toraids=pools[k]["raidlist"][kk]
 								toraids.pool=pools[k]["name"]
@@ -1090,7 +1110,6 @@ $(".snapshot."+$("#Vol").val()).show()
 									thedisk=pools[k]["raidlist"][kk]["disklist"][kkk]
 									dskstatus=thedisk['status']
 									dskchange=thedisk['changeop']
-									console.log(thedisk,dskchange)
 									$.each(disks,function(r,v){
 										if (disks[r]['status']!='free' && disks[r]['status']!='busy' && disks[r]['name']==thedisk['name']) {  dskstatus='busy' }
 										if (disks[r]['name']==thedisk['name'] && dskstatus!='busy' && dskstatus!='free') {  disks[r]['status']='busy' }
@@ -1117,17 +1136,6 @@ $(".snapshot."+$("#Vol").val()).show()
 					}
 			}
 			kdata=[]
-				$.each(kdata,function(k,v){	
-					if(kdata[k].indexOf('snapperiod') > 0){
-						periodlashes=jdata[k].replace("[",'').replace("']",'').replace("'",'').split(',')[1].replace("'",'').split('/')
-							switch(periodlashes[0].replace("'",'').replace(" ",'')){
-							case "hourly": $("#Hourlylist").append('<tr class="variable4 periods '+periodlashes[1].replace("'",'').replace(" ",'')+' '+kdata[k][0].replace("'",'').replace(" ",'')+'_'+kdata[k][kdata[k].indexOf('pool')+1].replace("'",'').replace(" ",'')+' '+periodlashes[0].replace("'",'').replace(" ",'')+' '+'"><td class="text-center">'+periodlashes[4].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+periodlashes[3].replace("'",'').replace(" ",'')+ "</td><td class='text-center'>"+ periodlashes[2].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+kdata[k][kdata[k].indexOf('snapperiod')+1].replace("'",'').replace(" ",'')+"</td><td class='text-center'><a href='javascript:SnapshotPeriodDelete(\""+kdata[k][kdata[k].indexOf('snapperiod')+1].replace("'",'').replace(" ",'')+"\")'><img src='assets/images/delete.png'</td></tr>");	 break;
-							case "Minutely": $("#Minutelylist").append('<tr class="variable4 periods '+periodlashes[1].replace("'",'').replace(" ",'')+' '+kdata[k][0].replace("'",'').replace(" ",'')+'_'+kdata[k][kdata[k].indexOf('pool')+1].replace("'",'').replace(" ",'')+' '+periodlashes[0].replace("'",'').replace(" ",'')+' '+'"><td class="text-center">'+periodlashes[3].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+periodlashes[2].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+kdata[k][kdata[k].indexOf('snapperiod')+1].replace("'",'').replace(" ",'')+"</td><td class='text-center'><a href='javascript:SnapshotPeriodDelete(\""+kdata[k][kdata[k].indexOf('snapperiod')+1].replace("'",'').replace(" ",'')+"\")'><img src='assets/images/delete.png'</td></tr>");	 break;
-							case "Weekly" : $("#Weeklylist").append('<tr class="variable4 periods '+periodlashes[1].replace("'",'').replace(" ",'')+' '+kdata[k][0].replace("'",'').replace(" ",'')+'_'+kdata[k][kdata[k].indexOf('pool')+1].replace("'",'').replace(" ",'')+' '+periodlashes[0].replace("'",'').replace(" ",'')+' '+'"><td class="text-center">'+periodlashes[3].replace("'",'').replace(" ",'')+":"+periodlashes[4].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+periodlashes[5].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+periodlashes[2].replace("'",'').replace(" ",'')+"</td><td class='text-center'>"+kdata[k][kdata[k].indexOf('snapperiod')+1].replace("'",'').replace(" ",'')+"</td><td class='text-center'><a href='javascript:SnapshotPeriodDelete(\""+kdata[k][kdata[k].indexOf('snapperiod')+1].replace("'",'').replace(" ",'')+"\")'><img src='assets/images/delete.png'</td></tr>");	 break;
-
-							}
-					}	
-				});
 			var diskdiv2
 			var diskcount=0
 			var diskpoolcount={}
@@ -1691,57 +1699,6 @@ function toggleDiskselect(ddd,sel,webclass) {
 		}
 }
 
-function refreshList(req,listid,fileloc,showtime,update) {
-	if(syscounter2==1000){$.post("./pump.php", { req: req, name:"a", passwd:"hihi" }, function (data1){});};
-	$.get("requestdatein.php", { file: fileloc+"updated" }, function(data){
-		var objdate = jQuery.parseJSON(data);
-		requiredtime[showtime]=objdate.updated;
-
-	});
-
-	if(times[showtime]==requiredtime[showtime]) { 
-	} 
-	else { 
-		times[showtime]=requiredtime[showtime];
-		//$(listid+" tr.variable").remove();
-		$.get("requestdata.php", { file: fileloc }, function(data){
-			if(data!=olddata[showtime]) {
-				olddata[showtime]=data
-					var gdata = jQuery.parseJSON(data);
-
-				$("."+update).remove();
-
-				for (var prot in gdata){
-
-					if(showtime=="snaps" ) {
-						//$(listid).append($('<option class="variable">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));	
-						//	//$(listid).append($('<option class="variable '+update+' '+gdata[prot].pool+' '+gdata[prot].father+'">').text(gdata[prot].onlyname+" on  "+gdata[prot].creation+ " "+ gdata[prot].time).val(gdata[prot].name));
-						//$(listid).append('<tr class="variable '+update+' '+gdata[prot].pool+' '+gdata[prot].father+'"><td class="text-center">'+gdata[prot].creation+"</td><td class='text-center'>"+ gdata[prot].time+"</td><td class='text-center'>"+gdata[prot].pool+"</td><td class='text-center'>"+gdata[prot].father+"</td><td class='text-center'>"+gdata[prot].onlyname+'</td><td class="text-center"><a href="javascript:SnapshotDelete(\''+gdata[prot].name+'\')"><img src="assets/images/delete.png"</td><td class="text-center"><a href="javascript:SnapshotRollback(\''+gdata[prot].name+'\')"><img src="assets/images/return.png" alt="can\'t upload delete icon"></a></td></tr>');
-						$("#Vol").change();	
-					}
-					if (showtime=="periods") {
-
-						switch (gdata[prot].period) {
-							//	case "hourly": $("#Hourlylist").append($('<option class="variable">').text('Every:'+gdata[prot].t3+"hrs At:"+gdata[prot].t2+ "mins Keep:"+ gdata[prot].t1+"snaps").val("hourly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3));	 break;
-							//	case "Minutely": $("#Minutelylist").append($('<option class="variable">').text('Every:'+gdata[prot].t2+"mins Keep:"+gdata[prot].t1+"snaps").val("Minutely."+gdata[prot].t1+"."+gdata[prot].t2));	 break;
-							//	case "Weekly" : $("#Weeklylist").append($('<option class="variable">').text('Every:'+gdata[prot].t4+" At:"+gdata[prot].t2+":"+gdata[prot].t3+" Keep:"+gdata[prot].t1+"snaps").val("Weekly."+gdata[prot].t1+"."+gdata[prot].t2+"."+gdata[prot].t3+"."+gdata[prot].t4));	 break;
-							//switch (gdata[prot].period) {
-						case "hourly": $("#Hourlylist").append('<tr class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'"><td class="text-center">'+gdata[prot].t3+"</td><td class='text-center'>"+gdata[prot].t2+ "</td><td class='text-center'>"+ gdata[prot].t1+"</td><td class='text-center'>"+gdata[prot].stamp+"</td><td class='text-center'><a href='javascript:SnapshotPeriodDelete(\""+gdata[prot].stamp+"\")'><img src='assets/images/delete.png'</td></tr>");	 break;
-						case "Minutely": $("#Minutelylist").append('<tr class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'"><td class="text-center">'+gdata[prot].t2+"</td><td class='text-center'>"+gdata[prot].t1+"</td><td class='text-center'>"+gdata[prot].stamp+"</td><td class='text-center'><a href='javascript:SnapshotPeriodDelete(\""+gdata[prot].stamp+"\")'><img src='assets/images/delete.png'</td></tr>");	 break;
-						case "Weekly" : $("#Weeklylist").append('<tr class="variable '+update+' '+gdata[prot].father+' '+gdata[prot].pool+' '+gdata[prot].period+' '+'"><td class="text-center">'+gdata[prot].t4+"</td><td class='text-center'>"+gdata[prot].t2+":"+gdata[prot].t3+"</td><td class='text-center'>"+gdata[prot].t1+"</td><td class='text-center'>"+gdata[prot].stamp+"</td><td class='text-center'><a href='javascript:SnapshotPeriodDelete(\""+gdata[prot].stamp+"\")'><img src='assets/images/delete.png'</td></tr>");	 break;
-
-
-
-						}
-
-						//chartdata.push([gdata[prot].Volumes[x].name,parseFloat(gdata[prot].Volumes[x].properties[0].volsize)])
-					}
-				}
-			}					
-		});
-
-	};
-};
 function refresh2(textareaid) {
 
 	$.get("requestdata2.php", { file: 'Data/'+textareaid+'.log' }, function(data){
@@ -2184,10 +2141,11 @@ $("#Weekly").change(function() {
 });
 $("#Vol").change(function() {
 	var selection=$("#Vol option:selected").val();
-
 	$(".snapshot").hide();
+	$(".snapperiod").hide();
 	//	$("#Snapshot").prop("selectedIndex",'-1');
 	$(".snapshot."+selection).show();
+	$(".snapperiod."+snapsel+'.'+selection).show();
 	//$('#Vol option.'+selection+':first').prop('selected', true);
 
 });
@@ -2292,7 +2250,7 @@ function SnapshotCreate(){
 	case "Minutely": oper = $("#Minute").val()+" "+$("#KeepMinutely").val(); break;
 	case "Weekly" : oper = $("#Stime").val()+" "+$("#Week option:selected").val()+" "+$("#KeepWeekly").val(); break;
 }
-oper =oper+" "+$("#Pool option:selected").val()+" "+$("#Vol option:selected").val();
+oper =$("#Pool option:selected").val()+" "+$("#Vol option:selected").val()+" "+oper
 console.log(snapsel,oper+" "+myname)
 $.post("./pump.php", { req:"SnapshotCreate.py "+snapsel, name: oper+" "+myname, passwd:"hihihih" }, function (data){
 //	refresh2("Snapsstatus"); $("#Vol").change();	
