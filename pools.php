@@ -1077,9 +1077,11 @@ function refreshall() { //check pool status
 							 $.each(tovol["snapshots"],function(kkk,vvv){
 									tosnap=tovol["snapshots"][kkk]
 									snapshots.push(tosnap)
-									$(".Snaplist").append('<tr class="snapshot '+kk+'"><td class="text-center">'+tosnap.creation+"</td><td class='text-center'>"+tosnap.time+"</td><td class='text-center'>"+tosnap.name+"</td><td class='text-center'>"+tosnap.quota+"</td><td class='text-center'>"+tosnap.refcompressratio+'</td><td class="text-center"><a href="javascript:SnapshotDelete(\''+tosnap.name+'\')"><img src="assets/images/delete.png"</td><td class="text-center"><a href="javascript:SnapshotRollback(\''+tosnap.name+'\')"><img src="assets/images/return.png" alt="can\'t upload delete icon"></a></td></tr>');
+									$(".Snaplist").append('<tr class="snapshot '+tovol.name+'"><td class="text-center">'+tosnap.creation+"</td><td class='text-center'>"+tosnap.time+"</td><td class='text-center'>"+tosnap.name+"</td><td class='text-center'>"+tosnap.quota+"</td><td class='text-center'>"+tosnap.refcompressratio+'</td><td class="text-center"><a href="javascript:SnapshotDelete(\''+tosnap.name+'\')"><img src="assets/images/delete.png"</td><td class="text-center"><a href="javascript:SnapshotRollback(\''+tosnap.name+'\')"><img src="assets/images/return.png" alt="can\'t upload delete icon"></a></td></tr>');
 							 });
 						 });
+$(".snapshot").hide()
+$(".snapshot."+$("#Vol").val()).show()
 						 $.each(pools[k]["raidlist"],function(kk,vv){
 								toraids=pools[k]["raidlist"][kk]
 								toraids.pool=pools[k]["name"]
