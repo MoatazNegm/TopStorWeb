@@ -229,15 +229,15 @@ NFS1004:1: : from :: Creating volume :
 NFS1005:2: : from :: Volume name : is registered in system. Please check for lost hosts/volumes
 NFS1006:2: : from :: Problem occurred while creating volume :
 NFS1007:2: : from :: Success creating volume :
-Snap1022:1: : from :: Deleting Snapshot :
+Snap1022:0: : from :: Deleting Snapshot :
 Snap1023:2: : from :: Problem while deleting snapshot :
 Snap1024: Success in deleting snapshot :
-Snap1025:2: : from :: Success in deleting snapshot :
+Snap1025:1: : from :: Success in deleting snapshot :
 Snap1026:0: : from :: Adding snapshot :
 Snap1027: Problem occurred while creating Snapshot :
 Snap1028:2: : from :: Problem occurred while creating Snapshot :
 Snap1029: Success creating Snapshot :
-Snap1030:2: : from :: Success creating Snapshot :
+Snap1030:1: : from :: Success creating Snapshot :
 Snap1031:1: : from :: Adding Weekly snapshot schedule for : ......
 Snap1032:2: : from :: Problem occurred adding Weekly snapshot schedule for :
 Snap1033:2: : from :: Success adding Weekly snapshot schedule : for volume :
