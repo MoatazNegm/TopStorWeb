@@ -968,6 +968,8 @@ function refreshall() { //check pool status
 							releasesel=0
 							oldreleasesel=0
 							disks=[];
+						cvol=$("#Vol").val()
+						cpool=$("#Pool").val()
 						var k;
 						$("#poollist2 div").remove();
 						$("#poollist3 div").remove();
@@ -1004,7 +1006,9 @@ function refreshall() { //check pool status
 									topool['host']=hosts[r]['name']
 									pools.push(topool)
 									if (topool.name.includes('ree') < 1 ){
-										$("#Pool").append($('<option class="pool ">').text(topool.name).val(topool.name));
+ if(topool.name==cpool){ selected='selected';} else {selected='';};
+ $("#Pool").append($('<option class="pool "'+selected+'>').text(topool.name).val(topool.name));
+
 									}
 							});
 						});
@@ -1069,7 +1073,8 @@ function refreshall() { //check pool status
 							$.each(pools[k]["volumes"],function(kk,vv){
 								tovol=pools[k]['volumes'][kk]
 								volumes.push(tovol) 
-								$("#Vol").append($('<option class="volume '+tovol.pool+'">').text(tovol.name).val(tovol.name));
+ if(tovol.name==cvol){ selected='selected';} else {selected='';};
+ $("#Vol").append($('<option class="volume '+tovol.pool+'" '+selected+'>').text(tovol.name).val(tovol.name));
 							 $.each(tovol["snapperiod"],function(kkk,vvv){
       snapperiod.push(tovol["snapperiod"][kkk])
  lash=tovol["snapperiod"][kkk][1].split("%")
