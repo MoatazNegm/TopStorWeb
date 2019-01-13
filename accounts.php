@@ -178,6 +178,18 @@
                                 <input id="UserPass" class="form-control" type="password">
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label">Home Pool</label>
+                            <div class="col-2">
+				<select id="UserVol" class="form-control">
+				 <option value='NoHome'>----</option>
+				</select>
+                            </div>
+                                <label class="offset-1 col-1 col-form-label">Size..GB</label>
+                            <div class="col-1">
+                                <input id="volsizeCIFS" min="1" class="form-control" type="number" value="1">
+                            </div>
+                        </div>
                         <div class="">
                             <button id="UnixAddUser" type="button" class="btn btn-submit col-3" style="cursor: pointer;">Add User</button>
                         </div>
@@ -187,14 +199,14 @@
                         <table class="col-5 table  dr-table-show">
                             <thead>
                             <tr>
-                                <th class="col-4">user</th>
+                                <th class="col-2">user</th>
                                 <th class="text-center">Change Password</th>
                                 <th class="text-center">Delete</th>
                             </tr>
                             </thead>
                             <tbody  id="UserList">
                             <tr>
-                                <td class="col-4">John Doe</td>
+                                <td class="col-2"></td>
                                 <td class="text-center"><a href="#" data-toggle="modal" data-target="#userEditing"><img src="assets/images/edit.png"
                                                                          alt="can't upload edit icon"></a></td>
                                 <td class="text-center"><a href="#"><img src="assets/images/delete.png"
@@ -202,7 +214,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="col-4">John Doe</td>
+                                <td class="col-2"></td>
                                 <td class="text-center"><a href="#" data-toggle="modal" data-target="#userEditing"><img src="assets/images/edit.png"
                                                                          alt="can't upload edit icon"></a></td>
                                 <td class="text-center"><a href="#"><img src="assets/images/delete.png"
@@ -451,6 +463,9 @@
  var myidhash;
  var mytimer;
  var mymodal;
+ var voldata='hihihi';
+ var oldvoldata='n;nolnlnn';
+ var volumes={'NoHome': 'NoHome'};
  var idletill=480000;
  var modaltill=idletill-120000
  var myid="<?php echo $_REQUEST['myid'] ?>";
@@ -565,7 +580,23 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 				DNS=1;
 				refreshUserList();
 					updateprop();
-					
+		$.get("gump2.php", { req: "pools/", name:"--prefix"  },function(voldata){
+			if(voldata!=oldvoldata)
+			{
+			  cvol=$("#UserVol").val()
+			  $(".volume").remove()
+ 			  volumes={'NoHome': 'NoHome'};
+			    oldvoldata=voldata
+			jvol = jQuery.parseJSON(voldata);
+			  console.log('voldata',voldata)
+$.each(jvol,function(k,v){
+ vol=jvol[k].name.split('/')[1]
+ volumes[vol]=jvol[k].prop
+ if( cvol==vol) {selected='selected';} else {selected='';}
+ $("#UserVol").append($('<option class="volume " '+selected+'>').text(vol).val(vol));
+			});
+			}		
+	});
 					
 				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("bg-success").text(data);});
 			//	console.log("AD is visible : " , $(".AD").is(":visible"));
@@ -631,7 +662,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 						//	if ( kdata[k].indexOf("user") > 0 ) {
 								//userid=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'')
 								username=kdata[k][1]
-								$("#UserList").append('<tr class="dontdelete" > ><td class="col-4">'+username+'</td><td class="text-center"><a href="javascript:userPassword(\''+username+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td class="text-center"><a class="UnixDelUser" val="'+username+'" href="javascript:auserdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+								$("#UserList").append('<tr class="dontdelete" > ><td class="col-2">'+username+'</td><td class="text-center"><a href="javascript:userPassword(\''+username+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td class="text-center"><a class="UnixDelUser" val="'+username+'" href="javascript:auserdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
 						});
 					}
 				});
@@ -707,7 +738,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 				 
 			});
 		
-			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val(), passwd:$("#UserPass").val()+" "+myname}, function (data){
+			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val()+' '+$("#UserVol").val(), passwd:$("#UserPass").val()+" "+volumes[$("#UserVol").val()]+" "+myname}, function (data){
 				 //refreshUserList(); 
 				 refresheruser=3
 				 });
