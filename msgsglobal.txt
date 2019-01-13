@@ -7,7 +7,7 @@ Rawa1:1: : from :: Raid : status changed to :
 Posu0:1: : from :: Pool : status changed to : 
 Powa1:1: : from :: Pool : status changed to : 
 Disu0:1: : from :: Disk : status changed to : 
-Diwa1:1: : from :: Disk : status changed to : 
+Diwa1:1: : from :: Pool : is degraded  
 Difa1:1: : from :: Disk : failed in system : 
 Dist2:0: : from :: Start replacing Disk : by the spare disk : in system : 
 Disu2:1: : from :: Success replacing Disk : by the spare disk : in system :
@@ -23,7 +23,7 @@ Disu6:1: : from :: Success attaching Disk :  to stripe : in pool : in system :
 Difa6:0: : from :: Failed attaching Disk :  to stripe : in pool : in system : 
 Dist7:0: : from :: Start Automatic Re-Attach of disk : to pool :
 Difa7:0: : from :: Failed Automatic Re-Attach of disk : to pool :
-Disu7:0: : from :: Success Automatic Re-Attach of disk : to pool :
+Disu7:1: : from :: Success Automatic Re-Attach of disk : to pool :
 Zpsu01:0: : from : finished scanning for disk pools to present : 
 Zpwa01:0: : from :: Still scanning the pool : 
 Zpst01:0: : from :: scanning for disk pools to present
@@ -50,7 +50,7 @@ Unlin1013:2: : from :: problem occurred while changing password for user :
 Unlin1015:2: : from :: Success changing password for user :
 Unlin1017: Adding user : ......
 Unlin1018:1: : from :: Adding user :
-Unlin1018:1: : from :: Adding user : (syncing)
+Unlin10188:1: : from :: Adding user : (syncing)
 Unlin1019: Problem occurred while adding user :
 Unlin1020:2: : from :: Problem occurred while adding user :
 Unlin1021:2: : from :: User : already exists
@@ -229,15 +229,15 @@ NFS1004:1: : from :: Creating volume :
 NFS1005:2: : from :: Volume name : is registered in system. Please check for lost hosts/volumes
 NFS1006:2: : from :: Problem occurred while creating volume :
 NFS1007:2: : from :: Success creating volume :
-Snap1022:1: : from :: Deleting Snapshot :
+Snap1022:0: : from :: Deleting Snapshot :
 Snap1023:2: : from :: Problem while deleting snapshot :
 Snap1024: Success in deleting snapshot :
-Snap1025:2: : from :: Success in deleting snapshot :
+Snap1025:1: : from :: Success in deleting snapshot :
 Snap1026:0: : from :: Adding snapshot :
 Snap1027: Problem occurred while creating Snapshot :
 Snap1028:2: : from :: Problem occurred while creating Snapshot :
 Snap1029: Success creating Snapshot :
-Snap1030:2: : from :: Success creating Snapshot :
+Snap1030:1: : from :: Success creating Snapshot :
 Snap1031:1: : from :: Adding Weekly snapshot schedule for : ......
 Snap1032:2: : from :: Problem occurred adding Weekly snapshot schedule for :
 Snap1033:2: : from :: Success adding Weekly snapshot schedule : for volume :
