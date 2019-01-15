@@ -187,7 +187,7 @@
                             </div>
                                 <label class="offset-1 col-1 col-form-label">Size..GB</label>
                             <div class="col-1">
-                                <input id="volsizeCIFS" min="1" class="form-control" type="number" value="1">
+                                <input id="volsize" min="1" class="form-control" type="number" value="1">
                             </div>
                         </div>
                         <div class="">
@@ -738,7 +738,7 @@ $.each(jvol,function(k,v){
 				 
 			});
 		
-			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val()+' '+$("#UserVol").val(), passwd:$("#UserPass").val()+" "+volumes[$("#UserVol").val()]+" "+myname}, function (data){
+			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val()+' '+$("#UserVol").val(), passwd:$("#UserPass").val()+" "+volumes[$("#UserVol").val()]+" "+$("#volsize").val()+"G "+myname}, function (data){
 				 //refreshUserList(); 
 				 refresheruser=3
 				 });

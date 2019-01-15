@@ -1,1 +1,1 @@
-{"hostname":"dhcp95200","name":"dhcp95200","addr":"10.11.11.241","addrsubnet":"24","rout":"10.0.4.2","dns":"192.168.43.1","mgmtip":"0","mgmtsubnet":"0"}
+{"hostname":"dhcp95200","name":"dhcp95200","addr":"10.11.11.241","addrsubnet":"24","rout":"10.0.4.2","dns":"192.168.43.1","mgmtip":"10.11.11.252","mgmtsubnet":"24"}
