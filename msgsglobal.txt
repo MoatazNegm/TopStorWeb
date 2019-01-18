@@ -53,7 +53,10 @@ Unlin1018:1: : from :: Adding user :
 Unlin10188:1: : from :: Adding user : (syncing)
 Unlin1019: Problem occurred while adding user :
 Unlin1020:2: : from :: Problem occurred while adding user :
-Unlin1021:2: : from :: User : already exists
+Unlin1021uu:1: : from :: User : already exists
+Unlin1021vv:1: : from :: Volume : already exists
+Unlin1021uv:1: : from :: User : cannot be created as there is a volume with same name
+Unlin1021vu:1: : from :: Voume : cannot be created as there is a user with same name
 Unlin10211:2: : from :: User : already exists so deleting accoount to sync new data
 Unlin1022:2: : from :: Success adding user :
 Unlin10222:0: : from :: Success adding user : (syncing)
