@@ -199,9 +199,11 @@
                         <table class="col-5 table  dr-table-show">
                             <thead>
                             <tr>
-                                <th class="col-2">user</th>
-                                <th class="text-center">Change Password</th>
-                                <th class="text-center">Delete</th>
+                                <th style="width:25%;">User Name</th>
+                                <th style="width: 25%;">Home Pool</th>
+                                <th style="width: 20%;">Quota</th>
+                                <th style="width: 15%;">Change Password</th>
+                                <th style="width: 15%;" class="text-center">Delete</th>
                             </tr>
                             </thead>
                             <tbody  id="UserList">
@@ -646,23 +648,19 @@ $.each(jvol,function(k,v){
 			}	;
 			function refreshUserList(){
 				var jdata;
-				$.get("gump.php", { req: 'usersinfo', name:'--prefix' }, function(data){
+				$.get("gump2.php", { req: 'usersinfo', name:'--prefix' }, function(data){
 				  if(data==olddata) { return; }
 				   jdata = jQuery.parseJSON(data);
                                    olddata=data
-				  kdata = []
-					if(typeof jdata=='object') {
+				if(typeof jdata=='object') {
 						console.log('users=',jdata)
 						olddiskpool=data;
-						$.each(jdata,function(kk,vv){
-							kdata.push(jdata[kk].replace("['",'').replace("]'",'').replace("'",'').split(',')[0].split('/'))
-						});
 						$("#UserList tr").remove();
-						$.each(kdata, function(k,v){
-						//	if ( kdata[k].indexOf("user") > 0 ) {
-								//userid=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'')
-								username=kdata[k][1]
-								$("#UserList").append('<tr class="dontdelete" > ><td class="col-2">'+username+'</td><td class="text-center"><a href="javascript:userPassword(\''+username+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td class="text-center"><a class="UnixDelUser" val="'+username+'" href="javascript:auserdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+						$.each(jdata, function(k,v){
+								username=jdata[k]['name'].replace('usersinfo/','')
+								usersize=jdata[k]['prop'].split('/')[3]
+								userpool=jdata[k]['prop'].split('/')[1]
+								$("#UserList").append('<tr class="dontdelete" > ><td style="width:25%;">'+username+'</td><td style="width:25%;">'+userpool+'</td><td style="width:20%;">'+usersize+'<td style="width: 15%;" class="text-center"><a href="javascript:userPassword(\''+username+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td style="width: 15%;" class="text-center"><a class="UnixDelUser" val="'+username+'" href="javascript:auserdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
 						});
 					}
 				});
