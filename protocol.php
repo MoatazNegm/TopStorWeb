@@ -111,12 +111,71 @@
                                 <div></div>
                                 <span>NFS</span></a>
                         </li>
+                        <li class="nav-item HOMe">
+                            <a class="nav-link" data-toggle="tab" href="#HOMespane" role="tab">
+                                <div></div>
+                                <span>Home</span></a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="col-md-9 main-content">
             <div class="tab-content">
+                <div class="tab-pane " id="HOMespane" role="tabpanel">
+                	
+                    <div class="col-6 dr-form">
+                        <div class="form-group row">
+                        	
+                            <label class="col-3 col-form-label">Pool</label>
+                            <div class="col-5">
+                                <select id="Pool2HOMe" class="Pool2 form-control">
+                                </select>
+                            </div>
+                         
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label">Vol name</label>
+                            <div class="col-5">
+                                <input id="volnameHOMe" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label">Size..GB</label>
+                            <div class="col-5">
+                                <input id="volsizeHOMe" min="1" class="form-control" type="number" value="1">
+                            </div>
+                        </div>
+
+                        <a href="javascript:createvol()"class="row">
+                            <div id="createvolHOMe" type="button" class="createvol btn btn-submit col-5">Create Volume</div>
+                        </a>
+                    </div>
+		   <div clas="col-5">
+                    <canvas id="myChartHOMe" style="max-width: 500px;">hellomezo</canvas>
+                   </div>
+						  <div  class="" class="col-4 chart"  >
+								<div class="" id="chartHOMe" ></div>
+						  </div>                  
+                    <h1>created volumes:</h1>
+                    <div class="row table-responsive">
+                        <table class="col-12 table  dr-table-show">
+                            <thead>
+                            <tr>
+                                <th class="" style="padding-left: 2rem; ">Volume Name</th>
+                                <th class="text-center">Volume Size(MB)</th>
+                                <th class="text-center">Actual size(MB)</th>
+                                <th class="text-center">Snaps size(MB)</th>
+                                <th class="text-center">Compres ratio(%)</th>
+                            </tr>
+                            </thead>
+                            <tbody id="VolumetableHOMe">
+                            <tr style="display: none;">
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <div class="tab-pane active" id="cifspane" role="tabpanel">
                 	
                     <div class="col-6 dr-form">
@@ -400,6 +459,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 			};
 			function refreshall() {
 				if($("#cifspane").hasClass('active'))  { if (prot !="CIFS") { olddiskpool="oldnfs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); $(".variable2").remove(); Vollisttime2="skldjfadks"; prot="CIFS";}};
+				if($("#HOMespane").hasClass('active'))  { if (prot !="HOMe") { olddiskpool="old"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); $(".variable2").remove(); Vollisttime2="skldjfadks"; prot="HOMe";}};
 				if($("#nfspane").hasClass('active') ) { if (prot !="NFS") { olddiskpool="oldcifs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove();prot="NFS"; Vollisttime2="ndfsfsn";}};
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){
 		if(data!=oldcurrentinfo && data != ''){linerfact=-1;oldcurrentinfo=data;  $(".bg-success").fadeIn(800); $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
@@ -478,7 +538,12 @@ function refreshList2(req,listid,filelocfrom,show) {
      $.each(pools[k]["volumes"],function(kk,vv){
       tovol=pools[k]['volumes'][kk]
       volumes.push(tovol) 
+      if ( prot != 'HOMe'){
       $("#Volumetable"+tovol['prot']).append('<tr onclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
+} else {
+      $("#Volumetable"+tovol['prot']).append('<tr onclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td></tr>');
+
+}
      chartdata.push([tovol.name,normsize(tovol.quota)]);
      datachart1.push(tovol.name);
      datachart2.push(normsize(tovol.quota));
