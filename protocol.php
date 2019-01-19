@@ -167,6 +167,7 @@
                                 <th class="text-center">Actual size(MB)</th>
                                 <th class="text-center">Snaps size(MB)</th>
                                 <th class="text-center">Compres ratio(%)</th>
+                                <th class="text-center">Delete</th>
                             </tr>
                             </thead>
                             <tbody id="VolumetableHOMe">
@@ -538,12 +539,8 @@ function refreshList2(req,listid,filelocfrom,show) {
      $.each(pools[k]["volumes"],function(kk,vv){
       tovol=pools[k]['volumes'][kk]
       volumes.push(tovol) 
-      if ( prot != 'HOMe'){
       $("#Volumetable"+tovol['prot']).append('<tr onclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
-} else {
-      $("#Volumetable"+tovol['prot']).append('<tr onclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td></tr>');
 
-}
      chartdata.push([tovol.name,normsize(tovol.quota)]);
      datachart1.push(tovol.name);
      datachart2.push(normsize(tovol.quota));
