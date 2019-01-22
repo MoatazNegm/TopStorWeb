@@ -382,7 +382,7 @@ chkuser();
 				   var alltabsAcco=0;var alltabsStat=0;var alltabsProt=0;var alltabsRepli=0;var alltabsPool=0;var alltabsUP=0;
 					var curuser=myname;
 					if(curuser!="admin"){
-					$.get("gump2.php", { req: 'usersinfo/'curuser, name:"" },function(data){ 
+					$.get("gump2.php", { req: 'usersinfo/'+curuser, name:"" },function(data){ 
 	console.log('ss-user',data.split('/'));
 	var gdata=data.split('/')
 	gdata.shift(); gdata.shift();
