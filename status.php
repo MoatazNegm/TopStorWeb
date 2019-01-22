@@ -73,7 +73,7 @@
                 <li class="nav-item protocol">
                     <a class="ref nav-link" id="protocol" href="#" role="tab">
                         <div></div>
-                        Protocol</a>
+                        Volumes</a>
                 </li>
                 <li class="nav-item replication">
                     <a class="nav-link ref" href="#" id="replication" role="tab">
@@ -382,9 +382,10 @@ chkuser();
 				   var alltabsAcco=0;var alltabsStat=0;var alltabsProt=0;var alltabsRepli=0;var alltabsPool=0;var alltabsUP=0;
 					var curuser=myname;
 					if(curuser!="admin"){
-					$.get("gump2.php", { req: 'usersinfo/mezo', name:"" },function(data){ 
+					$.get("gump2.php", { req: 'usersinfo/'curuser, name:"" },function(data){ 
 	console.log('ss-user',data.split('/'));
 	var gdata=data.split('/')
+	gdata.shift(); gdata.shift();
 						if(gdata[3].split('-')[1]!="true") { $(".activeDirectory").hide(); $("#activeDirectory").hide(); alltabsAcco=1;} 
 						if(gdata[7].split('-')[1]!="true") { $(".boxUsers").hide(); $("#boxUsers").hide(); alltabsAcco=alltabsAcco+1;} 
 						if(gdata[10].split('-')[1]!="true") { $(".boxProperties").hide(); $("#boxProperties").hide(); alltabsAcco=alltabsAcco+1;} 
@@ -392,7 +393,7 @@ chkuser();
 						if(gdata[4].split('-')[1]!="true") { $(".servicestatus").hide(); $("#servicestatus").hide(); alltabsStat=1;} 	else { $(".servicestatus").show(); $("#servicestatus").show();}
 						if(gdata[8].split('-')[1]!="true") { $("#Logs").hide(); $("#Logspanel").hide();alltabsStat=alltabsStat+1;}
 						if(alltabsStat==2) { $(".status").hide();}
-						if(gdata[11].split('-')[1]!="true") { $(".cifs").hide(); $("#cifspane").hide(); alltabsProt=1;} 
+						if(gdata[11].split('-')[1]!="true") { $(".cifs").hide(); $("#cifspane").hide(); alltabsProt=1;$(".HOMe").hide(); $("#HOMespane").hide();} 
 						if(gdata[5].split('-')[1]!="true") { $(".nfs").hide(); $("#nfspane").hide(); alltabsProt=alltabsProt+1;}
 						if(alltabsProt==2) { $(".protocol").hide()}
 						if(gdata[15].split('-')[1]!="true") { $(".partner").hide(); $("#partner").hide(); alltabsRepli=1;} 
