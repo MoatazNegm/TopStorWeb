@@ -110,12 +110,17 @@
                         <li id="navUnLin" class="nav-item boxUsers">
                             <a class="nav-link" data-toggle="tab" href="#boxUsers" role="tab">
                                 <div></div>
-                                <span>Box users</span></a>
+                                <span>User Accounts</span></a>
+                        </li>
+                        <li id="navUnGrp" class="nav-item boxGroups">
+                            <a class="nav-link" data-toggle="tab" href="#boxGroups" role="tab">
+                                <div></div>
+                                <span>Group Accounts</span></a>
                         </li>
                         <li id="navboxProperties" class="nav-item boxProperties">
                             <a class="nav-link" data-toggle="tab" href="#boxProperties" role="tab">
                                 <div></div>
-                                <span>Box properties</span></a>
+                                <span>System properties</span></a>
                         </li>
                     </ul>
                 </div>
@@ -219,6 +224,38 @@
                                 <td class="col-2"></td>
                                 <td class="text-center"><a href="#" data-toggle="modal" data-target="#userEditing"><img src="assets/images/edit.png"
                                                                          alt="can't upload edit icon"></a></td>
+                                <td class="text-center"><a href="#"><img src="assets/images/delete.png"
+                                                                         alt="can't upload delete icon"></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane Ungroup " id="boxGroups" role="tabpanel">
+                    <form class="dr-form">
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label">Group</label>
+                            <div class="col-5">
+                                <input id="Group" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="">
+                            <button id="UnixAddGroup" type="button" class="btn btn-submit col-3" style="cursor: pointer;">Add Group</button>
+                        </div>
+                    </form>
+                    <h1>Group List:</h1>
+                    <div class=" table-responsive">
+                        <table class="col-5 table  dr-table-show">
+                            <thead>
+                            <tr>
+                                <th style="width:25%;">Group Name</th>
+                                <th style="width: 15%;" class="text-center">Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody  id="GroupList">
+                            <tr>
+                                <td class="col-2"></td>
                                 <td class="text-center"><a href="#"><img src="assets/images/delete.png"
                                                                          alt="can't upload delete icon"></a>
                                 </td>
@@ -652,7 +689,7 @@ $.each(jvol,function(k,v){
 			}	;
 			function refreshUserList(){
 				var jdata;
-				$.get("gump2.php", { req: 'usersinfo', name:'--prefix' }, function(data){
+				$.get("gump2.php", { req: 'usersi', name:'--prefix' }, function(data){
 				  if(data==olddata) { return; }
 				   jdata = jQuery.parseJSON(data);
                                    olddata=data
@@ -660,11 +697,17 @@ $.each(jvol,function(k,v){
 						console.log('users=',jdata)
 						olddiskpool=data;
 						$("#UserList tr").remove();
+						$("#GroupList tr").remove();
 						$.each(jdata, function(k,v){
+						 if(jdata[k]['name'].includes('usersinfo') > 0) {
 								username=jdata[k]['name'].replace('usersinfo/','')
 								usersize=jdata[k]['prop'].split('/')[3]
 								userpool=jdata[k]['prop'].split('/')[1]
 								$("#UserList").append('<tr class="dontdelete" > ><td style="width:25%;">'+username+'</td><td style="width:25%;">'+userpool+'</td><td style="width:20%;">'+usersize+'<td style="width: 15%;" class="text-center"><a href="javascript:userPassword(\''+username+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td style="width: 15%;" class="text-center"><a class="UnixDelUser" val="'+username+'" href="javascript:auserdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+						 } else { 
+					username=jdata[k]['name'].replace('usersigroup/','')
+								$("#GroupList").append('<tr class="dontdelete" > ><td style="width:25%;">'+username+'</td><td style="width: 15%;" class="text-center"><a class="UnixDelGroup" val="'+username+'" href="javascript:agroupdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+							}
 						});
 					}
 				});
@@ -753,6 +796,24 @@ $.each(jvol,function(k,v){
 			});
 			
 			function auserdel(){ $.post("./pump.php", { req:"UnixDelUser", name:arguments[0]+" "+myname, passwd:"" }, function (data){
+				 //refreshUserList();
+				 console.log("hi", arguments[0]);
+				 refresheruser=3 
+				 });
+			};
+			$("#UnixAddGroup").click( function (){ $.post("./pump.php", { req:"UnixAddGroup", name:$("#Group").val(), passwd:myname}, function (data){
+				 //refreshUserList(); 
+				 refresheruser=3
+				 });
+			});
+			$("a.UnixDelGroup").click(function (e){ e.preventDefault(); $.post("./pump.php", { req:"UnixDelGroup", name:$(this).val()+" "+myname, passwd:"" }, function (data){
+				 //refreshUserList();
+				 console.log("hi", $(this).val());
+				 refresheruser=3 
+				 });
+			});
+			
+			function agroupdel(){ $.post("./pump.php", { req:"UnixDelgroup", name:arguments[0]+" "+myname, passwd:"" }, function (data){
 				 //refreshUserList();
 				 console.log("hi", arguments[0]);
 				 refresheruser=3 

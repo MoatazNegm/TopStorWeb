@@ -34,32 +34,48 @@ Zpst03:0: : from :: syncing my pools
 Zpsu03:0: : from :: finished syncing my pools 
 Unlin11000: Problem while deleting user :
 Unlin11001:2: : from :: Problem while deleting user :
+Unlin111001:2: : from :: Problem while deleting group :
 Unlin110011:2: : from :: Problem while deleting user : (syncing)
+Unlin1110011:2: : from :: Problem while deleting group : (syncing)
 Unlin1000:User : is deleted
 Unlin1010:2: : from :: User : is deleted
+Unlin1110:2: : from :: Group : is deleted
 Unlin10100:2: : from :: User : is deleted (syncing)
+Unlin11100:2: : from :: Group : is deleted (syncing)
 Unlin1001: Deleting user :
 Unlin1004:1: : from :: Deleting user :
+Unlin1104:1: : from :: Deleting group :
 Unlin10044:1: : from :: Deleting user : (syncing)
+Unlin11044:1: : from :: Deleting group : (syncing)
 Unlin1003:User : is added
 Unlin1006:0: : from :: Users are synced
+Unlin1106:0: : from :: Groups are synced
 Unlin1005:0: : from :: syncing users
+Unlin1105:0: : from :: syncing groups 
 Unlin1011: Changing user password for :
 Unlin1012:1: : from :: Changing password for user :
 Unlin1013:2: : from :: problem occurred while changing password for user :
 Unlin1015:2: : from :: Success changing password for user :
 Unlin1017: Adding user : ......
 Unlin1018:1: : from :: Adding user :
+Unlin1118:1: : from :: Adding group :
 Unlin10188:1: : from :: Adding user : (syncing)
+Unlin11188:1: : from :: Adding group : (syncing)
 Unlin1019: Problem occurred while adding user :
 Unlin1020:2: : from :: Problem occurred while adding user :
+Unlin1120:2: : from :: Problem occurred while adding group :
 Unlin1021uu:1: : from :: User : already exists
+Unlin1021gg:1: : from :: Group : already exists
 Unlin1021vv:1: : from :: Volume : already exists
 Unlin1021uv:1: : from :: User : cannot be created as there is a volume with same name
-Unlin1021vu:1: : from :: Voume : cannot be created as there is a user with same name
+Unlin1021gv:1: : from :: Group : cannot be created as there is a volume with same name
+Unlin1021vu:1: : from :: Volume : cannot be created as there is a user/group with same name
 Unlin10211:2: : from :: User : already exists so deleting accoount to sync new data
+Unlin11211:2: : from :: Group : already exists so deleting accoount to sync new data
 Unlin1022:2: : from :: Success adding user :
+Unlin1122:2: : from :: Success adding group :
 Unlin10222:0: : from :: Success adding user : (syncing)
+Unlin11222:0: : from :: Success adding group : (syncing)
 Unlin1023:2: : from :: user : will not have a home directory
 Unlin1024:2: : from :: user : will have a home directory in pool :
 Domain1000: Changing Domain to :
@@ -220,8 +236,10 @@ Snap1020: Problem occurred adding Weekly snapshot schedule for :
 Snap1021: Success adding Weekly snapshot schedule : for volume :
 Priv1000: Changing perivileges of user : ........
 Priv1001: Success changing privileges of user :
-Priv1002:1: : from : Changing perivileges of user : ........
-Priv1003:2: : from : Success changing privileges of user :
+Priv1002:1: : from : Changing perivileges of user : ........ It will overwrite conflicting group privileges
+Priv1102:1: : from : Changing perivileges of group : ........
+Priv1003:2: : from : Success changing privileges of user :. It will overwrite conflicting group privileges
+Priv1103:2: : from : Success changing privileges of group :
 Replivol1000:0: : from :: Receiving new snapshot for volume : from partner :
 Replidf1000:0: : from :: Receiving new Snapshot for volume : from partner :
 NFS1000:1: : from ::  Deleting volume :
