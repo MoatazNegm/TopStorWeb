@@ -34,9 +34,9 @@ Zpst03:0: : from :: syncing my pools
 Zpsu03:0: : from :: finished syncing my pools 
 Unlin11000: Problem while deleting user :
 Unlin11001:2: : from :: Problem while deleting user :
-Unlin111001:2: : from :: Problem while deleting group :
+Unlin1g1001:2: : from :: Problem while deleting group :
 Unlin110011:2: : from :: Problem while deleting user : (syncing)
-Unlin1110011:2: : from :: Problem while deleting group : (syncing)
+Unlin1g10011:2: : from :: Problem while deleting group : (syncing)
 Unlin1000:User : is deleted
 Unlin1010:2: : from :: User : is deleted
 Unlin1110:2: : from :: Group : is deleted
