@@ -222,6 +222,7 @@
                                 <th class="text-center">Actual size(MB)</th>
                                 <th class="text-center">Snaps size(MB)</th>
                                 <th class="text-center">Compres ratio(%)</th>
+                                <th class="text-center">Approved Groups</th>
                                 <th class="text-center">Delete</th>
                             </tr>
                             </thead>
