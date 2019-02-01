@@ -261,6 +261,17 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                        	
+                            <label class="col-3 col-form-label">Allowed Groups</label>
+                            <div class="col-5">
+                                <select id="GroupNFS" class="selectpicker form-control" multiple>
+				 <option value="hi">grp1</option>
+				 <option value="by" selected>grp2</option>
+				 <option value="ddfka">grp3</option>
+                                </select>
+                            </div>
+			</div>
+                        <div class="form-group row">
                             <label class="col-3 col-form-label">Size..GB</label>
                             <div class="col-5">
                                 <input id="volsizeNFS" class="form-control" min=1 value=1 type="number">
@@ -368,6 +379,7 @@
 			var olddata="hi";
 			var olddiskpool="hihi";
 			var jdata="hihihihi"
+			var grpolddata="hihihihi"
 			var chartdata = [];
 			var datachart1 = [];
 			var datachart2 = [];
@@ -431,7 +443,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
      }
  function createvol() { 
   var thepool=$("#Pool2"+prot).val()
-  $.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G ", passwd:myname+" "+pools[thepool].host }, function (data){
+  $.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+$("#Group"+prot).val().toString(), passwd:myname+" "+pools[thepool].host }, function (data){
  });
 };
 		function voldel() {  
@@ -470,10 +482,40 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 					});
 				};
 			};
+	function refreshgroups() {
+				var jdata;
+				$.get("gump2.php", { req: 'usersigroup', name:'--prefix' }, function(grpdata){
+				  if(grpdata==grpolddata) { return; }
+				   grpolddata=grpdata
+				   jdata = jQuery.parseJSON(grpdata);
+				$("#Group"+prot+" option").remove();
+				var selected=$("#Group"+prot).val();
+				$(".selectpicker").selectpicker("refresh");
+				var username="dkfj"
+				console.log('jdata',jdata)
+				$.each(jdata, function(k,v){
+				username=jdata[k]['name'].replace('usersigroup/','')
+ console.log('username',username)
+ if (selected.includes(username)>0){ 
+				$("#Group"+prot).append("<option value='"+username+"' selected>"+username+"</option>");
+ } else {
+				$("#Group"+prot).append("<option value='"+username+"'>"+username+"</option>");
+ }
+				$(".selectpicker").selectpicker("refresh");
+
+});
+
+
+});
+
+
+
+}
 			function refreshall() {
-				if($("#cifspane").hasClass('active'))  { if (prot !="CIFS") { olddiskpool="oldnfs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); $(".variable2").remove(); Vollisttime2="skldjfadks"; prot="CIFS";}};
+					refreshgroups();
+				if($("#cifspane").hasClass('active'))  { if (prot !="CIFS") { grpolddata='dkjffdk';olddiskpool="oldnfs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); $(".variable2").remove(); Vollisttime2="skldjfadks"; prot="CIFS";}};
 				if($("#HOMespane").hasClass('active'))  { if (prot !="HOMe") { olddiskpool="old"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); $(".variable2").remove(); Vollisttime2="skldjfadks"; prot="HOMe";}};
-				if($("#nfspane").hasClass('active') ) { if (prot !="NFS") { olddiskpool="oldcifs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove();prot="NFS"; Vollisttime2="ndfsfsn";}};
+				if($("#nfspane").hasClass('active') ) { if (prot !="NFS") { grpolddata='dkfaljf';olddiskpool="oldcifs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove();prot="NFS"; Vollisttime2="ndfsfsn";}};
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){
 		if(data!=oldcurrentinfo && data != ''){linerfact=-1;oldcurrentinfo=data;  $(".bg-success").fadeIn(800); $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
 	});
@@ -743,7 +785,7 @@ function refreshList2(req,listid,filelocfrom,show) {
 				 
 				 });
 			});
-			$(".createvololdoldold").click(function (){  var req="";$.post("./pump.php", { req:"VolumeCreate"+prot+"", name:$("#Pool2"+prot+" option:selected").val()+" "+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+myname }, function (data){
+			$(".createvololdoldold").click(function (){  var req="";$.post("./pump.php", { req:"VolumeCreate"+prot+"", name:$("#Pool2"+prot+" option:selected").val()+" "+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+$("#Group"+prot).val().toString()+" "+myname }, function (data){
 
 				 });
 			

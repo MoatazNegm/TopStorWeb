@@ -201,7 +201,7 @@
                     </form>
                     <h1>Users List:</h1>
                     <div class=" table-responsive">
-                        <table class="col-5 table  dr-table-show">
+                        <table class=" table  dr-table-show">
                             <thead>
                             <tr>
                                 <th style="width:25%;">User Name</th>
@@ -246,7 +246,7 @@
                     </form>
                     <h1>Group List:</h1>
                     <div class=" table-responsive">
-                        <table class="col-5 table  dr-table-show">
+                        <table class="table  dr-table-show">
                             <thead>
                             <tr>
                                 <th style="width:25%;">Group Name</th>
