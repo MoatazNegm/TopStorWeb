@@ -9,15 +9,14 @@
     <link rel="icon" type="image/png" href="assets/images/Qonly.png">
 
     <!--BOOTSTRAP CSS STYLE-->
-     <link href="assets/css/tether.min.css" rel="stylesheet" type="text/css">   
-    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
     <!--Font Awesome css-->
     <link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!--CUSTOME CSS-->
     <link href="assets/css/main.css" rel="stylesheet" type="text/css">
-    <link href="assets/css/jquery.jqplot.min.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/bootstrap-select.min.css" rel="stylesheet" type="text/css">
 
 </head>
 <body>
@@ -196,6 +195,18 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                        	
+                            <label class="col-3 col-form-label">Allowed Groups</label>
+                            <div class="col-5">
+                                <select id="GroupCIFS" class="selectpicker form-control" multiple>
+				 <option value="hi">grp1</option>
+				 <option value="by" selected>grp2</option>
+				 <option value="ddfka">grp3</option>
+                                </select>
+                            </div>
+                         
+                        </div>
+                        <div class="form-group row">
                             <label class="col-3 col-form-label">Size..GB</label>
                             <div class="col-5">
                                 <input id="volsizeCIFS" min="1" class="form-control" type="number" value="1">
@@ -335,16 +346,14 @@
  </div>
 </div>
 <!--JQUERY SCROPT-->
-<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/Chart.js"></script>
+<script src="assets/js/popper.min.js"></script>
+<script src="assets/js/jquery-3.3.1.min.js"></script>
 
 <!--BOOTSTRAP SCRIPT-->
-<script src="assets/js/tether.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script language="javascript" type="text/javascript" src="js/jquery.jqplot.min.js"></script>
-<script language="javascript" type="text/javascript" src="js/excanvas.js"></script>
-<script class="include" language="javascript" type="text/javascript" src="js/jqplot.pieRenderer.min.js"></script>
+<script src="assets/js/bootstrap-select.min.js"></script>
 <!--CUSTOM JS-->
-<script src="assets/js/Chart.js"></script>
 <script>
 	var pools = [];
 			var plotflag = 0;
@@ -381,6 +390,7 @@
  $(".myname").val(myname)
  $("#usrnm").text(myname)
  $(".params").val(myid);
+ $(".selectpicker").selectpicker()
 //$("#overlay").modal('show');
 function timeron() {
  mytimer=setTimeout(function() { 
