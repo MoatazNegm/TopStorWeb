@@ -1798,21 +1798,12 @@ function pooldelspecial(){
 function poolcreatesingle(){
 	var userpriv="false";
 	var curuser=myname;
-	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
-		var gdata = jQuery.parseJSON(data);
-		for (var prot in gdata){
-			if(gdata[prot].user==myname) {
-				userpriv=gdata[prot].DiskGroups
-			}
-		};
-
-		if(userpriv=="true" | curuser=="admin" ) { 
+ if(userpriv=="true" | curuser=="admin" ) { 
 
 			$.post("./pump.php", { req: "DGsetPool.py", name:"Single " + myname+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id,passwd:"nopool"+' '+currenthost});
 			syscounter2=980;  
 
-		}
-	});
+ }
 };
 function pooladdraidtriple(){
 	var userpriv="false";
@@ -2196,21 +2187,15 @@ $("#submitdiskgroup").click( function (){ $.post("./pump.php", { req:"DGsetPool.
 function pooldelete(){
 	var userpriv="false";
 	var curuser=myname;
-	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
-		var gdata = jQuery.parseJSON(data);
-		for (var prot in gdata){
-			if(gdata[prot].user==myname) {
-				userpriv=gdata[prot].DiskGroups
-}
-};
-
-if(userpriv=="true" | curuser=="admin" ) { 
+	console.log('starting',userpriv,myname)
+ if(userpriv=="true" | curuser=="admin" ) { 
+	console.log('runing',currentpool,myname,currenthost)
 
 	$.post("./pump.php", { req:"DGdestroyPool.py ", name:currentpool+" "+myname, passwd:currenthost });
+        console.log('hi')
 
 	syscounter2=980
-}
-});
+ };
 };
 
 

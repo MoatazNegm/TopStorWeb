@@ -1,1 +1,1 @@
-[{"stamp":"1547213920","period":"Minutely","father":"pool","nfs1":"t1","5":"t2","4":"t3","na":"t4"},{"stamp":"1547250703","period":"Weekly","father":"pool","roro":"t1","2":"t2","01":"t3","59":"t4"},{"stamp":"1547250706","period":"Weekly","father":"pool","roro":"t1","2":"t2","01":"t3","59":"t4"}]
+[{"stamp":"period","father":"pool","t1":"t2","t3":"t4"}]

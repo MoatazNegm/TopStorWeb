@@ -555,9 +555,6 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 				
 				   var alltabsAcco=0;var alltabsStat=0;var alltabsProt=0;var alltabsRepli=0;var alltabsPool=0;var alltabsUP=0;
 					var curuser=myname;
-					$.get("gump2.php", { req: 'usersinfo/'+myname, name:"" },function(data){ 
-	console.log('ss-user',data.split('/'));
-});
 					if(curuser!="admin"){
 					$.get("gump2.php", { req: 'usersinfo/'+curuser, name:"" },function(data){ 
 	console.log('ss-user',data.split('/'));

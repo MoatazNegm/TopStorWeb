@@ -368,6 +368,7 @@
 <!--CUSTOM JS-->
 <script>
 	var pools = [];
+	var dblrefresh=false;
 			var plotflag = 0;
 			var Protocol=0;
 			var config = 1;
@@ -392,7 +393,10 @@
 			var volumes=[];
 			var plotb;
  var mydate;
+ var wait1=0;
+ var wait2=0
  var oldvoldata;
+ var oldvoldataraw='dkfjdk';
  var myidhash;
  var mytimer;
  var mymodal;
@@ -542,13 +546,21 @@ function refreshList2(req,listid,filelocfrom,show) {
  var fileloc=filelocfrom;
  var request=req;
  var others=0
+ if(wait1 > 0 && wait2 > 0 ){ dblrefresh=false; wait1=0; wait2=0;}
+ console.log('checking',dblrefresh)
+ if (dblrefresh==false) { dblrefresh=true;console.log('itis true now',dblrefresh)}
+ else { console.log('returning');
+       return; }
+ console.log('starting')
  fileloc = filelocfrom ; request= request ; 
  $.get("gump2.php", { req: 'vol', name:'--prefix' }, function(data){
-  if(data==oldvoldata) {return;}
-  else {
+  wait1=1
+  if(data!=oldvoldataraw){
    jdata = jQuery.parseJSON(data)
    if(typeof jdata =='object' ) {
+    oldvoldataraw=data
     oldvoldata=jdata
+    console.log('change',dblrefresh,jdata)
     olddiskpool='change' 
    }
   }
@@ -556,8 +568,7 @@ function refreshList2(req,listid,filelocfrom,show) {
    
    
  $.get("gump2.php", { req: 'hosts', name:'--prefix' }, function(data){
-  if(data==olddiskpool) {return;}
-  else {
+  if(data!=olddiskpool){ 
    jdata = jQuery.parseJSON(data)
    if(typeof jdata =='object' ) {
     olddiskpool=data
@@ -577,6 +588,7 @@ function refreshList2(req,listid,filelocfrom,show) {
     chartdata=[]
     datachart1=[]
     datachart2=[]
+ 
     if (plotb) {plotb.destroy();}
     p=0
     $.each(jdata,function(k,v){
@@ -607,8 +619,8 @@ function refreshList2(req,listid,filelocfrom,show) {
      $.each(pools[k]["volumes"],function(kk,vv){
       tovol=pools[k]['volumes'][kk]
       $.each(oldvoldata,function(s,r){
-	if (oldvoldata.name.include(tovol.name)>0) {
-	 console.log(oldvoldata.prot)
+	if (oldvoldata[s].name.includes(tovol.name)>0) {
+	 console.log(oldvoldata[s].prop)
 	}
       });
       volumes.push(tovol) 
@@ -628,6 +640,8 @@ function refreshList2(req,listid,filelocfrom,show) {
    console.log('hi')
    plotchart('chart'+prot,datachart1,datachart2);
   }
+ console.log('incharting')
+ wait2=1
  });
 }
 	
