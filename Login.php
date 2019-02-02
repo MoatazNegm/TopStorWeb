@@ -50,7 +50,7 @@
                     <div class="form-group">
                         <label class="">Username</label>
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                            <div class="input-group-addon"><img src="assets/images/user-login.png"></div>
+                            <div class="input-group-prepend"><img src="assets/images/user-login.png"></div>
                             <input name="userName" type="text" class="form-control">
                             <input type="hidden" name="idd" value=0 >
                         </div>
@@ -58,7 +58,7 @@
                     <div class="form-group  ">
                         <label class="">Password</label>
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                            <div class="input-group-addon"><img src="assets/images/password-icon.png"></div>
+                            <div class="input-group-prepend"><img src="assets/images/password-icon.png"></div>
                             <input name="userPassword" type="password" class="form-control">
                         </div>
                     </div>

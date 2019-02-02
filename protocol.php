@@ -233,7 +233,7 @@
                                 <th class="text-center">Actual size(MB)</th>
                                 <th class="text-center">Snaps size(MB)</th>
                                 <th class="text-center">Compres ratio(%)</th>
-                                <th class="text-center">Approved Groups</th>
+                                <th class="text-center">Allowed Groups</th>
                                 <th class="text-center">Delete</th>
                             </tr>
                             </thead>
@@ -296,6 +296,7 @@
                                 <th class="text-center">Actual size(MB)</th>
                                 <th class="text-center">Snaps size(MB)</th>
                                 <th class="text-center">Compres ratio(%)</th>
+                                <th class="text-center">Allowed Groups</th>
                                 <th class="text-center">Delete</th>
                             </tr>
                             </thead>
@@ -391,6 +392,7 @@
 			var volumes=[];
 			var plotb;
  var mydate;
+ var oldvoldata;
  var myidhash;
  var mytimer;
  var mymodal;
@@ -541,6 +543,18 @@ function refreshList2(req,listid,filelocfrom,show) {
  var request=req;
  var others=0
  fileloc = filelocfrom ; request= request ; 
+ $.get("gump2.php", { req: 'vol', name:'--prefix' }, function(data){
+  if(data==oldvoldata) {return;}
+  else {
+   jdata = jQuery.parseJSON(data)
+   if(typeof jdata =='object' ) {
+    oldvoldata=jdata
+    olddiskpool='change' 
+   }
+  }
+ });
+   
+   
  $.get("gump2.php", { req: 'hosts', name:'--prefix' }, function(data){
   if(data==olddiskpool) {return;}
   else {
@@ -592,6 +606,11 @@ function refreshList2(req,listid,filelocfrom,show) {
      pools[k]['size']=normsize(pools[k]['available'])+normsize(pools[k]['used'])
      $.each(pools[k]["volumes"],function(kk,vv){
       tovol=pools[k]['volumes'][kk]
+      $.each(oldvoldata,function(s,r){
+	if (oldvoldata.name.include(tovol.name)>0) {
+	 console.log(oldvoldata.prot)
+	}
+      });
       volumes.push(tovol) 
       $("#Volumetable"+tovol['prot']).append('<tr onclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
 
