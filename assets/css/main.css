@@ -302,7 +302,9 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
 .proxyliscence > .nav-link.active > div {
     background: url("../images/proxy.png") no-repeat;
 }
-
+.smalloption {
+ font-size: 10 px;
+}
 .diskGroups div {
     background: url("../images/disk-gray.png") no-repeat;
 }

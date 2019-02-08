@@ -234,6 +234,7 @@
                                 <th class="text-center">Snaps size(MB)</th>
                                 <th class="text-center">Compres ratio(%)</th>
                                 <th class="text-center">Allowed Groups</th>
+                                <th class="text-center">Need Update</th>
                                 <th class="text-center">Delete</th>
                             </tr>
                             </thead>
@@ -391,12 +392,14 @@
 			var myChart='1';
                         var pools=[];
 			var volumes=[];
+			var allgroups={};
 			var plotb;
  var mydate;
  var wait1=0;
  var wait2=0
  var oldvoldata;
  var oldvoldataraw='dkfjdk';
+ var selvalues={};
  var myidhash;
  var mytimer;
  var mymodal;
@@ -413,10 +416,8 @@
 function timeron() {
  mytimer=setTimeout(function() { 
 	document.getElementById('Login'+'ref').submit();
-	console.log('timout');
 		},idletill);
  mymodal=setTimeout(function() { 
-	console.log('modaltimeout');
 	$("#overlay").modal('show')
 		},modaltill);
 }
@@ -426,15 +427,13 @@ function chkuser() {
 			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid},function(data){ 
          var data2=data.replace(" ","").replace('\n','');
 	if (myid != data2) { 
-	   console.log('username',myname)
-           console.log('myid,data2',myid,'and',data2)
 		document.getElementById('Login'+'ref').submit();
  	}		;
 				});
 };
 chkuser();
 				$("html").click(function(){
-mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser();myidhash=mydate;console.log(myidhash); } timerrst();});
+mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser();myidhash=mydate; } timerrst();});
 				$("html").keypress(function(){mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser(); myidhash=mydate;};timerrst();});
 				$(".bg-success").hide();$(".bg-successold").hide();$(".bg-danger").hide();$(".bg-warning").hide();
      function normsize(s){
@@ -461,13 +460,12 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 					var curuser=myname;
 					if(curuser!="admin"){
 					$.get("gump2.php", { req: 'usersinfo/'+curuser, name:"" },function(data){ 
-	console.log('ss-user',data.split('/'));
 	var gdata=data.split('/')
 	gdata.shift(); gdata.shift();
 						if(gdata[3].split('-')[1]!="true") { $(".activeDirectory").hide(); $("#activeDirectory").hide(); alltabsAcco=1;} 
 						if(gdata[7].split('-')[1]!="true") { $(".boxUsers").hide(); $("#boxUsers").hide(); alltabsAcco=alltabsAcco+1;} 
 						if(gdata[10].split('-')[1]!="true") { $(".boxProperties").hide(); $("#boxProperties").hide(); alltabsAcco=alltabsAcco+1;} 
-						if(alltabsAcco==3) { console.log('hi');$(".accounts").hide()}
+						if(alltabsAcco==3) { $(".accounts").hide()}
 						if(gdata[4].split('-')[1]!="true") { $(".servicestatus").hide(); $("#servicestatus").hide(); alltabsStat=1;} 	else { $(".servicestatus").show(); $("#servicestatus").show();}
 						if(gdata[8].split('-')[1]!="true") { $("#Logs").hide(); $("#Logspanel").hide();alltabsStat=alltabsStat+1;}
 						if(alltabsStat==2) { $(".status").hide();}
@@ -494,14 +492,13 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 				  if(grpdata==grpolddata) { return; }
 				   grpolddata=grpdata
 				   jdata = jQuery.parseJSON(grpdata);
+				   allgroups=jdata;
 				$("#Group"+prot+" option").remove();
 				var selected=$("#Group"+prot).val();
 				$(".selectpicker").selectpicker("refresh");
 				var username="dkfj"
-				console.log('jdata',jdata)
 				$.each(jdata, function(k,v){
 				username=jdata[k]['name'].replace('usersigroup/','')
- console.log('username',username)
  if (selected.includes(username)>0){ 
 				$("#Group"+prot).append("<option value='"+username+"' selected>"+username+"</option>");
  } else {
@@ -517,8 +514,31 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 
 
 }
+			function refreshselect(){
+			 $.each($('[id^=selvol]'),function(e,v) {
+		          var k;
+  			for (k in selvalues){
+			 if ( k.includes('change') > 0 )  { continue; }
+			 if (this.id.includes(k)> 0) {
+			  if( selvalues[k+'change']==0) { 
+			   if(selvalues[k].toString()!=$('#'+k).val().toString()) {
+			    $('#btn'+k).show()
+			    console.log('changing',k,selvalues[k],$('#'+k).val())
+			    selvalues[k+'change']= 1
+			   }
+			  } else {
+			   if(selvalues[k].toString()==$('#'+k).val().toString()) {
+			    $('#btn'+k).hide();
+			    selvalues[k+'change']=0;
+			   } 
+			  }
+			 }
+			};
+			});
+                       }
 			function refreshall() {
 					refreshgroups();
+					refreshselect();
 				if($("#cifspane").hasClass('active'))  { if (prot !="CIFS") { grpolddata='dkjffdk';olddiskpool="oldnfs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); $(".variable2").remove(); Vollisttime2="skldjfadks"; prot="CIFS";}};
 				if($("#HOMespane").hasClass('active'))  { if (prot !="HOMe") { olddiskpool="old"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); $(".variable2").remove(); Vollisttime2="skldjfadks"; prot="HOMe";}};
 				if($("#nfspane").hasClass('active') ) { if (prot !="NFS") { grpolddata='dkfaljf';olddiskpool="oldcifs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove();prot="NFS"; Vollisttime2="ndfsfsn";}};
@@ -546,12 +566,9 @@ function refreshList2(req,listid,filelocfrom,show) {
  var fileloc=filelocfrom;
  var request=req;
  var others=0
- if(wait1 > 0 && wait2 > 0 ){ dblrefresh=false; wait1=0; wait2=0;}
- console.log('checking',dblrefresh)
- if (dblrefresh==false) { dblrefresh=true;console.log('itis true now',dblrefresh)}
- else { console.log('returning');
-       return; }
- console.log('starting')
+ if(wait1 > 0 && wait2 > 0 ){ dblrefresh=false; wait1=0; wait=0; $(".volgrps option").hide();$(".volgrps .filter-option-inner").css("font-size","0.8rem");}
+ if (dblrefresh==false) { dblrefresh=true;}
+ else {return; }
  fileloc = filelocfrom ; request= request ; 
  $.get("gump2.php", { req: 'vol', name:'--prefix' }, function(data){
   wait1=1
@@ -560,7 +577,6 @@ function refreshList2(req,listid,filelocfrom,show) {
    if(typeof jdata =='object' ) {
     oldvoldataraw=data
     oldvoldata=jdata
-    console.log('change',dblrefresh,jdata)
     olddiskpool='change' 
    }
   }
@@ -602,7 +618,7 @@ function refreshList2(req,listid,filelocfrom,show) {
       topool['host']=hosts[r]['name']
       if (topool.name.includes('ree') < 1 ){
        pools.push(topool)
-       $("#Pool2"+prot).append($('<option class="pool variable2">').text(topool.name.replace('pdhcp','')).val(rr));
+       $("#Pool2"+prot).append($('<option class="pool variable2" value='+topool.name+'>').text(topool.name.replace('pdhcp','')).val(rr));
        //chartdata.push([topool.name,normsize(topool.alloc)]);
        chartdata.push(['free',normsize(topool.empty)]);
        datachart1.push('free');
@@ -618,13 +634,26 @@ function refreshList2(req,listid,filelocfrom,show) {
      pools[k]['size']=normsize(pools[k]['available'])+normsize(pools[k]['used'])
      $.each(pools[k]["volumes"],function(kk,vv){
       tovol=pools[k]['volumes'][kk]
+      tovol.group=""
       $.each(oldvoldata,function(s,r){
 	if (oldvoldata[s].name.includes(tovol.name)>0) {
-	 console.log(oldvoldata[s].prop)
+	 tovol.group=oldvoldata[s].prop.split('/')[4]
 	}
       });
       volumes.push(tovol) 
-      $("#Volumetable"+tovol['prot']).append('<tr onclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
+      $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td ><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" data-width="auto" class="selectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked(this)" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
+     $("#btnselvol"+tovol.name).hide();
+     $.each(allgroups, function(g,gg){
+      username=allgroups[g]['name'].replace('usersigroup/','')
+ if (tovol.group.includes(username)>0){ 
+				$("."+tovol.name).append("<option class='"+username.replace(',','')+"' value='"+username+"' selected>"+username+"</option>");
+ } else {
+				$("."+tovol.name).append("<option class='smalloption' value='"+username+"'>"+username+"</option>");
+ }
+	$("."+tovol.name).selectpicker("refresh");
+});
+     selvalues['selvol'+tovol.name]=$('#selvol'+tovol.name).val()
+     selvalues['selvol'+tovol.name+'change']=0
 
      chartdata.push([tovol.name,normsize(tovol.quota)]);
      datachart1.push(tovol.name);
@@ -637,10 +666,8 @@ function refreshList2(req,listid,filelocfrom,show) {
    //chartdata.push(['free',poolsize]);
    //chartdata.push(['others',others]);
    //plotchart('chart'+prot,chartdata);
-   console.log('hi')
    plotchart('chart'+prot,datachart1,datachart2);
   }
- console.log('incharting')
  wait2=1
  });
 }
@@ -670,6 +697,7 @@ function refreshList2(req,listid,filelocfrom,show) {
 			
 			function rowisclicked(x) {
 				//alert("Row index is: " + x.rowIndex);
+				console.log('row is clicked',x)
 				$(x).toggleClass("success");
 				var counter=0;
 				$(function(){ var a=0; var b=0; var c=0;  $("tr.success").each(function(){ 
@@ -724,8 +752,12 @@ function refreshList2(req,listid,filelocfrom,show) {
 			}
 			
 		
-			
-			
+		        function selbtnclicked(x){
+				console.log('update needed',x.id);
+  var thepool=$("#Pool2"+prot).val()
+ $.post("./pump.php", { req:"VolumeChange"+prot+".py", name:pools[thepool].name+" "+x.id.replace('btnselvol','')+" "+prot+" "+myname, passwd: pools[thepool].host });
+
+			};	
 			$("#CIFS").click(function (){ 
 				if(config == 1 ) {
 					var userpriv="false";
@@ -801,7 +833,6 @@ function refreshList2(req,listid,filelocfrom,show) {
 			}); 
 			$(".Pool2").change(function () {
 				var selection=$(".Pool2 option:selected").val();//
-				//console.log(selection
 				if (selection == "--All--")
 					$("#Vol2 option.variable").show();
 				else {
@@ -861,7 +892,6 @@ $(".ref").click(function() {
 					} else {
 					document.getElementById($(this).attr('id')+'ref').submit();
 					}
-		 //console.log($(this).attr('id'));
 		});	
 		SS();
 </script>
