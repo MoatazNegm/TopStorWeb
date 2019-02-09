@@ -242,6 +242,8 @@ Priv1003:2: : from : Success changing privileges of user :. It will overwrite co
 Priv1103:2: : from : Success changing privileges of group :
 Replivol1000:0: : from :: Receiving new snapshot for volume : from partner :
 Replidf1000:0: : from :: Receiving new Snapshot for volume : from partner :
+VolCst01:1: : from ::  Start chaning allowed groups of volume : to :
+VolCsu01:1: : from ::  Success changing allowed groups of volume : to :
 NFS1000:1: : from ::  Deleting volume :
 NFS1001:2: : from :: Problem occurred while deleting volume :
 NFS1002:2: : from :: Success deleting :

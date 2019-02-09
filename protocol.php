@@ -298,6 +298,7 @@
                                 <th class="text-center">Snaps size(MB)</th>
                                 <th class="text-center">Compres ratio(%)</th>
                                 <th class="text-center">Allowed Groups</th>
+                                <th class="text-center">Need Update</th>
                                 <th class="text-center">Delete</th>
                             </tr>
                             </thead>
@@ -634,17 +635,25 @@ function refreshList2(req,listid,filelocfrom,show) {
      pools[k]['size']=normsize(pools[k]['available'])+normsize(pools[k]['used'])
      $.each(pools[k]["volumes"],function(kk,vv){
       tovol=pools[k]['volumes'][kk]
-      tovol.group=""
+      tovol.group=tovol.name
       $.each(oldvoldata,function(s,r){
 	if (oldvoldata[s].name.includes(tovol.name)>0) {
+	 if (oldvoldata[s].name.includes('CIFS')> 0 ){
 	 tovol.group=oldvoldata[s].prop.split('/')[4]
+         } else { 
+	  if (oldvoldata[s].name.includes('NFS')> 0 ){
+	   tovol.group=oldvoldata[s].prop.split('/')[8]
+	  }  
+	 }
 	}
       });
       volumes.push(tovol) 
-      $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td ><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" data-width="auto" class="selectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked(this)" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
+      if(prot.includes('CIFS') > 0 || prot.includes('NFS') > 0) {
+      $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td ><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" data-width="auto" class="selectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked(this)" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
      $("#btnselvol"+tovol.name).hide();
      $.each(allgroups, function(g,gg){
       username=allgroups[g]['name'].replace('usersigroup/','')
+      console.log('tovol.group',tovol.group) 
  if (tovol.group.includes(username)>0){ 
 				$("."+tovol.name).append("<option class='"+username.replace(',','')+"' value='"+username+"' selected>"+username+"</option>");
  } else {
@@ -654,6 +663,10 @@ function refreshList2(req,listid,filelocfrom,show) {
 });
      selvalues['selvol'+tovol.name]=$('#selvol'+tovol.name).val()
      selvalues['selvol'+tovol.name+'change']=0
+     } else {
+      $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
+     
+     }
 
      chartdata.push([tovol.name,normsize(tovol.quota)]);
      datachart1.push(tovol.name);
@@ -755,7 +768,7 @@ function refreshList2(req,listid,filelocfrom,show) {
 		        function selbtnclicked(x){
 				console.log('update needed',x.id);
   var thepool=$("#Pool2"+prot).val()
- $.post("./pump.php", { req:"VolumeChange"+prot+".py", name:pools[thepool].name+" "+x.id.replace('btnselvol','')+" "+prot+" "+myname, passwd: pools[thepool].host });
+ $.post("./pump.php", { req:"VolumeChange"+prot+".py", name:pools[thepool].name+" "+x.id.replace('btnselvol','')+" "+prot+" "+$("#qta"+x.id.replace('btnselvol','')).val()+" "+$("#"+x.id.replace('btn','')).val().toString()+" "+myname, passwd: pools[thepool].host });
 
 			};	
 			$("#CIFS").click(function (){ 
