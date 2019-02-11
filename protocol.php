@@ -41,6 +41,7 @@
     </div>
 </nav>
 <!--MESSAGES-->
+<div class='row-fluid '>
 <div class="dr-messages">
     <div class="bg-warning">Your changes may be not saved
         <button type="button" class="close" aria-label="Close">
@@ -57,6 +58,7 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
+</div>
 </div>
 
 <!--BODY CONTENT-->
@@ -98,7 +100,7 @@
         </div>
         <div class="col-md-2 second-menu">
             <div class="tab-content">
-                <div class="tab-pane active" id="protocol" role="tabpanel">
+                <div class="tab-pane active" id="protocol2" role="tabpanel">
                     <ul class="nav flex-column" role="tablist">
                         <li class="nav-item cifs">
                             <a class="nav-link active" data-toggle="tab" href="#cifspane" role="tab">
@@ -153,12 +155,8 @@
 		   <div clas="col-5">
                     <canvas id="myChartHOMe" style="max-width: 500px;">hellomezo</canvas>
                    </div>
-						  <div  class="" class="col-4 chart"  >
-								<div class="" id="chartHOMe" ></div>
-						  </div>                  
-                    <h1>created volumes:</h1>
-                    <div class="row table-responsive">
-                        <table class="col-12 table  dr-table-show">
+                    <div class="row" style='margin-top:-0.7rem;'>
+                        <table class="col-12 table table-responsive dr-table-show">
                             <thead>
                             <tr>
                                 <th class="" style="padding-left: 2rem; ">Volume Name</th>
@@ -220,12 +218,8 @@
 		   <div clas="col-5">
                     <canvas id="myChartCIFS" style="max-width: 500px;">hellomezo</canvas>
                    </div>
-						  <div  class="" class="col-4 chart"  >
-								<div class="" id="chartCIFS" ></div>
-						  </div>                  
-                    <h1>created volumes:</h1>
-                    <div class="row table-responsive">
-                        <table class="col-12 table  dr-table-show">
+                    <div class="row "style='margin-top:-0.7rem;'>
+                        <table class="col-12 table table-responsive table-condensed dr-table-show">
                             <thead>
                             <tr>
                                 <th class="" style="padding-left: 2rem; ">Volume Name</th>
@@ -283,13 +277,11 @@
                         </a>
                         
                     </div>
-                    <div  class="" class="col-5 chart"  >
+                    <div  class="col-5"  >
                     <canvas id="myChartNFS" style="max-width: 500px;">hellomezo</canvas>
-								<div class="" id="chartNFS" ></div>
-						  </div>                  
-                    <h1>created volumes:</h1>
-                    <div class="row table-responsive">
-                        <table class="col-12 table  dr-table-show">
+		    </div>
+                   <div class="row"style='margin-top:-0.7rem;'>
+                        <table class="col-12 table table-responsive  dr-table-show">
                             <thead>
                             <tr>
                                 <th class="text-center" style="padding-left: 2rem; ">Volume Name</th>
@@ -649,7 +641,7 @@ function refreshList2(req,listid,filelocfrom,show) {
       });
       volumes.push(tovol) 
       if(prot.includes('CIFS') > 0 || prot.includes('NFS') > 0) {
-      $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td ><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" data-width="auto" class="selectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked(this)" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
+      $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td style="padding-top: 5px; padding-bottom: 5px;" ><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" data-width="auto" class="selectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked(this)" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
      $("#btnselvol"+tovol.name).hide();
      $.each(allgroups, function(g,gg){
       username=allgroups[g]['name'].replace('usersigroup/','')
