@@ -15,6 +15,7 @@
     <link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!--CUSTOME CSS-->
+    <link href="assets/css/jquery-ui.min.css" rel="stylesheet" type="text/css">
     <link href="assets/css/main.css" rel="stylesheet" type="text/css">
     <link href="assets/css/bootstrap-select.min.css" rel="stylesheet" type="text/css">
 
@@ -41,8 +42,8 @@
     </div>
 </nav>
 <!--MESSAGES-->
-<div class='row-fluid '>
 <div class="dr-messages">
+   
     <div class="bg-warning">Your changes may be not saved
         <button type="button" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -58,7 +59,6 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-</div>
 </div>
 
 <!--BODY CONTENT-->
@@ -155,8 +155,8 @@
 		   <div clas="col-5">
                     <canvas id="myChartHOMe" style="max-width: 500px;">hellomezo</canvas>
                    </div>
-                    <div class="row" style='margin-top:-0.7rem;'>
-                        <table class="col-12 table table-responsive dr-table-show">
+                    <div class="row table-responsive " style='margin-top:-0.7rem;'>
+                        <table class="col-12 table table-hover dr-table-show">
                             <thead>
                             <tr>
                                 <th class="" style="padding-left: 2rem; ">Volume Name</th>
@@ -218,8 +218,8 @@
 		   <div clas="col-5">
                     <canvas id="myChartCIFS" style="max-width: 500px;">hellomezo</canvas>
                    </div>
-                    <div class="row "style='margin-top:-0.7rem;'>
-                        <table class="col-12 table table-responsive table-condensed dr-table-show">
+                    <div class="row table-responsive "style='margin-top:-0.7rem;'>
+                        <table class="col-12 table table-hover dr-table-show">
                             <thead>
                             <tr>
                                 <th class="" style="padding-left: 2rem; ">Volume Name</th>
@@ -280,8 +280,8 @@
                     <div  class="col-5"  >
                     <canvas id="myChartNFS" style="max-width: 500px;">hellomezo</canvas>
 		    </div>
-                   <div class="row"style='margin-top:-0.7rem;'>
-                        <table class="col-12 table table-responsive  dr-table-show">
+                   <div class="row table-responsive "style='margin-top:-0.7rem;'>
+                        <table class="col-12 table table-hover dr-table-show">
                             <thead>
                             <tr>
                                 <th class="text-center" style="padding-left: 2rem; ">Volume Name</th>
@@ -300,6 +300,29 @@
                             </tbody>
                         </table>
                     </div>
+<div id='queue' class="queue" tabindex="-1" role="dialog" style="z-index: 10000; width: 100%;">
+ <div class="">
+  <div class="row">
+   <div class="col-10">
+    <h10 class="" style="padding:2px;">Queue</h10>
+   </div>
+   <div class="col-1">
+    <h10 class="" style="padding:2px;">Queue</h10>
+   </div>
+  </div>
+  <div class="row"style="margin-left: -2px;">
+<div class='table-responsive '>
+  <table class='col-12 table table-hover table-striped'style="padding:2px;">
+   <tbody>
+    <tr><td style="padding:2px;">ofone</td><td style="padding:2px;">oftwo</td><td style="padding:2px;">ofthree</td>
+    <tr><td style="padding:2px;">ofone</td><td style="padding:2px;">oftwo</td><td style="padding:2px;">ofthree</td>
+    <tr><td style="padding:2px;">ofone</td><td style="padding:2px;">oftwo</td><td style="padding:2px;">ofthree</td>
+   </tbody>
+  </table>
+ </div>
+ </div>
+ </div>
+  
                 </div>
             </div>
         </div>
@@ -355,6 +378,7 @@
 <script src="assets/js/Chart.js"></script>
 <script src="assets/js/popper.min.js"></script>
 <script src="assets/js/jquery-3.3.1.min.js"></script>
+<script src="assets/js/jquery-ui.min.js"></script>
 
 <!--BOOTSTRAP SCRIPT-->
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>

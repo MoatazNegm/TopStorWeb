@@ -710,6 +710,9 @@ h4{    color: #333;}
     border-radius: .25rem;
     height: 30px;
 }
+.queue tr {
+  font-size: small;
+ }
 .dr-table-show > tbody > tr:nth-of-type(odd) {
     background-color: #c5d7ed;
 }
