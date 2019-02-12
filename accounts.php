@@ -79,7 +79,7 @@
                 <li class="nav-item protocol">
                     <a class=" ref nav-link" id="protocol" href="#" role="tab">
                         <div></div>
-                        Protocol</a>
+                        Volumes</a>
                 </li>
                 <li class="nav-item replication">
                     <a class="nav-link ref" href="#" id="replication" role="tab">
@@ -110,12 +110,17 @@
                         <li id="navUnLin" class="nav-item boxUsers">
                             <a class="nav-link" data-toggle="tab" href="#boxUsers" role="tab">
                                 <div></div>
-                                <span>Box users</span></a>
+                                <span>User Accounts</span></a>
+                        </li>
+                        <li id="navUnGrp" class="nav-item boxGroups">
+                            <a class="nav-link" data-toggle="tab" href="#boxGroups" role="tab">
+                                <div></div>
+                                <span>Group Accounts</span></a>
                         </li>
                         <li id="navboxProperties" class="nav-item boxProperties">
                             <a class="nav-link" data-toggle="tab" href="#boxProperties" role="tab">
                                 <div></div>
-                                <span>Box properties</span></a>
+                                <span>System properties</span></a>
                         </li>
                     </ul>
                 </div>
@@ -187,7 +192,7 @@
                             </div>
                                 <label class="offset-1 col-1 col-form-label">Size..GB</label>
                             <div class="col-1">
-                                <input id="volsizeCIFS" min="1" class="form-control" type="number" value="1">
+                                <input id="volsize" min="1" class="form-control" type="number" value="1">
                             </div>
                         </div>
                         <div class="">
@@ -196,12 +201,14 @@
                     </form>
                     <h1>Users List:</h1>
                     <div class=" table-responsive">
-                        <table class="col-5 table  dr-table-show">
+                        <table class=" table  dr-table-show">
                             <thead>
                             <tr>
-                                <th class="col-2">user</th>
-                                <th class="text-center">Change Password</th>
-                                <th class="text-center">Delete</th>
+                                <th style="width:25%;">User Name</th>
+                                <th style="width: 25%;">Home Pool</th>
+                                <th style="width: 20%;">Quota</th>
+                                <th style="width: 15%;">Change Password</th>
+                                <th style="width: 15%;" class="text-center">Delete</th>
                             </tr>
                             </thead>
                             <tbody  id="UserList">
@@ -217,6 +224,38 @@
                                 <td class="col-2"></td>
                                 <td class="text-center"><a href="#" data-toggle="modal" data-target="#userEditing"><img src="assets/images/edit.png"
                                                                          alt="can't upload edit icon"></a></td>
+                                <td class="text-center"><a href="#"><img src="assets/images/delete.png"
+                                                                         alt="can't upload delete icon"></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane Ungroup " id="boxGroups" role="tabpanel">
+                    <form class="dr-form">
+                        <div class="form-group row">
+                            <label class="col-2 col-form-label">Group</label>
+                            <div class="col-5">
+                                <input id="Group" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="">
+                            <button id="UnixAddGroup" type="button" class="btn btn-submit col-3" style="cursor: pointer;">Add Group</button>
+                        </div>
+                    </form>
+                    <h1>Group List:</h1>
+                    <div class=" table-responsive">
+                        <table class="table  dr-table-show">
+                            <thead>
+                            <tr>
+                                <th style="width:25%;">Group Name</th>
+                                <th style="width: 15%;" class="text-center">Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody  id="GroupList">
+                            <tr>
+                                <td class="col-2"></td>
                                 <td class="text-center"><a href="#"><img src="assets/images/delete.png"
                                                                          alt="can't upload delete icon"></a>
                                 </td>
@@ -517,9 +556,10 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 				   var alltabsAcco=0;var alltabsStat=0;var alltabsProt=0;var alltabsRepli=0;var alltabsPool=0;var alltabsUP=0;
 					var curuser=myname;
 					if(curuser!="admin"){
-					$.get("gump2.php", { req: 'usersinfo/mezo', name:"" },function(data){ 
+					$.get("gump2.php", { req: 'usersinfo/'+curuser, name:"" },function(data){ 
 	console.log('ss-user',data.split('/'));
 	var gdata=data.split('/')
+	gdata.shift(); gdata.shift();
 						if(gdata[3].split('-')[1]!="true") { $(".activeDirectory").hide(); $("#activeDirectory").hide(); alltabsAcco=1;} 
 						if(gdata[7].split('-')[1]!="true") { $(".boxUsers").hide(); $("#boxUsers").hide(); alltabsAcco=alltabsAcco+1;} 
 						if(gdata[10].split('-')[1]!="true") { $(".boxProperties").hide(); $("#boxProperties").hide(); alltabsAcco=alltabsAcco+1;} 
@@ -527,7 +567,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 						if(gdata[4].split('-')[1]!="true") { $(".servicestatus").hide(); $("#servicestatus").hide(); alltabsStat=1;} 	else { $(".servicestatus").show(); $("#servicestatus").show();}
 						if(gdata[8].split('-')[1]!="true") { $("#Logs").hide(); $("#Logspanel").hide();alltabsStat=alltabsStat+1;}
 						if(alltabsStat==2) { $(".status").hide();}
-						if(gdata[11].split('-')[1]!="true") { $(".cifs").hide(); $("#cifspane").hide(); alltabsProt=1;} 
+						if(gdata[11].split('-')[1]!="true") { $(".cifs").hide(); $("#cifspane").hide(); alltabsProt=1;$(".HOMe").hide(); $("#HOMespane").hide();} 
 						if(gdata[5].split('-')[1]!="true") { $(".nfs").hide(); $("#nfspane").hide(); alltabsProt=alltabsProt+1;}
 						if(alltabsProt==2) { $(".protocol").hide()}
 						if(gdata[15].split('-')[1]!="true") { $(".partner").hide(); $("#partner").hide(); alltabsRepli=1;} 
@@ -646,23 +686,25 @@ $.each(jvol,function(k,v){
 			}	;
 			function refreshUserList(){
 				var jdata;
-				$.get("gump.php", { req: 'usersinfo', name:'--prefix' }, function(data){
+				$.get("gump2.php", { req: 'usersi', name:'--prefix' }, function(data){
 				  if(data==olddata) { return; }
 				   jdata = jQuery.parseJSON(data);
                                    olddata=data
-				  kdata = []
-					if(typeof jdata=='object') {
+				if(typeof jdata=='object') {
 						console.log('users=',jdata)
 						olddiskpool=data;
-						$.each(jdata,function(kk,vv){
-							kdata.push(jdata[kk].replace("['",'').replace("]'",'').replace("'",'').split(',')[0].split('/'))
-						});
 						$("#UserList tr").remove();
-						$.each(kdata, function(k,v){
-						//	if ( kdata[k].indexOf("user") > 0 ) {
-								//userid=jdata[k].replace("[",'').replace("']",'').replace("'",'').replace(' ','').split(',')[1].replace("'",'')
-								username=kdata[k][1]
-								$("#UserList").append('<tr class="dontdelete" > ><td class="col-2">'+username+'</td><td class="text-center"><a href="javascript:userPassword(\''+username+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td class="text-center"><a class="UnixDelUser" val="'+username+'" href="javascript:auserdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+						$("#GroupList tr").remove();
+						$.each(jdata, function(k,v){
+						 if(jdata[k]['name'].includes('usersinfo') > 0) {
+								username=jdata[k]['name'].replace('usersinfo/','')
+								usersize=jdata[k]['prop'].split('/')[3]
+								userpool=jdata[k]['prop'].split('/')[1]
+								$("#UserList").append('<tr class="dontdelete" > ><td style="width:25%;">'+username+'</td><td style="width:25%;">'+userpool+'</td><td style="width:20%;">'+usersize+'<td style="width: 15%;" class="text-center"><a href="javascript:userPassword(\''+username+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td style="width: 15%;" class="text-center"><a class="UnixDelUser" val="'+username+'" href="javascript:auserdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+						 } else { 
+					username=jdata[k]['name'].replace('usersigroup/','')
+								$("#GroupList").append('<tr class="dontdelete" > ><td style="width:25%;">'+username+'</td><td style="width: 15%;" class="text-center"><a class="UnixDelGroup" val="'+username+'" href="javascript:agroupdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+							}
 						});
 					}
 				});
@@ -738,7 +780,7 @@ $.each(jvol,function(k,v){
 				 
 			});
 		
-			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val()+' '+$("#UserVol").val(), passwd:$("#UserPass").val()+" "+volumes[$("#UserVol").val()]+" "+myname}, function (data){
+			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val()+' '+$("#UserVol").val(), passwd:$("#UserPass").val()+" "+volumes[$("#UserVol").val()]+" "+$("#volsize").val()+"G "+myname}, function (data){
 				 //refreshUserList(); 
 				 refresheruser=3
 				 });
@@ -751,6 +793,24 @@ $.each(jvol,function(k,v){
 			});
 			
 			function auserdel(){ $.post("./pump.php", { req:"UnixDelUser", name:arguments[0]+" "+myname, passwd:"" }, function (data){
+				 //refreshUserList();
+				 console.log("hi", arguments[0]);
+				 refresheruser=3 
+				 });
+			};
+			$("#UnixAddGroup").click( function (){ $.post("./pump.php", { req:"UnixAddGroup", name:$("#Group").val(), passwd:myname}, function (data){
+				 //refreshUserList(); 
+				 refresheruser=3
+				 });
+			});
+			$("a.UnixDelGroup").click(function (e){ e.preventDefault(); $.post("./pump.php", { req:"UnixDelGroup", name:$(this).val()+" "+myname, passwd:"" }, function (data){
+				 //refreshUserList();
+				 console.log("hi", $(this).val());
+				 refresheruser=3 
+				 });
+			});
+			
+			function agroupdel(){ $.post("./pump.php", { req:"UnixDelgroup", name:arguments[0]+" "+myname, passwd:"" }, function (data){
 				 //refreshUserList();
 				 console.log("hi", arguments[0]);
 				 refresheruser=3 

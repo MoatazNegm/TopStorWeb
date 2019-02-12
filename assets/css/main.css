@@ -218,6 +218,13 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
     background: url("../images/box-users.png") no-repeat;
 }
 
+.boxGroups div {
+    background: url("../images/box-users-gray.png") no-repeat;
+}
+
+.boxGroups > .nav-link.active > div {
+    background: url("../images/box-users.png") no-repeat;
+}
 .boxProperties div {
     background: url("../images/box-properties-gray.png") no-repeat;
 }
@@ -250,6 +257,12 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
     background: url("../images/cifs.png") no-repeat;
 }
 
+.HOMe div {
+    background: url("../images/nfs-gray.png") no-repeat;
+}
+.HOMe > .nav-link.active > div {
+    background: url("../images/nfs.png") no-repeat;
+}
 .nfs div {
     background: url("../images/nfs-gray.png") no-repeat;
 }
@@ -289,7 +302,9 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
 .proxyliscence > .nav-link.active > div {
     background: url("../images/proxy.png") no-repeat;
 }
-
+.smalloption {
+ font-size: 10 px;
+}
 .diskGroups div {
     background: url("../images/disk-gray.png") no-repeat;
 }
@@ -695,6 +710,9 @@ h4{    color: #333;}
     border-radius: .25rem;
     height: 30px;
 }
+.queue tr {
+  font-size: small;
+ }
 .dr-table-show > tbody > tr:nth-of-type(odd) {
     background-color: #c5d7ed;
 }

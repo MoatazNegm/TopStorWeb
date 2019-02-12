@@ -79,7 +79,7 @@
 		<li class="nav-item protocol">
 				<a class="ref nav-link" id="protocol" href="#" role="tab">
 			<div></div>
-			Protocol</a>
+			Volumes</a>
 		</li>
 		<li class="nav-item replication">
 				<a class="nav-link ref" href="#" id="replication" role="tab">
@@ -893,9 +893,10 @@ $("#deletePool").hide();$("#submitdiskgroup").hide();$(".finish").hide();$("#Sna
 				   var alltabsAcco=0;var alltabsStat=0;var alltabsProt=0;var alltabsRepli=0;var alltabsPool=0;var alltabsUP=0;
 					var curuser=myname;
 					if(curuser!="admin"){
-					$.get("gump2.php", { req: 'usersinfo/mezo', name:"" },function(data){ 
+					$.get("gump2.php", { req: 'usersinfo/'+curuser, name:"" },function(data){ 
 	console.log('ss-user',data.split('/'));
 	var gdata=data.split('/')
+	gdata.shift(); gdata.shift();
 						if(gdata[3].split('-')[1]!="true") { $(".activeDirectory").hide(); $("#activeDirectory").hide(); alltabsAcco=1;} 
 						if(gdata[7].split('-')[1]!="true") { $(".boxUsers").hide(); $("#boxUsers").hide(); alltabsAcco=alltabsAcco+1;} 
 						if(gdata[10].split('-')[1]!="true") { $(".boxProperties").hide(); $("#boxProperties").hide(); alltabsAcco=alltabsAcco+1;} 
@@ -903,7 +904,7 @@ $("#deletePool").hide();$("#submitdiskgroup").hide();$(".finish").hide();$("#Sna
 						if(gdata[4].split('-')[1]!="true") { $(".servicestatus").hide(); $("#servicestatus").hide(); alltabsStat=1;} 	else { $(".servicestatus").show(); $("#servicestatus").show();}
 						if(gdata[8].split('-')[1]!="true") { $("#Logs").hide(); $("#Logspanel").hide();alltabsStat=alltabsStat+1;}
 						if(alltabsStat==2) { $(".status").hide();}
-						if(gdata[11].split('-')[1]!="true") { $(".cifs").hide(); $("#cifspane").hide(); alltabsProt=1;} 
+						if(gdata[11].split('-')[1]!="true") { $(".cifs").hide(); $("#cifspane").hide(); alltabsProt=1;$(".HOMe").hide(); $("#HOMespane").hide();} 
 						if(gdata[5].split('-')[1]!="true") { $(".nfs").hide(); $("#nfspane").hide(); alltabsProt=alltabsProt+1;}
 						if(alltabsProt==2) { $(".protocol").hide()}
 						if(gdata[15].split('-')[1]!="true") { $(".partner").hide(); $("#partner").hide(); alltabsRepli=1;} 
@@ -1797,21 +1798,12 @@ function pooldelspecial(){
 function poolcreatesingle(){
 	var userpriv="false";
 	var curuser=myname;
-	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
-		var gdata = jQuery.parseJSON(data);
-		for (var prot in gdata){
-			if(gdata[prot].user==myname) {
-				userpriv=gdata[prot].DiskGroups
-			}
-		};
-
-		if(userpriv=="true" | curuser=="admin" ) { 
+ if(userpriv=="true" | curuser=="admin" ) { 
 
 			$.post("./pump.php", { req: "DGsetPool.py", name:"Single " + myname+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id,passwd:"nopool"+' '+currenthost});
 			syscounter2=980;  
 
-		}
-	});
+ }
 };
 function pooladdraidtriple(){
 	var userpriv="false";
@@ -2195,21 +2187,15 @@ $("#submitdiskgroup").click( function (){ $.post("./pump.php", { req:"DGsetPool.
 function pooldelete(){
 	var userpriv="false";
 	var curuser=myname;
-	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
-		var gdata = jQuery.parseJSON(data);
-		for (var prot in gdata){
-			if(gdata[prot].user==myname) {
-				userpriv=gdata[prot].DiskGroups
-}
-};
-
-if(userpriv=="true" | curuser=="admin" ) { 
+	console.log('starting',userpriv,myname)
+ if(userpriv=="true" | curuser=="admin" ) { 
+	console.log('runing',currentpool,myname,currenthost)
 
 	$.post("./pump.php", { req:"DGdestroyPool.py ", name:currentpool+" "+myname, passwd:currenthost });
+        console.log('hi')
 
 	syscounter2=980
-}
-});
+ };
 };
 
 

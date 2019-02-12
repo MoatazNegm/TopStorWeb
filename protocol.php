@@ -9,15 +9,15 @@
     <link rel="icon" type="image/png" href="assets/images/Qonly.png">
 
     <!--BOOTSTRAP CSS STYLE-->
-     <link href="assets/css/tether.min.css" rel="stylesheet" type="text/css">   
-    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
     <!--Font Awesome css-->
     <link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!--CUSTOME CSS-->
+    <link href="assets/css/jquery-ui.min.css" rel="stylesheet" type="text/css">
     <link href="assets/css/main.css" rel="stylesheet" type="text/css">
-    <link href="assets/css/jquery.jqplot.min.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/bootstrap-select.min.css" rel="stylesheet" type="text/css">
 
 </head>
 <body>
@@ -43,6 +43,7 @@
 </nav>
 <!--MESSAGES-->
 <div class="dr-messages">
+   
     <div class="bg-warning">Your changes may be not saved
         <button type="button" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -99,7 +100,7 @@
         </div>
         <div class="col-md-2 second-menu">
             <div class="tab-content">
-                <div class="tab-pane active" id="protocol" role="tabpanel">
+                <div class="tab-pane active" id="protocol2" role="tabpanel">
                     <ul class="nav flex-column" role="tablist">
                         <li class="nav-item cifs">
                             <a class="nav-link active" data-toggle="tab" href="#cifspane" role="tab">
@@ -111,12 +112,68 @@
                                 <div></div>
                                 <span>NFS</span></a>
                         </li>
+                        <li class="nav-item HOMe">
+                            <a class="nav-link" data-toggle="tab" href="#HOMespane" role="tab">
+                                <div></div>
+                                <span>Home</span></a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="col-md-9 main-content">
             <div class="tab-content">
+                <div class="tab-pane " id="HOMespane" role="tabpanel">
+                	
+                    <div class="col-6 dr-form">
+                        <div class="form-group row">
+                        	
+                            <label class="col-3 col-form-label">Pool</label>
+                            <div class="col-5">
+                                <select id="Pool2HOMe" class="Pool2 form-control">
+                                </select>
+                            </div>
+                         
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label">Vol name</label>
+                            <div class="col-5">
+                                <input id="volnameHOMe" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label">Size..GB</label>
+                            <div class="col-5">
+                                <input id="volsizeHOMe" min="1" class="form-control" type="number" value="1">
+                            </div>
+                        </div>
+
+                        <a href="javascript:createvol()"class="row">
+                            <div id="createvolHOMe" type="button" class="createvol btn btn-submit col-5">Create Volume</div>
+                        </a>
+                    </div>
+		   <div clas="col-5">
+                    <canvas id="myChartHOMe" style="max-width: 500px;">hellomezo</canvas>
+                   </div>
+                    <div class="row table-responsive " style='margin-top:-0.7rem;'>
+                        <table class="col-12 table table-hover dr-table-show">
+                            <thead>
+                            <tr>
+                                <th class="" style="padding-left: 2rem; ">Volume Name</th>
+                                <th class="text-center">Volume Size(MB)</th>
+                                <th class="text-center">Actual size(MB)</th>
+                                <th class="text-center">Snaps size(MB)</th>
+                                <th class="text-center">Compres ratio(%)</th>
+                                <th class="text-center">Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody id="VolumetableHOMe">
+                            <tr style="display: none;">
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <div class="tab-pane active" id="cifspane" role="tabpanel">
                 	
                     <div class="col-6 dr-form">
@@ -136,6 +193,18 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                        	
+                            <label class="col-3 col-form-label">Allowed Groups</label>
+                            <div class="col-5">
+                                <select id="GroupCIFS" class="selectpicker form-control" multiple>
+				 <option value="hi">grp1</option>
+				 <option value="by" selected>grp2</option>
+				 <option value="ddfka">grp3</option>
+                                </select>
+                            </div>
+                         
+                        </div>
+                        <div class="form-group row">
                             <label class="col-3 col-form-label">Size..GB</label>
                             <div class="col-5">
                                 <input id="volsizeCIFS" min="1" class="form-control" type="number" value="1">
@@ -149,12 +218,8 @@
 		   <div clas="col-5">
                     <canvas id="myChartCIFS" style="max-width: 500px;">hellomezo</canvas>
                    </div>
-						  <div  class="" class="col-4 chart"  >
-								<div class="" id="chartCIFS" ></div>
-						  </div>                  
-                    <h1>created volumes:</h1>
-                    <div class="row table-responsive">
-                        <table class="col-12 table  dr-table-show">
+                    <div class="row table-responsive "style='margin-top:-0.7rem;'>
+                        <table class="col-12 table table-hover dr-table-show">
                             <thead>
                             <tr>
                                 <th class="" style="padding-left: 2rem; ">Volume Name</th>
@@ -162,6 +227,8 @@
                                 <th class="text-center">Actual size(MB)</th>
                                 <th class="text-center">Snaps size(MB)</th>
                                 <th class="text-center">Compres ratio(%)</th>
+                                <th class="text-center">Allowed Groups</th>
+                                <th class="text-center">Need Update</th>
                                 <th class="text-center">Delete</th>
                             </tr>
                             </thead>
@@ -189,6 +256,17 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                        	
+                            <label class="col-3 col-form-label">Allowed Groups</label>
+                            <div class="col-5">
+                                <select id="GroupNFS" class="selectpicker form-control" multiple>
+				 <option value="hi">grp1</option>
+				 <option value="by" selected>grp2</option>
+				 <option value="ddfka">grp3</option>
+                                </select>
+                            </div>
+			</div>
+                        <div class="form-group row">
                             <label class="col-3 col-form-label">Size..GB</label>
                             <div class="col-5">
                                 <input id="volsizeNFS" class="form-control" min=1 value=1 type="number">
@@ -199,13 +277,11 @@
                         </a>
                         
                     </div>
-                    <div  class="" class="col-5 chart"  >
+                    <div  class="col-5"  >
                     <canvas id="myChartNFS" style="max-width: 500px;">hellomezo</canvas>
-								<div class="" id="chartNFS" ></div>
-						  </div>                  
-                    <h1>created volumes:</h1>
-                    <div class="row table-responsive">
-                        <table class="col-12 table  dr-table-show">
+		    </div>
+                   <div class="row table-responsive "style='margin-top:-0.7rem;'>
+                        <table class="col-12 table table-hover dr-table-show">
                             <thead>
                             <tr>
                                 <th class="text-center" style="padding-left: 2rem; ">Volume Name</th>
@@ -213,6 +289,8 @@
                                 <th class="text-center">Actual size(MB)</th>
                                 <th class="text-center">Snaps size(MB)</th>
                                 <th class="text-center">Compres ratio(%)</th>
+                                <th class="text-center">Allowed Groups</th>
+                                <th class="text-center">Need Update</th>
                                 <th class="text-center">Delete</th>
                             </tr>
                             </thead>
@@ -222,6 +300,29 @@
                             </tbody>
                         </table>
                     </div>
+<div id='queue' class="queue" tabindex="-1" role="dialog" style="z-index: 10000; width: 100%;">
+ <div class="">
+  <div class="row">
+   <div class="col-10">
+    <h10 class="" style="padding:2px;">Queue</h10>
+   </div>
+   <div class="col-1">
+    <h10 class="" style="padding:2px;">Queue</h10>
+   </div>
+  </div>
+  <div class="row"style="margin-left: -2px;">
+<div class='table-responsive '>
+  <table class='col-12 table table-hover table-striped'style="padding:2px;">
+   <tbody>
+    <tr><td style="padding:2px;">ofone</td><td style="padding:2px;">oftwo</td><td style="padding:2px;">ofthree</td>
+    <tr><td style="padding:2px;">ofone</td><td style="padding:2px;">oftwo</td><td style="padding:2px;">ofthree</td>
+    <tr><td style="padding:2px;">ofone</td><td style="padding:2px;">oftwo</td><td style="padding:2px;">ofthree</td>
+   </tbody>
+  </table>
+ </div>
+ </div>
+ </div>
+  
                 </div>
             </div>
         </div>
@@ -274,18 +375,18 @@
  </div>
 </div>
 <!--JQUERY SCROPT-->
-<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/Chart.js"></script>
+<script src="assets/js/popper.min.js"></script>
+<script src="assets/js/jquery-3.3.1.min.js"></script>
+<script src="assets/js/jquery-ui.min.js"></script>
 
 <!--BOOTSTRAP SCRIPT-->
-<script src="assets/js/tether.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script language="javascript" type="text/javascript" src="js/jquery.jqplot.min.js"></script>
-<script language="javascript" type="text/javascript" src="js/excanvas.js"></script>
-<script class="include" language="javascript" type="text/javascript" src="js/jqplot.pieRenderer.min.js"></script>
+<script src="assets/js/bootstrap-select.min.js"></script>
 <!--CUSTOM JS-->
-<script src="assets/js/Chart.js"></script>
 <script>
 	var pools = [];
+	var dblrefresh=false;
 			var plotflag = 0;
 			var Protocol=0;
 			var config = 1;
@@ -298,6 +399,7 @@
 			var olddata="hi";
 			var olddiskpool="hihi";
 			var jdata="hihihihi"
+			var grpolddata="hihihihi"
 			var chartdata = [];
 			var datachart1 = [];
 			var datachart2 = [];
@@ -307,8 +409,14 @@
 			var myChart='1';
                         var pools=[];
 			var volumes=[];
+			var allgroups={};
 			var plotb;
  var mydate;
+ var wait1=0;
+ var wait2=0
+ var oldvoldata;
+ var oldvoldataraw='dkfjdk';
+ var selvalues={};
  var myidhash;
  var mytimer;
  var mymodal;
@@ -320,14 +428,13 @@
  $(".myname").val(myname)
  $("#usrnm").text(myname)
  $(".params").val(myid);
+ $(".selectpicker").selectpicker()
 //$("#overlay").modal('show');
 function timeron() {
  mytimer=setTimeout(function() { 
 	document.getElementById('Login'+'ref').submit();
-	console.log('timout');
 		},idletill);
  mymodal=setTimeout(function() { 
-	console.log('modaltimeout');
 	$("#overlay").modal('show')
 		},modaltill);
 }
@@ -337,15 +444,13 @@ function chkuser() {
 			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid},function(data){ 
          var data2=data.replace(" ","").replace('\n','');
 	if (myid != data2) { 
-	   console.log('username',myname)
-           console.log('myid,data2',myid,'and',data2)
 		document.getElementById('Login'+'ref').submit();
  	}		;
 				});
 };
 chkuser();
 				$("html").click(function(){
-mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser();myidhash=mydate;console.log(myidhash); } timerrst();});
+mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser();myidhash=mydate; } timerrst();});
 				$("html").keypress(function(){mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser(); myidhash=mydate;};timerrst();});
 				$(".bg-success").hide();$(".bg-successold").hide();$(".bg-danger").hide();$(".bg-warning").hide();
      function normsize(s){
@@ -360,7 +465,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
      }
  function createvol() { 
   var thepool=$("#Pool2"+prot).val()
-  $.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G ", passwd:myname+" "+pools[thepool].host }, function (data){
+  $.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+$("#Group"+prot).val().toString(), passwd:myname+" "+pools[thepool].host }, function (data){
  });
 };
 		function voldel() {  
@@ -371,17 +476,17 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 				   var alltabsAcco=0;var alltabsStat=0;var alltabsProt=0;var alltabsRepli=0;var alltabsPool=0;var alltabsUP=0;
 					var curuser=myname;
 					if(curuser!="admin"){
-					$.get("gump2.php", { req: 'usersinfo/mezo', name:"" },function(data){ 
-	console.log('ss-user',data.split('/'));
+					$.get("gump2.php", { req: 'usersinfo/'+curuser, name:"" },function(data){ 
 	var gdata=data.split('/')
+	gdata.shift(); gdata.shift();
 						if(gdata[3].split('-')[1]!="true") { $(".activeDirectory").hide(); $("#activeDirectory").hide(); alltabsAcco=1;} 
 						if(gdata[7].split('-')[1]!="true") { $(".boxUsers").hide(); $("#boxUsers").hide(); alltabsAcco=alltabsAcco+1;} 
 						if(gdata[10].split('-')[1]!="true") { $(".boxProperties").hide(); $("#boxProperties").hide(); alltabsAcco=alltabsAcco+1;} 
-						if(alltabsAcco==3) { console.log('hi');$(".accounts").hide()}
+						if(alltabsAcco==3) { $(".accounts").hide()}
 						if(gdata[4].split('-')[1]!="true") { $(".servicestatus").hide(); $("#servicestatus").hide(); alltabsStat=1;} 	else { $(".servicestatus").show(); $("#servicestatus").show();}
 						if(gdata[8].split('-')[1]!="true") { $("#Logs").hide(); $("#Logspanel").hide();alltabsStat=alltabsStat+1;}
 						if(alltabsStat==2) { $(".status").hide();}
-						if(gdata[11].split('-')[1]!="true") { $(".cifs").hide(); $("#cifspane").hide(); alltabsProt=1;} 
+						if(gdata[11].split('-')[1]!="true") { $(".cifs").hide(); $("#cifspane").hide(); alltabsProt=1;$(".HOMe").hide(); $("#HOMespane").hide();} 
 						if(gdata[5].split('-')[1]!="true") { $(".nfs").hide(); $("#nfspane").hide(); alltabsProt=alltabsProt+1;}
 						if(alltabsProt==2) { $(".protocol").hide()}
 						if(gdata[15].split('-')[1]!="true") { $(".partner").hide(); $("#partner").hide(); alltabsRepli=1;} 
@@ -398,9 +503,62 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 					});
 				};
 			};
+	function refreshgroups() {
+				var jdata;
+				$.get("gump2.php", { req: 'usersigroup', name:'--prefix' }, function(grpdata){
+				  if(grpdata==grpolddata) { return; }
+				   grpolddata=grpdata
+				   jdata = jQuery.parseJSON(grpdata);
+				   allgroups=jdata;
+				$("#Group"+prot+" option").remove();
+				var selected=$("#Group"+prot).val();
+				$(".selectpicker").selectpicker("refresh");
+				var username="dkfj"
+				$.each(jdata, function(k,v){
+				username=jdata[k]['name'].replace('usersigroup/','')
+ if (selected.includes(username)>0){ 
+				$("#Group"+prot).append("<option value='"+username+"' selected>"+username+"</option>");
+ } else {
+				$("#Group"+prot).append("<option value='"+username+"'>"+username+"</option>");
+ }
+				$(".selectpicker").selectpicker("refresh");
+
+});
+
+
+});
+
+
+
+}
+			function refreshselect(){
+			 $.each($('[id^=selvol]'),function(e,v) {
+		          var k;
+  			for (k in selvalues){
+			 if ( k.includes('change') > 0 )  { continue; }
+			 if (this.id.includes(k)> 0) {
+			  if( selvalues[k+'change']==0) { 
+			   if(selvalues[k].toString()!=$('#'+k).val().toString()) {
+			    $('#btn'+k).show()
+			    console.log('changing',k,selvalues[k],$('#'+k).val())
+			    selvalues[k+'change']= 1
+			   }
+			  } else {
+			   if(selvalues[k].toString()==$('#'+k).val().toString()) {
+			    $('#btn'+k).hide();
+			    selvalues[k+'change']=0;
+			   } 
+			  }
+			 }
+			};
+			});
+                       }
 			function refreshall() {
-				if($("#cifspane").hasClass('active'))  { if (prot !="CIFS") { olddiskpool="oldnfs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); $(".variable2").remove(); Vollisttime2="skldjfadks"; prot="CIFS";}};
-				if($("#nfspane").hasClass('active') ) { if (prot !="NFS") { olddiskpool="oldcifs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove();prot="NFS"; Vollisttime2="ndfsfsn";}};
+					refreshgroups();
+					refreshselect();
+				if($("#cifspane").hasClass('active'))  { if (prot !="CIFS") { grpolddata='dkjffdk';olddiskpool="oldnfs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); $(".variable2").remove(); Vollisttime2="skldjfadks"; prot="CIFS";}};
+				if($("#HOMespane").hasClass('active'))  { if (prot !="HOMe") { olddiskpool="old"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); $(".variable2").remove(); Vollisttime2="skldjfadks"; prot="HOMe";}};
+				if($("#nfspane").hasClass('active') ) { if (prot !="NFS") { grpolddata='dkfaljf';olddiskpool="oldcifs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove();prot="NFS"; Vollisttime2="ndfsfsn";}};
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){
 		if(data!=oldcurrentinfo && data != ''){linerfact=-1;oldcurrentinfo=data;  $(".bg-success").fadeIn(800); $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
 	});
@@ -425,10 +583,25 @@ function refreshList2(req,listid,filelocfrom,show) {
  var fileloc=filelocfrom;
  var request=req;
  var others=0
+ if(wait1 > 0 && wait2 > 0 ){ dblrefresh=false; wait1=0; wait=0; $(".volgrps option").hide();$(".volgrps .filter-option-inner").css("font-size","0.8rem");}
+ if (dblrefresh==false) { dblrefresh=true;}
+ else {return; }
  fileloc = filelocfrom ; request= request ; 
+ $.get("gump2.php", { req: 'vol', name:'--prefix' }, function(data){
+  wait1=1
+  if(data!=oldvoldataraw){
+   jdata = jQuery.parseJSON(data)
+   if(typeof jdata =='object' ) {
+    oldvoldataraw=data
+    oldvoldata=jdata
+    olddiskpool='change' 
+   }
+  }
+ });
+   
+   
  $.get("gump2.php", { req: 'hosts', name:'--prefix' }, function(data){
-  if(data==olddiskpool) {return;}
-  else {
+  if(data!=olddiskpool){ 
    jdata = jQuery.parseJSON(data)
    if(typeof jdata =='object' ) {
     olddiskpool=data
@@ -448,6 +621,7 @@ function refreshList2(req,listid,filelocfrom,show) {
     chartdata=[]
     datachart1=[]
     datachart2=[]
+ 
     if (plotb) {plotb.destroy();}
     p=0
     $.each(jdata,function(k,v){
@@ -461,7 +635,7 @@ function refreshList2(req,listid,filelocfrom,show) {
       topool['host']=hosts[r]['name']
       if (topool.name.includes('ree') < 1 ){
        pools.push(topool)
-       $("#Pool2"+prot).append($('<option class="pool variable2">').text(topool.name.replace('pdhcp','')).val(rr));
+       $("#Pool2"+prot).append($('<option class="pool variable2" value='+topool.name+'>').text(topool.name.replace('pdhcp','')).val(rr));
        //chartdata.push([topool.name,normsize(topool.alloc)]);
        chartdata.push(['free',normsize(topool.empty)]);
        datachart1.push('free');
@@ -477,8 +651,39 @@ function refreshList2(req,listid,filelocfrom,show) {
      pools[k]['size']=normsize(pools[k]['available'])+normsize(pools[k]['used'])
      $.each(pools[k]["volumes"],function(kk,vv){
       tovol=pools[k]['volumes'][kk]
+      tovol.group=tovol.name
+      $.each(oldvoldata,function(s,r){
+	if (oldvoldata[s].name.includes(tovol.name)>0) {
+	 if (oldvoldata[s].name.includes('CIFS')> 0 ){
+	 tovol.group=oldvoldata[s].prop.split('/')[4]
+         } else { 
+	  if (oldvoldata[s].name.includes('NFS')> 0 ){
+	   tovol.group=oldvoldata[s].prop.split('/')[8]
+	  }  
+	 }
+	}
+      });
       volumes.push(tovol) 
-      $("#Volumetable"+tovol['prot']).append('<tr onclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
+      if(prot.includes('CIFS') > 0 || prot.includes('NFS') > 0) {
+      $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td style="padding-top: 5px; padding-bottom: 5px;" ><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" data-width="auto" class="selectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked(this)" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
+     $("#btnselvol"+tovol.name).hide();
+     $.each(allgroups, function(g,gg){
+      username=allgroups[g]['name'].replace('usersigroup/','')
+      console.log('tovol.group',tovol.group) 
+ if (tovol.group.includes(username)>0){ 
+				$("."+tovol.name).append("<option class='"+username.replace(',','')+"' value='"+username+"' selected>"+username+"</option>");
+ } else {
+				$("."+tovol.name).append("<option class='smalloption' value='"+username+"'>"+username+"</option>");
+ }
+	$("."+tovol.name).selectpicker("refresh");
+});
+     selvalues['selvol'+tovol.name]=$('#selvol'+tovol.name).val()
+     selvalues['selvol'+tovol.name+'change']=0
+     } else {
+      $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
+     
+     }
+
      chartdata.push([tovol.name,normsize(tovol.quota)]);
      datachart1.push(tovol.name);
      datachart2.push(normsize(tovol.quota));
@@ -490,9 +695,9 @@ function refreshList2(req,listid,filelocfrom,show) {
    //chartdata.push(['free',poolsize]);
    //chartdata.push(['others',others]);
    //plotchart('chart'+prot,chartdata);
-   console.log('hi')
    plotchart('chart'+prot,datachart1,datachart2);
   }
+ wait2=1
  });
 }
 	
@@ -521,6 +726,7 @@ function refreshList2(req,listid,filelocfrom,show) {
 			
 			function rowisclicked(x) {
 				//alert("Row index is: " + x.rowIndex);
+				console.log('row is clicked',x)
 				$(x).toggleClass("success");
 				var counter=0;
 				$(function(){ var a=0; var b=0; var c=0;  $("tr.success").each(function(){ 
@@ -575,8 +781,12 @@ function refreshList2(req,listid,filelocfrom,show) {
 			}
 			
 		
-			
-			
+		        function selbtnclicked(x){
+				console.log('update needed',x.id);
+  var thepool=$("#Pool2"+prot).val()
+ $.post("./pump.php", { req:"VolumeChange"+prot+".py", name:pools[thepool].name+" "+x.id.replace('btnselvol','')+" "+prot+" "+$("#qta"+x.id.replace('btnselvol','')).val()+" "+$("#"+x.id.replace('btn','')).val().toString()+" "+myname, passwd: pools[thepool].host });
+
+			};	
 			$("#CIFS").click(function (){ 
 				if(config == 1 ) {
 					var userpriv="false";
@@ -652,7 +862,6 @@ function refreshList2(req,listid,filelocfrom,show) {
 			}); 
 			$(".Pool2").change(function () {
 				var selection=$(".Pool2 option:selected").val();//
-				//console.log(selection
 				if (selection == "--All--")
 					$("#Vol2 option.variable").show();
 				else {
@@ -669,7 +878,7 @@ function refreshList2(req,listid,filelocfrom,show) {
 				 
 				 });
 			});
-			$(".createvololdoldold").click(function (){  var req="";$.post("./pump.php", { req:"VolumeCreate"+prot+"", name:$("#Pool2"+prot+" option:selected").val()+" "+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+myname }, function (data){
+			$(".createvololdoldold").click(function (){  var req="";$.post("./pump.php", { req:"VolumeCreate"+prot+"", name:$("#Pool2"+prot+" option:selected").val()+" "+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+$("#Group"+prot).val().toString()+" "+myname }, function (data){
 
 				 });
 			
@@ -712,7 +921,6 @@ $(".ref").click(function() {
 					} else {
 					document.getElementById($(this).attr('id')+'ref').submit();
 					}
-		 //console.log($(this).attr('id'));
 		});	
 		SS();
 </script>
