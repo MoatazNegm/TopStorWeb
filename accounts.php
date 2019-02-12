@@ -800,6 +800,7 @@ $.each(jvol,function(k,v){
 			};
 			$("#UnixAddGroup").click( function (){ $.post("./pump.php", { req:"UnixAddGroup", name:$("#Group").val(), passwd:myname}, function (data){
 				 //refreshUserList(); 
+			         console.log('hi',myname);
 				 refresheruser=3
 				 });
 			});
