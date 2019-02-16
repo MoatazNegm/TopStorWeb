@@ -2077,22 +2077,10 @@ function poolattachemirror(){
 function poolcreatemirror() {
 	var userpriv="false";
 	var curuser=myname;
-	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
-		var gdata = jQuery.parseJSON(data);
-		for (var prot in gdata){
-			if(gdata[prot].user==myname) {
-				userpriv=gdata[prot].DiskGroups
-			}
-		};
-
-		if(userpriv=="true" | curuser=="admin" ) { 
-
 			$.post("./pump.php", { req: "DGsetPool.py", name:"mirror " + myname+" "+dd[1].host+" "+dd[1].name+":"+dd[1].id+" "+dd[2].name+":"+dd[2].id, passwd: "nopool"+' '+currenthost});
 
+              console.log('hi',dd[1].name,dd[1].id,dd[2].name,dd[2].id,currenthost)
 			syscounter2=980;  
-
-		}
-	});
 
 }
 $("#SnapShots").click(function (){ 
