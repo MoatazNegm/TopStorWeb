@@ -1867,44 +1867,20 @@ function poolcreateraidtriple(){
 function pooladdraiddual(){
 	var userpriv="false";
 	var curuser=myname;
-	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
-		var gdata = jQuery.parseJSON(data);
-		for (var prot in gdata){
-			if(gdata[prot].user==myname) {
-				userpriv=gdata[prot].DiskGroups
-			}
-		};
-
-		if(userpriv=="true" | curuser=="admin" ) { 
 			var stripeset=dd["1"].host+" "
 				for(var k in dd) {
 					if(k > 0){
 						stripeset=stripeset+dd[k].name+":"+dd[k].id+" "		
 					}		
 				}
-
-			//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
 			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity2 " + myname+" "+stripeset,passwd:currentpool+' '+currenthost});
 
 			syscounter2=980;  
-
-		}
-	});
-
 
 }
 function poolcreateraiddual(){
 	var userpriv="false";
 	var curuser=myname;
-	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
-		var gdata = jQuery.parseJSON(data);
-		for (var prot in gdata){
-			if(gdata[prot].user==myname) {
-				userpriv=gdata[prot].DiskGroups
-			}
-		};
-
-		if(userpriv=="true" | curuser=="admin" ) { 
 			var stripeset=dd["1"].host+" "
 				for(var k in dd) {
 					if(k > 0){
@@ -1915,9 +1891,6 @@ function poolcreateraiddual(){
 			$.post("./pump.php", { req: "DGsetPool.py", name:"parity2 " + myname+" "+stripeset,passwd:"nopool" +' '+currenthost});
 
 			syscounter2=980;  
-
-		}
-	});
 
 
 }
