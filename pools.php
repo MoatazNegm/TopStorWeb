@@ -1897,15 +1897,6 @@ function poolcreateraiddual(){
 function pooladdraidsingle(){
 	var userpriv="false";
 	var curuser=myname;
-	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
-		var gdata = jQuery.parseJSON(data);
-		for (var prot in gdata){
-			if(gdata[prot].user==myname) {
-				userpriv=gdata[prot].DiskGroups
-			}
-		};
-
-		if(userpriv=="true" | curuser=="admin" ) { 
 			var stripeset=dd["1"].host+" "
 				for(var k in dd) {
 					if(k > 0){
@@ -1913,79 +1904,37 @@ function pooladdraidsingle(){
 					}		
 				}
 
-			//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
 			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity " + myname+" "+stripeset,passwd:currentpool+' '+currenthost });
 
 			syscounter2=980;  
-
-		}
-	});
-
-
-
 
 }
 function poolcreateraidsingle(){
 	var userpriv="false";
 	var curuser=myname;
-	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
-		var gdata = jQuery.parseJSON(data);
-		for (var prot in gdata){
-			if(gdata[prot].user==myname) {
-				userpriv=gdata[prot].DiskGroups
-			}
-		};
-
-		if(userpriv=="true" | curuser=="admin" ) { 
 			var stripeset=dd["1"].host+" "
 				for(var k in dd) {
 					if(k > 0){
 						stripeset=stripeset+dd[k].name+":"+dd[k].id+" "		
 					}		
 				}
-
+console.log('raidsingle')
 			$.post("./pump.php", { req: "DGsetPool.py", name:"parity " + myname+" "+stripeset,passwd:"nopool "+currenthost });
 
 			syscounter2=980;  
-
-		}
-	});
-
-
-
 
 }
 function pooladdstripe(){
 	var userpriv="false";
 	var curuser=myname;
-	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
-		var gdata = jQuery.parseJSON(data);
-		for (var prot in gdata){
-			if(gdata[prot].user==myname) {
-				userpriv=gdata[prot].DiskGroups
-			}
-		};
-
-		if(userpriv=="true" | curuser=="admin" ) { 
 			$.post("./pump.php", { req: "DGsetPool.py", name:"add " +myname+' '+currenthost+' '+dd[2].name+' '+dd[2].id,passwd:currentpool+' '+currenthost });
 
 			syscounter2=980;  
 
-		}
-	});
 };
 function poolcreatestripe(){
 	var userpriv="false";
 	var curuser=myname;
-	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
-		var gdata = jQuery.parseJSON(data);
-		for (var prot in gdata){
-			if(gdata[prot].user==myname) {
-				userpriv=gdata[prot].DiskGroups
-			}
-		};
-
-		if(userpriv=="true" | curuser=="admin" ) { 
 			var stripeset=dd["1"].host+" "
 				$.each(dd,function(k,v) {
 					if(k >0){
@@ -1997,55 +1946,23 @@ function poolcreatestripe(){
 
 			syscounter2=980;  
 
-		}
-	});
 };
 function pooladdmirror(){
 
 	var userpriv="false";
 	var curuser=myname;
-	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
-		var gdata = jQuery.parseJSON(data);
-		for (var prot in gdata){
-			if(gdata[prot].user==myname) {
-				userpriv=gdata[prot].DiskGroups
-			}
-		};
-
-		if(userpriv=="true" | curuser=="admin" ) { 
-
-
 			$.post("./pump.php", { req: "DGsetPool.py", name:"addmirror " + myname+" "+dd["1"].host+" "+dd["1"].name+":"+dd["1"].id+" "+dd["2"].name+":"+dd["2"].id, passwd:currentpool+' '+currenthost});
 
 			syscounter2=980;  
 
-		}
-	});
 }
 function poolattachemirror(){
 
 	var userpriv="false";
 	var curuser=myname;
-	$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
-		var gdata = jQuery.parseJSON(data);
-		for (var prot in gdata){
-			if(gdata[prot].user==myname) {
-				userpriv=gdata[prot].DiskGroups
-			}
-		};
-
-		if(userpriv=="true" | curuser=="admin" ) { 
-
-
 			$.post("./pump.php", { req: "DGsetPool.py", name:"attachmirror " + myname+" "+dd["1"].host+" "+dd["1"].name+" "+dd["1"].id+" "+dd["2"].name+" "+dd["2"].id, passwd:currentpool+' '+currenthost});
 
 			syscounter2=980;  
-
-		}
-	});
-
-
-
 }
 function poolcreatemirror() {
 	var userpriv="false";
@@ -2060,20 +1977,9 @@ $("#SnapShots").click(function (){
 	if(config== 1){ 
 		var userpriv="false";
 		var curuser=myname;
-		$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
-			var gdata = jQuery.parseJSON(data);
-			for (var prot in gdata){
-				if(gdata[prot].user==myname) {
-					userpriv=gdata[prot].SnapShots
-				}
-			};
-
-			if( userpriv=="true" | curuser=="admin" ) { 
 				config = 0; status="snaps"; $("h2").css("background-image","url('img/snapshot.png')").text("SnapShots"); Vollisttime="44:333:22";times= { "snaps":"30:43:433", "periods":"30:43:433" }; $(".ullis").hide();$(".finish").show();$(".SnapShots").show();
 				$("#Vol").change();
 			}
-		});
-	};
 });
 
 $(".finish").click(function (){ config = 1; status=0; $(".DiskGroups").hide(); $(".SnapShots").hide(); $(".ullis").show();$(".finish").hide()});
