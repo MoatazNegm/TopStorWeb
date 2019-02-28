@@ -115,8 +115,8 @@ CIFS1007: Success deleting :
 Partst01:1: : from :: Partner : booted with ip :  wait till complete joining cluster
 Partsu01:2: : from :: Partner : completed joining cluster with ip : 
 Partst02:2: : from :: Partner : is down
-Partst03:1: : from :: Partner : booting with ip : as standalone. please wait ... 
-Partsu03:2: : from :: Partner : booted with ip : as a standalone.
+Partst03:1: : from :: Partner : booting with ip : as master. please wait ... 
+Partsu03:2: : from :: Partner : booted with ip : as a master.
 Partst04:1: : from :: Partner : booting with ip : as a cluster node please wait ... 
 Partsu04:2: : from :: Partner : booted with ip : as a cluster node.
 Partst05:2: : from :: Partner : raised alert that some node is down
