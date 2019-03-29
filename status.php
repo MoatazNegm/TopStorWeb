@@ -274,7 +274,7 @@
  $(".params").val(myid)
 
 function chkuser(){
-			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid},function(data){ 
+			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid+" "+myname},function(data){ 
          var data2=data.replace(" ","").replace('\n','');
 	if (myid != data2) { 
 	   console.log('username',myname)
@@ -820,7 +820,7 @@ $("#Disks").change(function(){
 		$(".checkboxy").change (function(){ updatelogarea();
 			});
 		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
-		$.post("./pump.php", { req:"GetDisklist", name: "Data/disklist.txt", passwd:"hi"},function(){});
+		$.post("./pump.php", { req:"GetDisklist", name: "Data/disklist.txt", passwd:myname},function(){});
 		setInterval('refreshall()', 2000); // Loop every 1000 milliseconds (i.e. 1 second)
 		setInterval('chkuser()', 300000); // Loop every 1000 milliseconds (i.e. 1 second)
 		

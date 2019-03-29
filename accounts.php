@@ -165,7 +165,7 @@
                             </div>
                         </div>
                         <div class="">
-                            <button type="button" id="ADsubmit" class="btn btn-submit col-3" style="cursor: pointer;">Joint Domain</button>
+                            <button type="button" id="ADsubmit" class="btn btn-submit col-3" style="cursor: pointer;">Join Domain</button>
                         </div>
                     </form>
                 </div>
@@ -527,7 +527,7 @@ function timeron() {
 timeron();
 function timerrst() { clearTimeout(mytimer); clearTimeout(mymodal);$("#overlay").modal('hide'); timeron(); }
 function chkuser() {
-			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid},function(data){ 
+			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid+" "+myname},function(data){ 
          var data2=data.replace(" ","").replace('\n','');
 	if (myid != data2) { 
 	   console.log('username',myname)
@@ -605,7 +605,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 				});
 				}
 				});
-				if (refresherprop > 0) { $.post("./pump.php", { req:"HostgetIPs.py", name:"a", passwd:"" });}				
+				if (refresherprop > 0) { $.post("./pump.php", { req:"HostgetIPs.py", name:myname, passwd:"" });}				
 				
 						$("#cBoxName").text(prop["name"]); $("#cIPAddress").text(prop.addr); $("#cGateway").text(prop.rout);
 						$("#cdns1").text(prop.dns);
@@ -811,7 +811,7 @@ $.each(jvol,function(k,v){
 				 });
 			});
 			
-			function agroupdel(){ $.post("./pump.php", { req:"UnixDelgroup", name:arguments[0]+" "+myname, passwd:"" }, function (data){
+			function agroupdel(){ $.post("./pump.php", { req:"UnixDelGroup", name:arguments[0]+" "+myname, passwd:"" }, function (data){
 				 //refreshUserList();
 				 console.log("hi", arguments[0]);
 				 refresheruser=3 
