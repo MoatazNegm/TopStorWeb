@@ -441,7 +441,7 @@ function timeron() {
 timeron();
 function timerrst() { clearTimeout(mytimer); clearTimeout(mymodal);$("#overlay").modal('hide'); timeron(); }
 function chkuser() {
-			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid},function(data){ 
+			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid+" "+myname},function(data){ 
          var data2=data.replace(" ","").replace('\n','');
 	if (myid != data2) { 
 		document.getElementById('Login'+'ref').submit();
@@ -465,12 +465,12 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
      }
  function createvol() { 
   var thepool=$("#Pool2"+prot).val()
-  $.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+$("#Group"+prot).val().toString(), passwd:myname+" "+pools[thepool].host }, function (data){
+  $.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+$("#Group"+prot).val().toString(), passwd:myname+" "+pools[thepool].host+" "+myname }, function (data){
  });
 };
 		function voldel() {  
   var thepool=$("#Pool2"+prot).val()
- $.post("./pump.php", { req:"VolumeDelete"+prot+".py", name:pools[thepool].name+" "+arguments[0]+" "+prot+" "+myname, passwd: pools[thepool].host });   }
+ $.post("./pump.php", { req:"VolumeDelete"+prot+".py", name:pools[thepool].name+" "+arguments[0]+" "+prot+" "+myname, passwd: pools[thepool].host+" "+myname });   }
 		function SS(){ 
 				
 				   var alltabsAcco=0;var alltabsStat=0;var alltabsProt=0;var alltabsRepli=0;var alltabsPool=0;var alltabsUP=0;
@@ -784,7 +784,7 @@ function refreshList2(req,listid,filelocfrom,show) {
 		        function selbtnclicked(x){
 				console.log('update needed',x.id);
   var thepool=$("#Pool2"+prot).val()
- $.post("./pump.php", { req:"VolumeChange"+prot+".py", name:pools[thepool].name+" "+x.id.replace('btnselvol','')+" "+prot+" "+$("#qta"+x.id.replace('btnselvol','')).val()+" "+$("#"+x.id.replace('btn','')).val().toString()+" "+myname, passwd: pools[thepool].host });
+ $.post("./pump.php", { req:"VolumeChange"+prot+".py", name:pools[thepool].name+" "+x.id.replace('btnselvol','')+" "+prot+" "+$("#qta"+x.id.replace('btnselvol','')).val()+" "+$("#"+x.id.replace('btn','')).val().toString()+" "+myname, passwd: pools[thepool].host+" "+myname });
 
 			};	
 			$("#CIFS").click(function (){ 

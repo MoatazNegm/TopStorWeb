@@ -527,7 +527,7 @@ function timeron() {
 timeron();
 function timerrst() { clearTimeout(mytimer); clearTimeout(mymodal);$("#overlay").modal('hide'); timeron(); }
 function chkuser() {
-			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid},function(data){ 
+			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid+" "+myname},function(data){ 
          var data2=data.replace(" ","").replace('\n','');
 	if (myid != data2) { 
 	   console.log('username',myname)
@@ -605,7 +605,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 				});
 				}
 				});
-				if (refresherprop > 0) { $.post("./pump.php", { req:"HostgetIPs.py", name:"a", passwd:"" });}				
+				if (refresherprop > 0) { $.post("./pump.php", { req:"HostgetIPs.py", name:myname, passwd:"" });}				
 				
 						$("#cBoxName").text(prop["name"]); $("#cIPAddress").text(prop.addr); $("#cGateway").text(prop.rout);
 						$("#cdns1").text(prop.dns);

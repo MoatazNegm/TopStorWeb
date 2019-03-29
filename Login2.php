@@ -69,7 +69,7 @@
 <?php 
  $usern=$_POST["userName"];
  $passwd=$_POST["userPassword"];
- shell_exec("./pump.sh "."UnixPrepUser"." ".$usern."chk ".$passwd);
+ shell_exec("./pump.sh "."UnixPrepUser"." ".$usern."chk ".$passwd." ".$usern);
 ?>
 <form id="accounts" action="accounts.php" method="post">
  <input class='' type="hidden" name='name' value="<?php echo $usern ; ?>" >
@@ -86,7 +86,7 @@
 console.log('name','<?php echo $usern ?>');
 	
 	function loopingauth() { 
-			$.get("./pumpy.php", { req:"chkuser.py", name:"<?php echo $usern ?>"+" chk "+"<?php echo $passwd ?>"},function(data){ console.log('usertoken',data);
+			$.get("./pumpy.php", { req:"chkuser.py", name:"<?php echo $usern ?>"+" chk "+"<?php echo $passwd ?>"+" "+"<?php echo $usern ?>"},function(data){ console.log('usertoken',data);
 			var data2=data
 			if (data.includes('command')> 0 ) { data2='hi' };
 			if (data2.length > 7 ) {
