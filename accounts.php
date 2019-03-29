@@ -165,7 +165,7 @@
                             </div>
                         </div>
                         <div class="">
-                            <button type="button" id="ADsubmit" class="btn btn-submit col-3" style="cursor: pointer;">Joint Domain</button>
+                            <button type="button" id="ADsubmit" class="btn btn-submit col-3" style="cursor: pointer;">Join Domain</button>
                         </div>
                     </form>
                 </div>
@@ -811,7 +811,7 @@ $.each(jvol,function(k,v){
 				 });
 			});
 			
-			function agroupdel(){ $.post("./pump.php", { req:"UnixDelgroup", name:arguments[0]+" "+myname, passwd:"" }, function (data){
+			function agroupdel(){ $.post("./pump.php", { req:"UnixDelGroup", name:arguments[0]+" "+myname, passwd:"" }, function (data){
 				 //refreshUserList();
 				 console.log("hi", arguments[0]);
 				 refresheruser=3 
