@@ -309,6 +309,17 @@
                   <strong id="cMgmt">Not set</strong>
                       </div>
                         </div>
+                         <div class="form-group row">
+                            <label class="col-2 col-form-label">Time-Server(NTP)</label>
+                            <div class="col-2">
+                                <input id="NTP" class="form-control ip_address" type="text"  >
+                            </div>
+  			    <div class="col-3">
+			    </div>
+                            <div class="alert alert-dismissible alert-info">
+                  <strong id="cNTP">Not set</strong>
+                      </div>
+                        </div>
                         <div class="form-group row">
                             <label class="col-2 col-form-label">Gateway</label>
                             <div class="col-2">
