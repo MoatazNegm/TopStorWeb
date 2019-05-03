@@ -192,6 +192,17 @@
                                 <input id="volnameCIFS" class="form-control" type="text">
                             </div>
                         </div>
+			<div class="form-group row">
+                            <label class="col-3 col-form-label">IP Address</label>
+                            <div class="col-4">
+                                <input id="AddressCIFS" class="form-control ip_address" type="text"  >
+                            </div>
+                            <label class="col-1 col-form-label">Subnet</label>
+                            <div class="col-2">
+                                <input class="form-control" type="number" id="SubnetCIFS" min="0" max="32" value="24" step=8>
+                            </div>
+                        </div>
+
                         <div class="form-group row">
                         	
                             <label class="col-3 col-form-label">Allowed Groups</label>
@@ -255,8 +266,18 @@
                                 <input id="volnameNFS" class="form-control" type="text">
                             </div>
                         </div>
+			<div class="form-group row">
+                            <label class="col-3 col-form-label">IP Address</label>
+                            <div class="col-4">
+                                <input id="AddressNFS" class="form-control ip_address" type="text"  >
+                            </div>
+                            <label class="col-1 col-form-label">Subnet</label>
+                            <div class="col-2">
+                                <input class="form-control" type="number" id="SubnetNFS" min="0" max="32" value="24" step=8>
+                            </div>
+                        </div>
+
                         <div class="form-group row">
-                        	
                             <label class="col-3 col-form-label">Allowed Groups</label>
                             <div class="col-5">
                                 <select id="GroupNFS" class="selectpicker form-control" multiple>
@@ -465,7 +486,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
      }
  function createvol() { 
   var thepool=$("#Pool2"+prot).val()
-  $.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+$("#Group"+prot).val().toString(), passwd:myname+" "+pools[thepool].host+" "+myname }, function (data){
+  $.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+$("#Group"+prot).val().toString(), passwd:myname+" "+$("#Address"+prot).val().toString()+" "+$("#Subnet"+prot).val().toString()+" "+pools[thepool].host+" "+myname }, function (data){
  });
 };
 		function voldel() {  
@@ -667,13 +688,14 @@ function refreshList2(req,listid,filelocfrom,show) {
       if(prot.includes('CIFS') > 0 || prot.includes('NFS') > 0) {
       $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td style="padding-top: 5px; padding-bottom: 5px;" ><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" data-width="auto" class="selectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked(this)" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
      $("#btnselvol"+tovol.name).hide();
+     console.log('allgroups',allgroups)
      $.each(allgroups, function(g,gg){
-      username=allgroups[g]['name'].replace('usersigroup/','')
-      console.log('tovol.group',tovol.group) 
- if (tovol.group.includes(username)>0){ 
-				$("."+tovol.name).append("<option class='"+username.replace(',','')+"' value='"+username+"' selected>"+username+"</option>");
+      usergrp=allgroups[g]['name'].replace('usersigroup/','')
+ if (tovol.group==usergrp){ 
+      console.log('usergrp, tovol.group ',usergrp,',',tovol.group) 
+				$("."+tovol.name).append("<option class='"+usergrp.replace(',','')+"' value='"+usergrp+"' selected>"+usergrp+"</option>");
  } else {
-				$("."+tovol.name).append("<option class='smalloption' value='"+username+"'>"+username+"</option>");
+				$("."+tovol.name).append("<option class='smalloption' value='"+usergrp+"'>"+usergrp+"</option>");
  }
 	$("."+tovol.name).selectpicker("refresh");
 });
