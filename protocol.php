@@ -165,6 +165,7 @@
                                 <th class="text-center">Snaps size(MB)</th>
                                 <th class="text-center">Compres ratio(%)</th>
                                 <th class="text-center">IPAddress</th>
+                                <th class="text-center">Subnet</th>
                                 <th class="text-center">Delete</th>
                             </tr>
                             </thead>
@@ -240,6 +241,7 @@
                                 <th class="text-center">Snaps size(MB)</th>
                                 <th class="text-center">Compres ratio(%)</th>
                                 <th class="text-center">IPAddress</th>
+                                <th class="text-center">Subnet</th>
                                 <th class="text-center">Allowed Groups</th>
                                 <th class="text-center">Need Update</th>
                                 <th class="text-center">Delete</th>
@@ -313,6 +315,7 @@
                                 <th class="text-center">Snaps size(MB)</th>
                                 <th class="text-center">Compres ratio(%)</th>
                                 <th class="text-center">IPAddress</th>
+                                <th class="text-center">Subnet</th>
                                 <th class="text-center">Allowed Groups</th>
                                 <th class="text-center">Need Update</th>
                                 <th class="text-center">Delete</th>
@@ -562,12 +565,12 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 			 if ( k.includes('change') > 0 )  { continue; }
 			 if (this.id.includes(k)> 0) {
 			  if( selvalues[k+'change']==0) { 
-			   if(selvalues[k].toString()!=$('#'+k).val().toString()+$('#'+k+'ip').val().toString()) {
+			   if(selvalues[k].toString()!=$('#'+k).val().toString()+$('#'+k+'ip').val().toString()+$('#'+k+'sub').val().toString()) {
 			    $('#btn'+k).show()
 			    selvalues[k+'change']= 1
 			   }
 			  } else {
-			   if(selvalues[k].toString()==$('#'+k).val().toString()+$('#'+k+'ip').val().toString()) {
+			   if(selvalues[k].toString()==$('#'+k).val().toString()+$('#'+k+'ip').val().toString()+$('#'+k+'sub').val().toString()) {
 			    $('#btn'+k).hide();
 			    selvalues[k+'change']=0;
 			   } 
@@ -688,7 +691,7 @@ function refreshList2(req,listid,filelocfrom,show) {
       });
       volumes.push(tovol) 
       if(prot.includes('CIFS') > 0 || prot.includes('NFS') > 0) {
-      $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class=" tcol"><input class="form-control ip_address" type="text" id="selvol'+tovol.name+'ip"></td><td style="padding-top: 12px; padding-bottom: 5px;" ><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" data-width="auto" class="selectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked(this)" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
+      $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class=" tcol"><input class="form-control ip_address" type="text" id="selvol'+tovol.name+'ip"></td><td class=" tcol"><input class="form-control" type="number" id="selvol'+tovol.name+'sub" min="0" max="32"value="24" step=8></td><td style="padding-top: 12px; padding-bottom: 5px;" ><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" data-width="auto" class="selectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked(this)" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
      $("#btnselvol"+tovol.name).hide();
      console.log('allgroups',allgroups)
      $.each(allgroups, function(g,gg){
@@ -701,7 +704,7 @@ function refreshList2(req,listid,filelocfrom,show) {
  }
 	$("."+tovol.name).selectpicker("refresh");
 });
-     selvalues['selvol'+tovol.name]=$('#selvol'+tovol.name).val()+$('#selvol'+tovol.name+'ip').val()
+     selvalues['selvol'+tovol.name]=$('#selvol'+tovol.name).val()+$('#selvol'+tovol.name+'ip').val()+$('#selvol'+tovol.name+'sub').val()
      selvalues['selvol'+tovol.name+'change']=0
      } else {
       $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
@@ -808,7 +811,7 @@ function refreshList2(req,listid,filelocfrom,show) {
 		        function selbtnclicked(x){
 				console.log('update needed',x.id);
   var thepool=$("#Pool2"+prot).val()
- $.post("./pump.php", { req:"VolumeChange"+prot+".py", name:pools[thepool].name+" "+x.id.replace('btnselvol','')+" "+prot+" "+$("#qta"+x.id.replace('btnselvol','')).val()+" "+$("#"+x.id.replace('btn','')).val().toString()+" "+myname, passwd: pools[thepool].host+" "+myname });
+ $.post("./pump.php", { req:"VolumeChange"+prot+".py", name:pools[thepool].name+" "+x.id.replace('btnselvol','')+" "+prot+" "+$("#qta"+x.id.replace('btnselvol','')).val()+" "+$("#"+x.id.replace('btn','')).val().toString()+" "+$("#"+x.id.replace('btn','')+"ip").val().toString()+" "+$("#"+x.id.replace('btn','')+"sub").val().toString()+" "+myname, passwd: pools[thepool].host+" "+myname });
 
 			};	
 			$("#CIFS").click(function (){ 
