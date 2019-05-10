@@ -201,7 +201,7 @@
                             </div>
                             <label class="col-1 col-form-label">Subnet</label>
                             <div class="col-2">
-                                <input class="form-control" type="number" id="SubnetCIFS" min="0" max="32" value="24" step=8>
+                                <input class="form-control" type="number" id="SubnetCIFS" min="8" max="32" value="24" step=8>
                             </div>
                         </div>
 
@@ -689,9 +689,16 @@ function refreshList2(req,listid,filelocfrom,show) {
 	 }
 	}
       });
+      ip=""; subnet="";
+      $.each(oldvoldata,function(r,s){
+       if(oldvoldata[r]['name'].includes(tovol.name) > 0 ){
+        subnet=oldvoldata[r]['prop'].split('/')[10]
+        ip=oldvoldata[r]['prop'].split('/')[9]
+       }
+      });
       volumes.push(tovol) 
       if(prot.includes('CIFS') > 0 || prot.includes('NFS') > 0) {
-      $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class=" tcol"><input class="form-control ip_address" type="text" id="selvol'+tovol.name+'ip"></td><td class=" tcol"><input class="form-control" type="number" id="selvol'+tovol.name+'sub" min="0" max="32"value="24" step=8></td><td style="padding-top: 12px; padding-bottom: 5px;" ><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" data-width="auto" class="selectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked(this)" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
+      $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class=" tcol"><input class="form-control ip_address" type="text" id="selvol'+tovol.name+'ip" value="'+ip+'"></td><td class=" tcol"><input class="form-control" type="number" id="selvol'+tovol.name+'sub" value="'+subnet+'"style="padding-left:3px; padding-right:3px;" min="8" max="32"value="24" step=8></td><td style="padding-top: 12px; padding-bottom: 5px;" ><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" data-width="auto" class="selectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked(this)" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
      $("#btnselvol"+tovol.name).hide();
      console.log('allgroups',allgroups)
      $.each(allgroups, function(g,gg){
