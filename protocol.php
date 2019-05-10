@@ -698,21 +698,24 @@ function refreshList2(req,listid,filelocfrom,show) {
       });
       volumes.push(tovol) 
       if(prot.includes('CIFS') > 0 || prot.includes('NFS') > 0) {
-      $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class=" tcol"><input class="form-control ip_address" type="text" id="selvol'+tovol.name+'ip" value="'+ip+'"></td><td class=" tcol"><input class="form-control" type="number" id="selvol'+tovol.name+'sub" value="'+subnet+'"style="padding-left:3px; padding-right:3px;" min="8" max="32"value="24" step=8></td><td style="padding-top: 12px; padding-bottom: 5px;" ><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" data-width="auto" class="selectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked(this)" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
-     $("#btnselvol"+tovol.name).hide();
-     console.log('allgroups',allgroups)
-     $.each(allgroups, function(g,gg){
-      usergrp=allgroups[g]['name'].replace('usersigroup/','')
+       $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class=" tcol"><input class="form-control ip_address" type="text" id="selvol'+tovol.name+'ip" value="'+ip+'"></td><td class=" tcol"><input class="form-control" type="number" id="selvol'+tovol.name+'sub" value="'+subnet+'"style="padding-left:3px; padding-right:3px;" min="8" max="32"value="24" step=8></td><td style="padding-top: 12px; padding-bottom: 5px;" ><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" data-width="auto" class="selectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked(this)" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
+ 
+       $("#btnselvol"+tovol.name).hide();
+       console.log('allgroups',tovol.name,tovol.group)
+       $.each(allgroups, function(g,gg){
+        usergrp=allgroups[g]['name'].replace('usersigroup/','')
  if (tovol.group==usergrp){ 
-      console.log('usergrp, tovol.group ',usergrp,',',tovol.group) 
 				$("."+tovol.name).append("<option class='"+usergrp.replace(',','')+"' value='"+usergrp+"' selected>"+usergrp+"</option>");
  } else {
 				$("."+tovol.name).append("<option class='smalloption' value='"+usergrp+"'>"+usergrp+"</option>");
  }
 	$("."+tovol.name).selectpicker("refresh");
-});
-     selvalues['selvol'+tovol.name]=$('#selvol'+tovol.name).val()+$('#selvol'+tovol.name+'ip').val()+$('#selvol'+tovol.name+'sub').val()
-     selvalues['selvol'+tovol.name+'change']=0
+      });
+      tovol.group=tovol.group.split(',')
+      $("#selvol"+tovol.name).val(tovol.group);
+      $("#selvol"+tovol.name).selectpicker("refresh");
+      selvalues['selvol'+tovol.name]=$('#selvol'+tovol.name).val()+$('#selvol'+tovol.name+'ip').val()+$('#selvol'+tovol.name+'sub').val()
+      selvalues['selvol'+tovol.name+'change']=0
      } else {
       $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
      
