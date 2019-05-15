@@ -692,8 +692,14 @@ function refreshList2(req,listid,filelocfrom,show) {
       ip=""; subnet="";
       $.each(oldvoldata,function(r,s){
        if(oldvoldata[r]['name'].includes(tovol.name) > 0 ){
-        subnet=oldvoldata[r]['prop'].split('/')[10]
-        ip=oldvoldata[r]['prop'].split('/')[9]
+        if(prot.includes('NFS')>0 ) {
+         subnet=oldvoldata[r]['prop'].split('/')[10]
+         ip=oldvoldata[r]['prop'].split('/')[9]
+        }
+        if(prot.includes('CIFS')>0 ) {
+         subnet=oldvoldata[r]['prop'].split('/')[8]
+         ip=oldvoldata[r]['prop'].split('/')[7]
+        }
        }
       });
       volumes.push(tovol) 
