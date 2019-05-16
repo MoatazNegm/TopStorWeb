@@ -245,8 +245,8 @@ Replidf1000:0: : from :: Receiving new Snapshot for volume : from partner :
 VolCst01:1: : from ::  Start chaning allowed groups of volume : to :
 VolCsu01:1: : from ::  Success changing allowed groups of volume : to :
 NFS1000:1: : from ::  Deleting volume :
-NFS1001:2: : from :: Problem occurred while deleting volume :
-NFS1002:2: : from :: Success deleting :
+NFS1001:1: : from :: Problem occurred while deleting volume :
+NFS1002:1: : from :: Success deleting :
 NFS1003:1: : from :: volume : already exists
 NFS1004:1: : from :: Creating volume :
 NFS1005:2: : from :: Volume name : is registered in system. Please check for lost hosts/volumes
