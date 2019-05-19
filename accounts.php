@@ -264,6 +264,7 @@
                             <thead>
                             <tr>
                                 <th style="width:25%;">Group Name</th>
+                                <th style="width:25%;">Users in Group</th>
                                 <th style="width: 15%;" class="text-center">Delete</th>
                             </tr>
                             </thead>
@@ -659,7 +660,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 				var username="dkfj"
 				$.each(jdata, function(k,v){
 				 username=jdata[k]['name'].replace('usersinfo/','')
-				 $("#Groupusers").append("<option value='"+username+"' selected>"+username+"</option>");
+				 $(".selectpicker").append("<option value='"+username+"' selected>"+username+"</option>");
 
 				});
 				$(".selectpicker").selectpicker("refresh");
@@ -673,7 +674,11 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 
 			function refreshall() {
 				DNS=1;
+$(".dropdown").css("width","100%");
+$("button").css("height","2.3rem");
+
 				refreshUserList();
+				refreshusers();
 					updateprop();
 		$.get("gump2.php", { req: "pools/", name:"--prefix"  },function(voldata){
 			if(voldata!=oldvoldata)
@@ -758,7 +763,8 @@ $.each(jvol,function(k,v){
 								$("#UserList").append('<tr class="dontdelete" > ><td style="width:25%;">'+username+'</td><td style="width:25%;">'+userpool+'</td><td style="width:20%;">'+usersize+'<td style="width: 15%;" class="text-center"><a href="javascript:userPassword(\''+username+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td style="width: 15%;" class="text-center"><a class="UnixDelUser" val="'+username+'" href="javascript:auserdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
 						 } else { 
 					username=jdata[k]['name'].replace('usersigroup/','')
-								$("#GroupList").append('<tr class="dontdelete" > ><td style="width:25%;">'+username+'</td><td style="width: 15%;" class="text-center"><a class="UnixDelGroup" val="'+username+'" href="javascript:agroupdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+					grpuserlist=jdata[k]['prop'].split('/')[2]
+								$("#GroupList").append('<tr class="dontdelete" > <td style="width:25%;">'+username+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="seluser'+username+'" data-width="auto" class="'+username+' selectpicker " multiple></select></td><td style="width: 15%;" class="text-center"><a class="UnixDelGroup" val="'+username+'" href="javascript:agroupdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
 							}
 						});
 					}
@@ -853,7 +859,7 @@ $.each(jvol,function(k,v){
 				 refresheruser=3 
 				 });
 			};
-			$("#UnixAddGroup").click( function (){ $.post("./pump.php", { req:"UnixAddGroup", name:$("#Group").val(), passwd:myname}, function (data){
+			$("#UnixAddGroup").click( function (){ $.post("./pump.php", { req:"UnixAddGroup", name:$("#Group").val()+" "+$("#Groupusers").val().toString(), passwd:myname}, function (data){
 				 //refreshUserList(); 
 			         console.log('hi',myname);
 				 refresheruser=3
