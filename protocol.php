@@ -402,8 +402,8 @@
  </div>
 </div>
 <!--JQUERY SCROPT-->
-<script src="assets/js/Chart.js"></script>
 <script src="assets/js/popper.min.js"></script>
+<script src="assets/js/Chart.js"></script>
 <script src="assets/js/jquery-3.3.1.min.js"></script>
 <script src="assets/js/jquery-ui.min.js"></script>
 

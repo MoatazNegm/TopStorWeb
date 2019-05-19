@@ -12,6 +12,7 @@
     <!--BOOTSTRAP CSS STYLE-->
     <link href="assets/css/tether.min.css" rel="stylesheet" type="text/css">    
     <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="assets/css/bootstrap-select.min.css" rel="stylesheet" type="text/css">
     <!--Font Awesome css-->
     <link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
@@ -233,14 +234,27 @@
                     </div>
                 </div>
                 <div class="tab-pane Ungroup " id="boxGroups" role="tabpanel">
-                    <form class="dr-form">
+                    <form class="dr-form" role="form">
                         <div class="form-group row">
                             <label class="col-2 col-form-label">Group</label>
                             <div class="col-5">
                                 <input id="Group" class="form-control" type="text">
                             </div>
                         </div>
-                        <div class="">
+                        <div class="form-group row">
+                        	
+                            <label class="col-2 col-form-label">Allowed Groups</label>
+                            <div class="col-5">
+                                <select id="Groupusers" class="form-control selectpicker " data-size="3" multiple>
+				 <option value="hi">grp1</option>
+				 <option value="by" selected>grp2</option>
+				 <option value="ddfka">grp3</option>
+                                </select>
+                            </div>
+                         
+                        </div>
+ 
+                        <div class="form-group row">
                             <button id="UnixAddGroup" type="button" class="btn btn-submit col-3" style="cursor: pointer;">Add Group</button>
                         </div>
                     </form>
@@ -466,6 +480,7 @@
 
 <!--JAVA SCRIPT-->
 <!--JQUERY SCROPT-->
+<script src="assets/js/popper.min.js"></script>
 <script src="assets/js/jquery.min.js"></script>
 
 <!--BOOTSTRAP SCRIPT-->
@@ -476,6 +491,7 @@
 <script src="assets/js/dropzen.js"></script>
 <script src="assets/js/jquery.mask.min.js"></script>
 <script src="js/bootstrap-timepicker.js"></script>
+<script src="assets/js/bootstrap-select.min.js"></script>
 
 <!--CUSTOM JS-->
 <script src="assets/js/main.js"></script>
@@ -513,6 +529,8 @@
  var myidhash;
  var mytimer;
  var mymodal;
+ var userdata="dksfj";
+ var olduserdata="ksksksks";
  var voldata='hihihi';
  var oldvoldata='n;nolnlnn';
  var volumes={'NoHome': 'NoHome'};
@@ -522,6 +540,7 @@
  myidhash=myid;
  var myname="<?php echo $_REQUEST['name'] ?>";
  $(".myname").val(myname)
+ $(".selectpicker").selectpicker()
  $("#usrnm").text(myname)
  $(".params").val(myid);
 //$("#overlay").modal('show');
@@ -627,6 +646,31 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 						proptime=proptimenew;
 						refresherprop=refresherprop-1;
 			}
+ function refreshusers() {
+				var jdata;
+					$.get("gump2.php", { req: 'usersinfo', name:"--prefix" },function(userdata){ 
+				  if(userdata==olduserdata) { return; }
+				   olduserdata=userdata
+				   jdata = jQuery.parseJSON(userdata);
+				   allusers=jdata;
+				$("#Groupusers option").remove();
+				var selected=$("#Groupusers").val();
+				$(".selectpicker").selectpicker("refresh");
+				var username="dkfj"
+				$.each(jdata, function(k,v){
+				 username=jdata[k]['name'].replace('usersinfo/','')
+				 $("#Groupusers").append("<option value='"+username+"' selected>"+username+"</option>");
+
+				});
+				$(".selectpicker").selectpicker("refresh");
+
+
+});
+
+
+
+}
+
 			function refreshall() {
 				DNS=1;
 				refreshUserList();
