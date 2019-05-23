@@ -200,7 +200,7 @@
                         	
                             <label class="col-2 col-form-label">Allowed Groups</label>
                             <div class="col-5">
-                                <select id="Usergroups" class="form-control selectpicker grp" data-size="3" multiple>
+                                <select id="Usergroups"  data-actions-box="true" data-live-search="true" class="form-control selectpicker grp" data-size="3" multiple>
 				 <option value="hi">grp1</option>
 				 <option value="by" >grp2</option>
 				 <option value="ddfka">grp3</option>
@@ -260,7 +260,7 @@
                         	
                             <label class="col-2 col-form-label">Allowed Users</label>
                             <div class="col-5">
-                                <select id="Groupusers" class="form-control selectpicker grp" data-size="3" multiple>
+                                <select id="Groupusers"  data-actions-box="true" data-live-search="true" class="form-control selectpicker grp" data-size="3" multiple>
 				 <option value="hi">grp1</option>
 				 <option value="by" >grp2</option>
 				 <option value="ddfka">grp3</option>
@@ -543,6 +543,7 @@
 			var DNS=1;
 			var oldcurrentinfo='dlkfajsdl;';
  var mydate;
+ var tempvar;
  var allusers;
  var allgroups;
  var selvalues={};
@@ -645,36 +646,44 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 			})
 
 			$(".bg-success").hide();$(".bg-danger").hide();$(".bg-warning").hide();
-			function updateprop() {
- 				$.get("gump2.php", { req: "prop", name:"--prefix"  },function(data){ if(propdata==data){;} else {
-				console.log(data)
-				propdata=data
-				prop2=$.parseJSON(propdata)
-                                $("#hostlist a").remove();
-    				$.each(prop2,function(r,s){
- 				 prop2[r]['name']=prop2[r]['name'].replace('prop/','')
-				 prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
-     				$('#hostlist').append($('<a class="col-2 hostmember text-center" " href="javascript:hostclick(\''+prop2[r]["id"]+'\')">'+prop["name"]+'</a>'));	
-				hostclick(selprop)
-				});
-				}
-				});
-				if (refresherprop > 0) { $.post("./pump.php", { req:"HostgetIPs.py", name:myname, passwd:"" });}				
-				
-						$("#cBoxName").text(prop["name"]); $("#cIPAddress").text(prop.addr); $("#cGateway").text(prop.rout);
-						$("#cdns1").text(prop.dns);
-						$("#cSubnet").text(prop.addrsubnet);
-						$("#cMgmt").text(prop.mgmtip+'/'+prop.mgmtsubnet);
-						if(propdata.includes('dataip'))$("#cDataIP").text(prop.dataip+'/'+prop.dataipsubnet);
-						
-						proptime=proptimenew;
-						refresherprop=refresherprop-1;
-			}
-$('[id^=sel]').change(function(){
-   console.log('hi',this)
-});
+ function updateprop() {
+  $.get("gump2.php", { req: "prop", name:"--prefix"  },function(data){ 
+   if(propdata==data){;} else {
+    propdata=data
+    prop2=$.parseJSON(propdata)
+    $("#hostlist a").remove();
+    $.each(prop2,function(r,s){
+     prop2[r]['name']=prop2[r]['name'].replace('prop/','')
+     prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
+     $('#hostlist').append($('<a class="col-2 hostmember text-center" " href="javascript:hostclick(\''+prop2[r]["id"]+'\')">'+prop["name"]+'</a>'));	
+     hostclick(selprop)
+    });
+   }
+  });
+  if (refresherprop > 0) { 
+   $.post("./pump.php", { req:"HostgetIPs.py", name:myname, passwd:"" });
+  }				
+  $("#cBoxName").text(prop["name"]); $("#cIPAddress").text(prop.addr); $("#cGateway").text(prop.rout);
+  $("#cdns1").text(prop.dns);
+  $("#cSubnet").text(prop.addrsubnet);
+  $("#cMgmt").text(prop.mgmtip+'/'+prop.mgmtsubnet);
+  if(propdata.includes('dataip')) {
+   $("#cDataIP").text(prop.dataip+'/'+prop.dataipsubnet);
+  }
+  proptime=proptimenew;
+  refresherprop=refresherprop-1;
+ }
 function refreshselect(){
- $.each($('[id^=seluser]'),function(e,v) {
+ return;
+ $.each(cgrp,function(k,v){
+  if( v.toString() != $("#sel"+k).val().toString()) {
+   $("#btnsel"+k).show();
+  } else {
+   $("#btnsel"+k).hide();
+  }
+ });
+ return
+ $.each($('[id^=sel]'),function(e,v) {
 		          var k;
   			for (k in selvalues){
 			 if ( k.includes('change') > 0 )  { continue; }
@@ -736,7 +745,9 @@ function refreshselect(){
         userlistflag=0
 	refreshUserList();
       }
-//     refreshselect();
+      if (typeof(allgroups)=="object" && typeof(allusers)=="object" && userlistflag==0 ){
+     refreshselect();
+        }
 				refreshusers();
 				refreshgroups();
 					updateprop();
@@ -811,7 +822,7 @@ $.each(jvol,function(k,v){
    username=allusers[k]['name'].replace('usersinfo/','')
    usersize=allusers[k]['prop'].split('/')[3]
    userpool=allusers[k]['prop'].split('/')[1]
-   $("#UserList").append('<tr class="dontdelete" > ><td style="width:25%;">'+username+'</td><td style="width:25%;">'+userpool+'</td><td style="width:20%;">'+usersize+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="selgrp'+username+'" data-width="auto" class="'+username+' selectpicker "  multiple></select></td><td><button onclick="selbtnclickeduser(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a href="javascript:userPassword(\''+username+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td style="width: 15%;" class="text-center"><a class="UnixDelUser" val="'+username+'" href="javascript:auserdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+   $("#UserList").append('<tr class="dontdelete" > ><td style="width:25%;">'+username+'</td><td style="width:25%;">'+userpool+'</td><td style="width:20%;">'+usersize+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="sel'+username+'" data-width="auto" class="'+username+' selectpicker "  multiple data-actions-box="true" data-live-search="true"></select></td><td><button onclick="selbtnclickeduser(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a href="javascript:userPassword(\''+username+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td style="width: 15%;" class="text-center"><a class="UnixDelUser" val="'+username+'" href="javascript:auserdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
    $("#btnsel"+username).hide();
    cgrp[username]=[]
    $.each(allgroups, function(k,v){
@@ -822,8 +833,21 @@ $.each(jvol,function(k,v){
      var selected='selected'
      cgrp[username].push(grpname)
     }
-    $("#selgrp"+username).append("<option value='"+grpname+"' "+selected+">"+grpname+"</option>");
-    $("button").css("height","2.3rem");
+    $("#sel"+username).append("<option value='"+grpname+"' "+selected+">"+grpname+"</option>");
+   });
+   $("button").css("height","2.3rem");
+   $(".dropdown").css("width","100%");
+   $('#sel'+username).on('changed.bs.select',function(e,c,iss,pv){
+    if (cgrp[this.id.replace('sel','')].toString()==$('#'+this.id).val()) {
+     $('#btn'+this.id).hide();
+     console.log('tohide',cgrp[this.id.replace('sel','')].toString(), $('#'+this.id).val()) 
+    } else {
+     $("#btn"+this.id).show();
+    }
+    
+    if (cgrp[this.id.replace('sel','')].length==0 && $('#'+this.id).val()==null) {
+     $('#btn'+this.id).hide();
+    }
    });
   });
   $(".selectpicker").selectpicker("refresh");
@@ -831,7 +855,7 @@ $.each(jvol,function(k,v){
   $.each(allgroups, function(k,v){
    username=allgroups[k]['name'].replace('usersigroup/','')
    grpuserlist=allgroups[k]['prop'].split('/')[2]
-   $("#GroupList").append('<tr class="dontdelete" > <td style="width:25%;">'+username+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="seluser'+username+'" data-width="auto" class="'+username+' selectpicker grp" multiple></select></td><td><button onclick="selbtnclickeduser(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a class="UnixDelGroup" val="'+username+'" href="javascript:agroupdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+   $("#GroupList").append('<tr class="dontdelete" > <td style="width:25%;">'+username+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="sel'+username+'" data-width="auto" class="'+username+' selectpicker grp" multiple data-actions-box="true" data-live-search="true"></select></td><td class="text-center" style="width: 20%;"><button onclick="selbtnclickeduser(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a class="UnixDelGroup" val="'+username+'" href="javascript:agroupdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
    $("#btnsel"+username).hide();
    cuser[username]=[]
    $.each(allusers, function(k,v){
@@ -841,16 +865,29 @@ $.each(jvol,function(k,v){
      var selected='selected'
      cuser[username].push(evuser)
     }
-    $("#seluser"+username).append("<option value='"+evuser+"' "+selected+">"+evuser+"</option>");
-    $("button").css("height","2.3rem");
+    $("#sel"+username).append("<option value='"+evuser+"' "+selected+">"+evuser+"</option>");
    });
+   $("button").css("height","2.3rem");
+   $(".dropdown").css("width","100%");
+   $('#sel'+username).on('changed.bs.select',function(e,c,iss,pv){
+     console.log('checkit',cuser[this.id.replace('sel','')].length,'and', $('#'+this.id).val()) 
+    if (cuser[this.id.replace('sel','')].toString()==$('#'+this.id).val()) {
+     $('#btn'+this.id).hide();
+     console.log('tohide',cuser[this.id.replace('sel','')].toString(), $('#'+this.id).val()) 
+    } else {
+     $("#btn"+this.id).show();
+    }
+    if (cuser[this.id.replace('sel','')].length==0 && $('#'+this.id).val()==null) {
+     $('#btn'+this.id).hide();
+    }
+   });
+
   });
   $(".selectpicker").selectpicker("refresh");
  }
       function selbtnclickeduser(x){
 				console.log('update needed',x.id);
-  var thepool=$("#Pool2"+prot).val()
- $.post("./pump.php", { req:"VolumeChange"+prot+".py", name:pools[thepool].name+" "+x.id.replace('btnselvol','')+" "+prot+" "+$("#qta"+x.id.replace('btnselvol','')).val()+" "+$("#"+x.id.replace('btn','')).val().toString()+" "+$("#"+x.id.replace('btn','')+"ip").val().toString()+" "+$("#"+x.id.replace('btn','')+"sub").val().toString()+" "+myname, passwd: pools[thepool].host+" "+myname });
+ $.post("./pump.php", { req:"UnixChangeUser", name:x.id.replace('btnsel',''), passwd:'groups'+$("#"+x.id.replace('btn','')).val()+" "+myname });
 
 			};	
 		
@@ -923,7 +960,7 @@ $.each(jvol,function(k,v){
 				 
 			});
 		
-			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val()+' '+$("#UserVol").val(), passwd:$("#UserPass").val()+" "+volumes[$("#UserVol").val()]+" "+$("#volsize").val()+"G "+myname}, function (data){
+			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val()+' '+$("#UserVol").val()+' groups'+$("#Usergroups").val(), passwd:$("#UserPass").val()+" "+volumes[$("#UserVol").val()]+" "+$("#volsize").val()+"G "+myname}, function (data){
 				 refresheruser=3
 				 });
 			});
@@ -938,7 +975,7 @@ $.each(jvol,function(k,v){
 				 refresheruser=3 
 				 });
 			};
-			$("#UnixAddGroup").click( function (){ $.post("./pump.php", { req:"UnixAddGroup", name:$("#Group").val()+" "+$("#Groupusers").val().toString(), passwd:myname}, function (data){
+			$("#UnixAddGroup").click( function (){ $.post("./pump.php", { req:"UnixAddGroup", name:$("#Group").val()+" users"+$("#Groupusers").val().toString(), passwd:myname}, function (data){
 			         console.log('hi',myname);
 				 refresheruser=3
 				 });

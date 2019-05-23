@@ -78,6 +78,9 @@ Unlin10222:0: : from :: Success adding user : (syncing)
 Unlin11222:0: : from :: Success adding group : (syncing)
 Unlin1023:2: : from :: user : will not have a home directory
 Unlin1024:2: : from :: user : will have a home directory in pool :
+Unst1024:1: : from :: user : chaning profile of user :
+Unsu1024:1: : from :: user : Success chaning profile of user :
+Unfa1024:1: : from :: user : failed chaning profile of user :
 Domain1000: Changing Domain to :
 Domain1001: Problem changing to Domain :
 Domain1101: Problem, Domain : is not found
