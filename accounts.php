@@ -550,6 +550,9 @@
  var myidhash;
  var mytimer;
  var mymodal;
+ var cgrp={};
+ var cuser={};
+ var userlistflag=0;
  var userdata="dksfj";
  var olduserdata="ksksksks";
  var voldata='hihihi';
@@ -667,6 +670,9 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 						proptime=proptimenew;
 						refresherprop=refresherprop-1;
 			}
+$('[id^=sel]').change(function(){
+   console.log('hi',this)
+});
 function refreshselect(){
  $.each($('[id^=seluser]'),function(e,v) {
 		          var k;
@@ -694,6 +700,7 @@ function refreshselect(){
    $.get("gump2.php", { req: 'usersinfo', name:"--prefix" },function(userdata){ 
     if(userdata==olduserdata) { return; }
     olduserdata=userdata
+    userlistflag=1;
     jdata = jQuery.parseJSON(userdata);
     allusers=jdata;
     $("#Groupusers option").remove();
@@ -712,6 +719,7 @@ function refreshselect(){
    grpolddata=grpdata
    jdata = jQuery.parseJSON(grpdata);
    allgroups=jdata;
+   userlistflag=1;
    $("#Usergroups option").remove();
    var grpname="dkfj"
    $.each(jdata, function(k,v){
@@ -728,6 +736,7 @@ $(".dropdown").css("width","100%");
 $("button").css("height","2.3rem");
       if (typeof(allgroups)=="object" && typeof(allusers)=="object"){
 	refreshUserList();
+        refreshselect();
       }
 				refreshusers();
 				refreshgroups();
@@ -818,24 +827,29 @@ $.each(jvol,function(k,v){
       userpool=jdata[k]['prop'].split('/')[1]
       $("#UserList").append('<tr class="dontdelete" > ><td style="width:25%;">'+username+'</td><td style="width:25%;">'+userpool+'</td><td style="width:20%;">'+usersize+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="selgrp'+username+'" data-width="auto" class="'+username+' selectpicker "  multiple></select></td><td><button onclick="selbtnclickeduser(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a href="javascript:userPassword(\''+username+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td style="width: 15%;" class="text-center"><a class="UnixDelUser" val="'+username+'" href="javascript:auserdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
       $("#btnsel"+username).hide();
+      cgrp[username]=[]
       $.each(allgroups, function(k,v){
        evgroup=allgroups[k]['prop'].split('/')[2]
        grpname=allgroups[k]['name'].replace('usersigroup/','')
        selected='';
        if (evgroup.includes(username) > 0) {
-       var selected='selected'
+        var selected='selected'
+        cgrp[username].push(grpname)
        }
        $("#selgrp"+username).append("<option value='"+grpname+"' "+selected+">"+grpname+"</option>");
       });
      } else { 
       username=jdata[k]['name'].replace('usersigroup/','')
       grpuserlist=jdata[k]['prop'].split('/')[2]
-      $("#GroupList").append('<tr class="dontdelete" > <td style="width:25%;">'+username+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="seluser'+username+'" data-width="auto" class="'+username+' selectpicker grp" multiple></select></td><td style="width: 15%;" class="text-center"><a class="UnixDelGroup" val="'+username+'" href="javascript:agroupdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+      $("#GroupList").append('<tr class="dontdelete" > <td style="width:25%;">'+username+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="seluser'+username+'" data-width="auto" class="'+username+' selectpicker grp" multiple></select></td><td><button onclick="selbtnclickeduser(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a class="UnixDelGroup" val="'+username+'" href="javascript:agroupdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+      $("#btnsel"+username).hide();
+      cuser[username]=[]
       $.each(allusers, function(k,v){
        evuser=allusers[k]['name'].replace('usersinfo/','')
        selected='';
        if (grpuserlist.includes(evuser) > 0) {
-       var selected='selected'
+        var selected='selected'
+        cuser[username].push(evuser)
        }
        $("#seluser"+username).append("<option value='"+evuser+"' "+selected+">"+evuser+"</option>");
        console.log('eveveev',evuser,grpuserlist)
