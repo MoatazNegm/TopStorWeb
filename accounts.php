@@ -732,12 +732,11 @@ function refreshselect(){
 
 			function refreshall() {
 				DNS=1;
-$(".dropdown").css("width","100%");
-$("button").css("height","2.3rem");
-      if (typeof(allgroups)=="object" && typeof(allusers)=="object"){
+      if (typeof(allgroups)=="object" && typeof(allusers)=="object" && userlistflag==1 ){
+        userlistflag=0
 	refreshUserList();
-        refreshselect();
       }
+//     refreshselect();
 				refreshusers();
 				refreshgroups();
 					updateprop();
@@ -771,10 +770,6 @@ $.each(jvol,function(k,v){
 //					updateprop();
 //					$.get("requestdata2.php", { file: 'Data/HostManualconfigstatus.log' }, function(data){ $(".bg-success").text(data);});
 					
-				}
-				if($(".Unlin").is(":visible"))
-				{		
-				refreshUserList()		
 				}
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){
 		if(data!=oldcurrentinfo && data != ''){linerfact=-1;oldcurrentinfo=data;  $(".bg-success").fadeIn(800); $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
@@ -811,55 +806,46 @@ $.each(jvol,function(k,v){
    return
   }
   var jdata;
-  $.get("gump2.php", { req: 'usersi', name:'--prefix' }, function(data){
-   if(data==olddata) { return; }
-   jdata = jQuery.parseJSON(data);
-   olddata=data
-   if(typeof jdata=='object') {
-    console.log('users=',jdata)
-    olddiskpool=data;
-    $("#UserList tr").remove();
-    $("#GroupList tr").remove();
-    $.each(jdata, function(k,v){
-     if(jdata[k]['name'].includes('usersinfo') > 0) {
-      username=jdata[k]['name'].replace('usersinfo/','')
-      usersize=jdata[k]['prop'].split('/')[3]
-      userpool=jdata[k]['prop'].split('/')[1]
-      $("#UserList").append('<tr class="dontdelete" > ><td style="width:25%;">'+username+'</td><td style="width:25%;">'+userpool+'</td><td style="width:20%;">'+usersize+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="selgrp'+username+'" data-width="auto" class="'+username+' selectpicker "  multiple></select></td><td><button onclick="selbtnclickeduser(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a href="javascript:userPassword(\''+username+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td style="width: 15%;" class="text-center"><a class="UnixDelUser" val="'+username+'" href="javascript:auserdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
-      $("#btnsel"+username).hide();
-      cgrp[username]=[]
-      $.each(allgroups, function(k,v){
-       evgroup=allgroups[k]['prop'].split('/')[2]
-       grpname=allgroups[k]['name'].replace('usersigroup/','')
-       selected='';
-       if (evgroup.includes(username) > 0) {
-        var selected='selected'
-        cgrp[username].push(grpname)
-       }
-       $("#selgrp"+username).append("<option value='"+grpname+"' "+selected+">"+grpname+"</option>");
-      });
-     } else { 
-      username=jdata[k]['name'].replace('usersigroup/','')
-      grpuserlist=jdata[k]['prop'].split('/')[2]
-      $("#GroupList").append('<tr class="dontdelete" > <td style="width:25%;">'+username+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="seluser'+username+'" data-width="auto" class="'+username+' selectpicker grp" multiple></select></td><td><button onclick="selbtnclickeduser(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a class="UnixDelGroup" val="'+username+'" href="javascript:agroupdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
-      $("#btnsel"+username).hide();
-      cuser[username]=[]
-      $.each(allusers, function(k,v){
-       evuser=allusers[k]['name'].replace('usersinfo/','')
-       selected='';
-       if (grpuserlist.includes(evuser) > 0) {
-        var selected='selected'
-        cuser[username].push(evuser)
-       }
-       $("#seluser"+username).append("<option value='"+evuser+"' "+selected+">"+evuser+"</option>");
-       console.log('eveveev',evuser,grpuserlist)
-      });
-      $(".selectpicker").selectpicker("refresh");
-     };
-     $(".selectpicker").selectpicker("refresh");
-    });
-   };
+  $("#UserList tr").remove();
+  $.each(allusers, function(k,v){
+   username=allusers[k]['name'].replace('usersinfo/','')
+   usersize=allusers[k]['prop'].split('/')[3]
+   userpool=allusers[k]['prop'].split('/')[1]
+   $("#UserList").append('<tr class="dontdelete" > ><td style="width:25%;">'+username+'</td><td style="width:25%;">'+userpool+'</td><td style="width:20%;">'+usersize+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="selgrp'+username+'" data-width="auto" class="'+username+' selectpicker "  multiple></select></td><td><button onclick="selbtnclickeduser(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a href="javascript:userPassword(\''+username+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td style="width: 15%;" class="text-center"><a class="UnixDelUser" val="'+username+'" href="javascript:auserdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+   $("#btnsel"+username).hide();
+   cgrp[username]=[]
+   $.each(allgroups, function(k,v){
+    evgroup=allgroups[k]['prop'].split('/')[2]
+    grpname=allgroups[k]['name'].replace('usersigroup/','')
+    selected='';
+    if (evgroup.includes(username) > 0) {
+     var selected='selected'
+     cgrp[username].push(grpname)
+    }
+    $("#selgrp"+username).append("<option value='"+grpname+"' "+selected+">"+grpname+"</option>");
+    $("button").css("height","2.3rem");
+   });
   });
+  $(".selectpicker").selectpicker("refresh");
+  $("#GroupList tr").remove();
+  $.each(allgroups, function(k,v){
+   username=allgroups[k]['name'].replace('usersigroup/','')
+   grpuserlist=allgroups[k]['prop'].split('/')[2]
+   $("#GroupList").append('<tr class="dontdelete" > <td style="width:25%;">'+username+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="seluser'+username+'" data-width="auto" class="'+username+' selectpicker grp" multiple></select></td><td><button onclick="selbtnclickeduser(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a class="UnixDelGroup" val="'+username+'" href="javascript:agroupdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+   $("#btnsel"+username).hide();
+   cuser[username]=[]
+   $.each(allusers, function(k,v){
+    evuser=allusers[k]['name'].replace('usersinfo/','')
+    selected='';
+    if (grpuserlist.includes(evuser) > 0) {
+     var selected='selected'
+     cuser[username].push(evuser)
+    }
+    $("#seluser"+username).append("<option value='"+evuser+"' "+selected+">"+evuser+"</option>");
+    $("button").css("height","2.3rem");
+   });
+  });
+  $(".selectpicker").selectpicker("refresh");
  }
       function selbtnclickeduser(x){
 				console.log('update needed',x.id);
@@ -911,7 +897,6 @@ $.each(jvol,function(k,v){
 					
 						if(userpriv=="true" | curuser=="admin" ) {
 							refresheruser=2
-							refreshUserList();
 						}
 					});
 				
@@ -939,38 +924,32 @@ $.each(jvol,function(k,v){
 			});
 		
 			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val()+' '+$("#UserVol").val(), passwd:$("#UserPass").val()+" "+volumes[$("#UserVol").val()]+" "+$("#volsize").val()+"G "+myname}, function (data){
-				 //refreshUserList(); 
 				 refresheruser=3
 				 });
 			});
 			$("a.UnixDelUser").click(function (e){ e.preventDefault(); $.post("./pump.php", { req:"UnixDelUser", name:$(this).val()+" "+myname, passwd:"" }, function (data){
-				 //refreshUserList();
 				 console.log("hi", $(this).val());
 				 refresheruser=3 
 				 });
 			});
 			
 			function auserdel(){ $.post("./pump.php", { req:"UnixDelUser", name:arguments[0]+" "+myname, passwd:"" }, function (data){
-				 //refreshUserList();
 				 console.log("hi", arguments[0]);
 				 refresheruser=3 
 				 });
 			};
 			$("#UnixAddGroup").click( function (){ $.post("./pump.php", { req:"UnixAddGroup", name:$("#Group").val()+" "+$("#Groupusers").val().toString(), passwd:myname}, function (data){
-				 //refreshUserList(); 
 			         console.log('hi',myname);
 				 refresheruser=3
 				 });
 			});
 			$("a.UnixDelGroup").click(function (e){ e.preventDefault(); $.post("./pump.php", { req:"UnixDelGroup", name:$(this).val()+" "+myname, passwd:"" }, function (data){
-				 //refreshUserList();
 				 console.log("hi", $(this).val());
 				 refresheruser=3 
 				 });
 			});
 			
 			function agroupdel(){ $.post("./pump.php", { req:"UnixDelGroup", name:arguments[0]+" "+myname, passwd:"" }, function (data){
-				 //refreshUserList();
 				 console.log("hi", arguments[0]);
 				 refresheruser=3 
 				 });
@@ -1049,7 +1028,11 @@ console.log('hi',hostips)
 			}
 		}
 	
-			
+	 $('[id^=nav]').click(function(e){
+          console.log('hihihih');
+	  $(".dropdown").css("width","100%");
+          $("button").css("height","2.3rem");
+	 });		
 		setInterval('refreshall()',5000);
 				$("#close-success").click(function() { $(".bg-success").hide(); });
 				$("#userpass").click(function (){   
