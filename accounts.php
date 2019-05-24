@@ -855,7 +855,7 @@ $.each(jvol,function(k,v){
   $.each(allgroups, function(k,v){
    username=allgroups[k]['name'].replace('usersigroup/','')
    grpuserlist=allgroups[k]['prop'].split('/')[2]
-   $("#GroupList").append('<tr class="dontdelete" > <td style="width:25%;">'+username+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="sel'+username+'" data-width="auto" class="'+username+' selectpicker grp" multiple data-actions-box="true" data-live-search="true"></select></td><td class="text-center" style="width: 20%;"><button onclick="selbtnclickeduser(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a class="UnixDelGroup" val="'+username+'" href="javascript:agroupdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+   $("#GroupList").append('<tr class="dontdelete" > <td style="width:25%;">'+username+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="sel'+username+'" data-width="auto" class="'+username+' selectpicker grp" multiple data-actions-box="true" data-live-search="true"></select></td><td class="text-center" style="width: 20%;"><button onclick="selbtnclickedgroup(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a class="UnixDelGroup" val="'+username+'" href="javascript:agroupdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
    $("#btnsel"+username).hide();
    cuser[username]=[]
    $.each(allusers, function(k,v){
@@ -885,6 +885,11 @@ $.each(jvol,function(k,v){
   });
   $(".selectpicker").selectpicker("refresh");
  }
+      function selbtnclickedgroup(x){
+				console.log('update needed',x.id);
+ $.post("./pump.php", { req:"UnixChangeGroup", name:x.id.replace('btnsel',''), passwd:'users'+$("#"+x.id.replace('btn','')).val()+" "+myname });
+
+			};	
       function selbtnclickeduser(x){
 				console.log('update needed',x.id);
  $.post("./pump.php", { req:"UnixChangeUser", name:x.id.replace('btnsel',''), passwd:'groups'+$("#"+x.id.replace('btn','')).val()+" "+myname });
