@@ -830,7 +830,7 @@ function refreshList2(req,listid,filelocfrom,show) {
 		        function selbtnclicked(x){
 				console.log('update needed',x.id);
   var thepool=$("#Pool2"+prot).val()
- $.post("./pump.php", { req:"VolumeChange"+prot+".py", name:pools[thepool].name+" "+x.id.replace('btnselvol','')+" "+prot+" "+$("#qta"+x.id.replace('btnselvol','')).val()+" "+$("#"+x.id.replace('btn','')).val().toString()+" "+$("#"+x.id.replace('btn','')+"ip").val().toString()+" "+$("#"+x.id.replace('btn','')+"sub").val().toString()+" "+myname, passwd: pools[thepool].host+" "+myname });
+ $.post("./pump.php", { req:"VolumeChange"+prot+".py", name:pools[thepool].name+" "+x.id.replace('btnselvol','')+" "+prot+" "+$("#qta"+x.id.replace('btnselvol','')).val()+" nogroup"+$("#"+x.id.replace('btn','')).val().toString()+" "+$("#"+x.id.replace('btn','')+"ip").val().toString()+" "+$("#"+x.id.replace('btn','')+"sub").val().toString()+" "+myname, passwd: pools[thepool].host+" "+myname });
 
 			};	
 			$("#CIFS").click(function (){ 
