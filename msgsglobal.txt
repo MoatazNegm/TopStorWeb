@@ -78,18 +78,18 @@ Unlin10222:0: : from :: Success adding user : (syncing)
 Unlin11222:0: : from :: Success adding group : (syncing)
 Unlin1023:2: : from :: user : will not have a home directory
 Unlin1024:2: : from :: user : will have a home directory in pool :
-Unst1024:1: : from :: user : chaning profile of user :
-Unsu1024:1: : from :: user : Success chaning profile of user :
-Unfa1024:1: : from :: user : failed chaning profile of user :
-Unst1124:1: : from :: user : chaning profile of user : (syncing)
-Unsu1124:1: : from :: user : Success chaning profile of user : (syncing)
-Unfa1124:1: : from :: user : failed chaning profile of user : (syncing)
-Unst1025:1: : from :: user : chaning profile of group :
-Unsu1025:1: : from :: user : Success chaning profile of group :
-Unfa1025:1: : from :: user : failed chaning profile of group :
-Unst1125:1: : from :: user : chaning profile of group : (syncing)
-Unsu1125:1: : from :: user : Success chaning profile of group : (syncing)
-Unfa1125:1: : from :: user : failed chaning profile of group : (syncing)
+Unst1024:1: : from :: user : changing profile of user :
+Unsu1024:1: : from :: user : Success changing profile of user :
+Unfa1024:1: : from :: user : failed changing profile of user :
+Unst1124:1: : from :: user : changing profile of user : (syncing)
+Unsu1124:1: : from :: user : Success changing profile of user : (syncing)
+Unfa1124:1: : from :: user : failed changing profile of user : (syncing)
+Unst1025:1: : from :: user : changing profile of group :
+Unsu1025:1: : from :: user : Success changing profile of group :
+Unfa1025:1: : from :: user : failed changing profile of group :
+Unst1125:1: : from :: user : changing profile of group : (syncing)
+Unsu1125:1: : from :: user : Success changing profile of group : (syncing)
+Unfa1125:1: : from :: user : failed changing profile of group : (syncing)
 Domain1000: Changing Domain to :
 Domain1001: Problem changing to Domain :
 Domain1101: Problem, Domain : is not found
