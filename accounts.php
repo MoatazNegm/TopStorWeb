@@ -716,7 +716,9 @@ function refreshselect(){
     var username="dkfj"
     $.each(jdata, function(k,v){
      username=jdata[k]['name'].replace('usersinfo/','')
+     if (username!='NoUser'){
      $("#Groupusers ").append("<option value='"+username+"' >"+username+"</option>");
+     }
     });
     $("#Groupusers").selectpicker("refresh");
    });
@@ -822,66 +824,73 @@ $.each(jvol,function(k,v){
    username=allusers[k]['name'].replace('usersinfo/','')
    usersize=allusers[k]['prop'].split('/')[3]
    userpool=allusers[k]['prop'].split('/')[1]
-   $("#UserList").append('<tr class="dontdelete" > ><td style="width:25%;">'+username+'</td><td style="width:25%;">'+userpool+'</td><td style="width:20%;">'+usersize+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="sel'+username+'" data-width="auto" class="'+username+' selectpicker "  multiple data-actions-box="true" data-live-search="true"></select></td><td><button onclick="selbtnclickeduser(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a href="javascript:userPassword(\''+username+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td style="width: 15%;" class="text-center"><a class="UnixDelUser" val="'+username+'" href="javascript:auserdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
-   $("#btnsel"+username).hide();
-   cgrp[username]=[]
-   $.each(allgroups, function(k,v){
-    evgroup=allgroups[k]['prop'].split('/')[2]
-    grpname=allgroups[k]['name'].replace('usersigroup/','')
-    selected='';
-    if (evgroup.includes(username) > 0) {
-     var selected='selected'
-     cgrp[username].push(grpname)
-    }
-    $("#sel"+username).append("<option value='"+grpname+"' "+selected+">"+grpname+"</option>");
-   });
-   $("button").css("height","2.3rem");
-   $(".dropdown").css("width","100%");
-   $('#sel'+username).on('changed.bs.select',function(e,c,iss,pv){
-    if (cgrp[this.id.replace('sel','')].toString()==$('#'+this.id).val()) {
-     $('#btn'+this.id).hide();
-     console.log('tohide',cgrp[this.id.replace('sel','')].toString(), $('#'+this.id).val()) 
-    } else {
-     $("#btn"+this.id).show();
-    }
+   if (username!='NoUser') { 
+    $("#UserList").append('<tr class="dontdelete" > ><td style="width:25%;">'+username+'</td><td style="width:25%;">'+userpool+'</td><td style="width:20%;">'+usersize+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="sel'+username+'" data-width="auto" class="'+username+' selectpicker "  multiple data-actions-box="true" data-live-search="true"></select></td><td><button onclick="selbtnclickeduser(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a href="javascript:userPassword(\''+username+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td style="width: 15%;" class="text-center"><a class="UnixDelUser" val="'+username+'" href="javascript:auserdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+    $("#btnsel"+username).hide();
+    cgrp[username]=[]
+    $.each(allgroups, function(k,v){
+     evgroup=allgroups[k]['prop'].split('/')[2]
+     grpname=allgroups[k]['name'].replace('usersigroup/','')
+     selected='';
+     if (evgroup.includes(username) > 0) {
+      var selected='selected'
+      cgrp[username].push(grpname)
+     }
+     if(grpname!='Everyone') {
+      $("#sel"+username).append("<option value='"+grpname+"' "+selected+">"+grpname+"</option>");
+     }
+    });
+    $("button").css("height","2.3rem");
+    $(".dropdown").css("width","100%");
+    $('#sel'+username).on('changed.bs.select',function(e,c,iss,pv){
+     if (cgrp[this.id.replace('sel','')].toString()==$('#'+this.id).val()) {
+      $('#btn'+this.id).hide();
+      console.log('tohide',cgrp[this.id.replace('sel','')].toString(), $('#'+this.id).val()) 
+     } else {
+      $("#btn"+this.id).show();
+     }
     
-    if (cgrp[this.id.replace('sel','')].length==0 && $('#'+this.id).val()==null) {
-     $('#btn'+this.id).hide();
-    }
-   });
+     if (cgrp[this.id.replace('sel','')].length==0 && $('#'+this.id).val()==null) {
+      $('#btn'+this.id).hide();
+     }
+    });
+   }
   });
   $(".selectpicker").selectpicker("refresh");
   $("#GroupList tr").remove();
   $.each(allgroups, function(k,v){
    username=allgroups[k]['name'].replace('usersigroup/','')
    grpuserlist=allgroups[k]['prop'].split('/')[2]
-   $("#GroupList").append('<tr class="dontdelete" > <td style="width:25%;">'+username+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="sel'+username+'" data-width="auto" class="'+username+' selectpicker grp" multiple data-actions-box="true" data-live-search="true"></select></td><td class="text-center" style="width: 20%;"><button onclick="selbtnclickedgroup(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a class="UnixDelGroup" val="'+username+'" href="javascript:agroupdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
-   $("#btnsel"+username).hide();
-   cuser[username]=[]
-   $.each(allusers, function(k,v){
-    evuser=allusers[k]['name'].replace('usersinfo/','')
-    selected='';
-    if (grpuserlist.includes(evuser) > 0) {
-     var selected='selected'
-     cuser[username].push(evuser)
-    }
-    $("#sel"+username).append("<option value='"+evuser+"' "+selected+">"+evuser+"</option>");
-   });
-   $("button").css("height","2.3rem");
-   $(".dropdown").css("width","100%");
-   $('#sel'+username).on('changed.bs.select',function(e,c,iss,pv){
+   if (username!='Everyone'){
+    $("#GroupList").append('<tr class="dontdelete" > <td style="width:25%;">'+username+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="sel'+username+'" data-width="auto" class="'+username+' selectpicker grp" multiple data-actions-box="true" data-live-search="true"></select></td><td class="text-center" style="width: 20%;"><button onclick="selbtnclickedgroup(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a class="UnixDelGroup" val="'+username+'" href="javascript:agroupdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+    $("#btnsel"+username).hide();
+    cuser[username]=[]
+    $.each(allusers, function(k,v){
+     evuser=allusers[k]['name'].replace('usersinfo/','')
+     selected='';
+     if (grpuserlist.includes(evuser) > 0) {
+      var selected='selected'
+      cuser[username].push(evuser)
+     }
+     if(evuser!='NoUser'){
+      $("#sel"+username).append("<option value='"+evuser+"' "+selected+">"+evuser+"</option>");
+     }
+    });
+    $("button").css("height","2.3rem");
+    $(".dropdown").css("width","100%");
+    $('#sel'+username).on('changed.bs.select',function(e,c,iss,pv){
      console.log('checkit',cuser[this.id.replace('sel','')].length,'and', $('#'+this.id).val()) 
-    if (cuser[this.id.replace('sel','')].toString()==$('#'+this.id).val()) {
-     $('#btn'+this.id).hide();
-     console.log('tohide',cuser[this.id.replace('sel','')].toString(), $('#'+this.id).val()) 
-    } else {
-     $("#btn"+this.id).show();
-    }
-    if (cuser[this.id.replace('sel','')].length==0 && $('#'+this.id).val()==null) {
-     $('#btn'+this.id).hide();
-    }
-   });
-
+     if (cuser[this.id.replace('sel','')].toString()==$('#'+this.id).val()) {
+      $('#btn'+this.id).hide();
+      console.log('tohide',cuser[this.id.replace('sel','')].toString(), $('#'+this.id).val()) 
+     } else {
+      $("#btn"+this.id).show();
+     }
+     if (cuser[this.id.replace('sel','')].length==0 && $('#'+this.id).val()==null) {
+      $('#btn'+this.id).hide();
+     }
+    });
+   }
   });
   $(".selectpicker").selectpicker("refresh");
  }
@@ -980,7 +989,12 @@ $.each(jvol,function(k,v){
 				 refresheruser=3 
 				 });
 			};
-			$("#UnixAddGroup").click( function (){ $.post("./pump.php", { req:"UnixAddGroup", name:$("#Group").val()+" users"+$("#Groupusers").val().toString(), passwd:myname}, function (data){
+			$("#UnixAddGroup").click( function (){ 
+                           var Groupusers='NoUser';
+                           if($("#Groupusers").val()!=null){
+                             Groupusers=$("#Groupusers").val().toString()
+                           }
+                           $.post("./pump.php", { req:"UnixAddGroup", name:$("#Group").val()+" users"+Groupusers, passwd:myname}, function (data){
 			         console.log('hi',myname);
 				 refresheruser=3
 				 });
