@@ -209,7 +209,7 @@
                         	
                             <label class="col-3 col-form-label">Allowed Groups</label>
                             <div class="col-5">
-                                <select id="GroupCIFS" class="selectpicker form-control" multiple>
+                                <select id="GroupCIFS" title="No One" data-actions-box='true' data-live-search='true' class="selectpicker form-control" multiple>
 				 <option value="hi">grp1</option>
 				 <option value="by" selected>grp2</option>
 				 <option value="ddfka">grp3</option>
@@ -284,7 +284,7 @@
                         <div class="form-group row">
                             <label class="col-3 col-form-label">Allowed Groups</label>
                             <div class="col-5">
-                                <select id="GroupNFS" class="selectpicker form-control" multiple>
+                                <select id="GroupNFS" data-actions-box="true" data-live-search="true" title="No One" class="selectpicker form-control" multiple>
 				 <option value="hi">grp1</option>
 				 <option value="by" selected>grp2</option>
 				 <option value="ddfka">grp3</option>
@@ -492,7 +492,11 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
      }
  function createvol() { 
   var thepool=$("#Pool2"+prot).val()
-  $.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+$("#Group"+prot).val().toString(), passwd:$("#Address"+prot).val().toString()+" "+$("#Subnet"+prot).val().toString()+" "+myname+" "+pools[thepool].host+" "+myname }, function (data){
+  var Groupprot="Everyone"
+  if($("#Group"+prot).val()!=null){
+   Groupprot=$("#Group"+prot).val().toString()
+  }
+  $.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+Groupprot, passwd:$("#Address"+prot).val().toString()+" "+$("#Subnet"+prot).val().toString()+" "+myname+" "+pools[thepool].host+" "+myname }, function (data){
  });
 };
 		function voldel() {  
@@ -541,12 +545,20 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 				var selected=$("#Group"+prot).val();
 				$(".selectpicker").selectpicker("refresh");
 				var username="dkfj"
+  if (selected.includes('Everyone')>0){ 
+				$("#Group"+prot).append("<option value='Everyone' selected>Everyone</option>");
+  } else {
+				$("#Group"+prot).append("<option value='Everyone'>Everyone</option>");
+  }  
 				$.each(jdata, function(k,v){
 				username=jdata[k]['name'].replace('usersigroup/','')
- if (selected.includes(username)>0){ 
+				
+ if (username != "Everyone" ) {
+  if (selected.includes(username)>0){ 
 				$("#Group"+prot).append("<option value='"+username+"' selected>"+username+"</option>");
- } else {
+  } else {
 				$("#Group"+prot).append("<option value='"+username+"'>"+username+"</option>");
+  }  
  }
 				$(".selectpicker").selectpicker("refresh");
 
@@ -710,16 +722,24 @@ function refreshList2(req,listid,filelocfrom,show) {
       volumes.push(tovol) 
       if(prot.includes('CIFS') > 0 || prot.includes('NFS') > 0) {
       console.log('number',subnet);
-       $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class=" tcol"><input class="form-control ip_address" type="text" id="selvol'+tovol.name+'ip" value="'+ip+'"></td><td class=" tcol"><input class="form-control" type="number" id="selvol'+tovol.name+'sub" value="'+subnet+'"style="padding-left:3px; padding-right:3px;" min="8" max="32"value="24" step=8></td><td style="padding-top: 12px; padding-bottom: 5px;" ><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" data-width="auto" class="iselectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked(this)" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
+       $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class=" tcol"><input class="form-control ip_address" type="text" id="selvol'+tovol.name+'ip" value="'+ip+'"></td><td class=" tcol"><input class="form-control" type="number" id="selvol'+tovol.name+'sub" value="'+subnet+'"style="padding-left:3px; padding-right:3px;" min="8" max="32"value="24" step=8></td><td style="padding-top: 12px; padding-bottom: 5px;" ><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" title="No One" data-container="body" data-actions-box="true" data-live-search="true" data-width="auto" class="selectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked(this)" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
  
        $("#btnselvol"+tovol.name).hide();
-       console.log('allgroups',tovol.name,tovol.group)
-       $.each(allgroups, function(g,gg){
-        usergrp=allgroups[g]['name'].replace('usersigroup/','')
- if (tovol.group==usergrp){ 
+       usergrp="Everyone"
+       if(tovol.group.includes("Everyone") > 0) {
+       
 				$("."+tovol.name).append("<option class='"+usergrp.replace(',','')+"' value='"+usergrp+"' selected>"+usergrp+"</option>");
  } else {
 				$("."+tovol.name).append("<option class='smalloption' value='"+usergrp+"'>"+usergrp+"</option>");
+ }
+       $.each(allgroups, function(g,gg){
+        usergrp=allgroups[g]['name'].replace('usersigroup/','')
+        if(usergrp!="Everyone") {
+ if (tovol.group==usergrp ){ 
+				$("."+tovol.name).append("<option class='"+usergrp.replace(',','')+"' value='"+usergrp+"' selected>"+usergrp+"</option>");
+ } else {
+				$("."+tovol.name).append("<option class='smalloption' value='"+usergrp+"'>"+usergrp+"</option>");
+ }
  }
 	$("."+tovol.name).selectpicker("refresh");
       });

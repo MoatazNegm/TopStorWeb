@@ -200,7 +200,7 @@
                         	
                             <label class="col-2 col-form-label">Allowed Groups</label>
                             <div class="col-5">
-                                <select id="Usergroups"  data-actions-box="true" data-live-search="true" class="form-control selectpicker grp" data-size="3" multiple>
+                                <select id="Usergroups" title="No Group" data-actions-box="true" data-live-search="true" class="form-control selectpicker grp" data-size="3" multiple>
 				 <option value="hi">grp1</option>
 				 <option value="by" >grp2</option>
 				 <option value="ddfka">grp3</option>
@@ -260,7 +260,7 @@
                         	
                             <label class="col-2 col-form-label">Allowed Users</label>
                             <div class="col-5">
-                                <select id="Groupusers"  data-actions-box="true" data-live-search="true" class="form-control selectpicker grp" data-size="3" multiple>
+                                <select id="Groupusers" title="No User" data-actions-box="true" data-live-search="true" class="form-control selectpicker grp" data-size="3" multiple>
 				 <option value="hi">grp1</option>
 				 <option value="by" >grp2</option>
 				 <option value="ddfka">grp3</option>
@@ -825,7 +825,7 @@ $.each(jvol,function(k,v){
    usersize=allusers[k]['prop'].split('/')[3]
    userpool=allusers[k]['prop'].split('/')[1]
    if (username!='NoUser') { 
-    $("#UserList").append('<tr class="dontdelete" > ><td style="width:25%;">'+username+'</td><td style="width:25%;">'+userpool+'</td><td style="width:20%;">'+usersize+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="sel'+username+'" data-width="auto" class="'+username+' selectpicker "  multiple data-actions-box="true" data-live-search="true"></select></td><td><button onclick="selbtnclickeduser(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a href="javascript:userPassword(\''+username+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td style="width: 15%;" class="text-center"><a class="UnixDelUser" val="'+username+'" href="javascript:auserdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+    $("#UserList").append('<tr class="dontdelete" > ><td style="width:25%;">'+username+'</td><td style="width:25%;">'+userpool+'</td><td style="width:20%;">'+usersize+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="sel'+username+'" title="No Group" data-container="body" data-width="auto" class="'+username+' selectpicker "  multiple data-actions-box="true" data-live-search="true"></select></td><td><button onclick="selbtnclickeduser(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a href="javascript:userPassword(\''+username+'\')" ><img src="assets/images/edit.png" alt="cannott upload edit icon"></a></td><td style="width: 15%;" class="text-center"><a class="UnixDelUser" val="'+username+'" href="javascript:auserdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
     $("#btnsel"+username).hide();
     cgrp[username]=[]
     $.each(allgroups, function(k,v){
@@ -862,7 +862,7 @@ $.each(jvol,function(k,v){
    username=allgroups[k]['name'].replace('usersigroup/','')
    grpuserlist=allgroups[k]['prop'].split('/')[2]
    if (username!='Everyone'){
-    $("#GroupList").append('<tr class="dontdelete" > <td style="width:25%;">'+username+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="sel'+username+'" data-width="auto" class="'+username+' selectpicker grp" multiple data-actions-box="true" data-live-search="true"></select></td><td class="text-center" style="width: 20%;"><button onclick="selbtnclickedgroup(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a class="UnixDelGroup" val="'+username+'" href="javascript:agroupdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
+    $("#GroupList").append('<tr class="dontdelete" > <td style="width:25%;">'+username+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="sel'+username+'" title="No User" data-container="body" data-width="auto" class="'+username+' selectpicker grp" multiple data-actions-box="true" data-live-search="true"></select></td><td class="text-center" style="width: 20%;"><button onclick="selbtnclickedgroup(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a class="UnixDelGroup" val="'+username+'" href="javascript:agroupdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
     $("#btnsel"+username).hide();
     cuser[username]=[]
     $.each(allusers, function(k,v){
