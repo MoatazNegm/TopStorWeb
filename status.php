@@ -158,7 +158,7 @@
                             <tr class="row">
 										  <th class="text-left col-3" style="padding-left: 2rem; ">Date and time</th>                                
                                 <th class="text-center col-1">User</th>
-                                <th class="text-center col-2">Host</th>
+                                <th class="text-center col-2">Node</th>
                                 <th class="text-center col-6">Data</th>
                                 
                             </tr>
