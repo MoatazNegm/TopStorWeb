@@ -492,10 +492,11 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
      }
  function createvol() { 
   var thepool=$("#Pool2"+prot).val()
-  var Groupprot="Everyone"
-  if($("#Group"+prot).val()!=null){
+  var Groupprot="NoUser"
+  if($("#Group"+prot).val()!=""){
    Groupprot=$("#Group"+prot).val().toString()
   }
+  console.log('groupprot',Groupprot);
   $.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+Groupprot, passwd:$("#Address"+prot).val().toString()+" "+$("#Subnet"+prot).val().toString()+" "+myname+" "+pools[thepool].host+" "+myname }, function (data){
  });
 };
