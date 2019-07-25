@@ -735,7 +735,9 @@ function refreshselect(){
    var grpname="dkfj"
    $.each(jdata, function(k,v){
     grpname=jdata[k]['name'].replace('usersigroup/','')
-    $("#Usergroups ").append("<option value='"+grpname+"' >"+grpname+"</option>");
+    if (grpname!="Everyone") {
+     $("#Usergroups ").append("<option value='"+grpname+"' >"+grpname+"</option>");
+    }
    });
    $("#Usersgroup").selectpicker("refresh");
   });
