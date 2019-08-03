@@ -897,8 +897,13 @@ $.each(jvol,function(k,v){
   $(".selectpicker").selectpicker("refresh");
  }
       function selbtnclickedgroup(x){
+                           var Groupusers='NoUser';
+                           if($("#"+x.id.replace('btn','')).val()!=null){
+                             Groupusers=$("#"+x.id.replace('btn','')).val().toString()
+                           }
+ 
 				console.log('update needed',x.id);
- $.post("./pump.php", { req:"UnixChangeGroup", name:x.id.replace('btnsel',''), passwd:'users'+$("#"+x.id.replace('btn','')).val()+" "+myname });
+ $.post("./pump.php", { req:"UnixChangeGroup", name:x.id.replace('btnsel',''), passwd:'users'+Groupusers+" "+myname });
 
 			};	
       function selbtnclickeduser(x){
