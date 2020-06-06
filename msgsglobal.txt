@@ -204,6 +204,9 @@ DGfa20:2: : from :: :Failed adding a mirror array to pool: using disks:
 DGst21:1: : from :: Creating non-redundant Pool : using disks: ......
 DGsu21:2: : from :: Success creating non-redundant Pool : using disks:
 DGfa21:2: : from :: Failed creating non-redundant Pool : using disks:
+DGst22:1: : from :: Importing Pool : 
+DGsu22:2: : from :: Success importing Pool :
+DGfa22:2: : from :: Failed to import Pool : 
 Replica1008: Success in Rollback of snapshot :
 Replica1009: Adding Hourly replication schedule ......
 Replica1010: Problem occurred adding Hourly replication schedule
