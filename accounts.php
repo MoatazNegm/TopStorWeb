@@ -342,10 +342,10 @@
                         </div>
                          <div class="form-group row">
                             <label class="col-2 col-form-label">Time-Server(NTP)</label>
-                            <div class="col-2">
-                                <input id="NTP" class="form-control ip_address" type="text"  >
+                            <div class="col-4">
+                                <input id="NTP" class="form-control " type="text"  >
                             </div>
-  			    <div class="col-3">
+  			    <div class="col-1">
 			    </div>
                             <div class="alert alert-dismissible alert-info">
                   <strong id="cNTP">Not set</strong>
@@ -665,6 +665,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
   }				
   $("#cBoxName").text(prop["name"]); $("#cIPAddress").text(prop.addr); $("#cGateway").text(prop.rout);
   $("#cdns1").text(prop.dns);
+  $("#cNTP").text(prop.ntp);
   $("#cSubnet").text(prop.addrsubnet);
   $("#cMgmt").text(prop.mgmtip+'/'+prop.mgmtsubnet);
   if(propdata.includes('dataip')) {
@@ -1045,15 +1046,17 @@ $.each(jvol,function(k,v){
 						if($("#BoxName").val().length > 3) {
 							hostips['name']=$("#BoxName").val(); $("#BoxName").removeClass("NotComplete"); 
 							}
-							else
-							 $("#BoxName").addClass("NotComplete")
+							else {
+							 if($("#BoxName").val().length > 0)
+							 	$("#BoxName").addClass("NotComplete")
+							}
 hostips['hostname']=prop2[selprop]['name']
 						if($("#IPAddress").val().length > 3) { hostips['addr']=$("#IPAddress").val(); hostips['addrsubnet']=$("#Subnet").val(); }
 						if($("#Mgmt").val().length > 3) { hostips['mgmtip']=$("#Mgmt").val(); hostips['mgmtsubnet']=$("#MgmtSub").val();}
 						if($("#Gateway").val().length > 3) hostips['rout']=$("#Gateway").val();
 						if($("#dns1").val().length > 3) hostips['dns']=$("#dns1").val();
 						if($("#DataIP").val().length > 3){ hostips['dataip']=$("#DataIP").val(); hostips['dataipsubnet']=$("#DataSub").val();}
-						if($("#NTP").val().length > 3){ hostips['ntp']=$("#ntp").val(); }
+						if($("#NTP").val().length > 3){ hostips['ntp']=$("#NTP").val(); console.log('ntp',$("#NTP").val())}
 console.log('hi',hostips)
 						$.post("./pump.php", { req:"HostManualconfig.py", name:JSON.stringify(hostips), passwd:myname });
 						setTimeout(function(){ refresherprop=4},3000);					
