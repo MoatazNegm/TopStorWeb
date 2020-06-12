@@ -117,8 +117,8 @@ HostManual1st7:1: : from :: Start changing cluster managment address from :  to 
 HostManual1su7:2: : from :: Success changing cluster managment address from :  to :
 HostManual1st8:1: : from :: Start changing cluster data address from :  to :
 HostManual1su8:2: : from :: Success changing cluster data address from :  to :
-HostManual1sst9:2: : from :: Start changing cluster ntp server from :  to :
-HostManual1ssu9:2: : from :: Success changing cluster ntp server from :  to :
+HostManual1st9:2: : from :: Start changing cluster ntp server from :  to :
+HostManual1su9:2: : from :: Success changing cluster ntp server from :  to :
 CIFS1001: Creating Volume : ....
 CIFS1002: Volume : already exists
 CIFS1003: Problem occurred while creating volume :
