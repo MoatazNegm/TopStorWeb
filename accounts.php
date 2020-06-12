@@ -664,10 +664,8 @@
 function timeron() {
  mytimer=setTimeout(function() { 
 	document.getElementById('Login'+'ref').submit();
-	console.log('timout');
 		},idletill);
  mymodal=setTimeout(function() { 
-	console.log('modaltimeout');
 	$("#overlay").modal('show')
 		},modaltill);
 }
@@ -677,15 +675,13 @@ function chkuser() {
 			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid+" "+myname},function(data){ 
          var data2=data.replace(" ","").replace('\n','');
 	if (myid != data2) { 
-	   console.log('username',myname)
-           console.log('myid,data2',myid,'and',data2)
 		document.getElementById('Login'+'ref').submit();
  	}		;
 				});
 };
 chkuser();
 				$("html").click(function(){
-mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser();myidhash=mydate;console.log(myidhash); } timerrst();});
+mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser();myidhash=mydate; } timerrst();});
 				$("html").keypress(function(){mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { chkuser(); myidhash=mydate;};timerrst();});
 				$(".ref").click(function() {
 					if($(this).attr('id')=="Login")
@@ -693,10 +689,8 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 						document.getElementById('Login'+'ref').submit();
 						
 					} else {
-					console.log('id',$(this).attr('id')+'ref');
 					document.getElementById($(this).attr('id')+'ref').submit();
 					}
-		 //console.log($(this).attr('id'));
 		});
 		function SS(){ 
 				
@@ -704,13 +698,12 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 					var curuser=myname;
 					if(curuser!="admin"){
 					$.get("gump2.php", { req: 'usersinfo/'+curuser, name:"" },function(data){ 
-	console.log('ss-user',data.split('/'));
 	var gdata=data.split('/')
 	gdata.shift(); gdata.shift();
 						if(gdata[3].split('-')[1]!="true") { $(".activeDirectory").hide(); $("#activeDirectory").hide(); alltabsAcco=1;} 
 						if(gdata[7].split('-')[1]!="true") { $(".boxUsers").hide(); $("#boxUsers").hide(); alltabsAcco=alltabsAcco+1;} 
 						if(gdata[10].split('-')[1]!="true") { $(".boxProperties").hide(); $("#boxProperties").hide(); alltabsAcco=alltabsAcco+1;} 
-						if(alltabsAcco==3) { console.log('hi');$(".accounts").hide()}
+						if(alltabsAcco==3) { $(".accounts").hide()}
 						if(gdata[4].split('-')[1]!="true") { $(".servicestatus").hide(); $("#servicestatus").hide(); alltabsStat=1;} 	else { $(".servicestatus").show(); $("#servicestatus").show();}
 						if(gdata[8].split('-')[1]!="true") { $("#Logs").hide(); $("#Logspanel").hide();alltabsStat=alltabsStat+1;}
 						if(alltabsStat==2) { $(".status").hide();}
@@ -758,7 +751,6 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
   $("#cBoxName").text(prop["name"]); $("#cIPAddress").text(prop.addr); $("#cGateway").text(prop.rout);
   $("#cdns1").text(prop.dns);
   $("#cNTP").text(prop.ntp);
-  console.log(prop.tz)
   try {
 	$("#cTZ").text(prop.tz.split('@@')[1].split('!').join(':').split('_').join(' ').split('@').join(','));
   }
@@ -861,7 +853,6 @@ function refreshselect(){
  			  volumes={'NoHome': 'NoHome'};
 			    oldvoldata=voldata
 			jvol = jQuery.parseJSON(voldata);
-			  console.log('voldata',voldata)
 $.each(jvol,function(k,v){
  vol=jvol[k].name.split('/')[1]
  volumes[vol]=jvol[k].prop
@@ -872,7 +863,6 @@ $.each(jvol,function(k,v){
 	});
 					
 				$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ $("bg-success").text(data);});
-			//	console.log("AD is visible : " , $(".AD").is(":visible"));
 				if($(".AD").is(":visible"))
 				{
 					$.get("requestdata2.php", { file: 'Data/DomainChangestatus.log' }, function(data){ $("#ADstatus").val(data);});
@@ -901,7 +891,6 @@ $.each(jvol,function(k,v){
 					$("#network").change();
 				}
 	//				if(request=="network") { $("#network").val(data); $("#network").change(); }
-	//				console.log(field,request,data,$("#network").val());
 					});
 					
 				}
@@ -945,7 +934,6 @@ $.each(jvol,function(k,v){
     $('#sel'+username).on('changed.bs.select',function(e,c,iss,pv){
      if (cgrp[this.id.replace('sel','')].toString()==$('#'+this.id).val()) {
       $('#btn'+this.id).hide();
-      console.log('tohide',cgrp[this.id.replace('sel','')].toString(), $('#'+this.id).val()) 
      } else {
       $("#btn"+this.id).show();
      }
@@ -979,10 +967,8 @@ $.each(jvol,function(k,v){
     $("button").css("height","2.3rem");
     $(".dropdown").css("width","100%");
     $('#sel'+username).on('changed.bs.select',function(e,c,iss,pv){
-     console.log('checkit',cuser[this.id.replace('sel','')].length,'and', $('#'+this.id).val()) 
      if (cuser[this.id.replace('sel','')].toString()==$('#'+this.id).val()) {
       $('#btn'+this.id).hide();
-      console.log('tohide',cuser[this.id.replace('sel','')].toString(), $('#'+this.id).val()) 
      } else {
       $("#btn"+this.id).show();
      }
@@ -1000,12 +986,10 @@ $.each(jvol,function(k,v){
                              Groupusers=$("#"+x.id.replace('btn','')).val().toString()
                            }
  
-				console.log('update needed',x.id);
  $.post("./pump.php", { req:"UnixChangeGroup", name:x.id.replace('btnsel',''), passwd:'users'+Groupusers+" "+myname });
 
 			};	
       function selbtnclickeduser(x){
-				console.log('update needed',x.id);
  $.post("./pump.php", { req:"UnixChangeUser", name:x.id.replace('btnsel',''), passwd:'groups'+$("#"+x.id.replace('btn','')).val()+" "+myname });
 
 			};	
@@ -1084,13 +1068,11 @@ $.each(jvol,function(k,v){
 				 });
 			});
 			$("a.UnixDelUser").click(function (e){ e.preventDefault(); $.post("./pump.php", { req:"UnixDelUser", name:$(this).val()+" "+myname, passwd:"" }, function (data){
-				 console.log("hi", $(this).val());
 				 refresheruser=3 
 				 });
 			});
 			
 			function auserdel(){ $.post("./pump.php", { req:"UnixDelUser", name:arguments[0]+" "+myname, passwd:"" }, function (data){
-				 console.log("hi", arguments[0]);
 				 refresheruser=3 
 				 });
 			};
@@ -1100,22 +1082,19 @@ $.each(jvol,function(k,v){
                              Groupusers=$("#Groupusers").val().toString()
                            }
                            $.post("./pump.php", { req:"UnixAddGroup", name:$("#Group").val()+" users"+Groupusers, passwd:myname}, function (data){
-			         console.log('hi',myname);
 				 refresheruser=3
 				 });
 			});
 			$("a.UnixDelGroup").click(function (e){ e.preventDefault(); $.post("./pump.php", { req:"UnixDelGroup", name:$(this).val()+" "+myname, passwd:"" }, function (data){
-				 console.log("hi", $(this).val());
 				 refresheruser=3 
 				 });
 			});
 			
 			function agroupdel(){ $.post("./pump.php", { req:"UnixDelGroup", name:arguments[0]+" "+myname, passwd:"" }, function (data){
-				 console.log("hi", arguments[0]);
 				 refresheruser=3 
 				 });
 			};
-			function userPassword(){ userpass=arguments[0];  $("#userEditing").modal('show') ;console.log('userpass:',userpass);}
+			function userPassword(){ userpass=arguments[0];  $("#userEditing").modal('show') ;}
                         $("#iChPasssubmit").click(function(){
 			changePassword(mypass)
 			});
@@ -1125,7 +1104,6 @@ $.each(jvol,function(k,v){
 
 
 				$(".ChPass").click(function (){ 
-					console.log('ChPasssubmit',userpass,$("#chpass").val());
 				$.post("./pump.php",{ req:"UnixChangePass", name:"'"+$("#chpass").val()+"'", passwd:userpass+" "+myname});
 				refresheruser=1;
 				
@@ -1154,7 +1132,7 @@ hostips['hostname']=prop2[selprop]['name']
 						if($("#dns1").val().length > 3) hostips['dns']=$("#dns1").val();
 						if($("#DataIP").val().length > 3){ hostips['dataip']=$("#DataIP").val(); hostips['dataipsubnet']=$("#DataSub").val();}
 						if($("#NTP").val().length > 3){ hostips['ntp']=$("#NTP").val()}
-						if($("#TZ").val() != "-100" ){hostips['tz']=$("#TZ option:selected").attr('city')+'@@'+$("#TZ option:selected").text().split(' ').join('_').split(',').join('@').split(':').join('!'); console.log(JSON.stringify(hostips))}
+						if($("#TZ").val() != "-100" ){hostips['tz']=$("#TZ option:selected").attr('city')+'@@'+$("#TZ option:selected").text().split(' ').join('_').split(',').join('@').split(':').join('!'); }
 						$.post("./pump.php", { req:"HostManualconfig.py", name:JSON.stringify(hostips), passwd:myname });
 						setTimeout(function(){ refresherprop=4},3000);					
 						
@@ -1193,7 +1171,6 @@ hostips['hostname']=prop2[selprop]['name']
 		}
 	
 	 $('[id^=nav]').click(function(e){
-          console.log('hihihih');
 	  $(".dropdown").css("width","100%");
           $("button").css("height","2.3rem");
 	 });		
