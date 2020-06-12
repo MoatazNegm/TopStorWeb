@@ -1053,6 +1053,7 @@ hostips['hostname']=prop2[selprop]['name']
 						if($("#Gateway").val().length > 3) hostips['rout']=$("#Gateway").val();
 						if($("#dns1").val().length > 3) hostips['dns']=$("#dns1").val();
 						if($("#DataIP").val().length > 3){ hostips['dataip']=$("#DataIP").val(); hostips['dataipsubnet']=$("#DataSub").val();}
+						if($("#NTP").val().length > 3){ hostips['ntp']=$("#ntp").val(); }
 console.log('hi',hostips)
 						$.post("./pump.php", { req:"HostManualconfig.py", name:JSON.stringify(hostips), passwd:myname });
 						setTimeout(function(){ refresherprop=4},3000);					
