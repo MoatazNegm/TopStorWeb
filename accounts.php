@@ -454,30 +454,6 @@
                        <strong id="cGW">Not set</strong>
                       </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-2 col-form-label">DNS</label>
-                            <div class="col-2">
-                                <input id="dns1" class="form-control ip_address" type="text" >
-                            </div>
-  			    <div class="col-3">
-			    </div>
-                            <div class="alert alert-dismissible alert-info">
-                       <strong id="cdns1">Not set</strong> 
-                      </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-2 col-form-label">Data Address</label>
-                            <div class="col-2">
-                                <input id="DataIP" class="form-control ip_address" type="text"  >
-                            </div>
-                            <label class="col-1 col-form-label">Subnet</label>
-                            <div class="col-2">
-                                <input class="form-control" type="number" id="DataSub" min=8 value=24 max=32 step=8>
-                            </div>
-                            <div class="alert alert-dismissible alert-info">
-                  <strong id="cDataIP">Not set</strong>
-                      </div>
-                        </div>
                         <div class="row">
                             <button  id="DNSsubmit" type="button" style="cursor: pointer;"class="btn btn-submit col-3" >Submit
 			    </button>
