@@ -1047,6 +1047,7 @@ function refreshall() { //check pool status
 						+'margin-top: -0.08rem;'
       +'">'
       +'<a href="javascript:poolclick(\'pree\',1)"><h7 style="padding-left: 5%;">Free Disks </h7></a>'
+      +'<a class="float-right" href="javascript:diskrefresh()"><span class="fa fa-refresh" style="padding-left: 5%;"></span></a>'
       +'<section class="text-center">'
       +' <div  class="container">'
 						+'    <div id="freeimg2" class="row">'
@@ -1734,6 +1735,10 @@ function refresh2(textareaid) {
 var config = 1;
 $("[class*='xdsoft']").hide();
 $(".DiskGroups").hide(); $(".SnapShots").hide(); 
+function diskrefresh(){
+			$.post("./pump.php", { req: "Diskrefresh.py", name:"refresh "+" "+myname});
+			console.log('Diskrefresh');
+};
 function pooladdlog(){
 	var userpriv="false";
 	var curuser=myname;
