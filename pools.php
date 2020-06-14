@@ -1737,7 +1737,6 @@ $("[class*='xdsoft']").hide();
 $(".DiskGroups").hide(); $(".SnapShots").hide(); 
 function diskrefresh(){
 			$.post("./pump.php", { req: "Diskrefresh.py", name:"refresh "+" "+myname});
-			console.log('Diskrefresh');
 };
 function pooladdlog(){
 	var userpriv="false";
