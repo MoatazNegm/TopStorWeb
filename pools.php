@@ -831,10 +831,27 @@ var ppoolstate="na";
  var myid="<?php echo $_REQUEST['myid'] ?>";
  myidhash=myid;
  var myname="<?php echo $_REQUEST['name'] ?>";
+ var hostsname={};
+ var propdata='dlkafjd;'
  $(".myname").val(myname)
  $("#usrnm").text(myname)
  $(".params").val(myid);
 //$("#overlay").modal('show');
+ function updatehosts() {
+  $.get("gump2.php", { req: "prop", name:"--prefix"  },function(data){ 
+   if(propdata==data){;} else {
+    propdata=data
+    prop2=$.parseJSON(propdata)
+    $.each(prop2,function(r,s){
+     prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
+     hostsname[prop2[r]['name'].replace('prop/','')]=prop.name
+     $("#"+prop2[r]["name"].replace('prop/','')).text(prop2[r]["name"].replace('prop/','')+":"+prop.name)
+    });
+   }
+  });
+ }				
+
+
 function timeron() {
  mytimer=setTimeout(function() { 
 	document.getElementById('Login'+'ref').submit();
@@ -989,10 +1006,10 @@ function refreshall() { //check pool status
 						disks=[];
 						kdata=[];
 						pools=[];
-						hosts=[]
-						volumes=[]
-						snapshots=[]
-						snapperiod=[]
+						hosts=[];
+						volumes=[];
+						snapshots=[];
+						snapperiod=[];
 							//currenthost='hohoho'
 							//currentpool='na'
 						p=0
@@ -1001,7 +1018,7 @@ function refreshall() { //check pool status
 						});
 						$.each(hosts,function(r,s){
 							hosts[r]['name']=hosts[r]['name'].replace('hosts/','').replace('/current','')
-								$('#hostslist').append($('<a class="hostmember col-4" href="javascript:hostclick(\''+hosts[r]["name"]+'\')">'+hosts[r]["name"]+'</a>'));	
+								$('#hostslist').append($('<a id="'+hosts[r]["name"]+'" class="hostmember col-4" href="javascript:hostclick(\''+hosts[r]["name"]+'\')">'+hostsname[hosts[r].name]+'</a>'));	console.log('hosts',hostsname[hosts[r]["name"]],hosts[r]["name"],r)
 							$.each(hosts[r]['prop'],function(rr,ss){
 								topool=hosts[r]['prop'][rr]
 									topool['host']=hosts[r]['name']
@@ -1013,6 +1030,7 @@ function refreshall() { //check pool status
 									}
 							});
 						});
+						updatehosts()
 					 pooldiv=0
 						$.each(pools,function(k,v){
 							if(!pools[k]['name'].includes('pree')) {pooldiv=pooldiv+1}

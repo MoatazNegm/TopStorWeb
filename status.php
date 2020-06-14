@@ -229,6 +229,7 @@
 <!--CUSTOM JS-->
 		<script>
 			var topresent=0;
+			var hosts=[];
 			var msgdata= "no no no";
 			var msgs="no data";
 			var datalogf = [];
@@ -266,15 +267,29 @@
 			var timechanged=0;
 			var counter = 1;
 			var activepage=0; var lastpage=-1;
+			var propdata='dkfjasdlk'
 			
  var myid="<?php echo $_REQUEST['myid'] ?>";
  var myname="<?php echo $_REQUEST['name'] ?>";
  $(".myname").val(myname)
  $("#usrnm").text(myname)
  $(".params").val(myid)
+ function updatehosts() {
+  $.get("gump2.php", { req: "prop", name:"--prefix"  },function(data){ 
+   if(propdata==data){;} else {
+    propdata=data
+    prop2=$.parseJSON(propdata)
+    $.each(prop2,function(r,s){
+     prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
+     hosts[prop2[r]['name'].replace('prop/','')]=prop.name
+    });
+   }
+  });
+ }				
+
 
 function chkuser(){
-			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid+" "+myname},function(data){ 
+	$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid+" "+myname},function(data){ 
          var data2=data.replace(" ","").replace('\n','');
 	if (myid != data2) { 
 	   console.log('username',myname)
@@ -483,7 +498,7 @@ chkuser();
 	});
 		topresentlog();
 		counter=counter+1;
-		if(counter > 2 ) { if(topresent==0){topresentlog();}; updatelogarea(); infochange(); counter = 1; }
+		if(counter > 2 ) { if(topresent==0){topresentlog();}; updatehosts(); updatelogarea(); infochange(); counter = 1; }
 		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		
 			var date
@@ -746,7 +761,7 @@ themsgarr.splice(1,1)
 							if (k == 0) { y="first"; };
 							if (k == (obj[ii].length-1)) {y="last";};
 							if(obj[ii][k].msg == "info") { color="blue"}; if(obj[ii][k].msg == "warning") { color="#cabc55"}; if(obj[ii][k].msg == "error") { color="red"}						
-							$("#Logdetails").append('<tr style="padding-left: 3.9rem; color:'+color+'" class="row datarow '+obj[ii][k].msg+'" ><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-3 text-left tdlog Volname '+y+' '+obj[ii][k].msg+' " data-toggle="popover" rel="popover" data-trigger="hover" data-container="body"  >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td style="margin-left: -1.2rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-1 text-left tdlog '+obj[ii][k].msg+' "  data-content='+objdata+' >'+obj[ii][k].user+'</td><td style="margin-left: 0rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-2 text-center tdlog'+obj[ii].msg+' " data-content='+objdata+' >'+obj[ii][k].fromhost+'</td><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-6 text-center tdlog '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
+							$("#Logdetails").append('<tr style="padding-left: 3.9rem; color:'+color+'" class="row datarow '+obj[ii][k].msg+'" ><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-3 text-left tdlog Volname '+y+' '+obj[ii][k].msg+' " data-toggle="popover" rel="popover" data-trigger="hover" data-container="body"  >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td style="margin-left: -1.2rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-1 text-left tdlog '+obj[ii][k].msg+' "  data-content='+objdata+' >'+obj[ii][k].user+'</td><td style="margin-left: 0rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-2 text-center tdlog'+obj[ii].msg+' " data-content='+objdata+' >'+obj[ii][k].fromhost+':'+hosts[obj[ii][k].fromhost]+'</td><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-6 text-center tdlog '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
 							
 							
 										infochange();			
