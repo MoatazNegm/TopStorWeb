@@ -19,13 +19,11 @@ def file_read_from_head(fname,mydate,nlines,msglevel=0):
   mystamp=int(mydate.timestamp())
   for line in linelist: 
    linesplit=line.replace("\n","").split(" ")
-   ldate=int(linesplit[6])
+   ldate=int(linesplit[-1])
    if(x > 0):
-    #if (ldate <= mystamp and any(yy in str(line) for yy in valid)):
-    #print(x,ldate,mystamp, ldate-int(mystamp),linesplit[5].split('@')[0])
     if (ldate <= mystamp and linesplit[5].split('@')[0] in str(valid)):
      if linesplit[3] in msgtype:
-      alllines.append({"msglevel":msglevel,"Date":linesplit[0],"time":linesplit[1],"fromhost":linesplit[2], "msg":linesplit[3],"user":linesplit[4],"code":linesplit[5],"stamp":linesplit[6]}) 
+      alllines.append({"msglevel":msglevel,"Date":linesplit[0],"time":linesplit[1],"fromhost":linesplit[2], "msg":linesplit[3],"user":linesplit[4],"code":linesplit[5],"stamp":linesplit[-1]}) 
       x-=1
       if(x<=0):
        return list(alllines)

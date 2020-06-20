@@ -1,4 +1,5 @@
 #! /bin/sh
+echo $@ > Data/readl
 pgrep readlog -a | grep -v $$ >/dev/null
 if [ $? -ne 0 ];
 then
