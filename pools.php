@@ -1752,7 +1752,7 @@ function pooladdlog(){
 		if(userpriv=="true" | curuser=="admin" ) { 
 
 			//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"addlog " + myname+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id, passwd:currentpool+' '+currenthost+" "+myname});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"addlog " + myname+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id, passwd:currentpool+' '+currenthost});
 			syscounter2=980;  
 
 		}
@@ -1772,7 +1772,7 @@ function pooladdcache(){
 		if(userpriv=="true" | curuser=="admin" ) { 
 
 			//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"addcache " +myname+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id , passwd:currentpool+' '+currenthost+" "+myname});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"addcache " +myname+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id , passwd:currentpool+' '+currenthost});
 			syscounter2=980;  
 
 		}
@@ -1811,7 +1811,7 @@ function pooldelspecial(){
 
 		if(userpriv=="true" | curuser=="admin" ) { 
 
-			$.post("./pump.php", { req: "DGsetPool.py", name:"delspecial " + myname+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id, passwd:pool+' '+currenthosti+" "+myname});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"delspecial " + myname+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id, passwd:pool+' '+currenthost});
 			syscounter2=0;  
 
 		}
@@ -1822,7 +1822,7 @@ function poolcreatesingle(){
 	var curuser=myname;
  if(userpriv=="true" | curuser=="admin" ) { 
 
-			$.post("./pump.php", { req: "DGsetPool.py", name:"Single " + myname+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id,passwd:"nopool"+' '+currenthost+" "+myname});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"Single " + myname+" "+dd[1].host+" "+dd[1].name+" "+dd[1].id,passwd:"nopool"+' '+myname+" "+currenthost});
 			syscounter2=980;  
 
  }
@@ -1848,7 +1848,7 @@ function pooladdraidtriple(){
 				}
 
 			//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity3 " + myname+" "+stripeset,passwd:currentpool+' '+currenthost+" "+myname});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity3 " + myname+" "+stripeset,passwd:currentpool+' '+currenthost});
 
 			syscounter2=980;  
 
@@ -1877,7 +1877,7 @@ function poolcreateraidtriple(){
 				}
 
 			//	 config= 0; $("h2").css("background-image","url('img/diskconfigs.png')").text("Disk Groups"); status=1; $(".ullis").hide();$(".finish").show();$(".DiskGroups").show();
-			$.post("./pump.php", { req: "DGsetPool.py", name:"parity3 " + myname+" "+stripeset,passwd:"nopool"+' '+currenthost+" "+myname });
+			$.post("./pump.php", { req: "DGsetPool.py", name:"parity3 " + myname+" "+stripeset,passwd:"nopool"+' '+currenthost });
 
 			syscounter2=980;  
 
@@ -1895,7 +1895,7 @@ function pooladdraiddual(){
 						stripeset=stripeset+dd[k].name+":"+dd[k].id+" "		
 					}		
 				}
-			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity2 " + myname+" "+stripeset,passwd:currentpool+' '+currenthost+" "+myname});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity2 " + myname+" "+stripeset,passwd:currentpool+' '+currenthost});
 
 			syscounter2=980;  
 
@@ -1910,7 +1910,7 @@ function poolcreateraiddual(){
 					}		
 				}
 
-			$.post("./pump.php", { req: "DGsetPool.py", name:"parity2 " + myname+" "+stripeset,passwd:"nopool" +' '+currenthost+" "+myname});
+			$.post("./pump.php", { req: "DGsetPool.py", name:"parity2 " + myname+" "+stripeset,passwd:"nopool" +' '+currenthost});
 
 			syscounter2=980;  
 
@@ -1926,7 +1926,7 @@ function pooladdraidsingle(){
 					}		
 				}
 
-			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity " + myname+" "+stripeset,passwd:currentpool+' '+currenthost+" "+myname });
+			$.post("./pump.php", { req: "DGsetPool.py", name:"addparity " + myname+" "+stripeset,passwd:currentpool+' '+currenthost });
 
 			syscounter2=980;  
 
@@ -1941,7 +1941,7 @@ function poolcreateraidsingle(){
 					}		
 				}
 console.log('raidsingle')
-			$.post("./pump.php", { req: "DGsetPool.py", name:"parity " + myname+" "+stripeset,passwd:"nopool "+currenthost+" "+myname });
+			$.post("./pump.php", { req: "DGsetPool.py", name:"parity " + myname+" "+stripeset,passwd:"nopool "+currenthost });
 
 			syscounter2=980;  
 

@@ -725,7 +725,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
    $.post("./pump.php", { req:"HostgetIPs.py", name:myname, passwd:"" });
   }				
   $("#cBoxName").text(prop["name"]); $("#cIPAddress").text(prop.addr); $("#cGateway").text(prop.rout);
-  $("#cdns1").text(prop.dns);
+  //$("#cdns1").text(prop.dns);
   $("#cNTP").text(prop.ntp);
   $("#cGW").text(prop.gw);
   try {
@@ -976,7 +976,7 @@ $.each(jvol,function(k,v){
 				 prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
 			         selprop=r
 						$("#cBoxName").text(prop["name"]); $("#cIPAddress").text(prop.addr); $("#cGateway").text(prop.rout);
-						$("#cdns1").text(prop.dns);
+						//$("#cdns1").text(prop.dns);
 						$("#cSubnet").text(prop.addrsubnet);
 						$("#cMgmt").text(prop.mgmtip+'/'+prop.mgmtsubnet);
 			}
@@ -1105,8 +1105,8 @@ $.each(jvol,function(k,v){
 hostips['hostname']=prop2[selprop]['name']
 						if($("#IPAddress").val().length > 3) { hostips['addr']=$("#IPAddress").val(); hostips['addrsubnet']=$("#Subnet").val(); }
 						if($("#Mgmt").val().length > 3) { hostips['mgmtip']=$("#Mgmt").val(); hostips['mgmtsubnet']=$("#MgmtSub").val();}
-						if($("#dns1").val().length > 3) hostips['dns']=$("#dns1").val();
-						if($("#DataIP").val().length > 3){ hostips['dataip']=$("#DataIP").val(); hostips['dataipsubnet']=$("#DataSub").val();}
+						//if($("#dns1").val().length > 3) hostips['dns']=$("#dns1").val();
+						//if($("#DataIP").val().length > 3){ hostips['dataip']=$("#DataIP").val(); hostips['dataipsubnet']=$("#DataSub").val();}
 						if($("#NTP").val().length > 3){ hostips['ntp']=$("#NTP").val()}
 						if($("#GW").val().length > 3){ hostips['gw']=$("#GW").val()}
 						if($("#TZ").val() != "-100" ){hostips['tz']=$("#TZ option:selected").attr('city')+'@@'+$("#TZ option:selected").text().split(' ').join('_').split(',').join('@').split(':').join('!'); }

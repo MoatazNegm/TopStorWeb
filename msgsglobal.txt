@@ -112,9 +112,9 @@ HostManual1004:1: : from :: Changing System :  to new parameters
 HostManual1st5:1: : from :: Start changing system name from :  to :
 HostManual1su5:2: : from :: Succss changing system name from :  to :
 HostManual1st6:1: : from :: Start changing system IP address from :  to :
-HostManual1su6:2: : from :: Success changing system IP address from :  to : please reboot system urgently
+HostManual1su6:2: : from :: Success changing system IP address from :  to : system will reboot.
 HostManual1st7:1: : from :: Start changing cluster managment address from :  to :
-HostManual1su7:2: : from :: Success changing cluster managment address from :  to :
+HostManual1su7:1: : from :: Success changing cluster managment address from :  to :
 HostManual1st8:1: : from :: Start changing cluster data address from :  to :
 HostManual1su8:2: : from :: Success changing cluster data address from :  to :
 HostManual1st9:2: : from :: Start changing cluster ntp server from :  to :
