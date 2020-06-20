@@ -191,11 +191,21 @@
 				 <option value='NoHome'>----</option>
 				</select>
                             </div>
-                                <label class="offset-1 col-1 col-form-label">Size..GB</label>
+                                <label class="col-1 col-form-label">Size(GB)</label>
                             <div class="col-1">
                                 <input id="volsize" min="1" class="form-control" type="number" value="1">
                             </div>
                         </div>
+			<div class="form-group row">
+                            <label class="col-2 col-form-label"> HomeAddress</label>
+                            <div class="col-2">
+                                <input id="HomeAddress" class="form-control ip_address" type="text"  value="196.172.8.20">
+                            </div>
+                            <label class="col-1 col-form-label">Subnet</label>
+                            <div class="col-1">
+                                <input id="HomeSubnet" class="form-control" type="number"  min="0" max="32" value="24" step=8>
+                            </div>
+                       </div>
                         <div class="form-group row">
                         	
                             <label class="col-2 col-form-label">Allowed Groups</label>
@@ -1040,7 +1050,7 @@ $.each(jvol,function(k,v){
 				 
 			});
 		
-			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val()+' '+$("#UserVol").val()+' groups'+$("#Usergroups").val(), passwd:$("#UserPass").val()+" "+volumes[$("#UserVol").val()]+" "+$("#volsize").val()+"G "+myname}, function (data){
+			$("#UnixAddUser").click( function (){ $.post("./pump.php", { req:"UnixAddUser", name:$("#User").val()+' '+$("#UserVol").val()+' groups'+$("#Usergroups").val(), passwd:$("#UserPass").val()+" "+$("#volsize").val()+"G "+"Home/"+$("#HomeAddress").val()+'/'+$("#HomeSubnet").val()+" "+volumes[$("#UserVol").val()]+" "+myname}, function (data){
 				 refresheruser=3
 				 });
 			});
