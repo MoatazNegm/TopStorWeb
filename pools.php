@@ -50,16 +50,13 @@
 			<span aria-hidden="true">&times;</span>
 	</button>
 		</div>
-		<div class="bg-danger">Your changes hasn't been saved
-	<button type="button" class="close" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-	</button>
-		</div>
 		<div class="bg-success"><div id="texthere"></div>
 	<button type="button" id="close-success" style="margin-top: -2.4rem" class="close" aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 	</button>
 		</div>
+    <div class="bg-danger" ><div id="redhere"></div>
+    </div>
 </div>
 <!--BODY CONTENT-->
 <main class="col-md-12">
@@ -780,6 +777,7 @@
 <!--CUSTOM JS-->
 <script>
 
+var redflag="";
 var Vollisttime="44:333:222";
 var Vollisttime2="44:333:222";
 var times= { "snaps":"30:43:433", "periods":"30:43:433" };
@@ -846,6 +844,7 @@ var ppoolstate="na";
      prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
      hostsname[prop2[r]['name'].replace('prop/','')]=prop.name
      $("#"+prop2[r]["name"].replace('prop/','')).text(prop2[r]["name"].replace('prop/','')+":"+prop.name)
+     if( prop.configured.includes('no')> 0) { if(redflag.includes('need') >0 ) { redflag=redflag+', Node: '+prop.name+' needs to be configured'; } else { redflag='Node: '+prop.name+' needs to be configured';  }}
     });
    }
   });
@@ -953,8 +952,10 @@ function snaponce(txtin,but,altbut,comp){
 
 function refreshall() { //check pool status
 	$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){ 
+		if(redflag.includes('need')>0){ $('#redhere').text(redflag); $(".bg-danger").show(); } else { $(".bg-danger").hide(); }
 		if(data!=oldcurrentinfo && data != ''){oldcurrentinfo=data;  $(".bg-success").fadeIn(800); $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
 	});
+						updatehosts()
 	if($("#diskGroupspane").hasClass('active'))  { 
 		if (panesel !="diskgroup") { 
 			olddiskpool="kdajfd"; syscounter2=1000; Vollisttime2="skldjfadks"; panesel="diskgroup";
@@ -1030,7 +1031,6 @@ function refreshall() { //check pool status
 									}
 							});
 						});
-						updatehosts()
 					 pooldiv=0
 						$.each(pools,function(k,v){
 							if(!pools[k]['name'].includes('pree')) {pooldiv=pooldiv+1}

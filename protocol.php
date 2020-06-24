@@ -49,15 +49,12 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="bg-danger">Your changes hasn't been saved
-        <button type="button" class="close" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
     <div class="bg-success"><div id="texthere"></div>
         <button type="button" id="close-success" style="margin-top: -2.4rem" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
+    </div>
+    <div class="bg-danger" ><div id="redhere"></div>
     </div>
 </div>
 
@@ -445,6 +442,8 @@
  var oldvoldataraw='dkfjdk';
  var selvalues={};
  var myidhash;
+ var redflag="";
+ var propdata="dkaf";
  var mytimer;
  var mymodal;
  var idletill=480000;
@@ -599,6 +598,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 				if($("#HOMespane").hasClass('active'))  { if (prot !="HOMe") { olddiskpool="old"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); $(".variable2").remove(); Vollisttime2="skldjfadks"; prot="HOMe";}};
 				if($("#nfspane").hasClass('active') ) { if (prot !="NFS") { grpolddata='dkfaljf';olddiskpool="oldcifs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove();prot="NFS"; Vollisttime2="ndfsfsn";}};
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){
+		if(redflag.includes('need')>0){ $('#redhere').text(redflag); $(".bg-danger").show(); } else { $(".bg-danger").hide(); }
 		if(data!=oldcurrentinfo && data != ''){linerfact=-1;oldcurrentinfo=data;  $(".bg-success").fadeIn(800); $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
 	});
 					refreshList2("GetPoolVollist","#Volumetable"+prot,"Data/Vollist.txt","Volumes");
@@ -616,7 +616,21 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 				
 			}
 			
-			
+function updatehosts() {
+  $.get("gump2.php", { req: "prop", name:"--prefix"  },function(data){ 
+   if(propdata==data){;} else {
+    propdata=data
+    prop2=$.parseJSON(propdata)
+    $.each(prop2,function(r,s){
+     prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
+     hosts[prop2[r]['name'].replace('prop/','')]=prop.name
+     if( prop.configured.includes('no')> 0) { if(redflag.includes('need') >0 ) { redflag=redflag+', Node: '+prop.name+' needs to be configured'; } else { redflag='Node: '+prop.name+' needs to be configured';  }}
+  });
+ }				
+});
+};
+
+		
 			
 function refreshList2(req,listid,filelocfrom,show) {
  var fileloc=filelocfrom;
@@ -641,6 +655,7 @@ function refreshList2(req,listid,filelocfrom,show) {
   }
  });
    
+ updatehosts();
    
  $.get("gump2.php", { req: 'hosts', name:'--prefix' }, function(data){
   if(data!=olddiskpool){ 

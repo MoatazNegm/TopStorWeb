@@ -98,15 +98,12 @@ fclose($myfile);
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="bg-danger" hidden>Your changes hasn't been saved
-        <button type="button" class="close" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
     <div class="bg-success"><div id="texthere"></div>
         <button type="button" id="close-success" style="margin-top: -2.4rem" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
+    </div>
+    <div class="bg-danger" ><div id="redhere"></div>
     </div>
 </div>
 <!--BODY CONTENT-->
@@ -397,6 +394,7 @@ fclose($myfile);
 <script src="assets/js/main.js"></script>
 <script>
 			var needupdate=1
+			var redflag="";
  			var oldtexthere='hihihi';
 			var proptime="55:55:55";
 			var proptimenew="33:333:33";
@@ -412,6 +410,7 @@ fclose($myfile);
  var myidhash;
  var mytimer;
  var mymodal;
+ var propdata="dkajf;";
  var idletill=480000;
  var modaltill=idletill-120000
  var myid="<?php echo $_REQUEST['myid'] ?>";
@@ -421,6 +420,22 @@ fclose($myfile);
  $("#usrnm").text(myname)
  $(".params").val(myid);
 //$("#overlay").modal('show');
+function updatehosts() {
+  $.get("gump2.php", { req: "prop", name:"--prefix"  },function(data){ 
+   if(propdata==data){;} else {
+    propdata=data
+    prop2=$.parseJSON(propdata)
+    $.each(prop2,function(r,s){
+     prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
+     //hostsname[prop2[r]['name'].replace('prop/','')]=prop.name
+     //$("#"+prop2[r]["name"].replace('prop/','')).text(prop2[r]["name"].replace('prop/','')+":"+prop.name)
+     if( prop.configured.includes('no')> 0) { if(redflag.includes('need') >0 ) { redflag=redflag+', Node: '+prop.name+' needs to be configured'; } else { redflag='Node: '+prop.name+' needs to be configured';  }}
+    });
+   }
+  });
+ }				
+
+
 function timeron() {
  mytimer=setTimeout(function() { 
 	document.getElementById('Login'+'ref').submit();
@@ -584,9 +599,11 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 			function refreshall() {
 				DNS=1;
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){
+		if(redflag.includes('need')>0){ $('#redhere').text(redflag); $(".bg-danger").show(); } else { $(".bg-danger").hide(); }
 		if(data!=oldcurrentinfo && data != ''){linerfact=-1;oldcurrentinfo=data;  $(".bg-success").fadeIn(800); $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
 	});						
 SS();
+updatehosts();
 				$.get("requestversion.php",function(data){
 				 $("#soft").text(data)					
 				});

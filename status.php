@@ -49,10 +49,13 @@
 </nav>
 <!--MESSAGES-->
 <div class="dr-messages">
+
     <div class="bg-success" ><div id="texthere"></div>
         <button type="button" id="close-success" style="margin-top: -2.4rem" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
+    </div>
+    <div class="bg-danger" ><div id="redhere"></div>
     </div>
 </div>
 <!--BODY CONTENT-->
@@ -267,6 +270,7 @@
 			var timechanged=0;
 			var counter = 1;
 			var activepage=0; var lastpage=-1;
+			var redflag="";
 			var propdata='dkfjasdlk'
 			
  var myid="<?php echo $_REQUEST['myid'] ?>";
@@ -282,18 +286,17 @@
     $.each(prop2,function(r,s){
      prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
      hosts[prop2[r]['name'].replace('prop/','')]=prop.name
-    });
-   }
+     if( prop.configured.includes('no')> 0) { if(redflag.includes('need') >0 ) { redflag=redflag+', Node: '+prop.name+' needs to be configured'; } else { redflag='Node: '+prop.name+' needs to be configured';  }}
   });
  }				
+});
+};
 
 
 function chkuser(){
 	$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid+" "+myname},function(data){ 
          var data2=data.replace(" ","").replace('\n','');
 	if (myid != data2) { 
-	   console.log('username',myname)
-           console.log('myid,data2',myid,'and',data2)
 		document.getElementById('Login'+'ref').submit();
  	}		;
 				});
@@ -306,7 +309,6 @@ chkuser();
 						document.getElementById('Login'+'ref').submit();
 						
 					} else {
-					console.log('id',$(this).attr('id')+'ref');
 					document.getElementById($(this).attr('id')+'ref').submit();
 					}
 		 //console.log($(this).attr('id'));
@@ -398,13 +400,12 @@ chkuser();
 					var curuser=myname;
 					if(curuser!="admin"){
 					$.get("gump2.php", { req: 'usersinfo/'+curuser, name:"" },function(data){ 
-	console.log('ss-user',data.split('/'));
 	var gdata=data.split('/')
 	gdata.shift(); gdata.shift();
 						if(gdata[3].split('-')[1]!="true") { $(".activeDirectory").hide(); $("#activeDirectory").hide(); alltabsAcco=1;} 
 						if(gdata[7].split('-')[1]!="true") { $(".boxUsers").hide(); $("#boxUsers").hide(); alltabsAcco=alltabsAcco+1;} 
 						if(gdata[10].split('-')[1]!="true") { $(".boxProperties").hide(); $("#boxProperties").hide(); alltabsAcco=alltabsAcco+1;} 
-						if(alltabsAcco==3) { console.log('hi');$(".accounts").hide()}
+						if(alltabsAcco==3) { $(".accounts").hide()}
 						if(gdata[4].split('-')[1]!="true") { $(".servicestatus").hide(); $("#servicestatus").hide(); alltabsStat=1;} 	else { $(".servicestatus").show(); $("#servicestatus").show();}
 						if(gdata[8].split('-')[1]!="true") { $("#Logs").hide(); $("#Logspanel").hide();alltabsStat=alltabsStat+1;}
 						if(alltabsStat==2) { $(".status").hide();}
@@ -494,6 +495,7 @@ chkuser();
 	function refreshall() {
 		
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){
+		if(redflag.includes('need')>0){ $('#redhere').text(redflag); $(".bg-danger").show(); } else { $(".bg-danger").hide(); }
 		if(data!=oldcurrentinfo && data != ''){linerfact=-1;oldcurrentinfo=data;  $(".bg-success").fadeIn(800);if(data.includes('zone') > 0) { data=data.split('!').join(':').split('_').join(' ').split('^').join(',');}; $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
 	});
 		topresentlog();
@@ -523,9 +525,7 @@ chkuser();
 	function topresentlog(){
 if($("#Logspanel").hasClass('active')<=0) { return ; }
 	var date
-	console.log('before',linerfact)
 	topresent=1;
-	console.log('after',topresent)
 			if( $("#dater").val() == "") { 
 				date = new Date
 				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) +"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2)) 
@@ -550,7 +550,6 @@ if($("#Logspanel").hasClass('active')<=0) { return ; }
 					}
 					catch(err){ //console.log(obj[1]);
 						reprint=0;}
-			console.log('reprint:',reprint,'data:',data)
 			if (reprint==1){
 				if(obj[1].length < 11) {
 					date = new Date
@@ -761,7 +760,7 @@ themsgarr.splice(1,1)
 							if (k == 0) { y="first"; };
 							if (k == (obj[ii].length-1)) {y="last";};
 							if(obj[ii][k].msg == "info") { color="blue"}; if(obj[ii][k].msg == "warning") { color="#cabc55"}; if(obj[ii][k].msg == "error") { color="red"}						
-							if(objdata.includes('zone') > 0){ console.log(objdata);objdata1=objdata.split('%')[0];objdata=objdata.split('!').join(':').split('_').join(' ').split('^').join(',')}
+							if(objdata.includes('zone') > 0){objdata1=objdata.split('%')[0];objdata=objdata.split('!').join(':').split('_').join(' ').split('^').join(',')}
 							$("#Logdetails").append('<tr style="padding-left: 3.9rem; color:'+color+'" class="row datarow '+obj[ii][k].msg+'" ><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-3 text-left tdlog Volname '+y+' '+obj[ii][k].msg+' " data-toggle="popover" rel="popover" data-trigger="hover" data-container="body"  >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td style="margin-left: -1.2rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-1 text-left tdlog '+obj[ii][k].msg+' "  data-content='+objdata+' >'+obj[ii][k].user+'</td><td style="margin-left: 0rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-2 text-center tdlog'+obj[ii].msg+' " data-content='+objdata+' >'+obj[ii][k].fromhost+':'+hosts[obj[ii][k].fromhost]+'</td><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-6 text-center tdlog '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
 							
 							

@@ -51,15 +51,12 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="bg-danger">Your changes hasn't been saved
-        <button type="button" class="close" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
     <div class="bg-success"><div id="texthere"></div>
         <button type="button" id="close-success" style="margin-top: -2.4rem" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
+    </div>
+    <div class="bg-danger" ><div id="redhere"></div>
     </div>
  </div>
 <!--BODY CONTENT-->
@@ -620,6 +617,7 @@
 			var hostips={} 
 			var DNS=1;
 			var oldcurrentinfo='dlkfajsdl;';
+ var redflag="";
  var mydate;
  var tempvar;
  var allusers;
@@ -724,7 +722,9 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
     prop2=$.parseJSON(propdata)
     $("#hostlist a").remove();
     $.each(prop2,function(r,s){
+     prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
      prop2[r]['name']=prop2[r]['name'].replace('prop/','')
+     if( prop.configured.includes('no')> 0) { if(redflag.includes('need') >0 ) { redflag=redflag+', Node: '+prop.name+' needs to be configured'; } else { redflag='Node: '+prop.name+' needs to be configured';  }}
      prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
      $('#hostlist').append($('<a class="col-2 hostmember text-center" " href="javascript:hostclick(\''+prop2[r]["id"]+'\')">'+prop["name"]+'</a>'));	
      hostclick(selprop)
@@ -862,6 +862,7 @@ $.each(jvol,function(k,v){
 					
 				}
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){
+		if(redflag.includes('need')>0){ $('#redhere').text(redflag); $(".bg-danger").show(); } else { $(".bg-danger").hide(); }
 		if(data!=oldcurrentinfo && data != ''){linerfact=-1;oldcurrentinfo=data;  $(".bg-success").fadeIn(800);if(data.includes('zone') > 0) { data=data.split('!').join(':').split('_').join(' ').split('^').join(',');}; $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
 	});
 			}
