@@ -739,7 +739,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
   $("#cNTP").text(prop.ntp);
   $("#cGW").text(prop.gw);
   try {
-	$("#cTZ").text(prop.tz.split('%')[1].split('!').join(':').split('_').join(' ').split('@').join(','));
+	$("#cTZ").text(prop.tz.split('%')[1].split('!').join(':').split('_').join(' ').split('^').join(','));
   }
   catch {;}
   $("#cSubnet").text(prop.addrsubnet);
@@ -862,7 +862,7 @@ $.each(jvol,function(k,v){
 					
 				}
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){
-		if(data!=oldcurrentinfo && data != ''){linerfact=-1;oldcurrentinfo=data;  $(".bg-success").fadeIn(800); $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
+		if(data!=oldcurrentinfo && data != ''){linerfact=-1;oldcurrentinfo=data;  $(".bg-success").fadeIn(800);if(data.includes('zone') > 0) { data=data.split('!').join(':').split('_').join(' ').split('^').join(',');}; $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
 	});
 			}
 			function refresh4(request,field) {
@@ -1119,7 +1119,7 @@ hostips['hostname']=prop2[selprop]['name']
 						//if($("#DataIP").val().length > 3){ hostips['dataip']=$("#DataIP").val(); hostips['dataipsubnet']=$("#DataSub").val();}
 						if($("#NTP").val().length > 3){ hostips['ntp']=$("#NTP").val()}
 						if($("#GW").val().length > 3){ hostips['gw']=$("#GW").val()}
-						if($("#TZ").val() != "-100" ){hostips['tz']=$("#TZ option:selected").attr('city')+'%'+$("#TZ option:selected").text().split(' ').join('_').split(',').join('@').split(':').join('!'); }
+						if($("#TZ").val() != "-100" ){hostips['tz']=$("#TZ option:selected").attr('city')+'%'+$("#TZ option:selected").text().split(' ').join('_').split(',').join('^').split(':').join('!'); }
 						$.post("./pump.php", { req:"HostManualconfig.py", name:JSON.stringify(hostips), passwd:myname });
 						setTimeout(function(){ refresherprop=4},3000);					
 						
