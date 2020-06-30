@@ -159,6 +159,7 @@ fclose($myfile);
                                 <div></div>
                                 <span> Upgrade</span></a>
                         </li>
+
                     </ul>
                 </div>
             </div>
@@ -228,7 +229,7 @@ fclose($myfile);
                                     </div>
                                 </div>
                                 
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input id="UserPrivilegesch" value="UserPrivileges" type="checkbox" class="form-check-input checkboxy">
@@ -236,6 +237,15 @@ fclose($myfile);
                                         </label>
                                     </div>
                                 </div>
+				<div class="col-md-2">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input id="Cluster" value="Cluster" type="checkbox" class="form-check-input checkboxy">
+					    Cluster nodes
+                                        </label>
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="col-md-12">
                                 <div class="col-md-3">
@@ -493,6 +503,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 						if(alltabsRepli==3) { $(".replication").hide()}
 						if(gdata[12].split('-')[1]!="true") { $(".diskGroups").hide(); $("#diskGroups").hide(); alltabsPool=1;} 
 						if(gdata[6].split('-')[1]!="true") { $(".snapshots").hide(); $("#snapshots").hide(); alltabsPool=alltabsPool+1;}
+						if(gdata[17].split('-')[1]!="true") { $(".Cluster").hide(); $("#Cluster").hide(); alltabsPool=alltabsPool+1;}
 						if(alltabsPool==2) { $(".pools").hide()}
 						if(gdata[9].split('-')[1]!="true") { $(".userPrivlliges").hide(); $("#userPrivlliges").hide(); alltabsUP=1;} 
 						if(gdata[16].split('-')[1]!="true") { $(".firmware").hide(); $("#firmware").hide(); alltabsUP=alltabsUP+1;}

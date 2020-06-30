@@ -120,6 +120,11 @@
                                 <div></div>
                                 <span>System properties</span></a>
                         </li>
+			<li id="navCluster" class="nav-item Cluster">
+                            <a class="nav-link" data-toggle="tab" href="#Cluster" role="tab">
+                                <div></div>
+                                <span>Cluster nodes</span></a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -302,6 +307,66 @@
                         </table>
                     </div>
                 </div>
+		<div class="tab-pane Future" id="Cluster" role="tabpanel"> 
+<!------ Include the above in your HEAD tag ---------->
+
+<ul class="chec-radioc">
+	<li class="pzc">
+		<label class="radio-inline radio-inlinec">
+			<input type="checkbox" id="pro-chx-residential" name="gas_availability" class="pro-chxc" value="yes" checked>
+			<div class="clabc">Gas Availability</div>
+		</label>
+	</li>
+	<li class="pzc">
+		<label class="radio-inline radio-inlinec">
+			<input type="checkbox" id="pro-chx-residential" name="electricity_availability" class="pro-chxc" value="yes">
+			<div class="clabc">Electric Availability</div>
+		</label>
+	</li>
+	<li class="pzc">
+		<label class="radio-inline radio-inlinec">
+			<input type="checkbox" id="pro-chx-residential" name="phone_internet" class="pro-chxc" value="yes">
+			<div class="clabc">Phone and Internet</div>
+		</label>
+	</li>
+	<li class="pzc">
+		<label class="radio-inline radio-inlinec">
+			<input type="checkbox" id="pro-chx-residential" name="water_availability" class="pro-chxc" value="yes">
+			<div class="clabc">Water Availability</div>
+		</label>
+	</li>
+	<li class="pzc">
+		<label class="radio-inline radio-inlinec">
+			<input type="checkbox" id="pro-chx-residential" name="sanitation" class="pro-chxc" value="yes">
+			<div class="clabc">Sanitation</div>
+		</label>
+	</li>
+</ul>
+
+
+
+<ul class="chec-radioc">
+	<li class="pzc">
+		<label class="radio-inline radio-inlinec">
+			<input type="radio" checked="" id="pro-chx-residential" name="property_type" class="pro-chxc" value="constructed">
+			<div class="clabc">Constructed</div>
+		</label>
+	</li>
+	<li class="pzc">
+		<label class="radio-inline radio-inlinec">
+			<input type="radio" id="pro-chx-commercial" name="property_type" class="pro-chxc" value="unconstructed" checked>
+			<div class="clabc">Un Constructed</div>
+		</label>
+	</li>
+	<li class="pzc">
+		<label class="radio-inline radio-inlinec">
+			<input type="radio" id="pro-chx-open" name="property_type" class="pro-chxc" value="open_land">
+			<div class="clabc">Open Land</div>
+		</label>
+	</li>
+</ul>
+		</div>
+                 
                 <div class="tab-pane Future" id="boxProperties" role="tabpanel"> 
                  
                            <form class="dr-form">
@@ -676,6 +741,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 					document.getElementById($(this).attr('id')+'ref').submit();
 					}
 		});
+var tmpgdata;
 		function SS(){ 
 				
 				   var alltabsAcco=0;var alltabsStat=0;var alltabsProt=0;var alltabsRepli=0;var alltabsPool=0;var alltabsUP=0;
@@ -684,25 +750,28 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 					$.get("gump2.php", { req: 'usersinfo/'+curuser, name:"" },function(data){ 
 	var gdata=data.split('/')
 	gdata.shift(); gdata.shift();
+	tmpgdata=gdata;
+	console.log('hi');
 						if(gdata[3].split('-')[1]!="true") { $(".activeDirectory").hide(); $("#activeDirectory").hide(); alltabsAcco=1;} 
-						if(gdata[7].split('-')[1]!="true") { $(".boxUsers").hide(); $("#boxUsers").hide(); alltabsAcco=alltabsAcco+1;} 
-						if(gdata[10].split('-')[1]!="true") { $(".boxProperties").hide(); $("#boxProperties").hide(); alltabsAcco=alltabsAcco+1;} 
-						if(alltabsAcco==3) { $(".accounts").hide()}
+						if(gdata[7].split('-')[1]!="true") { $(".boxGroups").hide();$("#boxGroups").hide();$(".boxUsers").hide(); $("#boxUsers").hide(); alltabsAcco=alltabsAcco+1;} 
+						if(gdata[11].split('-')[1]!="true") { $(".boxProperties").hide(); $("#boxProperties").hide(); alltabsAcco=alltabsAcco+1;} 
+						if(alltabsAcco==4) { $(".accounts").hide()}
 						if(gdata[4].split('-')[1]!="true") { $(".servicestatus").hide(); $("#servicestatus").hide(); alltabsStat=1;} 	else { $(".servicestatus").show(); $("#servicestatus").show();}
 						if(gdata[8].split('-')[1]!="true") { $("#Logs").hide(); $("#Logspanel").hide();alltabsStat=alltabsStat+1;}
 						if(alltabsStat==2) { $(".status").hide();}
-						if(gdata[11].split('-')[1]!="true") { $(".cifs").hide(); $("#cifspane").hide(); alltabsProt=1;$(".HOMe").hide(); $("#HOMespane").hide();} 
+						if(gdata[12].split('-')[1]!="true") { $(".cifs").hide(); $("#cifspane").hide(); alltabsProt=1;$(".HOMe").hide(); $("#HOMespane").hide();} 
 						if(gdata[5].split('-')[1]!="true") { $(".nfs").hide(); $("#nfspane").hide(); alltabsProt=alltabsProt+1;}
 						if(alltabsProt==2) { $(".protocol").hide()}
-						if(gdata[15].split('-')[1]!="true") { $(".partner").hide(); $("#partner").hide(); alltabsRepli=1;} 
-						if(gdata[14].split('-')[1]!="true") { $(".sender").hide(); $("#sender").hide(); alltabsRepli=alltabsRepli+1;} 
-						if(gdata[13].split('-')[1]!="true") { $(".recive").hide(); $("#receiver").hide(); alltabsRepli=alltabsRepli+1;} 
+						if(gdata[16].split('-')[1]!="true") { $(".partner").hide(); $("#partner").hide(); alltabsRepli=1;} 
+						if(gdata[15].split('-')[1]!="true") { $(".sender").hide(); $("#sender").hide(); alltabsRepli=alltabsRepli+1;} 
+						if(gdata[14].split('-')[1]!="true") { $(".recive").hide(); $("#receiver").hide(); alltabsRepli=alltabsRepli+1;} 
 						if(alltabsRepli==3) { $(".replication").hide()}
-						if(gdata[12].split('-')[1]!="true") { $(".diskGroups").hide(); $("#diskGroups").hide(); alltabsPool=1;} 
+						if(gdata[13].split('-')[1]!="true") { $(".diskGroups").hide(); $("#diskGroups").hide(); alltabsPool=1;} 
 						if(gdata[6].split('-')[1]!="true") { $(".snapshots").hide(); $("#snapshots").hide(); alltabsPool=alltabsPool+1;}
 						if(alltabsPool==2) { $(".pools").hide()}
 						if(gdata[9].split('-')[1]!="true") { $(".userPrivlliges").hide(); $("#userPrivlliges").hide(); alltabsUP=1;} 
-						if(gdata[16].split('-')[1]!="true") { $(".firmware").hide(); $("#firmware").hide(); alltabsUP=alltabsUP+1;}
+						if(gdata[17].split('-')[1]!="true") { $(".firmware").hide(); $("#firmware").hide(); alltabsUP=alltabsUP+1;}
+						if(gdata[10].split('-')[1]!="true") { $(".Cluster").hide(); $("#Cluster").hide(); alltabsAcco=alltabsAcco+1;}
 						if(alltabsUP==2) { $(".config").hide()}
 					
 					});
@@ -1012,6 +1081,25 @@ $.each(jvol,function(k,v){
 					});
 				};
 			});
+			$("#navCluster").click(function (){ 
+					var userpriv="false";
+					var curuser=myname;
+					$.get("requestdata.php", { file: 'Data/userpriv.txt' },function(data){ 
+						var gdata = jQuery.parseJSON(data);
+						tmpgdata=gdata;
+						for (var prot in gdata){
+							if(gdata[prot].user==myname) {
+								userpriv=gdata[prot].Cluster
+							}
+						};
+					
+						if(userpriv=="true" | curuser=="admin" ) {
+							refresheruser=2
+						}
+					});
+				
+			});
+
 			$("#navUnLin").click(function (){ 
 					var userpriv="false";
 					var curuser=myname;
