@@ -309,7 +309,7 @@
                 </div>
 		<div class="tab-pane Future" id="Cluster" role="tabpanel"> 
 <!------ Include the above in your HEAD tag ---------->
-
+<!--------- for future use ------
 <ul class="chec-radioc">
 	<li class="pzc">
 		<label class="radio-inline radio-inlinec">
@@ -343,27 +343,33 @@
 	</li>
 </ul>
 
-
+-------------->
 
 <ul class="chec-radioc">
+	<div class='row'>
 	<li class="pzc">
 		<label class="radio-inline radio-inlinec">
-			<input type="radio" checked="" id="pro-chx-residential" name="property_type" class="pro-chxc" value="constructed">
-			<div class="clabc">Constructed</div>
+			<input type="radio" id="Rnode" name="property_type" class="pro-chxc" value="constructed" checked>
+			<div class="clabc">Running Nodes</div>
 		</label>
 	</li>
+	</div>
+	<div class='row'>
 	<li class="pzc">
 		<label class="radio-inline radio-inlinec">
-			<input type="radio" id="pro-chx-commercial" name="property_type" class="pro-chxc" value="unconstructed" checked>
-			<div class="clabc">Un Constructed</div>
+			<input type="radio" id="pro-chx-commercial" name="property_type" class="pro-chxc" value="unconstructed" >
+			<div class="clabc">Add Discovered Nodes</div>
 		</label>
 	</li>
+	</div>
+	<div class='row'>
 	<li class="pzc">
 		<label class="radio-inline radio-inlinec">
 			<input type="radio" id="pro-chx-open" name="property_type" class="pro-chxc" value="open_land">
-			<div class="clabc">Open Land</div>
+			<div class="clabc">Revoke Nodes</div>
 		</label>
 	</li>
+	</div>
 </ul>
 		</div>
                  
@@ -781,7 +787,7 @@ var tmpgdata;
 			$("#userpass").click(function (){   
 			$("#idduserpass").val("<?php  echo 'hi'?>");
 			$("#userpassform").submit();
-			})
+			});
 
 			$(".bg-success").hide();$(".bg-danger").hide();$(".bg-warning").hide();
  function updateprop() {
@@ -793,9 +799,9 @@ var tmpgdata;
     $.each(prop2,function(r,s){
      prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
      prop2[r]['name']=prop2[r]['name'].replace('prop/','')
-     if( prop.configured.includes('no')> 0) { if(redflag.includes('need') >0 ) { redflag=redflag+', Node: '+prop.name+' needs to be configured'; } else { redflag='Node: '+prop.name+' needs to be configured';  }}
+     if( prop.configured.includes('yes') < 1) {if(redflag.includes('need') >0 ) { redflag=redflag+', Node: '+prop.name+' needs to be configured'; } else { redflag='Node: '+prop.name+' needs to be configured';  }}
      prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
-     $('#hostlist').append($('<a class="col-2 hostmember text-center" " href="javascript:hostclick(\''+prop2[r]["id"]+'\')">'+prop["name"]+'</a>'));	
+     $('#hostlist').append($('<a class="col-2 hostmember text-center"  href="javascript:hostclick(\''+prop2[r]["id"]+'\')">'+prop["name"]+'</a>'));	
      hostclick(selprop)
     });
    }
