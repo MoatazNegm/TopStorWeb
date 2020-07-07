@@ -352,6 +352,12 @@
 			<input type="radio" id="Rnode" name="property_type" class="pro-chxc" value="constructed" checked>
 			<div class="clabc">Running Nodes</div>
 		</label>
+	<div class='row'>
+		<a id="s1">
+      			<img style="margin-bottom: 3.4rem;"  class="server" src="assets/images/Server1-On.png" />
+      			<p id="ps1" class="psize">Server1</p>
+		</a>
+	</div>
 	</li>
 	</div>
 	<div class='row'>
@@ -1263,6 +1269,7 @@ hostips['hostname']=prop2[selprop]['name']
 					$("#userpassform").submit();
 	
 				});
+   $.post("./pump.php", { req:"HostgetIPs.py", name:'hi', passwd:"" });
 				SS();
 		</script>
 

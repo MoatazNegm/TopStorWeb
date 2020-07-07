@@ -612,10 +612,23 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
 .psize { 
 	font-weight: bold;
 	color: darkblue;
-	margin-top: -2.4rem;
-	margin-left: -0.5rem;
+	margin-top: -3.1rem;
+	margin-left: -0.1rem;
+	margin-bottom: 1.5rem;
 	text-align:center;
 	width:4.4rem;
+}
+img.server:before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  transform:translate(50%,-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #4da6ff;
+  mix-blend-mode:darken;
 }
 .pOFFLINE, .pFAULT { text-align:center; width: 4.4rem; color: red; font-weight: bold;}
 .pONLINE {  text-align:center; width:4.4rem; color: blue; }
