@@ -257,10 +257,10 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
     background: url("../images/cifs.png") no-repeat;
 }
 
-.HOMe div {
+.Home div {
     background: url("../images/nfs-gray.png") no-repeat;
 }
-.HOMe > .nav-link.active > div {
+.Home > .nav-link.active > div {
     background: url("../images/nfs.png") no-repeat;
 }
 .nfs div {
