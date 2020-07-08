@@ -109,8 +109,8 @@
                                 <div></div>
                                 <span>NFS</span></a>
                         </li>
-                        <li class="nav-item HOMe">
-                            <a class="nav-link" data-toggle="tab" href="#HOMespane" role="tab">
+                        <li class="nav-item Home">
+                            <a class="nav-link" data-toggle="tab" href="#Homespane" role="tab">
                                 <div></div>
                                 <span>Home</span></a>
                         </li>
@@ -120,14 +120,14 @@
         </div>
         <div class="col-md-9 main-content">
             <div class="tab-content">
-                <div class="tab-pane " id="HOMespane" role="tabpanel">
+                <div class="tab-pane " id="Homespane" role="tabpanel">
                 	
                     <div class="col-6 dr-form">
                         <div class="form-group row">
                         	
                             <label class="col-3 col-form-label">Pool</label>
                             <div class="col-5">
-                                <select id="Pool2HOMe" class="Pool2 form-control">
+                                <select id="Pool2Home" class="Pool2 form-control">
                                 </select>
                             </div>
                          
@@ -135,22 +135,22 @@
                         <div class="form-group row">
                             <label class="col-3 col-form-label">Vol name</label>
                             <div class="col-5">
-                                <input id="volnameHOMe" class="form-control" type="text">
+                                <input id="volnameHome" class="form-control" type="text">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-3 col-form-label">Size..GB</label>
                             <div class="col-5">
-                                <input id="volsizeHOMe" min="1" class="form-control" type="number" value="1">
+                                <input id="volsizeHome" min="1" class="form-control" type="number" value="1">
                             </div>
                         </div>
 
                         <a href="javascript:createvol()"class="row">
-                            <div id="createvolHOMe" type="button" class="createvol btn btn-submit col-5">Create Volume</div>
+                            <div id="createvolHome" type="button" class="createvol btn btn-submit col-5">Create Volume</div>
                         </a>
                     </div>
 		   <div clas="col-5">
-                    <canvas id="myChartHOMe" style="max-width: 500px;">hellomezo</canvas>
+                    <canvas id="myChartHome" style="max-width: 500px;">hellomezo</canvas>
                    </div>
                     <div class="row table-responsive " style='margin-top:-0.7rem;'>
                         <table class="col-12 table table-hover dr-table-show">
@@ -166,7 +166,7 @@
                                 <th class="text-center">Delete</th>
                             </tr>
                             </thead>
-                            <tbody id="VolumetableHOMe">
+                            <tbody id="VolumetableHome">
                             <tr style="display: none;">
                             </tr>
                             </tbody>
@@ -495,7 +495,6 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
   if($("#Group"+prot).val()!=""){
    Groupprot=$("#Group"+prot).val().toString()
   }
-  console.log('groupprot',Groupprot);
   $.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+Groupprot, passwd:$("#Address"+prot).val().toString()+" "+$("#Subnet"+prot).val().toString()+" "+myname+" "+pools[thepool].host+" "+myname }, function (data){
  });
 };
@@ -517,7 +516,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 						if(gdata[4].split('-')[1]!="true") { $(".servicestatus").hide(); $("#servicestatus").hide(); alltabsStat=1;} 	else { $(".servicestatus").show(); $("#servicestatus").show();}
 						if(gdata[8].split('-')[1]!="true") { $("#Logs").hide(); $("#Logspanel").hide();alltabsStat=alltabsStat+1;}
 						if(alltabsStat==2) { $(".status").hide();}
-						if(gdata[11].split('-')[1]!="true") { $(".cifs").hide(); $("#cifspane").hide(); alltabsProt=1;$(".HOMe").hide(); $("#HOMespane").hide();} 
+						if(gdata[11].split('-')[1]!="true") { $(".cifs").hide(); $("#cifspane").hide(); alltabsProt=1;$(".Home").hide(); $("#Homespane").hide();} 
 						if(gdata[5].split('-')[1]!="true") { $(".nfs").hide(); $("#nfspane").hide(); alltabsProt=alltabsProt+1;}
 						if(alltabsProt==2) { $(".protocol").hide()}
 						if(gdata[15].split('-')[1]!="true") { $(".partner").hide(); $("#partner").hide(); alltabsRepli=1;} 
@@ -595,7 +594,7 @@ mydate=new Date(); mydate=mydate.getTime(); if(mydate-myidhash > modaltill) { ch
 					refreshgroups();
 					refreshselect();
 				if($("#cifspane").hasClass('active'))  { if (prot !="CIFS") { grpolddata='dkjffdk';olddiskpool="oldnfs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); $(".variable2").remove(); Vollisttime2="skldjfadks"; prot="CIFS";}};
-				if($("#HOMespane").hasClass('active'))  { if (prot !="HOMe") { olddiskpool="old"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); $(".variable2").remove(); Vollisttime2="skldjfadks"; prot="HOMe";}};
+				if($("#Homespane").hasClass('active'))  { if (prot !="Home") { olddiskpool="old"; pools=[]; $("#Pool2"+prot+" option.variable2").remove(); $(".variable2").remove(); Vollisttime2="skldjfadks"; prot="Home";}};
 				if($("#nfspane").hasClass('active') ) { if (prot !="NFS") { grpolddata='dkfaljf';olddiskpool="oldcifs"; pools=[]; $("#Pool2"+prot+" option.variable2").remove();prot="NFS"; Vollisttime2="ndfsfsn";}};
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){
 		if(redflag.includes('need')>0){ $('#redhere').text(redflag); $(".bg-danger").show(); } else { $(".bg-danger").hide(); }
@@ -623,7 +622,6 @@ function updatehosts() {
     prop2=$.parseJSON(propdata)
     $.each(prop2,function(r,s){
      prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
-     hosts[prop2[r]['name'].replace('prop/','')]=prop.name
      if( prop.configured.includes('yes') < 1) { if(redflag.includes('need') >0 ) { redflag=redflag+', Node: '+prop.name+' needs to be configured'; } else { redflag='Node: '+prop.name+' needs to be configured';  }}
   });
  }				
@@ -726,24 +724,19 @@ function refreshList2(req,listid,filelocfrom,show) {
       var oldvoldataname="";
       $.each(oldvoldata,function(r,s){
         oldvoldataname=oldvoldata[r]['name'].split('/')[oldvoldata[r]['name'].split('/').length-1]
-        console.log('tovolname',tovol.name, oldvoldataname);
        if(oldvoldataname==tovol.name){
         if(prot.includes('NFS')>0 && oldvoldata[r]["name"].split('/')[1]=="NFS") {
          subnet=oldvoldata[r]['prop'].split('/')[10]
          ip=oldvoldata[r]['prop'].split('/')[9]
-         console.log('res:NFS',ip,subnet)
         }
         if(prot.includes('CIFS')>0 && oldvoldata[r]["name"].split('/')[1]=="CIFS") {
          subnet=oldvoldata[r]['prop'].split('/')[8]
          ip=oldvoldata[r]['prop'].split('/')[7]
-         console.log('res:CIFS',oldvoldata[r]['prop'])
         }
        }
       });
       volumes.push(tovol) 
-      console.log('to1',tovol.name)
       txtname=tovol.name.split('_').slice(0,-1).join('_')
-      console.log('to2',tovol.name)
       if (txtname=="") { txtname=tovol.name; }
       if(prot.includes('CIFS') > 0 || prot.includes('NFS') > 0) {
        $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol" val="'+tovol.name+'">'+txtname+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class=" tcol"><input class="form-control ip_address" type="text" id="selvol'+tovol.name+'ip" value="'+ip+'"></td><td class=" tcol"><input class="form-control" type="number" id="selvol'+tovol.name+'sub" value="'+subnet+'"style="padding-left:3px; padding-right:3px;" min="8" max="32"value="24" step=8></td><td style="padding-top: 12px; padding-bottom: 5px;" ><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" title="No One" data-container="body" data-actions-box="true" data-live-search="true" data-width="auto" class="selectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked(this)" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
@@ -819,7 +812,6 @@ function refreshList2(req,listid,filelocfrom,show) {
 			
 			function rowisclicked(x) {
 				//alert("Row index is: " + x.rowIndex);
-				console.log('row is clicked',x)
 				$(x).toggleClass("success");
 				var counter=0;
 				$(function(){ var a=0; var b=0; var c=0;  $("tr.success").each(function(){ 
@@ -875,7 +867,6 @@ function refreshList2(req,listid,filelocfrom,show) {
 			
 		
 		        function selbtnclicked(x){
-				console.log('update needed',x.id);
   var thepool=$("#Pool2"+prot).val()
  $.post("./pump.php", { req:"VolumeChange"+prot+".py", name:pools[thepool].name+" "+x.id.replace('btnselvol','')+" "+prot+" "+$("#qta"+x.id.replace('btnselvol','')).val()+" nogroup"+$("#"+x.id.replace('btn','')).val().toString()+" "+$("#"+x.id.replace('btn','')+"ip").val().toString()+" "+$("#"+x.id.replace('btn','')+"sub").val().toString()+" "+myname, passwd: pools[thepool].host+" "+myname });
 
