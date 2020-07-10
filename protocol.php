@@ -120,146 +120,146 @@
                 <div class="col-md-9 main-content">
                     <div class="tab-content ">
                         
-                    <div class="tab-pane  row" id="Homespane" role="tabpanel">
-                       
-                        <div class="col-5 dr-form">
-                            <div class="form-group row">
+                        <div class="tab-pane  row" id="Homespane" role="tabpanel">
+                           
+                            <div class="col-5 dr-form">
+                                <div class="form-group row">
 
-                                <label class="col-3 col-form-label">Pool</label>
-                                <div class="col-5">
-                                    <select id="Pool2Home" class="Pool2 form-control">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-3 col-form-label">Vol name</label>
-                                <div class="col-5">
-                                    <input id="volnameHome" class="form-control" type="text">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-3 col-form-label">Size..GB</label>
-                                <div class="col-5">
-                                    <input id="volsizeHome" min="1" class="form-control" type="number" value="1">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <a href="javascript:createvol()"class="col-4">
-                                    <div id="createvolHome" type="button" class="createvol btn btn-submit">Create Volume
+                                    <label class="col-3 col-form-label">Pool</label>
+                                    <div class="col-5">
+                                        <select id="Pool2Home" class="Pool2 form-control">
+                                        </select>
                                     </div>
-                                </a>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-3 col-form-label">Vol name</label>
+                                    <div class="col-5">
+                                        <input id="volnameHome" class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-3 col-form-label">Size..GB</label>
+                                    <div class="col-5">
+                                        <input id="volsizeHome" min="1" class="form-control" type="number" value="1">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <a href="javascript:createvol()"class="col-4">
+                                        <div id="createvolHome" type="button" class="createvol btn btn-submit">Create Volume
+                                        </div>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div  class="col-6"  >
-                            <div class="row">
-                                <div class="col-12">
-                                <canvas id="myChartHome" style="max-width: 10000px;">hellomezo</canvas>
+                            <div  class="col-6"  >
+                                <div class="row">
+                                    <div class="col-12">
+                                    <canvas id="myChartHome" style="max-width: 50rem;">hellomezo</canvas>
 
+                                    </div>
                                 </div>
+                            </div>
+                        
+                            <div class="table-responsive  col-12" style='margin-top:-0.7rem;'>
+                                <table class="col-12 table table-hover dr-table-show">
+                                    <thead>
+                                    <tr>
+                                        <th class="" style="padding-left: 2rem; ">Volume Name</th>
+                                        <th class="text-center">Volume Size(MB)</th>
+                                        <th class="text-center">Actual size(MB)</th>
+                                        <th class="text-center">Snaps size(MB)</th>
+                                        <th class="text-center">Compres ratio(%)</th>
+                                        <th class="text-center">IPAddress</th>
+                                        <th class="text-center">Subnet</th>
+                                        <th class="text-center">Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="VolumetableHome">
+                                    <tr style="display: none;">
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                    
-                        <div class="table-responsive  col-12" style='margin-top:-0.7rem;'>
-                            <table class="col-12 table table-hover dr-table-show">
-                                <thead>
-                                <tr>
-                                    <th class="" style="padding-left: 2rem; ">Volume Name</th>
-                                    <th class="text-center">Volume Size(MB)</th>
-                                    <th class="text-center">Actual size(MB)</th>
-                                    <th class="text-center">Snaps size(MB)</th>
-                                    <th class="text-center">Compres ratio(%)</th>
-                                    <th class="text-center">IPAddress</th>
-                                    <th class="text-center">Subnet</th>
-                                    <th class="text-center">Delete</th>
-                                </tr>
-                                </thead>
-                                <tbody id="VolumetableHome">
-                                <tr style="display: none;">
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="tab-pane active" id="cifspane" role="tabpanel">
-                        <div class="col-5 dr-form">
-                            <div class="form-group row">
-                                <label class="col-3 col-form-label">Pool</label>
-                                <div class="col-5">
-                                    <select id="Pool2CIFS" class="Pool2 form-control">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-3 col-form-label">Vol name</label>
-                                <div class="col-5">
-                                    <input id="volnameCIFS" class="form-control" type="text">
-                                </div>
-                            </div>
-                			<div class="form-group row">
-                                    <label class="col-3 col-form-label">IP Address</label>
-                                    <div class="col-4">
-                                        <input id="AddressCIFS" class="form-control ip_address" type="text"  >
+                        <div class="tab-pane row active" id="cifspane" role="tabpanel">
+                            <div class="col-5 dr-form">
+                                <div class="form-group row">
+                                    <label class="col-3 col-form-label">Pool</label>
+                                    <div class="col-5">
+                                        <select id="Pool2CIFS" class="Pool2 form-control">
+                                        </select>
                                     </div>
-                                    <label class="col-1 col-form-label">Subnet</label>
-                                    <div class="col-2">
-                                        <input class="form-control" type="number" id="SubnetCIFS" min="8" max="32" value="24" step=8>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-3 col-form-label">Vol name</label>
+                                    <div class="col-5">
+                                        <input id="volnameCIFS" class="form-control" type="text">
                                     </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-3 col-form-label">Allowed Groups</label>
-                                <div class="col-5">
-                                    <select id="GroupCIFS" title="No One" data-actions-box='true' data-live-search='true' class="selectpicker form-control" multiple>
-                                        <option value="hi">grp1</option>
-                                        <option value="by" selected>grp2</option>
-                                        <option value="ddfka">grp3</option>
-                                    </select>
+                                </div>
+                    			<div class="form-group row">
+                                        <label class="col-3 col-form-label">IP Address</label>
+                                        <div class="col-4">
+                                            <input id="AddressCIFS" class="form-control ip_address" type="text"  >
+                                        </div>
+                                        <label class="col-1 col-form-label">Subnet</label>
+                                        <div class="col-2">
+                                            <input class="form-control" type="number" id="SubnetCIFS" min="8" max="32" value="24" step=8>
+                                        </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-3 col-form-label">Allowed Groups</label>
+                                    <div class="col-5">
+                                        <select id="GroupCIFS" title="No One" data-actions-box='true' data-live-search='true' class="selectpicker form-control" multiple>
+                                            <option value="hi">grp1</option>
+                                            <option value="by" selected>grp2</option>
+                                            <option value="ddfka">grp3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-3 col-form-label">Size..GB</label>
+                                    <div class="col-5">
+                                        <input id="volsizeCIFS" min="1" class="form-control" type="number" value="1">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <a href="javascript:createvol()"class="col-4">
+                                        <div id="createvolCIFS" type="button" class="createvol btn btn-submit">Create Volume
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-3 col-form-label">Size..GB</label>
-                                <div class="col-5">
-                                    <input id="volsizeCIFS" min="1" class="form-control" type="number" value="1">
-                                </div>
-                            </div>
-                            <div class="row form-group"
-                                <a href="javascript:createvol()"class="col-4">
-                                    <div id="createvolCIFS" type="button" class="createvol btn btn-submit col-5">Create Volume
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div  class="col-6"  >
-                            <div class="row">
-                                <div class="col-12">
-                                <canvas id="myChartCIFS" style="max-width: 10000px;">hellomezo</canvas>
+                            <div  class="col-6"  >
+                                <div class="row">
+                                    <div class="col-12">
+                                    <canvas id="myChartCIFS" style="max-width: 50rem;">hellomezo</canvas>
 
+                                    </div>
                                 </div>
                             </div>
+                            <div class="col-12 table-responsive "style='margin-top:-0.7rem;'>
+                                <table class="col-12 table table-hover dr-table-show">
+                                    <thead>
+                                    <tr>
+                                        <th class="" style="padding-left: 2rem; ">Volume Name</th>
+                                        <th class="text-center">Volume Size(MB)</th>
+                                        <th class="text-center">Actual size(MB)</th>
+                                        <th class="text-center">Snaps size(MB)</th>
+                                        <th class="text-center">Compres ratio(%)</th>
+                                        <th class="text-center">IPAddress</th>
+                                        <th class="text-center">Subnet</th>
+                                        <th class="text-center">Allowed Groups</th>
+                                        <th class="text-center">Need Update</th>
+                                        <th class="text-center">Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="VolumetableCIFS">
+                                    <tr style="display: none;">
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <div class="col-12 table-responsive "style='margin-top:-0.7rem;'>
-                            <table class="col-12 table table-hover dr-table-show">
-                                <thead>
-                                <tr>
-                                    <th class="" style="padding-left: 2rem; ">Volume Name</th>
-                                    <th class="text-center">Volume Size(MB)</th>
-                                    <th class="text-center">Actual size(MB)</th>
-                                    <th class="text-center">Snaps size(MB)</th>
-                                    <th class="text-center">Compres ratio(%)</th>
-                                    <th class="text-center">IPAddress</th>
-                                    <th class="text-center">Subnet</th>
-                                    <th class="text-center">Allowed Groups</th>
-                                    <th class="text-center">Need Update</th>
-                                    <th class="text-center">Delete</th>
-                                </tr>
-                                </thead>
-                                <tbody id="VolumetableCIFS">
-                                <tr style="display: none;">
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                        <div class="tab-pane" id="nfspane" role="tabpanel">
+                        <div class="tab-pane row" id="nfspane" role="tabpanel">
                             <div class="col-5 dr-form">
                                 <div class="form-group row">
                                     <label class="col-3 col-form-label">Pool</label>
@@ -306,17 +306,16 @@
                                         <div id="createvolNFS" type="button" class="createvol btn btn-submit ">Create Volume</div>
                                     </a>
                                 </div>
-                                
                             </div>
                             <div  class="col-6"  >
                                 <div class="row">
                                     <div class="col-12">
-                                    <canvas id="myChartNFS" style="max-width: 10000px;">hellomezo</canvas>
+                                    <canvas id="myChartNFS" style="max-width: 50rem;">hellomezo</canvas>
 
                                     </div>
                                 </div>
                             </div>
-                           <div class="col-12 table-responsive "style='margin-top:-0.7rem;'>
+                            <div class="col-12 table-responsive "style='margin-top:-0.7rem;'>
                                 <table class="col-12 table table-hover dr-table-show">
                                     <thead>
                                     <tr>
@@ -338,30 +337,6 @@
                                     </tbody>
                                 </table>
                             </div>
-        <div id='queue' class="queue" tabindex="-1" role="dialog" style="z-index: 10000; width: 100%;">
-         <div class="">
-          <div class="row">
-           <div class="col-10">
-            <h10 class="" style="padding:2px;">Queue</h10>
-           </div>
-           <div class="col-1">
-            <h10 class="" style="padding:2px;">Queue</h10>
-           </div>
-          </div>
-          <div class="row"style="margin-left: -2px;">
-        <div class='table-responsive '>
-          <table class='col-12 table table-hover table-striped'style="padding:2px;">
-           <tbody>
-            <tr><td style="padding:2px;">ofone</td><td style="padding:2px;">oftwo</td><td style="padding:2px;">ofthree</td>
-            <tr><td style="padding:2px;">ofone</td><td style="padding:2px;">oftwo</td><td style="padding:2px;">ofthree</td>
-            <tr><td style="padding:2px;">ofone</td><td style="padding:2px;">oftwo</td><td style="padding:2px;">ofthree</td>
-           </tbody>
-          </table>
-         </div>
-         </div>
-         </div>
-          
-                        </div>
                     </div>
                 </div>
             </div>
