@@ -122,35 +122,8 @@
                         
                         <div class="tab-pane  row" id="Homespane" role="tabpanel">
                            
-                            <div class="col-5 dr-form">
-                                <div class="form-group row">
-
-                                    <label class="col-3 col-form-label">Pool</label>
-                                    <div class="col-5">
-                                        <select id="Pool2Home" class="Pool2 form-control">
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-3 col-form-label">Vol name</label>
-                                    <div class="col-5">
-                                        <input id="volnameHome" class="form-control" type="text">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-3 col-form-label">Size..GB</label>
-                                    <div class="col-5">
-                                        <input id="volsizeHome" min="1" class="form-control" type="number" value="1">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <a href="javascript:createvol()"class="col-4">
-                                        <div id="createvolHome" type="button" class="createvol btn btn-submit">Create Volume
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <div  class="col-6"  >
+                            
+                            <div  class="offset-3 col-6"  >
                                 <div class="row">
                                     <div class="col-12">
                                     <canvas id="myChartHome" style="max-width: 50rem;">hellomezo</canvas>
