@@ -170,6 +170,7 @@
                                         <th class="text-center">Compres ratio(%)</th>
                                         <th class="text-center">IPAddress</th>
                                         <th class="text-center">Subnet</th>
+                                        <th class="text-center">Need Update</th>
                                         <th class="text-center">Delete</th>
                                     </tr>
                                     </thead>
@@ -705,7 +706,7 @@
                                     $.each(oldvoldata,function(s,r){
                                         oldvoldataname=oldvoldata[s]['name'].split('/')[oldvoldata[s]['name'].split('/').length-1]
                                         if (oldvoldataname==tovol.name) {
-                                            if (oldvoldata[s].name.includes('CIFS')> 0 ){
+                                            if (oldvoldata[s].name.includes('CIFS')> 0 || oldvoldata[s].name.includes('Home')> 0){
                                                 tovol.group=oldvoldata[s].prop.split('/')[4]
                                             } else { 
                                             if (oldvoldata[s].name.includes('NFS')> 0 ){
@@ -723,7 +724,7 @@
                                             subnet=oldvoldata[r]['prop'].split('/')[10]
                                             ip=oldvoldata[r]['prop'].split('/')[9]
                                         }
-                                        if(prot.includes('CIFS')>0 && oldvoldata[r]["name"].split('/')[1]=="CIFS"){
+                                        if((prot.includes('CIFS')>0 && oldvoldata[r]["name"].split('/')[1]=="CIFS") || (prot.includes('Home')>0 && oldvoldata[r]["name"].split('/')[1]=="Home")) {
                                             subnet=oldvoldata[r]['prop'].split('/')[8]
                                             ip=oldvoldata[r]['prop'].split('/')[7]
                                         }
@@ -732,8 +733,9 @@
                                 volumes.push(tovol) 
                                 txtname=tovol.name.split('_').slice(0,-1).join('_')
                                 if (txtname=="") { txtname=tovol.name; }
-                                if(prot.includes('CIFS') > 0 || prot.includes('NFS') > 0) {
-                                    $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol" val="'+tovol.name+'">'+txtname+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class=" tcol"><input class="form-control ip_address" type="text" id="selvol'+tovol.name+'ip" value="'+ip+'"></td><td class=" tcol"><input class="form-control" type="number" id="selvol'+tovol.name+'sub" value="'+subnet+'"style="padding-left:3px; padding-right:3px;" min="8" max="32"value="24" step=8></td><td style="padding-top: 12px; padding-bottom: 5px;" ><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" title="No One" data-container="body" data-actions-box="true" data-live-search="true" data-width="auto" class="selectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked(this)" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
+                                if(prot.includes('CIFS') > 0 || prot.includes('NFS') > 0  || prot.includes('Home') > 0) {
+                                    if(prot.includes('Home') > 0) { hidden='hidden';} else { hidden='';}
+                                    $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol" val="'+tovol.name+'">'+txtname+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class=" tcol"><input class="form-control ip_address" type="text" id="selvol'+tovol.name+'ip" value="'+ip+'"></td><td class=" tcol"><input class="form-control" type="number" id="selvol'+tovol.name+'sub" value="'+subnet+'"style="padding-left:3px; padding-right:3px;" min="8" max="32"value="24" step=8></td><td style="padding-top: 12px; padding-bottom: 5px;" '+hidden+'><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" title="No One" data-container="body" data-actions-box="true" data-live-search="true" data-width="auto" class="selectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked(this)" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
                                         $("#btnselvol"+tovol.name).hide();
                                         usergrp="Everyone"
                                         if(tovol.group.includes("Everyone") > 0) {
@@ -759,8 +761,13 @@
                                         selvalues['selvol'+tovol.name]=$('#selvol'+tovol.name).val()+$('#selvol'+tovol.name+'ip').val()+$('#selvol'+tovol.name+'sub').val()
                                         selvalues['selvol'+tovol.name+'change']=0
                                     } else {
-                                        $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
+                                        $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class=" tcol"><input class="form-control ip_address" type="text" id="selvol'+tovol.name+'ip" value="'+ip+'"></td><td class=" tcol"><input class="form-control" type="number" id="selvol'+tovol.name+'sub" value="'+subnet+'"style="padding-left:3px; padding-right:3px;" min="8" max="32"value="24" step=8></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
+                                        $("#selvol"+tovol.name).val(tovol.group);
+                                        //$("#selvol"+tovol.name).selectpicker("refresh");
+                                        selvalues['selvol'+tovol.name]=tovol.name+$('#selvol'+tovol.name+'ip').val()+$('#selvol'+tovol.name+'sub').val()
+                                        selvalues['selvol'+tovol.name+'change']=0
          
+
                                     }
                                     chartdata.push([tovol.name,normsize(tovol.quota)]);
                                     datachart1.push(tovol.name);
