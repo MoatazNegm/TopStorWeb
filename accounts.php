@@ -308,75 +308,39 @@
                     </div>
                 </div>
 		<div class="tab-pane Future" id="Cluster" role="tabpanel"> 
-<!------ Include the above in your HEAD tag ---------->
-<!--------- for future use ------
-<ul class="chec-radioc">
-	<li class="pzc">
-		<label class="radio-inline radio-inlinec">
-			<input type="checkbox" id="pro-chx-residential" name="gas_availability" class="pro-chxc" value="yes" checked>
-			<div class="clabc">Gas Availability</div>
-		</label>
-	</li>
-	<li class="pzc">
-		<label class="radio-inline radio-inlinec">
-			<input type="checkbox" id="pro-chx-residential" name="electricity_availability" class="pro-chxc" value="yes">
-			<div class="clabc">Electric Availability</div>
-		</label>
-	</li>
-	<li class="pzc">
-		<label class="radio-inline radio-inlinec">
-			<input type="checkbox" id="pro-chx-residential" name="phone_internet" class="pro-chxc" value="yes">
-			<div class="clabc">Phone and Internet</div>
-		</label>
-	</li>
-	<li class="pzc">
-		<label class="radio-inline radio-inlinec">
-			<input type="checkbox" id="pro-chx-residential" name="water_availability" class="pro-chxc" value="yes">
-			<div class="clabc">Water Availability</div>
-		</label>
-	</li>
-	<li class="pzc">
-		<label class="radio-inline radio-inlinec">
-			<input type="checkbox" id="pro-chx-residential" name="sanitation" class="pro-chxc" value="yes">
-			<div class="clabc">Sanitation</div>
-		</label>
-	</li>
-</ul>
 
--------------->
 
-<ul class="chec-radioc">
-	<div class='row'>
-	<li class="pzc">
-		<label class="radio-inline radio-inlinec">
-			<input type="radio" id="Rnode" name="property_type" class="pro-chxc" value="constructed" checked>
-			<div class="clabc">Running Nodes</div>
-		</label>
-	<div class='row'>
-		<a id="s1">
-      			<img style="margin-bottom: 3.4rem;"  class="server" src="assets/images/Server1-On.png" />
-      			<p id="ps1" class="psize">Server1</p>
-		</a>
-	</div>
-	</li>
-	</div>
-	<div class='row'>
-	<li class="pzc">
-		<label class="radio-inline radio-inlinec">
-			<input type="radio" id="pro-chx-commercial" name="property_type" class="pro-chxc" value="unconstructed" >
-			<div class="clabc">Add Discovered Nodes</div>
-		</label>
-	</li>
-	</div>
-	<div class='row'>
-	<li class="pzc">
-		<label class="radio-inline radio-inlinec">
-			<input type="radio" id="pro-chx-open" name="property_type" class="pro-chxc" value="open_land">
-			<div class="clabc">Revoke Nodes</div>
-		</label>
-	</li>
-	</div>
-</ul>
+            <div class="chec-radioc">
+                	<div class="pzc row">
+                		<label class="radio-inline radio-inlinec">
+                			<input type="radio" id="Rnode" name="property_type" class="pro-chxc" value="constructed" checked>
+                			<div class="clabc">Running Nodes</div>
+                		</label>
+                    </div>
+                	<div class='row' id='Rhosts' style="padding-left: 1rem;">
+                		<a id="s1" class='rhosts col-2'>
+                            <img style="margin-bottom: 3.4rem;"  class="server" src="assets/images/Server1-On.png" />
+                            <p id="ps1" class="psize">Server1</p>
+                        </a>
+                    </div>
+                    <div  class="row" >
+                        <button   type="button" id="RhostForget" href="javascript:rhostforget()" style="margin-bottom: 1rem; margin-top: 1rem;cursor: pointer;"class="btn btn-warning offset-3 col-6" >Forget selected Host
+                        </button>
+                    </div>
+
+                	<div class="pzc row ">
+                		<label class="radio-inline radio-inlinec">
+                			<input type="radio" id="pro-chx-commercial" name="property_type" class="pro-chxc" value="unconstructed" >
+                			<div class="clabc">Add Discovered Nodes</div>
+                		</label>
+                	</div>
+                	<div class="pzc row">
+                		<label class="radio-inline radio-inlinec">
+                			<input type="radio" id="pro-chx-open" name="property_type" class="pro-chxc" value="open_land">
+                			<div class="clabc">Revoke Nodes</div>
+                		</label>
+                	</div>
+            </div>
 		</div>
                  
                 <div class="tab-pane Future" id="boxProperties" role="tabpanel"> 
@@ -713,6 +677,9 @@
  var oldvoldata='n;nolnlnn';
  var volumes={'NoHome': 'NoHome'};
  var idletill=480000;
+ var oldhdata="dkd";
+ var oldrdata="kfld";
+ var selhosts="";
  var modaltill=idletill-120000
  var myid="<?php echo $_REQUEST['myid'] ?>";
  myidhash=myid;
@@ -900,7 +867,30 @@ function refreshselect(){
    $("#Usersgroup").selectpicker("refresh");
   });
  }
+    
+    function refreshhosts() {
+        var jdata;
+        $.get("gump2.php", { req: 'ready', name:'--prefix' }, function(rdata){
+            if(oldrdata==rdata) { return; }
+            oldrdata=rdata;
+            $.get("gump2.php", { req: 'alias', name:'--prefix' }, function(hdata){
+                if(oldhdata==hdata) { return; }
+                oldhdata=hdata
+                jdata = jQuery.parseJSON(hdata);
+                allhosts=jdata;
+                hostlistflag=1;
+                $("#Rhosts .rhosts").remove();
+                var hname="dkfj";
+                col=12/jdata.length;
+                $.each(jdata, function(k,v){
+                    hname=jdata[k]['name'].replace('alias/','')
+                    if(rdata.includes(hname) > 0) { img='Server1-On.png';} else { img='Server1-Off.png'};
+                    $("#Rhosts").append('<div id="mem'+hname+'" class="rhosts col-'+col+'"><a  href="javascript:memberclick(\''+hname+'\')"><img class="img-responsive" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+hname+'</p></a></div>')
+                });                
 
+            });
+        });
+    }
 			function refreshall() {
 				DNS=1;
       if (typeof(allgroups)=="object" && typeof(allusers)=="object" && userlistflag==1 ){
@@ -910,9 +900,10 @@ function refreshselect(){
       if (typeof(allgroups)=="object" && typeof(allusers)=="object" && userlistflag==0 ){
      refreshselect();
         }
+                updateprop();
 				refreshusers();
 				refreshgroups();
-					updateprop();
+				refreshhosts();
 		$.get("gump2.php", { req: "pools/", name:"--prefix"  },function(voldata){
 			if(voldata!=oldvoldata)
 			{
@@ -1269,9 +1260,26 @@ hostips['hostname']=prop2[selprop]['name']
 					$("#userpassform").submit();
 	
 				});
+        $("#RhostForget").on('click',function() {
+
+            $.post("./pump.php", { req:"Evacuate", name:selhosts, passwd: myname });
+        });
+
+        function memberclick(name) {
+            if($('#mem'+name).hasClass("SelectedFreered") > 0 ) {
+                $('#mem'+name).removeClass("SelectedFreered");
+                selhosts="";
+                $("#RhostForget").attr('disabled',true);
+            } else {
+                $(".rhosts").removeClass("SelectedFreered");
+                $('#mem'+name).addClass("SelectedFreered"); 
+                selhosts=name;
+                $("#RhostForget").attr('disabled',false);
+            }       
+        }
    $.post("./pump.php", { req:"HostgetIPs.py", name:'hi', passwd:"" });
 				SS();
-		</script>
+    	</script>
 
-</body>
+    </body>
 </html>

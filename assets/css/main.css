@@ -636,6 +636,7 @@ img.server:before {
 .pfree { text-align:center; width:4.4rem; color: green; }
 .disk-image { border: solid white; }
 .SelectedFree { border: solid green; }
+.SelectedFreered { border: solid red; }
 .InGroup {   background : blue; }
 .FreeDisk {  background: green; }
 .stripe { background: red; }
