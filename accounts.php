@@ -324,7 +324,7 @@
                         </a>
                     </div>
                     <div  class="row" >
-                        <button   type="button" id="RhostForget" href="javascript:rhostforget()" style="margin-bottom: 1rem; margin-top: 1rem;cursor: pointer;"class="btn btn-warning offset-3 col-6" >Forget selected Host
+                        <button disabled  type="button" id="RhostForget" href="javascript:rhostforget()" style="margin-bottom: 1rem; margin-top: 1rem;cursor: pointer;"class="btn btn-warning offset-3 col-6" >Forget selected Host
                         </button>
                     </div>
 
@@ -334,6 +334,16 @@
                 			<div class="clabc">Add Discovered Nodes</div>
                 		</label>
                 	</div>
+                    <div class='row' id='Dhosts' style="padding-left: 1rem;">
+                        <a class='dhosts col-2'>
+                            <img style="margin-bottom: 3.4rem;"  class="server" src="assets/images/Server1-On.png" />
+                            <p id="ps1" class="psize">Server1</p>
+                        </a>
+                    </div>
+                    <div  class="row" >
+                        <button   disabled type="button" id="DhostForget"  style="margin-bottom: 1rem; margin-top: 1rem;cursor: pointer;"class="btn btn-warning offset-3 col-6" >Add discovered Host
+                        </button>
+                    </div>
                 	<div class="pzc row">
                 		<label class="radio-inline radio-inlinec">
                 			<input type="radio" id="pro-chx-open" name="property_type" class="pro-chxc" value="open_land">
@@ -680,6 +690,7 @@
  var oldhdata="dkd";
  var oldrdata="kfld";
  var selhosts="";
+ var seldhosts="";
  var modaltill=idletill-120000
  var myid="<?php echo $_REQUEST['myid'] ?>";
  myidhash=myid;
@@ -888,6 +899,26 @@ function refreshselect(){
                     $("#Rhosts").append('<div id="mem'+hname+'" class="rhosts col-'+col+'"><a  href="javascript:memberclick(\''+hname+'\')"><img class="img-responsive" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+hname+'</p></a></div>')
                 });                
 
+            });
+        });
+    }
+
+    function refresdhosts() {
+        var jdata;
+        $.get("gump2.php", { req: 'possible', name:'--prefix' }, function(ddata){
+            if(oldddata==ddata) { return; }
+            oldrdata=ddata;
+            $.get("gump2.php", { req: 'alias', name:'--prefix' }, function(hdata){
+                jdata= jQuery.parseJSON(ddata);
+                $("#Dhosts .dhosts").remove();
+                var hname="dkfj";
+                $.each(jdata,function(r,s){
+                    hname=jdata[r]['name'].replace('possible','')
+                    if (hdata.includes(hname) < 1) {
+                        img='Server1-On.png';
+                        $("#Dhosts").append('<div id="dem'+hname+'" class="dhosts col-'+col+'"><a  href="javascript:demberclick(\''+hname+'\')"><img class="img-responsive" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+hname+'</p></a></div>');
+                    }
+                });                
             });
         });
     }
@@ -1262,7 +1293,12 @@ hostips['hostname']=prop2[selprop]['name']
 				});
         $("#RhostForget").on('click',function() {
 
-            $.post("./pump.php", { req:"Evacuate", name:selhosts, passwd: myname });
+            $.post("./pump.php", { req:"Evacuate.py", name:selhosts, passwd: myname });
+        });
+
+        $("#DhostAdd").on('click',function() {
+
+            $.post("./pump.php", { req:"AddHost.py", name:seldhosts, passwd: myname });
         });
 
         function memberclick(name) {
@@ -1275,6 +1311,19 @@ hostips['hostname']=prop2[selprop]['name']
                 $('#mem'+name).addClass("SelectedFreered"); 
                 selhosts=name;
                 $("#RhostForget").attr('disabled',false);
+            }       
+        }
+
+        function demberclick(name) {
+            if($('#dem'+name).hasClass("SelectedFree") > 0 ) {
+                $('#dem'+name).removeClass("SelectedFree");
+                seldhosts="";
+                $("#DhostAdd").attr('disabled',true);
+            } else {
+                $(".dhosts").removeClass("SelectedFree");
+                $('#dem'+name).addClass("SelectedFree"); 
+                seldhosts=name;
+                $("#DhostAdd").attr('disabled',false);
             }       
         }
    $.post("./pump.php", { req:"HostgetIPs.py", name:'hi', passwd:"" });
