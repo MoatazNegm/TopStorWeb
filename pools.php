@@ -844,7 +844,7 @@ var ppoolstate="na";
      prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
      hostsname[prop2[r]['name'].replace('prop/','')]=prop.name
      $("#"+prop2[r]["name"].replace('prop/','')).text(prop2[r]["name"].replace('prop/','')+":"+prop.name)
-     if( prop.configured.includes('yes') < 1) { if(redflag.includes('need') >0 ) { redflag=redflag+', Node: '+prop.name+' needs to be configured'; } else { redflag='Node: '+prop.name+' needs to be configured';  }}
+     if( prop.configured.includes('yes') < 1) { if(redflag.includes('need') >0 ) { redflag=redflag+', Node: '+prop.name+' needs to be configured'; } else { redflag='Node: '+prop.name+' needs to be configured';  }} else { redflag=""; };
     });
    }
   });

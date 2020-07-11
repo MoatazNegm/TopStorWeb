@@ -772,7 +772,7 @@ var tmpgdata;
     $.each(prop2,function(r,s){
      prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
      prop2[r]['name']=prop2[r]['name'].replace('prop/','')
-     if( prop.configured.includes('yes') < 1) {if(redflag.includes('need') >0 ) { redflag=redflag+', Node: '+prop.name+' needs to be configured'; } else { redflag='Node: '+prop.name+' needs to be configured';  }}
+     if( prop.configured.includes('yes') < 1) {if(redflag.includes('need') >0 ) { redflag=redflag+', Node: '+prop.name+' needs to be configured'; } else { redflag='Node: '+prop.name+' needs to be configured';  }} else { redflag=""; };
      prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
      $('#hostlist').append($('<a class="col-2 hostmember text-center"  href="javascript:hostclick(\''+prop2[r]["id"]+'\')">'+prop["name"]+'</a>'));	
      hostclick(selprop)
