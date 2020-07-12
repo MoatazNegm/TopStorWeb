@@ -311,45 +311,42 @@
 
 
             <div class="chec-radioc">
-                	<div class="pzc row">
-                		<label class="radio-inline radio-inlinec">
-                			<input type="radio" id="Rnode" name="property_type" class="pro-chxc" value="constructed" checked>
-                			<div class="clabc">Running Nodes</div>
-                		</label>
-                    </div>
-                	<div class='row' id='Rhosts' style="padding-left: 1rem;">
-                		<a id="s1" class='rhosts col-2'>
-                            <img style="margin-bottom: 3.4rem;"  class="server" src="assets/images/Server1-On.png" />
-                            <p id="ps1" class="psize">Server1</p>
-                        </a>
-                    </div>
-                    <div  class="row" >
-                        <button disabled  type="button" id="RhostForget" href="javascript:rhostforget()" style="margin-bottom: 1rem; margin-top: 1rem;cursor: pointer;"class="btn btn-warning offset-3 col-6" >Forget selected Host
-                        </button>
-                    </div>
+            	<div class="pzc row" style='margin-bottom: 1rem; margin-top: 1rem;'>
+            		<div class='col-12'>           			
+                        <h3><strong>Running Nodes</strong></h3>
+            		</div>	
+                </div>
+            	<div class='row' id='Rhosts' style="padding-left: 1rem;">
+            		<a id="s1" class='rhosts col-2'>
+                        <img style="margin-bottom: 3.4rem;"  class="server" src="assets/images/Server1-On.png" />
+                        <p id="ps1" class="psize">Server1</p>
+                    </a>
+                </div>
+                <div  class="row" >
+                    <button disabled  type="button" id="RhostForget" href="javascript:rhostforget()" style="margin-bottom: 1rem; margin-top: 1rem;cursor: pointer;"class="btn btn-warning offset-3 col-6" >Forget selected Host
+                    </button>
 
-                	<div class="pzc row ">
-                		<label class="radio-inline radio-inlinec">
-                			<input type="radio" id="pro-chx-commercial" name="property_type" class="pro-chxc" value="unconstructed" >
-                			<div class="clabc">Add Discovered Nodes</div>
-                		</label>
-                	</div>
-                    <div class='row' id='Dhosts' style="padding-left: 1rem;">
-                        <a class='dhosts col-2'>
-                            <img style="margin-bottom: 3.4rem;"  class="server" src="assets/images/Server1-On.png" />
-                            <p id="ps1" class="psize">Server1</p>
-                        </a>
+                </div>
+                <div class='row'>
+                    <div class='col-12'>
+                        <hr></hr>
                     </div>
-                    <div  class="row" >
-                        <button   disabled type="button" id="DhostForget"  style="margin-bottom: 1rem; margin-top: 1rem;cursor: pointer;"class="btn btn-warning offset-3 col-6" >Add discovered Host
-                        </button>
-                    </div>
-                	<div class="pzc row">
-                		<label class="radio-inline radio-inlinec">
-                			<input type="radio" id="pro-chx-open" name="property_type" class="pro-chxc" value="open_land">
-                			<div class="clabc">Revoke Nodes</div>
-                		</label>
-                	</div>
+                </div>
+                <div class="pzc row" style='margin-bottom: 2rem; margin-top: 1rem;'>
+                    <div class='col-12'>                    
+                        <h3><strong>Discovered Nodes</strong></h3>
+                    </div> 
+                </div> 
+                <div class='row' id='Dhosts' style="padding-left: 1rem;">
+                    <a class='dhosts col-2'>
+                        <img style="margin-bottom: 3.4rem;"  class="server" src="assets/images/Server1-On.png" />
+                        <p id="ps1" class="psize">Server1</p>
+                    </a>
+                </div>
+                <div  class="row" >
+                    <button   disabled type="button" id="DhostAdd"  style="margin-bottom: 1rem; margin-top: 1rem;cursor: pointer;"class="btn btn-warning offset-3 col-6" >Add discovered Host
+                    </button>
+                </div>
             </div>
 		</div>
                  
@@ -688,6 +685,7 @@
  var volumes={'NoHome': 'NoHome'};
  var idletill=480000;
  var oldhdata="dkd";
+ var oldddata="dkjlf";
  var oldrdata="kfld";
  var selhosts="";
  var seldhosts="";
@@ -884,41 +882,44 @@ function refreshselect(){
         $.get("gump2.php", { req: 'ready', name:'--prefix' }, function(rdata){
             if(oldrdata==rdata) { return; }
             oldrdata=rdata;
-            $.get("gump2.php", { req: 'alias', name:'--prefix' }, function(hdata){
-                if(oldhdata==hdata) { return; }
-                oldhdata=hdata
-                jdata = jQuery.parseJSON(hdata);
-                allhosts=jdata;
-                hostlistflag=1;
-                $("#Rhosts .rhosts").remove();
-                var hname="dkfj";
-                col=12/jdata.length;
-                $.each(jdata, function(k,v){
-                    hname=jdata[k]['name'].replace('alias/','')
-                    if(rdata.includes(hname) > 0) { img='Server1-On.png';} else { img='Server1-Off.png'};
-                    $("#Rhosts").append('<div id="mem'+hname+'" class="rhosts col-'+col+'"><a  href="javascript:memberclick(\''+hname+'\')"><img class="img-responsive" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+hname+'</p></a></div>')
-                });                
+            $.get("gump2.php", { req: 'possible', name:'--prefix' }, function(pdata){
+                $.get("gump2.php", { req: 'alias', name:'--prefix' }, function(hdata){
+                    if(oldhdata==hdata) { return; }
+                    oldhdata=hdata
+                    jpdata = jQuery.parseJSON(pdata)
+                    jdata = jQuery.parseJSON(hdata);
+                    allhosts=jdata;
+                    hostlistflag=1;
+                    $("#Rhosts .rhosts").remove();
+                    var hname="dkfj";
+                    col=12/(jdata.length-jpdata.length);
+                    $.each(jdata, function(k,v){
+                        hname=jdata[k]['name'].replace('alias/','')
+                        if(pdata.includes(hname) < 1){
+                            if(rdata.includes(hname) > 0) { img='Server1-On.png';} else { img='Server1-Off.png'};
+                            $("#Rhosts").append('<div id="mem'+hname+'" class="rhosts col-'+col+'"><a  href="javascript:memberclick(\''+hname+'\')"><img class="img-responsive" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+hname+'</p></a></div>')
+                        }
+                    });                
 
+                });
             });
         });
     }
 
-    function refresdhosts() {
+    function refreshdhosts() {
         var jdata;
         $.get("gump2.php", { req: 'possible', name:'--prefix' }, function(ddata){
             if(oldddata==ddata) { return; }
-            oldrdata=ddata;
-            $.get("gump2.php", { req: 'alias', name:'--prefix' }, function(hdata){
-                jdata= jQuery.parseJSON(ddata);
-                $("#Dhosts .dhosts").remove();
-                var hname="dkfj";
-                $.each(jdata,function(r,s){
-                    hname=jdata[r]['name'].replace('possible','')
-                    if (hdata.includes(hname) < 1) {
-                        img='Server1-On.png';
-                        $("#Dhosts").append('<div id="dem'+hname+'" class="dhosts col-'+col+'"><a  href="javascript:demberclick(\''+hname+'\')"><img class="img-responsive" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+hname+'</p></a></div>');
-                    }
-                });                
+            oldddata=ddata;
+            jdata= jQuery.parseJSON(ddata);
+            $("#Dhosts .dhosts").remove();
+            var hname="dkfj";
+            col=12/(2*jdata.length);
+            $.each(jdata,function(r,s){
+                hname=jdata[r]['name'].replace('possible','')
+                img='Server1-On.png';
+                $("#Dhosts").append('<div id="dem'+hname+'" class="dhosts col-'+col+'"><a  href="javascript:demberclick(\''+hname+'\')"><img class="img-responsive" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+hname+'</p></a></div>');
+                
             });
         });
     }
@@ -934,6 +935,7 @@ function refreshselect(){
                 updateprop();
 				refreshusers();
 				refreshgroups();
+                refreshdhosts();
 				refreshhosts();
 		$.get("gump2.php", { req: "pools/", name:"--prefix"  },function(voldata){
 			if(voldata!=oldvoldata)
