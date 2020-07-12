@@ -895,9 +895,10 @@ function refreshselect(){
                     col=12/(jdata.length-jpdata.length);
                     $.each(jdata, function(k,v){
                         hname=jdata[k]['name'].replace('alias/','')
+                        hip=jdata[k]['prop']
                         if(pdata.includes(hname) < 1){
                             if(rdata.includes(hname) > 0) { img='Server1-On.png';} else { img='Server1-Off.png'};
-                            $("#Rhosts").append('<div id="mem'+hname+'" class="rhosts col-'+col+'"><a  href="javascript:memberclick(\''+hname+'\')"><img class="img-responsive" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+hname+'</p></a></div>')
+                            $("#Rhosts").append('<div id="mem'+hname+'" class="rhosts col-'+col+'"><a  href="javascript:memberclick(\''+hname+'\')"><img class="img-responsive" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+hname+':'+hip+'</p></a></div>')
                         }
                     });                
 
@@ -916,9 +917,10 @@ function refreshselect(){
             var hname="dkfj";
             col=12/(2*jdata.length);
             $.each(jdata,function(r,s){
-                hname=jdata[r]['name'].replace('possible','')
+                hname=jdata[r]['name'].replace('possible','');
+                hip=jdata[r]['prop'];
                 img='Server1-On.png';
-                $("#Dhosts").append('<div id="dem'+hname+'" class="dhosts col-'+col+'"><a  href="javascript:demberclick(\''+hname+'\')"><img class="img-responsive" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+hname+'</p></a></div>');
+                $("#Dhosts").append('<div id="dem'+hname+'" class="dhosts col-'+col+'"><a  href="javascript:demberclick(\''+hname+'\')"><img class="img-responsive" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+hname+':'+hip+'</p></a></div>');
                 
             });
         });
