@@ -352,22 +352,33 @@
                  
                 <div class="tab-pane Future" id="boxProperties" role="tabpanel"> 
                  
-                           <form class="dr-form">
+                    <form class="dr-form">
                         <div id="hostlist" class="form-group row">
- 			</div>
+                        </div>
+                        <div class="form-group row">
+                            
+                            <label class="form-check-label col-form-label-lg col-3" >
+                                &nbsp <strong>Can join a running cluster</strong><br>&nbsp(will ignore all configuration)
+                            </label>
+                            <div class="form-check  col-5" >
+                                <input class="form-check-input form-control-lg" type="checkbox" value="no" id="isconfigured" style="transform: scale(2.5);">
+                                
+                            </div>
+                        </div>
                         <div class="form-group row">
 			
                             <label class="col-2 col-form-label">Unit Name</label>
                             <div class="col-5">
                                 <input id="BoxName" class="form-control" type="text">
                             </div>
-                            <div class="alert alert-dismissible alert-info">
-                       <strong id="cBoxName"></strong>
-                      </div>
+                            <div class="col-2">
+                                <div class="alert alert-dismissible alert-info col-1" style="margin-bottom:0;">
+                                    <strong id="cBoxName">.....</strong>
+                                </div>
+                            </div>
                             
                         </div>
                        
-                        
                         
                         <div class="form-group row">
                             <label class="col-2 col-form-label"> Unit Address</label>
@@ -378,7 +389,7 @@
                             <div class="col-2">
                                 <input class="form-control" type="number" id="Subnet" min="0" max="32" value="24" step=8>
                             </div>
-                            <div class="alert alert-dismissible alert-info">
+                            <div class="alert alert-dismissible alert-info" style="margin-bottom:0;">
                   <strong id="cIPAddress">Not set</strong><strong>/</strong><strong id="cSubnet"></strong>
                       </div>
                         </div>
@@ -391,7 +402,7 @@
                             <div class="col-2">
                                 <input class="form-control" type="number" id="MgmtSub" min="8" max="32" value="24" step=8>
                             </div>
-                            <div class="alert alert-dismissible alert-info">
+                            <div class="alert alert-dismissible alert-info" style="margin-bottom:0;">
                   <strong id="cMgmt">Not set</strong>
                       </div>
                         </div>
@@ -483,7 +494,7 @@
                             </div>
   			    <div class="col-1">
 			    </div>
-                            <div class="alert alert-dismissible alert-info">
+                            <div class="alert alert-dismissible alert-info" style="margin-bottom:0;">
                   <strong id="cTZ">Not set</strong>
                       </div>
                         </div>
@@ -494,7 +505,7 @@
                             </div>
   			    <div class="col-1">
 			    </div>
-                            <div class="alert alert-dismissible alert-info">
+                            <div class="alert alert-dismissible alert-info" style="margin-bottom:0;">
                   <strong id="cNTP">Not set</strong>
                       </div>
                         </div>
@@ -505,7 +516,7 @@
                             </div>
   			    <div class="col-3">
 			    </div>
-                            <div class="alert alert-dismissible alert-info">
+                            <div class="alert alert-dismissible alert-info" style="margin-bottom:0;">
                        <strong id="cGW">Not set</strong>
                       </div>
                         </div>
@@ -783,7 +794,8 @@ var tmpgdata;
      prop2[r]['name']=prop2[r]['name'].replace('prop/','')
      if( prop.configured.includes('yes') < 1) {if(redflag.includes('need') >0 ) { redflag=redflag+', Node: '+prop.name+' needs to be configured'; } else { redflag='Node: '+prop.name+' needs to be configured';  }} else { redflag=""; };
      prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
-     $('#hostlist').append($('<a class="col-2 hostmember text-center"  href="javascript:hostclick(\''+prop2[r]["id"]+'\')">'+prop["name"]+'</a>'));	
+     img='Server1-On.png'
+     $('#hostlist').append($('<a class="col-2 hostmember text-center"  href="javascript:hostclick(\''+prop2[r]["id"]+'\')">'+prop["name"]+'<img class="img-responsive" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+prop["name"]+'</p></a>'));	
      hostclick(selprop)
     });
    }

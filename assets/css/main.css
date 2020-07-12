@@ -338,23 +338,12 @@ main > .col-md-12, main .col-md-1, main .col-md-2 {
 }
 
 /*FORMS*/
-.tab-pane {
-    /*padding-top: 30px;*/
-}
-
-.dr-form {
-    margin-top: 30px;
-}
-
 .dr-form, .dr-form .form-control {
     font-weight: 300;
     font-size: 14px;
     color: #445165;
 }
 
-.dr-form .form-group {
-    margin-bottom: 25px;
-}
 
 .btn-submit {
     background-color: #185487;
@@ -729,10 +718,10 @@ span { text-align: center;}
 .dr-table-showc > tbody > tr:nth-of-type(odd) {
     background-color: #c5d7ed;
 }
-.dr-formc .form-groupc {
-    margin-bottom: 10px;
+.form-group {
+ margin-top: 0.5rem;
+ margin-bottom: 0.5rem;
 }
-
 .cardc{margin: 5px;    padding: 5px;    background-color: #eeeeee;
     border: 1px solid #e5e5e5;
     border-radius: .25rem;
