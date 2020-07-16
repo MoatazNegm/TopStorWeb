@@ -624,6 +624,9 @@ img.server:before {
 .pSpare {   text-align:center; width:4.4rem; color: blue; }
 .pfree { text-align:center; width:4.4rem; color: green; }
 .disk-image { border: solid white; }
+.server {
+ border: solid white; 
+}
 .SelectedFree { border: solid green; }
 .SelectedFreered { border: solid red; }
 .InGroup {   background : blue; }

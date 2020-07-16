@@ -371,11 +371,11 @@
                             <div class="col-5">
                                 <input id="BoxName" class="form-control" type="text">
                             </div>
-                            <div class="col-2">
-                                <div class="alert alert-dismissible alert-info col-1" style="margin-bottom:0;">
-                                    <strong id="cBoxName">.....</strong>
-                                </div>
+                           
+                            <div class="alert alert-dismissible alert-info col-2" style="max-width:13.5%;margin-bottom:0;">
+                                <strong id="cBoxName">...</strong>
                             </div>
+                          
                             
                         </div>
                        
@@ -389,8 +389,8 @@
                             <div class="col-2">
                                 <input class="form-control" type="number" id="Subnet" min="0" max="32" value="24" step=8>
                             </div>
-                            <div class="alert alert-dismissible alert-info" style="margin-bottom:0;">
-                  <strong id="cIPAddress">Not set</strong><strong>/</strong><strong id="cSubnet"></strong>
+                            <div class="alert alert-dismissible alert-info col-2" style="max-width:13.5%;margin-bottom:0;">
+                  <strong id="cIPAddress">...</strong><strong>/</strong><strong id="cSubnet"></strong>
                       </div>
                         </div>
                         <div class="form-group row">
@@ -402,8 +402,8 @@
                             <div class="col-2">
                                 <input class="form-control" type="number" id="MgmtSub" min="8" max="32" value="24" step=8>
                             </div>
-                            <div class="alert alert-dismissible alert-info" style="margin-bottom:0;">
-                  <strong id="cMgmt">Not set</strong>
+                            <div class="alert alert-dismissible alert-info col-2" style="max-width:13.5%;margin-bottom:0;">
+                  <strong id="cMgmt">...</strong>
                       </div>
                         </div>
                           <div class="form-group row">
@@ -494,31 +494,31 @@
                             </div>
   			    <div class="col-1">
 			    </div>
-                            <div class="alert alert-dismissible alert-info" style="margin-bottom:0;">
-                  <strong id="cTZ">Not set</strong>
+                            <div class="alert alert-dismissible alert-info col-3" style="max-width:13.5%;margin-bottom:0;">
+                  <strong id="cTZ">...</strong>
                       </div>
                         </div>
-<div class="form-group row">
+                        <div class="form-group row">
                             <label class="col-2 col-form-label">Time-Server(NTP)</label>
                             <div class="col-4">
                                 <input id="NTP" class="form-control " type="text"  >
                             </div>
-  			    <div class="col-1">
-			    </div>
-                            <div class="alert alert-dismissible alert-info" style="margin-bottom:0;">
-                  <strong id="cNTP">Not set</strong>
-                      </div>
+              			    <div class="col-1">
+            			    </div>
+                            <div class="alert alert-dismissible alert-info col-2"  style="max-width: 13.5%;margin-bottom:0;">
+                                <strong id="cNTP">...</strong>
+                            </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-2 col-form-label">Gateway</label>
                             <div class="col-2">
                                 <input id="GW" class="form-control ip_address" type="text" >
                             </div>
-  			    <div class="col-3">
-			    </div>
-                            <div class="alert alert-dismissible alert-info" style="margin-bottom:0;">
-                       <strong id="cGW">Not set</strong>
-                      </div>
+          			    <div class="col-3">
+        			    </div>
+                        <div class="alert alert-dismissible alert-info col-2" style="max-width:13.5%; margin-bottom:0;">
+                            <strong id="cGW">...</strong>
+                        </div>
                         </div>
                         <div class="row">
                             <button  id="DNSsubmit" type="button" style="cursor: pointer;"class="btn btn-submit col-3" >Submit
@@ -795,7 +795,7 @@ var tmpgdata;
      if( prop.configured.includes('yes') < 1) {if(redflag.includes('need') >0 ) { redflag=redflag+', Node: '+prop.name+' needs to be configured'; } else { redflag='Node: '+prop.name+' needs to be configured';  }} else { redflag=""; };
      prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
      img='Server1-On.png'
-     $('#hostlist').append($('<a class="col-2 hostmember text-center"  href="javascript:hostclick(\''+prop2[r]["id"]+'\')">'+prop["name"]+'<img class="img-responsive" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+prop["name"]+'</p></a>'));	
+     $('#hostlist').append($('<a class="col-2 hostmember text-center"  href="javascript:hostclick(\''+prop2[r]["id"]+'\')">'+prop["name"]+'<img class="img-responsive server '+prop2[r]["id"]+'" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+prop["name"]+'</p></a>'));	
      hostclick(selprop)
     });
    }
@@ -1103,6 +1103,8 @@ $.each(jvol,function(k,v){
 		
 			var config = 1;
 			function hostclick(r){
+                 $(".server").removeClass("SelectedFree");
+                 $("."+r).addClass("SelectedFree");
 				 prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
 			         selprop=r
 						$("#cBoxName").text(prop["name"]); $("#cIPAddress").text(prop.addr); $("#cGateway").text(prop.rout);
