@@ -357,11 +357,11 @@
                         </div>
                         <div class="form-group row">
                             
-                            <label class="form-check-label col-form-label-lg col-3" >
-                                &nbsp <strong>Can join a running cluster</strong><br>&nbsp(will ignore all configuration)
+                            <label class="form-check-label col-form-label-lg col-4" >
+                                &nbsp <strong>Can join a running cluster</strong><div style="font-size: 0.8rem; margin-top: -1.5rem;color: red"><br >(will ignore cluster configuration and will reboot)</div>
                             </label>
                             <div class="form-check  col-5" >
-                                <input class="form-check-input form-control-lg" type="checkbox" value="no" id="isconfigured" style="transform: scale(2.5);">
+                                <input class="form-check-input form-control-lg " type="checkbox" value="no" id="isconfigured" style="transform: scale(2.5);">
                                 
                             </div>
                         </div>
@@ -381,7 +381,7 @@
                        
                         
                         <div class="form-group row">
-                            <label class="col-2 col-form-label"> Unit Address</label>
+                            <label class="col-2 col-form-label"> Unit Address<div style="font-size: 0.8rem; margin-top: -1.5rem;color: red"><br >(will reboot)</div></label>
                             <div class="col-2">
                                 <input id="IPAddress" class="form-control ip_address" type="text"  >
                             </div>
@@ -792,7 +792,17 @@ var tmpgdata;
     $.each(prop2,function(r,s){
      prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
      prop2[r]['name']=prop2[r]['name'].replace('prop/','')
-     if( prop.configured.includes('yes') < 1) {if(redflag.includes('need') >0 ) { redflag=redflag+', Node: '+prop.name+' needs to be configured'; } else { redflag='Node: '+prop.name+' needs to be configured';  }} else { redflag=""; };
+    if( prop.configured.includes('yes') < 1) { 
+        $("#isconfigured").prop('checked',true);
+        if(redflag.includes('need') >0 ) { 
+            redflag=redflag+', Node: '+prop.name+' needs to be configured'; 
+        } else { 
+            redflag='Node: '+prop.name+' needs to be configured';  
+        }
+    } else { 
+        $("#isconfigured").prop('checked',false);
+        redflag=""; 
+    };
      prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
      img='Server1-On.png'
      $('#hostlist').append($('<a class="col-2 hostmember text-center"  href="javascript:hostclick(\''+prop2[r]["id"]+'\')">'+prop["name"]+'<img class="img-responsive server '+prop2[r]["id"]+'" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+prop["name"]+'</p></a>'));	
@@ -1103,14 +1113,19 @@ $.each(jvol,function(k,v){
 		
 			var config = 1;
 			function hostclick(r){
-                 $(".server").removeClass("SelectedFree");
-                 $("."+r).addClass("SelectedFree");
-				 prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
-			         selprop=r
-						$("#cBoxName").text(prop["name"]); $("#cIPAddress").text(prop.addr); $("#cGateway").text(prop.rout);
-						//$("#cdns1").text(prop.dns);
-						$("#cSubnet").text(prop.addrsubnet);
-						$("#cMgmt").text(prop.mgmtip+'/'+prop.mgmtsubnet);
+                $(".server").removeClass("SelectedFree");
+                $("."+r).addClass("SelectedFree");
+                prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
+                selprop=r
+                currenthost=prop["name"];
+                if(prop.configured.includes('yes') < 1)
+                    $("#isconfigured").prop('checked',true);
+                else
+                  $("#isconfigured").prop('checked',false);  
+                $("#cBoxName").text(prop["name"]); $("#cIPAddress").text(prop.addr); $("#cGateway").text(prop.rout);
+                //$("#cdns1").text(prop.dns);
+                $("#cSubnet").text(prop.addrsubnet);
+                $("#cMgmt").text(prop.mgmtip+'/'+prop.mgmtsubnet);
 			}
 			$("#AD").click(function (){ 
 				if(config == 1 ) { 
@@ -1246,23 +1261,27 @@ $.each(jvol,function(k,v){
 			});
 			$("#DNSsubmit").click(function (){ 
 				//$("form").validator("validate");
-						if($("#BoxName").val().length > 3) {
-							hostips['name']=$("#BoxName").val(); $("#BoxName").removeClass("NotComplete"); 
-							}
-							else {
-							 if($("#BoxName").val().length > 0)
-							 	$("#BoxName").addClass("NotComplete")
-							}
-hostips['hostname']=prop2[selprop]['name']
-						if($("#IPAddress").val().length > 3) { hostips['addr']=$("#IPAddress").val(); hostips['addrsubnet']=$("#Subnet").val(); }
-						if($("#Mgmt").val().length > 3) { hostips['mgmtip']=$("#Mgmt").val(); hostips['mgmtsubnet']=$("#MgmtSub").val();}
-						//if($("#dns1").val().length > 3) hostips['dns']=$("#dns1").val();
-						//if($("#DataIP").val().length > 3){ hostips['dataip']=$("#DataIP").val(); hostips['dataipsubnet']=$("#DataSub").val();}
-						if($("#NTP").val().length > 3){ hostips['ntp']=$("#NTP").val()}
-						if($("#GW").val().length > 3){ hostips['gw']=$("#GW").val()}
-						if($("#TZ").val() != "-100" ){hostips['tz']=$("#TZ option:selected").attr('city')+'%'+$("#TZ option:selected").text().split(' ').join('_').split(',').join('^').split(':').join('!'); }
-						$.post("./pump.php", { req:"HostManualconfig.py", name:JSON.stringify(hostips), passwd:myname });
-						setTimeout(function(){ refresherprop=4},3000);					
+				if($("#BoxName").val().length > 3) {
+					hostips['name']=$("#BoxName").val(); $("#BoxName").removeClass("NotComplete"); 
+				}
+				else {
+                    if($("#BoxName").val().length > 0)
+                        $("#BoxName").addClass("NotComplete")
+        		}
+                hostips['hostname']=prop2[selprop]['name']
+				if($("#IPAddress").val().length > 3) { hostips['addr']=$("#IPAddress").val(); hostips['addrsubnet']=$("#Subnet").val(); }
+				if($("#Mgmt").val().length > 3) { hostips['mgmtip']=$("#Mgmt").val(); hostips['mgmtsubnet']=$("#MgmtSub").val();}
+				//if($("#dns1").val().length > 3) hostips['dns']=$("#dns1").val();
+				//if($("#DataIP").val().length > 3){ hostips['dataip']=$("#DataIP").val(); hostips['dataipsubnet']=$("#DataSub").val();}
+				if($("#NTP").val().length > 3){ hostips['ntp']=$("#NTP").val()}
+				if($("#GW").val().length > 3){ hostips['gw']=$("#GW").val()}
+				if($("#TZ").val() != "-100" ){
+                    hostips['tz']=$("#TZ option:selected").attr('city')+'%'+$("#TZ option:selected").text().split(' ').join('_').split(',').join('^').split(':').join('!');
+                }
+                hostips['isconfigured']=$("#isconfigured").prop("checked")
+                console.log(hostips);
+				$.post("./pump.php", { req:"HostManualconfig.py", name:JSON.stringify(hostips), passwd:myname });
+				setTimeout(function(){ refresherprop=4},3000);					
 						
 						
 			});
