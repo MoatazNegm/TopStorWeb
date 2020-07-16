@@ -910,7 +910,7 @@ function refreshselect(){
                         hip=jdata[k]['prop']
                         if(pdata.includes(hname) < 1){
                             if(rdata.includes(hname) > 0) { img='Server1-On.png';} else { img='Server1-Off.png'};
-                            $("#Rhosts").append('<div id="mem'+hname+'" class="rhosts col-'+col+'"><a  href="javascript:memberclick(\''+hname+'\')"><img class="img-responsive" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+hname+':'+hip+'</p></a></div>')
+                            $("#Rhosts").append('<div id="mem'+hname+'" class="rhosts col-'+col+'"><a  href="javascript:memberclick(\''+hname+'\')"><img class="img-responsive server" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+hname+':'+hip+'</p></a></div>')
                         }
                     });                
 
@@ -932,7 +932,7 @@ function refreshselect(){
                 hname=jdata[r]['name'].replace('possible','');
                 hip=jdata[r]['prop'];
                 img='Server1-On.png';
-                $("#Dhosts").append('<div id="dem'+hname+'" class="dhosts col-'+col+'"><a  href="javascript:demberclick(\''+hname+'\')"><img class="img-responsive" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+hname+':'+hip+'</p></a></div>');
+                $("#Dhosts").append('<div id="dem'+hname+'" class="dhosts col-'+col+'"><a  href="javascript:demberclick(\''+hname+'\')"><img class="img-responsive server" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+hname+':'+hip+'</p></a></div>');
                 
             });
         });
@@ -1320,26 +1320,26 @@ hostips['hostname']=prop2[selprop]['name']
         });
 
         function memberclick(name) {
-            if($('#mem'+name).hasClass("SelectedFreered") > 0 ) {
-                $('#mem'+name).removeClass("SelectedFreered");
+            if($('#mem'+name+' a .server').hasClass("SelectedFreered") > 0 ) {
+                $('#mem'+name+' a .server').removeClass("SelectedFreered");
                 selhosts="";
                 $("#RhostForget").attr('disabled',true);
             } else {
-                $(".rhosts").removeClass("SelectedFreered");
-                $('#mem'+name).addClass("SelectedFreered"); 
+                $(".rhosts a .server").removeClass("SelectedFreered");
+                $('#mem'+name+' a .server').addClass("SelectedFreered"); 
                 selhosts=name;
                 $("#RhostForget").attr('disabled',false);
             }       
         }
 
         function demberclick(name) {
-            if($('#dem'+name).hasClass("SelectedFree") > 0 ) {
-                $('#dem'+name).removeClass("SelectedFree");
+            if($('#dem'+name+' a .server').hasClass("SelectedFree") > 0 ) {
+                $('#dem'+name+' a .server').removeClass("SelectedFree");
                 seldhosts="";
                 $("#DhostAdd").attr('disabled',true);
             } else {
-                $(".dhosts").removeClass("SelectedFree");
-                $('#dem'+name).addClass("SelectedFree"); 
+                $(".dhosts a .server").removeClass("SelectedFree");
+                $('#dem'+name+' a .server').addClass("SelectedFree"); 
                 seldhosts=name;
                 $("#DhostAdd").attr('disabled',false);
             }       
