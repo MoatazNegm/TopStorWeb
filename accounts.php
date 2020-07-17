@@ -1122,6 +1122,7 @@ $.each(jvol,function(k,v){
                     $("#isconfigured").prop('checked',true);
                 else
                   $("#isconfigured").prop('checked',false);  
+                $("#isconfigured").val(prop.configured);
                 $("#cBoxName").text(prop["name"]); $("#cIPAddress").text(prop.addr); $("#cGateway").text(prop.rout);
                 //$("#cdns1").text(prop.dns);
                 $("#cSubnet").text(prop.addrsubnet);
@@ -1278,7 +1279,15 @@ $.each(jvol,function(k,v){
 				if($("#TZ").val() != "-100" ){
                     hostips['tz']=$("#TZ option:selected").attr('city')+'%'+$("#TZ option:selected").text().split(' ').join('_').split(',').join('^').split(':').join('!');
                 }
-                hostips['isconfigured']=$("#isconfigured").prop("checked")
+		if ($("#isconfigured").prop("checked")){
+		 if ($("#isconfigured").val().includes('yes')> 0){
+		  hostips['configured']='no'
+		 } else {
+		  hostips['configured']=$("#isconfigured").val()
+		 }
+		} else {
+		 hostips['configured']='yes'
+		}
                 console.log(hostips);
 				$.post("./pump.php", { req:"HostManualconfig.py", name:JSON.stringify(hostips), passwd:myname });
 				setTimeout(function(){ refresherprop=4},3000);					
