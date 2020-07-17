@@ -696,6 +696,7 @@
  var volumes={'NoHome': 'NoHome'};
  var idletill=480000;
  var oldhdata="dkd";
+ var oldpdata="dkedfd";
  var oldddata="dkjlf";
  var oldrdata="kfld";
  var selhosts="";
@@ -902,11 +903,13 @@ function refreshselect(){
     function refreshhosts() {
         var jdata;
         $.get("gump2.php", { req: 'ready', name:'--prefix' }, function(rdata){
-            if(oldrdata==rdata) { return; }
             oldrdata=rdata;
             $.get("gump2.php", { req: 'possible', name:'--prefix' }, function(pdata){
                 $.get("gump2.php", { req: 'alias', name:'--prefix' }, function(hdata){
-                    oldhdata=hdata
+                    if(oldrdata==rdata && oldpdata==pdata && oldhdata==hdata) {return;}
+                    oldpdata=pdata;
+                    oldrdata=rdata;
+                    oldhdata=hdata;
                     jpdata = jQuery.parseJSON(pdata)
                     jdata = jQuery.parseJSON(hdata);
                     allhosts=jdata;
