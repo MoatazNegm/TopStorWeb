@@ -1338,7 +1338,7 @@ $.each(jvol,function(k,v){
 	
 				});
         $("#RhostForget").on('click',function() {
-
+            
             $.post("./pump.php", { req:"Evacuate.py", name:selhosts, passwd: myname });
         });
 

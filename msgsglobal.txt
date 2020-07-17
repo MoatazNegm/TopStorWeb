@@ -277,6 +277,8 @@ NFS1004:1: : from :: Creating volume :
 NFS1005:2: : from :: Volume name : is registered in system. Please check for lost hosts/volumes
 NFS1006:2: : from :: Problem occurred while creating volume :
 NFS1007:2: : from :: Success creating volume :
+Evacuaest01:2: : from :: Start Evacuating node :
+Evacuaesu01:2: : from :: Success Evacuating node :
 Snap1022:0: : from :: Deleting Snapshot :
 Snap1023:2: : from :: Problem while deleting snapshot :
 Snap1024: Success in deleting snapshot :
