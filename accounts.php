@@ -820,6 +820,7 @@ var tmpgdata;
   });
   if (refresherprop > 0) { 
    $.post("./pump.php", { req:"HostgetIPs.py", name:myname, passwd:"" });
+   refresherprop=-5
   }				
   $("#cBoxName").text(prop["name"]); $("#cIPAddress").text(prop.addr); $("#cGateway").text(prop.rout);
   //$("#cdns1").text(prop.dns);
@@ -835,7 +836,7 @@ var tmpgdata;
    $("#cDataIP").text(prop.dataip+'/'+prop.dataipsubnet);
   }
   proptime=proptimenew;
-  refresherprop=refresherprop-1;
+  refresherprop=refresherprop+1;
  }
 function refreshselect(){
  return;
@@ -910,7 +911,6 @@ function refreshselect(){
     function refreshhosts() {
         var jdata;
         $.get("gump2.php", { req: 'ready', name:'--prefix' }, function(rdata){
-            oldrdata=rdata;
             $.get("gump2.php", { req: 'possible', name:'--prefix' }, function(pdata){
                 $.get("gump2.php", { req: 'alias', name:'--prefix' }, function(hdata){
                     if(oldrdata==rdata && oldpdata==pdata && oldhdata==hdata) {return;}
