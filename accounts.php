@@ -785,31 +785,35 @@ var tmpgdata;
 
 			$(".bg-success").hide();$(".bg-danger").hide();$(".bg-warning").hide();
  function updateprop() {
-  $.get("gump2.php", { req: "prop", name:"--prefix"  },function(data){ 
-   if(propdata==data){;} else {
-    propdata=data
-    prop2=$.parseJSON(propdata)
-    $("#hostlist a").remove();
-    $.each(prop2,function(r,s){
-     prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
-     prop2[r]['name']=prop2[r]['name'].replace('prop/','')
-    if( prop.configured.includes('yes') < 1) { 
-        $("#isconfigured").prop('checked',true);
-        if(redflag.includes('need') >0 ) { 
-            redflag=redflag+', Node: '+prop.name+' needs to be configured'; 
-        } else { 
-            redflag='Node: '+prop.name+' needs to be configured';  
-        }
-    } else { 
-        $("#isconfigured").prop('checked',false);
-        redflag=""; 
-    };
-     prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
-     img='Server1-On.png'
-     $('#hostlist').append($('<a class="col-2 hostmember text-center"  href="javascript:hostclick(\''+prop2[r]["id"]+'\')">'+prop["name"]+'<img class="img-responsive server '+prop2[r]["id"]+'" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+prop["name"]+'</p></a>'));	
-     hostclick(selprop)
-    });
-   }
+  $.get("gump2.php", { req: "prop", name:"--prefix"  },function(data){
+  $.get("gump2.php", { req: "ready", name:"--prefix"  },function(rdata){ 
+    if(propdata==rdata){;} else {
+        propdata=rdata
+        prop2=$.parseJSON(data)
+        $("#hostlist a").remove();
+        $.each(prop2,function(r,s){
+            prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
+            prop2[r]['name']=prop2[r]['name'].replace('prop/','')
+            if(rdata.includes(prop2[r]['name'])) {
+                if( prop.configured.includes('yes') < 1) { 
+                    $("#isconfigured").prop('checked',true);
+                    if(redflag.includes('need') >0 ) { 
+                    redflag=redflag+', Node: '+prop.name+' needs to be configured'; 
+                    } else { 
+                        redflag='Node: '+prop.name+' needs to be configured';  
+                    }
+                } else { 
+                    $("#isconfigured").prop('checked',false);
+                    redflag=""; 
+                };
+                prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
+                img='Server1-On.png'
+                $('#hostlist').append($('<a class="col-2 hostmember text-center"  href="javascript:hostclick(\''+prop2[r]["id"]+'\')">'+prop["name"]+'<img class="img-responsive server '+prop2[r]["id"]+'" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+prop["name"]+'</p></a>'));	
+                hostclick(selprop)
+            }
+        });
+    }
+  })
   });
   if (refresherprop > 0) { 
    $.post("./pump.php", { req:"HostgetIPs.py", name:myname, passwd:"" });
