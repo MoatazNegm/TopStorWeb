@@ -906,7 +906,6 @@ function refreshselect(){
             oldrdata=rdata;
             $.get("gump2.php", { req: 'possible', name:'--prefix' }, function(pdata){
                 $.get("gump2.php", { req: 'alias', name:'--prefix' }, function(hdata){
-                    if(oldhdata==hdata) { return; }
                     oldhdata=hdata
                     jpdata = jQuery.parseJSON(pdata)
                     jdata = jQuery.parseJSON(hdata);
