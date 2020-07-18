@@ -669,6 +669,7 @@
 			var proptime="55:55:55";
 			var olddata=0;
 			var propdata='hi';
+            var oldproprdata="dakfj";
 			var proptimenew="33:333:33";
 			var prop={};
 			var prop2={};
@@ -787,8 +788,10 @@ var tmpgdata;
  function updateprop() {
   $.get("gump2.php", { req: "prop", name:"--prefix"  },function(data){
   $.get("gump2.php", { req: "ready", name:"--prefix"  },function(rdata){ 
-    if(propdata==rdata){;} else {
-        propdata=rdata
+    if(propdata==data && oldproprdata==rdata){;} else {
+        propdata=data
+        oldproprdata=rdata;
+        
         prop2=$.parseJSON(data)
         $("#hostlist a").remove();
         $.each(prop2,function(r,s){
@@ -914,6 +917,8 @@ function refreshselect(){
                     oldpdata=pdata;
                     oldrdata=rdata;
                     oldhdata=hdata;
+                    propdata="dkfajd";
+                    oldproprdata="dfk;d";
                     jpdata = jQuery.parseJSON(pdata)
                     jdata = jQuery.parseJSON(hdata);
                     allhosts=jdata;
@@ -940,6 +945,11 @@ function refreshselect(){
         $.get("gump2.php", { req: 'possible', name:'--prefix' }, function(ddata){
             if(oldddata==ddata) { return; }
             oldddata=ddata;
+            propdata="dsafkj;"
+            oldproprdata="dfkdk";
+            oldpdata='dfdkjdf';
+            oldrdata='dfaksdjkf';
+            oldhdata='dfaksdljf;';
             jdata= jQuery.parseJSON(ddata);
             $("#Dhosts .dhosts").remove();
             var hname="dkfj";
