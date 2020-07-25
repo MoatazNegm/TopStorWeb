@@ -40,13 +40,13 @@ Unlin1g10011:2: : from :: Problem while deleting group : (syncing)
 Unlin1000:User : is deleted
 Unlin1010:2: : from :: User : is deleted
 Unlin1110:2: : from :: Group : is deleted
-Unlin10100:2: : from :: User : is deleted (syncing)
-Unlin11100:2: : from :: Group : is deleted (syncing)
+Unlin10100:0: : from :: User : is deleted (syncing)
+Unlin11100:0: : from :: Group : is deleted (syncing)
 Unlin1001: Deleting user :
 Unlin1004:1: : from :: Deleting user :
 Unlin1104:1: : from :: Deleting group :
-Unlin10044:1: : from :: Deleting user : (syncing)
-Unlin11044:1: : from :: Deleting group : (syncing)
+Unlin10044:0: : from :: Deleting user : (syncing)
+Unlin11044:0: : from :: Deleting group : (syncing)
 Unlin1003:User : is added
 Unlin1006:0: : from :: Users are synced
 Unlin1106:0: : from :: Groups are synced
@@ -59,8 +59,8 @@ Unlin1015:2: : from :: Success changing password for user :
 Unlin1017: Adding user : ......
 Unlin1018:1: : from :: Adding user :
 Unlin1118:1: : from :: Adding group :
-Unlin10188:1: : from :: Adding user : (syncing)
-Unlin11188:1: : from :: Adding group : (syncing)
+Unlin10188:0: : from :: Adding user : (syncing)
+Unlin11188:0: : from :: Adding group : (syncing)
 Unlin1019: Problem occurred while adding user :
 Unlin1020:2: : from :: Problem occurred while adding user :
 Unlin1120:2: : from :: Problem occurred while adding group :
@@ -70,8 +70,8 @@ Unlin1021vv:1: : from :: Volume : already exists
 Unlin1021uv:1: : from :: User : cannot be created as there is a volume with same name
 Unlin1021gv:1: : from :: Group : cannot be created as there is a volume with same name
 Unlin1021vu:1: : from :: Volume : cannot be created as there is a user/group with same name
-Unlin10211:2: : from :: User : already exists so deleting accoount to sync new data
-Unlin11211:2: : from :: Group : already exists so deleting accoount to sync new data
+Unlin10211:0: : from :: User : already exists so deleting account to sync new data
+Unlin11211:0: : from :: Group : already exists so deleting account to sync new data
 Unlin1022:2: : from :: Success adding user :
 Unlin1122:2: : from :: Success adding group :
 Unlin10222:0: : from :: Success adding user : (syncing)
@@ -81,15 +81,15 @@ Unlin1024:2: : from :: user : will have a home directory in pool :
 Unst1024:1: : from :: Changing profile of user :
 Unsu1024:1: : from :: Success changing profile of user :
 Unfa1024:1: : from :: failed changing profile of user :
-Unst1124:1: : from :: Changing profile of user : (syncing)
-Unsu1124:1: : from :: Success changing profile of user : (syncing)
-Unfa1124:1: : from :: Failed changing profile of user : (syncing)
+Unst1124:0: : from :: Changing profile of user : (syncing)
+Unsu1124:0: : from :: Success changing profile of user : (syncing)
+Unfa1124:0: : from :: Failed changing profile of user : (syncing)
 Unst1025:1: : from :: Changing profile of group :
 Unsu1025:1: : from :: Success changing profile of group :
 Unfa1025:1: : from :: Failed changing profile of group :
-Unst1125:1: : from :: Changing profile of group : (syncing)
-Unsu1125:1: : from :: Success changing profile of group : (syncing)
-Unfa1125:1: : from :: Failed changing profile of group : (syncing)
+Unst1125:0: : from :: Changing profile of group : (syncing)
+Unsu1125:0: : from :: Success changing profile of group : (syncing)
+Unfa1125:0: : from :: Failed changing profile of group : (syncing)
 Domain1000: Changing Domain to :
 Domain1001: Problem changing to Domain :
 Domain1101: Problem, Domain : is not found
