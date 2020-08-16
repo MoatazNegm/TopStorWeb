@@ -1,7 +1,7 @@
 <div class="row dialogbox NFS">
 							
 	<div class=" col-sm-12 boxy "  style="height: 42rem; padding: 1rem;" >
-		<div class="row">
+		<div class="row" >
 			<div class="col-sm-11">
 				<h2 class="configTitle colorize separatortbot " style="margin-top:2px;"  id="SubTitle">Active Directory</h2>
 			</div>
