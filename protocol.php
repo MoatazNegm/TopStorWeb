@@ -121,7 +121,15 @@
                     <div class="tab-content ">
                         
                         <div class="tab-pane  row" id="Homespane" role="tabpanel">
-                           
+                            <div class="col-5 dr-form">
+                                <div class="form-group row">
+                                    <label class="col-3 col-form-label">Pool</label>
+                                    <div class="col-5">
+                                        <select id="Pool2Home" class="Pool2 form-control">
+                                        </select>
+                                    </div>
+                                </div>
+			    </div> 
                             
                             <div  class="offset-3 col-6"  >
                                 <div class="row">
@@ -387,7 +395,8 @@
         	var olddiskpool="hihi";
         	var jdata="hihihihi"
         	var grpolddata="hihihihi"
-        	var chartdata = [];
+        	var chartdata1 = {};
+        	var chartdata2 = {};
         	var datachart1 = [];
         	var datachart2 = [];
         	var voldirty=1;
@@ -642,7 +651,6 @@
                             hosts=[]
                             volumes=[]
                             snapshots=[]
-                            chartdata=[]
                             datachart1=[]
                             datachart2=[]
                             if (plotb) {plotb.destroy();}
@@ -658,11 +666,12 @@
                                     topool['host']=hosts[r]['name']
                                     if (topool.name.includes('ree') < 1 ){
                                         pools.push(topool)
-                                        $("#Pool2"+prot).append($('<option class="pool variable2" value='+topool.name+'>').text(topool.name.replace('pdhcp','')).val(rr));
-                                        //chartdata.push([topool.name,normsize(topool.alloc)]);
-                                        chartdata.push(['free',normsize(topool.empty)]);
-                                        datachart1.push('free');
-                                        datachart2.push(normsize(topool.empty));
+                                        topoolname=topool.name.replace('pdhcp','')
+					chartdata1[topoolname]=[]
+					chartdata2[topoolname]=[]
+                                        $("#Pool2"+prot).append($('<option class="pool variable2" >').val(topoolname).text(topoolname));
+                                        chartdata1[topoolname].push('free');
+                                        chartdata2[topoolname].push(normsize(topool.empty));
                                     }
                                 });
                             });
@@ -708,7 +717,8 @@
                                 if (txtname=="") { txtname=tovol.name; }
                                 if(prot.includes('CIFS') > 0 || prot.includes('NFS') > 0  || prot.includes('Home') > 0) {
                                     if(prot.includes('Home') > 0) { hidden='hidden';} else { hidden='';}
-                                    $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol" val="'+tovol.name+'">'+txtname+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class=" tcol"><input class="form-control ip_address" type="text" id="selvol'+tovol.name+'ip" value="'+ip+'"></td><td class=" tcol"><input class="form-control" type="number" id="selvol'+tovol.name+'sub" value="'+subnet+'"style="padding-left:3px; padding-right:3px;" min="8" max="32"value="24" step=8></td><td style="padding-top: 12px; padding-bottom: 5px;" '+hidden+'><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" title="No One" data-container="body" data-actions-box="true" data-live-search="true" data-width="auto" class="selectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked('+"'"+tovol.pool+"','"+tovol.host+"',this"+')" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
+				    tovolpool=tovol.pool.replace('pdhcp','')
+                                    $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+tovolpool+' '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol" val="'+tovol.name+'">'+txtname+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class=" tcol"><input class="form-control ip_address" type="text" id="selvol'+tovol.name+'ip" value="'+ip+'"></td><td class=" tcol"><input class="form-control" type="number" id="selvol'+tovol.name+'sub" value="'+subnet+'"style="padding-left:3px; padding-right:3px;" min="8" max="32"value="24" step=8></td><td style="padding-top: 12px; padding-bottom: 5px;" '+hidden+'><select onclick="tdisclicked(this)" id="selvol'+tovol.name+'" title="No One" data-container="body" data-actions-box="true" data-live-search="true" data-width="auto" class="selectpicker volgrps '+tovol.name+' " multiple></select></td><td><button onclick="selbtnclicked('+"'"+tovol.pool+"','"+tovol.host+"',this"+')" id="btnselvol'+tovol.name+'" type="button" class="btn btn-primary" >update</button></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
                                         $("#btnselvol"+tovol.name).hide();
                                         usergrp="Everyone"
                                         if(tovol.group.includes("Everyone") > 0) {
@@ -742,18 +752,15 @@
          
 
                                     }
-                                    chartdata.push([tovol.name,normsize(tovol.quota)]);
-                                    datachart1.push(tovol.name);
-                                    datachart2.push(normsize(tovol.quota));
+				    tovolpool=tovol.pool.replace('pdhcp','')
+                                    chartdata1[tovolpool].push(tovol.name);
+                                    chartdata2[tovolpool].push(normsize(tovol.quota));
                                 });
                             });
                         };
                         if (myChart!='1') {myChart.destroy();}
-                        //plotchart(['chart'+prot,chartdata("#Pool2"+prot+"").val()]);
-                        //chartdata.push(['free',poolsize]);
-                        //chartdata.push(['others',others]);
-                        //plotchart('chart'+prot,chartdata);
-                        plotchart('chart'+prot,datachart1,datachart2);
+        		//plotchart('chartNFS',chartdata1[$(".Pool2").val()],chartdata2[$(".Pool2").val()]);
+			$(".Pool2").change();
                     }
                     wait2=1
                 });
@@ -766,7 +773,7 @@
         		switch(selection) {
         			case "newoption" :  $("#createvol").show(); break;
                 	case "alloption" : $("tr.success").removeClass("success");rowisclicked(); $("#createvol").hide(); $("#Vollist").show(); 
-        				plotchart('chartNFS',chartdata[$(".Pool2").val()]);
+        			//plotchart('chartNFS',chartdata1[$(".Pool2").val()],chartdata2[$(".Pool2").val()]);
             			break;
         			default:  $("#createvol").hide();
         				break;
@@ -853,7 +860,6 @@
         					Initclickedprotocol();
         					prot=32423
         					$("h2").css("background-image","url('img/cifs.png')").text("CIFS"); $(".ullis").hide(); $(".finish").show(); $(".NFS").show();
-        					//plotchart('chartNFS',chartdata);
         				}
         				else { $("#CIFS").hide(); };
         			});
@@ -879,7 +885,6 @@
         					Initclickedprotocol();
         					prot=5654
         					$("h2").css("background-image","url('img/nfs.png')").text("NFS"); $(".ullis").hide();$(".finish").show(); $(".NFS").show();
-        					//plotchart('chartNFS',chartdata);
         				}
         			});
         		};
@@ -899,7 +904,8 @@
         				};
         			
         				if( userpriv=="true" | curuser=="admin" ) {
-        					Protocol="ISCSI"; config = 1; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ullis").hide(); $(".finish").show();$(".ISCSI").show(); plotchart('chartISCSI',chartdata);
+        					Protocol="ISCSI"; config = 1; $("h2").css("background-image","url('img/iscsi2.png')").text("ISCSI"); $(".ullis").hide(); $(".finish").show();$(".ISCSI").show();
+        				//plotchart('chartISCSI',chartdata1[$(".Pool2").val()],chartdata2[$(".Pool2").val()]);
         				}
         			});
         		};
@@ -924,7 +930,10 @@
         			if(plotflag > 0 ) {
         				plotb.destroy();
         			}
-        			plotchart('chartNFS',chartdata[$(".Pool2").val()]);
+        			plotchart('chartNFS',chartdata1[selection],chartdata2[selection]);
+				console.log('slection',selection)
+				$(".trow").hide()
+				$("."+selection).show();
         		}
         	});
         	
