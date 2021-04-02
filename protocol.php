@@ -744,6 +744,7 @@
                                         $("#selvol"+tovol.name).selectpicker("refresh");
                                         selvalues['selvol'+tovol.name]=$('#selvol'+tovol.name).val()+$('#selvol'+tovol.name+'ip').val()+$('#selvol'+tovol.name+'sub').val()
                                         selvalues['selvol'+tovol.name+'change']=0
+				 console.log('hi1')
                                     } else {
                                         $("#Volumetable"+tovol['prot']).append('<tr ionclick="rowisclicked(this)" class="variable variable2 trow '+kk+'"><td style="padding-left: 2rem; " class="Volname tcol">'+tovol.name+'</td><td class="text-center tcol" id="qta'+tovol.name+'" value="'+tovol.quota+'">'+normsize(tovol.quota)+'</td><td class="text-center tcol">'+tovol.used+'</td><td class=" text-center tcol">'+tovol.usedbysnapshots+'</td><td class=" text-center tcol">'+tovol.refcompressratio+'</td><td class=" tcol"><input class="form-control ip_address" type="text" id="selvol'+tovol.name+'ip" value="'+ip+'"></td><td class=" tcol"><input class="form-control" type="number" id="selvol'+tovol.name+'sub" value="'+subnet+'"style="padding-left:3px; padding-right:3px;" min="8" max="32"value="24" step=8></td><td class="text-center"><a href="javascript:voldel(\''+tovol.fullname+'\')"><img src="assets/images/delete.png" alt="cannot upload delete icon"></a></td></tr>');
                                         $("#selvol"+tovol.name).val(tovol.group);
