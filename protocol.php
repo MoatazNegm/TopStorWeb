@@ -665,13 +665,14 @@
                                     topool=hosts[r]['prop'][rr]
                                     topool['host']=hosts[r]['name']
                                     if (topool.name.includes('ree') < 1 ){
+					poolslen = pools.length
                                         pools.push(topool)
                                         topoolname=topool.name.replace('pdhcp','')
-					chartdata1[topoolname]=[]
-					chartdata2[topoolname]=[]
-                                        $("#Pool2"+prot).append($('<option class="pool variable2" >').val(topoolname).text(topoolname));
-                                        chartdata1[topoolname].push('free');
-                                        chartdata2[topoolname].push(normsize(topool.empty));
+					chartdata1[poolslen]=[]
+					chartdata2[poolslen]=[]
+                                        $("#Pool2"+prot).append($('<option class="pool variable2" >').val(poolslen).text(topoolname));
+                                        chartdata1[poolslen].push('free');
+                                        chartdata2[poolslen].push(normsize(topool.empty));
                                     }
                                 });
                             });
@@ -752,12 +753,19 @@
          
 
                                     }
+				    console.log('poolsnow',pools)
 				    tovolpool=tovol.pool.replace('pdhcp','')
-                                    chartdata1[tovolpool].push(tovol.name);
-                                    chartdata2[tovolpool].push(normsize(tovol.quota));
+                                    //chartdata1[tovolpool].push(tovol.name);
+                                    //chartdata2[tovolpool].push(normsize(tovol.quota));
                                 });
                             });
                         };
+                	$.each(pools, function(s,t){
+                		$.each(t.volumes, function(ss,tt){
+                                	chartdata1[s].push(tt.name);
+                                	chartdata2[s].push(normsize(tt.quota));
+				});
+                        });
                         if (myChart!='1') {myChart.destroy();}
         		//plotchart('chartNFS',chartdata1[$(".Pool2").val()],chartdata2[$(".Pool2").val()]);
 			$(".Pool2").change();
