@@ -811,7 +811,7 @@ var tmpgdata;
                 };
                 prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
                 img='Server1-On.png'
-                $('#hostlist').append($('<a class="col-2 hostmember text-center"  href="javascript:hostclick(\''+prop2[r]["id"]+'\')">'+prop["name"]+'<img class="img-responsive server '+prop2[r]["id"]+'" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+prop["name"]+'</p></a>'));	
+                $('#hostlist').append($('<a class="col-3 hostmember text-center"  href="javascript:hostclick(\''+prop2[r]["id"]+'\')">'+prop["name"]+'<img class="img-responsive server '+prop2[r]["id"]+'" style="object-fit:cover; max-width:250%;max-height:250%; height: auto; margin-bottom: 3.4rem;"  class="server" src="assets/images/'+img+'" /><p class="psize" style="color:green;">'+prop["name"]+'</p></a>'));	
                 hostclick(selprop)
             }
         });
