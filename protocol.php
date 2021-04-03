@@ -182,8 +182,8 @@
                                         <div class="col-4">
                                             <input id="AddressCIFS" class="form-control ip_address" type="text"  >
                                         </div>
-                                        <label class="col-1 col-form-label">Subnet</label>
-                                        <div class="col-2">
+                                        <label class="col-2 col-form-label">Subnet</label>
+                                        <div class="col-3">
                                             <input class="form-control" type="number" id="SubnetCIFS" min="8" max="32" value="24" step=8>
                                         </div>
                                 </div>
