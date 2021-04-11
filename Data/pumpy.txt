@@ -1,1 +1,1 @@
-chkuser2.sh admin 1617480682 admin
+readlog.sh 04/11/2022T18:49:11 10 1 admin
