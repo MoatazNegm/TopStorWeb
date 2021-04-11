@@ -15,7 +15,8 @@ def queuethis(*args):
  for arg in args:
   z.append(arg)
  z.append(int(time()*1000))
- print('logqueue z=',z)
+ with open('/root/logqueuetmp','w') as f:
+  f.write(str(z))
  leaderinfo=get('leader','--prefix')
  knowninfo=get('known','--prefix')
  leaderip=leaderinfo[0][1]
@@ -26,9 +27,10 @@ def queuethis(*args):
  msg={'req': 'queue', 'reply':z}
  print('sending', leaderip, str(msg),'recevreply',myhost)
  sendhost(leaderip, str(msg),'recvreply',myhost)
- for k in knowninfo:
-  sendhost(k[1], str(msg),'recvreply',myhost)
-  knowns.append(k[1])
+ #for k in knowninfo:
+ # sendhost(k[1], str(msg),'recvreply',myhost)
+ # knowns.append(k[1])
+ #print('logqueue z=',z)
 
 if __name__=='__main__':
  queuethis(*sys.argv[1:])
