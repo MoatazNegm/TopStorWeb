@@ -1,1 +1,1 @@
-chkuser2.sh admin 1617480682 admin
+readlog.sh 04/17/2022T23:35:16 10 infowarningerror 1 admin
