@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 readlog.sh 04/17/2022T23:35:16 10 infowarningerror 1 admin
+=======
+readlog.sh 04/11/2022T18:49:11 10 1 admin
+>>>>>>> 9b3ae0fbe6ed6cba4241f996c9c9aa3f18d159b3
