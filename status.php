@@ -116,29 +116,28 @@
         <div class="col-md-9 main-content">
             <div class="tab-content">
                 <div class="tab-pane " id="servicestatus" role="tabpanel">
-                    <div id='queue' class="queue" tabindex="-1" role="dialog" style="z-index: 10000; width: 100%;">
-                                <div class="">
-                                    <div class="row">
-                                        <div class="col-10">
-                                            <h10 class="" style="padding:2px;">Queue</h10>
-                                        </div>
-                                        <div class="col-1">
-                                            <h10 class="" style="padding:2px;">Queue</h10>
-                                        </div>
-                                    </div>
-                                    <div class="row"style="margin-left: -2px;">
-                                        <div class='table-responsive '>
-                                            <table class='col-12 table table-hover table-striped'style="padding:2px;">
-                                                <tbody>
-                                                    <tr><td style="padding:2px;">ofone</td><td style="padding:2px;">oftwo</td><td style="padding:2px;">ofthree</td>
-                                                    <tr><td style="padding:2px;">ofone</td><td style="padding:2px;">oftwo</td><td style="padding:2px;">ofthree</td>
-                                                    <tr><td style="padding:2px;">ofone</td><td style="padding:2px;">oftwo</td><td style="padding:2px;">ofthree</td>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="row table-responsive">
+                        <table  class="col-12 table  dr-table-show">
+                            <thead>
+                            <tr class="row">
+										  <th class="text-left col-3" style="padding-left: 2rem; ">Date and time</th>                                
+                                <th class="text-center col-1">User</th>
+                                <th class="text-center col-2">Node</th>
+                                <th class="text-center col-6">Data</th>
+                                
+                            </tr>
+                            </thead>
+                            <tbody id="Qdetails">
+                           
+
+                            </tbody>
+                        </table>
                     </div>
+ 
+
+
+
+
                 </div>
                 <div class="tab-pane active" id="Logspanel" role="tabpanel">
                     <form class="dr-form">
