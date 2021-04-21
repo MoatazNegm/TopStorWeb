@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="dist/css/fonts/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+
 </head>
 <!--
 `body` tag options:
@@ -998,7 +999,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
+            <h1 class="m-0">User account management</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -1014,67 +1015,164 @@
     <div class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="  col-lg-6">
+          <div class="col-md-4">
             <div class="card">
-                          <!-- form start -->
-                          <form>
-                            <div class="card-body">
+              <!-- form start -->
+              <form>
+                <div class="card-body">
 
-                              <div class="form-group">
-                                <label for="User">User Name</label>
-                                <input type="text" class="form-control" id="User" placeholder="Domain Name">
-                              </div>
-                              <div class="form-group">
-                                <label for="Pass">Password</label>
-                                <input type="password" class="form-control" id="Pass" placeholder="Password">
-                              </div>
-                              <div class="row">
-                                <div class='col-4'>
-                                  <div class="form-group">
-                                    <label  for="UserVol">Home Pool</label>
-                                    <select  class="form-control" id="UserVol">
-                                      <option value="NoHome">-----</option>
-                                    </select>
-                                  </div>
-                                  <div class="form-group">
-                                    <label  for="HomeAddress">Home Address</label>
-                                    <input type="text"   minlength="7" maxlength="15" size="15" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$"
-                                     placeholder="xxx.xxx.xxx.xxx" class="form-control" name="HomeAddress" id="HomeAddress">
-                                  </div>
-                                </div>
-                                <div class='offset-3 col-2'>
-                                  <div class="form-group">
-                                    <label  for="volsize">Size</label>
-                                    <input type="number"  class="form-control" id="volsize" min="1" value="1" >
-                                    </select>
-                                  </div>
-                                  <div class="form-group">
-                                    <label  for="HomeSubnet">Subnet</label>
-                                    <input type="number"   min="8" max="32" step="8" value=8 class="form-control"  id="HomeSubnet">
+                  <div class="form-group">
+                    <label for="User">User Name</label>
+                    <input type="text" class="form-control" id="User" placeholder="Domain Name">
+                  </div>
+                  <div class="form-group">
+                    <label for="Pass">Password</label>
+                    <input type="password" class="form-control" id="Pass" placeholder="Password">
+                  </div>
+                  <div class="row">
+                    <div class='col-5'>
+                      <div class="form-group">
+                        <label  for="UserVol">Home Pool</label>
+                        <select  class="form-control" id="UserVol">
+                          <option value="NoHome">-----</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label  for="HomeAddress">Home Address</label>
+                        <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-input" name="HomeAddress" id="HomeAddress"  data-inputmask="'alias': 'ip'">
+                      </div>
+                    </div>
+                    <div class='offset-4 col-3'>
+                      <div class="form-group">
+                        <label  for="volsize">Size(GB)</label>
+                        <input type="number"  class="form-control" id="volsize" min="1" value="1" >
+                      </div>
+                      <div class="form-group">
+                        <label  for="HomeSubnet">Subnet</label>
+                        <input type="number"   min="8" max="32" step="8" value=8 class="form-control"  id="HomeSubnet">
 
-                                  </div>
-                                </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class='col-12'>
+                      <label  for="UserVol">Allowed Groups</label>
+                      <select  multiple size=3 class="form-control" id="Usergroups" value="NoGroup">
+                        <option value="NoGroup">-----</option>
+                      </select>
+                    </div>
+                  </div>
 
-                              </div>
-                            </div>
-                            <!-- /.card-body -->
+                </div>
+                <!-- /.card-body -->
 
-                            <div class="card-footer">
-                              <button type="submit" id="UnixAddUser" class="btn btn-primary">Add User</button>
-                            </div>
-                          </form>
-                        </div>            <!-- /.card -->
+                <div class="card-footer">
+                  <button type="submit" id="UnixAddUser" class="btn btn-primary">Add User</button>
+                </div>
+              </form>
+            </div> <!-- /.card -->
+          </div>
+          <div class="col-md-8">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">User List</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example1" class="table table-sm table-hover  table-striped">
+                  <thead>
+                  <tr>
+                    <th>User name</th>
+                    <th>Home pool</th>
+                    <th>Quota</th>
+                    <th>Groups</th>
+                    <th>Need update</th>
+                    <th>Password</th>
+                    <th>Remove</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                   <tr class="dontdelete" >
+                     <td style="width:25%;">username</td>
+                     <td style="width:25%;">userpool</td>
+                     <td style="width:20%;">usersize</td>
+                     <td style="width:25%;">
+                       <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
+                        multiple data-actions-box="true" data-live-search="true">
+                       </select>
+                     </td>
+                    <td>
+                      <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
+                        update
+                      </button>
+                    </td>
+                    <td style="width: 15%;" class="text-center">
+                      <a href="javascript:userPassword(\'username\')" >
+                        <img src="dist/img/edit.png" alt="cannott upload edit icon">
+                      </a>
+                    </td>
+                    <td style="width: 15%;" class="text-center">
+                      <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
+                        <img  src="dist/img/delete.png" alt="cannott upload delete icon">
+                      </a>
+                    </td></tr>
 
+
+                  <tr>
+                    <td>Trident</td>
+                    <td>Internet
+                      Explorer 4.0
+                    </td>
+                    <td>Win 95+</td>
+                    <td> 4</td>
+                    <td>X</td>
+                    <td>A</td>
+                    <td>A</td>
+                  </tr>
+                  <tr>
+                    <td>Presto</td>
+                    <td>Opera 8.0</td>
+                    <td>Win 95+ / OSX.2+</td>
+                    <td>-</td>
+                    <td>A</td>
+                    <td>A</td>
+                    <td>A</td>
+                  </tr>
+                  <tr>
+                    <td>Other browsers</td>
+                    <td>All others</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>U</td>
+                    <td>A</td>
+                    <td>A</td>
+                  </tr>
+                  </tbody>
+                  <tfoot>
+                  <tr>
+                    <th>User name</th>
+                    <th>Home pool</th>
+                    <th>Quota</th>
+                    <th>Groups</th>
+                    <th>Need update</th>
+                    <th>Password</th>
+                    <th>Remove</th>
+                  </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
 
           </div>
-        </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-    </div>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+        </div> <!-- /.row -->
+
+      </div> <!-- /.container-fluid -->
+
+    </div> <!-- /.content -->
+
+  </div> <!-- /.content-wrapper -->
+
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -1101,10 +1199,24 @@
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE -->
 <script src="dist/js/adminlte.js"></script>
-
+<!-- DataTables  & Plugins -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="plugins/jszip/jszip.min.js"></script>
+<script src="plugins/pdfmake/pdfmake.min.js"></script>
+<script src="plugins/pdfmake/vfs_fonts.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- OPTIONAL SCRIPTS -->
-<script src="dist/js/jquery.inputmask.js"></script>
-<script src="dist/js/pages/Qusers.js"></script>
+<script src="dist/js/Qjquery.inputmask.bundle.js"></script>
+<script src="dist/js/Qusers.js" ></script>
 <script src="plugins/chart.js/Chart.min.js"></script>
+<script src="dist/js/demo.js"></script>
+<script src="dist/js/Qmain.js"></script>
 </body>
 </html>
