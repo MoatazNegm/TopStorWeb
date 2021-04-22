@@ -10,5 +10,5 @@ $("#example1").DataTable({
   $("#example1_filter").css("margin-left","10rem");
 //$("#example1_filter").css("margin-left","10rem");
 
-var ipv4_address = $("#HomeAddress");
+var ipv4_address = $(".ipaddress");
 ipv4_address.inputmask();

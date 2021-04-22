@@ -1,1 +1,1 @@
-GetDisklist Data/disklist.txt admin
+HostgetIPs.py admin
