@@ -12,9 +12,9 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <!-- Select2 -->
-  <link rel="stylesheet" href="../../plugins/select2/css/select2.min.css">
-  <link rel="stylesheet" href="../../plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-
+  <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <link rel="stylesheet" href="dist/css/Qmain.css">
 </head>
 <!--
 `body` tag options:
@@ -1000,7 +1000,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Nodes Management</h1>
+            <h1 class="m-0">Cluster Management</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -1017,36 +1017,43 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-12">
-            <div class="card datacard">
-              <div class="card-header">
+            <div class="card card-outline card-primary datacard">
+              <div class="card-header" style="cursor: cell;">
+                <div class="card-tools" >
+                  <!-- Collapse Button -->
+                  <button type="button" class="btn btn-tool "  data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                </div>
                 <div class="row" data-card-widget="collapse">
                   <div class='col-5'>
-                    <h3 class="card-title" >Clustered Nodes</h3>
+                    <h3 class="card-title text-lg" >Running Nodes</h3>
                   </div>
                 </div>
+
+              </div>
+              <div class="card-header">
                 <div class="row">
-                 <div id="mem hname" class="rhosts col-2">
-                   <a  href="javascript:memberclick(hname)">
-                     <img class="img-responsive server" style="object-fit:cover; max-width:60%;max-height:60%;
-                     height: auto; margin-bottom: 0.4rem;"  class="server" src="img/Server1-On.png" />
+                 <div id="memhname" class="rhosts col-2">
+                   <a  href="#" class='img-clck' data-htname='hnameall'>
+                     <img class="img-responsive server SelectedFreewhite" style="object-fit:cover; max-width:80%;"
+                      class="server" src="img/Server1-On.png" />
                      <p class="psize1" style="color:green;">
                        hname:hip
                      </p>
                    </a>
                  </div>
+                 <div id="memhname" class="rhosts col-2">
+                   <a  href="#" class='img-clck'>
+                     <img class="img-responsive server" style="object-fit:cover; max-width:80%;"
+                      class="server" src="img/Server1-On.png" />
+                     <p class="psize1" style="color:green;">
+                       hname2:hip2
+                     </p>
+                   </a>
+                 </div>
 
-                  <div class="col-2"> Node 1</div>
-                  <div class="col-2"> Node 2</div>
-                  <div class="col-2"> Node 3</div>
-                  <div class="col-2"> Node 4</div>
-                  <div class="col-2"> Node 5</div>
-                  <div class="col-2"> Node 6</div>
-                </div>
-                <div class="card-tools">
-                  <!-- Collapse Button -->
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                 </div>
               </div>
+
               <div class="card-body" >
                 <!-- form start -->
                 <form>
@@ -1245,26 +1252,43 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-            <div class="card datacard">
-              <div class="card-header">
+            <div class="card card-outline card-danger datacard">
+              <div class="card-header" style="cursor: cell;">
+                <div class="card-tools" >
+                  <!-- Collapse Button -->
+                  <button type="button" class="btn btn-tool "  data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                </div>
                 <div class="row" data-card-widget="collapse">
                   <div class='col-5'>
-                    <h3 class="card-title" >Nodes status</h3>
+                    <h3 class="card-title text-lg" >Nodes Status</h3>
                   </div>
                 </div>
+
+              </div>
+              <div class="card-header">
                 <div class="row">
-                  <div class="col-2"> Node 1</div>
-                  <div class="col-2"> Node 2</div>
-                  <div class="col-2"> Node 3</div>
-                  <div class="col-2"> Node 4</div>
-                  <div class="col-2"> Node 5</div>
-                  <div class="col-2"> Node 6</div>
-                </div>
-                <div class="card-tools">
-                  <!-- Collapse Button -->
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                 <div id="memhname" class="rhosts col-2">
+                   <a  href="javascript:memberclick(hname)">
+                     <img class="img-responsive server" style="object-fit:cover; max-width:80%;"
+                      class="server" src="img/Server1-On.png" />
+                     <p class="psize1" style="color:green;">
+                       hname:hip
+                     </p>
+                   </a>
+                 </div>
+                 <div id="memhname" class="rhosts col-2">
+                   <a  href="javascript:memberclick(hname)">
+                     <img class="img-responsive server" style="object-fit:cover; max-width:80%;"
+                      class="server" src="img/Server1-Off.png" />
+                     <p class="psize1" style="color:green;">
+                       hname2:hip2
+                     </p>
+                   </a>
+                 </div>
+
                 </div>
               </div>
+
               <div class="card-body">
                 <!-- form start -->
                 <form>
@@ -1282,26 +1306,43 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-            <div class="card datacard">
-              <div class="card-header">
+            <div class="card card-outline card-info datacard">
+              <div class="card-header" style="cursor: cell;">
+                <div class="card-tools" >
+                  <!-- Collapse Button -->
+                  <button type="button" class="btn btn-tool "  data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                </div>
                 <div class="row" data-card-widget="collapse">
                   <div class='col-5'>
-                    <h3 class="card-title" >Discovred Nodes</h3>
+                    <h3 class="card-title text-lg" >Discovered Nodes</h3>
                   </div>
                 </div>
+
+              </div>
+              <div class="card-header">
                 <div class="row">
-                  <div class="col-2"> Node 1</div>
-                  <div class="col-2"> Node 2</div>
-                  <div class="col-2"> Node 3</div>
-                  <div class="col-2"> Node 4</div>
-                  <div class="col-2"> Node 5</div>
-                  <div class="col-2"> Node 6</div>
-                </div>
-                <div class="card-tools">
-                  <!-- Collapse Button -->
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                 <div id="memhname" class="rhosts col-2">
+                   <a  href="#" class='img-clck'>
+                     <img class="img-responsive server SelectedFreeWhite" style="object-fit:cover; max-width:80%;"
+                      class="server" src="img/Server1-On.png" />
+                     <p class="psize1" style="color:green;">
+                       hname:hip
+                     </p>
+                   </a>
+                 </div>
+                 <div id="memhname" class="rhosts col-2">
+                   <a  href="#" class='img-clck'>
+                     <img class="img-responsive server SelectedFreeWhite" style="object-fit:cover; max-width:80%;"
+                      class="server" src="img/Server1-On.png" />
+                     <p class="psize1" style="color:green;">
+                       hname2:hip2
+                     </p>
+                   </a>
+                 </div>
+
                 </div>
               </div>
+
               <div class="card-body">
                 <!-- form start -->
                 <form>
