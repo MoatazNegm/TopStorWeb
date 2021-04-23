@@ -11,6 +11,9 @@
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="../../plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="../../plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 
 </head>
 <!--
@@ -1014,11 +1017,239 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-12">
-            <div class="card">
+            <div class="card datacard">
               <div class="card-header">
-                <div class="row">
+                <div class="row" data-card-widget="collapse">
                   <div class='col-5'>
-                    <h3 class="card-title">Clustered Nodes</h3>
+                    <h3 class="card-title" >Clustered Nodes</h3>
+                  </div>
+                </div>
+                <div class="row">
+                 <div id="mem hname" class="rhosts col-2">
+                   <a  href="javascript:memberclick(hname)">
+                     <img class="img-responsive server" style="object-fit:cover; max-width:60%;max-height:60%;
+                     height: auto; margin-bottom: 0.4rem;"  class="server" src="img/Server1-On.png" />
+                     <p class="psize1" style="color:green;">
+                       hname:hip
+                     </p>
+                   </a>
+                 </div>
+
+                  <div class="col-2"> Node 1</div>
+                  <div class="col-2"> Node 2</div>
+                  <div class="col-2"> Node 3</div>
+                  <div class="col-2"> Node 4</div>
+                  <div class="col-2"> Node 5</div>
+                  <div class="col-2"> Node 6</div>
+                </div>
+                <div class="card-tools">
+                  <!-- Collapse Button -->
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                </div>
+              </div>
+              <div class="card-body" >
+                <!-- form start -->
+                <form>
+                 <div class="form-group" >
+                   <div class="row">
+                    <div class="offset-4 col-8">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class=" custom-control-input " id="customSwitch1">
+                        <label class="custom-control-label" for="customSwitch1"></label>
+                      </div>
+                    </div>
+                   </div>
+                 </div>
+                 <div class="form-group" >
+                   <div class="row">
+                    <div class="offset-3 col-8">
+                      <label class="" for="">Switch On to join an existing cluster</label>
+                    </div>
+                   </div>
+                   <div class="row">
+                    <div class="col-2">
+                     <label for="User">Node Name</label>
+                     <input type="text" class="form-control" id="Group" placeholder="Node Name">
+                    </div>
+                    <div class="offset-4 col-2">
+                      <label for="cBoxName" style="color: white;">.</label>
+                      <div  class="form-control bg-secondary color-palette"><span id="cBoxName">node_1</span>
+                      </div>
+                    </div>
+                   </div>
+                 </div>
+                 <div class="form-group" >
+                  <div class="row">
+                     <div class='col-2'>
+                        <label  for="IPAddress">Node Address</label>
+                        <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="IPAddress" id="IPAddress"  data-inputmask="'alias': 'ip'">
+                     </div>
+                     <div class='offset-1 col-1'>
+                        <label  for="Subnet">Subnet</label>
+                        <input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="Subnet">
+                     </div>
+                     <div class="offset-2 col-2">
+                      <label for="cIPAddress" style="color: white;">.</label>
+                      <div  class="form-control bg-secondary color-palette"><span id="cIPAddress">10.11.11.11/24</span>
+                      </div>
+                     </div>
+                  </div>
+                 </div>
+                 <div class="form-group" >
+                    <div class="row">
+                      <div class='col-2'>
+                         <label  for="Mgmt">Cluster Address</label>
+                         <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="IPAddress" id="Mgmt"  data-inputmask="'alias': 'ip'">
+                      </div>
+                      <div class='offset-1 col-1'>
+                         <label  for="MgmtSub">Subnet</label>
+                         <input type="number"  min="8" max="32" step="8" value=24 class="form-control"  id="MgmtSub">
+                      </div>
+                      <div class="offset-2 col-2">
+                       <label for="cMgmt" style="color: white;">.</label>
+                       <div  class="form-control bg-secondary color-palette"><span id="cMgmt">10.11.11.139/24</span>
+                       </div>
+                      </div>
+                    </div>
+                 </div>
+                 <div class="form-group" >
+                   <div class="row">
+                     <div class="col-4">
+                       <label>Time Zone</label>
+                       <select id='TZ' class="form-control select2" style="width: 100%;">
+                         <option city='0' timeZoneId="-1" value="-100"> Change if needed </option>
+                       	<option city='Chatham' timeZoneId="1" gmtAdjustment="GMT-12:00" useDaylightTime="0" value="-12">(GMT-12:00) International Date Line West</option>
+                       	<option city='Midway' timeZoneId="2" gmtAdjustment="GMT-11:00" useDaylightTime="0" value="-11">(GMT-11:00) Midway Island, Samoa</option>
+                       	<option city='kirit' timeZoneId="3" gmtAdjustment="GMT-10:00" useDaylightTime="0" value="-10">(GMT-10:00) Hawaii</option>
+                       	<option city='Gambier' timeZoneId="4" gmtAdjustment="GMT-09:00" useDaylightTime="1" value="-9">(GMT-09:00) Alaska</option>
+                       	<option city='Anchorage' timeZoneId="5" gmtAdjustment="GMT-08:00" useDaylightTime="1" value="-8">(GMT-08:00) Pacific Time (US & Canada)</option>
+                       	<option city='Tijuana' timeZoneId="6" gmtAdjustment="GMT-08:00" useDaylightTime="1" value="-8">(GMT-08:00) Tijuana, Baja California</option>
+                       	<option city='Whitehorse' timeZoneId="7" gmtAdjustment="GMT-07:00" useDaylightTime="0" value="-7">(GMT-07:00) Arizona</option>
+                       	<option city='Whitehorse' timeZoneId="8" gmtAdjustment="GMT-07:00" useDaylightTime="1" value="-7">(GMT-07:00) Chihuahua, La Paz, Mazatlan</option>
+                       	<option city='Whitehorse' timeZoneId="9" gmtAdjustment="GMT-07:00" useDaylightTime="1" value="-7">(GMT-07:00) Mountain Time (US & Canada)</option>
+                       	<option city='Yello' timeZoneId="10" gmtAdjustment="GMT-06:00" useDaylightTime="0" value="-6">(GMT-06:00) Central America</option>
+                       	<option city='Yello' timeZoneId="11" gmtAdjustment="GMT-06:00" useDaylightTime="1" value="-6">(GMT-06:00) Central Time (US & Canada)</option>
+                       	<option city='Yello' timeZoneId="12" gmtAdjustment="GMT-06:00" useDaylightTime="1" value="-6">(GMT-06:00) Guadalajara, Mexico City, Monterrey</option>
+                       <option city='Yello' timeZoneId="13" gmtAdjustment="GMT-06:00" useDaylightTime="0" value="-6">(GMT-06:00) Saskatchewan</option>
+                       <option city='Lima' timeZoneId="14" gmtAdjustment="GMT-05:00" useDaylightTime="0" value="-5">(GMT-05:00) Bogota, Lima, Quito, Rio Branco</option>
+                       	<option city='Lima' timeZoneId="15" gmtAdjustment="GMT-05:00" useDaylightTime="1" value="-5">(GMT-05:00) Eastern Time (US & Canada)</option>
+                       	<option city='Lima' timeZoneId="16" gmtAdjustment="GMT-05:00" useDaylightTime="1" value="-5">(GMT-05:00) Indiana (East)</option>
+                       	<option city='Detro' timeZoneId="17" gmtAdjustment="GMT-04:00" useDaylightTime="1" value="-4">(GMT-04:00) Atlantic Time (Canada)</option>
+                       	<option city='Detro' timeZoneId="18" gmtAdjustment="GMT-04:00" useDaylightTime="0" value="-4">(GMT-04:00) Caracas, La Paz</option>
+                       	<option city='Detro' timeZoneId="19" gmtAdjustment="GMT-04:00" useDaylightTime="0" value="-4">(GMT-04:00) Manaus</option>
+                       	<option city='Detro' timeZoneId="20" gmtAdjustment="GMT-04:00" useDaylightTime="1" value="-4">(GMT-04:00) Santiago</option>
+                       	<option city='Buen' timeZoneId="22" gmtAdjustment="GMT-03:00" useDaylightTime="1" value="-3">(GMT-03:00) Brasilia</option>
+                       	<option city='Buen' timeZoneId="23" gmtAdjustment="GMT-03:00" useDaylightTime="0" value="-3">(GMT-03:00) Buenos Aires, Georgetown</option>
+                       	<option city='Buen' timeZoneId="24" gmtAdjustment="GMT-03:00" useDaylightTime="1" value="-3">(GMT-03:00) Greenland</option>
+                       	<option city='Buen' timeZoneId="25" gmtAdjustment="GMT-03:00" useDaylightTime="1" value="-3">(GMT-03:00) Montevideo</option>
+                       	<option city='Verde' timeZoneId="27" gmtAdjustment="GMT-01:00" useDaylightTime="0" value="-1">(GMT-01:00) Cape Verde Is.</option>
+                       	<option city='Verde' timeZoneId="28" gmtAdjustment="GMT-01:00" useDaylightTime="1" value="-1">(GMT-01:00) Azores</option>
+                       	<option city='Casa' timeZoneId="29" gmtAdjustment="GMT+00:00" useDaylightTime="0" value="0">(GMT+00:00) Casablanca, Monrovia, Reykjavik</option>
+                       	<option city='Casa' timeZoneId="30" gmtAdjustment="GMT+00:00" useDaylightTime="1" value="0">(GMT+00:00) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London</option>
+                       	<option city='Berl' timeZoneId="31" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna</option>
+                       	<option city='Berl' timeZoneId="32" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague</option>
+                       	<option city='Berl' timeZoneId="33" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Brussels, Copenhagen, Madrid, Paris</option>
+                       	<option city='Berl' timeZoneId="34" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb</option>
+                       	<option city='Berl' timeZoneId="35" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) West Central Africa</option>
+                       	<option city='Amman' timeZoneId="36" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Amman</option>
+                       	<option city='Amman' timeZoneId="37" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Athens, Bucharest, Istanbul</option>
+                       	<option city='Amman' timeZoneId="38" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Beirut</option>
+                       	<option city='Amman' timeZoneId="39" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Cairo</option>
+                       	<option city='Amman' timeZoneId="40" gmtAdjustment="GMT+02:00" useDaylightTime="0" value="2">(GMT+02:00) Harare, Pretoria</option>
+                       	<option city='Amman' timeZoneId="41" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius</option>
+                       	<option city='Amman' timeZoneId="42" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Jerusalem</option>
+                       	<option city='Amman' timeZoneId="43" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Minsk</option>
+                       	<option city='Amman' timeZoneId="44" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Windhoek</option>
+                       	<option city='Kuw' timeZoneId="45" gmtAdjustment="GMT+03:00" useDaylightTime="0" value="3">(GMT+03:00) Kuwait, Riyadh, Baghdad</option>
+                       	<option city='Kuw' timeZoneId="46" gmtAdjustment="GMT+03:00" useDaylightTime="1" value="3">(GMT+03:00) Moscow, St. Petersburg, Volgograd</option>
+                       	<option city='Kuw' timeZoneId="47" gmtAdjustment="GMT+03:00" useDaylightTime="0" value="3">(GMT+03:00) Nairobi</option>
+                       	<option city='Kuw' timeZoneId="48" gmtAdjustment="GMT+03:00" useDaylightTime="0" value="3">(GMT+03:00) Tbilisi</option>
+                       	<option city='Tehr' timeZoneId="49" gmtAdjustment="GMT+03:30" useDaylightTime="1" value="3.5">(GMT+03:30) Tehran</option>
+                       	<option city='Dubai' timeZoneId="50" gmtAdjustment="GMT+04:00" useDaylightTime="0" value="4">(GMT+04:00) Abu Dhabi, Muscat</option>
+                       	<option city='Dubai' timeZoneId="51" gmtAdjustment="GMT+04:00" useDaylightTime="1" value="4">(GMT+04:00) Baku</option>
+                       	<option city='Dubai' timeZoneId="52" gmtAdjustment="GMT+04:00" useDaylightTime="1" value="4">(GMT+04:00) Yerevan</option>
+                       	<option city='Kab' timeZoneId="53" gmtAdjustment="GMT+04:30" useDaylightTime="0" value="4.5">(GMT+04:30) Kabul</option>
+                       	<option city='Yekat' timeZoneId="54" gmtAdjustment="GMT+05:00" useDaylightTime="1" value="5">(GMT+05:00) Yekaterinburg</option>
+                       	<option city='Yekat' timeZoneId="55" gmtAdjustment="GMT+05:00" useDaylightTime="0" value="5">(GMT+05:00) Islamabad, Karachi, Tashkent</option>
+                       	<option city='Kol' timeZoneId="56" gmtAdjustment="GMT+05:30" useDaylightTime="0" value="5.5">(GMT+05:30) Sri Jayawardenapura</option>
+                       	<option city='Kol' timeZoneId="57" gmtAdjustment="GMT+05:30" useDaylightTime="0" value="5.5">(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi</option>
+                       	<option city='Kath' timeZoneId="58" gmtAdjustment="GMT+05:45" useDaylightTime="0" value="5.75">(GMT+05:45) Kathmandu</option>
+                       	<option city='Almat' timeZoneId="59" gmtAdjustment="GMT+06:00" useDaylightTime="1" value="6">(GMT+06:00) Almaty, Novosibirsk</option>
+                       	<option city='Almat' timeZoneId="60" gmtAdjustment="GMT+06:00" useDaylightTime="0" value="6">(GMT+06:00) Astana, Dhaka</option>
+                       	<option city='Yan' timeZoneId="61" gmtAdjustment="GMT+06:30" useDaylightTime="0" value="6.5">(GMT+06:30) Yangon (Rangoon)</option>
+                       	<option city='Jak' timeZoneId="62" gmtAdjustment="GMT+07:00" useDaylightTime="0" value="7">(GMT+07:00) Bangkok, Hanoi, Jakarta</option>
+                       	<option city='Jak' timeZoneId="63" gmtAdjustment="GMT+07:00" useDaylightTime="1" value="7">(GMT+07:00) Krasnoyarsk</option>
+                       	<option city='Hong' timeZoneId="64" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi</option>
+                       	<option city='Hong' timeZoneId="65" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Kuala Lumpur, Singapore</option>
+                       	<option city='Hong' timeZoneId="66" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Irkutsk, Ulaan Bataar</option>
+                       	<option city='Hong' timeZoneId="67" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Perth</option>
+                       	<option city='Hong' timeZoneId="68" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Taipei</option>
+                       	<option city='Tok' timeZoneId="69" gmtAdjustment="GMT+09:00" useDaylightTime="0" value="9">(GMT+09:00) Osaka, Sapporo, Tokyo</option>
+                       	<option city='Tok' timeZoneId="70" gmtAdjustment="GMT+09:00" useDaylightTime="0" value="9">(GMT+09:00) Seoul</option>
+                       	<option city='Tok' timeZoneId="71" gmtAdjustment="GMT+09:00" useDaylightTime="1" value="9">(GMT+09:00) Yakutsk</option>
+                       	<option city='Adel' timeZoneId="72" gmtAdjustment="GMT+09:30" useDaylightTime="0" value="9.5">(GMT+09:30) Adelaide</option>
+                       	<option city='Adel' timeZoneId="73" gmtAdjustment="GMT+09:30" useDaylightTime="0" value="9.5">(GMT+09:30) Darwin</option>
+                       	<option city='Bris' timeZoneId="74" gmtAdjustment="GMT+10:00" useDaylightTime="0" value="10">(GMT+10:00) Brisbane</option>
+                       	<option city='Bris' timeZoneId="75" gmtAdjustment="GMT+10:00" useDaylightTime="1" value="10">(GMT+10:00) Canberra, Melbourne, Sydney</option>
+                       	<option city='Bris' timeZoneId="76" gmtAdjustment="GMT+10:00" useDaylightTime="1" value="10">(GMT+10:00) Hobart</option>
+                       	<option city='Bris' timeZoneId="77" gmtAdjustment="GMT+10:00" useDaylightTime="0" value="10">(GMT+10:00) Guam, Port Moresby</option>
+                       	<option city='Bris' timeZoneId="78" gmtAdjustment="GMT+10:00" useDaylightTime="1" value="10">(GMT+10:00) Vladivostok</option>
+                       	<option city='Mag' timeZoneId="79" gmtAdjustment="GMT+11:00" useDaylightTime="1" value="11">(GMT+11:00) Magadan, Solomon Is., New Caledonia</option>
+                       	<option city='Auc' timeZoneId="80" gmtAdjustment="GMT+12:00" useDaylightTime="1" value="12">(GMT+12:00) Auckland, Wellington</option>
+                       	<option city='Auc' timeZoneId="81" gmtAdjustment="GMT+12:00" useDaylightTime="0" value="12">(GMT+12:00) Fiji, Kamchatka, Marshall Is.</option>
+
+                       </select>
+                     </div>
+                     <div class="offset-2 col-2">
+                      <label for="cTZ" style="color: white;">.</label>
+                      <div  class="form-control bg-secondary color-palette"><span id="cTZ">(00+3)Istanubl</span>
+                      </div>
+                     </div>
+                   </div>
+                 </div>
+                 <div class="form-group" >
+                  <div class="row">
+                     <div class='col-2'>
+                        <label  for="NTP">NTP Server</label>
+                        <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="IPAddress" id="NTP"  data-inputmask="'alias': 'ip'">
+                     </div>
+                     <div class="offset-4 col-2">
+                      <label for="cNTP" style="color: white;">.</label>
+                      <div  class="form-control bg-secondary color-palette"><span id="cNTP">4.4.4.2</span>
+                      </div>
+                     </div>
+                  </div>
+                 </div>
+                 <div class="form-group" >
+                  <div class="row">
+                     <div class='col-2'>
+                        <label  for="GW">Gateway/router</label>
+                        <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="IPAddress" id="GW"  data-inputmask="'alias': 'ip'">
+                     </div>
+                     <div class="offset-4 col-2">
+                      <label for="cGW" style="color: white;">.</label>
+                      <div  class="form-control bg-secondary color-palette"><span id="cGW">10.11.11.1</span>
+                      </div>
+                     </div>
+                  </div>
+                 </div>
+                <!-- /.card-body -->
+                 <div class="card-footer">
+                  <button type="submit" id="DNSsubmit" class="btn btn-primary">Update Node</button>
+                 </div>
+               </form>
+              </div>
+              <!-- /card body -->
+            </div> <!-- /.card -->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card datacard">
+              <div class="card-header">
+                <div class="row" data-card-widget="collapse">
+                  <div class='col-5'>
+                    <h3 class="card-title" >Nodes status</h3>
                   </div>
                 </div>
                 <div class="row">
@@ -1034,127 +1265,61 @@
                   <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                 </div>
               </div>
-
               <div class="card-body">
-              <!-- form start -->
-               <form>
+                <!-- form start -->
+                <form>
                  <div class="form-group" >
                    <div class="row">
-                    <div class="offset-4 col-8">
-                      <div class="custom-control custom-switch">
-                        <input type="checkbox" class=" custom-control-input " id="customSwitch1">
-                        <label class="custom-control-label" for="customSwitch1"></label>
-                      </div>
-                    </div>
-                   </div>
-                   <div class="row">
-                    <div class="offset-3 col-8">
-                      <label class="" for="">Switch On to join an existing cluster</label>
-                    </div>
-                   </div>
-                   <div class="row">
-                    <div class="col-3">
-                     <label for="User">Node Name</label>
-                     <input type="text" class="form-control" id="Group" placeholder="Node Name">
-                    </div>
-                    <div class="offset-2 col-2">
-                      <label for="cBoxName" style="color: white;">.</label>
-                      <div  class="form-control bg-secondary color-palette"><span id="cBoxName">node_1</span>
-                      </div>
-
-                    </div>
-                  </div>
-
-                 <div class="form-group">
-                   <div class="row">
-                    <div class="col-8">
-
-                      <label  for="UserVol">Users in Group</label>
-                      <select  multiple size=3 class="form-control" id="Groupusers" value="NoUser">
-                        <option value="NoUser">-----</option>
-                      </select>
+                    <div class="offset-4 col-4">
+                      <button type="button" class="btn btn-block bg-gradient-warning btn-lg">Evacuate Node</button>
                     </div>
                    </div>
                  </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                  <button type="submit" id="UnixAddGroup" class="btn btn-primary">Add Group</button>
-                </div>
-              </form>
+               </form>
+              </div><!-- /.card body -->
             </div> <!-- /.card -->
           </div>
-          <div class="col-md-8">
-            <div class="card">
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card datacard">
               <div class="card-header">
-
+                <div class="row" data-card-widget="collapse">
+                  <div class='col-5'>
+                    <h3 class="card-title" >Discovred Nodes</h3>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-2"> Node 1</div>
+                  <div class="col-2"> Node 2</div>
+                  <div class="col-2"> Node 3</div>
+                  <div class="col-2"> Node 4</div>
+                  <div class="col-2"> Node 5</div>
+                  <div class="col-2"> Node 6</div>
+                </div>
+                <div class="card-tools">
+                  <!-- Collapse Button -->
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                </div>
               </div>
-              <!-- /.card-header -->
               <div class="card-body">
-                <table id="example1" class="table table-sm table-hover  table-striped">
-                  <thead>
-                  <tr>
-                    <th>Group Name</th>
-                    <th>Users in Group</th>
-                    <th>Need update</th>
-                    <th>Remove</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                   <tr class="dontdelete" >
-                     <td style="width:25%;">groupname</td>
-                     <td style="width:25%;">
-                       <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selgroupname" title="No Group" data-container="body" data-width="auto" class="groupname selectpicker "
-                        multiple data-actions-box="true" data-live-search="true">
-                       </select>
-                     </td>
-                    <td><button onclick="selbtnclickeduser(this)" id="btnselgroupname" type="button" class="btn btn-primary" >
-                        update
-                      </button>
-                    </td>
-                    <td style="width: 15%;" class="text-center">
-                      <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                        <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                      </a>
-                    </td></tr>
-                  <tr>
-                    <td>Trident</td>
-                    <td> 4</td>
-                    <td>A</td>
-                    <td>A</td>
-                  </tr>
-                  <tr>
-                    <td>Presto</td>
-                    <td>A</td>
-                    <td>A</td>
-                    <td>A</td>
-                  </tr>
-                  <tr>
-                    <td>Other browsers</td>
-                    <td>U</td>
-                    <td>A</td>
-                    <td>A</td>
-                  </tr>
-                  </tbody>
-                  <tfoot>
-                  <tr>
-                    <th>Group Name</th>
-                    <th>Users in Group</th>
-                    <th>Need update</th>
-                    <th>Remove</th>
-                  </tr>
-                  </tfoot>
-                </table>
-              </div>
-              <!-- /.card-body -->
-            </div>
-
+                <!-- form start -->
+                <form>
+                 <div class="form-group" >
+                   <div class="row">
+                    <div class="offset-4 col-4">
+                      <button type="button" class="btn btn-block bg-gradient-info btn-lg">Allow to join the cluster</button>
+                    </div>
+                   </div>
+                 </div>
+               </form>
+              </div><!-- /.card body -->
+            </div> <!-- /.card -->
           </div>
-        </div> <!-- /.row -->
+        </div>
 
       </div> <!-- /.container-fluid -->
-
     </div> <!-- /.content -->
-
   </div> <!-- /.content-wrapper -->
 
 
@@ -1178,30 +1343,35 @@
 <!-- REQUIRED SCRIPTS -->
 
 <!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE -->
-<script src="dist/js/adminlte.js"></script>
-<!-- DataTables  & Plugins -->
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="plugins/jszip/jszip.min.js"></script>
-<script src="plugins/pdfmake/pdfmake.min.js"></script>
-<script src="plugins/pdfmake/vfs_fonts.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-<!-- OPTIONAL SCRIPTS -->
-<script src="dist/js/Qjquery.inputmask.bundle.js"></script>
-<script src="dist/js/QNodes.js" ></script>
-<script src="plugins/chart.js/Chart.min.js"></script>
-<script src="dist/js/demo.js"></script>
-<script src="dist/js/Qmain.js"></script>
-
+  <script src="plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE -->
+  <script src="dist/js/adminlte.js"></script>
+  <!-- DataTables  & Plugins -->
+  <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+  <script src="plugins/jszip/jszip.min.js"></script>
+  <script src="plugins/pdfmake/pdfmake.min.js"></script>
+  <script src="plugins/pdfmake/vfs_fonts.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+  <!-- OPTIONAL SCRIPTS -->
+  <script src="dist/js/Qjquery.inputmask.bundle.js"></script>
+  <script src="plugins/select2/js/select2.full.min.js"></script>
+  <script src="dist/js/QNodes.js" ></script>
+  <script src="plugins/chart.js/Chart.min.js"></script>
+  <script src="dist/js/demo.js"></script>
+  <script src="dist/js/Qmain.js"></script>
+  <script>
+  $('.select2').select2();
+  $(".select2-selection").css('padding','0');
+  $('.datacard').CardWidget('collapse')
+  </script>
 </body>
 </html>
