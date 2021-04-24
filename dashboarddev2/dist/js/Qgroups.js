@@ -9,6 +9,3 @@ $("#example1").DataTable({
   }).buttons().container().appendTo('#example1_wrapper .col-6:eq(0)');
   //$("#example1_filter").css("margin-left","10rem");
 //$("#example1_filter").css("margin-left","10rem");
-
-var ipv4_address = $(".ipaddress");
-ipv4_address.inputmask();
