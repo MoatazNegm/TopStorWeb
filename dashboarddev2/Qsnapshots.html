@@ -1021,175 +1021,177 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-5">
-            <div class="card card-primary card-outline card-outline-tabs">
-              <div class="card-header">
-                <div class="row">
-                  <div class="col-md-12">
-                    <h3 class="card-title">New Snapshot periods</h3>
-                  </div>
-                </div>
-              </div>
-              <form>
-              <div class="card-header border-bottom-0">
-                <div class="row">
-                  <div class='col-12'>
-                    <div class="form-group">
-                      <label  for="Pool">Pool</label>
-                      <select  class="form-control" id="Pool">
-                        <option value="0">32435245446</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class='col-12'>
-                    <div class="form-group">
-                      <label  for="Vol">Volume</label>
-                      <select  class="form-control" id="Vol">
-                        <option value="0">peckFinacne</option>
-                      </select>
+            <form>
+              <div class="card card-primary card-outline card-outline-tabs">
+                <div class="card-header">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h3 class="card-title">New Snapshot periods</h3>
                     </div>
                   </div>
                 </div>
 
-              </div>
-              <div class="card-body">
-                  <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
-                  <li class="nav-item">
-                    <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-Once" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Once</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-Minutely" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Minutely</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#custom-tabs-four-Hourly" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">Hourly</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#custom-tabs-four-Weekly" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Weekly</a>
-                  </li>
-                </ul>
-                </div>
-              <div class="card-body" style="height: 13rem; ">
-                <div class="tab-content" id="custom-tabs-four-tabContent">
-                  <div class="tab-pane fade show active" id="custom-tabs-four-Once" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
-                    <div class="row">
-                      <div class='col-7'>
-                        <div class="form-group">
-                          <label  for="Oncename">Snapshot name</label>
-                          <input type="text" class="form-control" id="Oncename" >
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="card-body">
-                          <button type="submit" id="oncecreate" class="btn btn-primary">Create Snapshot</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="tab-pane fade" id="custom-tabs-four-Hourly" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
-                    <div class="row">
-                      <div class='col-3'>
-                        <div class="form-group">
-                          <label  for="Sminute">At</label>
-                          <input type="number" min='0' max='59' step=1 value=0 class="form-control" id="Sminute" >
-                          <label  for="Sminute"><sup>th</sup> minute</label>
-                        </div>
-                      </div>
-                      <div class='offset-1 col-3'>
-                        <div class="form-group">
-                          <label  for="Hour">at  </label>
-                          <input type="number" min='1' max='23' step=1 value=1 class="form-control" id="Hour" >
-                          <label  for="Hour">o'clock</label>
-                        </div>
-                      </div>
-                      <div class='offset-1 col-3'>
-                        <div class="form-group">
-                          <label  for="KeepHourly">Keep</label>
-                          <input type="number" min='1' max='100' step=1 value=1 class="form-control" id="KeepHourly" >
-                          <label  for="KeepHourly">Snapshots</label>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="card-body">
-                          <button type="submit" id="oncecreate" class="btn btn-primary">Create Snapshot period</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="tab-pane fade" id="custom-tabs-four-Minutely" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
-                    <div class="row">
-                      <div class='col-3'>
-                        <div class="form-group">
-                          <label  for="Minute">Every</label>
-                          <input type="number" min='0' max='59' step=1 value=0 class="form-control" id="Minute" >
-                          <label  for="Minute">minute</label>
-                        </div>
-                      </div>
-                      <div class='offset-1 col-3'>
-                        <div class="form-group">
-                          <label  for="KeepMinutely">Keep</label>
-                          <input type="number" min='1' max='100' step=1 value=1 class="form-control" id="KeepMinutely" >
-                          <label  for="KeepMinutely">Snapshots</label>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="card-body">
-                          <button type="submit" id="oncecreate" class="btn btn-primary">Create Snapshot period</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="tab-pane fade" id="custom-tabs-four-Weekly" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
-                    <div class="row">
-                      <div class='col-3'>
-                        <div class="form-group">
-                          <label>Snaptshot at</label>
-                          <div class="input-group date" id="timepicker" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input" data-target="#timepicker"/>
-                            <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">
-                                <div class="input-group-text"><i class="far fa-clock"></i></div>
-                            </div>
-
-                          </div>
-                          <label>o'clock</label>
-                        </div>
-                      </div>
-                      <div class='offset-1 col-3'>
-                        <div class="form-group">
-                          <label  for="Week">Snapshot on</label>
-                          <select id="Week" class="form-control">
-					                 <option value="Sat">Saturday</option><option value="Sun">Sunday</option><option value="Mon">Monday</option><option value="Tue">Tuesday</option><option value="Wed">Wednesday</option><option value="Thu">Thursday</option><option value="Fri">Friday</option>
-                          <label  for="Week">.</label>
+                <div class="card-header border-bottom-0">
+                  <div class="row">
+                    <div class='col-12'>
+                      <div class="form-group">
+                        <label  for="Pool">Pool</label>
+                        <select  class="form-control" id="Pool">
+                          <option value="0">32435245446</option>
                         </select>
-                        </div>
                       </div>
-                      <div class='offset-1 col-3'>
-                        <div class="form-group">
-                          <label  for="KeepWeekly">Keep</label>
-                          <input type="number" min='1' max='100' step=1 value=1 class="form-control" id="KeepWeekly" >
-                          <label  for="KeepWeekly">Snapshots</label>
-                        </div>
-                      </div>
-
                     </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="card-body">
-                          <button type="submit" id="oncecreate" class="btn btn-primary">Create Snapshot period</button>
+                  </div>
+                  <div class="row">
+                    <div class='col-12'>
+                      <div class="form-group">
+                        <label  for="Vol">Volume</label>
+                        <select  class="form-control" id="Vol">
+                          <option value="0">peckFinacne</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="card-body">
+                    <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-Once" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Once</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-Minutely" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Minutely</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#custom-tabs-four-Hourly" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">Hourly</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#custom-tabs-four-Weekly" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Weekly</a>
+                    </li>
+                  </ul>
+                  </div>
+                <div class="card-body" style="height: 13rem; ">
+                  <div class="tab-content" id="custom-tabs-four-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-four-Once" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
+                      <div class="row">
+                        <div class='col-7'>
+                          <div class="form-group">
+                            <label  for="Oncename">Snapshot name</label>
+                            <input type="text" class="form-control" id="Oncename" >
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="card-body">
+                            <button type="submit" id="oncecreate" class="btn btn-primary">Create Snapshot</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="custom-tabs-four-Hourly" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
+                      <div class="row">
+                        <div class='col-3'>
+                          <div class="form-group">
+                            <label  for="Sminute">At</label>
+                            <input type="number" min='0' max='59' step=1 value=0 class="form-control" id="Sminute" >
+                            <label  for="Sminute"><sup>th</sup> minute</label>
+                          </div>
+                        </div>
+                        <div class='offset-1 col-3'>
+                          <div class="form-group">
+                            <label  for="Hour">at  </label>
+                            <input type="number" min='1' max='23' step=1 value=1 class="form-control" id="Hour" >
+                            <label  for="Hour">o'clock</label>
+                          </div>
+                        </div>
+                        <div class='offset-1 col-3'>
+                          <div class="form-group">
+                            <label  for="KeepHourly">Keep</label>
+                            <input type="number" min='1' max='100' step=1 value=1 class="form-control" id="KeepHourly" >
+                            <label  for="KeepHourly">Snapshots</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="card-body">
+                            <button type="submit" id="oncecreate" class="btn btn-primary">Create Snapshot period</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="custom-tabs-four-Minutely" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
+                      <div class="row">
+                        <div class='col-3'>
+                          <div class="form-group">
+                            <label  for="Minute">Every</label>
+                            <input type="number" min='0' max='59' step=1 value=0 class="form-control" id="Minute" >
+                            <label  for="Minute">minute</label>
+                          </div>
+                        </div>
+                        <div class='offset-1 col-3'>
+                          <div class="form-group">
+                            <label  for="KeepMinutely">Keep</label>
+                            <input type="number" min='1' max='100' step=1 value=1 class="form-control" id="KeepMinutely" >
+                            <label  for="KeepMinutely">Snapshots</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="card-body">
+                            <button type="submit" id="oncecreate" class="btn btn-primary">Create Snapshot period</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="custom-tabs-four-Weekly" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
+                      <div class="row">
+                        <div class='col-3'>
+                          <div class="form-group">
+                            <label>Snaptshot at</label>
+                            <div class="input-group date" id="timepicker" data-target-input="nearest">
+                              <input type="text" class="form-control datetimepicker-input" data-target="#timepicker"/>
+                              <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">
+                                  <div class="input-group-text"><i class="far fa-clock"></i></div>
+                              </div>
+
+                            </div>
+                            <label>o'clock</label>
+                          </div>
+                        </div>
+                        <div class='offset-1 col-3'>
+                          <div class="form-group">
+                            <label  for="Week">Snapshot on</label>
+                            <select id="Week" class="form-control">
+  					                 <option value="Sat">Saturday</option><option value="Sun">Sunday</option><option value="Mon">Monday</option><option value="Tue">Tuesday</option><option value="Wed">Wednesday</option><option value="Thu">Thursday</option><option value="Fri">Friday</option>
+                            <label  for="Week">.</label>
+                          </select>
+                          </div>
+                        </div>
+                        <div class='offset-1 col-3'>
+                          <div class="form-group">
+                            <label  for="KeepWeekly">Keep</label>
+                            <input type="number" min='1' max='100' step=1 value=1 class="form-control" id="KeepWeekly" >
+                            <label  for="KeepWeekly">Snapshots</label>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="card-body">
+                            <button type="submit" id="oncecreate" class="btn btn-primary">Create Snapshot period</button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                <!-- /.card -->
               </div>
-              <!-- /.card -->
-            </div>
+            </form>
 
           </div>
           <div class="col-md-7">
@@ -1271,6 +1273,389 @@
               </div>
 
             </div>
+            <!-- Period list -->
+            <div class="row">
+              <div class="card card-primary card-outline card-outline-tabs">
+              <div class="card-header">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h3 class="card-title">New Snapshot periods</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                  <ul class="nav nav-tabs" id="custom-tabs-four-tabl" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link active" id="custom-tabs-four-home-tabl" data-toggle="pill" href="#custom-tabs-four-Oncel" role="tab" aria-controls="custom-tabs-four-homel" aria-selected="true">Once</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-four-profile-tabl" data-toggle="pill" href="#custom-tabs-four-Minutelyl" role="tab" aria-controls="custom-tabs-four-profilel" aria-selected="false">Minutely</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-four-messages-tabl" data-toggle="pill" href="#custom-tabs-four-Hourlyl" role="tab" aria-controls="custom-tabs-four-messagesl" aria-selected="false">Hourly</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-four-settings-tabl" data-toggle="pill" href="#custom-tabs-four-Weeklyl" role="tab" aria-controls="custom-tabs-four-settingsl" aria-selected="false">Weekly</a>
+                  </li>
+                </ul>
+                </div>
+              <div class="card-body" style="height: 13rem; ">
+                <div class="tab-content" id="custom-tabs-four-tabContent">
+                  <div class="tab-pane fade show active" id="custom-tabs-four-Oncel" role="tabpanel" aria-labelledby="custom-tabs-four-home-tabl">
+                    <table id="Oncetable" class="table table-sm table-hover example1  table-striped">
+                      <thead>
+                      <tr>
+                        <th>Volume</th>
+                        <th>pool</th>
+                        <th>Size(GB)</th>
+                        <th>Snapshots(MB)</th>
+                        <th>Compression%</th>
+                        <th>IP Address</th>
+                        <th>Subnet</th>
+                        <th>Allowed Groups</th>
+                        <th>Need update</th>
+                        <th>Remove Volume</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                       <tr class="dontdelete" >
+                         <td >pecoFinance</td>
+                         <td >74828239292</td>
+                         <td >32</td>
+                         <td >4</td>
+                         <td >1.2x</td>
+                         <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="s" id="s"  data-inputmask="'alias': 'ip'">
+                         </td>
+                         <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="sd">
+                         </td>
+                         <td>
+                           <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
+                            multiple data-actions-box="true" data-live-search="true">
+                           </select>
+                         </td>
+                        <td>
+                          <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
+                            update
+                          </button>
+                        </td>
+                        <td  class="text-center">
+                          <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
+                            <img  src="dist/img/delete.png" alt="cannott upload delete icon">
+                          </a>
+                        </td>
+                        <tr class="dontdelete" >
+                          <td >pecolow</td>
+                          <td >74828239292</td>
+                          <td >10</td>
+                          <td >4</td>
+                          <td >1.98x</td>
+                          <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="ss" id="ss"  data-inputmask="'alias': 'ip'">
+                          </td>
+                          <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="ssd">
+                          </td>
+                          <td>
+                            <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
+                             multiple data-actions-box="true" data-live-search="true">
+                            </select>
+                          </td>
+                         <td>
+                           <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
+                             update
+                           </button>
+                         </td>
+                         <td  class="text-center">
+                           <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
+                             <img  src="dist/img/delete.png" alt="cannott upload delete icon">
+                           </a>
+                         </td>
+
+                      </tr>
+
+                      </tbody>
+                      <tfoot>
+                      <tr>
+                        <th>Volume</th>
+                        <th>pool</th>
+                        <th>Size(GB)</th>
+                        <th>Snapshots(MB)</th>
+                        <th>Compression%</th>
+                        <th>IP Address</th>
+                        <th>Subnet</th>
+                        <th>Allowed Groups</th>
+                        <th>Need update</th>
+                        <th>Remove Volume</th>
+                      </tr>
+                      </tfoot>
+                    </table>
+
+                  </div>
+                  <div class="tab-pane fade" id="custom-tabs-four-Hourlyl" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tabl">
+                    <table id="Hourlytable" class="table table-sm table-hover example1  table-striped">
+                      <thead>
+                      <tr>
+                        <th>Volume</th>
+                        <th>pool</th>
+                        <th>Size(GB)</th>
+                        <th>Snapshots(MB)</th>
+                        <th>Compression%</th>
+                        <th>IP Address</th>
+                        <th>Subnet</th>
+                        <th>Allowed Groups</th>
+                        <th>Need update</th>
+                        <th>Remove Volume</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                       <tr class="dontdelete" >
+                         <td >pecoFinance</td>
+                         <td >74828239292</td>
+                         <td >32</td>
+                         <td >4</td>
+                         <td >1.2x</td>
+                         <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="s" id="s"  data-inputmask="'alias': 'ip'">
+                         </td>
+                         <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="sd">
+                         </td>
+                         <td>
+                           <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
+                            multiple data-actions-box="true" data-live-search="true">
+                           </select>
+                         </td>
+                        <td>
+                          <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
+                            update
+                          </button>
+                        </td>
+                        <td  class="text-center">
+                          <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
+                            <img  src="dist/img/delete.png" alt="cannott upload delete icon">
+                          </a>
+                        </td>
+                        <tr class="dontdelete" >
+                          <td >pecolow</td>
+                          <td >74828239292</td>
+                          <td >10</td>
+                          <td >4</td>
+                          <td >1.98x</td>
+                          <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="ss" id="ss"  data-inputmask="'alias': 'ip'">
+                          </td>
+                          <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="ssd">
+                          </td>
+                          <td>
+                            <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
+                             multiple data-actions-box="true" data-live-search="true">
+                            </select>
+                          </td>
+                         <td>
+                           <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
+                             update
+                           </button>
+                         </td>
+                         <td  class="text-center">
+                           <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
+                             <img  src="dist/img/delete.png" alt="cannott upload delete icon">
+                           </a>
+                         </td>
+
+                      </tr>
+
+                      </tbody>
+                      <tfoot>
+                      <tr>
+                        <th>Volume</th>
+                        <th>pool</th>
+                        <th>Size(GB)</th>
+                        <th>Snapshots(MB)</th>
+                        <th>Compression%</th>
+                        <th>IP Address</th>
+                        <th>Subnet</th>
+                        <th>Allowed Groups</th>
+                        <th>Need update</th>
+                        <th>Remove Volume</th>
+                      </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                  <div class="tab-pane fade" id="custom-tabs-four-Minutelyl" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tabl">
+                    <table id="Minutelytable" class="table table-sm table-hover example1  table-striped">
+                      <thead>
+                      <tr>
+                        <th>Volume</th>
+                        <th>pool</th>
+                        <th>Size(GB)</th>
+                        <th>Snapshots(MB)</th>
+                        <th>Compression%</th>
+                        <th>IP Address</th>
+                        <th>Subnet</th>
+                        <th>Allowed Groups</th>
+                        <th>Need update</th>
+                        <th>Remove Volume</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                       <tr class="dontdelete" >
+                         <td >pecoFinance</td>
+                         <td >74828239292</td>
+                         <td >32</td>
+                         <td >4</td>
+                         <td >1.2x</td>
+                         <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="s" id="s"  data-inputmask="'alias': 'ip'">
+                         </td>
+                         <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="sd">
+                         </td>
+                         <td>
+                           <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
+                            multiple data-actions-box="true" data-live-search="true">
+                           </select>
+                         </td>
+                        <td>
+                          <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
+                            update
+                          </button>
+                        </td>
+                        <td  class="text-center">
+                          <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
+                            <img  src="dist/img/delete.png" alt="cannott upload delete icon">
+                          </a>
+                        </td>
+                        <tr class="dontdelete" >
+                          <td >pecolow</td>
+                          <td >74828239292</td>
+                          <td >10</td>
+                          <td >4</td>
+                          <td >1.98x</td>
+                          <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="ss" id="ss"  data-inputmask="'alias': 'ip'">
+                          </td>
+                          <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="ssd">
+                          </td>
+                          <td>
+                            <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
+                             multiple data-actions-box="true" data-live-search="true">
+                            </select>
+                          </td>
+                         <td>
+                           <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
+                             update
+                           </button>
+                         </td>
+                         <td  class="text-center">
+                           <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
+                             <img  src="dist/img/delete.png" alt="cannott upload delete icon">
+                           </a>
+                         </td>
+
+                      </tr>
+
+                      </tbody>
+                      <tfoot>
+                      <tr>
+                        <th>Volume</th>
+                        <th>pool</th>
+                        <th>Size(GB)</th>
+                        <th>Snapshots(MB)</th>
+                        <th>Compression%</th>
+                        <th>IP Address</th>
+                        <th>Subnet</th>
+                        <th>Allowed Groups</th>
+                        <th>Need update</th>
+                        <th>Remove Volume</th>
+                      </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                  <div class="tab-pane fade" id="custom-tabs-four-Weeklyl" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tabl">
+                    <table id="Weeklytable" class="table table-sm table-hover example1  table-striped">
+                      <thead>
+                      <tr>
+                        <th>Volume</th>
+                        <th>pool</th>
+                        <th>Size(GB)</th>
+                        <th>Snapshots(MB)</th>
+                        <th>Compression%</th>
+                        <th>IP Address</th>
+                        <th>Subnet</th>
+                        <th>Allowed Groups</th>
+                        <th>Need update</th>
+                        <th>Remove Volume</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                       <tr class="dontdelete" >
+                         <td >pecoFinance</td>
+                         <td >74828239292</td>
+                         <td >32</td>
+                         <td >4</td>
+                         <td >1.2x</td>
+                         <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="s" id="s"  data-inputmask="'alias': 'ip'">
+                         </td>
+                         <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="sd">
+                         </td>
+                         <td>
+                           <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
+                            multiple data-actions-box="true" data-live-search="true">
+                           </select>
+                         </td>
+                        <td>
+                          <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
+                            update
+                          </button>
+                        </td>
+                        <td  class="text-center">
+                          <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
+                            <img  src="dist/img/delete.png" alt="cannott upload delete icon">
+                          </a>
+                        </td>
+                        <tr class="dontdelete" >
+                          <td >pecolow</td>
+                          <td >74828239292</td>
+                          <td >10</td>
+                          <td >4</td>
+                          <td >1.98x</td>
+                          <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="ss" id="ss"  data-inputmask="'alias': 'ip'">
+                          </td>
+                          <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="ssd">
+                          </td>
+                          <td>
+                            <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
+                             multiple data-actions-box="true" data-live-search="true">
+                            </select>
+                          </td>
+                         <td>
+                           <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
+                             update
+                           </button>
+                         </td>
+                         <td  class="text-center">
+                           <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
+                             <img  src="dist/img/delete.png" alt="cannott upload delete icon">
+                           </a>
+                         </td>
+
+                      </tr>
+
+                      </tbody>
+                      <tfoot>
+                      <tr>
+                        <th>Volume</th>
+                        <th>pool</th>
+                        <th>Size(GB)</th>
+                        <th>Snapshots(MB)</th>
+                        <th>Compression%</th>
+                        <th>IP Address</th>
+                        <th>Subnet</th>
+                        <th>Allowed Groups</th>
+                        <th>Need update</th>
+                        <th>Remove Volume</th>
+                      </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card -->
+            </div>
+            </div>
+
             <div class="row">
               <div class="col-md-12">
                 <div class="card">
