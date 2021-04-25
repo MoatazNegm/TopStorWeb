@@ -1,1 +1,1 @@
-UnixChkUser2 admin 1619298553 admin
+UnixChkUser admin chk list admin
