@@ -11,11 +11,11 @@
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-
   <!-- DataTables -->
   <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
 
@@ -1004,7 +1004,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Logs</h1>
+            <h1 class="m-0">Received Snapshots Management</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -1022,58 +1022,80 @@
         <div class="row">
           <div class="col-md-12">
             <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Global Log</h3>
+              <!-- form start -->
+              <form>
+                <div class="card-body">
+                  <div class="form-group row">
+                    <label  for="Poolsend" class="col-1 col-form-label" >Pool</label>
+                    <select  class="form-control col-2" id="Poolsend">
+                      <option value="0">32435245446</option>
+                    </select>
+                    <label  for="Volsend" class="offset-1 col-1 col-form-label">Volume</label>
+                    <select  class="form-control col-2" id="Volsend">
+                      <option value="0">peckFinacne</option>
+                    </select>
+                    <label  for="partnercsend" class="offset-1 col-1 col-form-label">Sender</label>
+                    <select  class="form-control col-2" id="partnercsend">
+                      <option value="0">CityCenter</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+              </form>
+              <div class="card-footer">
+                  <h3 class="card-title">Received Snapshtos List</h3>
               </div>
-              <!-- /.card-header -->
-              <div class="card-body">
+                <!-- /.card-header -->
+              <div class="card-body ">
                 <table id="example1" class="table table-sm table-hover  table-striped">
                   <thead>
                   <tr>
+                    <th>Name</th>
                     <th>Date</th>
                     <th>time</th>
-                    <th>User</th>
-                    <th>Node</th>
-                    <th>Description</th>
+                    <th>Remove</th>
+                    <th>Rollbak</th>
                   </tr>
                   </thead>
                   <tbody>
                    <tr class="dontdelete" >
-                     <td >date</td>
-                     <td >time</td>
-                     <td >system</td>
-                     <td >node_1</td>
-                     <td>Data...data....data..</td>
-                   </tr>
+                     <td >Snapshotname</td>
+                     <td >12April2019</td>
+                     <td >12:10am</td>
+                     <td style="width: 15%;" class="text-center">
+                      <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
+                        <img  src="dist/img/delete.png" alt="cannott upload delete icon">
+                      </a>
+                    </td>
+                    <td  class="text-center">
+                      <a  href="javascript:auserdel(\'username\')" >
+                        <img  src="dist/img/return.png" alt="cannott upload delete icon">
+                      </a>
+                    </td>
+                  </tr>
                   <tr>
                     <td>Trident</td>
-                    <td>Win 95+</td>
-                    <td>X</td>
-                    <td>A</td>
-                    <td>A</td>
-                  </tr>
-                  <tr>
-                    <td>Presto</td>
-                    <td>-</td>
-                    <td>A</td>
-                    <td>A</td>
-                    <td>A</td>
-                  </tr>
-                  <tr>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>U</td>
-                    <td>A</td>
-                    <td>A</td>
+                    <td>20May2020</td>
+                    <td >10:23pm</td>
+                    <td style="width: 15%;" class="text-center">
+                     <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
+                       <img  src="dist/img/delete.png" alt="cannott upload delete icon">
+                     </a>
+                    </td>
+                    <td  class="text-center">
+                      <a  href="javascript:auserdel(\'username\')" >
+                        <img  src="dist/img/return.png" alt="cannott upload delete icon">
+                      </a>
+                    </td>
                   </tr>
                   </tbody>
                   <tfoot>
                   <tr>
+                    <th>Name</th>
                     <th>Date</th>
                     <th>time</th>
-                    <th>User</th>
-                    <th>Node</th>
-                    <th>Description</th>
+                    <th>Remove</th>
+                    <th>Rollbak</th>
                   </tr>
                   </tfoot>
                 </table>
@@ -1081,72 +1103,7 @@
               <!-- /.card-body -->
             </div>
 
-          </div>
-        </div> <!-- /.row -->
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Condensed Full Width Table</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body p-0">
-                <table class="table table-sm">
-                  <thead>
-                    <tr>
-                      <th style="width: 10px">#</th>
-                      <th>Task</th>
-                      <th>Progress</th>
-                      <th style="width: 40px">Label</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>1.</td>
-                      <td>Update software</td>
-                      <td>
-                        <div class="progress progress-xs">
-                          <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                        </div>
-                      </td>
-                      <td><span class="badge bg-danger">55%</span></td>
-                    </tr>
-                    <tr>
-                      <td>2.</td>
-                      <td>Clean database</td>
-                      <td>
-                        <div class="progress progress-xs">
-                          <div class="progress-bar bg-warning" style="width: 70%"></div>
-                        </div>
-                      </td>
-                      <td><span class="badge bg-warning">70%</span></td>
-                    </tr>
-                    <tr>
-                      <td>3.</td>
-                      <td>Cron job running</td>
-                      <td>
-                        <div class="progress progress-xs progress-striped active">
-                          <div class="progress-bar bg-primary" style="width: 30%"></div>
-                        </div>
-                      </td>
-                      <td><span class="badge bg-primary">30%</span></td>
-                    </tr>
-                    <tr>
-                      <td>4.</td>
-                      <td>Fix and squish bugs</td>
-                      <td>
-                        <div class="progress progress-xs progress-striped active">
-                          <div class="progress-bar bg-success" style="width: 90%"></div>
-                        </div>
-                      </td>
-                      <td><span class="badge bg-success">90%</span></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.card-body -->
-            </div>
-
+            </div> <!-- /.card -->
           </div>
         </div> <!-- /.row -->
 
