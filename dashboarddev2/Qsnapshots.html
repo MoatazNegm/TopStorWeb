@@ -1065,7 +1065,7 @@
                         </div>
                         <div class="form-group row">
                           <div class="col-md-12">
-                            <div class="card card-primary card-outline card-outline-tab">
+                            <div class="card card-primary card-outline card-outline-tab" style="padding: 5px;">
                               <h4>Snapshots Created manually</h4>
                               <table id="Oncetable" class="table table-sm table-hover example1  table-striped">
                                 <thead class="bg-info">
@@ -1152,7 +1152,7 @@
                         </div>
                         <div class="form-group row">
                           <div class="col-md-12">
-                            <div class="card card-primary card-outline card-outline-tab">
+                            <div class="card card-primary card-outline card-outline-tab" style="padding: 5px;">
                               <h4>list of hourly periods</h4>
                               <table id="" class="table table-sm table-hover example1  table-striped">
                                 <thead class="bg-info">
@@ -1203,8 +1203,8 @@
                         </div>
                         <div class="form-group row">
                           <div class="col-md-12">
-                            <div class="card card-primary card-outline card-outline-tab">
-                              <h4>Snapshots Created manually</h4>
+                            <div class="card card-primary card-outline card-outline-tab" style="padding: 5px;">
+                              <h4>Snapshots Created Hourly</h4>
                               <table id="Oncetable" class="table table-sm table-hover example1  table-striped">
                                 <thead class="bg-info">
                                 <tr>
@@ -1286,7 +1286,7 @@
                             </div>
                             <div class="form-group row">
                               <div class="col-md-12">
-                                <div class="card card-primary card-outline card-outline-tab">
+                                <div class="card card-primary card-outline card-outline-tab" style="padding: 5px;">
                                   <h4>list of minutley periods</h4>
                                   <table id="" class="table table-sm table-hover example1  table-striped">
                                     <thead class="bg-info">
@@ -1333,8 +1333,8 @@
                             </div>
                             <div class="form-group row">
                               <div class="col-md-12">
-                                <div class="card card-primary card-outline card-outline-tab">
-                                  <h4>Snapshots Created manually</h4>
+                                <div class="card card-primary card-outline card-outline-tab" style="padding: 5px;">
+                                  <h4>Snapshots Created Minutely</h4>
                                   <table id="Oncetable" class="table table-sm table-hover example1  table-striped">
                                     <thead class="bg-info">
                                     <tr>
@@ -1428,7 +1428,7 @@
                             </div>
                             <div class="form-group row">
                               <div class="col-md-12">
-                                <div class="card card-primary card-outline card-outline-tab">
+                                <div class="card card-primary card-outline card-outline-tab" style="padding: 5px;">
                                   <h4>list of weekly periods</h4>
                                   <table id="" class="table table-sm table-hover example1  table-striped">
                                     <thead class="bg-info">
@@ -1479,8 +1479,8 @@
                             </div>
                             <div class="form-group row">
                               <div class="col-md-12">
-                                <div class="card card-primary card-outline card-outline-tab">
-                                  <h4>Snapshots Created manually</h4>
+                                <div class="card card-primary card-outline card-outline-tab" style="padding: 5px;">
+                                  <h4>Snapshots Created Weekly</h4>
                                   <table id="Oncetable" class="table table-sm table-hover example1  table-striped">
                                     <thead class="bg-info">
                                     <tr>
@@ -1544,129 +1544,16 @@
                                 </div>
                               </div>
                             </div>
-
-
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-body">
-                    <div class="tab-content" id="custom-tabs-four-tabContent"  >
-                      <div class="tab-pane fade custom-tabs-four-Minutely" id="custom-tabs-four-Minutely2" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
-                        <div class="row ">
-                          <div class="col-md-12 ">
-                            <div class="card ">
-                              <div class="card-header">
-                                <div class="row ">
-                                  <div class="col-md-12 ">
-                                <h3>hihihi</h3>
-                              </div>
-                            </div>
-                              </div>
-                              <div class="card-body">
-                                <table id="Oncetable" class="table table-sm table-hover example1  table-striped">
-                                  <thead>
-                                  <tr>
-                                    <th>Volume</th>
-                                    <th>pool</th>
-                                    <th>Size(GB)</th>
-                                    <th>Snapshots(MB)</th>
-                                    <th>Compression%</th>
-                                    <th>IP Address</th>
-                                    <th>Subnet</th>
-                                    <th>Allowed Groups</th>
-                                    <th>Need update</th>
-                                    <th>Remove Volume</th>
-                                  </tr>
-                                  </thead>
-                                  <tbody>
-                                   <tr class="dontdelete" >
-                                     <td >pecoFinance</td>
-                                     <td >74828239292</td>
-                                     <td >32</td>
-                                     <td >4</td>
-                                     <td >1.2x</td>
-                                     <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="s" id="s"  data-inputmask="'alias': 'ip'">
-                                     </td>
-                                     <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="sd">
-                                     </td>
-                                     <td>
-                                       <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
-                                        multiple data-actions-box="true" data-live-search="true">
-                                       </select>
-                                     </td>
-                                    <td>
-                                      <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
-                                        update
-                                      </button>
-                                    </td>
-                                    <td  class="text-center">
-                                      <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                                        <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                                      </a>
-                                    </td>
-                                    <tr class="dontdelete" >
-                                      <td >pecolow</td>
-                                      <td >74828239292</td>
-                                      <td >10</td>
-                                      <td >4</td>
-                                      <td >1.98x</td>
-                                      <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="ss" id="ss"  data-inputmask="'alias': 'ip'">
-                                      </td>
-                                      <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="ssd">
-                                      </td>
-                                      <td>
-                                        <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
-                                         multiple data-actions-box="true" data-live-search="true">
-                                        </select>
-                                      </td>
-                                     <td>
-                                       <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
-                                         update
-                                       </button>
-                                     </td>
-                                     <td  class="text-center">
-                                       <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                                         <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                                       </a>
-                                     </td>
-
-                                  </tr>
-
-                                  </tbody>
-                                  <tfoot>
-                                  <tr>
-                                    <th>Volume</th>
-                                    <th>pool</th>
-                                    <th>Size(GB)</th>
-                                    <th>Snapshots(MB)</th>
-                                    <th>Compression%</th>
-                                    <th>IP Address</th>
-                                    <th>Subnet</th>
-                                    <th>Allowed Groups</th>
-                                    <th>Need update</th>
-                                    <th>Remove Volume</th>
-                                  </tr>
-                                  </tfoot>
-                                </table>
-                              </div>
-                            </div>
-                          </div>
                         </div>
-                      </div>
                     </div>
                   </div>
 
-
-
-
-                  <!-- /.card -->
                 </div>
-
-
             </div>
-            <div class="col-md-7">
-              <div class="row">
-                <div class="col-md-6">
+          </div>
+        </form>
+        <div class="row">
+            <div class="col-md-6">
                   <div class="card">
                     <div class="card-header">
                       <h3 class="card-title"> Metadata+Snapshot on Volumes </h3>
@@ -1677,560 +1564,73 @@
                       </div>
                     </div>
                   </div> <!-- /.card -->
+            </div>
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-body p-0">
+                  <table class="table table-sm">
+                    <thead>
+                      <tr>
+                        <th style="width: 10px">Time</th>
+                        <th>Volume Task</th>
+                        <th>Progress</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>1.</td>
+                        <td>Update software</td>
+                        <td>
+                          <div class="progress progress-xs">
+                            <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>2.</td>
+                        <td>Clean database</td>
+                        <td>
+                          <div class="progress progress-xs">
+                            <div class="progress-bar bg-warning" style="width: 70%"></div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>3.</td>
+                        <td>Cron job running</td>
+                        <td>
+                          <div class="progress progress-xs progress-striped active">
+                            <div class="progress-bar bg-primary" style="width: 30%"></div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>4.</td>
+                        <td>Fix and squish bugs</td>
+                        <td>
+                          <div class="progress progress-xs progress-striped active">
+                            <div class="progress-bar bg-success" style="width: 90%"></div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>4.</td>
+                        <td>Fix and squish bugs</td>
+                        <td>
+                          <div class="progress progress-xs progress-striped active">
+                            <div class="progress-bar bg-success" style="width: 90%"></div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-                <div class="col-md-6">
-                  <div class="card">
-                    <div class="card-body p-0">
-                      <table class="table table-sm">
-                        <thead>
-                          <tr>
-                            <th style="width: 10px">Time</th>
-                            <th>Volume Task</th>
-                            <th>Progress</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>1.</td>
-                            <td>Update software</td>
-                            <td>
-                              <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>2.</td>
-                            <td>Clean database</td>
-                            <td>
-                              <div class="progress progress-xs">
-                                <div class="progress-bar bg-warning" style="width: 70%"></div>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>3.</td>
-                            <td>Cron job running</td>
-                            <td>
-                              <div class="progress progress-xs progress-striped active">
-                                <div class="progress-bar bg-primary" style="width: 30%"></div>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>4.</td>
-                            <td>Fix and squish bugs</td>
-                            <td>
-                              <div class="progress progress-xs progress-striped active">
-                                <div class="progress-bar bg-success" style="width: 90%"></div>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>4.</td>
-                            <td>Fix and squish bugs</td>
-                            <td>
-                              <div class="progress progress-xs progress-striped active">
-                                <div class="progress-bar bg-success" style="width: 90%"></div>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <!-- /.card-body -->
-                  </div>
-                </div>
-
-              </div>
-              <!-- Period list -->
-              <div class="row">
-                <div class="card card-primary card-outline card-outline-tabs">
-                <div class="card-header">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <h3 class="card-title">New Snapshot periods</h3>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-body">
-                    <ul class="nav nav-tabs" id="custom-tabs-four-tabl" role="tablist">
-                    <li class="nav-item">
-                      <a class="nav-link active" id="custom-tabs-four-home-tabl" data-toggle="pill" href="#custom-tabs-four-Oncel" role="tab" aria-controls="custom-tabs-four-homel" aria-selected="true">Once</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" id="custom-tabs-four-profile-tabl" data-toggle="pill" href="#custom-tabs-four-Minutelyl" role="tab" aria-controls="custom-tabs-four-profilel" aria-selected="false">Minutely</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" id="custom-tabs-four-messages-tabl" data-toggle="pill" href="#custom-tabs-four-Hourlyl" role="tab" aria-controls="custom-tabs-four-messagesl" aria-selected="false">Hourly</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" id="custom-tabs-four-settings-tabl" data-toggle="pill" href="#custom-tabs-four-Weeklyl" role="tab" aria-controls="custom-tabs-four-settingsl" aria-selected="false">Weekly</a>
-                    </li>
-                  </ul>
-                  </div>
-                <div class="card-body" style="height: 13rem; ">
-                  <div class="tab-content" id="custom-tabs-four-tabContent">
-                    <div class="tab-pane fade show active" id="custom-tabs-four-Oncel" role="tabpanel" aria-labelledby="custom-tabs-four-home-tabl">
-                      <table id="Oncetable" class="table table-sm table-hover example1  table-striped">
-                        <thead>
-                        <tr>
-                          <th>Volume</th>
-                          <th>pool</th>
-                          <th>Size(GB)</th>
-                          <th>Snapshots(MB)</th>
-                          <th>Compression%</th>
-                          <th>IP Address</th>
-                          <th>Subnet</th>
-                          <th>Allowed Groups</th>
-                          <th>Need update</th>
-                          <th>Remove Volume</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                         <tr class="dontdelete" >
-                           <td >pecoFinance</td>
-                           <td >74828239292</td>
-                           <td >32</td>
-                           <td >4</td>
-                           <td >1.2x</td>
-                           <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="s" id="s"  data-inputmask="'alias': 'ip'">
-                           </td>
-                           <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="sd">
-                           </td>
-                           <td>
-                             <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
-                              multiple data-actions-box="true" data-live-search="true">
-                             </select>
-                           </td>
-                          <td>
-                            <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
-                              update
-                            </button>
-                          </td>
-                          <td  class="text-center">
-                            <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                              <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                            </a>
-                          </td>
-                          <tr class="dontdelete" >
-                            <td >pecolow</td>
-                            <td >74828239292</td>
-                            <td >10</td>
-                            <td >4</td>
-                            <td >1.98x</td>
-                            <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="ss" id="ss"  data-inputmask="'alias': 'ip'">
-                            </td>
-                            <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="ssd">
-                            </td>
-                            <td>
-                              <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
-                               multiple data-actions-box="true" data-live-search="true">
-                              </select>
-                            </td>
-                           <td>
-                             <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
-                               update
-                             </button>
-                           </td>
-                           <td  class="text-center">
-                             <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                               <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                             </a>
-                           </td>
-
-                        </tr>
-
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                          <th>Volume</th>
-                          <th>pool</th>
-                          <th>Size(GB)</th>
-                          <th>Snapshots(MB)</th>
-                          <th>Compression%</th>
-                          <th>IP Address</th>
-                          <th>Subnet</th>
-                          <th>Allowed Groups</th>
-                          <th>Need update</th>
-                          <th>Remove Volume</th>
-                        </tr>
-                        </tfoot>
-                      </table>
-
-                    </div>
-                    <div class="tab-pane fade" id="custom-tabs-four-Hourlyl" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tabl">
-                      <table id="Hourlytable" class="table table-sm table-hover example1  table-striped">
-                        <thead>
-                        <tr>
-                          <th>Volume</th>
-                          <th>pool</th>
-                          <th>Size(GB)</th>
-                          <th>Snapshots(MB)</th>
-                          <th>Compression%</th>
-                          <th>IP Address</th>
-                          <th>Subnet</th>
-                          <th>Allowed Groups</th>
-                          <th>Need update</th>
-                          <th>Remove Volume</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                         <tr class="dontdelete" >
-                           <td >pecoFinance</td>
-                           <td >74828239292</td>
-                           <td >32</td>
-                           <td >4</td>
-                           <td >1.2x</td>
-                           <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="s" id="s"  data-inputmask="'alias': 'ip'">
-                           </td>
-                           <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="sd">
-                           </td>
-                           <td>
-                             <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
-                              multiple data-actions-box="true" data-live-search="true">
-                             </select>
-                           </td>
-                          <td>
-                            <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
-                              update
-                            </button>
-                          </td>
-                          <td  class="text-center">
-                            <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                              <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                            </a>
-                          </td>
-                          <tr class="dontdelete" >
-                            <td >pecolow</td>
-                            <td >74828239292</td>
-                            <td >10</td>
-                            <td >4</td>
-                            <td >1.98x</td>
-                            <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="ss" id="ss"  data-inputmask="'alias': 'ip'">
-                            </td>
-                            <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="ssd">
-                            </td>
-                            <td>
-                              <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
-                               multiple data-actions-box="true" data-live-search="true">
-                              </select>
-                            </td>
-                           <td>
-                             <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
-                               update
-                             </button>
-                           </td>
-                           <td  class="text-center">
-                             <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                               <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                             </a>
-                           </td>
-
-                        </tr>
-
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                          <th>Volume</th>
-                          <th>pool</th>
-                          <th>Size(GB)</th>
-                          <th>Snapshots(MB)</th>
-                          <th>Compression%</th>
-                          <th>IP Address</th>
-                          <th>Subnet</th>
-                          <th>Allowed Groups</th>
-                          <th>Need update</th>
-                          <th>Remove Volume</th>
-                        </tr>
-                        </tfoot>
-                      </table>
-                    </div>
-                    <div class="tab-pane fade" id="custom-tabs-four-Minutelyl" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tabl">
-                      <table id="Minutelytable" class="table table-sm table-hover example1  table-striped">
-                        <thead>
-                        <tr>
-                          <th>Volume</th>
-                          <th>pool</th>
-                          <th>Size(GB)</th>
-                          <th>Snapshots(MB)</th>
-                          <th>Compression%</th>
-                          <th>IP Address</th>
-                          <th>Subnet</th>
-                          <th>Allowed Groups</th>
-                          <th>Need update</th>
-                          <th>Remove Volume</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                         <tr class="dontdelete" >
-                           <td >pecoFinance</td>
-                           <td >74828239292</td>
-                           <td >32</td>
-                           <td >4</td>
-                           <td >1.2x</td>
-                           <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="s" id="s"  data-inputmask="'alias': 'ip'">
-                           </td>
-                           <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="sd">
-                           </td>
-                           <td>
-                             <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
-                              multiple data-actions-box="true" data-live-search="true">
-                             </select>
-                           </td>
-                          <td>
-                            <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
-                              update
-                            </button>
-                          </td>
-                          <td  class="text-center">
-                            <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                              <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                            </a>
-                          </td>
-                          <tr class="dontdelete" >
-                            <td >pecolow</td>
-                            <td >74828239292</td>
-                            <td >10</td>
-                            <td >4</td>
-                            <td >1.98x</td>
-                            <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="ss" id="ss"  data-inputmask="'alias': 'ip'">
-                            </td>
-                            <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="ssd">
-                            </td>
-                            <td>
-                              <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
-                               multiple data-actions-box="true" data-live-search="true">
-                              </select>
-                            </td>
-                           <td>
-                             <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
-                               update
-                             </button>
-                           </td>
-                           <td  class="text-center">
-                             <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                               <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                             </a>
-                           </td>
-
-                        </tr>
-
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                          <th>Volume</th>
-                          <th>pool</th>
-                          <th>Size(GB)</th>
-                          <th>Snapshots(MB)</th>
-                          <th>Compression%</th>
-                          <th>IP Address</th>
-                          <th>Subnet</th>
-                          <th>Allowed Groups</th>
-                          <th>Need update</th>
-                          <th>Remove Volume</th>
-                        </tr>
-                        </tfoot>
-                      </table>
-                    </div>
-                    <div class="tab-pane fade" id="custom-tabs-four-Weeklyl" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tabl">
-                      <table id="Weeklytable" class="table table-sm table-hover example1  table-striped">
-                        <thead>
-                        <tr>
-                          <th>Volume</th>
-                          <th>pool</th>
-                          <th>Size(GB)</th>
-                          <th>Snapshots(MB)</th>
-                          <th>Compression%</th>
-                          <th>IP Address</th>
-                          <th>Subnet</th>
-                          <th>Allowed Groups</th>
-                          <th>Need update</th>
-                          <th>Remove Volume</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                         <tr class="dontdelete" >
-                           <td >pecoFinance</td>
-                           <td >74828239292</td>
-                           <td >32</td>
-                           <td >4</td>
-                           <td >1.2x</td>
-                           <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="s" id="s"  data-inputmask="'alias': 'ip'">
-                           </td>
-                           <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="sd">
-                           </td>
-                           <td>
-                             <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
-                              multiple data-actions-box="true" data-live-search="true">
-                             </select>
-                           </td>
-                          <td>
-                            <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
-                              update
-                            </button>
-                          </td>
-                          <td  class="text-center">
-                            <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                              <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                            </a>
-                          </td>
-                          <tr class="dontdelete" >
-                            <td >pecolow</td>
-                            <td >74828239292</td>
-                            <td >10</td>
-                            <td >4</td>
-                            <td >1.98x</td>
-                            <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="ss" id="ss"  data-inputmask="'alias': 'ip'">
-                            </td>
-                            <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="ssd">
-                            </td>
-                            <td>
-                              <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
-                               multiple data-actions-box="true" data-live-search="true">
-                              </select>
-                            </td>
-                           <td>
-                             <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
-                               update
-                             </button>
-                           </td>
-                           <td  class="text-center">
-                             <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                               <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                             </a>
-                           </td>
-
-                        </tr>
-
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                          <th>Volume</th>
-                          <th>pool</th>
-                          <th>Size(GB)</th>
-                          <th>Snapshots(MB)</th>
-                          <th>Compression%</th>
-                          <th>IP Address</th>
-                          <th>Subnet</th>
-                          <th>Allowed Groups</th>
-                          <th>Need update</th>
-                          <th>Remove Volume</th>
-                        </tr>
-                        </tfoot>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-                <!-- /.card -->
-              </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="card">
-                    <div class="card-header">
-                      <h3 class="card-title">CIFS volume list</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                      <table id="example1" class="table table-sm table-hover example1  table-striped">
-                        <thead>
-                        <tr>
-                          <th>Volume</th>
-                          <th>pool</th>
-                          <th>Size(GB)</th>
-                          <th>Snapshots(MB)</th>
-                          <th>Compression%</th>
-                          <th>IP Address</th>
-                          <th>Subnet</th>
-                          <th>Allowed Groups</th>
-                          <th>Need update</th>
-                          <th>Remove Volume</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                         <tr class="dontdelete" >
-                           <td >pecoFinance</td>
-                           <td >74828239292</td>
-                           <td >32</td>
-                           <td >4</td>
-                           <td >1.2x</td>
-                           <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="s" id="s"  data-inputmask="'alias': 'ip'">
-                           </td>
-                           <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="sd">
-                           </td>
-                           <td>
-                             <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
-                              multiple data-actions-box="true" data-live-search="true">
-                             </select>
-                           </td>
-                          <td>
-                            <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
-                              update
-                            </button>
-                          </td>
-                          <td  class="text-center">
-                            <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                              <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                            </a>
-                          </td>
-                          <tr class="dontdelete" >
-                            <td >pecolow</td>
-                            <td >74828239292</td>
-                            <td >10</td>
-                            <td >4</td>
-                            <td >1.98x</td>
-                            <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="ss" id="ss"  data-inputmask="'alias': 'ip'">
-                            </td>
-                            <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="ssd">
-                            </td>
-                            <td>
-                              <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
-                               multiple data-actions-box="true" data-live-search="true">
-                              </select>
-                            </td>
-                           <td>
-                             <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
-                               update
-                             </button>
-                           </td>
-                           <td  class="text-center">
-                             <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                               <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                             </a>
-                           </td>
-
-                        </tr>
-
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                          <th>Volume</th>
-                          <th>pool</th>
-                          <th>Size(GB)</th>
-                          <th>Snapshots(MB)</th>
-                          <th>Compression%</th>
-                          <th>IP Address</th>
-                          <th>Subnet</th>
-                          <th>Allowed Groups</th>
-                          <th>Need update</th>
-                          <th>Remove Volume</th>
-                        </tr>
-                        </tfoot>
-                      </table>
-                    </div>
-                    <!-- /.card-body -->
-                  </div>
-
-                </div>
-
-
-
-
+                <!-- /.card-body -->
               </div>
             </div>
-          </div>
+
+        </div>
+              <!-- Period list -->
           <div class="row">
             <div class="col-md-12">
               <div class="card">
@@ -2329,8 +1729,9 @@
               </div>
 
             </div>
-          </div> <!-- /.row -->
-        </form>
+          </div>
+
+    
       </div> <!-- /.container-fluid -->
 
     </div> <!-- /.content -->
