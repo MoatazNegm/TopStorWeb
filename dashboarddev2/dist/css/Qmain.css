@@ -1,3 +1,24 @@
 .SelectedFree { border: solid green; }
 .SelectedFreered  { border: solid red; }
 .SelectedFreewhite  { border: solid white }
+.imgstyle { height:4.7rem; 
+        width:3.3rem;
+}
+.psize { 
+	font-weight: bold;
+	color: darkblue;
+	margin-top: -2.5rem;
+	margin-left: -0.55rem;
+	margin-bottom: 1.1rem;
+	text-align:center;
+	width:4.4rem;
+}
+.pimage {
+    text-align: center;
+    width: 4.4rem;
+    margin-bottom: 0;
+       margin-left: -0.5rem;
+    font-size: 0.8rem;
+    line-height: .9em;
+ }
+                      

@@ -1,7 +1,7 @@
 //input mask bundle ip address
 function memberclick(){
-    name=$(this).attr('data-htname');
-    console.log('hihihi',name)
+    hname=$(this).attr('data-htname');
+    console.log('hihihi',hname)
 
     if($(this).children('img').hasClass("SelectedFreered") > 0 ) {
         $(this).children('img').removeClass("SelectedFreered")
@@ -13,7 +13,7 @@ function memberclick(){
       $('img.server').addClass("SelectedFreewhite");
       $(this).children('img').removeClass("SelectedFreewhite")
       $(this).children('img').addClass("SelectedFreered");
-        selhosts=name;
+        selhosts=hname;
         $("#RhostForget").attr('disabled',false);
     }
 }
