@@ -1,1 +1,1 @@
-{"hostname":"dhcp6517","name":"dhcp6517","addr":"10.11.11.241","addrsubnet":"24","rout":"10.0.2.2","dns":"192.168.110.136","mgmtip":"192.168.43.7","mgmtsubnet":"24","ntp":"-1","tz":"-1","gw":"-1","configured":"no"}
+{"hostname":"dhcp6517","name":"dhcp6517","addr":"10.11.11.241","addrsubnet":"24","rout":"10.0.2.2","dns":"192.168.51.172","mgmtip":"192.168.43.7","mgmtsubnet":"24","ntp":"-1","tz":"-1","gw":"-1","configured":"no"}

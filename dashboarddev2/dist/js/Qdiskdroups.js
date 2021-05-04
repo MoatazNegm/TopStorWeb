@@ -17,23 +17,25 @@ disks = [];
  imgf = 'disk-image.png'
  diskimg = 'disk-image'
  clickdisk = 'href="#"'
-  $("#freedisks").append(
+  $(".freedisks").append(
       '<div id="disk'+disks[kk].pool+'" class=" col-'+col+' disks '+disks[kk]['host']+' '+disks[kk]['pool']+' '+disks[kk]['status']+' '+disks[kk]['changeop']+'">'
      
 						/*      +'   <div class="a413">' */
-      +'  <a id="'+kk+'" '+clickdisk+'class="img-clck"  >'
-      +'     <img id="iimf" class="img412 imgstyle '+diskimg+' disk'+kk+'" src="img/'+imgf+'" />'
-      +'  <p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>'
-      +'  </a>'
-    
+        +'  <a id="'+kk+'2" '+clickdisk+' class="img-clck" >'
+        +'     <img class="img412 imgstyle '+diskimg+' disk'+kk+'" src="img/'+imgf+'" />'
+        +'  <p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p>'
+        +' <p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>'
+        +'  </a>'
+
 	 );
-   $("#freedisks").append(
+   $(".freedisks").append(
       '<div id="disk'+disks[kk].pool+'2" class=" col-'+col+' disks '+disks[kk]['host']+' '+disks[kk]['pool']+' '+disks[kk]['status']+' '+disks[kk]['changeop']+'">'
      
 						/*      +'   <div class="a413">' */
       +'  <a id="'+kk+'2" '+clickdisk+' class="img-clck" >'
       +'     <img class="img412 imgstyle '+diskimg+' disk'+kk+'" src="img/'+imgf+'" />'
-      +'  <p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p><p class="pimage p'+disks[kk]["status"]+'">'+disks[kk]["status"]+'</p><p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>'
+      +'  <p class="psize">'+disks[kk]["size"]+'</p></a><p class="pimage">disk'+kk+'</p>'
+      +' <p class="pimage">'+disks[kk]["grouptype"]+'</p><p class="pimage">'+disks[kk]["fromhost"]+'</p>'
       +'  </a>'
   
 	 );

@@ -1013,13 +1013,13 @@
                 </div>
                 <div class="row" data-card-widget="collapse">
                   <div class='col-5'>
-                    <h3 class="card-title text-lg" >Free disks</h3>
+                    <h3 class="card-title text-lg" >Update Pool: <strong>PDHCP234445532</strong></h3>
                   </div>
                 </div>
 
               </div>
               <div class="card-header">
-                <div id="freedisks" class="row">
+                <div id="freediskspdhcp23445532" class="row freedisks">
                 
 
                 </div>
@@ -1029,15 +1029,126 @@
                 <!-- form start -->
                 <form>
                 <!-- /.card-body -->
-                 <div class="card-footer">
-                  <button type="submit" id="DNSsubmit" class="btn btn-primary">Update Node</button>
-                 </div>
+                 
+                  <div class="row card-header" >
+                    
+                      <div class='col-3' style="margin-bottom: 1rem;">
+                        <label for="pooladdlog" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button id="pooladdlog" type="submit" class="btn btn-primary">add as a read/write cache</button>
+                        </label>
+                      </div>
+                      <div class='col-3' style="margin-bottom: 1rem;">
+                        <label for="pooladdcache" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button id="pooladdcache" type="submit" class="btn btn-primary">add as a read cache</button>
+                        </label>
+                      </div>
+                      <div class='col-3' style="margin-bottom: 1rem;">
+                        <label for="pooladdraidtriple" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button id="pooladdraidtriple" type="submit" class="btn btn-primary">add this raid 6+ group </button>
+                        </label>
+                      </div>
+                      <div class='col-3' style="margin-bottom: 1rem;">
+                        <label for="pooladdraiddual" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button id="pooladdraiddual" type="submit" class="btn btn-primary">add this raid 6 group </button>
+                        </label>
+                      </div>
+                      <div class='col-3' style="margin-bottom: 1rem;">
+                        <label for="pooladdraidsingle" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button id="pooladdraidsingle" type="submit" class="btn btn-primary">add this raid 5 group </button>
+                        </label>
+                      </div>
+                      <div class='col-3' style="margin-bottom: 1rem;">
+                        <label for="pooladdstripe" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button id="pooladdstripe" type="submit" class="btn btn-primary">add this space </button>
+                        </label>
+                      </div>
+                      <div class='col-3' style="margin-bottom: 1rem;">
+                        <label for="pooladdspare" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button id="pooladdspare" type="submit" class="btn btn-primary">add as a spare disk</button>
+                        </label>
+                      </div>
+                      <div class='col-3' style="margin-bottom: 1rem;">
+                        <label for="pooladdmirror" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button id="pooladdmirror" type="submit" class="btn btn-primary">add this mirror </button>
+                        </label>
+                      </div>
+                  </div>
+                </form>
+              </div>
+              <!-- /card body -->
+            </div> <!-- /.card -->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-outline card-primary datacard">
+              <div class="card-header" style="cursor: cell;">
+                <div class="card-tools" >
+                  <!-- Collapse Button -->
+                  <button type="button" class="btn btn-tool "  data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                </div>
+                <div class="row" data-card-widget="collapse">
+                  <div class='col-5'>
+                    <h3 class="card-title text-lg" >Create New Pool</h3>
+                  </div>
+                </div>
+
+              </div>
+              <div class="card-header">
+                <div id="freedisksfree" class="row freedisks">
+                
+
+                </div>
+              </div>
+
+              <div class="card-body" >
+                <!-- form start -->
+                <form>
+                  <!-- /.card-body -->
+                 
+                  <div  class="row card-header">
+                    <div class='col-3' style="margin-bottom: 1rem;">
+                      <label for="poolcreatesingle" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                      <button id="poolcreatesingle" type="submit" class="btn btn-primary form-control">Single Disk Pool</button>
+                      </label>
+                    </div>
+
+                    <div class='col-3'  style="margin-bottom: 1rem;">
+                      <label for="poolcreatemirror" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                        <button id="poolcreatemirror" type="submit" class="btn btn-primary col-12 ">Mirror Pool</button>
+                      </label>
+                    </div>
+
+                    <div class='col-3' style="margin-bottom: 1rem;">
+                      <label for="poolcreateraidsingle" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                        <button id="poolcreateraidsingle" type="submit" class="btn btn-primary">Raid 5 (single disk parity)</button>
+                      </label>
+                    </div>
+
+                    <div class='col-3' style="margin-bottom: 1rem;">
+                      <label for="poolcreatestripe" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                        <button id="poolcreatestripe" type="submit" class="btn btn-primary">(multi disk strip)(no parity)</button>
+                      </label>
+                    </div>
+                    <div class='col-3' style="margin-bottom: 1rem;">
+                      <label for="poolcreateraiddual" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                        <button id="poolcreateraiddual" type="submit" class="btn btn-primary">Raid 6 (dual disk parity)</button>
+                      </label>
+                    </div>
+                    <div class='col-3' style="margin-bottom: 1rem;">
+                      <label for="poolcreateraidtriple" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                        <button id="poolcreateraidtriple" type="submit" class="btn btn-primary">Raid 6+ (triple disk parity)</button>
+                      </label>
+                    </div>
+                      
+                  </div>
                </form>
               </div>
               <!-- /card body -->
             </div> <!-- /.card -->
           </div>
         </div>
+      
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
