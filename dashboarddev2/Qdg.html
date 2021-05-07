@@ -11,14 +11,13 @@
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- DataTables -->
-  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
 
+  <!-- Select2 -->
+  <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <link rel="stylesheet" href="dist/css/Qmain.css">
 </head>
 <!--
 `body` tag options:
@@ -194,7 +193,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item system ">
-             <a href="#" class="nav-link  " style="background-color: #162432;" >
+             <a href="#" class="nav-link " style="background-color: #162432;" >
                <i class="nav-icon fa fa-cogs "></i>
                <p>
                  System configuration
@@ -221,15 +220,15 @@
                  </a>
                </li>
                <li class="nav-item">
-                 <a href="./Qnodes.html" class="nav-link"  >
+                 <a href="./Qnodes.html" class="nav-link" >
                    <i class="fas fa-server nav-icon" ></i>
                    <p>Nodes</p>
                  </a>
                </li>
              </ul>
            </li>
-           <li class="nav-item  status">
-              <a href="#" class="nav-link " style="background-color: #162432;">
+           <li class="nav-item status">
+              <a href="#" class="nav-link" style="background-color: #162432;">
                 <i class="nav-icon fas fa-stream "></i>
                 <p>
                   System Status
@@ -238,7 +237,7 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="./QLogs.html" class="nav-link" >
+                  <a href="./QLogs.html" class="nav-link">
                     <i class="fas fa-clipboard-list nav-icon" ></i>
                     <p>Logs</p>
                   </a>
@@ -251,8 +250,8 @@
                 </li>
               </ul>
             </li>
-            <li class="nav-item menu-open Volumes">
-               <a href="#" class="nav-link active" >
+            <li class="nav-item Volumes">
+               <a href="#" class="nav-link " style="background-color: #162432;">
                  <i class="nav-icon fas fa-stream "></i>
                  <p>
                    Volumes
@@ -261,7 +260,7 @@
                </a>
                <ul class="nav nav-treeview">
                  <li class="nav-item">
-                   <a href="./Qcifs.html" class="nav-link" style="background-color: #1f232c;">
+                   <a href="./Qcifs.html" class="nav-link">
                      <i class="fab fa-windows nav-icon" ></i>
                      <p>CIFS</p>
                    </a>
@@ -317,8 +316,8 @@
 
                 </ul>
             </li>
-            <li class="nav-item  Pools">
-               <a href="#" class="nav-link " style="background-color: #162432;">
+            <li class="nav-item  menu-open  Pools">
+               <a href="#" class="nav-link active " >
                  <i class="nav-icon fas fa-stream "></i>
                  <p>
                    Pools
@@ -327,7 +326,7 @@
                </a>
                <ul class="nav nav-treeview">
                  <li class="nav-item">
-                   <a href="./Qdg.html" class="nav-link">
+                   <a href="./Qdg.html" class="nav-link" style="background-color: #1f232c;" >
                      <i class="far fa-clipboard-list nav-icon" ></i>
                      <p>Disk Groups</p>
                    </a>
@@ -1004,7 +1003,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">CIFS volume Management</h1>
+            <h1 class="m-0">Cluster Management</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -1020,266 +1019,153 @@
     <div class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-4">
-           <div class="card">
-              <!-- form start -->
-              <form>
-                <div class="card-header">
-                  <h3 class="card-title">New Volume</h3>
+          <div class="col-md-12">
+            <div class="card card-outline card-primary datacard">
+              <div class="card-header" style="cursor: cell;">
+                <div class="card-tools" >
+                  <!-- Collapse Button -->
+                  <button type="button" class="btn btn-tool "  data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                </div>
+                <div class="row" data-card-widget="collapse">
+                  <div class='col-5'>
+                    <h3 class="card-title text-lg" >Update Pool: <strong>PDHCP234445532</strong></h3>
+                  </div>
                 </div>
 
-                <div class="card-body">
-                  <div class="row">
-                    <div class='col-12'>
-                      <div class="form-group">
-                        <label  for="Pool2CIFS">Pool</label>
-                        <select  class="form-control" id="Pool2CIFS">
-                          <option value="0">---------</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class='col-7'>
-                      <div class="form-group">
-                        <label  for="volnameCIFS">Volume</label>
-                        <input type="text" class="form-control" id="volnameCIFS" placeholder="Volume Name">
-                      </div>
-                    </div>
-                    <div class='offset-1 col-4'>
-                       <label  for="volsizeCIFS">Size (GB)</label>
-                       <input type="number"  value=1 class="form-control"  id="volsizeCIFS">
-                    </div>
+              </div>
+              <div class="card-header">
+                <div id="freediskspdhcp23445532" class="row freedisks">
+                
 
-                  </div>
-                  <div class="row">
-                    <div class='col-6'>
-                      <div class="form-group">
-                        <label  for="AddressCIFS">IP Address</label>
-                        <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="AddressCIFS" id="AddressCIFS"  data-inputmask="'alias': 'ip'">
-                      </div>
-                    </div>
-                    <div class='offset-2 col-4'>
-                       <label  for="SubnetCIFS">Subnet</label>
-                       <input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="SubnetCIFS">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class='col-12'>
-                      <div class="form-group">
-                        <label  for="GroupCIFS">Allowed Groups</label>
-                        <select  multiple size=3 class="form-control" id="GroupCIFS" value="NoGroup">
-                          <option value="NoGroup">-----</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
                 </div>
+              </div>
+
+              <div class="card-body" >
+                <!-- form start -->
+                <form>
                 <!-- /.card-body -->
-
-                <div class="card-footer">
-                  <button type="submit" id="createvolCIFS" class="btn btn-primary">Add Volume</button>
-                </div>
-              </form>
-            </div> <!-- /.card -->
-          </div>
-          <div class="col-md-8">
-            <div class="row">
-              <div class="col-md-8">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Volumes on Pool</h3>
-              </div>
-              <div class="card-body">
-                <div class="chart">
-                  <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                </div>
-              </div>
-            </div> <!-- /.card -->
-          </div>
-              <div class="col-md-4">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Volume Metadata</h3>
-              </div>
-              <div class="card-body">
-                <div class="chart">
-                  <canvas id="stackedBarChart" style="min-height: 250px; height: 210px; max-height: 250px; max-width: 100%;"></canvas>
-                </div>
-              </div>
-            </div> <!-- /.card -->
-          </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="card">
-                  <div class="card-body p-0">
-                    <table class="table table-sm">
-                      <thead>
-                        <tr>
-                          <th style="width: 10px">#</th>
-                          <th>Volume Task</th>
-                          <th>Progress</th>
-                          <th style="width: 40px">Label</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>1.</td>
-                          <td>Update software</td>
-                          <td>
-                            <div class="progress progress-xs">
-                              <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                            </div>
-                          </td>
-                          <td><span class="badge bg-danger">55%</span></td>
-                        </tr>
-                        <tr>
-                          <td>2.</td>
-                          <td>Clean database</td>
-                          <td>
-                            <div class="progress progress-xs">
-                              <div class="progress-bar bg-warning" style="width: 70%"></div>
-                            </div>
-                          </td>
-                          <td><span class="badge bg-warning">70%</span></td>
-                        </tr>
-                        <tr>
-                          <td>3.</td>
-                          <td>Cron job running</td>
-                          <td>
-                            <div class="progress progress-xs progress-striped active">
-                              <div class="progress-bar bg-primary" style="width: 30%"></div>
-                            </div>
-                          </td>
-                          <td><span class="badge bg-primary">30%</span></td>
-                        </tr>
-                        <tr>
-                          <td>4.</td>
-                          <td>Fix and squish bugs</td>
-                          <td>
-                            <div class="progress progress-xs progress-striped active">
-                              <div class="progress-bar bg-success" style="width: 90%"></div>
-                            </div>
-                          </td>
-                          <td><span class="badge bg-success">90%</span></td>
-                        </tr>
-                      </tbody>
-                    </table>
+                 
+                  <div class="row card-header" >
+                    
+                      <div class='col-3' style="margin-bottom: 1rem;">
+                        <label for="pooladdlog" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button id="pooladdlog" type="submit" class="btn btn-primary">add as a read/write cache</button>
+                        </label>
+                      </div>
+                      <div class='col-3' style="margin-bottom: 1rem;">
+                        <label for="pooladdcache" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button id="pooladdcache" type="submit" class="btn btn-primary">add as a read cache</button>
+                        </label>
+                      </div>
+                      <div class='col-3' style="margin-bottom: 1rem;">
+                        <label for="pooladdraidtriple" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button id="pooladdraidtriple" type="submit" class="btn btn-primary">add this raid 6+ group </button>
+                        </label>
+                      </div>
+                      <div class='col-3' style="margin-bottom: 1rem;">
+                        <label for="pooladdraiddual" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button id="pooladdraiddual" type="submit" class="btn btn-primary">add this raid 6 group </button>
+                        </label>
+                      </div>
+                      <div class='col-3' style="margin-bottom: 1rem;">
+                        <label for="pooladdraidsingle" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button id="pooladdraidsingle" type="submit" class="btn btn-primary">add this raid 5 group </button>
+                        </label>
+                      </div>
+                      <div class='col-3' style="margin-bottom: 1rem;">
+                        <label for="pooladdstripe" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button id="pooladdstripe" type="submit" class="btn btn-primary">add this space </button>
+                        </label>
+                      </div>
+                      <div class='col-3' style="margin-bottom: 1rem;">
+                        <label for="pooladdspare" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button id="pooladdspare" type="submit" class="btn btn-primary">add as a spare disk</button>
+                        </label>
+                      </div>
+                      <div class='col-3' style="margin-bottom: 1rem;">
+                        <label for="pooladdmirror" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button id="pooladdmirror" type="submit" class="btn btn-primary">add this mirror </button>
+                        </label>
+                      </div>
                   </div>
-                  <!-- /.card-body -->
-                </div>
-
-
-
+                </form>
               </div>
-            </div>
+              <!-- /card body -->
+            </div> <!-- /.card -->
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-            <div class="card">
+            <div class="card card-outline card-primary datacard">
+              <div class="card-header" style="cursor: cell;">
+                <div class="card-tools" >
+                  <!-- Collapse Button -->
+                  <button type="button" class="btn btn-tool "  data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                </div>
+                <div class="row" data-card-widget="collapse">
+                  <div class='col-5'>
+                    <h3 class="card-title text-lg" >Create New Pool</h3>
+                  </div>
+                </div>
+
+              </div>
               <div class="card-header">
-                <h3 class="card-title">CIFS volume list</h3>
+                <div id="freedisksfree" class="row freedisks">
+                
+
+                </div>
               </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <table id="example1" class="table table-sm table-hover example1  table-striped">
-                  <thead>
-                  <tr>
-                    <th>Volume</th>
-                    <th>pool</th>
-                    <th>Size(GB)</th>
-                    <th>Snapshots(MB)</th>
-                    <th>Compression%</th>
-                    <th>IP Address</th>
-                    <th>Subnet</th>
-                    <th>Allowed Groups</th>
-                    <th>Need update</th>
-                    <th>Remove Volume</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                   <tr class="dontdelete" >
-                     <td >pecoFinance</td>
-                     <td >74828239292</td>
-                     <td >32</td>
-                     <td >4</td>
-                     <td >1.2x</td>
-                     <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="s" id="s"  data-inputmask="'alias': 'ip'">
-                     </td>
-                     <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="sd">
-                     </td>
-                     <td>
-                       <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
-                        multiple data-actions-box="true" data-live-search="true">
-                       </select>
-                     </td>
-                    <td>
-                      <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
-                        update
-                      </button>
-                    </td>
-                    <td  class="text-center">
-                      <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                        <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                      </a>
-                    </td>
-                    <tr class="dontdelete" >
-                      <td >pecolow</td>
-                      <td >74828239292</td>
-                      <td >10</td>
-                      <td >4</td>
-                      <td >1.98x</td>
-                      <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="ss" id="ss"  data-inputmask="'alias': 'ip'">
-                      </td>
-                      <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="ssd">
-                      </td>
-                      <td>
-                        <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
-                         multiple data-actions-box="true" data-live-search="true">
-                        </select>
-                      </td>
-                     <td>
-                       <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
-                         update
-                       </button>
-                     </td>
-                     <td  class="text-center">
-                       <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                         <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                       </a>
-                     </td>
 
-                  </tr>
+              <div class="card-body" >
+                <!-- form start -->
+                <form>
+                  <!-- /.card-body -->
+                 
+                  <div  class="row card-header">
+                    <div class='col-3' style="margin-bottom: 1rem;">
+                      <label for="poolcreatesingle" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                      <button id="poolcreatesingle" type="submit" class="btn btn-primary form-control">Single Disk Pool</button>
+                      </label>
+                    </div>
 
-                  </tbody>
-                  <tfoot>
-                  <tr>
-                    <th>Volume</th>
-                    <th>pool</th>
-                    <th>Size(GB)</th>
-                    <th>Snapshots(MB)</th>
-                    <th>Compression%</th>
-                    <th>IP Address</th>
-                    <th>Subnet</th>
-                    <th>Allowed Groups</th>
-                    <th>Need update</th>
-                    <th>Remove Volume</th>
-                  </tr>
-                  </tfoot>
-                </table>
+                    <div class='col-3'  style="margin-bottom: 1rem;">
+                      <label for="poolcreatemirror" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                        <button id="poolcreatemirror" type="submit" class="btn btn-primary col-12 ">Mirror Pool</button>
+                      </label>
+                    </div>
+
+                    <div class='col-3' style="margin-bottom: 1rem;">
+                      <label for="poolcreateraidsingle" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                        <button id="poolcreateraidsingle" type="submit" class="btn btn-primary">Raid 5 (single disk parity)</button>
+                      </label>
+                    </div>
+
+                    <div class='col-3' style="margin-bottom: 1rem;">
+                      <label for="poolcreatestripe" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                        <button id="poolcreatestripe" type="submit" class="btn btn-primary">(multi disk strip)(no parity)</button>
+                      </label>
+                    </div>
+                    <div class='col-3' style="margin-bottom: 1rem;">
+                      <label for="poolcreateraiddual" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                        <button id="poolcreateraiddual" type="submit" class="btn btn-primary">Raid 6 (dual disk parity)</button>
+                      </label>
+                    </div>
+                    <div class='col-3' style="margin-bottom: 1rem;">
+                      <label for="poolcreateraidtriple" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                        <button id="poolcreateraidtriple" type="submit" class="btn btn-primary">Raid 6+ (triple disk parity)</button>
+                      </label>
+                    </div>
+                      
+                  </div>
+               </form>
               </div>
-              <!-- /.card-body -->
-            </div>
-
+              <!-- /card body -->
+            </div> <!-- /.card -->
           </div>
-        </div> <!-- /.row -->
-
+        </div>
+        
       </div> <!-- /.container-fluid -->
-
     </div> <!-- /.content -->
-
   </div> <!-- /.content-wrapper -->
 
 
@@ -1303,34 +1189,53 @@
 <!-- REQUIRED SCRIPTS -->
 
 <!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE -->
-<script src="dist/js/adminlte.js"></script>
-<!-- DataTables  & Plugins -->
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="plugins/jszip/jszip.min.js"></script>
-<script src="plugins/pdfmake/pdfmake.min.js"></script>
-<script src="plugins/pdfmake/vfs_fonts.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- OPTIONAL SCRIPTS -->
-<script src="dist/js/Qjquery.inputmask.bundle.js"></script>
-<script src="dist/js/Qcifs.js" ></script>
-<script src="plugins/chart.js/Chart.min.js"></script>
-<script src="dist/js/demo.js"></script>
-<script src="dist/js/Qmain.js"></script>
-<script>
-
-</script>
-
+  <script src="plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE -->
+  <script src="dist/js/adminlte.js"></script>
+  <!-- DataTables  & Plugins -->
+  <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+  <script src="plugins/jszip/jszip.min.js"></script>
+  <script src="plugins/pdfmake/pdfmake.min.js"></script>
+  <script src="plugins/pdfmake/vfs_fonts.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+  <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+  <!-- OPTIONAL SCRIPTS -->
+  <script src="dist/js/Qjquery.inputmask.bundle.js"></script>
+  <script src="plugins/select2/js/select2.full.min.js"></script>
+  <script src="plugins/chart.js/Chart.min.js"></script>
+  <script src="dist/js/demo.js"></script>
+  <script src="dist/js/Qdg.js"></script>
+  <script src="dist/js/Qmain.js"></script>
+  <script>
+  $('.datacard').CardWidget('collapse')
+  jQuery(function($){
+  $('.card-header').each(function(){
+    let $card_header = $(this);
+    let $collapse_element = $card_header.next();
+    $collapse_element.on('show.bs.collapse', function () {
+      let $card_header_top = $card_header.offset().top;
+      let $visible_collapse = $('.collapse.show');
+      if($visible_collapse.length){
+        let $visible_collapse_top = $visible_collapse.offset().top;
+        if($visible_collapse_top < $card_header_top){
+          $card_header_top -= $visible_collapse.height();
+        }
+      }
+      $([document.documentElement, document.body]).animate({
+        scrollTop: $card_header_top
+      });
+    });
+  });
+});
+  </script>
 </body>
 </html>

@@ -1,24 +1,28 @@
 //input mask bundle ip address
-function memberclick(){
-    hname=$(this).attr('data-htname');
+function memberclick(thisclck){
+    hname=$(thisclck).attr('data-htname');
     console.log('hihihi',hname)
 
-    if($(this).children('img').hasClass("SelectedFreered") > 0 ) {
-        $(this).children('img').removeClass("SelectedFreered")
-        $(this).children('img').addClass("SelectedFreewhite");
+    if($(thisclck).children('img').hasClass("SelectedFreered") > 0 ) {
+        $(thisclck).children('img').removeClass("SelectedFreered")
+        $(thisclck).children('img').addClass("SelectedFreewhite");
         selhosts="";
         $("#RhostForget").attr('disabled',true);
     } else {
       $('img.server').removeClass("SelectedFreered")
       $('img.server').addClass("SelectedFreewhite");
-      $(this).children('img').removeClass("SelectedFreewhite")
-      $(this).children('img').addClass("SelectedFreered");
+      $(thisclck).children('img').removeClass("SelectedFreewhite")
+      $(thisclck).children('img').addClass("SelectedFreered");
         selhosts=hname;
         $("#RhostForget").attr('disabled',false);
+       
     }
 }
 
-$(".img-clck").click(memberclick);
+$(".img-clck").click(function(event) {
+  memberclick(this);
+  event.preventDefault();
+});
 var example1_filter = $("#example1_filter");
 $("#example1").DataTable({
     "responsive": true, "lengthChange": true, "autoWidth": true, "info":true,
