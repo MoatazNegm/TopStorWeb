@@ -44,21 +44,13 @@ var oldcurrentinfo='dlkfajsdl;';
  var myname="<?php echo $_REQUEST['name'] ?>";
 
 var example1_filter = $("#UserList_filter");
-$("#UserList").DataTable({
-    //"responsive": true, "lengthChange": true, "autoWidth": true, "info":true,
-    "order": [[ 1, "desc" ]],
-    //"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-  }).buttons().container().appendTo('#UserList_wrapper .col-6:eq(0)');
- 
 
-var ipv4_address = $(".ipaddress");
-ipv4_address.inputmask();
-function getuserlist() {
+function getgrplst() {
 
   // Instantiate an new XHR Object
 
-
- $.ajax({
+/*
+$.ajax({
    url: "api/v1/users/userlist", 
    type: "GET",
    async: false,
@@ -66,6 +58,7 @@ function getuserlist() {
    
    success: function(data) {  allusers=data;  console.log('Success!' + allusers[0]); }
 });
+*/
 $.ajax({
  url: "api/v1/users/grouplist", 
  type: "GET",
@@ -77,6 +70,94 @@ $.ajax({
  
   
 }
+
+
+function initUserlist(){
+  getgrplst();
+  $("#UserList").DataTable({
+      //"responsive": true, "lengthChange": true, "autoWidth": true, "info":true,
+      "order": [[ 1, "desc" ]],
+      //"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      "ajax" : {
+        url: 'api/v1/users/userlist',
+        async: false,
+        type: 'GET',
+        dataSrc: 'allusers'
+      },
+      "columns": [
+        {
+          data: "name"
+        }, {data:"pool"}, {data:"size"},
+        {
+          data:"groups",
+          render: function(data, type, row){
+            return '<select class="select2 usergroups '+row.name+' form-control"  multiple="multiple" onclick="tdisclicked(this)"'
+            + 'data-grps="'+row.groups+'" value=[0] id="sel'+row.name+'"></select>';
+          }
+        },
+        {
+          data: null,
+          render: function(data, type, row){
+            return '<button onclick="selbtnclickeduser(this)" id="btnsel'+row.name+'" '
+            + 'type="button" class="btn btn-primary" hidden="True"> update</button>';
+          }
+        },
+        {
+          data: null,
+          render: function(data, type, row){
+            return '<a href="javascript:userPassword(\''+row.name+'\')" >'
+            + '<img src="dist/img/edit.png" alt="cannott upload edit icon">'
+            + '</a>';
+          }
+        },
+        {
+          data: null,
+          render: function(data, type, row){
+            return '<a class="UnixDelUser" val="username" href="javascript:auserdel(\''+row.name+'\')" >'
+            + '<img  src="dist/img/delete.png" alt="cannott upload delete icon">'
+            + '</a>';
+          }
+        },
+      ],
+      'columnDefs': [
+        {
+           'createdCell':  function (td, cellData, rowData, row, col) {
+                $(td).data('grps', 'cell-' + cellData); 
+            }
+        }
+      ]
+      
+    }).buttons().container().appendTo('#UserList_wrapper .col-6:eq(0)');
+  var option;
+  $(".usergroups").each(function(){
+    thisuser=$(this)
+    assignedgrps = thisuser.data("grps")
+    if(typeof(assignedgrps) == 'number') {
+      grps = [assignedgrps];
+    } else {
+      grps = assignedgrps.split(',');
+    }
+    $.each(grps, function(e,t){
+      if(t !="NoGroup") {
+        grp = allgroups["results"][t];
+        option = new Option(grp.text, grp.id, true, true)
+        thisuser.append(option).trigger('change');
+      }
+    });
+    // manually trigger the `select2:select` event
+    thisuser.trigger({
+        type: 'select2:select',
+        params: {
+            allgroups: allgroups
+        }
+
+    });
+  });
+}
+initUserlist();
+
+var ipv4_address = $(".ipaddress");
+ipv4_address.inputmask();
 
 function refreshgroups() {
   
@@ -216,7 +297,17 @@ function refreshUserList(){
  //fetchBtn.addEventListener("click", buttonclickhandler);
 
  
- getuserlist();
- refreshUserList();
- refreshgroups();
- $('.select2').select2()
+ //getuserlist();
+ //refreshUserList();
+ //refreshgroups();
+ //$('.select2').select2()
+ 
+ $('.select2').select2({
+   ajax: {
+    url: 'api/v1/users/grouplist',
+    dataType: 'json',
+    // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+    type: 'GET',
+    async: false,
+  }
+});
