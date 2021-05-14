@@ -15,6 +15,9 @@
   <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="../../plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="../../plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
@@ -1020,59 +1023,39 @@
     <div class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-4">
+          <div class="offset-1 col-md-10">
             <div class="card">
               <!-- form start -->
               <form>
                 <div class="card-body">
 
-                  <div class="form-group">
-                    <label for="User">User Name</label>
-                    <input type="text" class="form-control" id="User" placeholder="Domain Name">
+                  <div class="form-group row">
+                    <label for="User" class="col-2 col-form-label">User Name</label>
+                    <input type="text" class="form-control col-3" id="User" placeholder="Domain Name">
+                    <label for="Pass" class="offset-2 col-2 col-form-label">Password</label>
+                    <input type="password" class="form-control col-3" id="Pass" placeholder="Password">
                   </div>
-                  <div class="form-group">
-                    <label for="Pass">Password</label>
-                    <input type="password" class="form-control" id="Pass" placeholder="Password">
+                  <div class="form-group row">
+                    <label  for="UserVol" class="col-2 col-form-label">Home Pool</label>
+                    <select  class="form-control col-3" id="UserVol">
+                      <option value="NoHome">-----</option>
+                    </select>
+                    <label  for="volsize" class="offset-2 col-2 col-form-label">Size(GB)</label>
+                    <input type="number"  class="form-control col-2" id="volsize" min="1" value="1" >
                   </div>
-                  <div class="row">
-                    <div class='col-5'>
-                      <div class="form-group">
-                        <label  for="UserVol">Home Pool</label>
-                        <select  class="form-control" id="UserVol">
-                          <option value="NoHome">-----</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class='offset-3 col-4'>
-                      <div class="form-group">
-                        <label  for="volsize">Size(GB)</label>
-                        <input type="number"  class="form-control" id="volsize" min="1" value="1" >
-                      </div>
-                    </div>
+                  <div class="form-group row">
+                    <label  for="HomeAddress" class=" col-2 col-form-label">Home Address</label>
+                    <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control col-2 ipaddress" name="HomeAddress" id="HomeAddress"  data-inputmask="'alias': 'ip'">
+                    <label  for="HomeSubnet" class="offset-3 col-2 col-form-label">Subnet</label>
+                    <input type="number"   min="8" max="32" step="8" value=8 class="form-control col-2"  id="HomeSubnet">
+                         
                   </div>
-                  <div class="row">
-                     <div class='col-5'>
-                      <div class="form-group">
-                        <label  for="HomeAddress">Home Address</label>
-                        <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="HomeAddress" id="HomeAddress"  data-inputmask="'alias': 'ip'">
-                      </div>
-                     </div>
-                    <div class='offset-3 col-4'>
-                      <div class="form-group">
-                        <label  for="HomeSubnet">Subnet</label>
-                        <input type="number"   min="8" max="32" step="8" value=8 class="form-control"  id="HomeSubnet">
-                      </div>
-                    </div>
+                  <div class="form-group row">
+                    <label  for="Groups" class="col-2 col-form-label">Allowed Groups</label>
+                    <select  class="select2  form-control col-5" multiple="multiple"id="Usergroups" value="NoGroup">
+                      
+                    </select>
                   </div>
-                  <div class="row">
-                    <div class='col-12'>
-                      <label  for="UserVol">Allowed Groups</label>
-                      <select  multiple size=3 class="form-control" id="Usergroups" value="NoGroup">
-                        <option value="NoGroup">-----</option>
-                      </select>
-                    </div>
-                  </div>
-
                 </div>
                 <!-- /.card-body -->
 
@@ -1082,23 +1065,25 @@
               </form>
             </div> <!-- /.card -->
           </div>
-          <div class="col-md-8">
+        </div>
+        <div class="row">
+          <div class="col-md-12">
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">User List</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example1" class="table table-sm table-hover  table-striped">
+                <table id="UserList" class="table table-sm table-hover  table-striped">
                   <thead>
                   <tr>
-                    <th>User name</th>
-                    <th>Home pool</th>
-                    <th>Quota</th>
-                    <th>Groups</th>
-                    <th>Need update</th>
-                    <th>Password</th>
-                    <th>Remove</th>
+                    <th style="width:5%;">User name</th>
+                    <th style="width:5%;">Home pool</th>
+                    <th style="width:2%;">Quota</th>
+                    <th style="width:20%;">Groups</th>
+                    <th style="width:5%;">Need update</th>
+                    <th style="width:2%;">Password</th>
+                    <th style="width:2%;">Remove</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -1160,13 +1145,13 @@
                   </tbody>
                   <tfoot>
                   <tr>
-                    <th>User name</th>
-                    <th>Home pool</th>
-                    <th>Quota</th>
-                    <th>Groups</th>
-                    <th>Need update</th>
-                    <th>Password</th>
-                    <th>Remove</th>
+                    <th style="width:5%;">User name</th>
+                    <th style="width:5%;">Home pool</th>
+                    <th style="width:2%;">Quota</th>
+                    <th style="width:20%;">Groups</th>
+                    <th style="width:5%;">Need update</th>
+                    <th style="width:2%;">Password</th>
+                    <th style="width:2%;">Remove</th>
                   </tr>
                   </tfoot>
                 </table>
@@ -1216,6 +1201,9 @@
 <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
 <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<!-- Select2 -->
+<script src="plugins/select2/js/select2.full.min.js"></script>
+
 <script src="plugins/jszip/jszip.min.js"></script>
 <script src="plugins/pdfmake/pdfmake.min.js"></script>
 <script src="plugins/pdfmake/vfs_fonts.js"></script>
@@ -1230,4 +1218,13 @@
 <script src="dist/js/demo.js"></script>
 <script src="dist/js/Qmain.js"></script>
 </body>
+<script>
+
+    //Initialize Select2 Elements
+   
+
+   
+    
+
+</script>
 </html>
