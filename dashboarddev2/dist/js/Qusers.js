@@ -18,6 +18,7 @@ var oldcurrentinfo='dlkfajsdl;';
  var tempvar;
  var allusers="init";
  var allgroups="init";
+ var allpools="init";
  var selvalues={};
  var grpolddata;
  var myidhash;
@@ -47,18 +48,6 @@ var example1_filter = $("#UserList_filter");
 
 function getgrplst() {
 
-  // Instantiate an new XHR Object
-
-/*
-$.ajax({
-   url: "api/v1/users/userlist", 
-   type: "GET",
-   async: false,
-   //beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
-   
-   success: function(data) {  allusers=data;  console.log('Success!' + allusers[0]); }
-});
-*/
 $.ajax({
  url: "api/v1/users/grouplist", 
  type: "GET",
@@ -70,10 +59,24 @@ $.ajax({
  
   
 }
+function getpoollst() {
+
+  $.ajax({
+   url: "api/v1/pools/poolsinfo", 
+   type: "GET",
+   async: false,
+   //beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
+   
+   success: function(data) {  allpools=data;  console.log('Success!' + allpools); }
+  });
+   
+    
+  }
 
 
 function initUserlist(){
   getgrplst();
+  getpoollst();
   $("#UserList").DataTable({
       //"responsive": true, "lengthChange": true, "autoWidth": true, "info":true,
       "order": [[ 1, "desc" ]],
@@ -91,7 +94,7 @@ function initUserlist(){
         {
           data:"groups",
           render: function(data, type, row){
-            return '<select class="select2 usergroups '+row.name+' form-control"  multiple="multiple" onclick="tdisclicked(this)"'
+            return '<select class="select2 multiple usergroups '+row.name+' form-control"  multiple="multiple" onclick="tdisclicked(this)"'
             + 'data-grps="'+row.groups+'" value=[0] id="sel'+row.name+'"></select>';
           }
         },
@@ -153,6 +156,8 @@ function initUserlist(){
 
     });
   });
+  
+  
 }
 initUserlist();
 
@@ -192,117 +197,14 @@ function refreshUserList(){
 
 
 
-  $("#UserList tbody tr").remove();
-  $.each(allusers, function(k,v){
-   username=allusers[k]['name'].replace('usersinfo/','')
-   usersize=allusers[k]['prop'].split('/')[3]
-   userpool=allusers[k]['prop'].split('/')[1]
-   if (username!='NoUser') { 
-    $("#UserList").append(''
-      + '<tr class="dontdelete" > '
-      + '<td>'+username+'</td> '
-      + '  <td>'+userpool+'</td> '
-      + '  <td>'+usersize+'</td> '
-      + ' <td> '  
-      + '    <select style="width: 100%;" onclick="tdisclicked(this)" id="sel'+username+'" '
-      + '      title="No Group" size=2 data-container="body" data-width="auto" class="select2 '+username+' selectpicker " '
-      + '      multiple data-actions-box="true" data-live-search="true"> '
-      + '    </select> '
-      + '  </td> '
-      + '  <td> '
-      + '    <button onclick="selbtnclickeduser(this)" id="btnsel'+username+'" type="button" '
-      + '    class="btn btn-primary" >update '
-      + '    </button> '
-      + '  </td> '
-      + '  <td class="text-center"> '
-      + '    <a href="javascript:userPassword(\''+username+'\')" > '
-      + '      <img src="dist/img/edit.png" alt="cannott upload edit icon"> '
-      + '    </a> '
-      + '  </td> '
-      + '  <td class="text-center"> '
-      + '    <a class="UnixDelUser" val="'+username+'" href="javascript:auserdel('+username+')" > '
-      + '      <img  src="dist/img/delete.png" alt="cannott upload delete icon"> '
-      + '    </a> '
-      + '  </td> '
-      + '</tr>'
-      );
-
-    $("#btnsel"+username).hide();
-    cgrp[username]=[]
-    $.each(allgroups, function(k,v){
-     evgroup=allgroups[k]['prop'].split('/')[2]
-     grpname=allgroups[k]['name'].replace('usersigroup/','')
-     selecteds='';
-     if (evgroup.includes(username) > 0) {
-      selecteds='selected'
-      cgrp[username].push(grpname)
-     }
-     if(grpname!='Everyone') {
-      $("#sel"+username).append("<option value='"+grpname+"' "+selecteds+">"+grpname+"</option>");
-     }
-    });
-    $("button").css("height","2.3rem");
-    $(".dropdown").css("width","100%");
-    $('#sel'+username).on('changed.bs.select',function(e,c,iss,pv){
-     if (cgrp[this.id.replace('sel','')].toString()==$('#'+this.id).val()) {
-      $('#btn'+this.id).hide();
-     } else {
-      $("#btn"+this.id).show();
-     }
-    
-     if (cgrp[this.id.replace('sel','')].length==0 && $('#'+this.id).val()==null) {
-      $('#btn'+this.id).hide();
-     }
-    });
-   }
-  });
+  
   //$(".selectpicker").selectpicker("refresh");
-  $("#GroupList tbody tr").remove();
-  $.each(allgroups, function(k,v){
-   username=allgroups[k]['name'].replace('usersigroup/','')
-   grpuserlist=allgroups[k]['prop'].split('/')[2]
-   if (username!='Everyone'){
-    $("#GroupList").append('<tr class="dontdelete" > <td style="width:25%;">'+username+'</td><td style="width:25%;"><select style="width: 100%;" onclick="tdisclicked(this)" id="sel'+username+'" title="No User" data-container="body" data-width="auto" class="'+username+' selectpicker grp" multiple data-actions-box="true" data-live-search="true"></select></td><td class="text-center" style="width: 20%;"><button onclick="selbtnclickedgroup(this)" id="btnsel'+username+'" type="button" class="btn btn-primary" >update</button></td><td style="width: 15%;" class="text-center"><a class="UnixDelGroup" val="'+username+'" href="javascript:agroupdel(\''+username+'\')" ><img  src="assets/images/delete.png" alt="cannott upload delete icon"></a></td></tr>');
-    $("#btnsel"+username).hide();
-    cuser[username]=[]
-    $.each(allusers, function(k,v){
-     evuser=allusers[k]['name'].replace('usersinfo/','')
-     selecteds='';
-     if (grpuserlist.includes(evuser) > 0) {
-      selecteds='selected'
-      cuser[username].push(evuser)
-     }
-     if(evuser!='NoUser'){
-      $("#sel"+username).append("<option value='"+evuser+"' "+selecteds+">"+evuser+"</option>");
-     }
-    });
-    $("button").css("height","2.3rem");
-    $(".dropdown").css("width","100%");
-    $('#sel'+username).on('changed.bs.select',function(e,c,iss,pv){
-     if (cuser[this.id.replace('sel','')].toString()==$('#'+this.id).val()) {
-      $('#btn'+this.id).hide();
-     } else {
-      $("#btn"+this.id).show();
-     }
-     if (cuser[this.id.replace('sel','')].length==0 && $('#'+this.id).val()==null) {
-      $('#btn'+this.id).hide();
-     }
-    });
-   }
-  });
+ 
  // $(".selectpicker").selectpicker("refresh");
  }
- //let fetchBtn = document.getElementById("fetchBtn");
-  
- //fetchBtn.addEventListener("click", buttonclickhandler);
-
  
- //getuserlist();
- //refreshUserList();
- //refreshgroups();
- //$('.select2').select2()
  
- $('.select2').select2({
+ $('.select2.multiple').select2({
    ajax: {
     url: 'api/v1/users/grouplist',
     dataType: 'json',
@@ -310,4 +212,30 @@ function refreshUserList(){
     type: 'GET',
     async: false,
   }
+});
+
+$('.select2.pool').select2({
+  ajax: {
+   url: 'api/v1/pools/poolsinfo',
+   dataType: 'json',
+   // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+   type: 'GET',
+   async: false,
+ }
+});
+
+$("#UnixAddUser").click( function (e){ 
+  var apiurl = "api/v1/users/UnixAddUser";
+  var apidata = {"name": $("#User").val(), "Volpool": $("#UserVol").val(), "groups":$("#Usergroups").val().toString(), 
+            "Password": $("#UserPass").val(), "Volsize": $("#volsize").val(), 
+            "HomeAddress": $("#HomeAddress").val(), "HomeSubnet": $("#HomeSubnet").val(), "Myname":"mezo"}
+  $.ajax({
+    url: apiurl,
+    dataType: 'json',
+    data: apidata,
+
+  });
+ 
+  e.preventDefault();
+  console.log('hi',apiurl,apidata);
 });
