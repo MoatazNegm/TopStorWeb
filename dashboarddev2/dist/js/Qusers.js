@@ -102,11 +102,13 @@ function userlistrefresh(){
     });
     groupsrefresh();
     $(".select2.usergroups").on('change',function(e){
-      if( $(this).data('grps') != $(this).val().toString()){
+      if( $(this).data('grps').toString() !== $(this).val().toString()){
         
         $("#btn"+$(this).attr('id')).show();
+        $(this).data('change', $(this).val().toString());
       }
       else {
+        $(this).data('change','');
         $("#btn"+$(this).attr('id')).hide();
       }
       
@@ -137,15 +139,15 @@ function initUserlist(){
           data:"groups",
           render: function(data, type, row){
             return '<select class="select2 multiple usergroups '+row.name+' form-control"' 
-            + ' multiple="multiple" onclick="tdisclicked(this)"' 
-            + 'data-grps="'+row.groups+'" value=[0] id="sel'+row.name+'"></select>';
+            + ' multiple="multiple" data-name='+row.name+'  onclick="tdisclicked(this)"' 
+            + 'data-grps="'+row.groups+'" value=[0] data-change="" id="sel'+row.name+'"></select>';
           }
         },
         {
           data: null,
           render: function(data, type, row){
             return '<button onclick="selbtnclickeduser(this)" id="btnsel'+row.name+'" '
-            + 'type="button" class="btn btn-primary" > update</button>';
+            + 'type="button" data-name='+row.name+'  class="btn btn-primary" > update</button>';
           }
         },
         {
@@ -193,10 +195,14 @@ function postdata(url,data){
   });
 }
 
-function selbtnclickeduser(x){
+function selbtnclickeduser(ths){
   //$.post("./pump.php", { req:"UnixChangeUser", name:x.id.replace('btnsel',''), passwd:'groups'+$("#"+x.id.replace('btn','')).val()+" "+myname });
-        console.log('hi',x)
-       };
+        var apiurl = 'api/v1/users/userchange';
+        nam = $(ths).data('name');
+        console.log('name',nam)
+        var apidata = {'name': nam, "groups": $("#sel"+nam).val().toString() };
+        postdata(apiurl,apidata);
+}
 $("#UnixAddUser").click( function (e){ 
   var apiurl = "api/v1/users/UnixAddUser";
   var apidata = {"name": $("#User").val(), "Volpool": $("#UserVol").val(), "groups":$("#Usergroups").val().toString(), 
@@ -261,3 +267,13 @@ function refreshall(){
   }
 }
 setInterval(refreshall, 2000);
+setInterval(function(){$(document).Toasts('create', { 
+  //title: 'Toast Title',
+  close: false,
+  class: 'bg-info infoalert',
+  autohide: true,
+  position: 'bottomRight',
+  delay: 1000,
+  body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+});}, 5000);
+    
