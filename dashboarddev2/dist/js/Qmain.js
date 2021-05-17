@@ -1,6 +1,7 @@
 
 var ipv4_address = $(".ipaddress");
 ipv4_address.inputmask();
+var globalnotif = {'msgcode':'init','time':'init'};
 
 
 $(".main-sidebar").css("background","#131010")
@@ -26,3 +27,33 @@ jQuery(function($){
       });
     });
   });
+  var bg = {'warning':{'class':'bg-warning', 'loc':'bottomLeft', 'delay':10000},
+     'error':{'class':'bg-danger', 'loc':'topRight', 'delay':10000}, 
+     'info':{'class':'bg-info','loc':'bottomRight', 'delay':4000},};
+  setInterval(function(){
+    var notif;
+    
+    $.ajax({
+      url: 'api/v1/info/notification',
+      async: false,
+      type: 'GET',
+      success: function(data) {  notif=data; }
+    });
+    if(globalnotif['time'] != notif['time'] || globalnotif['msgcode'] != notif['msgcode']){
+      globalnotif = notif;
+      console.log('notif',notif['type'], bg[notif['type']]['class'],bg[notif['type']]['loc'], bg[notif['type']]['delay'] );
+      notifbody = notif['msgbody'];
+      $(document).Toasts('create', { 
+        title: notif['host'],
+        subtitle: notif['user'],
+        close: false,
+        class: bg[notif['type']]['class']+' infoalert',
+        autohide: true,
+        position: bg[notif['type']]['loc'],
+        delay: bg[notif['type']]['delay'],
+        body: notifbody
+      });
+      
+    }
+    }, 5000);
+      

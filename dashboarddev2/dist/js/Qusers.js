@@ -102,7 +102,9 @@ function userlistrefresh(){
     });
     groupsrefresh();
     $(".select2.usergroups").on('change',function(e){
-      if( $(this).data('grps').toString() !== $(this).val().toString()){
+      grpsval = $(this).data('grps').toString()
+      if(grpsval == 'NoGroup') { grpsval = ''}
+      if( grpsval !== $(this).val().toString() ){
         
         $("#btn"+$(this).attr('id')).show();
         $(this).data('change', $(this).val().toString());
@@ -267,13 +269,4 @@ function refreshall(){
   }
 }
 setInterval(refreshall, 2000);
-setInterval(function(){$(document).Toasts('create', { 
-  //title: 'Toast Title',
-  close: false,
-  class: 'bg-info infoalert',
-  autohide: true,
-  position: 'bottomRight',
-  delay: 1000,
-  body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
-});}, 5000);
-    
+
