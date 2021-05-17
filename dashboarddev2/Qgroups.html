@@ -1036,8 +1036,8 @@
                   <div class="row">
                     <div class='col-12'>
                       <label  for="UserVol">Users in Group</label>
-                      <select  multiple size=3 class="form-control" id="Groupusers" value="NoUser">
-                        <option value="NoUser">-----</option>
+                      <select  class="select2 multiple form-control col-5" multiple="multiple" id="groupusers" value="NoUroup">
+                      
                       </select>
                     </div>
                   </div>
@@ -1060,7 +1060,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example1" class="table table-sm table-hover  table-striped">
+                <table id="GroupList" class="table table-sm table-hover  table-striped">
                   <thead>
                   <tr>
                     <th>Group Name</th>
@@ -1070,40 +1070,6 @@
                   </tr>
                   </thead>
                   <tbody>
-                   <tr class="dontdelete" >
-                     <td style="width:25%;">groupname</td>
-                     <td style="width:25%;">
-                       <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selgroupname" title="No Group" data-container="body" data-width="auto" class="groupname selectpicker "
-                        multiple data-actions-box="true" data-live-search="true">
-                       </select>
-                     </td>
-                    <td><button onclick="selbtnclickeduser(this)" id="btnselgroupname" type="button" class="btn btn-primary" >
-                        update
-                      </button>
-                    </td>
-                    <td style="width: 15%;" class="text-center">
-                      <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                        <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                      </a>
-                    </td></tr>
-                  <tr>
-                    <td>Trident</td>
-                    <td> 4</td>
-                    <td>A</td>
-                    <td>A</td>
-                  </tr>
-                  <tr>
-                    <td>Presto</td>
-                    <td>A</td>
-                    <td>A</td>
-                    <td>A</td>
-                  </tr>
-                  <tr>
-                    <td>Other browsers</td>
-                    <td>U</td>
-                    <td>A</td>
-                    <td>A</td>
-                  </tr>
                   </tbody>
                   <tfoot>
                   <tr>
