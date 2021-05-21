@@ -45,7 +45,7 @@ var oldcurrentinfo='dlkfajsdl;';
  myidhash=myid;
  var myname="<?php echo $_REQUEST['name'] ?>";
 
-var example1_filter = $("#GroupList_filter");
+var example1_filter = $("#groupList_filter");
 
 function usersrefresh(){
   
@@ -75,19 +75,19 @@ function poolsrefresh(){
 function grouplistrefresh(){
   grouplisttable.ajax.reload(function(){
     var option;
-    var usrs;
     $(".groupusers").each(function(){
       thisgroup=$(this)
-      
+      var usrs;
       assignedusrs = thisgroup.data("usrs")
       if(typeof(assignedusrs) == 'number') {
         usrs = [assignedusrs];
       } else {
         usrs = assignedusrs.split(',');
       }
+      
       $.each(usrs, function(e,t){
         if(t !="NoUser") {
-          var usr = allusers["results"][e];
+          var usr = allusers["results"][t];
           option = new Option(usr.text, usr.id, true, true)
           thisgroup.append(option).trigger('change');
         }
@@ -124,7 +124,7 @@ function grouplistrefresh(){
 }
 
 function initgrouplist(){
-  grouplisttable=$("#GroupList").DataTable({
+  grouplisttable=$("#groupList").DataTable({
       //"responsive": true, "lengthChange": true, "autoWidth": true, "info":true,
       "order": [[ 1, "desc" ]],
       //"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
@@ -137,10 +137,11 @@ function initgrouplist(){
       "columns": [
         {
           data: "name"
-        },
+        }, 
         {
           data:"users",
           render: function(data, type, row){
+            
             return '<select class="select2 multiple groupusers '+row.name+' form-control"' 
             + ' multiple="multiple" data-name='+row.name+'  onclick="tdisclicked(this)"' 
             + 'data-usrs="'+row.users+'" value=[0] data-change="" id="sel'+row.name+'"></select>';
@@ -171,7 +172,8 @@ function initgrouplist(){
       ]
       
     });
-  grouplisttable.buttons().container().appendTo('#GroupList_wrapper .col-6:eq(0)');
+    
+  grouplisttable.buttons().container().appendTo('#groupList_wrapper .col-6:eq(0)');
   //grouplistrefresh();
   
   
@@ -200,11 +202,8 @@ function selbtnclickedgroup(ths){
 }
 $("#UnixAddgroup").click( function (e){ 
   var apiurl = "api/v1/groups/UnixAddgroup";
-  var apidata = {"name": $("#group").val(), "Volpool": $("#groupVol").val(), "users":$("#groupusers").val().toString(), 
-            "Password": $("#groupPass").val(), "Volsize": $("#volsize").val(), 
-            "HomeAddress": $("#HomeAddress").val(), "HomeSubnet": $("#HomeSubnet").val(), "Myname":"mezo"}
+  var apidata = {"name": $("#Group").val(), "users":$("#groupusers").val().toString(), "Myname":"mezo"}
   postdata(apiurl,apidata);
- 
   e.preventDefault();
   
 });

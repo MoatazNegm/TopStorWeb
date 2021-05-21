@@ -1029,24 +1029,24 @@
               <form>
                 <div class="card-body">
 
-                  <div class="form-group">
-                    <label for="User">Group Name</label>
-                    <input type="text" class="form-control" id="Group" placeholder="Group Name">
+                  <div class="form-group row">
+                    <label for="Group" class='col-2 '>Group Name</label>
+                    <input type="text" class="form-control offset-1 col-5 " id="Group" placeholder="Group Name">
                   </div>
-                  <div class="row">
-                    <div class='col-12'>
-                      <label  for="UserVol">Users in Group</label>
-                      <select  class="select2 multiple form-control col-5" multiple="multiple" id="groupusers" value="NoUroup">
+                  <div class="form-group row">
+
+                      <label  for="groupusers" class='col-3'>Users in Group</label>
+                      <select  class="select2 multiple form-control offset-1 col-5" multiple="multiple" id="groupusers" value="NoUroup">
                       
                       </select>
-                    </div>
+
                   </div>
 
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" id="UnixAddGroup" class="btn btn-primary">Add Group</button>
+                  <button type="submit" id="UnixAddgroup" class="btn btn-primary">Add Group</button>
                 </div>
               </form>
             </div> <!-- /.card -->
@@ -1060,7 +1060,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="GroupList" class="table table-sm table-hover  table-striped">
+                <table id="groupList" class="table table-sm table-hover  table-striped">
                   <thead>
                   <tr>
                     <th>Group Name</th>
