@@ -1,1 +1,1 @@
-[{id: 0, name: prop/dhcp6517, prop: {hostname:dhcp6517,name:-1,addr:10.11.11.241,addrsubnet:24,rout:10.0.2.2,dns:192.168.143.88,mgmtip:-1,mgmtsubnet:ntp,-1:tz,-1:gw,-1:configured}}]
+[{id: 0, name: pools/pdhcp703521310, prop: dhcp6517}]

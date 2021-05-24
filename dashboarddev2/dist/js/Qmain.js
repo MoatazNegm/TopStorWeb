@@ -1,12 +1,18 @@
 
-var ipv4_address = $(".ipaddress");
-ipv4_address.inputmask();
+//var ipv4_address = $(".ipaddress");
+//ipv4_address.inputmask();
 var globalnotif = {'msgcode':'init','time':'init'};
-
+function postdata(url,data){
+  $.ajax({
+    url: url,
+    dataType: 'json',
+    data: data,
+  });
+}
 
 $(".main-sidebar").css("background","#131010")
 var ipv4_address = $(".ipaddress");
-ipv4_address.inputmask();
+ipv4_address.inputmask({ "clearIncomplete": true });
 //Initialize Select2 Elements
 jQuery(function($){
     $('.card-header').each(function(){
