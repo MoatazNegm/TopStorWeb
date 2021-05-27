@@ -136,30 +136,48 @@ function initgrouplist(){
       },
       "columns": [
         {
-          data: "name"
+          data: "name",
+          render: function(data, type, row){
+           
+              return data;
+          }
+          
         }, 
         {
           data:"users",
           render: function(data, type, row){
-            
-            return '<select class="select2 multiple groupusers '+row.name+' form-control"' 
+            cls = 'Everyone';
+            if(row.name != "Everyone"){
+              cls='';
+            };
+            return '<select class="select2 multiple  groupusers '+row.name+' '+cls+' form-control"' 
             + ' multiple="multiple" data-name='+row.name+'  onclick="tdisclicked(this)"' 
             + 'data-usrs="'+row.users+'" value=[0] data-change="" id="sel'+row.name+'"></select>';
+            
           }
         },
         {
           data: null,
           render: function(data, type, row){
+            cls = 'Everyone';
+            if(row.name != "Everyone"){
+              cls='';
+            }
             return '<button onclick="selbtnclickedgroup(this)" id="btnsel'+row.name+'" '
-            + 'type="button" data-name='+row.name+'  class="btn btn-primary" > update</button>';
+            + 'type="button" data-name='+row.name+'  class="btn '+cls+' btn-primary" > update</button>';
           }
         },
         {
           data: null,
           render: function(data, type, row){
-            return '<a class="UnixDelgroup" val="groupname" href="javascript:agroupdel(\''+row.name+'\')" >'
+            cls = 'Everyone';
+            if(row.name != "Everyone"){
+              cls = '';
+            }
+            return '<a class="UnixDelgroup '+cls+'" val="groupname" href="javascript:agroupdel(\''+row.name+'\')" >'
             + '<img  src="dist/img/delete.png" alt="cannott upload delete icon">'
             + '</a>';
+            
           }
         },
       ],
