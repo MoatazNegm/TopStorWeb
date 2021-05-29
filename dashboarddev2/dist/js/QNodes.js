@@ -19,24 +19,27 @@ function refreshhosts(){
     $.each(hosts,function(e,host){
       $("#hosts").append(
         '<div id="'+host.name+'" class="hosts col-2 '+host.name+'"> ' 
-        +'  <a  href="javascript:memberclick(\''+e+'\')"  class="img-clck" data-htname="'+e+'"> '
+        +'  <div onclick="memberclick(this)" class="img-clck runninghost'+e+'" data-htname="'+e+'"> '
         +'   <img class="img-responsive server SelectedFreewhite" style="object-fit:cover; max-width:80%;" ' 
         +'   class="server" src="dist/img/Server1-On.png" /> '
         +'   <p class="psize1" style="font-size: 0.7rem; color:green;">'+host.name+':'+host.ip+'</p>'
-        +'  </a>'
+        +'  </div>'
         +'</div>'
       );
       $("#hosts").append(
-        '<div id="'+host.name+'2" class="hosts col-2 '+host.name+'"> ' 
-        +'  <a  href="javascript:memberclick(\''+e+'\')"  class="img-clck" data-htname="'+e+'"> '
+        '<div id="'+host.name+'2"  class="hosts col-2 '+host.name+'"> ' 
+        +'  <div   onclick="memberclick(this)"  class="img-clck runninghost'+e+e+'" data-htname="'+e+'"> '
         +'   <img class="img-responsive server SelectedFreewhite" style="object-fit:cover; max-width:80%;" ' 
         +'   class="server" src="dist/img/Server1-On.png" /> '
         +'   <p class="psize1" style="font-size: 0.7rem; color:green;">'+host.name+':'+host.ip+'</p>'
-        +'  </a>'
+        +'  </div>'
         +'</div>'
       );
     });
     updaterunninghosts();
+    if(selectedhost !='-1'){
+      memberclick($(".runninghost"+selectedhost));
+    }
   }
 }
 
@@ -53,10 +56,11 @@ function updaterunninghosts(){
     $(".runningnodes").attr('disabled','disabled')
   } else {
     $(".runningnodes").attr('disabled', false)
-    $("#cBoxName").text(hosts[selectedhost]['name']);
+    $("#cBoxName").text(hosts[selectedhost]['alias']);
     $("#cIPAddress").text(hosts[selectedhost]['ip']);
     $("#cMgmt").text(hosts[selectedhost]['cluster']);
-    $("#cTZ").text(hosts[selectedhost]['tz']);
+    console.log('selected',hosts[selectedhost]['tz'])
+    $("#cTZ").text(hosts[selectedhost]['tz'].split('%')[1].replace('!',':').replace(/\^/g,',').replace(/_/g,' '));
     $("#cNTP").text(hosts[selectedhost]['ntp']);
     $("#cGW").text(hosts[selectedhost]['gw']);
    
@@ -65,8 +69,8 @@ function updaterunninghosts(){
 
 function memberclick(thisclck){
     hname=$(thisclck).attr('data-htname');
-    selectedhost=hname
-    console.log('hname',selectedhost)
+    selectedhost=hname;
+
 
     if($(thisclck).children('img').hasClass("SelectedFreered") > 0 ) {
         $(thisclck).children('img').removeClass("SelectedFreered")
@@ -84,51 +88,65 @@ function memberclick(thisclck){
         $("#RhostForget").attr('disabled',false);
        
     }
+  //thisclck.preventDefault();
 }
-
-$(".img-clck").click(function(ev) {
-  memberclick(this);
-  ev.preventDefault();
-});
 
 $("#DNSsubmit").click(function (ev){ 
   ev.preventDefault();
   var tochange = 0;
   var hostconfig  = JSON.parse(JSON.stringify(hosts[selectedhost])); 
-  hostconfig['id'] = selectedhost;
+  
+  hostsubmit = {};
+  hostsubmit['name'] = hostconfig['name'];
   if($("#BoxName").val().length > 3 && $("#BoxName").val() != hostconfig['name'] ) {
-    hostconfig['alias'] = $("#BoxName").val();
+    hostsubmit['alias'] = $("#BoxName").val();
     tochange = 1;
   }
   if($("#IPAddress").val().length > 3 && $("#IPAddress").val().includes('__') < 1 && $("#IPAddress").val() != hostconfig['ip']){
-    hostconfig['ip'] = $("#IPAddress").val();
+    hostsubmit['ip'] = $("#IPAddress").val();
   }
-  if($("#Mgmt").val().length > 3 && $("#Mgmt").val().includes('__') < 1 && $("#Mgmt").val() != hostconfig['cluster'] ) {
-    hostconfig["cluster"] = $("#Mgmt").val();
+  if($("#Mgmt").val().length > 3 && $("#Mgmt").val().includes('__') < 1 && ($("#Mgmt").val()+'/'+$("#MgmtSub").val())
+   != hostconfig['cluster'] ) {
+    hostsubmit["cluster"] = $("#Mgmt").val()+'/'+$("#MgmtSub").val();
+    console.log('hihihihi');
     tochange = 1;
   }
-  if( $("#TZ").val() != '-100'  && $("#TZ").val() != hostconfig['tz']) {
-    console.log('hi')
-    hostconfig["tz"] = $("#TZ option:selected").attr('city')+'%'+$("#TZ option:selected").text().split(' ').join('_').split(',').join('^').split(':').join('!');
+  if( $("#TZ").val() != '-100'  && 
+      $("#TZ option:selected").text() != 
+      hostconfig['tz'].split('%')[1].replace('!',':').replace(/\^/g,',').replace(/_/g,' ')) {
+
+    hostsubmit["tz"] = $("#TZ option:selected").attr('city')+'%'+
+          $("#TZ option:selected").text().split(' ').join('_').split(',').join('^').split(':').join('!');
     tochange = 1;
-    console.log('I am here');
+
   }
   if($("#NTP").val().length > 3 && $("#NTP").val().includes('__') < 1 && $("#NTP").val() != hostconfig['ntp']) {
-    hostconfig["ntp"] = $("#NTP").val();
+    hostsubmit["ntp"] = $("#NTP").val();
+    tochange = 1;
+  }
+  if($("#NTPname").val().length > 3 && $("#NTPname").val() != hostconfig['ntp']) {
+    hostsubmit["ntp"] = $("#NTPname").val();
     tochange = 1;
   }
   if($("#GW").val().length > 3 && $("#GW").val().includes('__') < 1 && $("#GW").val() != hostconfig['gw']) {
-    hostconfig["gw"] = $("#GW").val();
+    hostsubmit["gw"] = $("#GW").val();
     tochange = 1;
   }
   if(tochange > 0){
-    hostconfig["user"] = 'mezo';
+    hostsubmit['id'] = selectedhost;
+    hostsubmit["user"] = 'mezo';
     var apiurl = 'api/v1/host/config';
-    var apidata = hostconfig;
+    var apidata = hostsubmit;
     postdata(apiurl,apidata);
   }
   
 });
+
+
+setInterval(function(){refreshhosts();},5000);
+
+
+
 
 var example1_filter = $("#example1_filter");
 $("#example1").DataTable({

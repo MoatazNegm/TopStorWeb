@@ -45,9 +45,13 @@ jQuery(function($){
       type: 'GET',
       success: function(data) {  notif=data; }
     });
+    // for fixing the time zone presentation
+    if(notif['msgcode'].includes('_')  && notif['msgcode'].includes('%') && notif['msgcode'].includes('!')){
+       notif['msgcode'] = notif['msgocde'].split('%')[2]
+     }
     if(globalnotif['time'] != notif['time'] || globalnotif['msgcode'] != notif['msgcode']){
       globalnotif = notif;
-      console.log('notif',notif['type'], bg[notif['type']]['class'],bg[notif['type']]['loc'], bg[notif['type']]['delay'] );
+      //console.log('notif',notif['type'], bg[notif['type']]['class'],bg[notif['type']]['loc'], bg[notif['type']]['delay'] );
       notifbody = notif['msgbody'];
       $(document).Toasts('create', { 
         title: notif['host'],
