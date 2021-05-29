@@ -59,7 +59,6 @@ function updaterunninghosts(){
     $("#cBoxName").text(hosts[selectedhost]['alias']);
     $("#cIPAddress").text(hosts[selectedhost]['ip']);
     $("#cMgmt").text(hosts[selectedhost]['cluster']);
-    console.log('selected',hosts[selectedhost]['tz'])
     $("#cTZ").text(hosts[selectedhost]['tz'].split('%')[1].replace('!',':').replace(/\^/g,',').replace(/_/g,' '));
     $("#cNTP").text(hosts[selectedhost]['ntp']);
     $("#cGW").text(hosts[selectedhost]['gw']);
@@ -108,7 +107,6 @@ $("#DNSsubmit").click(function (ev){
   if($("#Mgmt").val().length > 3 && $("#Mgmt").val().includes('__') < 1 && ($("#Mgmt").val()+'/'+$("#MgmtSub").val())
    != hostconfig['cluster'] ) {
     hostsubmit["cluster"] = $("#Mgmt").val()+'/'+$("#MgmtSub").val();
-    console.log('hihihihi');
     tochange = 1;
   }
   if( $("#TZ").val() != '-100'  && 
