@@ -17,9 +17,14 @@ function refreshhosts(){
     type: 'GET',
     success: function(data) {  newhosts=data; }
   });
-  
-  $.each(hoststata, function(hoststataid, status){
+
+  if(JSON.stringify(hostsinfo) !=  JSON.stringify(newhosts['all'])) {
     hostsinfo = JSON.parse(JSON.stringify(newhosts['all']));
+    $.each(hoststata, function (e,status){
+      allhosts[status] = 'reinit';
+    })
+  }
+  $.each(hoststata, function(hoststataid, status){
     if(JSON.stringify(allhosts[status]) !=  JSON.stringify(newhosts[status])){
       $(".hosts"+status).remove();
       allhosts[status] = JSON.parse(JSON.stringify(newhosts[status]));
@@ -29,7 +34,7 @@ function refreshhosts(){
         if( status == 'active' && JSON.stringify(newhosts['lost']).includes(host.name) ){
           imgstatus = 'Off';
         }
-        console.log('before', status);
+
         $("#hosts"+status).append(
           '<div id="'+host.name+'" class="hosts'+status+' col-2 '+host.name+'"> ' 
           +'  <div onclick="memberclick(this,\''+status+'\')" class="img-clck '+e+'" data-htname="'+e+'"> '
@@ -87,7 +92,6 @@ function updaterunninghosts(status){
 function memberclick(thisclck,status){
     hname=$(thisclck).attr('data-htname');
     selectedhost[status]=hname;
-    console.log('status',status, hname);
 
     if($(thisclck).children('img').hasClass("SelectedFreered") > 0 ) {
         $(thisclck).children('img').removeClass("SelectedFreered")
