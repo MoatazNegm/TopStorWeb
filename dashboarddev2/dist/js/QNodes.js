@@ -1,89 +1,107 @@
 //input mask bundle ip address
 
-var hosts=["init"];
-selectedhost = "-1";
+var allhosts= {};
+var selectedhost = {};
+var hoststata = ['ready', 'active', 'possible', 'lost'];
+$.each(hoststata, function(e,t){
+  selectedhost[t] = '-1';
+  allhosts[t] = [];
+});
+var hostsinfo = 'init';
 
 $("#BoxName").inputmask('Regex', {regex: '(.*[a-z]){3}', "clearIncomplete": true });
 function refreshhosts(){
-  var newhosts="init";
   $.ajax({
-    url: 'api/v1/hosts/info',
+    url: 'api/v1/hosts/allinfo',
     async: false,
     type: 'GET',
     success: function(data) {  newhosts=data; }
   });
   
-  if( JSON.stringify(newhosts) !=  JSON.stringify(hosts)){
-    $(".hosts").remove();
-    hosts = newhosts;
-    $.each(hosts,function(e,host){
-      $("#hosts").append(
-        '<div id="'+host.name+'" class="hosts col-2 '+host.name+'"> ' 
-        +'  <div onclick="memberclick(this)" class="img-clck runninghost'+e+'" data-htname="'+e+'"> '
-        +'   <img class="img-responsive server SelectedFreewhite" style="object-fit:cover; max-width:80%;" ' 
-        +'   class="server" src="dist/img/Server1-On.png" /> '
-        +'   <p class="psize1" style="font-size: 0.7rem; color:green;">'+host.name+':'+host.ip+'</p>'
-        +'  </div>'
-        +'</div>'
-      );
-      $("#hosts").append(
-        '<div id="'+host.name+'2"  class="hosts col-2 '+host.name+'"> ' 
-        +'  <div   onclick="memberclick(this)"  class="img-clck runninghost'+e+e+'" data-htname="'+e+'"> '
-        +'   <img class="img-responsive server SelectedFreewhite" style="object-fit:cover; max-width:80%;" ' 
-        +'   class="server" src="dist/img/Server1-On.png" /> '
-        +'   <p class="psize1" style="font-size: 0.7rem; color:green;">'+host.name+':'+host.ip+'</p>'
-        +'  </div>'
-        +'</div>'
-      );
-    });
-    updaterunninghosts();
-    if(selectedhost !='-1'){
-      memberclick($(".runninghost"+selectedhost));
+  $.each(hoststata, function(hoststataid, status){
+    hostsinfo = JSON.parse(JSON.stringify(newhosts['all']));
+    if(JSON.stringify(allhosts[status]) !=  JSON.stringify(newhosts[status])){
+      $(".hosts"+status).remove();
+      allhosts[status] = JSON.parse(JSON.stringify(newhosts[status]));
+      hosts = allhosts[status];
+      var imgstatus = 'On';
+      $.each(hosts,function(e,host){
+        if( status == 'active' && JSON.stringify(newhosts['lost']).includes(host.name) ){
+          imgstatus = 'Off';
+        }
+        console.log('before', status);
+        $("#hosts"+status).append(
+          '<div id="'+host.name+'" class="hosts'+status+' col-2 '+host.name+'"> ' 
+          +'  <div onclick="memberclick(this,\''+status+'\')" class="img-clck '+e+'" data-htname="'+e+'"> '
+          +'   <img class="img-responsive server '+status+ 'SelectedFreewhite" style="object-fit:cover; max-width:80%;" ' 
+          +'   class="server" src="dist/img/Server1-'+imgstatus+'.png" /> '
+          +'   <p class="psize1" style="font-size: 0.7rem; color:green;">'+host.name+':'+host.ip+'</p>'
+          +'  </div>'
+          +'</div>'
+        );
+      });
+      updaterunninghosts(status);
+      if(selectedhost[status] !='-1'){
+        memberclick($(".runninghost"+selectedhost[status]));
+      }
+    
+
     }
-  }
+  });
+
+  
+  var newhosts="init";
+ 
+  
+ 
 }
 
 refreshhosts();
 
-function updaterunninghosts(){
-  if (selectedhost=="-1"){
-    $("#cBoxName").css("font-size","0.8rem").text("select a node...");
-    $("#cIPAddress").css("font-size","0.8rem").text("select a node...");
-    $("#cMgmt").css("font-size","0.8rem").text("select a node...");
-    $("#cTZ").css("font-size","0.8rem").text("select a node...");
-    $("#cNTP").css("font-size","0.8rem").text("select a node...");
-    $("#cGW").css("font-size","0.8rem").text("select a node...");
-    $(".runningnodes").attr('disabled','disabled')
-  } else {
-    $(".runningnodes").attr('disabled', false)
-    $("#cBoxName").text(hosts[selectedhost]['alias']);
-    $("#cIPAddress").text(hosts[selectedhost]['ip']);
-    $("#cMgmt").text(hosts[selectedhost]['cluster']);
-    $("#cTZ").text(hosts[selectedhost]['tz'].split('%')[1].replace('!',':').replace(/\^/g,',').replace(/_/g,' '));
-    $("#cNTP").text(hosts[selectedhost]['ntp']);
-    $("#cGW").text(hosts[selectedhost]['gw']);
-   
+function updaterunninghosts(status){
+  if(status=='ready'){
+    if (selectedhost[status]=="-1"){
+      $("#cBoxName").css("font-size","0.8rem").text("select a node...");
+      $("#cIPAddress").css("font-size","0.8rem").text("select a node...");
+      $("#cMgmt").css("font-size","0.8rem").text("select a node...");
+      $("#cTZ").css("font-size","0.8rem").text("select a node...");
+      $("#cNTP").css("font-size","0.8rem").text("select a node...");
+      $("#cGW").css("font-size","0.8rem").text("select a node...");
+      $(".runningnodes").attr('disabled','disabled')
+    } else {
+      var hostdata = hostsinfo[allhosts[status][selectedhost[status]]['name']]
+      $(".runningnodes").attr('disabled', false)
+      $("#cBoxName").text(hostdata['alias']);
+      $("#cIPAddress").text(hostdata['ip']);
+      $("#cMgmt").text(hostdata['cluster']);
+      $("#cTZ").text(hostdata['tz'].split('%')[1].replace('!',':').replace(/\^/g,',').replace(/_/g,' '));
+      $("#cNTP").text(hostdata['ntp']);
+      $("#cGW").text(hostdata['gw']);
+      $("#DNSsubmit").data('selected',selectedhost[status])
+      
+    
+    }
   }
 }
 
-function memberclick(thisclck){
+function memberclick(thisclck,status){
     hname=$(thisclck).attr('data-htname');
-    selectedhost=hname;
-
+    selectedhost[status]=hname;
+    console.log('status',status, hname);
 
     if($(thisclck).children('img').hasClass("SelectedFreered") > 0 ) {
         $(thisclck).children('img').removeClass("SelectedFreered")
         $(thisclck).children('img').addClass("SelectedFreewhite");
-        selectedhost="-1";
+        selectedhost[status]="-1";
         $(".collapse").collapse('hide');
-        updaterunninghosts();
+        updaterunninghosts(status);
         $("#RhostForget").attr('disabled',true);
     } else {
-      $('img.server').removeClass("SelectedFreered")
-      $('img.server').addClass("SelectedFreewhite");
+      $('img.server.'+status).removeClass("SelectedFreered")
+      $('img.server'+status).addClass("SelectedFreewhite");
       $(thisclck).children('img').removeClass("SelectedFreewhite")
       $(thisclck).children('img').addClass("SelectedFreered");
-      updaterunninghosts();
+      updaterunninghosts(status);
         $("#RhostForget").attr('disabled',false);
        
     }
@@ -93,11 +111,13 @@ function memberclick(thisclck){
 $("#DNSsubmit").click(function (ev){ 
   ev.preventDefault();
   var tochange = 0;
-  var hostconfig  = JSON.parse(JSON.stringify(hosts[selectedhost])); 
+  var selstatus = $("#DNSsubmit").data('selected')
+  hostdata = hostsinfo[allhosts['ready'][selstatus]['name']]
+  var hostconfig  = JSON.parse(JSON.stringify(hostdata)); 
   
   hostsubmit = {};
-  hostsubmit['name'] = hostconfig['name'];
-  if($("#BoxName").val().length > 3 && $("#BoxName").val() != hostconfig['name'] ) {
+  
+  if($("#BoxName").val().length > 3 && $("#BoxName").val() != hostconfig['alias'] ) {
     hostsubmit['alias'] = $("#BoxName").val();
     tochange = 1;
   }
@@ -131,8 +151,9 @@ $("#DNSsubmit").click(function (ev){
     tochange = 1;
   }
   if(tochange > 0){
-    hostsubmit['id'] = selectedhost;
+    hostsubmit['id'] = $("#DNSsubmit").data('selected');
     hostsubmit["user"] = 'mezo';
+    hostsubmit['name'] = allhosts['ready'][selstatus]['name'];
     var apiurl = 'api/v1/host/config';
     var apidata = hostsubmit;
     postdata(apiurl,apidata);
