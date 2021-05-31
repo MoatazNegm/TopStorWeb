@@ -216,6 +216,7 @@ $("#UnixAddUser").click( function (e){
   
 });
 
+
 function auserdel(){
   var apiurl = "api/v1/users/userdel";
   var apidata = {'name': arguments[0], 'Myname':'mezo'}

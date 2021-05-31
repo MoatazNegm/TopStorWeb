@@ -29,8 +29,9 @@ function refreshhosts(){
       $(".hosts"+status).remove();
       allhosts[status] = JSON.parse(JSON.stringify(newhosts[status]));
       hosts = allhosts[status];
-      var imgstatus = 'On';
+      var imgstatus;
       $.each(hosts,function(e,host){
+        imgstatus = 'On';
         if( status == 'active' && JSON.stringify(newhosts['lost']).includes(host.name) ){
           imgstatus = 'Off';
         }
@@ -112,6 +113,14 @@ function memberclick(thisclck,status){
   //thisclck.preventDefault();
 }
 
+function evacuate(){
+  var host = selectedhost['active'];
+  var apiurl = "api/v1/hosts/evacuate";
+  var apidata = {"name": allhosts['active'][host]['name'], "Myname":"mezo"}
+  postdata(apiurl,apidata);
+  
+}
+
 $("#DNSsubmit").click(function (ev){ 
   ev.preventDefault();
   var tochange = 0;
@@ -158,7 +167,7 @@ $("#DNSsubmit").click(function (ev){
     hostsubmit['id'] = $("#DNSsubmit").data('selected');
     hostsubmit["user"] = 'mezo';
     hostsubmit['name'] = allhosts['ready'][selstatus]['name'];
-    var apiurl = 'api/v1/host/config';
+    var apiurl = 'api/v1/hosts/config';
     var apidata = hostsubmit;
     postdata(apiurl,apidata);
   }
