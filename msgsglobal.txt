@@ -18,9 +18,9 @@ Diwa4:1: : from :: Disk : is removed from system :
 Disu4:0: : from :: Success deleting absent disk : from system database
 Dist5:0 : : from :: Start offlineing disk :. Please add a spare disk urgently so system :
 Disu5:1: : from :: Success to set disk : to be offline, please add a spare disk urgently
-Dist6:0: : from :: Start attaching Disk :  to group : in pool : in system : 
-Disu6:1: : from :: Success attaching Disk :  to group : in pool : in system : 
-Difa6:0: : from :: Failed attaching Disk :  to group : in pool : in system : 
+Dist6:0: : from :: Start attaching Disk : to group : in pool : in system : 
+Disu6:1: : from :: Success attaching Disk : to group : in pool : in system : 
+Difa6:0: : from :: Failed attaching Disk : to group : in pool : in system : 
 Dist7:0: : from :: Start Automatic Re-Attach of disk : to pool :
 Difa7:0: : from :: Failed Automatic Re-Attach of disk : to pool :
 Disu7:1: : from :: Success Automatic Re-Attach of disk : to pool :
@@ -108,21 +108,21 @@ HostManual1000: Changing Device name and IPs by :
 HostManual1001: All changes are done. Please, wait till they take effect.
 HostManual1002:1: : from :: Changing System name and IPs
 HostManual1003:2: : from :: Changed Device System name and IPs to name: ip: gateway: dns:
-HostManual1004:1: : from :: Changing System :  to new parameters
-HostManual1st5:1: : from :: Start changing system name from :  to :
-HostManual1su5:2: : from :: Succss changing system name from :  to :
-HostManual1st6:1: : from :: Start changing system IP address from :  to :
-HostManual1su6:2: : from :: Success changing system IP address from :  to : the system will reboot.
-HostManual1st7:1: : from :: Start changing cluster managment address from :  to :
-HostManual1su7:1: : from :: Success changing cluster managment address from :  to :
-HostManual1st8:1: : from :: Start changing cluster data address from :  to :
-HostManual1su8:2: : from :: Success changing cluster data address from :  to :
-HostManual1st9:2: : from :: Start changing cluster ntp server from :  to :
-HostManual1su9:2: : from :: Success changing cluster ntp server from :  to :
-HostManual1st10:2: : from :: Start changing cluster time zone server from :  to :
-HostManual1su10:2: : from :: Success changing cluster time zone server from :  to :
-HostManual1st11:2: : from :: Start changing cluster gateway  from :  to :
-HostManual1su11:2: : from :: Success changing cluster gateway  from :  to :
+HostManual1004:1: : from :: Changing System : to new parameters
+HostManual1st5:1: : from :: Start changing system name from : to :
+HostManual1su5:2: : from :: Succss changing system name from : to :
+HostManual1st6:1: : from :: Start changing system IP address from : to :
+HostManual1su6:2: : from :: Success changing system IP address from : to : the system will reboot.
+HostManual1st7:1: : from :: Start changing cluster managment address from : to :
+HostManual1su7:1: : from :: Success changing cluster managment address from : to :
+HostManual1st8:1: : from :: Start changing cluster data address from : to :
+HostManual1su8:2: : from :: Success changing cluster data address from : to :
+HostManual1st9:2: : from :: Start changing cluster ntp server from : to :
+HostManual1su9:2: : from :: Success changing cluster ntp server from : to :
+HostManual1st10:2: : from :: Start changing cluster time zone server from : to :
+HostManual1su10:2: : from :: Success changing cluster time zone server from : to :
+HostManual1st11:2: : from :: Start changing cluster gateway  from : to :
+HostManual1su11:2: : from :: Success changing cluster gateway  from : to :
 HostManual2st12:2: : from :: Preparing the node to be able to join a cluster 
 HostManual2su12:2: : from :: The node is ready to join any cluser, the node will reboot 
 HostManual1st12:2: : from :: Locking the node for not joining any cluster

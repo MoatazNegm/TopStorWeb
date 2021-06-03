@@ -1078,8 +1078,8 @@
                     <input type="text" placeholder="xxx.xxx.xxx.xxx" 
                           class="form-control col-2 runningnodes ipaddress" name="IPAddress" \
                           id="IPAddress"  data-inputmask="'alias': 'ip'"> 
-                    <label  for="Subnet" class='offset-1 col-1'>Subnet</label>
-                    <input type="number"  min="8" max="32" step="8" value=8 class="form-control runningnodes col-1"  id="Subnet">
+                    <label  for="ipaddrsubnet" class='offset-1 col-1'>Subnet</label>
+                    <input type="number"  min="8" max="32" step="8" value=8 class="form-control runningnodes col-1"  id="ipaddrsubnet">
                     <div  class="form-control bg-secondary offset-1 col-2 color-palette">
                       <span id="cIPAddress">10.11.11.11/24</span>
                     </div>
@@ -1198,7 +1198,7 @@
                   </div>
                 <!-- /.card-body -->
                  <div class="card-footer">
-                  <button type="submit" id="DNSsubmit" class="btn runningnodes btn-primary">Update Node</button>
+                  <button type="submit" id="readysubmit" class="btn runningnodes btn-primary">Update Node</button>
                  </div>
                </form>
               </div>
@@ -1251,7 +1251,7 @@
                  <div class="form-group" >
                    <div class="row">
                     <div class="offset-4 col-4">
-                      <button type="button" onclick="evacuate()" class="btn btn-block bg-gradient-warning btn-lg">Evacuate Node</button>
+                      <button type="button" disabled id="activesubmit" onclick="evacuate()" class="btn btn-block bg-gradient-warning btn-lg">Evacuate Node</button>
                     </div>
                    </div>
                  </div>
@@ -1305,7 +1305,7 @@
                  <div class="form-group" >
                    <div class="row">
                     <div class="offset-4 col-4">
-                      <button type="button" class="btn btn-block bg-gradient-info btn-lg">Allow to join the cluster</button>
+                      <button type="button" id="possiblesubmit" disabled class="btn btn-block bg-gradient-info btn-lg">Allow to join the cluster</button>
                     </div>
                    </div>
                  </div>

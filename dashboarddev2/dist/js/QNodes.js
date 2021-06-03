@@ -73,17 +73,20 @@ function updaterunninghosts(status){
       $("#cTZ").css("font-size","0.8rem").text("select a node...");
       $("#cNTP").css("font-size","0.8rem").text("select a node...");
       $("#cGW").css("font-size","0.8rem").text("select a node...");
+      $("#customSwitch1").prop('checked',false);
       $(".runningnodes").attr('disabled','disabled')
     } else {
       var hostdata = hostsinfo[allhosts[status][selectedhost[status]]['name']]
       $(".runningnodes").attr('disabled', false)
       $("#cBoxName").text(hostdata['alias']);
-      $("#cIPAddress").text(hostdata['ip']);
+      $("#cIPAddress").text(hostdata['ipaddr']+'/'+hostdata['ipaddrsubnet']);
       $("#cMgmt").text(hostdata['cluster']);
       $("#cTZ").text(hostdata['tz'].split('%')[1].replace('!',':').replace(/\^/g,',').replace(/_/g,' '));
       $("#cNTP").text(hostdata['ntp']);
       $("#cGW").text(hostdata['gw']);
-      $("#DNSsubmit").data('selected',selectedhost[status])
+      if (hostdata['configured'] == 'no') { $("#customSwitch1").prop('checked',true);}
+      else{ $("#customSwitch1").prop('checked',false); }
+      $("#readysubmit").data('selected',selectedhost[status])
       
     
     }
@@ -100,14 +103,14 @@ function memberclick(thisclck,status){
         selectedhost[status]="-1";
         $(".collapse").collapse('hide');
         updaterunninghosts(status);
-        $("#RhostForget").attr('disabled',true);
+        $("#"+status+"submit").attr('disabled',true);
     } else {
       $('img.server.'+status).removeClass("SelectedFreered")
       $('img.server'+status).addClass("SelectedFreewhite");
       $(thisclck).children('img').removeClass("SelectedFreewhite")
       $(thisclck).children('img').addClass("SelectedFreered");
       updaterunninghosts(status);
-        $("#RhostForget").attr('disabled',false);
+      $("#"+status+"submit").attr('disabled',false);
        
     }
   //thisclck.preventDefault();
@@ -121,10 +124,10 @@ function evacuate(){
   
 }
 
-$("#DNSsubmit").click(function (ev){ 
+$("#readysubmit").click(function (ev){ 
   ev.preventDefault();
   var tochange = 0;
-  var selstatus = $("#DNSsubmit").data('selected')
+  var selstatus = $("#readysubmit").data('selected')
   hostdata = hostsinfo[allhosts['ready'][selstatus]['name']]
   var hostconfig  = JSON.parse(JSON.stringify(hostdata)); 
   
@@ -134,14 +137,25 @@ $("#DNSsubmit").click(function (ev){
     hostsubmit['alias'] = $("#BoxName").val();
     tochange = 1;
   }
-  if($("#IPAddress").val().length > 3 && $("#IPAddress").val().includes('__') < 1 && $("#IPAddress").val() != hostconfig['ip']){
-    hostsubmit['ip'] = $("#IPAddress").val();
+  if($("#IPAddress").val().length > 3 && $("#IPAddress").val().includes('__') < 1 && $("#IPAddress").val() != hostconfig['ipaddr']){
+    hostsubmit['ipaddr'] = $("#IPAddress").val();
+    hostsubmit['ipaddrsubnet'] = $("#ipaddrsubnet").val()
+    tochange = 1;
+  }
+  if( $("#ipaddrsubnet").val() != hostconfig['ipaddrsubnet']){
+    if($("#IPAddress").val().length > 3 && $("#IPAddress").val().includes('__') < 1 ){
+      hostsubmit['ipaddr'] = $("#IPAddress").val();
+      hostsubmit['ipaddrsubnet'] = $("#ipaddrsubnet").val()
+      tochange = 1;
+    }
   }
   if($("#Mgmt").val().length > 3 && $("#Mgmt").val().includes('__') < 1 && ($("#Mgmt").val()+'/'+$("#MgmtSub").val())
    != hostconfig['cluster'] ) {
     hostsubmit["cluster"] = $("#Mgmt").val()+'/'+$("#MgmtSub").val();
     tochange = 1;
   }
+  
+  
   if( $("#TZ").val() != '-100'  && 
       $("#TZ option:selected").text() != 
       hostconfig['tz'].split('%')[1].replace('!',':').replace(/\^/g,',').replace(/_/g,' ')) {
@@ -163,8 +177,16 @@ $("#DNSsubmit").click(function (ev){
     hostsubmit["gw"] = $("#GW").val();
     tochange = 1;
   }
+  if($("#customSwitch1").prop('checked') == false && hostconfig['configured'] == 'no'){
+    hostsubmit["configured"] = 'yes';
+    tochange = 1;
+  }
+  if($("#customSwitch1").prop('checked') == true && hostconfig['configured'] != 'no') {
+    hostsubmit["configured"] = 'no';
+    tochange = 1;
+  }
   if(tochange > 0){
-    hostsubmit['id'] = $("#DNSsubmit").data('selected');
+    hostsubmit['id'] = $("#readysubmit").data('selected');
     hostsubmit["user"] = 'mezo';
     hostsubmit['name'] = allhosts['ready'][selstatus]['name'];
     var apiurl = 'api/v1/hosts/config';

@@ -1,1 +1,1 @@
-{"hostname":"dhcp32502","name":"node_1","addr":"10.11.11.244","addrsubnet":"24","rout":"10.0.4.2","dns":"192.168.246.169","mgmtip":"121.212.121.219","mgmtsubnet":"24","ntp":"-1","tz":"-1","gw":"-1","configured":"no"}
+{"hostname":"dhcp32502","name":"node1","addr":"10.11.11.123","addrsubnet":"24","rout":"10.0.4.2","dns":"192.168.147.2","mgmtip":"10.11.11.21","mgmtsubnet":"24","ntp":"1.pool.ntp.org","tz":"Kuw%(GMT+03!00)_Kuwait^_Riyadh^_Baghdad","gw":"10.0.4.2","configured":"yes"}
