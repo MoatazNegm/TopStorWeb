@@ -11,14 +11,17 @@
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-
   <!-- DataTables -->
   <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
-
 </head>
 <!--
 `body` tag options:
@@ -1027,7 +1030,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example1" class="table table-sm table-hover  table-striped">
+                <table id="logs" class="table table-sm table-hover  table-striped">
                   <thead>
                   <tr>
                     <th>Date</th>
@@ -1035,37 +1038,12 @@
                     <th>User</th>
                     <th>Node</th>
                     <th>Description</th>
+                    <th>type</th>
+                    <th>msgcode</th>
                   </tr>
                   </thead>
                   <tbody>
-                   <tr class="dontdelete" >
-                     <td >date</td>
-                     <td >time</td>
-                     <td >system</td>
-                     <td >node_1</td>
-                     <td>Data...data....data..</td>
-                   </tr>
-                  <tr>
-                    <td>Trident</td>
-                    <td>Win 95+</td>
-                    <td>X</td>
-                    <td>A</td>
-                    <td>A</td>
-                  </tr>
-                  <tr>
-                    <td>Presto</td>
-                    <td>-</td>
-                    <td>A</td>
-                    <td>A</td>
-                    <td>A</td>
-                  </tr>
-                  <tr>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>U</td>
-                    <td>A</td>
-                    <td>A</td>
-                  </tr>
+
                   </tbody>
                   <tfoot>
                   <tr>
@@ -1074,6 +1052,8 @@
                     <th>User</th>
                     <th>Node</th>
                     <th>Description</th>
+                    <th>type</th>
+                    <th>msgcode</th>
                   </tr>
                   </tfoot>
                 </table>
@@ -1189,6 +1169,9 @@
 <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
 <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<!-- Select2 -->
+<script src="plugins/select2/js/select2.full.min.js"></script>
+
 <script src="plugins/jszip/jszip.min.js"></script>
 <script src="plugins/pdfmake/pdfmake.min.js"></script>
 <script src="plugins/pdfmake/vfs_fonts.js"></script>
@@ -1196,9 +1179,10 @@
 <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+
 <!-- OPTIONAL SCRIPTS -->
 <script src="dist/js/Qjquery.inputmask.bundle.js"></script>
-<script src="dist/js/Qusers.js" ></script>
+<script src="dist/js/Qlogs.js" ></script>
 <script src="plugins/chart.js/Chart.min.js"></script>
 <script src="dist/js/demo.js"></script>
 <script src="dist/js/Qmain.js"></script>

@@ -2,6 +2,7 @@
 //var ipv4_address = $(".ipaddress");
 //ipv4_address.inputmask();
 var globalnotif = {'msgcode':'init','time':'init'};
+dirtylog = 1;
 function postdata(url,data){
   $.ajax({
     url: url,
@@ -43,7 +44,7 @@ jQuery(function($){
       url: 'api/v1/info/notification',
       async: false,
       type: 'GET',
-      success: function(data) {  notif=data; }
+      success: function(data) {  notif=data;}
     });
     // for fixing the time zone presentation
     if(notif['msgcode'].includes('_')  && notif['msgcode'].includes('%') && notif['msgcode'].includes('!')){
@@ -51,6 +52,7 @@ jQuery(function($){
      }
     if(globalnotif['time'] != notif['time'] || globalnotif['msgcode'] != notif['msgcode']){
       globalnotif = notif;
+      dirtylog = 1;
       //console.log('notif',notif['type'], bg[notif['type']]['class'],bg[notif['type']]['loc'], bg[notif['type']]['delay'] );
       notifbody = notif['msgbody'];
       $(document).Toasts('create', { 
@@ -64,6 +66,6 @@ jQuery(function($){
         body: notifbody
       });
       
-    }
+    } else { dirtylog = 0}
     }, 5000);
       

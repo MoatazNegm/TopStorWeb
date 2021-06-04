@@ -41,6 +41,7 @@ var oldcurrentinfo='dlkfajsdl;';
  var seldhosts="";
  var modaltill=idletill-120000
  var userlisttable;
+ var dirtylog = 1;
  var myid="<?php echo $_REQUEST['myid'] ?>";
  myidhash=myid;
  var myname="<?php echo $_REQUEST['name'] ?>";
