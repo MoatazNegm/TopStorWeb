@@ -141,34 +141,51 @@ function volumelistrefresh(){
     groupsrefresh();
 
     
-    
-    $(".select2.usergroups").on('change',function(e){
-      
-
-      var grpsval = $(this).data('grps').toString();
-      var newgrpsval = $(this).val().toString();
-
   
-      if(grpsval == 'NoGroup') { grpsval = ''}
-      if( grpsval !== newgrpsval ){
-        changedprop[$(this).data('name')] = {'groups': newgrpsval}
-        $("#btn"+$(this).attr('id')).show();
-        $(this).data('change', newgrpsval);
+
+
+    $(".changeprop").on('change',function(e){
+        
+      var changedkey = $(this).data('key');
+      console.log('changed',changedkey)
+      var oldpropvalue = $(this).data('value').toString();
+      var newpropvalue = $(this).val().toString();
+      if(!($(this).data('name') in changedprop)){ changedprop[$(this).data('name')] = {}; }
+
+
+      if(oldpropvalue == 'NoGroup') { oldpropvalue = ''}
+      if( oldpropvalue !== newpropvalue ){
+        changedprop[$(this).data('name')][changedkey] =  newpropvalue
+        $("#btn"+$(this).data('name')).show();
       }
       else {
         try{
-        delete changedprop[$(this).data('name')]['groups'];
-        if($.isEmptyObject(changedprop[$(this).data('name')])) { delete changedprop[$(this).data('name')]}
+          delete changedprop[$(this).data('name')][changedkey];
+          if($.isEmptyObject(changedprop[$(this).data('name')])) { 
+            $("#btn"+$(this).data('name')).hide();
+            delete changedprop[$(this).data('name')];
+          }
         } catch{
           ;
         }
-        $(this).data('change','');
-        $("#btn"+$(this).attr('id')).hide();
+        
       }
-      
+     
     });
-    $(".select2.usergroups").trigger('change');    
-  });
+    if($.isEmptyObject(changedprop)) { $("button.volumes").hide();}
+    try{
+        if($.isEmptyObject(changedprop[$(this).data('name')])) { 
+          $("#btn"+$(this).data('name')).hide();
+          delete changedprop[$(this).data('name')];
+        }
+      } catch {
+        ;
+      }
+
+    
+
+    $(".changeprop").trigger('change');    
+});
 }
 
 
@@ -198,30 +215,31 @@ function initVolumelist(){
         {
           data:"ipaddress",
           render: function(data, type, row){
-            return '<input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" '
-            + 'name="s" id="ip'+row.name+'" value="'+data+'" data-name='+row.name+' style="font-size: 99.9%;" data-inputmask="\'alias\': \'ip\'">'
+            return '<input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control changeprop" '
+            + 'name="s" id="ip'+row.name+'" data-value="'+data+'" value="'+data+'" data-name='+row.name
+            + ' data-key="ipaddress" style="font-size: 99.9%;" data-inputmask="\'alias\': \'ip\'">'
           }
         },
         {
           data:"Subnet",
           render: function(data, type, row){
-            return '<input type="number"  style="font-size: 99.9%;" min="8" max="32" step="8" class="form-control"'
-            +'id="sub'+row.name+'" data-name='+row.name+' value="'+data+'">'
+            return '<input type="number"  style="font-size: 99.9%;" min="8" max="32" step="8" class="form-control changeprop"'
+            +'id="sub'+row.name+'" data-key="Subnet" data-name='+row.name+' data-value="'+data+'" value="'+data+'">'
           }
         },
         {
           data:"groups",
           render: function(data, type, row){
-            return '<select class="select2 multiple usergroups '+row.name+' form-control"' 
+            return '<select class="select2 multiple changeprop usergroups '+row.name+' form-control"' 
             + ' multiple="multiple" data-name='+row.name+'  '
-            + 'data-grps="'+row.groups+'" data-name='+row.name+' value=[0] data-change="" id="sel'+row.name+'"></select>';
+            + 'data-grps="'+row.groups+'" data-key="groups" data-value="'+data+'" data-name='+row.name+' value=[0] data-change="" id="sel'+row.name+'"></select>';
           }
         },
         {
           data: null,
           render: function(data, type, row){
-            return '<button onclick="selbtnclickeduser(this)" style="font-size:99.9%;" id="btnsel'+row.name+'" '
-            + 'type="button" data-name='+row.name+' data-name='+row.name+'  class="btn btn-primary" > update</button>';
+            return '<button onclick="selbtnclickeduser(this)" style="font-size:99.9%;" id="btn'+row.name+'" '
+            + 'type="button" data-name='+row.name+' data-name='+row.name+'  class="btn btn-primary volumes" > update</button>';
           }
         },
         {
@@ -244,6 +262,8 @@ function initVolumelist(){
     });
   volumelisttable.buttons().container().appendTo('#VolumeList_wrapper .col-6:eq(0)');
   //volumelistrefresh();
+  $('.volumes').hide();
+  
   
   
 }
