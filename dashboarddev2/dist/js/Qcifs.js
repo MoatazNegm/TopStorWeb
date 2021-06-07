@@ -40,6 +40,7 @@ var oldcurrentinfo='dlkfajsdl;';
  var oldrdata="kfld";
  var selhosts="";
  var seldhosts="";
+ var changedprop = {};
  var modaltill=idletill-120000
  var volumelisttable;
  var dirtylog = 1;
@@ -120,7 +121,7 @@ function volumelistrefresh(){
       } else {
         grps = assignedgrps.split(',');
       }
-      console.log('grps',grps);
+      
       $.each(grps, function(e,t){
         if(t !="NoGroup") {
           var grp = allgroups["results"][t];
@@ -139,40 +140,37 @@ function volumelistrefresh(){
     });
     groupsrefresh();
 
-
+    
+    
     $(".select2.usergroups").on('change',function(e){
+      
+
       var grpsval = $(this).data('grps').toString();
       var newgrpsval = $(this).val().toString();
 
-      console.log('oldgrps',grpsval, 'newgrp',newgrpsval)
+  
       if(grpsval == 'NoGroup') { grpsval = ''}
       if( grpsval !== newgrpsval ){
-        console.log('notequal');
+        changedprop[$(this).data('name')] = {'groups': newgrpsval}
         $("#btn"+$(this).attr('id')).show();
         $(this).data('change', newgrpsval);
       }
       else {
-        console.log('equal'); 
+        try{
+        delete changedprop[$(this).data('name')]['groups'];
+        if($.isEmptyObject(changedprop[$(this).data('name')])) { delete changedprop[$(this).data('name')]}
+        } catch{
+          ;
+        }
         $(this).data('change','');
         $("#btn"+$(this).attr('id')).hide();
       }
       
     });
-    $(".select2.usergroups").trigger('change');
-
-    
-    
+    $(".select2.usergroups").trigger('change');    
   });
 }
-function getgroups(grpval){
- var grpstr= []
- $.each(grpval, function(e,t){
-  grpstr.push(allgroups['results'][t]['text'])
- });
 
- console.log('getgrps',grpstr)
- return grpstr.toString();
-}
 
 
 
@@ -183,8 +181,7 @@ function initVolumelist(){
         url: 'api/v1/volumes/CIFS/volumesinfo',
         async: false,
         type: 'GET',
-        //success: function(data){ allvolumes = data; },
-        //error: function(data) { console.log('oops',data);},
+        
         dataSrc: 'allvolumes'
       },
       "columns": [
@@ -202,14 +199,14 @@ function initVolumelist(){
           data:"ipaddress",
           render: function(data, type, row){
             return '<input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" '
-            + 'name="s" id="ip'+row.name+'" value="'+data+'" data-inputmask="\'alias\': \'ip\'">'
+            + 'name="s" id="ip'+row.name+'" value="'+data+'" data-name='+row.name+' style="font-size: 99.9%;" data-inputmask="\'alias\': \'ip\'">'
           }
         },
         {
           data:"Subnet",
           render: function(data, type, row){
-            return '<input type="number"  min="8" max="32" step="8" value=8 class="form-control"'
-            +'id="sub'+row.name+' value="'+data+'"">'
+            return '<input type="number"  style="font-size: 99.9%;" min="8" max="32" step="8" class="form-control"'
+            +'id="sub'+row.name+'" data-name='+row.name+' value="'+data+'">'
           }
         },
         {
@@ -217,21 +214,21 @@ function initVolumelist(){
           render: function(data, type, row){
             return '<select class="select2 multiple usergroups '+row.name+' form-control"' 
             + ' multiple="multiple" data-name='+row.name+'  '
-            + 'data-grps="'+row.groups+'" value=[0] data-change="" id="sel'+row.name+'"></select>';
+            + 'data-grps="'+row.groups+'" data-name='+row.name+' value=[0] data-change="" id="sel'+row.name+'"></select>';
           }
         },
         {
           data: null,
           render: function(data, type, row){
-            return '<button onclick="selbtnclickeduser(this)" id="btnsel'+row.name+'" '
-            + 'type="button" data-name='+row.name+'  class="btn btn-primary" > update</button>';
+            return '<button onclick="selbtnclickeduser(this)" style="font-size:99.9%;" id="btnsel'+row.name+'" '
+            + 'type="button" data-name='+row.name+' data-name='+row.name+'  class="btn btn-primary" > update</button>';
           }
         },
         {
           data: null,
           render: function(data, type, row){
             return '<a class="UnixDelUser" val="username" href="javascript:auserdel(\''+row.name+'\')" >'
-            + '<img  src="dist/img/delete.png" alt="cannott upload delete icon">'
+            + '<img  src="dist/img/delete.png" data-name='+row.name+' alt="cannott upload delete icon">'
             + '</a>';
           }
         },
@@ -256,9 +253,11 @@ initVolumelist();
 
 function selbtnclickeduser(ths){
   //$.post("./pump.php", { req:"UnixChangeUser", name:x.id.replace('btnsel',''), passwd:'groups'+$("#"+x.id.replace('btn','')).val()+" "+myname });
-        var apiurl = 'api/v1/users/userchange';
+        var apiurl = 'api/v1/volumes/volumechange';
         nam = $(ths).data('name');
-        var apidata = {'name': nam, "groups": $("#sel"+nam).val().toString() };
+        changedprop[nam]['volume'] = nam;
+        var apidata = changedprop[nam];
+        console.log('apidata',apidata); 
         postdata(apiurl,apidata);
 }
 
@@ -277,7 +276,6 @@ function tocheck(){
     if($("#Pool2").val().length < 1) { $("#createvol").prop('disabled', 'disabled'); }
     try {
       if($("#Pool2").val().length  > 0 && $("#Address").val().length < 3) { $("#createvol").prop('disabled', 'disabled'); }
-      //if(allpools["results"][$("#Pool2").val()]["text"].includes('--') > 0) { $("#createvol").prop('disabled', 'disabled'); }
      } catch(err){
       console.log('hi',$("#Pool2").val());
       console.log('hihi',allpools['results'])
@@ -292,8 +290,6 @@ $(".tocheck").click(function(e){ tocheck(); });
 $(".tocheck").focusout(function(e){ tocheck(); });
 
 function refreshall(){
-  console.log('hi');
-
   var newallgroups='new0';
   $.ajax({
     url: "api/v1/volumes/grouplist", 
@@ -306,7 +302,6 @@ function refreshall(){
    if(JSON.stringify(allgroups) != JSON.stringify(newallgroups)) {
      allgroups = newallgroups; 
      groupsrefresh();
-     volumelistrefresh();
    }
 
 
