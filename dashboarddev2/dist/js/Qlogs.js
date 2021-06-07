@@ -52,7 +52,7 @@ var example1_filter = $("#UserList_filter");
 function initlogs(){
   logstable=$("#logs").DataTable({
       //"responsive": true, "lengthChange": true, "autoWidth": true, "info":true,
-      "order": [[ 1, "desc" ]],
+      "order": [[ 0, "desc" ],[ 1, "desc"]],
       //"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
       "ajax" : {
         url: 'api/v1/info/logs',

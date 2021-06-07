@@ -15,6 +15,10 @@
   <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <!-- Toastr -->
 
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
@@ -1021,7 +1025,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-4">
-           <div class="card">
+           <div class="card tocheck ">
               <!-- form start -->
               <form>
                 <div class="card-header">
@@ -1032,9 +1036,9 @@
                   <div class="row">
                     <div class='col-12'>
                       <div class="form-group">
-                        <label  for="Pool2CIFS">Pool</label>
-                        <select  class="form-control" id="Pool2CIFS">
-                          <option value="0">---------</option>
+                        <label  for="Pool2">Pool</label>
+                        <select  class="select2 pool  form-control" id="Pool2">
+                          <option></option>
                         </select>
                       </div>
                     </div>
@@ -1042,34 +1046,34 @@
                   <div class="row">
                     <div class='col-7'>
                       <div class="form-group">
-                        <label  for="volnameCIFS">Volume</label>
-                        <input type="text" class="form-control" id="volnameCIFS" placeholder="Volume Name">
+                        <label  for="volname">Volume</label>
+                        <input type="text" class="form-control " id="volname" placeholder="Volume Name">
                       </div>
                     </div>
                     <div class='offset-1 col-4'>
-                       <label  for="volsizeCIFS">Size (GB)</label>
-                       <input type="number"  value=1 class="form-control"  id="volsizeCIFS">
+                       <label  for="volsize">Size (GB)</label>
+                       <input type="number" min="1"  step="1" value=1 class="form-control "  id="volsize">
                     </div>
 
                   </div>
                   <div class="row">
                     <div class='col-6'>
                       <div class="form-group">
-                        <label  for="AddressCIFS">IP Address</label>
-                        <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="AddressCIFS" id="AddressCIFS"  data-inputmask="'alias': 'ip'">
+                        <label  for="Address">IP Address</label>
+                        <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control  ipaddress" name="Address" id="Address"  data-inputmask="'alias': 'ip'">
                       </div>
                     </div>
                     <div class='offset-2 col-4'>
-                       <label  for="SubnetCIFS">Subnet</label>
-                       <input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="SubnetCIFS">
+                       <label  for="Subnet">Subnet</label>
+                       <input type="number"  min="8" max="32" step="8" value=24 class="form-control"  id="Subnet">
                     </div>
                   </div>
                   <div class="row">
                     <div class='col-12'>
                       <div class="form-group">
-                        <label  for="GroupCIFS">Allowed Groups</label>
-                        <select  multiple size=3 class="form-control" id="GroupCIFS" value="NoGroup">
-                          <option value="NoGroup">-----</option>
+                        <label  for="Group">Allowed Groups</label>
+                        <select  multiple size=3 class=" select2 multiple form-control" multiple="multiple" id="Group" value="NoGroup">
+                          
                         </select>
                       </div>
                     </div>
@@ -1078,7 +1082,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" id="createvolCIFS" class="btn btn-primary">Add Volume</button>
+                  <button type="submit" id="createvol" class="btn btn-primary">Add Volume</button>
                 </div>
               </form>
             </div> <!-- /.card -->
@@ -1184,91 +1188,42 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example1" class="table table-sm table-hover example1  table-striped">
+                <table id="VolumeList" class="table table-sm table-hover  table-striped"">
                   <thead>
-                  <tr>
-                    <th>Volume</th>
-                    <th>pool</th>
-                    <th>Size(GB)</th>
-                    <th>Snapshots(MB)</th>
-                    <th>Compression%</th>
-                    <th>IP Address</th>
-                    <th>Subnet</th>
-                    <th>Allowed Groups</th>
-                    <th>Need update</th>
-                    <th>Remove Volume</th>
-                  </tr>
+                    <tr>
+                      <th>Volume</th>
+                      <th>pool</th>
+                      <th>Size (GB)</th>
+                      <th>Snaps. (MB)</th>
+                      <th>Copress. %</th>
+                      <th>IP Address</th>
+                      <th>Subnet</th>
+                      <th>Allowed Groups</th>
+                      <th>Need update</th>
+                      <th>Remove Volume</th>
+                    </tr>
+
                   </thead>
                   <tbody>
-                   <tr class="dontdelete" >
-                     <td >pecoFinance</td>
-                     <td >74828239292</td>
-                     <td >32</td>
-                     <td >4</td>
-                     <td >1.2x</td>
-                     <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="s" id="s"  data-inputmask="'alias': 'ip'">
-                     </td>
-                     <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="sd">
-                     </td>
-                     <td>
-                       <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
-                        multiple data-actions-box="true" data-live-search="true">
-                       </select>
-                     </td>
-                    <td>
-                      <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
-                        update
-                      </button>
-                    </td>
-                    <td  class="text-center">
-                      <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                        <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                      </a>
-                    </td>
-                    <tr class="dontdelete" >
-                      <td >pecolow</td>
-                      <td >74828239292</td>
-                      <td >10</td>
-                      <td >4</td>
-                      <td >1.98x</td>
-                      <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="ss" id="ss"  data-inputmask="'alias': 'ip'">
-                      </td>
-                      <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="ssd">
-                      </td>
-                      <td>
-                        <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
-                         multiple data-actions-box="true" data-live-search="true">
-                        </select>
-                      </td>
-                     <td>
-                       <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
-                         update
-                       </button>
-                     </td>
-                     <td  class="text-center">
-                       <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                         <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                       </a>
-                     </td>
-
-                  </tr>
+                    <tr>
+                      <th>Volume</th>
+                      <th>pool</th>
+                      <th>Size (GB)</th>
+                      <th>Snaps. (MB)</th>
+                      <th>Copress. %</th>
+                      <th>IP Address</th>
+                      <th>Subnet</th>
+                      <th>Allowed Groups</th>
+                      <th>Need update</th>
+                      <th>Remove Volume</th>
+                    </tr>
 
                   </tbody>
                   <tfoot>
-                  <tr>
-                    <th>Volume</th>
-                    <th>pool</th>
-                    <th>Size(GB)</th>
-                    <th>Snapshots(MB)</th>
-                    <th>Compression%</th>
-                    <th>IP Address</th>
-                    <th>Subnet</th>
-                    <th>Allowed Groups</th>
-                    <th>Need update</th>
-                    <th>Remove Volume</th>
-                  </tr>
+                  
                   </tfoot>
                 </table>
+                
               </div>
               <!-- /.card-body -->
             </div>
@@ -1309,6 +1264,7 @@
 <!-- AdminLTE -->
 <script src="dist/js/adminlte.js"></script>
 <!-- DataTables  & Plugins -->
+<script src="plugins/select2/js/select2.full.min.js"></script>
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>

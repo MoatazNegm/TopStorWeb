@@ -1,3 +1,349 @@
+
+var refresherprop=2;
+var refresheruser=2;
+var userpass="hi";
+var proptime="55:55:55";
+var olddata=0;
+var propdata='hi';
+var oldproprdata="dakfj";
+var proptimenew="33:333:33";
+var prop={};
+var prop2={};
+var selprop=0
+var hostips={} 
+var DNS=1;
+var oldcurrentinfo='dlkfajsdl;';
+ var redflag="";
+ var mydate;
+ var tempvar;
+ var allusers="init";
+ var allvolumes = "init";
+ var allgroups= "";
+ var allpools= 'init';
+ var selvalues={};
+ var grpolddata;
+ var myidhash;
+ var mytimer;
+ var mymodal;
+ var cgrp={};
+ var cuser={};
+ var volumelistflag=0;
+ var userdata="dksfj";
+ var olduserdata="ksksksks";
+ var voldata='hihihi';
+ var oldvoldata='n;nolnlnn';
+ var volumes={'NoHome': 'NoHome'};
+ var idletill=480000;
+ var oldhdata="dkd";
+ var oldpdata="dkedfd";
+ var oldddata="dkjlf";
+ var oldrdata="kfld";
+ var selhosts="";
+ var seldhosts="";
+ var modaltill=idletill-120000
+ var volumelisttable;
+ var dirtylog = 1;
+
+ function postdata(url,data){
+  $.ajax({
+    url: url,
+    dataType: 'json',
+    data: data,
+  });
+}
+
+function poolsrefresh(){
+ 
+  $('.select2.pool').select2({
+    placeholder: "Select a state",
+    ajax: {
+     url: '/api/v1/volumes/poolsinfo',
+     dataType: 'json',
+     // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+     type: 'GET',
+     async: false,
+     success: function(data){ allpools = data;}
+   }
+  });
+  
+ }
+
+function groupsrefresh(){
+  
+  $('.select2.multiple').select2({
+    ajax: {
+     url: 'api/v1/volumes/grouplist',
+     dataType: 'json',
+     // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+     type: 'GET',
+     async: false,
+     success: function(data){ allgroups = data;}
+   },
+ });
+} 
+groupsrefresh();
+poolsrefresh();
+
+//$.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+Groupprot, passwd:$("#Address"+prot).val().toString()+" "+$("#Subnet"+prot).val().toString()+" "+myname+" "+pools[thepool].host+" "+myname }, function (data){
+            
+$("#createvol").click(function(e){
+  e.preventDefault();
+  var thepool = allpools['results'][$("#Pool2").val()]['text'];
+  var owner = allpools['results'][$("#Pool2").val()]['owner'];
+  var groups = 'NoGroup';
+  if($("#Group").val().toString().length > 0){
+    groups = '';
+    $.each($("#Group").val(),function(e,t){
+      groups +=allgroups['results'][t]['text']+',';
+    });
+    groups = groups.slice(0,-1);
+  }
+  var apiurl = "api/v1/volumes/create";
+  var apidata = {"type": "CIFS", "pool": thepool, "name": $("#volname").val(), 'ipaddress':$("#Address").val(),
+   "Subnet": $("#Subnet").val(), 'groups': groups, "Myname":"mezo", "size": $("#volsize").val()+'G', 'owner':owner }
+
+  postdata(apiurl,apidata);
+
+ 
+});
+
+function volumelistrefresh(){
+  volumelisttable.ajax.reload(function(){
+    var option;
+    $(".usergroups").each(function(){
+      var thisvolume=$(this)
+      var grps;
+      var assignedgrps = thisvolume.data("grps");
+      
+      if(typeof(assignedgrps) == 'number') {
+        grps = [assignedgrps];
+      } else {
+        grps = assignedgrps.split(',');
+      }
+      console.log('grps',grps);
+      $.each(grps, function(e,t){
+        if(t !="NoGroup") {
+          var grp = allgroups["results"][t];
+          option = new Option(grp.text, grp.id, true, true)
+          thisvolume.append(option).trigger('change');
+        }
+      });
+      // manually trigger the `select2:select` event
+      thisvolume.trigger({
+          type: 'select2:select',
+          params: {
+              allgroups: allgroups
+          }
+
+      });
+    });
+    groupsrefresh();
+
+
+    $(".select2.usergroups").on('change',function(e){
+      var grpsval = $(this).data('grps').toString();
+      var newgrpsval = $(this).val().toString();
+
+      console.log('oldgrps',grpsval, 'newgrp',newgrpsval)
+      if(grpsval == 'NoGroup') { grpsval = ''}
+      if( grpsval !== newgrpsval ){
+        console.log('notequal');
+        $("#btn"+$(this).attr('id')).show();
+        $(this).data('change', newgrpsval);
+      }
+      else {
+        console.log('equal'); 
+        $(this).data('change','');
+        $("#btn"+$(this).attr('id')).hide();
+      }
+      
+    });
+    $(".select2.usergroups").trigger('change');
+
+    
+    
+  });
+}
+function getgroups(grpval){
+ var grpstr= []
+ $.each(grpval, function(e,t){
+  grpstr.push(allgroups['results'][t]['text'])
+ });
+
+ console.log('getgrps',grpstr)
+ return grpstr.toString();
+}
+
+
+
+function initVolumelist(){
+  volumelisttable=$("#VolumeList").DataTable({
+      "order": [[ 1, "desc" ]],
+      "ajax" : {
+        url: 'api/v1/volumes/CIFS/volumesinfo',
+        async: false,
+        type: 'GET',
+        //success: function(data){ allvolumes = data; },
+        //error: function(data) { console.log('oops',data);},
+        dataSrc: 'allvolumes'
+      },
+      "columns": [
+        { data: "name",
+          render: function(data,type,row){
+          return data.split('_')[0];
+          }
+        }, 
+        { data:"pool",
+          render: function(data,type,row){
+            return data.split('p')[2];
+          }
+        }, {data:"quota"},{data:"usedbysnapshots"}, {data: "refcompressratio"}, 
+        {
+          data:"ipaddress",
+          render: function(data, type, row){
+            return '<input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" '
+            + 'name="s" id="ip'+row.name+'" value="'+data+'" data-inputmask="\'alias\': \'ip\'">'
+          }
+        },
+        {
+          data:"Subnet",
+          render: function(data, type, row){
+            return '<input type="number"  min="8" max="32" step="8" value=8 class="form-control"'
+            +'id="sub'+row.name+' value="'+data+'"">'
+          }
+        },
+        {
+          data:"groups",
+          render: function(data, type, row){
+            return '<select class="select2 multiple usergroups '+row.name+' form-control"' 
+            + ' multiple="multiple" data-name='+row.name+'  '
+            + 'data-grps="'+row.groups+'" value=[0] data-change="" id="sel'+row.name+'"></select>';
+          }
+        },
+        {
+          data: null,
+          render: function(data, type, row){
+            return '<button onclick="selbtnclickeduser(this)" id="btnsel'+row.name+'" '
+            + 'type="button" data-name='+row.name+'  class="btn btn-primary" > update</button>';
+          }
+        },
+        {
+          data: null,
+          render: function(data, type, row){
+            return '<a class="UnixDelUser" val="username" href="javascript:auserdel(\''+row.name+'\')" >'
+            + '<img  src="dist/img/delete.png" alt="cannott upload delete icon">'
+            + '</a>';
+          }
+        },
+      ],
+      'columnDefs': [
+        {
+           'createdCell':  function (td, cellData, rowData, row, col) {
+                $(td).data('grps', 'cell-' + cellData); 
+            }
+        }
+      ],
+      
+    });
+  volumelisttable.buttons().container().appendTo('#VolumeList_wrapper .col-6:eq(0)');
+  //volumelistrefresh();
+  
+  
+}
+initVolumelist();
+
+
+
+function selbtnclickeduser(ths){
+  //$.post("./pump.php", { req:"UnixChangeUser", name:x.id.replace('btnsel',''), passwd:'groups'+$("#"+x.id.replace('btn','')).val()+" "+myname });
+        var apiurl = 'api/v1/users/userchange';
+        nam = $(ths).data('name');
+        var apidata = {'name': nam, "groups": $("#sel"+nam).val().toString() };
+        postdata(apiurl,apidata);
+}
+
+function auserdel(){
+  var apiurl = "api/v1/users/userdel";
+  var apidata = {'name': arguments[0], 'Myname':'mezo'}
+  postdata(apiurl,apidata);
+};
+
+
+function tocheck(){
+  
+    
+    $("#createvol").prop('disabled', false);
+    if($("#volname").val().length < 3) { $("#createvol").prop('disabled', 'disabled'); }
+    if($("#Pool2").val().length < 1) { $("#createvol").prop('disabled', 'disabled'); }
+    try {
+      if($("#Pool2").val().length  > 0 && $("#Address").val().length < 3) { $("#createvol").prop('disabled', 'disabled'); }
+      //if(allpools["results"][$("#Pool2").val()]["text"].includes('--') > 0) { $("#createvol").prop('disabled', 'disabled'); }
+     } catch(err){
+      console.log('hi',$("#Pool2").val());
+      console.log('hihi',allpools['results'])
+     }
+     
+     if($("#volsize").val() < 0) { $("#createvol").prop('disabled', 'disabled'); }
+}
+
+tocheck();
+
+$(".tocheck").click(function(e){ tocheck(); });
+$(".tocheck").focusout(function(e){ tocheck(); });
+
+function refreshall(){
+  console.log('hi');
+
+  var newallgroups='new0';
+  $.ajax({
+    url: "api/v1/volumes/grouplist", 
+    type: "GET",
+    async: false,
+    //beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
+    
+    success: function(data) {  newallgroups=data; }
+   });
+   if(JSON.stringify(allgroups) != JSON.stringify(newallgroups)) {
+     allgroups = newallgroups; 
+     groupsrefresh();
+     volumelistrefresh();
+   }
+
+
+  var newallpools = 'new0';
+  $.ajax({
+    url: "api/v1/pools/poolsinfo", 
+    type: "GET",
+    async: false,
+    //beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
+    
+    success: function(data) {  newallpools=data; }
+   });
+   if(JSON.stringify(allpools) != JSON.stringify(newallpools)) { 
+      allpools = newallpools;
+      poolsrefresh();
+    }
+  
+  var newallvolumes = 'new0';
+  $.ajax({
+    url: 'api/v1/volumes/CIFS/volumesinfo',
+    type: "GET",
+    async: false,
+    //beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
+    
+    success: function(data) {  newallvolumes=data; }
+   });
+   if(JSON.stringify(allvolumes) != JSON.stringify(newallvolumes)) { 
+      allvolumes = newallvolumes;
+      volumelistrefresh();
+    }
+    
+  
+}
+refreshall();
+setInterval(refreshall, 2000);
+
+
 $(function () {
   /* ChartJS
    * -------
@@ -96,11 +442,3 @@ $(function () {
       });
 })
 
-var example1_filter = $(".example1_filter");
-$(".example1").DataTable({
-    //"responsive": true, "lengthChange": true, "autoWidth": true, "info":true,
-    "order": [[ 1, "desc" ]],
-    //"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-  }).buttons().container().appendTo('.example1_wrapper .col-6:eq(0)');
-  //$("#example1_filter").css("margin-left","10rem");
-//$("#example1_filter").css("margin-left","10rem");

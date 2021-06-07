@@ -77,7 +77,7 @@ function userlistrefresh(){
   userlisttable.ajax.reload(function(){
     var option;
     $(".usergroups").each(function(){
-      thisuser=$(this)
+      var thisuser=$(this)
       var grps;
       assignedgrps = thisuser.data("grps")
       if(typeof(assignedgrps) == 'number') {
