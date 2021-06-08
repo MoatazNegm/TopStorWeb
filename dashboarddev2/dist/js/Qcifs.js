@@ -123,7 +123,8 @@ function volumelistrefresh(){
       }
       
       $.each(grps, function(e,t){
-        if(t !="NoGroup") {
+        console.log('ttt',t.length);
+        if(t !="NoGroup" && t in allgroups["results"]) {
           var grp = allgroups["results"][t];
           option = new Option(grp.text, grp.id, true, true)
           thisvolume.append(option).trigger('change');
@@ -139,6 +140,7 @@ function volumelistrefresh(){
       });
     });
     groupsrefresh();
+    
 
     
   
@@ -185,7 +187,8 @@ function volumelistrefresh(){
     
 
     $(".changeprop").trigger('change');    
-});
+  });
+  
 }
 
 
@@ -273,10 +276,29 @@ initVolumelist();
 
 function selbtnclickeduser(ths){
   //$.post("./pump.php", { req:"UnixChangeUser", name:x.id.replace('btnsel',''), passwd:'groups'+$("#"+x.id.replace('btn','')).val()+" "+myname });
-        var apiurl = 'api/v1/volumes/volumechange';
+        var apiurl = 'api/v1/volumes/config';
         nam = $(ths).data('name');
-        changedprop[nam]['volume'] = nam;
-        var apidata = changedprop[nam];
+        var apidata = JSON.parse(JSON.stringify(changedprop[nam]));
+        apidata['volume'] = nam;
+        if('groups' in apidata){
+          var newgrps='';
+          if (apidata['groups'] == '') { 
+            newgrps = 'NoGroup';
+          }else{
+            $.each(apidata['groups'].split(','),function(e,t){
+              try{
+              newgrps += allgroups['results'][t]['text']+',';
+              } catch {
+                newgrps += t+',';
+              }
+
+            });
+            newgrps = newgrps.slice(0,-1);
+            }
+          apidata['groups'] = newgrps
+        }
+         
+        apidata['type'] = 'CIFS'
         console.log('apidata',apidata); 
         postdata(apiurl,apidata);
 }
@@ -320,7 +342,7 @@ function refreshall(){
     success: function(data) {  newallgroups=data; }
    });
    if(JSON.stringify(allgroups) != JSON.stringify(newallgroups)) {
-     allgroups = newallgroups; 
+     allgroups = JSON.parse(JSON.stringify(newallgroups)); 
      groupsrefresh();
    }
 
@@ -335,7 +357,7 @@ function refreshall(){
     success: function(data) {  newallpools=data; }
    });
    if(JSON.stringify(allpools) != JSON.stringify(newallpools)) { 
-      allpools = newallpools;
+      allpools = JSON.parse(JSON.stringify(newallpools));
       poolsrefresh();
     }
   
@@ -349,7 +371,8 @@ function refreshall(){
     success: function(data) {  newallvolumes=data; }
    });
    if(JSON.stringify(allvolumes) != JSON.stringify(newallvolumes)) { 
-      allvolumes = newallvolumes;
+      allvolumes = JSON.parse(JSON.stringify(newallvolumes));
+      console.log('refreshvolumes');
       volumelistrefresh();
     }
     
