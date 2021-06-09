@@ -38,6 +38,8 @@ var oldcurrentinfo='dlkfajsdl;';
  var oldpdata="dkedfd";
  var oldddata="dkjlf";
  var oldrdata="kfld";
+ var volstats = 'init'
+ var stat = 'quota'
  var selhosts="";
  var seldhosts="";
  var changedprop = {};
@@ -376,11 +378,24 @@ function refreshall(){
       volumelistrefresh();
     }
     
-  
+  var newstats='new0'
+  $.ajax({
+    url: "api/v1/volumes/stats", 
+    type: "GET",
+    async: false,
+    //beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
+    
+    success: function(data) {  newstats=data; }
+    });
+    if(JSON.stringify(volstats) != JSON.stringify(newstats)) { 
+      volstats = JSON.parse(JSON.stringify(newstats));
+      pichartrefresh();
+    }
 }
 refreshall();
 setInterval(refreshall, 2000);
 
+function pichartrefresh(){
 
 $(function () {
   /* ChartJS
@@ -391,7 +406,7 @@ $(function () {
   //- PIE CHART -
   //-------------
   // Get context with jQuery - using jQuery's .get() method.
-  var donutData        = {
+  var donutData2        = {
     labels: [
         'Chrome',
         'IE',
@@ -407,6 +422,15 @@ $(function () {
       }
     ]
   }
+
+  var donutData = {};
+  donutData['labels'] = volstats[stat]['labels'];
+  donutData['datasets'] = [{
+    data: volstats[stat]['stats'],
+    backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef']
+  }];
+
+
   var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
   var pieData        = donutData;
   var pieOptions     = {
@@ -478,5 +502,5 @@ $(function () {
         data: stackedBarChartData,
         options: stackedBarChartOptions
       });
-})
-
+});
+}
