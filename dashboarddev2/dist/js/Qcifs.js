@@ -6,6 +6,8 @@ var proptime="55:55:55";
 var olddata=0;
 var propdata='hi';
 var oldproprdata="dakfj";
+var chartcards = [ 'quota', 'used', 'usedbysnapshots'];
+var charts = {}
 var proptimenew="33:333:33";
 var prop={};
 var prop2={};
@@ -46,6 +48,7 @@ var oldcurrentinfo='dlkfajsdl;';
  var modaltill=idletill-120000
  var volumelisttable;
  var dirtylog = 1;
+
 
  function postdata(url,data){
   $.ajax({
@@ -102,7 +105,7 @@ $("#createvol").click(function(e){
     groups = groups.slice(0,-1);
   }
   var apiurl = "api/v1/volumes/create";
-  var apidata = {"type": "CIFS", "pool": thepool, "name": $("#volname").val(), 'ipaddress':$("#Address").val(),
+  var apidata = {"type": prot, "pool": thepool, "name": $("#volname").val(), 'ipaddress':$("#Address").val(),
    "Subnet": $("#Subnet").val(), 'groups': groups, "Myname":"mezo", "size": $("#volsize").val()+'G', 'owner':owner }
 
   postdata(apiurl,apidata);
@@ -125,7 +128,6 @@ function volumelistrefresh(){
       }
       
       $.each(grps, function(e,t){
-        console.log('ttt',t.length);
         if(t !="NoGroup" && t in allgroups["results"]) {
           var grp = allgroups["results"][t];
           option = new Option(grp.text, grp.id, true, true)
@@ -151,7 +153,6 @@ function volumelistrefresh(){
     $(".changeprop").on('change',function(e){
         
       var changedkey = $(this).data('key');
-      console.log('changed',changedkey)
       var oldpropvalue = $(this).data('value').toString();
       var newpropvalue = $(this).val().toString();
       if(!($(this).data('name') in changedprop)){ changedprop[$(this).data('name')] = {}; }
@@ -200,7 +201,7 @@ function initVolumelist(){
   volumelisttable=$("#VolumeList").DataTable({
       "order": [[ 1, "desc" ]],
       "ajax" : {
-        url: 'api/v1/volumes/CIFS/volumesinfo',
+        url: 'api/v1/volumes/'+prot+'/volumesinfo',
         async: false,
         type: 'GET',
         
@@ -216,7 +217,31 @@ function initVolumelist(){
           render: function(data,type,row){
             return data.split('p')[2];
           }
-        }, {data:"quota"},{data:"usedbysnapshots"}, {data: "refcompressratio"}, 
+        }, {data: null,
+            render: function(data,type,row){
+              if('quota' in row){
+                return row.quota;
+              } else {
+                return 'n/a'; 
+              }
+            }
+        },{data: null,
+           render: function(data,type,row){
+             if("usedbysnapshots"in row){
+               return row.usedbysnapshots
+             } else{
+               return 'n/a';
+             }
+            }
+        },{data: null,
+           render: function(data,type,row){
+            if("refcompressratio"in row){
+              return row.refcompressratio
+            } else{
+              return 'n/a';
+            }
+           } 
+        }, 
         {
           data:"ipaddress",
           render: function(data, type, row){
@@ -250,7 +275,7 @@ function initVolumelist(){
         {
           data: null,
           render: function(data, type, row){
-            return '<a class="UnixDelUser" val="username" href="javascript:auserdel(\''+row.name+'\')" >'
+            return '<a class="UnixDelUser" val="username" href="javascript:avoldel(\''+row.name+'\')" >'
             + '<img  src="dist/img/delete.png" data-name='+row.name+' alt="cannott upload delete icon">'
             + '</a>';
           }
@@ -267,6 +292,10 @@ function initVolumelist(){
     });
   volumelisttable.buttons().container().appendTo('#VolumeList_wrapper .col-6:eq(0)');
   //volumelistrefresh();
+  volumelisttable.errMode = function ( settings, helpPage, message ) { 
+    console.log(message);
+};
+  $.fn.dataTable.ext.errMode = 'throw';
   $('.volumes').hide();
   
   
@@ -300,14 +329,13 @@ function selbtnclickeduser(ths){
           apidata['groups'] = newgrps
         }
          
-        apidata['type'] = 'CIFS'
-        console.log('apidata',apidata); 
+        apidata['type'] = prot;
         postdata(apiurl,apidata);
 }
 
-function auserdel(){
-  var apiurl = "api/v1/users/userdel";
-  var apidata = {'name': arguments[0], 'Myname':'mezo'}
+function avoldel(volname){
+  var apiurl = "api/v1/volumes/volumedel";
+  var apidata = {'name': volname, 'type': prot, 'user':'mezo'}
   postdata(apiurl,apidata);
 };
 
@@ -321,8 +349,8 @@ function tocheck(){
     try {
       if($("#Pool2").val().length  > 0 && $("#Address").val().length < 3) { $("#createvol").prop('disabled', 'disabled'); }
      } catch(err){
-      console.log('hi',$("#Pool2").val());
-      console.log('hihi',allpools['results'])
+      console.log('Pool2 error',$("#Pool2").val());
+      console.log('Pool2 error allpools',allpools['results'])
      }
      
      if($("#volsize").val() < 0) { $("#createvol").prop('disabled', 'disabled'); }
@@ -332,6 +360,90 @@ tocheck();
 
 $(".tocheck").click(function(e){ tocheck(); });
 $(".tocheck").focusout(function(e){ tocheck(); });
+
+
+function initcharts(){
+  $.each(chartcards,function(e,t){
+
+
+
+  $(function () {
+    /* ChartJS
+    * -------
+    * Here we will create a few charts using ChartJS
+    */
+    //-------------
+    //- PIE CHART -
+    //-------------
+    // Get context with jQuery - using jQuery's .get() method.
+    var donutData2        = {
+      labels: [
+          'Chrome',
+          'IE',
+          'FireFox',
+          'Safari',
+          'Opera',
+          'Navigator',
+      ],
+      datasets: [
+        {
+          data: [700,500,400,600,300,100],
+          backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+        }
+      ]
+    }
+
+    var donutData = {};
+    donutData['labels'] = volstats[t]['labels']
+    donutData['datasets'] = [{
+      data: volstats[t]['stats'],
+      backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef']
+    }];
+
+
+    var pieChartCanvas = $('#'+t+'Chart').get(0).getContext('2d')
+    var pieData        = donutData;
+    var pieOptions     = {
+      maintainAspectRatio : false,
+      responsive : true,
+      legend: {
+          display: true,
+          labels: {
+              color: 'rgb(255, 99, 132)',
+              boxWidth : 10,
+              padding : 4,
+          },
+          
+      },
+      title: { 
+        text: t,
+        display: true,
+      },
+      colorschemes: {
+
+        scheme: 'brewer.Paired8'
+      }
+    }
+
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    charts[t] = new Chart(pieChartCanvas, {
+      type: 'pie',
+      data: pieData,
+      options: pieOptions
+    });
+
+
+  });
+  });
+}
+initcharts()
+
+
+
+
+
+
 
 function refreshall(){
   var newallgroups='new0';
@@ -351,7 +463,7 @@ function refreshall(){
 
   var newallpools = 'new0';
   $.ajax({
-    url: "api/v1/pools/poolsinfo", 
+    url: "api/v1/volumes/poolsinfo", 
     type: "GET",
     async: false,
     //beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
@@ -365,7 +477,7 @@ function refreshall(){
   
   var newallvolumes = 'new0';
   $.ajax({
-    url: 'api/v1/volumes/CIFS/volumesinfo',
+    url: 'api/v1/volumes/'+prot+'/volumesinfo',
     type: "GET",
     async: false,
     //beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
@@ -374,7 +486,6 @@ function refreshall(){
    });
    if(JSON.stringify(allvolumes) != JSON.stringify(newallvolumes)) { 
       allvolumes = JSON.parse(JSON.stringify(newallvolumes));
-      console.log('refreshvolumes');
       volumelistrefresh();
     }
     
@@ -389,118 +500,16 @@ function refreshall(){
     });
     if(JSON.stringify(volstats) != JSON.stringify(newstats)) { 
       volstats = JSON.parse(JSON.stringify(newstats));
-      pichartrefresh();
+      try{
+      $.each(chartcards,function(e,t){
+        charts[t].data.datasets[0]['data'] = volstats[t]['stats']
+        charts[t].data.labels = volstats[t]['labels']
+        charts[t].update();
+      });;
+    } catch {;}
     }
 }
 refreshall();
 setInterval(refreshall, 2000);
+setInterval(function(){allvolumes='refresh';}, 5000);
 
-function pichartrefresh(){
-
-$(function () {
-  /* ChartJS
-   * -------
-   * Here we will create a few charts using ChartJS
-   */
-  //-------------
-  //- PIE CHART -
-  //-------------
-  // Get context with jQuery - using jQuery's .get() method.
-  var donutData2        = {
-    labels: [
-        'Chrome',
-        'IE',
-        'FireFox',
-        'Safari',
-        'Opera',
-        'Navigator',
-    ],
-    datasets: [
-      {
-        data: [700,500,400,600,300,100],
-        backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
-      }
-    ]
-  }
-
-  var donutData = {};
-  donutData['labels'] = volstats[stat]['labels'];
-  donutData['datasets'] = [{
-    data: volstats[stat]['stats'],
-    backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef']
-  }];
-
-
-  var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-  var pieData        = donutData;
-  var pieOptions     = {
-    maintainAspectRatio : false,
-    responsive : true,
-  }
-  //Create pie or douhnut chart
-  // You can switch between pie and douhnut using the method below.
-  new Chart(pieChartCanvas, {
-    type: 'pie',
-    data: pieData,
-    options: pieOptions
-  })
-
-
-      //---------------------
-      //- STACKED BAR CHART -
-      //---------------------
-      var areaChartData = {
-        labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        datasets: [
-          {
-            label               : 'Digital Goods',
-            backgroundColor     : 'rgba(60,141,188,0.9)',
-            borderColor         : 'rgba(60,141,188,0.8)',
-            pointRadius          : false,
-            pointColor          : '#3b8bba',
-            pointStrokeColor    : 'rgba(60,141,188,1)',
-            pointHighlightFill  : '#fff',
-            pointHighlightStroke: 'rgba(60,141,188,1)',
-            data                : [28, 48, 40, 19, 86, 27, 90]
-          },
-          {
-            label               : 'Electronics',
-            backgroundColor     : 'rgba(210, 214, 222, 1)',
-            borderColor         : 'rgba(210, 214, 222, 1)',
-            pointRadius         : false,
-            pointColor          : 'rgba(210, 214, 222, 1)',
-            pointStrokeColor    : '#c1c7d1',
-            pointHighlightFill  : '#fff',
-            pointHighlightStroke: 'rgba(220,220,220,1)',
-            data                : [65, 59, 80, 81, 56, 55, 40]
-          },
-        ]
-      }
-      var barChartData = $.extend(true, {}, areaChartData)
-      var temp0 = areaChartData.datasets[0]
-      var temp1 = areaChartData.datasets[1]
-      barChartData.datasets[0] = temp1
-      barChartData.datasets[1] = temp0
-      var stackedBarChartCanvas = $('#stackedBarChart').get(0).getContext('2d')
-      var stackedBarChartData = $.extend(true, {}, barChartData)
-
-      var stackedBarChartOptions = {
-        responsive              : true,
-        maintainAspectRatio     : false,
-        scales: {
-          xAxes: [{
-            stacked: true,
-          }],
-          yAxes: [{
-            stacked: true
-          }]
-        }
-      }
-
-      new Chart(stackedBarChartCanvas, {
-        type: 'bar',
-        data: stackedBarChartData,
-        options: stackedBarChartOptions
-      });
-});
-}

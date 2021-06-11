@@ -18,7 +18,8 @@
   <!-- Select2 -->
   <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
   <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-  <!-- Toastr -->
+  <!-- Chartjs -->
+  <link rel="stylesheet" href="plugins/chart.js/Chart.min.css">
 
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
@@ -1089,30 +1090,34 @@
           </div>
           <div class="col-md-8">
             <div class="row">
-              <div class="col-md-8">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Volumes on Pool</h3>
-              </div>
-              <div class="card-body">
-                <div class="chart">
-                  <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                </div>
-              </div>
-            </div> <!-- /.card -->
-          </div>
               <div class="col-md-4">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Volume Metadata</h3>
+                <div class="card">
+                  <div class="card-body">
+                    <div class="chart">
+                      <canvas id="quotaChart" style="min-height: 300px; height: 300px; max-height: 300px; max-width: 100%;"></canvas>
+                    </div>
+                  </div>
+                </div> <!-- /.card -->
               </div>
-              <div class="card-body">
-                <div class="chart">
-                  <canvas id="stackedBarChart" style="min-height: 250px; height: 210px; max-height: 250px; max-width: 100%;"></canvas>
-                </div>
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="chart">
+                      <canvas id="usedChart" style="min-height: 300px; height: 300px; max-height: 300px; max-width: 100%;"></canvas>
+                    </div>
+                  </div>
+                </div> <!-- /.card -->
               </div>
-            </div> <!-- /.card -->
-          </div>
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="chart">
+                      <canvas id="usedbysnapshotsChart" style="min-height: 300px; height: 300px; max-height: 300px; max-width: 100%;"></canvas>
+                    </div>
+                  </div>
+                </div> <!-- /.card -->
+              </div>
+             
             </div>
             <div class="row">
               <div class="col-md-12">
@@ -1198,7 +1203,7 @@
                       <th style="width:3%;">comp. %</th>
                       <th style="width:22%;">IP Address</th>
                       <th style="width:3%;">Subnet</th>
-                      <th style="width:45%;">Allowed Groups</th>
+                      <th style="width:40%;">Allowed Groups</th>
                       <th style="width:10%;">Need update</th>
                       <th style="width:3%;">Remove Volume</th>
                     </tr>
@@ -1256,7 +1261,9 @@
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
-
+<script>
+  var prot = 'CIFS';
+ </script>
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap -->
@@ -1281,12 +1288,11 @@
 <!-- OPTIONAL SCRIPTS -->
 <script src="dist/js/Qjquery.inputmask.bundle.js"></script>
 <script src="dist/js/Qcifs.js" ></script>
-<script src="plugins/chart.js/Chart.min.js"></script>
+
+<script src="plugins/chart.js/Chart.bundle.min.js"></script>
 <script src="dist/js/demo.js"></script>
 <script src="dist/js/Qmain.js"></script>
-<script>
 
-</script>
 
 </body>
 </html>
