@@ -208,9 +208,11 @@ function selbtnclickeduser(ths){
 }
 $("#UnixAddUser").click( function (e){ 
   var apiurl = "api/v1/users/UnixAddUser";
+  var ipaddr = $("#HomeAddress").val();
+  if($("#HomeAddress").val() == ""){ ipaddr = 'NoAddress'}
   var apidata = {"name": $("#User").val(), "Volpool": $("#UserVol").val(), "groups":$("#Usergroups").val().toString(), 
             "Password": $("#UserPass").val(), "Volsize": $("#volsize").val(), 
-            "HomeAddress": $("#HomeAddress").val(), "HomeSubnet": $("#HomeSubnet").val(), "Myname":"mezo"}
+            "HomeAddress": ipaddr, "HomeSubnet": $("#HomeSubnet").val(), "Myname":"mezo"}
   postdata(apiurl,apidata);
  
   e.preventDefault();

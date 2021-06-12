@@ -19,6 +19,7 @@ var oldcurrentinfo='dlkfajsdl;';
  var mydate;
  var tempvar;
  var allusers="init";
+ var allusersnohome="init";
  var allvolumes = "init";
  var allgroups= "";
  var allpools= 'init';
@@ -54,6 +55,7 @@ var oldcurrentinfo='dlkfajsdl;';
   $.ajax({
     url: url,
     dataType: 'json',
+    timeout: 3000,
     data: data,
   });
 }
@@ -65,6 +67,7 @@ function poolsrefresh(){
     ajax: {
      url: '/api/v1/volumes/poolsinfo',
      dataType: 'json',
+     timeout: 3000,
      // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
      type: 'GET',
      async: false,
@@ -74,12 +77,36 @@ function poolsrefresh(){
   
  }
 
+function usersnohomerefresh(){
+ // the volume name will get only the username as it is home here
+ var newallusersnohome;
+  $.ajax({
+    url: '/api/v1/users/userlist',
+    dataType: 'json',
+    timeout: 3000,
+    // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+    type: 'GET',
+    async: false,
+    DataSrc: 'usersnohome',
+    success: function(data){ newallusersnohome = data['usersnohome'];}
+  });
+  if(JSON.stringify(allusersnohome) != JSON.stringify(newallusersnohome)) {
+    allusersnohome = JSON.parse(JSON.stringify(newallusersnohome)); 
+    $('.select2.home').select2({
+      placeholder: "Select a user",
+      data: allusersnohome
+    });
+  }
+}
+ 
+
 function groupsrefresh(){
   
   $('.select2.multiple').select2({
     ajax: {
      url: 'api/v1/volumes/grouplist',
      dataType: 'json',
+     timeout: 3000,
      // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
      type: 'GET',
      async: false,
@@ -89,6 +116,7 @@ function groupsrefresh(){
 } 
 groupsrefresh();
 poolsrefresh();
+usersnohomerefresh();
 
 //$.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+Groupprot, passwd:$("#Address"+prot).val().toString()+" "+$("#Subnet"+prot).val().toString()+" "+myname+" "+pools[thepool].host+" "+myname }, function (data){
             
@@ -96,16 +124,23 @@ $("#createvol").click(function(e){
   e.preventDefault();
   var thepool = allpools['results'][$("#Pool2").val()]['text'];
   var owner = allpools['results'][$("#Pool2").val()]['owner'];
-  var groups = 'NoGroup';
-  if($("#Group").val().toString().length > 0){
-    groups = '';
-    $.each($("#Group").val(),function(e,t){
-      groups +=allgroups['results'][t]['text']+',';
-    });
-    groups = groups.slice(0,-1);
+  var thevol;
+  var groups;
+  if(prot != 'HOME'){
+    if($("#Group").val().toString().length > 0){
+      groups = '';
+      $.each($("#Group").val(),function(e,t){
+        groups +=allgroups['results'][t]['text']+',';
+      });
+      groups = groups.slice(0,-1);
+    }
+    thevol = $("#volname").val();
+  } else{
+    thevol = allusersnohome[$("#volname").val()]['text'];
+    groups = thevol;
   }
   var apiurl = "api/v1/volumes/create";
-  var apidata = {"type": prot, "pool": thepool, "name": $("#volname").val(), 'ipaddress':$("#Address").val(),
+  var apidata = {"type": prot, "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(),
    "Subnet": $("#Subnet").val(), 'groups': groups, "Myname":"mezo", "size": $("#volsize").val()+'G', 'owner':owner }
 
   postdata(apiurl,apidata);
@@ -202,6 +237,7 @@ function initVolumelist(){
       "order": [[ 1, "desc" ]],
       "ajax" : {
         url: 'api/v1/volumes/'+prot+'/volumesinfo',
+        timeout: 3000,
         async: false,
         type: 'GET',
         
@@ -259,6 +295,7 @@ function initVolumelist(){
         },
         {
           data:"groups",
+          "visible": prot != 'HOME',
           render: function(data, type, row){
             return '<select class="select2 multiple changeprop usergroups '+row.name+' form-control"' 
             + ' multiple="multiple" data-name='+row.name+'  '
@@ -342,9 +379,10 @@ function avoldel(volname){
 
 function tocheck(){
   
-    
+    var vollimit = 3;
+    if(prot == 'HOME') { vollimit = 1; }
     $("#createvol").prop('disabled', false);
-    if($("#volname").val().length < 3) { $("#createvol").prop('disabled', 'disabled'); }
+    if($("#volname").val().length < vollimit) { $("#createvol").prop('disabled', 'disabled'); }
     if($("#Pool2").val().length < 1) { $("#createvol").prop('disabled', 'disabled'); }
     try {
       if($("#Pool2").val().length  > 0 && $("#Address").val().length < 3) { $("#createvol").prop('disabled', 'disabled'); }
@@ -450,6 +488,7 @@ function refreshall(){
   $.ajax({
     url: "api/v1/volumes/grouplist", 
     type: "GET",
+    timeout: 3000,
     async: false,
     //beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
     
@@ -459,12 +498,13 @@ function refreshall(){
      allgroups = JSON.parse(JSON.stringify(newallgroups)); 
      groupsrefresh();
    }
-
+   
 
   var newallpools = 'new0';
   $.ajax({
     url: "api/v1/volumes/poolsinfo", 
     type: "GET",
+    timeout: 3000,
     async: false,
     //beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
     
@@ -479,6 +519,7 @@ function refreshall(){
   $.ajax({
     url: 'api/v1/volumes/'+prot+'/volumesinfo',
     type: "GET",
+    timeout: 3000,
     async: false,
     //beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
     
@@ -493,6 +534,7 @@ function refreshall(){
   $.ajax({
     url: "api/v1/volumes/stats", 
     type: "GET",
+    timeout: 3000,
     async: false,
     //beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
     
@@ -511,5 +553,5 @@ function refreshall(){
 }
 refreshall();
 setInterval(refreshall, 2000);
-setInterval(function(){allvolumes='refresh';}, 5000);
+//setInterval(function(){allvolumes='refresh';}, 5000);
 
