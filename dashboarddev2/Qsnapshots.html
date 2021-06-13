@@ -15,6 +15,11 @@
   <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <!-- Chartjs -->
+  <link rel="stylesheet" href="plugins/chart.js/Chart.min.css">
 
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
@@ -1025,13 +1030,13 @@
                 <div class="card card-primary card-outline card-outline-tabs">
                   <div class="card-header border-bottom-0">
                       <div class="form-group row">
-                        <label  for="Pool" class="col-1 col-form-label" >Pool</label>
-                        <select  class="form-control col-3" id="Pool">
-                          <option value="0">32435245446</option>
+                        <label  for="Pool2" class="col-1 col-form-label" >Pool</label>
+                        <select  class=" select2 form-control pool col-3" id="Pool2">
+                          <option></option>
                         </select>
-                        <label  for="Vol" class="offset-2 col-1 col-form-label">Volume</label>
-                        <select  class="form-control col-3" id="Vol">
-                          <option value="0">peckFinacne</option>
+                        <label  for="volname" class="offset-2 col-1  col-form-label">Volume</label>
+                        <select  class="select2 form-control volume col-3"  id="volname">
+                          <option></option>
                         </select>
                       </div>
                     </div>
@@ -1056,11 +1061,11 @@
                       <div class="tab-pane fade show  custom-tabs-four-Once active" id="custom-tabs-four-Once" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab" >
                         <div class="form-group row" style="padding-bottom: 1rem; border-bottom: 1px solid #dee2e6;" >
                           <label  for="Oncename" class="col-2 col-form-label" style="text-align: right;">Snapshot name</label>
-                          <input type="text" class="form-control col-3" id="Oncename" >
+                          <input type="text" class="form-control col-3" disabled id="Oncename" >
                         </div>
                         <div class=" form-group row"  >
                           <div class=" offset-md-3 col-md-9" >
-                              <button type="submit" id="oncecreate" class="form-control btn btn-primary col-md-6 ">Create Snapshot Now</button>
+                              <button type="submit" id="oncecreate" disabled class="form-control btn btn-primary col-md-6 ">Create Snapshot Now</button>
                           </div>
                         </div>
                         <div class="form-group row">
@@ -1073,6 +1078,7 @@
                                   <th>date</th>
                                   <th>time</th>
                                   <th>name</th>
+                                  <th>volume</th>
                                   <th>size(MB)</th>
                                   <th>compression%</th>
                                   <th>Rollback</th>
@@ -1080,46 +1086,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                 <tr class="dontdelete" >
-                                   <td >12April</td>
-                                   <td >12:10am</td>
-                                   <td >pecoFinance</td>
-                                   <td >32</td>
-                                   <td >1.2x</td>
-                                   <td  class="text-center">
-                                     <a  href="javascript:auserdel(\'username\')" >
-                                       <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                                     </a>
-                                   </td>
-                                  <td  class="text-center">
-                                    <a  href="javascript:auserdel(\'username\')" >
-                                      <img  src="dist/img/return.png" alt="cannott upload delete icon">
-                                    </a>
-                                  </td>
-                                  <tr class="dontdelete" >
-                                    <td >pecolow</td>
-                                    <td >74828239292</td>
-                                    <td >10</td>
-                                    <td >4</td>
-                                    <td >1.98x</td>
-                                   <td  class="text-center">
-                                     <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                                       <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                                     </a>
-                                   </td>
-                                   <td  class="text-center">
-                                     <a  href="javascript:auserdel(\'username\')" >
-                                       <img  src="dist/img/return.png" alt="cannott upload delete icon">
-                                     </a>
-                                   </td>
-
-                                </tr>
+                                 
                                 </tbody>
                                 <tfoot class="bg-info">
                                 <tr>
                                   <th>date</th>
                                   <th>time</th>
                                   <th>name</th>
+                                  <th>volume</th>
                                   <th>size(MB)</th>
                                   <th>compression%</th>
                                   <th>Rollback</th>
@@ -1147,7 +1121,7 @@
                         </div>
                         <div class=" form-group row"  >
                           <div class=" offset-md-3 col-md-9" >
-                              <button type="submit" id="oncecreate" class="form-control btn btn-primary col-md-6 ">Create Snapshot Period</button>
+                              <button type="submit" id="Period1" class="form-control btn btn-primary col-md-6 ">Create Snapshot Period</button>
                           </div>
                         </div>
                         <div class="form-group row">
@@ -1281,7 +1255,7 @@
                             </div>
                             <div class=" form-group row"  >
                               <div class=" offset-md-3 col-md-9" >
-                                  <button type="submit" id="oncecreate" class="form-control btn btn-primary col-md-6 ">Create Snapshot Now</button>
+                                  <button type="submit" id="Preiod2" class="form-control btn btn-primary col-md-6 ">Create Snapshot Now</button>
                               </div>
                             </div>
                             <div class="form-group row">
@@ -1423,7 +1397,7 @@
                             </div>
                             <div class=" form-group row"  >
                               <div class=" offset-md-3 col-md-9" >
-                                  <button type="submit" id="oncecreate" class="form-control btn btn-primary col-md-6 ">Create Snapshot Now</button>
+                                  <button type="submit" id="Preiod3" class="form-control btn btn-primary col-md-6 ">Create Snapshot Now</button>
                               </div>
                             </div>
                             <div class="form-group row">
@@ -1765,6 +1739,7 @@
 <!-- AdminLTE -->
 <script src="dist/js/adminlte.js"></script>
 <!-- DataTables  & Plugins -->
+<script src="plugins/select2/js/select2.full.min.js"></script>
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
