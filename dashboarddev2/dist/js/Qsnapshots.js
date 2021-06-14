@@ -48,10 +48,14 @@ var oldcurrentinfo='dlkfajsdl;';
  var changedprop = {};
  var modaltill=idletill-120000
  var onceinittable;
+ var allperiodstable = {}
+ var allpsnapstable = {}
  var cpool = 'init';
  var cvolume = 'init';
  var dirtylog = 1;
-
+ var allperiods = ['Minutely', 'Hourly', 'Weekly'];
+ //var allperiods = ['Minutely', 'Minutely', 'Minutely'];
+ 
 function postdata(url,data){
   $.ajax({
     url: url,
@@ -128,49 +132,160 @@ function getsnaps(){
 }
 allsnaps = getsnaps();
 
-function onceinit(){
+function initalltables(){
 
   onceinittable=$("#Oncetable").DataTable({
-      "order": [[ 0, "desc" ],[ 1, "desc" ]],
-      "data": allsnaps['Once'],
-      "columns": [
-        {data: "date"}, {data:"time"},{data: "name" }, 
-        {data: null,
-         render: function(data, type, row){
-           return row.volume.split('_')[0]
-         }
-        },
-        {data: "used"}, {data:"refcompressratio"}, 
-        {
-          data: null,
-          render: function(data, type, row){
-            return '<a class="snapdelegt" val="username" href="javascript:rollback(\''+row.name+'\')" >'
-            + '<img  src="dist/img/return.png" data-name='+row.name+' alt="cannott upload delete icon">'
-            + '</a>';          }
-        },
-        {
-          data: null,
-          render: function(data, type, row){
-            return '<a class="snapdelegt" val="username" href="javascript:asnapdel(\''+row.name+'\')" >'
-            + '<img  src="dist/img/delete.png" data-name='+row.name+' alt="cannott upload delete icon">'
-            + '</a>'; 
-          }
-        },
-      ],
-      'columnDefs': [
-        {
-            'createdCell':  function (td, cellData, rowData, row, col) {
-                $(td).data('grps', 'cell-' + cellData); 
-            }
+    "order": [[ 0, "desc" ],[ 1, "desc" ]],
+    "data": allsnaps['Once'],
+    "columns": [
+      {data: "date"}, {data:"time"},{data: "name" }, 
+      {data: null,
+        render: function(data, type, row){
+          return row.volume.split('_')[0]
         }
-      ],
-      
+      },
+      {data: "used"}, {data:"refcompressratio"}, 
+      {
+        data: null,
+        render: function(data, type, row){
+          return '<a class="snapdelegt" val="username" href="javascript:rollback(\''+row.name+'\')" >'
+          + '<img  src="dist/img/return.png" data-name='+row.name+' alt="cannott upload delete icon">'
+          + '</a>';          }
+      },
+      {
+        data: null,
+        render: function(data, type, row){
+          return '<a class="snapdelegt" val="username" href="javascript:asnapdel(\''+row.name+'\')" >'
+          + '<img  src="dist/img/delete.png" data-name='+row.name+' alt="cannott upload delete icon">'
+          + '</a>'; 
+        }
+      },
+    ],
+    'columnDefs': [
+      {
+          'createdCell':  function (td, cellData, rowData, row, col) {
+              $(td).data('grps', 'cell-' + cellData); 
+          }
+      }
+    ],
+    
+  });
+  onceinittable.buttons().container().appendTo('#Oncetable_wrapper .col-6:eq(0)');
+  allpsnapstable["allsnaps"] =$("#allsnapstable").DataTable({
+    "order": [[ 0, "desc" ],[ 1, "desc" ]],
+    "data": allsnaps["allsnaps"],
+    "columns": [
+      {data: "date"}, {data:"time"},{data: "name" }, {data: "snaptype"},
+      {data: null,
+        render: function(data, type, row){
+          return row.volume.split('_')[0]
+        }
+      },
+      {data: "used"}, {data:"refcompressratio"}, 
+      {
+        data: null,
+        render: function(data, type, row){
+          return '<a class="snapdelegt" val="username" href="javascript:rollback(\''+row.name+'\')" >'
+          + '<img  src="dist/img/return.png" data-name='+row.name+' alt="cannott upload delete icon">'
+          + '</a>';         
+         }
+      },
+      {
+        data: null,
+        render: function(data, type, row){
+          return '<a class="snapdelegt" val="username" href="javascript:asnapdel(\''+row.name+'\')" >'
+          + '<img  src="dist/img/delete.png" data-name='+row.name+' alt="cannott upload delete icon">'
+          + '</a>'; 
+        }
+      },
+    ],
+    'columnDefs': [
+      {
+          'createdCell':  function (td, cellData, rowData, row, col) {
+              $(td).data('grps', 'cell-' + cellData); 
+          }
+      }
+    ],
+    
+  });
+  allpsnapstable["allsnaps"].buttons().container().appendTo('#allsnapstablee_wrapper .col-6:eq(0)');
+  try{
+    
+    $.each(allperiods, function(e,t){
+      allpsnapstable[t] =$("#"+t+"table").DataTable({
+        "order": [[ 0, "desc" ],[ 1, "desc" ]],
+        "data": allsnaps[t],
+        "columns": [
+          {data: "date"}, {data:"time"},{data: "name" }, 
+          {data: null,
+            render: function(data, type, row){
+              return row.volume.split('_')[0]
+            }
+          },
+          {data: "used"}, {data:"refcompressratio"}, 
+          {
+            data: null,
+            render: function(data, type, row){
+              return '<a class="snapdelegt" val="username" href="javascript:rollback(\''+row.name+'\')" >'
+              + '<img  src="dist/img/return.png" data-name='+row.name+' alt="cannott upload delete icon">'
+              + '</a>';          }
+          },
+          {
+            data: null,
+            render: function(data, type, row){
+              return '<a class="snapdelegt" val="username" href="javascript:asnapdel(\''+row.name+'\')" >'
+              + '<img  src="dist/img/delete.png" data-name='+row.name+' alt="cannott upload delete icon">'
+              + '</a>'; 
+            }
+          },
+        ],
+        'columnDefs': [
+          {
+              'createdCell':  function (td, cellData, rowData, row, col) {
+                  $(td).data('grps', 'cell-' + cellData); 
+              }
+          }
+        ],
+        
+      });
+      allpsnapstable[t].buttons().container().appendTo('#'+t+'table_wrapper .col-6:eq(0)');
+      allperiodstable[t]=$("#"+t+"periods").DataTable({
+        "order": [[ 0, "desc" ],[ 1, "desc" ]],
+        "data": allsnaps[t+'period'],
+        "columns": [
+          {data: "id"}, 
+          {data: null,
+            render: function(data, type, row){
+              return row.volume.split('_')[0]
+            }
+          }, {data:"every"},{data: "keep" }, 
+          {
+            data: null,
+            render: function(data, type, row){
+              return '<a class="snapdelegt" val="username" href="javascript:aperioddel(\''+row.id+'\')" >'
+              + '<img  src="dist/img/delete.png" data-name='+row.id+' alt="cannott upload delete icon">'
+              + '</a>'; 
+            }
+          },
+        ],
+        'columnDefs': [
+          {
+              'createdCell':  function (td, cellData, rowData, row, col) {
+                  $(td).data('grps', 'cell-' + cellData); 
+              }
+          }
+        ],
+        
+      });
+      allperiodstable[t].buttons().container().appendTo('#'+t+'periods_wrapper .col-6:eq(0)');
     });
-    onceinittable.buttons().container().appendTo('#Oncetable_wrapper .col-6:eq(0)');
+   
+  } catch {;}
+  $.fn.dataTable.ext.errMode = 'throw';
   //volumelistrefresh();
   
 }
-onceinit();
+initalltables();
 
 
 function snapsreferesh(){
@@ -178,8 +293,21 @@ function snapsreferesh(){
   if(JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
     allsnaps = JSON.parse(JSON.stringify(newsnaps)); 
     onceinittable.clear();
-    onceinittable.rows.add(allsnaps['Once'])
-    onceinittable.draw()
+    onceinittable.rows.add(allsnaps['Once']);
+    onceinittable.draw();
+    try{
+      $.each(allperiods, function(e,t){
+        allpsnapstable[t].clear();
+        allpsnapstable[t].rows.add(allsnaps[t]);
+        allpsnapstable[t].draw();
+        allperiodstable[t].clear();
+        allperiodstable[t].rows.add(allsnaps[t]+'period');
+        allperiodstable[t].draw();
+      });
+      allperiodstable["allsnaps"].clear();
+      allperiodstable["allsnaps"].rows.add(allsnaps["allsnaps"]);
+      allperiodstable["allsnaps"].draw();
+    } catch {;}
   }
    
 }
@@ -225,6 +353,22 @@ postdata(apiurl,apidata);
 
 });
 
+$("#Minutelycreate").click(function(e){
+  e.preventDefault();
+  var thepool = allpools['results'][$("#Pool2").val()]['text'];
+  var owner = allpools['results'][$("#Pool2").val()]['owner'];
+  var thevol = allvolumes[$("#volname").val()]['fullname'];
+  var every = $("#EveryMinutely").val();
+  var keep = $("#KeepMinutely").val();
+  var apiurl = "api/v1/volumes/snapshots/create";
+  var apidata = {"snapsel": 'Minutely', "pool": thepool, "volume": thevol, 'every': every, 
+                  'keep': keep, 'owner':owner }
+  console.log('apidata',apidata);
+  
+  postdata(apiurl,apidata);
+  
+  
+  });
 
 function changeoncesubmit(){
   if($("#Oncename").val().length < 3) { 
@@ -241,8 +385,10 @@ $("#volname").change(function(e){
   if($("#volname").val() == ''){
     $("#Oncename").attr('disabled','disabled');
     $("#oncecreate").attr('disabled','disabled');
+    $(".Minute").prop('disabled','disabled');
   } else {
     $("#Oncename").attr('disabled',false);
+    $(".Minute").prop('disabled', false);
     changeoncesubmit();
   }
 });
