@@ -270,6 +270,36 @@ function initalltables(){
       
     });
     allperiodstable[t].buttons().container().appendTo('#'+t+'periods_wrapper .col-6:eq(0)');
+    t='Weekly';
+    allperiodstable[t]=$("#"+t+"periods").DataTable({
+      "order": [[ 0, "desc" ],[ 1, "desc" ]],
+      "data": allsnaps[t+'period'],
+      "columns": [
+        {data: "id"}, 
+        {data: null,
+          render: function(data, type, row){
+            return row.volume.split('_')[0]
+          }
+        },{data:"stime"}, {data:'every'}, {data: "keep" }, 
+        {
+          data: null,
+          render: function(data, type, row){
+            return '<a class="snapdelegt" val="username" href="javascript:aperioddel(\''+row.id+'\')" >'
+            + '<img  src="dist/img/delete.png" data-name='+row.id+' alt="cannott upload delete icon">'
+            + '</a>'; 
+          }
+        },
+      ],
+      'columnDefs': [
+        {
+            'createdCell':  function (td, cellData, rowData, row, col) {
+                $(td).data('grps', 'cell-' + cellData); 
+            }
+        }
+      ],
+      
+    });
+    allperiodstable[t].buttons().container().appendTo('#'+t+'periods_wrapper .col-6:eq(0)');
     $.each(allperiods, function(e,t){
       allpsnapstable[t] =$("#"+t+"table").DataTable({
         "order": [[ 0, "desc" ],[ 1, "desc" ]],
@@ -335,7 +365,7 @@ function snapsreferesh(){
         allpsnapstable[t].rows.add(allsnaps[t]);
         allpsnapstable[t].draw();
         allperiodstable[t].clear();
-        allperiodstable[t].rows.add(allsnaps[t]+'period');
+        allperiodstable[t].rows.add(allsnaps[t+'period']);
         allperiodstable[t].draw();
       });
       
@@ -367,6 +397,12 @@ function rollback(csnap){
 function asnapdel(csnap){
   var apiurl = "api/v1/volumes/snapshots/snapshotdel";
   var apidata = {"name": csnap, 'user':'mezo' }
+  postdata(apiurl,apidata);
+}
+
+function aperioddel(cperiod){
+  var apiurl = "api/v1/volumes/snapshots/perioddelete";
+  var apidata = {"name": cperiod, 'user':'mezo' }
   postdata(apiurl,apidata);
 }
 
@@ -416,6 +452,25 @@ $("#Minutelycreate").click(function(e){
     
   });
 
+  $("#Weeklycreate").click(function(e){
+    e.preventDefault();
+    var thepool = allpools['results'][$("#Pool2").val()]['text'];
+    var owner = allpools['results'][$("#Pool2").val()]['owner'];
+    var thevol = allvolumes[$("#volname").val()]['fullname'];
+    var every = $("#Sday").val();
+    var keep = $("#KeepWeekly").val();
+    var stime = $("#Stime").val();
+    var apiurl = "api/v1/volumes/snapshots/create";
+    var apidata = {"snapsel": 'Weekly', "pool": thepool, "volume": thevol, 'every': every, 
+                    'keep': keep,'stime':stime, 'owner':owner }
+    console.log('apidata',apidata);
+    
+    postdata(apiurl,apidata);
+    
+    
+  });
+  $("#Stime").focusout(function(e){ if($("#Stime").val() == ''){ $("#Stime").val('11:50 PM')}});
+
 function changeoncesubmit(){
   if($("#Oncename").val().length < 3) { 
     $("#oncecreate").attr('disabled','disabled');
@@ -433,10 +488,12 @@ $("#volname").change(function(e){
     $("#oncecreate").attr('disabled','disabled');
     $(".Minute").prop('disabled','disabled');
     $(".Hour").prop('disabled','disabled');
+    $(".Week").prop('disabled','disabled');
   } else {
     $("#Oncename").attr('disabled',false);
     $(".Minute").prop('disabled', false);
     $(".Hour").prop('disabled', false);
+    $(".Week").prop('disabled', false);
     changeoncesubmit();
   }
 });

@@ -1279,26 +1279,26 @@
                             <div class="form-group row"  style="padding-bottom: 1rem; border-bottom: 1px solid #dee2e6;">
                               <label class="col-md-3 col-form-label"
                                   style="text-align: right; margin-right: 5px; margin-left:5px;">Snaptshot at</label>
-                              <div class="input-group date col-md-2" id="timepicker" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input" data-target="#timepicker"/>
+                              <div class="input-group date  col-md-2" id="timepicker" data-target-input="nearest">
+                                <input type="text" id="Stime" class="form-control Week datetimepicker-input" value="11:50 PM" disabled data-target="#timepicker"/>
                                 <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="far fa-clock"></i></div>
                                 </div>
                               </div>
                               <label class="col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">o'clock,</label>
-                              <label  for="Week" class="col-form-label" style="text-align: right; margin-right: 5px; margin-left:5px;"> on</label>
-                              <select id="Week" class="form-control col-md-2">
+                              <label  for="Sday" class="col-form-label" style="text-align: right; margin-right: 5px; margin-left:5px;"> on</label>
+                              <select id="Sday" class="form-control Week col-md-2" disabled>
     					                 <option value="Sat">Saturday</option><option value="Sun">Sunday</option><option value="Mon">Monday</option><option value="Tue">Tuesday</option><option value="Wed">Wednesday</option><option value="Thu">Thursday</option><option value="Fri">Friday</option>
                               </select>
-                              <label  for="Week" class="col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">.</label>
+                              <label  for="Sday" class="col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">.</label>
 
                               <label  for="KeepWeekly" class="col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">Keep</label>
-                              <input type="number" min='1' max='100' step=1 value=1 class="form-control col-md-1" id="KeepWeekly" >
+                              <input type="number" min='1' max='100' step=1 value=1 class="form-control Week col-md-1" disabled id="KeepWeekly" >
                               <label  for="KeepWeekly" class="col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">Snapshots</label>
                             </div>
                             <div class=" form-group row"  >
                               <div class=" offset-md-3 col-md-9" >
-                                  <button type="submit" id="Preiod3" class="form-control btn btn-primary col-md-6 ">Create Snapshot Now</button>
+                                  <button type="submit" id="Weeklycreate" class="form-control Week btn btn-primary col-md-6 " disabled>Create Snapshot Now</button>
                               </div>
                             </div>
                             <div class="form-group row">
@@ -1308,11 +1308,12 @@
                                   <table id="Weeklyperiods" class="table table-sm table-hover   table-striped dataTable">
                                     <thead class="bg-info">
                                     <tr>
-                                      <th>at(hh:mm)</th>
-                                      <th>day of week</th>
-                                      <th>keep(snapshots)</th>
-                                      <th>identifier</th>
-                                      <th>delete</th>
+                                      <th>SequenceID</th>
+                                      <th>Volume</th>
+                                      <th>At(hh:mm)</th>
+                                      <th>Day of week</th>
+                                      <th>Keep(snapshots)</th>
+                                      <th>Delete</th>
                                     </tr>
                                     </thead>
                                     <tbody >
@@ -1320,11 +1321,12 @@
                                     </tbody>
                                     <tfoot class="bg-info">
                                     <tr>
-                                      <th>at(hh:mm)</th>
-                                      <th>day of week</th>
-                                      <th>keep(snapshots)</th>
-                                      <th>identifier</th>
-                                      <th>delete</th>
+                                      <th>SequenceID</th>
+                                      <th>Volume</th>
+                                      <th>At(hh:mm)</th>
+                                      <th>Day of week</th>
+                                      <th>Keep(snapshots)</th>
+                                      <th>Delete</th>
                                     </tr>
                                     </tfoot>
                                   </table>
