@@ -1110,18 +1110,18 @@
                       <div class="tab-pane fade " id="custom-tabs-four-Hourly" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
                         <div class="form-group row" style="padding-bottom: 1rem; border-bottom: 1px solid #dee2e6;">
                           <label  for="Sminute" class=" col-md-3 col-form-label" style="text-align: right;">At the</label>
-                          <input type="number" min='0' max='59' step=1 value=0 class="form-control col-md-1" id="Sminute" >
+                          <input type="number" min='0' max='59' step=1 value=0 class="form-control Hour col-md-1" disabled id="Sminute" >
                           <label  for="Sminute" class="  col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;" ><sup>th</sup> minute, </label>
-                          <label  for="Sminute" class="  col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;" >  every</label>
-                          <input type="number" min='1' max='23' step=1 value=1 class="form-control col-md-1" id="Hour" >
-                          <label  for="Hour" class=" col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">hours,</label>
+                          <label  for="EveryHourly" class="  col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;" >  every</label>
+                          <input type="number" min='1' max='23' step=1 value=1 class="form-control Hour col-md-1" disabled id="EveryHourly" >
+                          <label  for="EveryHourly" class=" col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">hours,</label>
                           <label  for="KeepHourly" class=" col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">Keep</label>
-                          <input type="number" min='1' max='100' step=1 value=1 class="form-control col-md-1" id="KeepHourly" >
+                          <input type="number" min='1' max='100' step=1 value=1 class="form-control Hour col-md-1" disabled id="KeepHourly" >
                           <label  for="KeepHourly" class=" col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">Snapshots</label>
                         </div>
                         <div class=" form-group row"  >
                           <div class=" offset-md-3 col-md-9" >
-                              <button type="submit" id="Period1" class="form-control btn btn-primary col-md-6 ">Create Snapshot Period</button>
+                              <button type="submit" id="Hourlycreate" class="form-control Hour btn btn-primary col-md-6 " disabled >Create Snapshot Period</button>
                           </div>
                         </div>
                         <div class="form-group row">
@@ -1131,10 +1131,11 @@
                               <table id="Hourlyperiods" class="table table-sm table-hover example1  table-striped dataTable">
                                 <thead class="bg-info">
                                 <tr>
+                                  <th>SequenceID</th>
+                                  <th>Volume</th>
                                   <th>Every(hrs)</th>
-                                  <th>at(minute)</th>
+                                  <th>Snap at(minute)</th>
                                   <th>keep(snapshots)</th>
-                                  <th>identifier</th>
                                   <th>delete</th>
                                 </tr>
                                 </thead>
@@ -1143,10 +1144,11 @@
                                 </tbody>
                                 <tfoot class="bg-info">
                                 <tr>
+                                  <th>SequenceID</th>
+                                  <th>Volume</th>
                                   <th>Every(hrs)</th>
-                                  <th>at(minute)</th>
+                                  <th>Snap at(minute)</th>
                                   <th>keep(snapshots)</th>
-                                  <th>identifier</th>
                                   <th>delete</th>
                                 </tr>
                                 </tfoot>

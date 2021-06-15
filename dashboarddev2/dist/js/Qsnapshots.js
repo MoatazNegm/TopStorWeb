@@ -208,9 +208,68 @@ function initalltables(){
     ],
     
   });
-  allpsnapstable["allsnaps"].buttons().container().appendTo('#allsnapstablee_wrapper .col-6:eq(0)');
+  allpsnapstable["allsnaps"].buttons().container().appendTo('#allsnapstable_wrapper .col-6:eq(0)');
   try{
-    
+    t='Minutely';
+    allperiodstable[t]=$("#"+t+"periods").DataTable({
+      "order": [[ 0, "desc" ],[ 1, "desc" ]],
+      "data": allsnaps[t+'period'],
+      "columns": [
+        {data: "id"}, 
+        {data: null,
+          render: function(data, type, row){
+            return row.volume.split('_')[0]
+          }
+        }, {data:"every"},{data: "keep" }, 
+        {
+          data: null,
+          render: function(data, type, row){
+            return '<a class="snapdelegt" val="username" href="javascript:aperioddel(\''+row.id+'\')" >'
+            + '<img  src="dist/img/delete.png" data-name='+row.id+' alt="cannott upload delete icon">'
+            + '</a>'; 
+          }
+        },
+      ],
+      'columnDefs': [
+        {
+            'createdCell':  function (td, cellData, rowData, row, col) {
+                $(td).data('grps', 'cell-' + cellData); 
+            }
+        }
+      ],
+      
+    });
+    allperiodstable[t].buttons().container().appendTo('#'+t+'periods_wrapper .col-6:eq(0)');
+    t='Hourly';
+    allperiodstable[t]=$("#"+t+"periods").DataTable({
+      "order": [[ 0, "desc" ],[ 1, "desc" ]],
+      "data": allsnaps[t+'period'],
+      "columns": [
+        {data: "id"}, 
+        {data: null,
+          render: function(data, type, row){
+            return row.volume.split('_')[0]
+          }
+        },{data:"every"}, {data:'sminute'}, {data: "keep" }, 
+        {
+          data: null,
+          render: function(data, type, row){
+            return '<a class="snapdelegt" val="username" href="javascript:aperioddel(\''+row.id+'\')" >'
+            + '<img  src="dist/img/delete.png" data-name='+row.id+' alt="cannott upload delete icon">'
+            + '</a>'; 
+          }
+        },
+      ],
+      'columnDefs': [
+        {
+            'createdCell':  function (td, cellData, rowData, row, col) {
+                $(td).data('grps', 'cell-' + cellData); 
+            }
+        }
+      ],
+      
+    });
+    allperiodstable[t].buttons().container().appendTo('#'+t+'periods_wrapper .col-6:eq(0)');
     $.each(allperiods, function(e,t){
       allpsnapstable[t] =$("#"+t+"table").DataTable({
         "order": [[ 0, "desc" ],[ 1, "desc" ]],
@@ -249,35 +308,7 @@ function initalltables(){
         
       });
       allpsnapstable[t].buttons().container().appendTo('#'+t+'table_wrapper .col-6:eq(0)');
-      allperiodstable[t]=$("#"+t+"periods").DataTable({
-        "order": [[ 0, "desc" ],[ 1, "desc" ]],
-        "data": allsnaps[t+'period'],
-        "columns": [
-          {data: "id"}, 
-          {data: null,
-            render: function(data, type, row){
-              return row.volume.split('_')[0]
-            }
-          }, {data:"every"},{data: "keep" }, 
-          {
-            data: null,
-            render: function(data, type, row){
-              return '<a class="snapdelegt" val="username" href="javascript:aperioddel(\''+row.id+'\')" >'
-              + '<img  src="dist/img/delete.png" data-name='+row.id+' alt="cannott upload delete icon">'
-              + '</a>'; 
-            }
-          },
-        ],
-        'columnDefs': [
-          {
-              'createdCell':  function (td, cellData, rowData, row, col) {
-                  $(td).data('grps', 'cell-' + cellData); 
-              }
-          }
-        ],
-        
-      });
-      allperiodstable[t].buttons().container().appendTo('#'+t+'periods_wrapper .col-6:eq(0)');
+      
     });
    
   } catch {;}
@@ -296,6 +327,9 @@ function snapsreferesh(){
     onceinittable.rows.add(allsnaps['Once']);
     onceinittable.draw();
     try{
+      allpsnapstable["allsnaps"].clear();
+      allpsnapstable["allsnaps"].rows.add(allsnaps["allsnaps"]);
+      allpsnapstable["allsnaps"].draw();
       $.each(allperiods, function(e,t){
         allpsnapstable[t].clear();
         allpsnapstable[t].rows.add(allsnaps[t]);
@@ -304,9 +338,7 @@ function snapsreferesh(){
         allperiodstable[t].rows.add(allsnaps[t]+'period');
         allperiodstable[t].draw();
       });
-      allperiodstable["allsnaps"].clear();
-      allperiodstable["allsnaps"].rows.add(allsnaps["allsnaps"]);
-      allperiodstable["allsnaps"].draw();
+      
     } catch {;}
   }
    
@@ -363,11 +395,25 @@ $("#Minutelycreate").click(function(e){
   var apiurl = "api/v1/volumes/snapshots/create";
   var apidata = {"snapsel": 'Minutely', "pool": thepool, "volume": thevol, 'every': every, 
                   'keep': keep, 'owner':owner }
-  console.log('apidata',apidata);
-  
   postdata(apiurl,apidata);
-  
-  
+  });
+
+  $("#Hourlycreate").click(function(e){
+    e.preventDefault();
+    var thepool = allpools['results'][$("#Pool2").val()]['text'];
+    var owner = allpools['results'][$("#Pool2").val()]['owner'];
+    var thevol = allvolumes[$("#volname").val()]['fullname'];
+    var every = $("#EveryHourly").val();
+    var keep = $("#KeepHourly").val();
+    var sminute = $("#Sminute").val();
+    var apiurl = "api/v1/volumes/snapshots/create";
+    var apidata = {"snapsel": 'Hourly', "pool": thepool, "volume": thevol, 'every': every, 
+                    'keep': keep,'sminute':sminute, 'owner':owner }
+    console.log('apidata',apidata);
+    
+    postdata(apiurl,apidata);
+    
+    
   });
 
 function changeoncesubmit(){
@@ -386,9 +432,11 @@ $("#volname").change(function(e){
     $("#Oncename").attr('disabled','disabled');
     $("#oncecreate").attr('disabled','disabled');
     $(".Minute").prop('disabled','disabled');
+    $(".Hour").prop('disabled','disabled');
   } else {
     $("#Oncename").attr('disabled',false);
     $(".Minute").prop('disabled', false);
+    $(".Hour").prop('disabled', false);
     changeoncesubmit();
   }
 });
