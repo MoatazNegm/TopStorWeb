@@ -175,7 +175,12 @@ function initalltables(){
     "order": [[ 0, "desc" ],[ 1, "desc" ]],
     "data": allsnaps["allsnaps"],
     "columns": [
-      {data: "date"}, {data:"time"},{data: "name" }, {data: "snaptype"},
+      {data: "date"}, {data:"time"},
+      {data: "name",
+       render: function(data,type,row){
+         return data.split('.')[0]+'.'+data.split('.').pop();
+       }
+      }, {data: "snaptype"},
       {data: null,
         render: function(data, type, row){
           return row.volume.split('_')[0]
@@ -305,7 +310,12 @@ function initalltables(){
         "order": [[ 0, "desc" ],[ 1, "desc" ]],
         "data": allsnaps[t],
         "columns": [
-          {data: "date"}, {data:"time"},{data: "name" }, 
+          {data: "date"}, {data:"time"},
+          {data: "name",
+           render: function(data,type,row){
+            return data.split('.')[0]+'.'+data.split('.').pop();
+           }
+          }, 
           {data: null,
             render: function(data, type, row){
               return row.volume.split('_')[0]
@@ -376,6 +386,7 @@ function snapsreferesh(){
 function refreshall(){
   snapsreferesh();
 }
+$("table").css('width','100%');
 setInterval(refreshall,2000);
 
 
