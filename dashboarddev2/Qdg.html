@@ -1017,8 +1017,8 @@
 
     <!-- Main content -->
     <div class="content">
-      <div class="container-fluid">
-        <div class="row">
+      <div id='container' class="container-fluid">
+        <div class="row toclone" style="display: none;">
           <div class="col-md-12">
             <div class="card card-outline card-primary datacard">
               <div class="card-header" style="cursor: cell;">
@@ -1028,13 +1028,13 @@
                 </div>
                 <div class="row" data-card-widget="collapse">
                   <div class='col-5'>
-                    <h3 class="card-title text-lg" >Update Pool: <strong>PDHCP234445532</strong></h3>
+                    <h3 class="card-title text-lg" >Update Pool: <strong class="title">PDHCP234445532</strong></h3>
                   </div>
                 </div>
 
               </div>
               <div class="card-header">
-                <div id="freediskspdhcp23445532" class="row freedisks">
+                <div class="row disks">
                 
 
                 </div>
@@ -1048,43 +1048,43 @@
                   <div class="row card-header" >
                     
                       <div class='col-3' style="margin-bottom: 1rem;">
-                        <label for="pooladdlog" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
-                          <button id="pooladdlog" type="submit" class="btn btn-primary">add as a read/write cache</button>
+                        <label class=" control-label "><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button type="submit" data-therole='pooladdlog' class="btn btn-primary btna ">add as a read/write cache</button>
                         </label>
                       </div>
                       <div class='col-3' style="margin-bottom: 1rem;">
-                        <label for="pooladdcache" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
-                          <button id="pooladdcache" type="submit" class="btn btn-primary">add as a read cache</button>
+                        <label  class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button  type="submit" data-therole='pooladdcache' class="btn btn-primary btna ">add as a read cache</button>
                         </label>
                       </div>
                       <div class='col-3' style="margin-bottom: 1rem;">
-                        <label for="pooladdraidtriple" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
-                          <button id="pooladdraidtriple" type="submit" class="btn btn-primary">add this raid 6+ group </button>
+                        <label  class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button  type="submit" data-therole='pooladdraidtriple' class="btn btn-primary btna ">add this raid 6+ group </button>
                         </label>
                       </div>
                       <div class='col-3' style="margin-bottom: 1rem;">
-                        <label for="pooladdraiddual" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
-                          <button id="pooladdraiddual" type="submit" class="btn btn-primary">add this raid 6 group </button>
+                        <label class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button type="submit" data-therole='pooladdraiddual' class="btn btn-primary btna ">add this raid 6 group </button>
                         </label>
                       </div>
                       <div class='col-3' style="margin-bottom: 1rem;">
-                        <label for="pooladdraidsingle" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
-                          <button id="pooladdraidsingle" type="submit" class="btn btn-primary">add this raid 5 group </button>
+                        <label  class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button  type="submit" data-therole='pooladdraidsingle' class="btn btn-primary btna ">add this raid 5 group </button>
                         </label>
                       </div>
                       <div class='col-3' style="margin-bottom: 1rem;">
-                        <label for="pooladdstripe" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
-                          <button id="pooladdstripe" type="submit" class="btn btn-primary">add this space </button>
+                        <label class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button  type="submit" data-therole='pooladdstripe' class="btn btn-primary btna ">add this space </button>
                         </label>
                       </div>
                       <div class='col-3' style="margin-bottom: 1rem;">
-                        <label for="pooladdspare" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
-                          <button id="pooladdspare" type="submit" class="btn btn-primary">add as a spare disk</button>
+                        <label class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button  type="submit" data-therole='pooladdspare' class="btn btn-primary btna ">add as a spare disk</button>
                         </label>
                       </div>
                       <div class='col-3' style="margin-bottom: 1rem;">
-                        <label for="pooladdmirror" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
-                          <button id="pooladdmirror" type="submit" class="btn btn-primary">add this mirror </button>
+                        <label class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                          <button type="submit" data-therole='pooladdmirror' class="btn btn-primary btna ">add this mirror </button>
                         </label>
                       </div>
                   </div>
@@ -1094,7 +1094,7 @@
             </div> <!-- /.card -->
           </div>
         </div>
-        <div class="row">
+        <div id="freepools" class="row">
           <div class="col-md-12">
             <div class="card card-outline card-primary datacard">
               <div class="card-header" style="cursor: cell;">
