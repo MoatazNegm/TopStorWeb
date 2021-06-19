@@ -1118,40 +1118,203 @@
 
               <div class="card-body" >
                 <!-- form start -->
-                <form>
+                <div class='row'>
+                  <div class='col-3'>
+                    <strong>Select</strong>
+                  </div>
+                  <div class='col-3'>
+                    <strong>Redundancy</strong>
+                  </div>
+                  <div class='col-3'>
+                    <strong>Useable(GB)</strong>
+                  </div>
+                </div>
+                <div class='row'>
                   <!-- /.card-body -->
-                 
-                  <div  class="row card-header">
-                    <div class='col-3' style="margin-bottom: 1rem;">
-                      <label for="poolcreatesingle" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
-                      <button id="poolcreatesingle" type="submit" class="btn btn-primary form-control">Single Disk Pool</button>
-                      </label>
+                  <div class='col-3'>
+                    <div  class='form-group divsingle newraid'>
+                      <div class="custom-control divsingle custom-radio">
+                        <input class="custom-control-input divsingle" type="radio" name="single" id="single">
+                        <label class="custom-control-label divsingle" for="single">
+                          
+                        </label>
+                      </div>
                     </div>
+                    <div  class=' form-group divvolset newraid'>
+                      <div class="custom-control custom-radio">
+                        <input class="custom-control-input" type="radio" name="flexRadioDefault" id="volset">
+                        <label class="custom-control-label" for="volset">
+                          
+                        </label>
+                      </div>
+                    </div>
+                    <div  class='form-group divmirror newraid '>
+                      <div class="custom-control custom-radio">
+                        <input class="custom-control-input" type="radio" name="flexRadioDefault" id="mirror">
+                        <label class="custom-control-label" for="mirror">
+                          
+                        </label>
+                      </div>
+                    </div>
+                    <div class='form-group divraid5 newraid '>
+                      <div class="custom-control custom-radio">
+                        <input class="custom-control-input" type="radio" name="flexRadioDefault" id="raid5">
+                        <label class="custom-control-label" for="raid5">
+                          
+                        </label>
+                      </div>
+                    </div>
+                    <div class='form-group divraid5 newraid '>
+                      <div class="custom-control custom-radio">
+                        <input class="custom-control-input" type="radio" name="flexRadioDefault" id="raid6">
+                        <label class="custom-control-label" for="raid6">
+                          
+                        </label>
+                      </div>
+                    </div>
+                    <div class='form-group divraid6plus newraid '>
+                      <div class="custom-control custom-radio">
+                        <input class="custom-control-input" type="radio" name="flexRadioDefault" id="raid6">
+                        <label class="custom-control-label" for="raid6">
+                          
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class='col-3'>
+                    <div class=' form-group divsingle newraid'>
+                      <div ><p>Single Disk Pool</p>
+                      </div>
+                    </div>
+                    <div class=' form-group divvolset newraid'>
+                      <div ><p>Multiple disks no redundancy</p>
+                      </div>
+                    </div>
+                    <div class=' form-group divmirror newraid'>
+                      <div ><p>Two mirrored disks</p>
+                      </div>
+                    </div>
+                    <div class=' form-group divraid5 newraid'>
+                      <div ><p>Single disk redundancy like Raid5</p>
+                      </div>
+                    </div>
+                    <div class=' form-group divraid6 newraid'>
+                      <div ><p>Dual disk redundancy like Raid6</p>
+                      </div>
+                    </div>
+                    <div class=' form-group divraid6plus newraid'>
+                      <div ><p>Triple disk redundancy (raid6plus)</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class='col-3'>
+                    <div  class='col-3 form-group divsingle newraid' style="margin-bottom: 1rem; display:none;">
+                      <select id='selectsingle' class="btn btn-mini"></select>
+                          <option class='newraidoption'>10GB</option>
+                      </select>
+                      <span class="caret"></span> 
+                    </div>
+                    <div  class='col-3 form-group divvolset newraid' style="margin-bottom: 1rem; display:none;">
+                      <select id='selectvolset' class="btn btn-mini"></select>
+                          <option class='newraidoption'>10GB</option>
+                      </select>
+                      <span class="caret"></span> 
+                    </div>
+                    <div  class='col-3 form-group divmirror newraid' style="margin-bottom: 1rem; display:none;">
+                      <select id='selectmirror' class="btn btn-mini"></select>
+                          <option class='newraidoption'>10GB</option>
+                      </select>
+                      <span class="caret"></span> 
+                    </div>
+                    <div  class='col-3 form-group divraid5 newraid' style="margin-bottom: 1rem; display:none;">
+                      <select id='selectraid5' class="btn btn-mini"></select>
+                          <option class='newraidoption'>10GB</option>
+                      </select>
+                      <span class="caret"></span> 
+                    </div>
+                    <div  class='col-3 form-group divraid6 newraid' style="margin-bottom: 1rem; display:none;">
+                      <select id='selectraid6' class="btn btn-mini"></select>
+                          <option class='newraidoption'>10GB</option>
+                      </select>
+                      <span class="caret"></span> 
+                    </div>
+                    <div class='col-3 form-group divraid6plus newraid' style="margin-bottom: 1rem; display:none;">
+                      <select id='selectraid6plus' class="btn btn-mini"></select>
+                          <option class='newraidoption'>10GB</option>
+                      </select>
+                      <span class="caret"></span> 
+                    </div>
+                    
+                    
+                  </div>
+                </div>
 
-                    <div class='col-3'  style="margin-bottom: 1rem;">
-                      <label for="poolcreatemirror" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+
+                   
+          
+
+
+                    <div id='divsingle' class='col-3 newraid' style="margin-bottom: 1rem; display:none;">
+                      <label for="poolcreatesingle" class=" control-label"><h6 style="margin-bottom:0px;">Usable size:
+                      <select id='selectsingle' class="btn btn-mini">
+                          <option class='newraidoption'>10GB</option>>
+                      </select>
+                      <span class="caret"></span> 
+                      </h6></label>
+                      <button id="poolcreatesingle" type="submit" class="btn btn-primary form-control">Single Disk Pool</button>
+                      
+                    </div>
+                    
+
+                    <div id='divmirror' class='col-3 newraid'  style="margin-bottom: 1rem; display:none;">
+                      <label for="poolcreatemirror" class=" control-label"><h6 style="margin-bottom:0px;">Usable size:
+                        <select id='selectmirror' class="btn btn-mini">
+                          <option class='newraidoption'>10GB</option>>
+                      </select>
+                      <span class="caret"></span> 
+                      </h6>
                         <button id="poolcreatemirror" type="submit" class="btn btn-primary col-12 ">Mirror Pool</button>
                       </label>
                     </div>
 
-                    <div class='col-3' style="margin-bottom: 1rem;">
-                      <label for="poolcreateraidsingle" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                    <div id='divraid5' class='col-3 newraid' style="margin-bottom: 1rem; display:none;">
+                      <label for="poolcreateraidsingle" class=" control-label"><h6 style="margin-bottom:0px;">Usable size:
+                        <select id='selectraid5' class="btn btn-mini">
+                          <option class='newraidoption'>10GB</option>>
+                      </select>
+                      <span class="caret"></span> 
+                      </h6>
                         <button id="poolcreateraidsingle" type="submit" class="btn btn-primary">Raid 5 (single disk parity)</button>
                       </label>
                     </div>
 
-                    <div class='col-3' style="margin-bottom: 1rem;">
-                      <label for="poolcreatestripe" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                    <div id='divvolset' class='col-3 newraid' style="margin-bottom: 1rem; display:none;">
+                      <label for="poolcreatestripe" class=" control-label"><h6 style="margin-bottom:0px;">Usable size:
+                        <select id='selectvolset' class="btn btn-mini">
+                          <option class='newraidoption'>10GB</option>>
+                      </select>
+                      <span class="caret"></span> 
+                      </h6>
                         <button id="poolcreatestripe" type="submit" class="btn btn-primary">(multi disk strip)(no parity)</button>
                       </label>
                     </div>
-                    <div class='col-3' style="margin-bottom: 1rem;">
-                      <label for="poolcreateraiddual" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                    <div id='divraid6' class='col-3 newraid' style="margin-bottom: 1rem; display:none;">
+                      <label for="poolcreateraiddual" class=" control-label"><h6 style="margin-bottom:0px;">Usable size:
+                        <select id='selectraid6' class="btn btn-mini">
+                          <option class='newraidoption'>10GB</option>>
+                      </select>
+                      <span class="caret"></span> 
+                      </h6>
                         <button id="poolcreateraiddual" type="submit" class="btn btn-primary">Raid 6 (dual disk parity)</button>
                       </label>
                     </div>
-                    <div class='col-3' style="margin-bottom: 1rem;">
-                      <label for="poolcreateraidtriple" class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
+                    <div id='divraid6plus' class='col-3 newraid' style="margin-bottom: 1rem; display:none;">
+                      <label for="poolcreateraidtriple" class=" control-label"><h6 style="margin-bottom:0px;">Usable size:
+                        <select id='selectraid6plus' class="btn btn-mini">
+                          <option class='newraidoption'>10GB</option>>
+                      </select>
+                      <span class="caret"></span> 
+                      </h6>
                         <button id="poolcreateraidtriple" type="submit" class="btn btn-primary">Raid 6+ (triple disk parity)</button>
                       </label>
                     </div>

@@ -30,7 +30,9 @@ function getdgs(){
   });
   return newdgs
 }
-
+$('.newraid input').click(function(e){
+  console.log('hi',$(this).prop('id'))
+});
 function initdgs(){
   var poolcard;
   var pool, host, status, grouptype, raid, changeop,shortdisk, size;
@@ -44,10 +46,10 @@ function initdgs(){
       poolcard.addClass('phdcp');
       poolcard.prop('id',pool);
       $('#'+pool+" .title").text(pool);
-      console.log('raids',t['raids']);
+
       $.each(t['raids'],function(ee,tt){
         raid = tt;
-        console.log('tttt',alldgs['raids'][raid]['disks']);
+
         $.each(alldgs['raids'][raid]['disks'],function(eee,disk){
           shortdisk = disk.slice(-5);
           status = alldgs['disks'][disk]['status'];
@@ -74,6 +76,8 @@ function initdgs(){
     }
  });
  $(".freedisks").children().remove();
+ $(".newraid").hide();
+ $(".newraidoption").remove();
  $.each(alldgs['raids']['free']['disks'],function(e,disk){
   shortdisk = disk.slice(-5);
   status = alldgs['disks'][disk]['status'];
@@ -90,7 +94,27 @@ function initdgs(){
     +'</div>'
   );
 
- });  
+ }); 
+ $.each(alldgs['newraid'],function(e,t){
+  if(e == 'single'){
+   if(Object.keys(t).length > 0 ){
+     $.each(t,function(size,value){
+      var o = new Option(size.toString()+'GB',size);
+      $("#selectsingle").append(o);
+     });
+   }
+   $(".divsingle").show();
+  } else {
+    if(Object.keys(t).length > 0){
+      $.each(t,function(size,raid){
+        var o = new Option(size.toString()+'GB',size);
+        $("#select"+e).append(o)
+      });
+    }
+    $(".div"+e).show();
+  }
+ });
+
 
 
 }
@@ -101,7 +125,7 @@ $('.updatepool').click(function(e){
   e.preventDefault();
   var pool = $(this).data('pool');
   var therole = $(this).data('therole');
-  console.log('pool,role',pool,therole);
+
 })
 function memberclick(thisclck){
   //hname=$(thisclck).attr('data-disk');
@@ -160,7 +184,7 @@ function dgrefresh(){
   if(needupdate){
     
     alldgs = JSON.parse(JSON.stringify(newdgs)); 
-    console.log(alldgs);
+
     initdgs();
   }
 }
