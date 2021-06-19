@@ -1119,137 +1119,123 @@
               <div class="card-body" >
                 <!-- form start -->
                 <div class='row'>
-                  <div class='col-3'>
-                    <strong>Select</strong>
-                  </div>
-                  <div class='col-3'>
-                    <strong>Redundancy</strong>
-                  </div>
-                  <div class='col-3'>
-                    <strong>Useable(GB)</strong>
+                  <div class='col-12'>
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">Select</th>
+                          <th scope="col">Redundancy</th>
+                          <th scope="col">Useable(GB)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      
+                        <tr class='newraid divsingle'>
+                          
+                          <td>
+                            <div class="custom-control  custom-radio">
+                              <input class="custom-control-input " type="radio" name="newraid" id="single">
+                              <label class="custom-control-label " for="single">
+                                
+                              </label>
+                            </div>
+                          </td>
+                          <td>Single Disk Pool</td>
+                          <td><select id='selectsingle' class="btn btn-mini"></select>
+                                <option class='newraidoption'>10GB</option>
+                              </select>
+                              <span class="caret"></span> 
+                          </td>
+                        
+                        </tr>
+                  
+                        <tr class='newraid divvolset'>
+                          <td>
+                            <div class="custom-control  custom-radio">
+                              <input class="custom-control-input " type="radio" name="newraid" id="volset">
+                              <label class="custom-control-label " for="volset"></label>
+                            </div>
+                          </td>
+                          <td>Multiple disks no redundancy</td>
+                          <td><select id='selectvolset' class="btn btn-mini"></select>
+                                <option class='newraidoption'>10GB</option>
+                              </select>
+                              <span class="caret"></span> 
+                          </td>
+                      
+                        </tr>
+                        <tr class='newraid divmirror'>
+                          <th scope="row">
+                            <div class="custom-control  custom-radio">
+                              <input class="custom-control-input " type="radio" name="newraid" id="mirror">
+                              <label class="custom-control-label " for="mirror"></label>
+                            </div>
+                          </th>
+                          <td>Two mirrored disks</td>
+                          <td><select id='selectmirror' class="btn btn-mini"></select>
+                                <option class='newraidoption'>10GB</option>
+                              </select>
+                              <span class="caret"></span> 
+                          </td>
+                        
+                        </tr>
+                        <tr class='newraid divraid5'>
+                          <th scope="row">
+                            <div class="custom-control  custom-radio">
+                              <input class="custom-control-input " type="radio" name="newraid" id="raid5">
+                              <label class="custom-control-label " for="raid5"></label>
+                            </div>
+                          </th>
+                          <td>Single disk redundancy</td>
+                          <td><select id='selectraid5' class="btn btn-mini"></select>
+                                <option class='newraidoption'>10GB</option>
+                              </select>
+                              <span class="caret"></span> 
+                          </td>
+                        
+                        </tr>
+                        <tr class='newraid divraid6'>
+                          <th scope="row">
+                            <div class="custom-control  custom-radio">
+                              <input class="custom-control-input " type="radio" name="newraid" id="raid6">
+                              <label class="custom-control-label " for="raid6"></label>
+                            </div>
+                          </th>
+                          <td>Dual disk redundancy Pool</td>
+                          <td><select id='selectraid6' class="btn btn-mini"></select>
+                                <option class='newraidoption'>10GB</option>
+                              </select>
+                              <span class="caret"></span> 
+                          </td>
+                        
+                        </tr>
+                        <tr class='newraid divraid6plus'>
+                          <th scope="row">
+                            <div class="custom-control  custom-radio">
+                              <input class="custom-control-input " type="radio" name="newraid" id="raid6">
+                              <label class="custom-control-label " for="raid6"></label>
+                            </div>
+                          </th>
+                          <td>Triple disk redundancy Pool</td>
+                          <td><select id='selectraid6plus' class="btn btn-mini"></select>
+                                <option class='newraidoption'>10GB</option>
+                              </select>
+                              <span class="caret"></span> 
+                          </td>
+                        
+                        </tr>
+                      </tbody>
+                      
+                    </table>
                   </div>
                 </div>
                 <div class='row'>
-                  <!-- /.card-body -->
-                  <div class='col-3'>
-                    <div  class='form-group divsingle newraid'>
-                      <div class="custom-control divsingle custom-radio">
-                        <input class="custom-control-input divsingle" type="radio" name="single" id="single">
-                        <label class="custom-control-label divsingle" for="single">
-                          
-                        </label>
-                      </div>
-                    </div>
-                    <div  class=' form-group divvolset newraid'>
-                      <div class="custom-control custom-radio">
-                        <input class="custom-control-input" type="radio" name="flexRadioDefault" id="volset">
-                        <label class="custom-control-label" for="volset">
-                          
-                        </label>
-                      </div>
-                    </div>
-                    <div  class='form-group divmirror newraid '>
-                      <div class="custom-control custom-radio">
-                        <input class="custom-control-input" type="radio" name="flexRadioDefault" id="mirror">
-                        <label class="custom-control-label" for="mirror">
-                          
-                        </label>
-                      </div>
-                    </div>
-                    <div class='form-group divraid5 newraid '>
-                      <div class="custom-control custom-radio">
-                        <input class="custom-control-input" type="radio" name="flexRadioDefault" id="raid5">
-                        <label class="custom-control-label" for="raid5">
-                          
-                        </label>
-                      </div>
-                    </div>
-                    <div class='form-group divraid5 newraid '>
-                      <div class="custom-control custom-radio">
-                        <input class="custom-control-input" type="radio" name="flexRadioDefault" id="raid6">
-                        <label class="custom-control-label" for="raid6">
-                          
-                        </label>
-                      </div>
-                    </div>
-                    <div class='form-group divraid6plus newraid '>
-                      <div class="custom-control custom-radio">
-                        <input class="custom-control-input" type="radio" name="flexRadioDefault" id="raid6">
-                        <label class="custom-control-label" for="raid6">
-                          
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class='col-3'>
-                    <div class=' form-group divsingle newraid'>
-                      <div ><p>Single Disk Pool</p>
-                      </div>
-                    </div>
-                    <div class=' form-group divvolset newraid'>
-                      <div ><p>Multiple disks no redundancy</p>
-                      </div>
-                    </div>
-                    <div class=' form-group divmirror newraid'>
-                      <div ><p>Two mirrored disks</p>
-                      </div>
-                    </div>
-                    <div class=' form-group divraid5 newraid'>
-                      <div ><p>Single disk redundancy like Raid5</p>
-                      </div>
-                    </div>
-                    <div class=' form-group divraid6 newraid'>
-                      <div ><p>Dual disk redundancy like Raid6</p>
-                      </div>
-                    </div>
-                    <div class=' form-group divraid6plus newraid'>
-                      <div ><p>Triple disk redundancy (raid6plus)</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class='col-3'>
-                    <div  class='col-3 form-group divsingle newraid' style="margin-bottom: 1rem; display:none;">
-                      <select id='selectsingle' class="btn btn-mini"></select>
-                          <option class='newraidoption'>10GB</option>
-                      </select>
-                      <span class="caret"></span> 
-                    </div>
-                    <div  class='col-3 form-group divvolset newraid' style="margin-bottom: 1rem; display:none;">
-                      <select id='selectvolset' class="btn btn-mini"></select>
-                          <option class='newraidoption'>10GB</option>
-                      </select>
-                      <span class="caret"></span> 
-                    </div>
-                    <div  class='col-3 form-group divmirror newraid' style="margin-bottom: 1rem; display:none;">
-                      <select id='selectmirror' class="btn btn-mini"></select>
-                          <option class='newraidoption'>10GB</option>
-                      </select>
-                      <span class="caret"></span> 
-                    </div>
-                    <div  class='col-3 form-group divraid5 newraid' style="margin-bottom: 1rem; display:none;">
-                      <select id='selectraid5' class="btn btn-mini"></select>
-                          <option class='newraidoption'>10GB</option>
-                      </select>
-                      <span class="caret"></span> 
-                    </div>
-                    <div  class='col-3 form-group divraid6 newraid' style="margin-bottom: 1rem; display:none;">
-                      <select id='selectraid6' class="btn btn-mini"></select>
-                          <option class='newraidoption'>10GB</option>
-                      </select>
-                      <span class="caret"></span> 
-                    </div>
-                    <div class='col-3 form-group divraid6plus newraid' style="margin-bottom: 1rem; display:none;">
-                      <select id='selectraid6plus' class="btn btn-mini"></select>
-                          <option class='newraidoption'>10GB</option>
-                      </select>
-                      <span class="caret"></span> 
-                    </div>
-                    
-                    
+                  <div class='col-12'>
+                    <button id="createpool" type="submit" class="btn btn-primary form-control" disabled>Create Pool</button>
                   </div>
                 </div>
-
-
+               
+                
                    
           
 

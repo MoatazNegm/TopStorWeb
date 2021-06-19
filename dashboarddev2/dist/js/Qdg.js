@@ -32,6 +32,7 @@ function getdgs(){
 }
 $('.newraid input').click(function(e){
   console.log('hi',$(this).prop('id'))
+  $('#createpool').attr('disabled',false);
 });
 function initdgs(){
   var poolcard;
@@ -55,7 +56,7 @@ function initdgs(){
           status = alldgs['disks'][disk]['status'];
           host = alldgs['disks'][disk]['host'];
           changeop = alldgs['disks'][disk]['changeop'];
-          size = alldgs['disks'][disk]['size'];
+          size = parseFloat(alldgs['disks'][disk]['size']).toFixed(2);
           $('#'+pool+' .disks').append(
             '<div id="'+disk+'" data-disk="'+disk+'" class=" col-'+col+' '+raid+' '+pool+' '+status+' '+changeop+'">'
               +'  <a href="javascript:memberclick(\'#'+disk+'\')" class="img-clck" >'
@@ -83,7 +84,7 @@ function initdgs(){
   status = alldgs['disks'][disk]['status'];
   host = alldgs['disks'][disk]['host'];
   changeop = alldgs['disks'][disk]['changeop'];
-  size = alldgs['disks'][disk]['size'];
+  size = parseFloat(alldgs['disks'][disk]['size']).toFixed(2);
   $('.freedisks').append(
     '<div id="'+disk+'" data-disk="'+disk+'" class=" col-'+col+' '+status+' '+changeop+'">'
       +'  <a href="javascript:memberclick(\'#'+disk+'\')" class="img-clck" >'
@@ -98,16 +99,18 @@ function initdgs(){
  $.each(alldgs['newraid'],function(e,t){
   if(e == 'single'){
    if(Object.keys(t).length > 0 ){
-     $.each(t,function(size,value){
-      var o = new Option(size.toString()+'GB',size);
+     $.each(t,function(psize,value){
+      var size = parseFloat(psize).toFixed(2)
+      var o = new Option(size.toString(),size);
       $("#selectsingle").append(o);
      });
    }
    $(".divsingle").show();
   } else {
     if(Object.keys(t).length > 0){
-      $.each(t,function(size,raid){
-        var o = new Option(size.toString()+'GB',size);
+      $.each(t,function(psize,raid){
+        var size = parseFloat(psize).toFixed(2)
+        var o = new Option(size.toString(),size);
         $("#select"+e).append(o)
       });
     }
@@ -115,6 +118,9 @@ function initdgs(){
   }
  });
 
+ $("tr:visible").each(function (index) {
+  $(this).css("background-color", !!(index & 1)? "rgba(0,0,0,.05)" : "rgba(0,0,0,0)");
+});
 
 
 }
