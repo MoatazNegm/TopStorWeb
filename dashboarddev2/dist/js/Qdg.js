@@ -31,8 +31,9 @@ function getdgs(){
   return newdgs
 }
 $('.newraid input').click(function(e){
-  console.log('hi',$(this).prop('id'))
+  console.log('hi',$(this).prop('id'));
   $('#createpool').attr('disabled',false);
+  $('#createpool').data('redundancy',$(this).prop('id'));
 });
 function initdgs(){
   var poolcard;
@@ -78,7 +79,7 @@ function initdgs(){
  });
  $(".freedisks").children().remove();
  $(".newraid").hide();
- $(".newraidoption").remove();
+ $(".newraid option").remove();
  $.each(alldgs['raids']['free']['disks'],function(e,disk){
   shortdisk = disk.slice(-5);
   status = alldgs['disks'][disk]['status'];
@@ -133,6 +134,17 @@ $('.updatepool').click(function(e){
   var therole = $(this).data('therole');
 
 })
+$('#createpool').click(function(e){
+  e.preventDefault();
+  var apiurl = "api/v1/pools/newpool";
+  var redundancy = $(this).data('redundancy');
+  console.log('submit',redundancy);
+  var useable = $("#select"+redundancy).val();
+  console.log('submit',redundancy,useable);
+  var apidata = {"redundancy": $(this).data('redundancy'), 'useable': useable, 'user':'mezo' }
+  postdata(apiurl,apidata);
+})
+
 function memberclick(thisclck){
   //hname=$(thisclck).attr('data-disk');
   var hname = thisclck
