@@ -31,10 +31,43 @@ function getdgs(){
   return newdgs
 }
 $('.newraid input').click(function(e){
-  console.log('hi',$(this).prop('id'));
   $('#createpool').attr('disabled',false);
   $('#createpool').data('redundancy',$(this).prop('id'));
 });
+
+function setdeletesequence(pool){
+  $("#"+pool+" .poolbtn1").show();
+  $("#"+pool+" .poolbtn1").click(function(e){
+    e.preventDefault();
+    $("#"+pool+" .poolbtn1").hide();
+    $("#"+pool+" .poolbtn1c").show();
+    $("#"+pool+" .poolbtn2").show();
+  });
+  $("#"+pool+" .poolbtn2").click(function(e){
+    e.preventDefault();
+    $("#"+pool+" .poolbtn1c").hide();
+    $("#"+pool+" .poolbtn2").hide();
+    $("#"+pool+" .poolbtn2c").show();
+    $("#"+pool+" .poolbtn3").show();
+  })
+  $("#"+pool+" .poolbtn1c").click(function(e){
+    e.preventDefault();
+    $("#"+pool+" .poolbtn1c").hide();
+    $("#"+pool+" .poolbtn2").hide();
+    $("#"+pool+" .poolbtn1").show();
+  })
+  $("#"+pool+" .poolbtn2c").click(function(e){
+    e.preventDefault();
+    $("#"+pool+" .poolbtn2c").hide();
+    $("#"+pool+" .poolbtn3").hide();
+    $("#"+pool+" .poolbtn1").show();
+  })
+  $("#"+pool+" .poolbtn3").click(function(e){
+    e.preventDefault();
+    adelpool(pool);
+  })
+}
+
 function initdgs(){
   var poolcard;
   var pool, host, status, grouptype, raid, changeop,shortdisk, size;
@@ -74,6 +107,7 @@ function initdgs(){
         $(v).removeClass('btna');
         $(v).addClass('updatepool');
       }); 
+      setdeletesequence(pool);
       poolcard.show();
     }
  });
@@ -134,11 +168,16 @@ $('.updatepool').click(function(e){
   var therole = $(this).data('therole');
 
 })
+function adelpool(pool){
+    var apiurl = "api/v1/pools/delpool";
+    var apidata = {"pool": pool,'user':'mezo' }
+    postdata(apiurl,apidata);
+}
+
 $('#createpool').click(function(e){
   e.preventDefault();
   var apiurl = "api/v1/pools/newpool";
   var redundancy = $(this).data('redundancy');
-  console.log('submit',redundancy);
   var useable = $("#select"+redundancy).val();
   console.log('submit',redundancy,useable);
   var apidata = {"redundancy": $(this).data('redundancy'), 'useable': useable, 'user':'mezo' }
@@ -194,11 +233,15 @@ function dgrefresh(){
     
     needupdate = 1;
   }
-  $.each(newdgs['pools'],function(e,t){
-    if(t['changeop'] != alldgs['pools'][e]['changeop'] || t['status']!=alldgs['pools'][e]['status']){
+    if(JSON.stringify(Object.keys(alldgs['pools'])) != JSON.stringify(Object.keys(newdgs['pools']))){
       needupdate = 1;
-    }
-  });
+  } else{
+    $.each(newdgs['pools'],function(e,t){
+      if(t['changeop'] != alldgs['pools'][e]['changeop'] || t['status']!=alldgs['pools'][e]['status']){
+        needupdate = 1;
+      }
+    });
+  }
   if(needupdate){
     
     alldgs = JSON.parse(JSON.stringify(newdgs)); 
