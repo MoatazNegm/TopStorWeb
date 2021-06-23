@@ -36,36 +36,46 @@ $('.newraid input').click(function(e){
 });
 
 function setdeletesequence(pool){
-  $("#"+pool+" .poolbtn1").show();
-  $("#"+pool+" .poolbtn1").click(function(e){
-    e.preventDefault();
-    $("#"+pool+" .poolbtn1").hide();
-    $("#"+pool+" .poolbtn1c").show();
-    $("#"+pool+" .poolbtn2").show();
-  });
-  $("#"+pool+" .poolbtn2").click(function(e){
-    e.preventDefault();
-    $("#"+pool+" .poolbtn1c").hide();
-    $("#"+pool+" .poolbtn2").hide();
-    $("#"+pool+" .poolbtn2c").show();
-    $("#"+pool+" .poolbtn3").show();
-  })
-  $("#"+pool+" .poolbtn1c").click(function(e){
-    e.preventDefault();
-    $("#"+pool+" .poolbtn1c").hide();
-    $("#"+pool+" .poolbtn2").hide();
+  if (alldgs['pools'][pool]['volumes'].length == 0){
     $("#"+pool+" .poolbtn1").show();
-  })
-  $("#"+pool+" .poolbtn2c").click(function(e){
-    e.preventDefault();
-    $("#"+pool+" .poolbtn2c").hide();
-    $("#"+pool+" .poolbtn3").hide();
-    $("#"+pool+" .poolbtn1").show();
-  })
-  $("#"+pool+" .poolbtn3").click(function(e){
-    e.preventDefault();
-    adelpool(pool);
-  })
+    $("#"+pool+" .poolbtn1").click(function(e){
+      e.preventDefault();
+      $("#"+pool+" .poolbtn1").hide();
+      $("#"+pool+" .poolbtn1c").show();
+      $("#"+pool+" .poolbtn2").show();
+    });
+    $("#"+pool+" .poolbtn2").click(function(e){
+      e.preventDefault();
+      $("#"+pool+" .poolbtn1c").hide();
+      $("#"+pool+" .poolbtn2").hide();
+      $("#"+pool+" .poolbtn2c").show();
+      $("#"+pool+" .poolbtn3").show();
+    })
+    $("#"+pool+" .poolbtn1c").click(function(e){
+      e.preventDefault();
+      $("#"+pool+" .poolbtn1c").hide();
+      $("#"+pool+" .poolbtn2").hide();
+      $("#"+pool+" .poolbtn1").show();
+    })
+    $("#"+pool+" .poolbtn2c").click(function(e){
+      e.preventDefault();
+      $("#"+pool+" .poolbtn2c").hide();
+      $("#"+pool+" .poolbtn3").hide();
+      $("#"+pool+" .poolbtn1").show();
+    })
+    $("#"+pool+" .poolbtn3").click(function(e){
+      e.preventDefault();
+      adelpool(pool);
+    });
+  } else {
+    var volumes = ' '
+    $.each(alldgs['pools'][pool]['volumes'],function(pe,pv){
+      volumes = volumes+pv.split('_')[0]+', ';
+    })
+    if(volumes.length > 0){ volumes = volumes.slice(0,-2)}
+    $("#"+pool+" .volumespan").text(volumes);
+    $("#"+pool+" .volumes").show();
+  }
 }
 
 function initdgs(){
@@ -135,7 +145,7 @@ function initdgs(){
   if(e == 'single'){
    if(Object.keys(t).length > 0 ){
      $.each(t,function(psize,value){
-      var size = parseFloat(psize).toFixed(2)
+      var size = psize.slice(0,5)
       var o = new Option(size.toString(),size);
       $("#selectsingle").append(o);
      });
@@ -144,7 +154,7 @@ function initdgs(){
   } else {
     if(Object.keys(t).length > 0){
       $.each(t,function(psize,raid){
-        var size = parseFloat(psize).toFixed(2)
+        var size = psize.slice(0,5)
         var o = new Option(size.toString(),size);
         $("#select"+e).append(o)
       });
