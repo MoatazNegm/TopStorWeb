@@ -133,6 +133,8 @@ $("#createvol").click(function(e){
         groups +=allgroups['results'][t]['text']+',';
       });
       groups = groups.slice(0,-1);
+    } else {
+      groups='NoGroup'
     }
     thevol = $("#volname").val();
   } else{
@@ -365,8 +367,8 @@ function selbtnclickeduser(ths){
             }
           apidata['groups'] = newgrps
         }
-         
         apidata['type'] = prot;
+        console.log('config',apidata);
         postdata(apiurl,apidata);
 }
 

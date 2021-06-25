@@ -16,7 +16,7 @@ Dist3:0: : from :: Start removing Disk : in : from system database
 Disu3:1: : from :: Success removing Disk :  from system : It is no longer used.
 Diwa4:1: : from :: Disk : is removed from system :
 Disu4:0: : from :: Success deleting absent disk : from system database
-Dist5:0 : : from :: Start offlineing disk :. Please add a spare disk urgently so system :
+Dist5:0 : : from :: Start offlineing disk : Please add a spare disk urgently so system :
 Disu5:1: : from :: Success to set disk : to be offline, please add a spare disk urgently
 Dist6:0: : from :: Start attaching Disk : to group : in pool : in system : 
 Disu6:1: : from :: Success attaching Disk : to group : in pool : in system : 
@@ -24,6 +24,24 @@ Difa6:0: : from :: Failed attaching Disk : to group : in pool : in system :
 Dist7:0: : from :: Start Automatic Re-Attach of disk : to pool :
 Difa7:0: : from :: Failed Automatic Re-Attach of disk : to pool :
 Disu7:1: : from :: Success Automatic Re-Attach of disk : to pool :
+Sys01:0: : from :: the host : is registered in the system.
+Sys02:0: : from :: the host : is removed from the system.
+Sys03:0: : from :: the pool : is registered in the system.
+Sys04:0: : from :: the host : is removed from the system.  
+Sys05:0: : from :: : status is changed from : to :
+Sys06:0: : from :: the pool : ownership is transferred from host : to host :
+Sys07:0: : from :: the raid : is registered in the system.
+Sys08:0: : from :: the raid : is removed from the system.
+Sys09:0: : from :: the raid : status is change from : to :
+Sys10:0: : from :: the disk : is registered in the system.
+Sys11:0: : from :: the disk : is removed from the system.
+Sys12:0: : from :: the disk : status is change from : to :
+Sys13:0: : from :: the volume : is registered in the system.
+Sys14:0: : from :: the volume : is removed from the system.
+Sys15:0: : from :: this volume :  allowed groups are changed.
+Sys16:0: : from :: the volume : ipaddress is changed from : to :
+Sys17:0: : from :: the volume : ip subnet is changed from : to :
+Sys18:0: : from :: the volume : maximum size is changed from : to :
 Zpsu01:0: : from : finished scanning for disk pools to present : 
 Zpwa01:0: : from :: Still scanning the pool : 
 Zpst01:0: : from :: scanning for disk pools to present
@@ -184,7 +202,7 @@ DGfa10:2: : from :: Failed adding Disk: as a read cache
 DGst11:1: : from :: Adding Disk: as a read/write cache.....
 DGsu11:2: : from :: Success adding Disk: as a read/write cache
 DGfa11:2: : from :: Failed adding Disk: as a read/write cache
-DGst12:1: : from :: Adding triple redundancy array to Pool :  using disks:.....
+DGst12:1: : from :: Adding triple redundancy array to Pool :  using disks: ....
 DGsu12:2: : from :: Success adding triple redundancy array to Pool :  using disks:
 DGfa12:2: : from :: Failed adding triple redundancy array to Pool :  using disks:
 DGst13:1: : from :: Creating redundant Pool : using triple parity array of disk: ......
@@ -263,7 +281,7 @@ Priv1000: Changing perivileges of user : ........
 Priv1001: Success changing privileges of user :
 Priv1002:1: : from : Changing perivileges of user : ........ It will overwrite conflicting group privileges
 Priv1102:1: : from : Changing perivileges of group : ........
-Priv1003:2: : from : Success changing privileges of user :. It will overwrite conflicting group privileges
+Priv1003:2: : from : Success changing privileges of user : It will overwrite conflicting group privileges
 Priv1103:2: : from : Success changing privileges of group :
 Replivol1000:0: : from :: Receiving new snapshot for volume : from partner :
 Replidf1000:0: : from :: Receiving new Snapshot for volume : from partner :

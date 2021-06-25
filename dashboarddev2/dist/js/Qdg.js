@@ -101,6 +101,11 @@ function initdgs(){
           host = alldgs['disks'][disk]['host'];
           changeop = alldgs['disks'][disk]['changeop'];
           size = parseFloat(alldgs['disks'][disk]['size']).toFixed(2);
+          if(status.includes('ONLINE')){
+            imgf = 'disk-image.png';
+          } else {
+            imgf = 'invaliddisk.png';
+          }
           $('#'+pool+' .disks').append(
             '<div id="'+disk+'" data-disk="'+disk+'" class=" col-'+col+' '+raid+' '+pool+' '+status+' '+changeop+'">'
               +'  <a href="javascript:memberclick(\'#'+disk+'\')" class="img-clck" >'
@@ -130,6 +135,11 @@ function initdgs(){
   host = alldgs['disks'][disk]['host'];
   changeop = alldgs['disks'][disk]['changeop'];
   size = parseFloat(alldgs['disks'][disk]['size']).toFixed(2);
+  if(status.includes('free') ){
+    imgf = 'disk-image.png';
+  } else {
+    imgf = 'invaliddisk.png';
+  }
   $('.freedisks').append(
     '<div id="'+disk+'" data-disk="'+disk+'" class=" col-'+col+' '+status+' '+changeop+'">'
       +'  <a href="javascript:memberclick(\'#'+disk+'\')" class="img-clck" >'

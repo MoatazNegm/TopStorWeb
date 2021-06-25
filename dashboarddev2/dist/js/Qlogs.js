@@ -79,7 +79,7 @@ function initlogs(){
             $(row).css('color', 'blue');
         }
         if(data.type == 'warning'){
-            $(row).css('color', 'yellow');
+            $(row).css('color', '#c2c237');
         }
         if(data.type == 'error'){
           $(row).css('color', 'red');
