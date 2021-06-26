@@ -94,6 +94,9 @@ function initdgs(){
 
       $.each(t['raids'],function(ee,tt){
         raid = tt;
+        if(t['name'] == 'pdhcp1385914084'){
+          console.log(alldgs['raids'][raid]);
+        }
 
         $.each(alldgs['raids'][raid]['disks'],function(eee,disk){
           shortdisk = disk.slice(-5);
