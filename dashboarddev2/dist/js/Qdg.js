@@ -91,13 +91,12 @@ function initdgs(){
       poolcard.addClass('phdcp');
       poolcard.prop('id',pool);
       $('#'+pool+" .title").text(pool);
+      $('#'+pool+" .spansize").text('size:'+t['available'].toString().slice(-5)+'GB');
+      $('#'+pool+" .spanused").text('used:'+t['used'].toString().slice(-5)+'GB');
+      $('#'+pool+" .spandedup").text('dedupped:'+t['dedup']);
 
       $.each(t['raids'],function(ee,tt){
         raid = tt;
-        if(t['name'] == 'pdhcp1385914084'){
-          console.log(alldgs['raids'][raid]);
-        }
-
         $.each(alldgs['raids'][raid]['disks'],function(eee,disk){
           shortdisk = disk.slice(-5);
           status = alldgs['disks'][disk]['status'];
@@ -119,7 +118,11 @@ function initdgs(){
             +'</div>'
           );
         });
+        
+        
       });
+     
+      
       $.each($('.btna'),function(k,v){
         $(v).data('pool',pool);
         $(v).removeClass('btna');
@@ -274,6 +277,35 @@ function dgrefresh(){
 }
 
 function refreshall(){
+  $.each(alldgs['pools'],function(e,t){
+    pool = e; 
+    if($('#'+pool+" option").length <= 0){
+      $.each(alldgs['newraid'],function(en,tn){
+
+        
+            if(Object.keys(tn).length > 0){
+              $.each(tn,function(psize,raid){
+                var size = psize.slice(0,5)
+                totalsize= parseFloat(size)+parseFloat(t['available']);
+                console.log('total',totalsize)
+                var o = new Option(totalsize.toString().slice(0,5),size);
+                $('#'+pool+" .select"+en).append(o)
+              });
+            }
+            if (alldgs['pools'][pool]['Availability'].includes('Availability')){
+              $('#'+pool+" .adiv"+en).show();
+              $('#'+pool+" .adivvolset").hide();
+            } else {
+              $('#'+pool+" .adiv"+en).hide();
+              $('#'+pool+" .adivvolset").show();
+            }
+
+    
+
+      });
+      
+    }
+  });
   dgrefresh();
 }
 

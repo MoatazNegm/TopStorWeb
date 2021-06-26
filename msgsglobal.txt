@@ -27,7 +27,7 @@ Disu7:1: : from :: Success Automatic Re-Attach of disk : to pool :
 Sys01:0: : from :: the host : is registered in the system.
 Sys02:0: : from :: the host : is removed from the system.
 Sys03:0: : from :: the pool : is registered in the system.
-Sys04:0: : from :: the host : is removed from the system.  
+Sys04:0: : from :: the pool : is removed from the system.  
 Sys05:0: : from :: : status is changed from : to :
 Sys06:0: : from :: the pool : ownership is transferred from host : to host :
 Sys07:0: : from :: the raid : is registered in the system.

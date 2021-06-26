@@ -1030,6 +1030,15 @@
                   <div class='col-5'>
                     <h3 class="card-title text-lg" >Update Pool: <strong class="title">PDHCP234445532</strong></h3>
                   </div>
+                  <div class='col-2'>
+                    <span class='spansize'></span>
+                  </div>
+                  <div class='col-2'>
+                    <span class='spanused'></span>
+                  </div>
+                  <div class='col-2'>
+                      <span class='spandedup'></span>
+                  </div>
                 </div>
 
               </div>
@@ -1041,54 +1050,100 @@
               </div>
 
               <div class="card-body" >
-                <!-- form start -->
-                <form>
-                <!-- /.card-body -->
-                 
-                  <div class="row card-header" >
-                    
-                      <div class='col-3' style="margin-bottom: 1rem;">
-                        <label class=" control-label "><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
-                          <button type="submit" data-therole='pooladdlog' class="btn btn-primary btna ">add as a read/write cache</button>
-                        </label>
-                      </div>
-                      <div class='col-3' style="margin-bottom: 1rem;">
-                        <label  class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
-                          <button  type="submit" data-therole='pooladdcache' class="btn btn-primary btna ">add as a read cache</button>
-                        </label>
-                      </div>
-                      <div class='col-3' style="margin-bottom: 1rem;">
-                        <label  class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
-                          <button  type="submit" data-therole='pooladdraidtriple' class="btn btn-primary btna ">add this raid 6+ group </button>
-                        </label>
-                      </div>
-                      <div class='col-3' style="margin-bottom: 1rem;">
-                        <label class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
-                          <button type="submit" data-therole='pooladdraiddual' class="btn btn-primary btna ">add this raid 6 group </button>
-                        </label>
-                      </div>
-                      <div class='col-3' style="margin-bottom: 1rem;">
-                        <label  class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
-                          <button  type="submit" data-therole='pooladdraidsingle' class="btn btn-primary btna ">add this raid 5 group </button>
-                        </label>
-                      </div>
-                      <div class='col-3' style="margin-bottom: 1rem;">
-                        <label class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
-                          <button  type="submit" data-therole='pooladdstripe' class="btn btn-primary btna ">add this space </button>
-                        </label>
-                      </div>
-                      <div class='col-3' style="margin-bottom: 1rem;">
-                        <label class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
-                          <button  type="submit" data-therole='pooladdspare' class="btn btn-primary btna ">add as a spare disk</button>
-                        </label>
-                      </div>
-                      <div class='col-3' style="margin-bottom: 1rem;">
-                        <label class=" control-label"><h6 style="margin-bottom:0px;">Usable size: <strong>10GB</strong></h6>
-                          <button type="submit" data-therole='pooladdmirror' class="btn btn-primary btna ">add this mirror </button>
-                        </label>
-                      </div>
+                <div class='row'>
+                  <div class='col-12'>
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">Select</th>
+                          <th scope="col">Redundancy</th>
+                          <th scope="col">Total Useable(GB)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      
+                        <tr class='newraid adivvolset'>
+                          <td>
+                            <div class="custom-control  custom-radio">
+                              <input class="custom-control-input avolset " type="radio" name="newraid">
+                              <label class="custom-control-label " ></label>
+                            </div>
+                          </td>
+                          <td>Multiple disks no redundancy</td>
+                          <td><select class="btn btn-mini selectvolset"></select>
+                                <option class='newraidoption'>10GB</option>
+                              </select>
+                              <span class="caret"></span> 
+                          </td>
+                      
+                        </tr>
+                        <tr class='newraid adivmirror'>
+                          <th scope="row">
+                            <div class="custom-control  custom-radio">
+                              <input class="custom-control-input mirror " type="radio" name="newraid" >
+                              <label class="custom-control-label "></label>
+                            </div>
+                          </th>
+                          <td>Two mirrored disks</td>
+                          <td><select class="btn btn-mini selectmirror"></select>
+                                <option class='newraidoption'>10GB</option>
+                              </select>
+                              <span class="caret"></span> 
+                          </td>
+                        
+                        </tr>
+                        <tr class='newraid adivraid5'>
+                          <th scope="row">
+                            <div class="custom-control  custom-radio">
+                              <input class="custom-control-input raid5 " type="radio" name="newraid">
+                              <label class="custom-control-label " ></label>
+                            </div>
+                          </th>
+                          <td>Single disk redundancy</td>
+                          <td><select class="btn btn-mini selectraid5"></select>
+                                <option class='newraidoption'>10GB</option>
+                              </select>
+                              <span class="caret"></span> 
+                          </td>
+                        
+                        </tr>
+                        <tr class='newraid adivraid6'>
+                          <th scope="row">
+                            <div class="custom-control  custom-radio">
+                              <input class="custom-control-input raid6" type="radio" name="newraid">
+                              <label class="custom-control-label "></label>
+                            </div>
+                          </th>
+                          <td>Dual disk redundancy Pool</td>
+                          <td><select class="btn btn-mini selectraid6"></select>
+                                <option class='newraidoption'>10GB</option>
+                              </select>
+                              <span class="caret"></span> 
+                          </td>
+                        
+                        </tr>
+                        <tr class='newraid adivraid6plus'>
+                          <th scope="row">
+                            <div class="custom-control  custom-radio">
+                              <input class="custom-control-input raid6plus" type="radio" name="newraid">
+                              <label class="custom-control-label "></label>
+                            </div>
+                          </th>
+                          <td>Triple disk redundancy Pool</td>
+                          <td><select class="btn btn-mini selectraid6plus"></select>
+                                <option class='newraidoption'>10GB</option>
+                              </select>
+                              <span class="caret"></span> 
+                          </td>
+                        
+                        </tr>
+                      </tbody>
+                      
+                    </table>
                   </div>
-                </form>
+                </div>
+                <!-- form start -->
+                
               </div>
               <!-- /card body -->
               <div class="card-footer">
