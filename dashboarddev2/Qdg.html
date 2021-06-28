@@ -1062,13 +1062,13 @@
                       </thead>
                       <tbody>
                       
-                        <tr class='newraid adivvolset'>
-                          <td>
+                        <tr class='addraid adivvolset'>
+                          <th scope='row' data-redundancy='volset' >
                             <div class="custom-control  custom-radio">
-                              <input class="custom-control-input avolset " type="radio" name="newraid">
+                              <input class="custom-control-input avolset " data-redundancy='volset' type="radio" name="addraid">
                               <label class="custom-control-label " ></label>
                             </div>
-                          </td>
+                          </th>
                           <td>Multiple disks no redundancy</td>
                           <td><select class="btn btn-mini selectvolset"></select>
                                 <option class='newraidoption'>10GB</option>
@@ -1077,10 +1077,10 @@
                           </td>
                       
                         </tr>
-                        <tr class='newraid adivmirror'>
-                          <th scope="row">
+                        <tr class='addraid adivmirror'>
+                          <th scope="row"  data-redundancy='mirror'>
                             <div class="custom-control  custom-radio">
-                              <input class="custom-control-input mirror " type="radio" name="newraid" >
+                              <input class="custom-control-input mirror " data-redundancy='mirror' type="radio" name="addraid" >
                               <label class="custom-control-label "></label>
                             </div>
                           </th>
@@ -1092,10 +1092,10 @@
                           </td>
                         
                         </tr>
-                        <tr class='newraid adivraid5'>
-                          <th scope="row">
+                        <tr class='addraid adivraid5'>
+                          <th scope="row"  data-redundancy='raid5'>
                             <div class="custom-control  custom-radio">
-                              <input class="custom-control-input raid5 " type="radio" name="newraid">
+                              <input class="custom-control-input raid5 " data-redundancy='raid5' type="radio" name="addraid">
                               <label class="custom-control-label " ></label>
                             </div>
                           </th>
@@ -1107,10 +1107,10 @@
                           </td>
                         
                         </tr>
-                        <tr class='newraid adivraid6'>
-                          <th scope="row">
+                        <tr class='addraid adivraid6'>
+                          <th scope="row" data-redundancy='raid6'>
                             <div class="custom-control  custom-radio">
-                              <input class="custom-control-input raid6" type="radio" name="newraid">
+                              <input class="custom-control-input raid6" data-redundancy='raid6' type="radio" name="addraid">
                               <label class="custom-control-label "></label>
                             </div>
                           </th>
@@ -1122,10 +1122,10 @@
                           </td>
                         
                         </tr>
-                        <tr class='newraid adivraid6plus'>
-                          <th scope="row">
+                        <tr class='addraid adivraid6plus'>
+                          <th scope="row" data-redundancy='raid6plus'>
                             <div class="custom-control  custom-radio">
-                              <input class="custom-control-input raid6plus" type="radio" name="newraid">
+                              <input class="custom-control-input raid6plus" data-redundancy='raid6plus'type="radio" name="addraid">
                               <label class="custom-control-label "></label>
                             </div>
                           </th>
@@ -1140,6 +1140,11 @@
                       </tbody>
                       
                     </table>
+                  </div>
+                </div>
+                <div class='row'>
+                  <div class='col-12'>
+                    <button  type="submit" class="btn btn-primary addtopool form-control" data-pool='dummy' disabled>Add to Pool</button>
                   </div>
                 </div>
                 <!-- form start -->

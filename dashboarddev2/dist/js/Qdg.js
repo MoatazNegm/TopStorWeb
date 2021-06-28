@@ -35,6 +35,7 @@ $('.newraid input').click(function(e){
   $('#createpool').data('redundancy',$(this).prop('id'));
 });
 
+//$(".addraid").click(function(){ console.log(this); $(this).find('input').prop('checked','checked'); });
 function setdeletesequence(pool){
   if (alldgs['pools'][pool]['volumes'].length == 0){
     $("#"+pool+" .poolbtn1").show();
@@ -77,7 +78,51 @@ function setdeletesequence(pool){
     $("#"+pool+" .volumes").show();
   }
 }
+function initaddgs(){
+  $.each(alldgs['pools'],function(e,t){
+    pool = e; 
+    $('#'+pool+" option").remove()
+    
+    if($('#'+pool+" option").length <= 0){
+      $.each(alldgs['newraid'],function(en,tn){
 
+
+            if(Object.keys(tn).length > 0){
+              
+              $.each(tn,function(psize,raid){
+                var size = psize.slice(0,5)
+                totalsize= parseFloat(size)+parseFloat(t['available']);
+                console.log('total',totalsize)
+                var o = new Option(totalsize.toString().slice(0,5),size);
+                $('#'+pool+" .select"+en).append(o)
+              });
+            }
+            if (alldgs['pools'][pool]['Availability'].includes('Availability')){
+              $('#'+pool+" .adiv"+en).show();
+              $('#'+pool+" .adivvolset").hide();
+            } else {
+              $('#'+pool+" .adiv"+en).hide();
+              $('#'+pool+" .adivvolset").show();
+            }
+      });
+      $('#'+pool+" .addtopool").prop('disabled','disabled');
+      $('#'+pool+" .addtopool").data('pool',pool);
+      $('#'+pool+" .addraid").data('pool',pool);
+      $('#'+pool+" .addtopool").addClass('addto'+pool);
+
+    }
+  });
+  $(".addraid").click(function(e){
+    e.preventDefault();
+    $(this).find('input').prop('checked','checked')
+    var pool = $(this).data('pool');
+
+    console.log('hihihi',pool, $(this).find('input').data('redundancy'));
+    $('.addto'+pool).attr('disabled',false);
+    $('.addto'+pool).data('redundancy',$(this).find('input').data('redundancy'));
+  });
+
+}
 function initdgs(){
   var poolcard;
   var pool, host, status, grouptype, raid, changeop,shortdisk, size;
@@ -187,6 +232,7 @@ function initdgs(){
 }
 alldgs = getdgs();
 initdgs();
+initaddgs();
 
 $('.updatepool').click(function(e){
   e.preventDefault();
@@ -208,6 +254,16 @@ $('#createpool').click(function(e){
   console.log('submit',redundancy,useable);
   var apidata = {"redundancy": $(this).data('redundancy'), 'useable': useable, 'user':'mezo' }
   postdata(apiurl,apidata);
+});
+$('.addtopool').click(function(e){
+  e.preventDefault();
+  var apiurl = "api/v1/pools/addtopool";
+  var redundancy = $(this).data('redundancy');
+  var pool = $(this).data('pool');
+  var useable = $("#"+pool+" .select"+redundancy).val();
+  console.log('submit',pool, redundancy,useable);
+  var apidata = {"pool": pool, "redundancy": redundancy, 'useable': useable, 'user':'mezo' }
+  //postdata(apiurl,apidata);
 })
 
 function memberclick(thisclck){
@@ -273,39 +329,12 @@ function dgrefresh(){
     alldgs = JSON.parse(JSON.stringify(newdgs)); 
 
     initdgs();
+    initaddgs();
   }
 }
 
 function refreshall(){
-  $.each(alldgs['pools'],function(e,t){
-    pool = e; 
-    if($('#'+pool+" option").length <= 0){
-      $.each(alldgs['newraid'],function(en,tn){
-
-        
-            if(Object.keys(tn).length > 0){
-              $.each(tn,function(psize,raid){
-                var size = psize.slice(0,5)
-                totalsize= parseFloat(size)+parseFloat(t['available']);
-                console.log('total',totalsize)
-                var o = new Option(totalsize.toString().slice(0,5),size);
-                $('#'+pool+" .select"+en).append(o)
-              });
-            }
-            if (alldgs['pools'][pool]['Availability'].includes('Availability')){
-              $('#'+pool+" .adiv"+en).show();
-              $('#'+pool+" .adivvolset").hide();
-            } else {
-              $('#'+pool+" .adiv"+en).hide();
-              $('#'+pool+" .adivvolset").show();
-            }
-
-    
-
-      });
-      
-    }
-  });
+  
   dgrefresh();
 }
 
