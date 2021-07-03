@@ -79,6 +79,7 @@ function setdeletesequence(pool){
   }
 }
 function initaddgs(){
+  $(" .addraid").hide();
   $.each(alldgs['pools'],function(e,t){
     pool = e; 
     $('#'+pool+" option").remove()
@@ -116,8 +117,6 @@ function initaddgs(){
     e.preventDefault();
     $(this).find('input').prop('checked','checked')
     var pool = $(this).data('pool');
-
-    console.log('hihihi',pool, $(this).find('input').data('redundancy'));
     $('.addto'+pool).attr('disabled',false);
     $('.addto'+pool).data('redundancy',$(this).find('input').data('redundancy'));
   });
