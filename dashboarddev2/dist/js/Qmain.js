@@ -1,7 +1,21 @@
 
 //var ipv4_address = $(".ipaddress");
 //ipv4_address.inputmask();
+
 var globalnotif = {'msgcode':'init','time':'init'};
+
+if (typeof(Storage) !== "undefined") {
+  // Store
+  //localStorage.setItem("lastname", "Smith");
+  // Retrieve
+  console.log('it is ok :',localStorage.getItem("lastname"));
+} else {
+  console.log("Sorry, your browser does not support Web Storage...");
+}
+
+
+
+
 dirtylog = 1;
 function postdata(url,data){
   $.ajax({
