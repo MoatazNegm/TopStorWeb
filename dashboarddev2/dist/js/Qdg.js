@@ -136,7 +136,7 @@ function initdgs(){
       poolcard.prop('id',pool);
       $('#'+pool+" .title").text(pool);
       $('#'+pool+" .spansize").text('size:'+t['available'].toString().slice(-5)+'GB');
-      $('#'+pool+" .spanused").text('used:'+t['used'].toString().slice(-5)+'GB');
+      $('#'+pool+" .spanused").text('used:'+t['used'].toString().slice(0,5)+'GB');
       $('#'+pool+" .spandedup").text('dedupped:'+t['dedup']);
 
       $.each(t['raids'],function(ee,tt){
@@ -207,7 +207,7 @@ function initdgs(){
       if(Object.keys(t).length > 0 ){
         $.each(t,function(psize,value){
           var size = psize.slice(0,5)
-          var o = new Option(size.toString(),size);
+          var o = new Option((size*0.9).toString().slice(0,5),size);
           $("#selectsingle").append(o);
         });
       }
@@ -215,8 +215,9 @@ function initdgs(){
       } else {
         if(Object.keys(t).length > 0){
           $.each(t,function(psize,raid){
+            var diskcount = raid['diskcount'];
             var size = psize.slice(0,5)
-            var o = new Option(size.toString(),size);
+            var o = new Option((size*0.9).toString().slice(0,5),size);
             $("#select"+e).append(o)
           });
         }
