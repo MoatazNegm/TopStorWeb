@@ -179,50 +179,51 @@ function initdgs(){
  $(".freedisks").children().remove();
  $(".newraid").hide();
  $(".newraid option").remove();
- $.each(alldgs['raids']['free']['disks'],function(e,disk){
-  shortdisk = disk.slice(-5);
-  status = alldgs['disks'][disk]['status'];
-  host = alldgs['disks'][disk]['host'];
-  changeop = alldgs['disks'][disk]['changeop'];
-  size = parseFloat(alldgs['disks'][disk]['size']).toFixed(2);
-  if(status.includes('free') ){
-    imgf = 'disk-image.png';
-  } else {
-    imgf = 'invaliddisk.png';
-  }
-  $('.freedisks').append(
-    '<div id="'+disk+'" data-disk="'+disk+'" class=" col-'+col+' '+status+' '+changeop+'">'
-      +'  <a href="javascript:memberclick(\'#'+disk+'\')" class="img-clck" >'
-      +'     <img class="img412 imgstyle '+diskimg+' '+disk+'" src="img/'+imgf+'" />'
-      +'  <p class="psize">'+size+'</p></a><p class="pimage">'+shortdisk+'</p>'
-      //+' <p class="pimage">'+changeop+'</p><p class="pimage">'+e+'</p>'
-      +'  </a>'
-    +'</div>'
-  );
+ if('free' in alldgs['raids']) {
+    $.each(alldgs['raids']['free']['disks'],function(e,disk){
+      shortdisk = disk.slice(-5);
+      status = alldgs['disks'][disk]['status'];
+      host = alldgs['disks'][disk]['host'];
+      changeop = alldgs['disks'][disk]['changeop'];
+      size = parseFloat(alldgs['disks'][disk]['size']).toFixed(2);
+      if(status.includes('free') ){
+        imgf = 'disk-image.png';
+      } else {
+        imgf = 'invaliddisk.png';
+      }
+      $('.freedisks').append(
+        '<div id="'+disk+'" data-disk="'+disk+'" class=" col-'+col+' '+status+' '+changeop+'">'
+          +'  <a href="javascript:memberclick(\'#'+disk+'\')" class="img-clck" >'
+          +'     <img class="img412 imgstyle '+diskimg+' '+disk+'" src="img/'+imgf+'" />'
+          +'  <p class="psize">'+size+'</p></a><p class="pimage">'+shortdisk+'</p>'
+          //+' <p class="pimage">'+changeop+'</p><p class="pimage">'+e+'</p>'
+          +'  </a>'
+        +'</div>'
+      );
 
- }); 
- $.each(alldgs['newraid'],function(e,t){
-  if(e == 'single'){
-   if(Object.keys(t).length > 0 ){
-     $.each(t,function(psize,value){
-      var size = psize.slice(0,5)
-      var o = new Option(size.toString(),size);
-      $("#selectsingle").append(o);
-     });
-   }
-   $(".divsingle").show();
-  } else {
-    if(Object.keys(t).length > 0){
-      $.each(t,function(psize,raid){
-        var size = psize.slice(0,5)
-        var o = new Option(size.toString(),size);
-        $("#select"+e).append(o)
-      });
-    }
-    $(".div"+e).show();
-  }
- });
-
+    }); 
+    $.each(alldgs['newraid'],function(e,t){
+      if(e == 'single'){
+      if(Object.keys(t).length > 0 ){
+        $.each(t,function(psize,value){
+          var size = psize.slice(0,5)
+          var o = new Option(size.toString(),size);
+          $("#selectsingle").append(o);
+        });
+      }
+      $(".divsingle").show();
+      } else {
+        if(Object.keys(t).length > 0){
+          $.each(t,function(psize,raid){
+            var size = psize.slice(0,5)
+            var o = new Option(size.toString(),size);
+            $("#select"+e).append(o)
+          });
+        }
+        $(".div"+e).show();
+      }
+    });
+ }
  $("tr:visible").each(function (index) {
   $(this).css("background-color", !!(index & 1)? "rgba(0,0,0,.05)" : "rgba(0,0,0,0)");
 });
@@ -262,7 +263,7 @@ $('.addtopool').click(function(e){
   var useable = $("#"+pool+" .select"+redundancy).val();
   console.log('submit',pool, redundancy,useable);
   var apidata = {"pool": pool, "redundancy": redundancy, 'useable': useable, 'user':'mezo' }
-  //postdata(apiurl,apidata);
+  postdata(apiurl,apidata);
 })
 
 function memberclick(thisclck){
