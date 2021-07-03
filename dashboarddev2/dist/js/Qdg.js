@@ -93,7 +93,6 @@ function initaddgs(){
               $.each(tn,function(psize,raid){
                 var size = psize.slice(0,5)
                 totalsize= parseFloat(size)+parseFloat(t['available']);
-                console.log('total',totalsize)
                 var o = new Option(totalsize.toString().slice(0,5),size);
                 $('#'+pool+" .select"+en).append(o)
               });
@@ -137,6 +136,11 @@ function initdgs(){
       $('#'+pool+" .title").text(pool);
       $('#'+pool+" .spansize").text('size:'+t['available'].toString().slice(-5)+'GB');
       $('#'+pool+" .spanused").text('used:'+t['used'].toString().slice(0,5)+'GB');
+      var avtype = 'Highly Available';
+      var avcolor = 'blue';
+      if(t["Availability"] != "Availability") { avtype = 'No Redundancy'; avcolor='red'}
+      $('#'+pool+" .spanredundancy").text(avtype);
+      $('#'+pool+" .spanredundancy").css('color',avcolor);
       $('#'+pool+" .spandedup").text('dedupped:'+t['dedup']);
 
       $.each(t['raids'],function(ee,tt){
