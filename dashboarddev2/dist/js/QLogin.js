@@ -1,7 +1,18 @@
 
 //var ipv4_address = $(".ipaddress");
 //ipv4_address.inputmask();
-var hypetoken='init'
+function postdata(url,data){
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      data: data,
+    });
+  }
+var hypetoken = localStorage.getItem('token');
+
+var initurl = 'api/v1/logout';
+localStorage.setItem('token','0')
+postdata(initurl,{'token':hypetoken});
 function postlogin(url,data){
     $.ajax({
       url: url,
@@ -11,7 +22,16 @@ function postlogin(url,data){
       data: data,
       success: function(token){ hypetoken = token['token'];}
     });
-  }
+    if(hypetoken.includes('init') < 1){ 
+        console.log('token',hypetoken);
+        if(hypetoken.includes('baduser') < 1){
+            localStorage.setItem("token",hypetoken);
+            var wloc = localStorage.getItem('lastlocation');
+            if(wloc == null  ) { wloc = 'QuickStor.html';}
+            location.replace(wloc)
+        }
+    }
+}
 var globalnotif = {'msgcode':'init','time':'init'};
 
 if (typeof(Storage) !== "undefined") {
@@ -26,20 +46,13 @@ if (typeof(Storage) !== "undefined") {
 $("button").click(function(e){
     urlapi = 'api/v1/login';
     datapi = {'user':$('#user').val(), 'pass':$("#pass").val() }
-    console.log('hi');
     postlogin(urlapi, datapi);
 });
 
 
 
 dirtylog = 1;
-function postdata(url,data){
-  $.ajax({
-    url: url,
-    dataType: 'json',
-    data: data,
-  });
-}
+
 
 $(".main-sidebar").css("background","#131010")
 var ipv4_address = $(".ipaddress");
@@ -67,35 +80,5 @@ jQuery(function($){
   var bg = {'warning':{'class':'bg-warning', 'loc':'bottomLeft', 'delay':10000},
      'error':{'class':'bg-danger', 'loc':'topRight', 'delay':10000}, 
      'info':{'class':'bg-info','loc':'bottomRight', 'delay':4000},};
-  setInterval(function(){
-    var notif;
-    
-    $.ajax({
-      url: 'api/v1/info/notification',
-      async: false,
-      type: 'GET',
-      success: function(data) {  notif=data;}
-    });
-    // for fixing the time zone presentation
-    if(notif['msgcode'].includes('_')  && notif['msgcode'].includes('%') && notif['msgcode'].includes('!')){
-       notif['msgcode'] = notif['msgocde'].split('%')[2]
-     }
-    if(globalnotif['time'] != notif['time'] || globalnotif['msgcode'] != notif['msgcode']){
-      globalnotif = notif;
-      dirtylog = 1;
-      //console.log('notif',notif['type'], bg[notif['type']]['class'],bg[notif['type']]['loc'], bg[notif['type']]['delay'] );
-      notifbody = notif['msgbody'];
-      $(document).Toasts('create', { 
-        title: notif['host'],
-        subtitle: notif['user'],
-        close: false,
-        class: bg[notif['type']]['class']+' infoalert',
-        autohide: true,
-        position: bg[notif['type']]['loc'],
-        delay: bg[notif['type']]['delay'],
-        body: notifbody
-      });
-      
-    } else { dirtylog = 0}
-    }, 5000);
+ 
       

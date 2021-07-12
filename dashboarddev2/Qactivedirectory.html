@@ -995,7 +995,7 @@
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="./QuickStor.html">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="./login.html">Logout</a></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -1018,8 +1018,8 @@
                                 <input type="text" class="form-control" id="DomName" placeholder="Domain Name">
                               </div>
                               <div class="form-group">
-                                <label for="DCserver">Domain Server DNS name or IP address</label>
-                                <input type="text" class="form-control" id="DCserver" placeholder="Domain server Name/IP">
+                                <label for="DCserver">Domain Server IP address</label>
+                                <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control  ipaddress" name="Address" id="DCserver"  data-inputmask="'alias': 'ip'">
                               </div>
                               <div class="form-group">
                                 <label for="Admin">Administrator / Priviledged user</label>
@@ -1077,7 +1077,8 @@
 <!-- Bootstrap -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-
+<script src="dist/js/Qjquery.inputmask.bundle.js"></script>
+<script src="dist/js/Qmain.js"></script>
 <!-- AdminLTE -->
 <script src="dist/js/adminlte.js"></script>
 

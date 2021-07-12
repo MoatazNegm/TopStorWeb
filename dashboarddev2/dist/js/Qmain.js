@@ -1,8 +1,26 @@
 
 //var ipv4_address = $(".ipaddress");
 //ipv4_address.inputmask();
+var wpath = window.location.pathname;
+var wpage = wpath.split("/").pop();
+localStorage.setItem("lastlocation",wpage);
 
 var globalnotif = {'msgcode':'init','time':'init'};
+var hypetoken = localStorage.getItem('token');
+if(hypetoken == null || hypetoken == '0'){ console.log('hi'); location.replace('login.html');}
+$.ajax({
+  url: 'api/v1/login/test',
+  async: false,
+  type: 'GET',
+  data: {'token': hypetoken},
+  success: function(isok) {  
+    if(isok['response'].includes('baduser') > 0){
+      location.href = 'login.html';
+    };
+  } 
+});
+
+
 
 if (typeof(Storage) !== "undefined") {
   // Store
@@ -58,7 +76,11 @@ jQuery(function($){
       url: 'api/v1/info/notification',
       async: false,
       type: 'GET',
-      success: function(data) {  notif=data;}
+      data: {'token': hypetoken},
+      success: function(data) {  notif=data;
+      if(notif['response'].includes('baduser') > 0){
+         location.replace('login.html');
+      }}
     });
     // for fixing the time zone presentation
     if(notif['msgcode'].includes('_')  && notif['msgcode'].includes('%') && notif['msgcode'].includes('!')){
@@ -82,4 +104,9 @@ jQuery(function($){
       
     } else { dirtylog = 0}
     }, 5000);
+    $('body').click(function(e){
+      var apiurl = 'api/v1/login/renewtoken';
+      var apidata = {'token':hypetoken};
+      postdata(apiurl,apidata);
+    })
       
