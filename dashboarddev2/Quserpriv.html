@@ -9,6 +9,9 @@
   <link rel="stylesheet" href="dist/css/fonts/google-fonts.css">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- DataTables -->
@@ -1025,8 +1028,7 @@
                     
                         <div class="form-group row">
                             <label  for="UserList" class="offset-3 col-1 col-form-label" >User</label>
-                            <select  class="form-control col-3" id="UserList">
-                            <option value="0">remo</option>
+                            <select  class="select2 users form-control col-3" id="UserList">
                             </select>
                         </div>
                     </div>
@@ -1038,25 +1040,25 @@
                             <div class="row">
                                 <div class="col-3 form-check">
                                     <label class="form-check-label">
-                                        <input id="Active_Directory" type="checkbox" class="form-check-input checkboxy">
+                                        <input id="Active_Directory" data-auth='0' type="checkbox" class="form-check-input checkboxy">
                                         Active Directory
                                     </label>
                                 </div>
                                 <div class="col-3 form-check">
                                     <label class="form-check-label">
-                                        <input id="Service_Charts" value="info" type="checkbox" class="form-check-input checkboxy">
-                                        Service Charts
+                                        <input id="Service_Charts" value="info" data-auth='1' type="checkbox" class="form-check-input checkboxy">
+                                        Performance Charts
                                     </label>
                                 </div>
                                 <div class="col-3 form-check">
                                     <label class="form-check-label">
-                                        <input id="NFS" type="checkbox" value="info" class="form-check-input checkboxy">
+                                        <input id="NFS" type="checkbox" value="info" data-auth='2' class="form-check-input checkboxy">
                                         NFS
                                     </label>
                                 </div>
                                 <div class="col-3 form-check">
                                     <label class="form-check-label">
-                                        <input id="SnapShots" value="info" type="checkbox" class="form-check-input checkboxy">
+                                        <input id="SnapShots" value="info" type="checkbox" data-auth='3' class="form-check-input checkboxy">
                                         SnapShots
                                     </label>
                                 </div>
@@ -1064,26 +1066,26 @@
                             <div class="row">
                                 <div class="col-3 form-check">
                                         <label class="form-check-label">
-                                            <input id="Box_Users" value="Warning" type="checkbox" class="form-check-input checkboxy">
+                                            <input id="Box_Users" value="Warning" data-auth='4' type="checkbox" class="form-check-input checkboxy">
                                             Box Users
                                         </label>
                                 </div>
                                 <div class="col-3 form-check">
                                         <label class="form-check-label">
-                                            <input id="Logs" value="Warning" type="checkbox" class="form-check-input checkboxy">
+                                            <input id="Logs" value="Warning" data-auth='5' type="checkbox" class="form-check-input checkboxy">
                                             Logs
                                         </label>
                                     
                                 </div>
                                 <div class="col-3 form-check">
                                     <label class="form-check-label">
-                                        <input id="UserPrivilegesch" value="UserPrivileges" type="checkbox" class="form-check-input checkboxy">
+                                        <input id="UserPrivilegesch" value="UserPrivileges"  data-auth='6' type="checkbox" class="form-check-input checkboxy">
                                         User Privileges
                                     </label>
                                 </div>
                                 <div class="col-3 form-check">
                                     <label class="form-check-label">
-                                        <input id="Cluster" value="Cluster" type="checkbox" class="form-check-input checkboxy">
+                                        <input id="Cluster" value="Cluster" type="checkbox" data-auth='7' class="form-check-input checkboxy">
                                     Cluster nodes
                                     </label>
                                 </div>
@@ -1091,25 +1093,25 @@
                             <div class="row">
                                 <div class="col-3 form-check">
                                     <label class="form-check-label">
-                                        <input id="Error" value="Error" type="checkbox" class="form-check-input checkboxy">
+                                        <input id="Error" value="Error" type="checkbox" data-auth='8' class="form-check-input checkboxy">
                                         Box Properties
                                     </label>
                                 </div>
                                 <div class="col-3 form-check">
                                     <label class="form-check-label">
-                                        <input id="CIFS" value="Error"type="checkbox" class="form-check-input checkboxy">
+                                        <input id="CIFS" value="Error"type="checkbox" data-auth='9' class="form-check-input checkboxy">
                                         CIFS
                                     </label>
                                 </div>
                                 <div class="col-3 form-check">
                                     <label class="form-check-label">
-                                        <input id="DiskGroups" value="DiskGroups" type="checkbox" class="form-check-input checkboxy" >
+                                        <input id="DiskGroups" value="DiskGroups" data-auth='10' type="checkbox" class="form-check-input checkboxy" >
                                         Disk Groups
                                     </label>
                                 </div>
                                 <div class="col-3 form-check">
                                     <label class="form-check-label">
-                                        <input id="Partners" value="Partners" type="checkbox" class="form-check-input checkboxy">
+                                        <input id="Partners" value="Partners" data-auth='11' type="checkbox" class="form-check-input checkboxy">
                                         Partners
                                     </label>
                                 </div>
@@ -1117,25 +1119,19 @@
                             <div class="row">
                                 <div class="col-3 form-check">
                                     <label class="form-check-label">
-                                        <input id="Senders" value="Senders" type="checkbox" class="form-check-input checkboxy">
+                                        <input id="Senders" value="Senders" type="checkbox" data-auth='12' class="form-check-input checkboxy">
                                         Senders
                                     </label>
                                 </div>
                                 <div class="col-3 form-check">
                                     <label class="form-check-label">
-                                        <input type="checkbox" id="Proxylic" value="Proxylic" class="form-check-input hiddencheckbox">
-                                        Proxy License
-                                    </label>
-                                </div>
-                                <div class="col-3 form-check">
-                                    <label class="form-check-label">
-                                        <input id="Replication" value="Replication" type="checkbox" class="form-check-input checkboxy">
+                                        <input id="Replication" value="Replication" type="checkbox" data-auth='13' class="form-check-input checkboxy">
                                         Replication
                                     </label>
                                 </div>
                                 <div class="col-3 form-check">
                                     <label class="form-check-label">
-                                        <input id="Uploadch" type="checkbox" class="form-check-input checkboxy" value="Upload">
+                                        <input id="Uploadch" type="checkbox" class="form-check-input checkboxy" data-auth='15' value="Upload">
                                         Firmware
                                     </label>
                                 </div>
@@ -1144,7 +1140,7 @@
                     </div>
                     <div class="card-footer">
                         <div class="row">
-                            <button type="submit" id="SubmitPriv" class="btn btn-primary col-3">Update Priviledges</button>
+                            <button type="button" id="SubmitPriv" class="btn btn-primary col-3">Update Priviledges</button>
                         </div>
                     </div> 
                 </div>         
@@ -1181,6 +1177,8 @@
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE -->
 <script src="dist/js/adminlte.js"></script>
+<!-- Select2 -->
+<script src="plugins/select2/js/select2.full.min.js"></script>
 <!-- DataTables  & Plugins -->
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
