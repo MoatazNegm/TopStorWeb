@@ -197,8 +197,14 @@ $("#readysubmit").click(function (ev){
 });
 
 
-setInterval(function(){refreshhosts();},5000);
+setInterval(function(){
+  $("#runninghosts > form > div:nth-child(5) > span > span.selection > span").css('margin-top','0.1rem');
+  $('#runninghosts > form > div:nth-child(5) > span > span.selection > span').css('height','97%');
+  $('#select2-TZ-container').css('margin-top','0.2rem');
+  $('#runninghosts > form > div:nth-child(5) > span > span.selection > span > span.select2-selection__arrow').css('margin-top','0.2rem');
 
+  refreshhosts();
+},5000);
 
 
 

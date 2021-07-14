@@ -51,14 +51,6 @@ var oldcurrentinfo='dlkfajsdl;';
  var dirtylog = 1;
 
 
- function postdata(url,data){
-  $.ajax({
-    url: url,
-    dataType: 'json',
-    timeout: 3000,
-    data: data,
-  });
-}
 
 function poolsrefresh(){
  

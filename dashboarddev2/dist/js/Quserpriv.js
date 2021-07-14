@@ -1,4 +1,5 @@
-var allusers = 'init';
+var allusers = ['init'];
+var currentuser = 'init';
 $(".checkboxy").css("margin-top","0.36rem");
 $(".form-check").css("margin-bottom","0.6rem");
 function sortsofts(){
@@ -11,9 +12,28 @@ options.each(function(i, o) {
 });
 }
 sortsofts();
+function updateauths(event){
+  var cuser = $("#UserList").val();
+  if(cuser.length > 0){
+    var auths = allusers[cuser]['priv'];
+     var cpriv;
+    $.each($('.checkboxy'), function(e,t){
+      cpriv = $(t).prop('id');
+      if(auths.includes(cpriv+'-'+'true') > 0 ){
+         $('#'+cpriv).prop('checked',true);
+     } else {
+      $('#'+cpriv).prop('checked',false);
+     }
+    }); 
+  }
+  if(currentuser == 'init'){ currentuser = 0}
+  if(event !='manual') {
+    $('#UserList').val(currentuser);
+    $('#UserList').trigger('change');
+  }
+}
 
-
-function users(){
+function userschange(){
   var newallusers;
    $.ajax({
      url: '/api/v1/users/userlist',
@@ -25,8 +45,21 @@ function users(){
      DataSrc: 'usersnohome',
      success: function(data){ newallusers = data['allusers'];}
    });
-   if(JSON.stringify(allusers) != JSON.stringify(newallusers)) {
+   var diff = 0;
+   if(allusers.length == newallusers.length){
+     $.each(allusers,function(c,v){
+      if(allusers[c]['name'] != newallusers[c]['name'] || allusers[c]['priv'] != newallusers[c]['priv']  ) {
+        diff = 1;
+        return false;
+      }
+     });
+
+   } else {
+     diff = 1;
+   }
+   if(diff) {
      allusers = JSON.parse(JSON.stringify(newallusers)); 
+     
      $.each(allusers,function(e,v){
        allusers[e]['text'] = allusers[e]['name']
      });
@@ -36,22 +69,24 @@ function users(){
        placeholder: "Select a user",
        data: allusers
      });
+    updateauths('changeevent');
    }
  }
- users();
+ userschange();
  $("#SubmitPriv").click(function(e){
    var auths = []
    $.each($('.checkboxy'),function(e,t){
-    if($(t).prop('checked') == true){
-      auths.push($(t).data('auth'));
-    }
-    
+      auths.push($(t).prop('id')+'-'+$(t).prop('checked'));
    });
-   console.log(auths);
    apiurl = 'api/v1/users/usersauth';
-  apidata = {'user': allusers[$('#UserList').val()]['name'], 'auths':auths.join(),'token':hypetoken }
+  apidata = {'user': allusers[$('#UserList').val()]['name'], 'auths':auths.join() }
   postdata(apiurl,apidata)
      
  })
+ $('#UserList').change(function(e){
+   updateauths('manual');
+   currentuser = $("#UserList").val()
+ })
+ setInterval(function(){ userschange();},5000);
 
   

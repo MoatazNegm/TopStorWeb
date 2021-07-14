@@ -56,14 +56,6 @@ var oldcurrentinfo='dlkfajsdl;';
  var allperiods = ['Minutely', 'Hourly', 'Weekly'];
  //var allperiods = ['Minutely', 'Minutely', 'Minutely'];
  
-function postdata(url,data){
-  $.ajax({
-    url: url,
-    dataType: 'json',
-    timeout: 3000,
-    data: data,
-  });
-}
  function poolsrefresh(){
  
   $('.select2.pool').select2({

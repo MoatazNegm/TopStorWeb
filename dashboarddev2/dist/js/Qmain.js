@@ -36,6 +36,7 @@ if (typeof(Storage) !== "undefined") {
 
 dirtylog = 1;
 function postdata(url,data){
+  data['token'] = hypetoken;
   $.ajax({
     url: url,
     dataType: 'json',
