@@ -7,7 +7,7 @@ localStorage.setItem("lastlocation",wpage);
 
 var globalnotif = {'msgcode':'init','time':'init'};
 var hypetoken = localStorage.getItem('token');
-if(hypetoken == null || hypetoken == '0'){ console.log('hi'); location.replace('login.html');}
+if(hypetoken == null || hypetoken == '0'){  location.replace('login.html');}
 $.ajax({
   url: 'api/v1/login/test',
   async: false,
@@ -19,7 +19,27 @@ $.ajax({
     };
   } 
 });
-
+var puser = localStorage.getItem('user');
+$(".auths").hide();
+$.ajax({
+  url: 'api/v1/users/userauths',
+  async: false,
+  type: 'GET',
+  data: {'username':puser, 'token': hypetoken},
+  success: function(data) {  
+    if(data['response'].includes('baduser') > 0){
+      location.href = 'login.html';
+    }
+    var auths = data['auths'].split('/')
+    $.each(auths,function(e,t){
+      if(t.includes(true) > 0){
+        var theauth = t.split('-')[0];
+        $("."+theauth).show();
+      }
+    })
+  
+  } 
+});
 
 
 if (typeof(Storage) !== "undefined") {

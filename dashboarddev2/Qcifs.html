@@ -198,7 +198,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item system ">
+          <li class="nav-item system  auths Box_Users Active_Directory Error">
              <a href="#" class="nav-link  " style="background-color: #162432;" >
                <i class="nav-icon fa fa-cogs "></i>
                <p>
@@ -207,25 +207,25 @@
                </p>
              </a>
              <ul class="nav nav-treeview">
-               <li class="nav-item" >
+               <li class="nav-item auths Active_Directory" >
                  <a href="./Qactivedirectory.html" class="nav-link">
                    <i class="fab fa-windows nav-icon" ></i>
                    <p>Active Directory</p>
                  </a>
                </li>
-               <li class="nav-item">
+               <li class="nav-item auths Box_Users">
                  <a href="./Qusers.html" class="nav-link" >
                    <i class="fas fa-user-plus nav-icon" ></i>
                    <p>Users</p>
                  </a>
                </li>
-               <li class="nav-item">
+               <li class="nav-item auths Box_Users">
                  <a href="./Qgroups.html" class="nav-link" >
                    <i class="fas fa-users nav-icon" ></i>
                    <p> Groups</p>
                  </a>
                </li>
-               <li class="nav-item">
+               <li class="nav-item auths Error">
                  <a href="./Qnodes.html" class="nav-link"  >
                    <i class="fas fa-server nav-icon" ></i>
                    <p>Nodes</p>
@@ -233,7 +233,7 @@
                </li>
              </ul>
            </li>
-           <li class="nav-item  status">
+           <li class="nav-item  status auths Service_Charts Logs">
               <a href="#" class="nav-link " style="background-color: #162432;">
                 <i class="nav-icon fas fa-stream "></i>
                 <p>
@@ -242,13 +242,13 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item">
+                <li class="nav-item auths Logs">
                   <a href="./QLogs.html" class="nav-link" >
                     <i class="fas fa-clipboard-list nav-icon" ></i>
                     <p>Logs</p>
                   </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item auths Service_Charts">
                   <a href="./Qserviceperformance.html" class="nav-link">
                     <i class="far fa-chart-bar nav-icon" ></i>
                     <p>Service Performance</p>
@@ -256,7 +256,7 @@
                 </li>
               </ul>
             </li>
-            <li class="nav-item menu-open Volumes">
+            <li class="nav-item menu-open Volumes auths SnapShots CIFS NFS HOME">
                <a href="#" class="nav-link active" >
                  <i class="nav-icon fas fa-stream "></i>
                  <p>
@@ -265,25 +265,25 @@
                  </p>
                </a>
                <ul class="nav nav-treeview">
-                 <li class="nav-item">
+                 <li class="nav-item auths CIFS">
                    <a href="./Qcifs.html" class="nav-link" style="background-color: #1f232c;">
                      <i class="fab fa-windows nav-icon" ></i>
                      <p>CIFS</p>
                    </a>
                  </li>
-                 <li class="nav-item">
+                 <li class="nav-item auths NFS">
                    <a href="./Qnfs.html" class="nav-link">
                      <i class="fab fa-linux nav-icon" ></i>
                      <p> NFS</p>
                    </a>
                  </li>
-                 <li class="nav-item">
+                 <li class="nav-item auths HOME">
                    <a href="./Qhome.html" class="nav-link">
                      <i class="fas fa-house-user nav-icon" ></i>
                      <p> Home Folders</p>
                    </a>
                  </li>
-                 <li class="nav-item">
+                 <li class="nav-item auths SnapShots ">
                    <a href="./Qsnapshots.html" class="nav-link">
                      <i class="fas fa-camera nav-icon" ></i>
                      <p>Snapshots</p>
@@ -292,7 +292,7 @@
 
                </ul>
             </li>
-            <li class="nav-item replication">
+            <li class="nav-item replication auths Replication Partners Senders">
                 <a href="#" class="nav-link " style="background-color: #162432;">
                   <i class="nav-icon far fa-clone "></i>
                   <p>
@@ -301,19 +301,19 @@
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
-                  <li class="nav-item" >
+                  <li class="nav-item auths Partners" >
                     <a href="./Qpartner.html" class="nav-link">
                       <i class="fas fa-hands-helping nav-icon" ></i>
                       <p>Partner</p>
                     </a>
                   </li>
-                  <li class="nav-item">
+                  <li class="nav-item auths Senders">
                     <a href="./Qsender.html" class="nav-link">
                       <i class="fas fa-paper-plane nav-icon" ></i>
                       <p> Sender</p>
                     </a>
                   </li>
-                  <li class="nav-item">
+                  <li class="nav-item auths Replication">
                     <a href="./Qreceived.html" class="nav-link">
                       <i class="fab fa-perbyte nav-icon" ></i>
                       <p>Received</p>
@@ -322,7 +322,7 @@
 
                 </ul>
             </li>
-            <li class="nav-item  Pools">
+            <li class="nav-item  Pools auths DiskGroups">
                <a href="#" class="nav-link " style="background-color: #162432;">
                  <i class="nav-icon fas fa-stream "></i>
                  <p>
@@ -331,7 +331,7 @@
                  </p>
                </a>
                <ul class="nav nav-treeview">
-                 <li class="nav-item">
+                 <li class="nav-item auths DiskGroups">
                    <a href="./Qdg.html" class="nav-link">
                      <i class="far fa-clipboard-list nav-icon" ></i>
                      <p>Disk Groups</p>
@@ -339,7 +339,7 @@
                  </li>
                </ul>
              </li>
-             <li class="nav-item  Settings">
+             <li class="nav-item  Settings auths Uploadch UserPrivilegesch">
                 <a href="#" class="nav-link " style="background-color: #162432;">
                   <i class="nav-icon fas fa-cog "></i>
                   <p>
@@ -348,13 +348,13 @@
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
-                  <li class="nav-item">
+                  <li class="nav-item auths UserPrivilegesch">
                     <a href="./Quserpriv.html" class="nav-link">
                       <i class="fas fa-unlock-alt nav-icon" ></i>
                       <p>User Privelideges</p>
                     </a>
                   </li>
-                  <li class="nav-item">
+                  <li class="nav-item auths Uploadch">
                     <a href="./Qupdates.html" class="nav-link">
                       <i class="fas fa-pen-fancy nav-icon" ></i>
                       <p>Updates</p>

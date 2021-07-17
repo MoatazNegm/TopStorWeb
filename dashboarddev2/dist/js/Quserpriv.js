@@ -14,6 +14,7 @@ options.each(function(i, o) {
 sortsofts();
 function updateauths(event){
   var cuser = $("#UserList").val();
+  if(cuser == null ){ return } 
   if(cuser.length > 0){
     var auths = allusers[cuser]['priv'];
      var cpriv;

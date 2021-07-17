@@ -46,7 +46,10 @@ if (typeof(Storage) !== "undefined") {
 $("button").click(function(e){
     urlapi = 'api/v1/login';
     datapi = {'user':$('#user').val(), 'pass':$("#pass").val() }
+    localStorage.setItem("user",$('#user').val());
     postlogin(urlapi, datapi);
+    
+    
 });
 
 
