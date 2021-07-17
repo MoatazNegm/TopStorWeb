@@ -44,9 +44,12 @@ var oldcurrentinfo='dlkfajsdl;';
  var myid="<?php echo $_REQUEST['myid'] ?>";
  myidhash=myid;
  var myname="<?php echo $_REQUEST['name'] ?>";
-
 var example1_filter = $("#groupList_filter");
-
+$("#UnixAddgroup").prop('disabled',true);
+$("#Group").change(function(e){
+  if($("#Group").val().length > 2){$("#UnixAddgroup").prop('disabled',false); }
+  else {$("#UnixAddgroup").prop('disabled',true);}
+})
 function usersrefresh(){
   
   $('.select2.multiple').select2({

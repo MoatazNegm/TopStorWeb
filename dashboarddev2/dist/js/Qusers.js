@@ -45,9 +45,16 @@ var oldcurrentinfo='dlkfajsdl;';
  var myid="<?php echo $_REQUEST['myid'] ?>";
  myidhash=myid;
  var myname="<?php echo $_REQUEST['name'] ?>";
-
 var example1_filter = $("#UserList_filter");
-
+$("#UnixAddUser").prop('disabled',true);
+$("#UserPass").change(function(e){
+ if($("#User").val().length > 2 && $("#UserPass").val().length > 2) { $("#UnixAddUser").prop('disabled',false); }
+ else { $("#UnixAddUser").prop('disabled',true); }
+});
+$("#User").change(function(e){
+  if($("#User").val().length > 2 && $("#UserPass").val().length > 2) { $("#UnixAddUser").prop('disabled',false); }
+  else { $("#UnixAddUser").prop('disabled',true); }
+ });
 function groupsrefresh(){
   
   $('.select2.multiple').select2({

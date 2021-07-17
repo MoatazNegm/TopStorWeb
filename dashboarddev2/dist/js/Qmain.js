@@ -20,7 +20,7 @@ $.ajax({
   } 
 });
 var puser = localStorage.getItem('user');
-$(".auths").hide();
+if(puser != 'admin') {$(".auths").hide();}
 $.ajax({
   url: 'api/v1/users/userauths',
   async: false,
@@ -67,7 +67,7 @@ function postdata(url,data){
       }
     }
   });
-  console.log('postdat',data);
+
 }
 
 $(".main-sidebar").css("background","#131010")
