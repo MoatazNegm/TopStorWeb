@@ -72,7 +72,10 @@ function postdata(url,data){
 
 $(".main-sidebar").css("background","#131010")
 var ipv4_address = $(".ipaddress");
+try{
 ipv4_address.inputmask({ "clearIncomplete": true });
+}
+catch{ ; }
 //Initialize Select2 Elements
 jQuery(function($){
     $('.card-header').each(function(){

@@ -23,7 +23,7 @@
   * sidebar-collapse
   * sidebar-mini
 -->
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -161,9 +161,9 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background: rgb(19, 16, 16);">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link navbar-brand ">
+    <a href="#" class="brand-link navbar-brand ">
       <img src="img/logo.png" alt="nothing" class="" style="opacity: .8">
     </a>
 
@@ -187,8 +187,8 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item menu-open system  auths Box_Users Active_Directory Error">
-             <a href="#" class="nav-link active">
+          <li class="nav-item  system  auths Box_Users Active_Directory Error">
+             <a href="#" class="nav-link active" style="background-color: #162432;">
                <i class="nav-icon fa fa-cogs "></i>
                <p>
                  System configuration
@@ -222,8 +222,8 @@
                </li>
              </ul>
            </li>
-           <li class="nav-item menu-open status Service_Charts Logs">
-              <a href="#" class="nav-link active">
+           <li class="nav-item  status auths Service_Charts Logs">
+              <a href="#" class="nav-link active" style="background-color: #162432;">
                 <i class="nav-icon fas fa-stream "></i>
                 <p>
                   System Status
@@ -245,8 +245,8 @@
                 </li>
               </ul>
             </li>
-            <li class="nav-item menu-open Volumes SnapShots CIFS NFS HOME">
-               <a href="#" class="nav-link active">
+            <li class="nav-item Volumes auths SnapShots CIFS NFS HOME">
+               <a href="#" class="nav-link active" style="background-color: #162432;">
                  <i class="nav-icon fas fa-stream "></i>
                  <p>
                    Volumes
@@ -281,8 +281,8 @@
 
                </ul>
             </li>
-            <li class="nav-item menu-open replication  auths Replication Partners Senders">
-                <a href="#" class="nav-link active">
+            <li class="nav-item  replication  auths Replication Partners Senders">
+                <a href="#" class="nav-link active" style="background-color: #162432;">
                   <i class="nav-icon far fa-clone "></i>
                   <p>
                     Replication
@@ -311,8 +311,8 @@
 
                 </ul>
             </li>
-            <li class="nav-item menu-open Pools auths DiskGroups">
-               <a href="#" class="nav-link active">
+            <li class="nav-item Pools auths DiskGroups">
+               <a href="#" class="nav-link active" style="background-color: #162432;">
                  <i class="nav-icon fas fa-stream "></i>
                  <p>
                    Pools
@@ -328,8 +328,8 @@
                  </li>
                </ul>
              </li>
-             <li class="nav-item menu-open Settings  auths Uploadch UserPrivilegesch">
-                <a href="#" class="nav-link active">
+             <li class="nav-item Settings  auths Uploadch UserPrivilegesch">
+                <a href="#" class="nav-link active" style="background-color: #162432;">
                   <i class="nav-icon fas fa-cog "></i>
                   <p>
                     Settings
@@ -352,638 +352,6 @@
 
                 </ul>
               </li>
-
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="./index.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v1</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v2</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./index3.html" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v3</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Widgets
-                <span class="right badge badge-danger">New</span>
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-copy"></i>
-              <p>
-                Layout Options
-                <i class="fas fa-angle-left right"></i>
-                <span class="badge badge-info right">6</span>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Top Navigation</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Top Navigation + Sidebar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/boxed.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Boxed</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/fixed-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Sidebar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/fixed-sidebar-custom.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Sidebar <small>+ Custom Area</small></p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/fixed-topnav.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Navbar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/fixed-footer.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fixed Footer</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/collapsed-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Collapsed Sidebar</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
-              <p>
-                Charts
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/charts/chartjs.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>ChartJS</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/charts/flot.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Flot</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/charts/inline.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Inline</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/charts/uplot.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>uPlot</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tree"></i>
-              <p>
-                UI Elements
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/UI/general.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>General</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/icons.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Icons</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/buttons.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Buttons</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/sliders.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Sliders</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/modals.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Modals & Alerts</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/navbar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Navbar & Tabs</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/timeline.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Timeline</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/ribbons.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Ribbons</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
-              <p>
-                Forms
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/forms/general.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>General Elements</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/forms/advanced.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Advanced Elements</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/forms/editors.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Editors</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/forms/validation.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Validation</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
-              <p>
-                Tables
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/tables/simple.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Simple Tables</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/tables/data.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>DataTables</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/tables/jsgrid.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>jsGrid</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-header">EXAMPLES</li>
-          <li class="nav-item">
-            <a href="pages/calendar.html" class="nav-link">
-              <i class="nav-icon fas fa-calendar-alt"></i>
-              <p>
-                Calendar
-                <span class="badge badge-info right">2</span>
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="pages/gallery.html" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
-              <p>
-                Gallery
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="pages/kanban.html" class="nav-link">
-              <i class="nav-icon fas fa-columns"></i>
-              <p>
-                Kanban Board
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-envelope"></i>
-              <p>
-                Mailbox
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/mailbox/mailbox.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Inbox</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/mailbox/compose.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Compose</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/mailbox/read-mail.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Read</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-book"></i>
-              <p>
-                Pages
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/examples/invoice.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Invoice</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/profile.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Profile</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/e-commerce.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>E-commerce</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/projects.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Projects</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/project-add.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Project Add</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/project-edit.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Project Edit</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/project-detail.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Project Detail</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/contacts.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Contacts</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/faq.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>FAQ</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/contact-us.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Contact us</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-plus-square"></i>
-              <p>
-                Extras
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>
-                    Login & Register v1
-                    <i class="fas fa-angle-left right"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="pages/examples/login.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Login v1</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/register.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Register v1</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/forgot-password.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Forgot Password v1</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/recover-password.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Recover Password v1</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>
-                    Login & Register v2
-                    <i class="fas fa-angle-left right"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="pages/examples/login-v2.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Login v2</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/register-v2.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Register v2</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/forgot-password-v2.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Forgot Password v2</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/recover-password-v2.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Recover Password v2</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/lockscreen.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Lockscreen</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/legacy-user-menu.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Legacy User Menu</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/language-menu.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Language Menu</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/404.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Error 404</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/500.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Error 500</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/pace.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Pace</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/examples/blank.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Blank Page</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="starter.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Starter Page</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-search"></i>
-              <p>
-                Search
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/search/simple.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Simple Search</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/search/enhanced.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Enhanced</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-header">MISCELLANEOUS</li>
-          <li class="nav-item">
-            <a href="iframe.html" class="nav-link">
-              <i class="nav-icon fas fa-ellipsis-h"></i>
-              <p>Tabbed IFrame Plugin</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="https://adminlte.io/docs/3.1/" class="nav-link">
-              <i class="nav-icon fas fa-file"></i>
-              <p>Documentation</p>
-            </a>
-          </li>
-          <li class="nav-header">MULTI LEVEL EXAMPLE</li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="fas fa-circle nav-icon"></i>
-              <p>Level 1</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-circle"></i>
-              <p>
-                Level 1
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Level 2</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>
-                    Level 2
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-dot-circle nav-icon"></i>
-                      <p>Level 3</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-dot-circle nav-icon"></i>
-                      <p>Level 3</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-dot-circle nav-icon"></i>
-                      <p>Level 3</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Level 2</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="fas fa-circle nav-icon"></i>
-              <p>Level 1</p>
-            </a>
-          </li>
-          <li class="nav-header">LABELS</li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-danger"></i>
-              <p class="text">Important</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-warning"></i>
-              <p>Warning</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-info"></i>
-              <p>Informational</p>
-            </a>
-          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -1039,7 +407,7 @@
                 <p>Cluster Nodes</p>
               </div>
               <div class="icon">
-                <i><input type="text" id="tstorage" value="100" class="knob  responsive angle-offset" data-angleOffset="0" data-thickness=".15" data-linecap="round" data-width="100" data-height="100" data-inputColor="#e1e1e1" data-readOnly="true" data-fgColor="darkblue" data-knob-icon="ft-trending-up">
+                <i><input type="text" id="tnodes" value="100" class="knob  responsive angle-offset" data-angleOffset="0" data-thickness=".15" data-linecap="round" data-width="100" data-height="100" data-inputColor="#e1e1e1" data-readOnly="true" data-fgColor="darkblue" data-knob-icon="ft-trending-up">
                   </i>        
                
               </div>
@@ -1054,7 +422,7 @@
                 <p>Users</p>
               </div>
               <div class="icon">
-                <i><input type="text" id="tstorage" value="10" class="knob  responsive angle-offset" data-angleOffset="0" data-thickness=".15" data-linecap="round" data-width="100" data-height="100" data-inputColor="#e1e1e1" data-readOnly="true" data-fgColor="lightblue" data-knob-icon="ft-trending-up">
+                <i><input type="text" id="tusers" value="10" class="knob  responsive angle-offset" data-angleOffset="0" data-thickness=".15" data-linecap="round" data-width="100" data-height="100" data-inputColor="#e1e1e1" data-readOnly="true" data-fgColor="lightblue" data-knob-icon="ft-trending-up">
                   </i>        
                
               </div>
@@ -1157,250 +525,132 @@
               <a href="#" class="small-box-footer" >More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
+          <div class="col-4">
+            <!-- small box -->
+            <div class="small-box bg-secondary">
+              <div class="inner" style="padding-bottom: 0px">
+                <h3 id="TotalSnaps">24</h3>
+                <p style="margin-bottom: 0.9rem;" >Registered Disks</p>
+                <p style="margin-bottom: 0rem;">.</p>
+              </div>
+              <div class="icon">
+                <i><div class=" fas fa-hdd" style="color:white;"></div></i>        
+               
+              </div>
+              <a href="#" class="small-box-footer" >More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
         </div>
+         <!-- LINE CHART -->
         <div class="row">
-          <div class="col-lg-6">
-            <div class="card">
-              <div class="card-header border-0">
-                <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Online Store Visitors</h3>
-                  <a href="javascript:void(0);">View Report</a>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="d-flex">
-                  <p class="d-flex flex-column">
-                    <span class="text-bold text-lg">820</span>
-                    <span>Visitors Over Time</span>
-                  </p>
-                  <p class="ml-auto d-flex flex-column text-right">
-                    <span class="text-success">
-                      <i class="fas fa-arrow-up"></i> 12.5%
-                    </span>
-                    <span class="text-muted">Since last week</span>
-                  </p>
-                </div>
-                <!-- /.d-flex -->
+          <div class='col-3'>
+            <div class="card card-info">
+              <div class="card-header"  style="padding-top: 1rem; padding-bottom: 1.1rem;">
+                <h3 class="card-title">Size Trend</h3>
 
-                <div class="position-relative mb-4">
-                  <canvas id="visitors-chart" height="200"></canvas>
-                </div>
-
-                <div class="d-flex flex-row justify-content-end">
-                  <span class="mr-2">
-                    <i class="fas fa-square text-primary"></i> This Week
-                  </span>
-
-                  <span>
-                    <i class="fas fa-square text-gray"></i> Last Week
-                  </span>
-                </div>
-              </div>
-            </div>
-            <!-- /.card -->
-
-            <div class="card">
-              <div class="card-header border-0">
-                <h3 class="card-title">Products</h3>
                 <div class="card-tools">
-                  <a href="#" class="btn btn-tool btn-sm">
-                    <i class="fas fa-download"></i>
-                  </a>
-                  <a href="#" class="btn btn-tool btn-sm">
-                    <i class="fas fa-bars"></i>
-                  </a>
-                </div>
-              </div>
-              <div class="card-body table-responsive p-0">
-                <table class="table table-striped table-valign-middle">
-                  <thead>
-                  <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Sales</th>
-                    <th>More</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td>
-                      <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                      Some Product
-                    </td>
-                    <td>$13 USD</td>
-                    <td>
-                      <small class="text-success mr-1">
-                        <i class="fas fa-arrow-up"></i>
-                        12%
-                      </small>
-                      12,000 Sold
-                    </td>
-                    <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                      Another Product
-                    </td>
-                    <td>$29 USD</td>
-                    <td>
-                      <small class="text-warning mr-1">
-                        <i class="fas fa-arrow-down"></i>
-                        0.5%
-                      </small>
-                      123,234 Sold
-                    </td>
-                    <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                      Amazing Product
-                    </td>
-                    <td>$1,230 USD</td>
-                    <td>
-                      <small class="text-danger mr-1">
-                        <i class="fas fa-arrow-down"></i>
-                        3%
-                      </small>
-                      198 Sold
-                    </td>
-                    <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                      Perfect Item
-                      <span class="badge bg-danger">NEW</span>
-                    </td>
-                    <td>$199 USD</td>
-                    <td>
-                      <small class="text-success mr-1">
-                        <i class="fas fa-arrow-up"></i>
-                        63%
-                      </small>
-                      87 Sold
-                    </td>
-                    <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col-md-6 -->
-          <div class="col-lg-6">
-            <div class="card">
-              <div class="card-header border-0">
-                <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Sales</h3>
-                  <a href="javascript:void(0);">View Report</a>
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
                 </div>
               </div>
               <div class="card-body">
-                <div class="d-flex">
-                  <p class="d-flex flex-column">
-                    <span class="text-bold text-lg">$18,230.00</span>
-                    <span>Sales Over Time</span>
-                  </p>
-                  <p class="ml-auto d-flex flex-column text-right">
-                    <span class="text-success">
-                      <i class="fas fa-arrow-up"></i> 33.1%
-                    </span>
-                    <span class="text-muted">Since last month</span>
-                  </p>
-                </div>
-                <!-- /.d-flex -->
-
-                <div class="position-relative mb-4">
-                  <canvas id="sales-chart" height="200"></canvas>
-                </div>
-
-                <div class="d-flex flex-row justify-content-end">
-                  <span class="mr-2">
-                    <i class="fas fa-square text-primary"></i> This year
-                  </span>
-
-                  <span>
-                    <i class="fas fa-square text-gray"></i> Last year
-                  </span>
+                <div class="chart">
+                  <canvas id="lineChart" style="min-height: 10rem; height: 10rem; max-height: 10rem; max-width: 100%;"></canvas>
                 </div>
               </div>
-            </div>
-            <!-- /.card -->
-
-            <div class="card">
-              <div class="card-header border-0">
-                <h3 class="card-title">Online Store Overview</h3>
-                <div class="card-tools">
-                  <a href="#" class="btn btn-sm btn-tool">
-                    <i class="fas fa-download"></i>
-                  </a>
-                  <a href="#" class="btn btn-sm btn-tool">
-                    <i class="fas fa-bars"></i>
-                  </a>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-                  <p class="text-success text-xl">
-                    <i class="ion ion-ios-refresh-empty"></i>
-                  </p>
-                  <p class="d-flex flex-column text-right">
-                    <span class="font-weight-bold">
-                      <i class="ion ion-android-arrow-up text-success"></i> 12%
-                    </span>
-                    <span class="text-muted">CONVERSION RATE</span>
-                  </p>
-                </div>
-                <!-- /.d-flex -->
-                <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-                  <p class="text-warning text-xl">
-                    <i class="ion ion-ios-cart-outline"></i>
-                  </p>
-                  <p class="d-flex flex-column text-right">
-                    <span class="font-weight-bold">
-                      <i class="ion ion-android-arrow-up text-warning"></i> 0.8%
-                    </span>
-                    <span class="text-muted">SALES RATE</span>
-                  </p>
-                </div>
-                <!-- /.d-flex -->
-                <div class="d-flex justify-content-between align-items-center mb-0">
-                  <p class="text-danger text-xl">
-                    <i class="ion ion-ios-people-outline"></i>
-                  </p>
-                  <p class="d-flex flex-column text-right">
-                    <span class="font-weight-bold">
-                      <i class="ion ion-android-arrow-down text-danger"></i> 1%
-                    </span>
-                    <span class="text-muted">REGISTRATION RATE</span>
-                  </p>
-                </div>
-                <!-- /.d-flex -->
-              </div>
+              <!-- /.card-body -->
             </div>
           </div>
-          <!-- /.col-md-6 -->
+          <div class="col-9">
+            <!-- interactive chart -->
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="far fa-chart-bar"></i>
+                  Interactive Area Chart
+                </h3>
+
+                <div class="card-tools">
+                  Real time
+                  <div class="btn-group" id="realtime" data-toggle="btn-toggle">
+                    <button type="button" class="btn btn-default btn-sm active" data-toggle="on">On</button>
+                    <button type="button" class="btn btn-default btn-sm" data-toggle="off">Off</button>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="interactive" style="height: 10rem;"></div>
+              </div>
+              <!-- /.card-body-->
+            </div>
+            <!-- /.card -->
+
+          </div>
+        <!-- /.card -->
+
+        <!-- BAR CHART -->
         </div>
-        <!-- /.row -->
+        
+        <div class="row">
+          <div class="col-8">
+            <!-- interactive chart -->
+            <div class="card card-primary card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="far fa-chart-bar"></i>
+                  Interactive Area Chart
+                </h3>
+
+                <div class="card-tools">
+                  Real time
+                  <div class="btn-group" id="realtime" data-toggle="btn-toggle">
+                    <button type="button" class="btn btn-default btn-sm active" data-toggle="on">On</button>
+                    <button type="button" class="btn btn-default btn-sm" data-toggle="off">Off</button>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="interactive" style="height: 10rem;"></div>
+              </div>
+              <!-- /.card-body-->
+            </div>
+            <!-- /.card -->
+
+          </div>
+          <div class='col-4'>
+            <div class="card card-info">
+              <div class="card-header"  style="padding-top: 1rem; padding-bottom: 1.1rem;">
+                <h3 class="card-title">Overall Load</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="icon">
+                  <i><input type="text" id="tworkload" value="75" class="knob  responsive angle-offset" data-angleOffset="0" data-thickness=".15" data-linecap="round" data-width="153" data-height="153" data-inputColor="#e1e1e1" data-readOnly="true" data-fgColor="#FF5722" data-knob-icon="ft-trending-up">
+                    </i>        
+                 
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+          </div>
+          
+        <!-- /.card -->
+
+        <!-- BAR CHART -->
+        </div>
+        
+        
       </div>
       <!-- /.container-fluid -->
     </div>
@@ -1437,10 +687,16 @@
 <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- OPTIONAL SCRIPTS -->
 <script src="plugins/chart.js/Chart.min.js"></script>
+<!-- FLOT CHARTS -->
+<script src="plugins/flot/jquery.flot.js"></script>
+<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+<script src="plugins/flot/plugins/jquery.flot.resize.js"></script>
+<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
+<script src="plugins/flot/plugins/jquery.flot.pie.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard3.js"></script>
+<script src="dist/js/Qmain.js"></script>
 <script>
 
     /* jQueryKnob */
@@ -1505,6 +761,167 @@
       }
     });
     /* END JQUERY KNOB */
+    //-------------
+    //- LINE CHART -
+    //--------------
+    var areaChartData = {
+      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      datasets: [
+        {
+          label               : 'Digital Goods',
+          backgroundColor     : 'rgba(60,141,188,0.9)',
+          borderColor         : 'rgba(60,141,188,0.8)',
+          pointRadius          : false,
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : [28, 48, 40, 19, 86, 27, 90]
+        },
+        {
+          label               : 'Electronics',
+          backgroundColor     : 'rgba(210, 214, 222, 1)',
+          borderColor         : 'rgba(210, 214, 222, 1)',
+          pointRadius         : false,
+          pointColor          : 'rgba(210, 214, 222, 1)',
+          pointStrokeColor    : '#c1c7d1',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(220,220,220,1)',
+          data                : [65, 59, 80, 81, 56, 55, 40]
+        },
+      ]
+    }
+
+    var areaChartOptions = {
+      maintainAspectRatio : false,
+      responsive : true,
+      legend: {
+        display: false
+      },
+      scales: {
+        xAxes: [{
+          gridLines : {
+            display : false,
+          }
+        }],
+        yAxes: [{
+          gridLines : {
+            display : false,
+          }
+        }]
+      }
+    }
+    var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
+    var lineChartOptions = $.extend(true, {}, areaChartOptions)
+    var lineChartData = $.extend(true, {}, areaChartData)
+    lineChartData.datasets[0].fill = false;
+    lineChartData.datasets[1].fill = false;
+    lineChartOptions.datasetFill = false
+
+    var lineChart = new Chart(lineChartCanvas, {
+      type: 'line',
+      data: lineChartData,
+      options: lineChartOptions
+    })
+    /*
+     * Flot Interactive Chart
+     * -----------------------
+     */
+    // We use an inline data source in the example, usually data would
+    // be fetched from a server
+    var data        = [],
+        totalPoints = 100
+
+    function getRandomData() {
+
+      if (data.length > 0) {
+        data = data.slice(1)
+      }
+
+      // Do a random walk
+      while (data.length < totalPoints) {
+
+        var prev = data.length > 0 ? data[data.length - 1] : 50,
+            y    = prev + Math.random() * 10 - 5
+
+        if (y < 0) {
+          y = 0
+        } else if (y > 100) {
+          y = 100
+        }
+
+        data.push(y)
+      }
+
+      // Zip the generated y values with the x values
+      var res = []
+      for (var i = 0; i < data.length; ++i) {
+        res.push([i, data[i]])
+      }
+
+      return res
+    }
+
+    var interactive_plot = $.plot('#interactive', [
+        {
+          data: getRandomData(),
+        }
+      ],
+      {
+        grid: {
+          borderColor: '#f3f3f3',
+          borderWidth: 1,
+          tickColor: '#f3f3f3'
+        },
+        series: {
+          color: '#3c8dbc',
+          lines: {
+            lineWidth: 2,
+            show: true,
+            fill: true,
+          },
+        },
+        yaxis: {
+          min: 0,
+          max: 100,
+          show: true
+        },
+        xaxis: {
+          show: true
+        }
+      }
+    )
+
+    var updateInterval = 500 //Fetch data ever x milliseconds
+    var realtime       = 'on' //If == to on then fetch data every x seconds. else stop fetching
+    function update() {
+
+      interactive_plot.setData([getRandomData()])
+
+      // Since the axes don't change, we don't need to call plot.setupGrid()
+      interactive_plot.draw()
+      if (realtime === 'on') {
+        setTimeout(update, updateInterval)
+      }
+    }
+
+    //INITIALIZE REALTIME DATA FETCHING
+    if (realtime === 'on') {
+      update()
+    }
+    //REALTIME TOGGLE
+    $('#realtime .btn').click(function () {
+      if ($(this).data('toggle') === 'on') {
+        realtime = 'on'
+      }
+      else {
+        realtime = 'off'
+      }
+      update()
+    })
+    /*
+     * END INTERACTIVE CHART
+     */
 
 </script>
 </body>
