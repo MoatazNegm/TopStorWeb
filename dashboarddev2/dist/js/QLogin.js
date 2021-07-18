@@ -23,12 +23,16 @@ function postlogin(url,data){
       success: function(token){ hypetoken = token['token'];}
     });
     if(hypetoken.includes('init') < 1){ 
-        console.log('token',hypetoken);
+
         if(hypetoken.includes('baduser') < 1){
             localStorage.setItem("token",hypetoken);
             var wloc = localStorage.getItem('lastlocation');
             if(wloc == null  ) { wloc = 'QuickStor.html';}
-            location.replace(wloc)
+            location.replace(wloc);
+        }
+        else {
+          console.log('token',hypetoken);
+          $("#signin").text("Username or Password is invalid")
         }
     }
 }
