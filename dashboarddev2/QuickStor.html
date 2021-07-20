@@ -386,12 +386,12 @@
             <!-- small box -->
             <div class="small-box bg-secondary">
               <div class="inner">
-                <h3 id="TotalStorage">150</h3>
+                <h3 id="TotalStorage">0</h3>
 
                 <p>Configured Storage</p>
               </div>
               <div class="icon">
-                <i><input type="text" id="tstorage" value="75" class="knob tstorage responsive angle-offset" data-angleOffset="0" data-thickness=".15" data-linecap="round" data-width="100" data-height="100" data-inputColor="#e1e1e1" data-readOnly="true"  data-knob-icon="ft-trending-up">
+                <i><input type="text" id="tstorage" value="0" class="knob tstorage responsive angle-offset" data-angleOffset="0" data-thickness=".15" data-linecap="round" data-width="100" data-height="100" data-inputColor="#e1e1e1" data-readOnly="true"  data-knob-icon="ft-trending-up">
                   </i>        
                   <span class="offset-8" style="color:white;">Used size (MB)</span>  
               </div>
@@ -402,12 +402,12 @@
             <!-- small box -->
             <div class="small-box bg-primary">
               <div class="inner">
-                <h3 id="totalhosts">4</h3>
+                <h3 id="totalhosts">0</h3>
 
                 <p>Cluster Nodes</p>
               </div>
               <div class="icon">
-                <i><input type="text" id="thost" value="100" class="knob thost responsive angle-offset" data-angleOffset="0" data-thickness=".15" data-linecap="round" data-width="100" data-height="100" data-inputColor="#e1e1e1" data-readOnly="true" data-knob-icon="ft-trending-up">
+                <i><input type="text" id="thost" value="0" class="knob thost responsive angle-offset" data-angleOffset="0" data-thickness=".15" data-linecap="round" data-width="100" data-height="100" data-inputColor="#e1e1e1" data-readOnly="true" data-knob-icon="ft-trending-up">
                   </i>        
                   <span class="offset-8" style="color:white;">running nodes</span> 
               </div>
@@ -418,11 +418,11 @@
             <!-- small box -->
             <div class="small-box bg-secondary">
               <div class="inner">
-                <h3 id="totalusers">100</h3>
+                <h3 id="totalusers">0</h3>
                 <p>Users</p>
               </div>
               <div class="icon">
-                <i><input type="text" id="tuser" value='10'  class="knob tuser responsive angle-offset" data-angleOffset="0" data-thickness=".15" data-linecap="round" data-width="100" data-height="100" data-inputColor="#e1e1e1" data-readOnly="true" data-fgColor="lightblue" data-knob-icon="ft-trending-up">
+                <i><input type="text" id="tuser" value='0'  class="knob tuser responsive angle-offset" data-angleOffset="0" data-thickness=".15" data-linecap="round" data-width="100" data-height="100" data-inputColor="#e1e1e1" data-readOnly="true" data-fgColor="lightblue" data-knob-icon="ft-trending-up">
                   </i>  
                 <span class="offset-7" style="color:white;">active connections</span>      
                
@@ -443,7 +443,7 @@
               <div class="info-box-content">
                 <span class="info-box-text">Warning Alerts</span>
                 <span class="info-box-number">
-                  10
+                  <span  id="warning">00</span>
                   <small> last week only</small>
                 </span>
               </div>
@@ -456,8 +456,8 @@
               <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-times-circle"></i></span>
               <div class="info-box-content">
                 <span class="info-box-text">Problem Alerts</span>
-                <span class="info-box-number">
-                  10
+                <span  class="info-box-number">
+                  <span id='error'>00</span>
                   <small> last week only</small>
                 </span>
               </div>
@@ -471,7 +471,7 @@
               <div class="info-box-content">
                 <span class="info-box-text">Unscussfull logins</span>
                 <span class="info-box-number">
-                  10
+                  <span id='failedlogon'>00</span>
                   <small> last week only</small>
                 </span>
               </div>
@@ -485,7 +485,7 @@
               <div class="info-box-content">
                 <span class="info-box-text">Created Snapshots</span>
                 <span class="info-box-number">
-                  10
+                  <span id='snaps'>00</span>
                   <small> last week only</small>
                 </span>
               </div>

@@ -1,4 +1,5 @@
 //input mask bundle ip address
+var onedaylog = { 'error':-1, 'warning':-1};
 var allhosts= {};
 var allhostsready = -1;
 var allhostsactive = -1;
@@ -50,6 +51,41 @@ function extracthosts(){
     
 
 }
+function extractsnaps(){
+    var newsnaps = getdata('api/v1/volumes/snapshots/snapshotsinfo');
+    snaps = newsnaps['allsnaps'];
+    var today = new Date();
+    var lstweeksnaps = 0;
+    var lstweek = new Date();
+    lstweek.setDate(today.getDate()-8)
+    $.each(snaps,function(e,t){
+        var creation = new Date(snaps[e]['creation']);
+        if(creation > lstweek){
+            lstweeksnaps += 1;
+        }
+    });
+        $("#snaps").text(lstweeksnaps);  
+}   
+
+function extractonedaylog(){
+    var newonedaylog = getdata('api/v1/info/onedaylog');
+;
+ 
+    var tconn = 0;
+    if(onedaylog['error'].length != newonedaylog['error'].length || 
+      onedaylog['warning'].length != newonedaylog['warning'].length ||
+      onedaylog['failedlogon'].length != newonedaylog['failedlogon'].length  ){
+        onedaylog['error'] = newonedaylog['error'];
+        onedaylog['warning'] = newonedaylog['warning'];
+        onedaylog['failedlogon'] = newonedaylog['failedlogon'];
+      $("#error").text(onedaylog['error'].length);
+      $("#warning").text(onedaylog['warning'].length);
+      $("#failedlogon").text(onedaylog['failedlogon'].length);
+      
+   }   
+   
+}
+
 function extractconns(){
     var newallconns = getdata('api/v1/volumes/connections');
     var newallusers = getdata('api/v1/users/userlist');
@@ -90,7 +126,7 @@ function extractstorage(){
             
         }
     });
- 
+    
     $("#TotalStorage").text(totalstorage+'GB');
     $(".tstorage").trigger('configure', {'fgColor': tstoragecolor, 'min':0, 'max': totalstorage *1000, 'skin':'tron'});
     $(".tstorage").val(tstorage*1000);
@@ -100,8 +136,7 @@ function extractstorage(){
 }
 //$(".addraid").click(function(){ console.log(this); $(this).find('input').prop('checked','checked'); });
 
-extractstorage();
-extracthosts()
+
 
 
 function refreshall(){
@@ -109,6 +144,8 @@ function refreshall(){
     extractstorage();
     extracthosts();
     extractconns();
+    extractonedaylog();
+    extractsnaps();
     //$(".tstorage").trigger('configure', {'fgColor': tstoragecolor});
 
   

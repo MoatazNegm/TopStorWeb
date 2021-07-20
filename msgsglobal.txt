@@ -42,6 +42,10 @@ Sys15:0: : from :: this volume :  allowed groups are changed.
 Sys16:0: : from :: the volume : ipaddress is changed from : to :
 Sys17:0: : from :: the volume : ip subnet is changed from : to :
 Sys18:0: : from :: the volume : maximum size is changed from : to :
+Lognsu0:1: : from :: Success login to the system by the user :  
+Lognfa0:1: : from :: Error logining to the system by the user :  
+Lognsa0:1: : from :: the Session timeout of the logged on user :  
+Lognno0:1: : from :: the there is no valid session for the user :  
 Zpsu01:0: : from : finished scanning for disk pools to present : 
 Zpwa01:0: : from :: Still scanning the pool : 
 Zpst01:0: : from :: scanning for disk pools to present
