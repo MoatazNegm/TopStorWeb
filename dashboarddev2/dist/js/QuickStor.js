@@ -51,6 +51,11 @@ function extracthosts(){
     
 
 }
+function extractdisks(){
+    var newdisks = getdata('api/v1/pools/dgsinfo');
+    disks = newdisks['disks'];
+    $("#disks").text(Object.keys(disks).length);  
+}   
 function extractsnaps(){
     var newsnaps = getdata('api/v1/volumes/snapshots/snapshotsinfo');
     snaps = newsnaps['allsnaps'];
@@ -64,7 +69,22 @@ function extractsnaps(){
             lstweeksnaps += 1;
         }
     });
-        $("#snaps").text(lstweeksnaps);  
+        $("#weeksnaps").text(lstweeksnaps);  
+        $("#allsnaps").text(snaps.length);  
+}   
+function extractvolumes(){
+    var voltypes = ['NFS', 'CIFS', 'HOME'];
+    var vols = {};
+    $.each(voltypes, function(e,prot){
+        vols[prot] = getdata('api/v1/volumes/'+prot+'/volumesinfo')['allvolumes'];
+    });
+    var count = 0
+    $.each(vols, function(e,t){
+        count += vols[e].length
+    });
+        
+    $("#allvols").text(count);  
+     
 }   
 
 function extractonedaylog(){
@@ -146,6 +166,8 @@ function refreshall(){
     extractconns();
     extractonedaylog();
     extractsnaps();
+    extractvolumes();
+    extractdisks();
     //$(".tstorage").trigger('configure', {'fgColor': tstoragecolor});
 
   
