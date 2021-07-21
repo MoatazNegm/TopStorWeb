@@ -1,4 +1,6 @@
 //input mask bundle ip address
+var trendstamps = [];
+var trendsizes = [];
 var onedaylog = { 'error':-1, 'warning':-1};
 var allhosts= {};
 var allhostsready = -1;
@@ -8,7 +10,7 @@ var thostcolor = 'red';
 var allusers= 0;
 var allconns = 0;
 var tusercolor = 'blue';
-alldgs = 'init';
+var alldgs = 'init';
 var totalstorage = 0;
 var totalstoragealloc = 0;
 var emergency = { 0:'darkblue', 25 : '#687ee6', 50: 'yellow', 75: 'eb2a45', 100: 'red'};
@@ -31,33 +33,46 @@ function getdata(url, data={}){
 function extracttrends(){
     var newtrends = getdata('api/v1/volumes/stats')['trends'];
     trendstamps = [];
-    trendsizes = []
-    var trendict = {}
-    var tt;
+    trendsizes = [];
+    var trendict = {};
     $.each(newtrends,function(vol,trends){
         if(trends != -1){
             $.each(trends.split('/'),function(e,trend){
-                tt = Date(trend.split('-')[0]);
-                tt = new Date(tt).getMinutes(); 
-                trendict[tt] = []
+                tth =  trend.split('-')[0]
+                var tt = new Date(parseInt(tth)*1000);
+                ttd = tt.toLocaleString('default', { month: 'short' });
+                trendict[ttd] = []
+                console.log(ttd,tt, trendict);
             });
         }
     });
-    var tt;
+    var tt, tth,ttd;
     $.each(newtrends,function(vol,trends){
         if(trends != -1){
             $.each(trends.split('/'),function(e,trend){
-                tt = Date(trend.split('-')[0]);
-                tt = new Date(tt).getMinutes(); 
-                trendict[tt].push(trend.split('-')[1]); 
+                tth =  trend.split('-')[0]
+                var tt = new Date(parseInt(tth)*1000);
+                ttd = tt.toLocaleString('default', { month: 'short' });
+                trendict[ttd].push(trend.split('-')[1]); 
             });
         }
+    });
+    $.each(trendict,function(stamp,sizes){
+        trendstamps.push(stamp);
+        var tsizes = 0;
+        $.each(sizes, function(e,size){
+            tsizes += parseFloat(size);
+        });
+        trendsizes.push(tsizes);
     });
 
     //console.log(trendstamps,trendsizes);
-    console.log(trendict);
+    console.log(trendstamps, trendsizes);
+    linechartpls();
 
 }
+extracttrends();
+
 function extracthosts(){
      var newallhosts = getdata('api/v1/hosts/allinfo');
      
@@ -270,13 +285,15 @@ $('.knob').knob({
     }
   }
 });
+function linechartpls(){
 /* END JQUERY KNOB */
 
 //-------------
 //- LINE CHART -
 //--------------
 var areaChartData = {
-  labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  //labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  labels : trendstamps,
   datasets: [
     {
       label               : 'Digital Goods',
@@ -287,19 +304,9 @@ var areaChartData = {
       pointStrokeColor    : 'rgba(60,141,188,1)',
       pointHighlightFill  : '#fff',
       pointHighlightStroke: 'rgba(60,141,188,1)',
-      data                : [28, 48, 40, 19, 86, 27, 90]
-    },
-    {
-      label               : 'Electronics',
-      backgroundColor     : 'rgba(210, 214, 222, 1)',
-      borderColor         : 'rgba(210, 214, 222, 1)',
-      pointRadius         : false,
-      pointColor          : 'rgba(210, 214, 222, 1)',
-      pointStrokeColor    : '#c1c7d1',
-      pointHighlightFill  : '#fff',
-      pointHighlightStroke: 'rgba(220,220,220,1)',
-      data                : [65, 59, 80, 81, 56, 55, 40]
-    },
+      data                : trendsizes
+    }
+ 
   ]
 }
 
@@ -326,14 +333,15 @@ var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
 var lineChartOptions = $.extend(true, {}, areaChartOptions)
 var lineChartData = $.extend(true, {}, areaChartData)
 lineChartData.datasets[0].fill = false;
-lineChartData.datasets[1].fill = false;
+//lineChartData.datasets[1].fill = false;
 lineChartOptions.datasetFill = false
 
 var lineChart = new Chart(lineChartCanvas, {
   type: 'line',
   data: lineChartData,
   options: lineChartOptions
-})
+});
+}
 /*
  * Flot Interactive Chart
  * -----------------------
