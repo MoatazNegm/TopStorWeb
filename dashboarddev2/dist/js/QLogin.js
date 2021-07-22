@@ -32,7 +32,10 @@ function postlogin(url,data){
         }
         else {
           console.log('token',hypetoken);
-          $("#signin").text("Username or Password is invalid")
+          $("#user").prop('disabled',false);
+          $("#pass").prop('disabled',false);
+          $("#signin").text("Username or Password is invalid");
+          $("#signin").show();
         }
     }
 }
@@ -51,6 +54,9 @@ $("button").click(function(e){
     urlapi = 'api/v1/login';
     datapi = {'user':$('#user').val(), 'pass':$("#pass").val() }
     localStorage.setItem("user",$('#user').val());
+    $("#user").prop('disabled',true);
+    $("#pass").prop('disabled',true);
+    $("#signin").hide();
     postlogin(urlapi, datapi);
     
     

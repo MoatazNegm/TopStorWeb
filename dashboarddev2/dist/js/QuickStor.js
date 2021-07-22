@@ -15,6 +15,7 @@ var alldgs = 'init';
 var totalstorage = 0;
 var totalstoragealloc = 0;
 var iodata = {};
+var tcpu = 0;
 iodata['tps'] = Array.from({length:50}).map(x => 0);
 iodata['thru'] = Array.from({length:50}).map(y => 0);
 iodata['readpercent'] = Array.from({length:50}).map(z => 0);
@@ -49,16 +50,20 @@ function extractload(){
         dskperf = getdata('api/v1/stats/dskperf');
     }
     var thecpucolor=0;
-    var tcpu = 0;
+    var newtcpu = 0;
     $.each(dskperf['cpu'],function(e,t){
-        tcpu += dskperf['cpu'][e]['cpu'];
+        newtcpu += parseFloat(dskperf['cpu'][e]['cpu']);
        
     });
-    thecpucolor = clrcomp(tcpu);
-    $(".tload").trigger('configure', {'fgColor': thecpucolor, 'min':0, 'max':100, 'skin':'tron'});
+    newtcpu = newtcpu/dskperf['cpu'].length;
+        tcpu = newtcpu
+        thecpucolor = clrcomp(tcpu);
+        console.log('tcpu',tcpu);
+        $(".tload").trigger('configure', {'fgColor': thecpucolor, step:"0.01",  'skin':'tron'});
+        
+        $(".tload").val(tcpu);  
+        $(".tload").trigger('change');
     
-    $(".tload").val(tcpu);  
-    $(".tload").trigger('change'); 
 }
 function extractdskperf(){
     dskperf = getdata('api/v1/stats/dskperf');
