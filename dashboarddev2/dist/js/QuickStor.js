@@ -3,6 +3,7 @@ var trendstamps = [];
 var trendsizes = [];
 var onedaylog = { 'error':-1, 'warning':-1};
 var allhosts= {};
+var dskperf = 'init';
 var allhostsready = -1;
 var allhostsactive = -1;
 var thost = 0;
@@ -13,10 +14,23 @@ var tusercolor = 'blue';
 var alldgs = 'init';
 var totalstorage = 0;
 var totalstoragealloc = 0;
-var emergency = { 0:'darkblue', 25 : '#687ee6', 50: 'yellow', 75: 'eb2a45', 100: 'red'};
+var iodata = {};
+iodata['tps'] = Array.from({length:50}).map(x => 0);
+iodata['thru'] = Array.from({length:50}).map(y => 0);
+iodata['readpercent'] = Array.from({length:50}).map(z => 0);
+
+var emergency = { 0.0009:'darkblue', 25 : '#687ee6', 50: 'yellow', 75: '#eb2a45', 98: 'red'};
 var tstorage = 0;
 var tstoragecolor = 'grey';
 col = 1;
+function clrcomp(xx){
+    var clr = 'darkblue'
+    if(parseFloat(xx) > 25){ clr = '#687ee6'}
+    if(parseFloat(xx) > 50){ clr = 'yellow'}
+    if(parseFloat(xx) > 75){ clr = '#eb2a45'}
+    if(parseFloat(xx) > 95){ clr = 'red'}
+    return clr
+}
 function getdata(url, data={}){
   var newdgs;
   data['token'] = hypetoken
@@ -30,6 +44,40 @@ function getdata(url, data={}){
   });
   return newdgs
 }
+function extractload(){
+    if(dskperf == 'init'){
+        dskperf = getdata('api/v1/stats/dskperf');
+    }
+    var thecpucolor=0;
+    var tcpu = 0;
+    $.each(dskperf['cpu'],function(e,t){
+        tcpu += dskperf['cpu'][e]['cpu'];
+       
+    });
+    thecpucolor = clrcomp(tcpu);
+    $(".tload").trigger('configure', {'fgColor': thecpucolor, 'min':0, 'max':100, 'skin':'tron'});
+    
+    $(".tload").val(tcpu);  
+    $(".tload").trigger('change'); 
+}
+function extractdskperf(){
+    dskperf = getdata('api/v1/stats/dskperf');
+    var tps = 0
+    var thru = 0
+    var readn = 0
+    $.each(dskperf['dsk'],function(e,t){
+        tps += parseFloat(t['tps']);
+        thru += parseFloat(t['thr']);
+        readn += parseFloat(t['readpercent']);
+    });
+    readn = readn/dskperf['dsk'].length
+    iodata['tps'].shift();
+    iodata['thru'].shift();
+    iodata['readpercent'].shift();
+    iodata['tps'].push(tps);
+    iodata['thru'].push(thru)
+    iodata['readpercent'].push(readn);
+}
 function extracttrends(){
     var newtrends = getdata('api/v1/volumes/stats')['trends'];
     trendstamps = [];
@@ -42,7 +90,7 @@ function extracttrends(){
                 var tt = new Date(parseInt(tth)*1000);
                 ttd = tt.toLocaleString('default', { month: 'short' });
                 trendict[ttd] = []
-                console.log(ttd,tt, trendict);
+               
             });
         }
     });
@@ -67,7 +115,7 @@ function extracttrends(){
     });
 
     //console.log(trendstamps,trendsizes);
-    console.log(trendstamps, trendsizes);
+   
     linechartpls();
 
 }
@@ -212,6 +260,7 @@ function refreshall(){
     extractsnaps();
     extractvolumes();
     extractdisks();
+    extractload();
     //$(".tstorage").trigger('configure', {'fgColor': tstoragecolor});
 
   
@@ -349,41 +398,69 @@ var lineChart = new Chart(lineChartCanvas, {
 // We use an inline data source in the example, usually data would
 // be fetched from a server
 var data        = [],
-    totalPoints = 100
+    totalPoints = iodata['tps'].length
 
-function getRandomData() {
+function getRandomDatatps() {
 
-  if (data.length > 0) {
-    data = data.slice(1)
-  }
-
-  // Do a random walk
-  while (data.length < totalPoints) {
-
-    var prev = data.length > 0 ? data[data.length - 1] : 50,
-        y    = prev + Math.random() * 10 - 5
-
-    if (y < 0) {
-      y = 0
-    } else if (y > 100) {
-      y = 100
-    }
-
-    data.push(y)
-  }
+  extractdskperf();
+  
 
   // Zip the generated y values with the x values
   var res = []
-  for (var i = 0; i < data.length; ++i) {
-    res.push([i, data[i]])
+  for (var i = 0; i < iodata['tps'].length; ++i) {
+    res.push([i, iodata['tps'][i]])
+
   }
 
   return res
 }
+function getRandomDatathru() {
 
-var interactive_plot = $.plot('#interactive', [
+  
+    
+  
+    // Zip the generated y values with the x values
+    var res = []
+    for (var i = 0; i < iodata['thru'].length; ++i) {
+      res.push([i, iodata['thru'][i]])
+  
+    }
+  
+    return res
+  }
+
+var interactive_plottps = $.plot('#interactivetps', [
     {
-      data: getRandomData(),
+      data: getRandomDatatps(),
+    }
+  ],
+  {
+    grid: {
+      borderColor: '#f3f3f3',
+      borderWidth: 1,
+      tickColor: '#f3f3f3'
+    },
+    series: {
+      color: '#3c8dbc',
+      lines: {
+        lineWidth: 2,
+        show: true,
+        fill: true,
+      },
+    },
+    yaxis: {
+      min: 0,
+      max: 100,
+      show: true
+    },
+    xaxis: {
+      show: true
+    }
+  }
+)
+var interactive_plotthru = $.plot('#interactivethru', [
+    {
+      data: getRandomDatathru(),
     }
   ],
   {
@@ -411,14 +488,16 @@ var interactive_plot = $.plot('#interactive', [
   }
 )
 
-var updateInterval = 500 //Fetch data ever x milliseconds
+var updateInterval = 3000 //Fetch data ever x milliseconds
 var realtime       = 'on' //If == to on then fetch data every x seconds. else stop fetching
 function update() {
 
-  interactive_plot.setData([getRandomData()])
+  interactive_plottps.setData([getRandomDatatps()])
+  interactive_plotthru.setData([getRandomDatathru()])
 
   // Since the axes don't change, we don't need to call plot.setupGrid()
-  interactive_plot.draw()
+  interactive_plottps.draw();
+  interactive_plotthru.draw();
   if (realtime === 'on') {
     setTimeout(update, updateInterval)
   }
@@ -429,7 +508,7 @@ if (realtime === 'on') {
   update()
 }
 //REALTIME TOGGLE
-$('#realtime .btn').click(function () {
+$('.realtime .btn').click(function () {
   if ($(this).data('toggle') === 'on') {
     realtime = 'on'
   }
@@ -442,3 +521,8 @@ $('#realtime .btn').click(function () {
  * END INTERACTIVE CHART
  */
 
+$('body').click(function(e){
+    var apiurl = 'api/v1/login/renewtoken';
+    var apidata = {'token':hypetoken};
+    postdata(apiurl,apidata);
+  })
