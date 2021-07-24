@@ -6,7 +6,7 @@ disks[kk] = [];
 disks[kk]['pool'] = 'disks[kk].pool';
 diskdiv2 ='diskdiv2';
 poolid = 'poolid';
-alldgs = 'init';
+alldgs = {disks: {}, newraid: {}, pools: {}, raids: {}};
 col = 1;
 disks[kk]['host'] = 'disks[kk].host';
 disks[kk]['status'] = 'disks[kk].status';
@@ -20,16 +20,15 @@ diskimg = 'disk-image';
 clickdisk = 'href="#"';
 
 function getdgs(){
-  var newdgs;
   $.ajax({
     url: 'api/v1/pools/dgsinfo',
-    timeout: 3000,
-    async: false,
+    //timeout: 3000,
+    async: true,
     type: 'GET',
-    success: function(data){  newdgs = data}
+    success: function(data){  dgrefresh(data); }
   });
-  return newdgs
 }
+
 $('.newraid input').click(function(e){
   $('#createpool').attr('disabled',false);
   $('#createpool').data('redundancy',$(this).prop('id'));
@@ -79,6 +78,7 @@ function setdeletesequence(pool){
   }
 }
 function initaddgs(){
+  if(typeof alldgs == 'undefined' ) {return;}
   $(" .addraid").hide();
   $.each(alldgs['pools'],function(e,t){
     pool = e; 
@@ -124,6 +124,7 @@ function initaddgs(){
 function initdgs(){
   var poolcard;
   var pool, host, status, grouptype, raid, changeop,shortdisk, size;
+  if(typeof alldgs == 'undefined' ) {return;}
   $('.phdcp').remove();
   $.each(alldgs['pools'],function(e,t){
     if(e.includes('pree') < 1){
@@ -235,7 +236,7 @@ function initdgs(){
 
 
 }
-alldgs = getdgs();
+getdgs();
 initdgs();
 initaddgs();
 
@@ -311,10 +312,9 @@ function getChanges(prev, now) {
 }
 
 
-function dgrefresh(){
-  var newdgs = getdgs();
+function dgrefresh(newdgs){
   var needupdate = 0;
-
+  console.log(newdgs) 
   if((JSON.stringify(alldgs['disks']) != JSON.stringify(newdgs['disks'])) ||
   (JSON.stringify(alldgs['raids']) != JSON.stringify(newdgs['raids']))) {
     
@@ -340,7 +340,7 @@ function dgrefresh(){
 
 function refreshall(){
   
-  dgrefresh();
+  getdgs();
 }
 
 setInterval(refreshall,2000);

@@ -13,11 +13,12 @@ $("#BoxName").inputmask('Regex', {regex: '(.*[a-z]){3}', "clearIncomplete": true
 function refreshhosts(){
   $.ajax({
     url: 'api/v1/hosts/allinfo',
-    async: false,
+    async: true,
     type: 'GET',
-    success: function(data) {  newhosts=data; }
+    success: function(data) {  newhostref(data); }
   });
-
+ }
+function newhostref(newhosts){
   if(JSON.stringify(hostsinfo) !=  JSON.stringify(newhosts['all'])) {
     hostsinfo = JSON.parse(JSON.stringify(newhosts['all']));
     $.each(hoststata, function (e,status){
@@ -81,7 +82,11 @@ function updaterunninghosts(status){
       $("#cBoxName").text(hostdata['alias']);
       $("#cIPAddress").text(hostdata['ipaddr']+'/'+hostdata['ipaddrsubnet']);
       $("#cMgmt").text(hostdata['cluster']);
+      try {
       $("#cTZ").text(hostdata['tz'].split('%')[1].replace('!',':').replace(/\^/g,',').replace(/_/g,' '));
+       } catch {
+          $("#cTZ").text('not set yet');
+      }
       $("#cNTP").text(hostdata['ntp']);
       $("#cGW").text(hostdata['gw']);
       if (hostdata['configured'] == 'no') { $("#customSwitch1").prop('checked',true);}
@@ -155,15 +160,23 @@ $("#readysubmit").click(function (ev){
     tochange = 1;
   }
   
-  
-  if( $("#TZ").val() != '-100'  && 
-      $("#TZ option:selected").text() != 
-      hostconfig['tz'].split('%')[1].replace('!',':').replace(/\^/g,',').replace(/_/g,' ')) {
+   
+  if( $("#TZ").val() != '-100' ){ 
+      var tzflag = 0
+      try {  
+       if($("#TZ option:selected").text() != 
+        hostconfig['tz'].split('%')[1].replace('!',':').replace(/\^/g,',').replace(/_/g,' ')) {
+          tzflag = 1
+         }
+      } catch {
+          tzflag = 1
+      }
+      if(tzflag > 0){
 
     hostsubmit["tz"] = $("#TZ option:selected").attr('city')+'%'+
-          $("#TZ option:selected").text().split(' ').join('_').split(',').join('^').split(':').join('!');
+         $("#TZ option:selected").text().split(' ').join('_').split(',').join('^').split(':').join('!');
     tochange = 1;
-
+    }
   }
   if($("#NTP").val().length > 3 && $("#NTP").val().includes('__') < 1 && $("#NTP").val() != hostconfig['ntp']) {
     hostsubmit["ntp"] = $("#NTP").val();
@@ -197,13 +210,16 @@ $("#readysubmit").click(function (ev){
 });
 
 
+
 setInterval(function(){
+  console.log('hi')
   $("#runninghosts > form > div:nth-child(5) > span > span.selection > span").css('margin-top','0.1rem');
   $('#runninghosts > form > div:nth-child(5) > span > span.selection > span').css('height','97%');
   $('#select2-TZ-container').css('margin-top','0.2rem');
   $('#runninghosts > form > div:nth-child(5) > span > span.selection > span > span.select2-selection__arrow').css('margin-top','0.2rem');
 
   refreshhosts();
+ console.log('hihi')
 },5000);
 
 

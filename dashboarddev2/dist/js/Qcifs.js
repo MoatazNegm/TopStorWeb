@@ -1,4 +1,4 @@
-
+var chartsflag = 0;
 var refresherprop=2;
 var refresheruser=2;
 var userpass="hi";
@@ -469,7 +469,7 @@ function initcharts(){
   });
   });
 }
-initcharts()
+//initcharts()
 
 
 
@@ -482,68 +482,74 @@ function refreshall(){
   $.ajax({
     url: "api/v1/volumes/grouplist", 
     type: "GET",
-    timeout: 3000,
-    async: false,
+    //timeout: 3000,
+    async: true,
     //beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
     
-    success: function(data) {  newallgroups=data; }
+    success: function(data) {  newallgroups=data
+      if(JSON.stringify(allgroups) != JSON.stringify(newallgroups)) {
+        allgroups = JSON.parse(JSON.stringify(newallgroups)); 
+        groupsrefresh();
+      }
+    }
    });
-   if(JSON.stringify(allgroups) != JSON.stringify(newallgroups)) {
-     allgroups = JSON.parse(JSON.stringify(newallgroups)); 
-     groupsrefresh();
-   }
    
 
   var newallpools = 'new0';
   $.ajax({
     url: "api/v1/volumes/poolsinfo", 
     type: "GET",
-    timeout: 3000,
-    async: false,
+    //timeout: 3000,
+    async: true,
     //beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
     
-    success: function(data) {  newallpools=data; }
-   });
-   if(JSON.stringify(allpools) != JSON.stringify(newallpools)) { 
-      allpools = JSON.parse(JSON.stringify(newallpools));
-      poolsrefresh();
+    success: function(data) {  newallpools=data; 
+     if(JSON.stringify(allpools) != JSON.stringify(newallpools)) { 
+       allpools = JSON.parse(JSON.stringify(newallpools));
+       poolsrefresh();
+     }
     }
-  
+   });
   var newallvolumes = 'new0';
   $.ajax({
     url: 'api/v1/volumes/'+prot+'/volumesinfo',
     type: "GET",
-    timeout: 3000,
-    async: false,
+    //timeout: 3000,
+    async: true,
     //beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
     
-    success: function(data) {  newallvolumes=data; }
-   });
-   if(JSON.stringify(allvolumes) != JSON.stringify(newallvolumes)) { 
-      allvolumes = JSON.parse(JSON.stringify(newallvolumes));
-      volumelistrefresh();
+    success: function(data) {  newallvolumes=data; 
+     if(JSON.stringify(allvolumes) != JSON.stringify(newallvolumes)) { 
+        allvolumes = JSON.parse(JSON.stringify(newallvolumes));
+        volumelistrefresh();
+     }
     }
+   });
     
   var newstats='new0'
   $.ajax({
     url: "api/v1/volumes/stats", 
     type: "GET",
-    timeout: 3000,
-    async: false,
+    //timeout: 3000,
+    async: true,
     //beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
     
-    success: function(data) {  newstats=data; }
-    });
-    if(JSON.stringify(volstats) != JSON.stringify(newstats)) { 
+    success: function(data) {  newstats=data; 
+     if(JSON.stringify(volstats) != JSON.stringify(newstats)) { 
       volstats = JSON.parse(JSON.stringify(newstats));
-      try{
-      $.each(chartcards,function(e,t){
-        charts[t].data.datasets[0]['data'] = volstats[t]['stats']
-        charts[t].data.labels = volstats[t]['labels']
-        charts[t].update();
-      });;
-    } catch {;}
+      if (chartsflag == 0 ) { initcharts(); chartsflag =1 }
+      else{
+       try{
+       $.each(chartcards,function(e,t){
+         charts[t].data.datasets[0]['data'] = volstats[t]['stats']
+         charts[t].data.labels = volstats[t]['labels']
+         charts[t].update();
+       });
+      }    catch {;}
+     }
     }
+   }
+  });
 }
 refreshall();
 setInterval(refreshall, 2000);

@@ -1,4 +1,5 @@
 var refresherprop=2;
+var newsnaps = 'init';
 var refresheruser=2;
 var userpass="hi";
 var proptime="55:55:55";
@@ -112,17 +113,15 @@ function volumesrefresh(){
 
   }
 function getsnaps(){
-  var newsnaps;
   $.ajax({
     url: 'api/v1/volumes/snapshots/snapshotsinfo',
-    timeout: 3000,
-    async: false,
+    //timeout: 3000,
+    async: true,
     type: 'GET',
     success: function(data){  newsnaps = data}
   });
-  return newsnaps
 }
-allsnaps = getsnaps();
+//allsnaps = getsnaps();
 
 function initalltables(){
 
@@ -352,7 +351,7 @@ initalltables();
 
 
 function snapsreferesh(){
-  var newsnaps = getsnaps();
+  getsnaps();
   if(JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
     allsnaps = JSON.parse(JSON.stringify(newsnaps)); 
     onceinittable.clear();

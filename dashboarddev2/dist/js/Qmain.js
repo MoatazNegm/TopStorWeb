@@ -42,18 +42,6 @@ $.ajax({
 });
 
 
-if (typeof(Storage) !== "undefined") {
-  // Store
-  //localStorage.setItem("lastname", "Smith");
-  // Retrieve
-  console.log('it is ok :',localStorage.getItem("lastname"));
-} else {
-  console.log("Sorry, your browser does not support Web Storage...");
-}
-
-
-
-
 dirtylog = 1;
 function postdata(url,data){
   data['token'] = hypetoken;

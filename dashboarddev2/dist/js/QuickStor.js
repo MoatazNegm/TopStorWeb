@@ -1,9 +1,16 @@
-//input mask bundle ip address
+//input mask bundle/ ip address
 var trendstamps = [];
+var newtrends ;
 var trendsizes = [];
 var onedaylog = { 'error':-1, 'warning':-1};
 var allhosts= {};
-var dskperf = 'init';
+var newallhosts;
+var newdisks;
+var newonedaylog;
+var newallconns; 
+var newallusers;
+var vols = {};
+var dskperf ;
 var allhostsready = -1;
 var allhostsactive = -1;
 var thost = 0;
@@ -32,23 +39,24 @@ function clrcomp(xx){
     if(parseFloat(xx) > 95){ clr = 'red'}
     return clr
 }
-function getdata(url, data={}){
+function getdata(url,fn){
   var newdgs;
-  data['token'] = hypetoken
   $.ajax({
     url: url,
-    timeout: 3000,
+    //timeout: 3000,
     async: false,
     type: 'GET',
-    data: data,
-    success: function(data){  newdgs = data}
+    data: {'token':hypetoken },
+    success: function(data){  fn(data);}
   });
-  return newdgs
 }
-function extractload(){
+function extractload(data){
     if(dskperf == 'init'){
-        dskperf = getdata('api/v1/stats/dskperf');
+        getdata('api/v1/stats/dskperf',loadfn);
     }
+ }
+function loadfn(data){
+    dskperf = data
     var thecpucolor=0;
     var newtcpu = 0;
     $.each(dskperf['cpu'],function(e,t){
@@ -56,9 +64,8 @@ function extractload(){
        
     });
     newtcpu = newtcpu/dskperf['cpu'].length;
-        tcpu = newtcpu
+        tcpu = newtcpu;
         thecpucolor = clrcomp(tcpu);
-        console.log('tcpu',tcpu);
         $(".tload").trigger('configure', {'fgColor': thecpucolor, step:"0.01",  'skin':'tron'});
         
         $(".tload").val(tcpu);  
@@ -66,7 +73,11 @@ function extractload(){
     
 }
 function extractdskperf(){
-    dskperf = getdata('api/v1/stats/dskperf');
+    dskperf = getdata('api/v1/stats/dskperf',dskperffn);
+ }
+function dskperffn(data){
+    dskperf = data;
+    if (typeof(dskperf) == "undefined") { return; }
     var tps = 0
     var thru = 0
     var readn = 0
@@ -75,6 +86,7 @@ function extractdskperf(){
         thru += parseFloat(t['thr']);
         readn += parseFloat(t['readpercent']);
     });
+    console.log('dskperf',dskperf)
     readn = readn/dskperf['dsk'].length
     iodata['tps'].shift();
     iodata['thru'].shift();
@@ -84,7 +96,11 @@ function extractdskperf(){
     iodata['readpercent'].push(readn);
 }
 function extracttrends(){
-    var newtrends = getdata('api/v1/volumes/stats')['trends'];
+    getdata('api/v1/volumes/stats',trendsfn)
+ }
+function trendsfn(data){
+    var allnewtrends = data;
+    newtrends = allnewtrends['trends'];
     trendstamps = [];
     trendsizes = [];
     var trendict = {};
@@ -124,11 +140,13 @@ function extracttrends(){
     linechartpls();
 
 }
-extracttrends();
 
 function extracthosts(){
-     var newallhosts = getdata('api/v1/hosts/allinfo');
-     
+     getdata('api/v1/hosts/allinfo',hostsfn);
+} 
+function hostsfn(data){
+     newallhosts = data;
+     //if (typeof(newallhosts) == "undefined") { return; }
      if(allhostsready != newallhosts['ready'].length || allhostsactive != newallhosts['active'].length){
         allhostsready = newallhosts['ready'].length ;
         allhostsactive = newallhosts['active'].length;
@@ -149,12 +167,19 @@ function extracthosts(){
 
 }
 function extractdisks(){
-    var newdisks = getdata('api/v1/pools/dgsinfo');
+    getdata('api/v1/pools/dgsinfo',disksfn);
+}
+function disksfn(data){
+    newdisks = data;
     disks = newdisks['disks'];
     $("#disks").text(Object.keys(disks).length);  
 }   
 function extractsnaps(){
-    var newsnaps = getdata('api/v1/volumes/snapshots/snapshotsinfo');
+    var newsnaps;
+    getdata('api/v1/volumes/snapshots/snapshotsinfo', snapsfn);
+}
+function snapsfn(data){
+    var newsnaps = data;
     snaps = newsnaps['allsnaps'];
     var today = new Date();
     var lstweeksnaps = 0;
@@ -169,13 +194,20 @@ function extractsnaps(){
         $("#weeksnaps").text(lstweeksnaps);  
         $("#allsnaps").text(snaps.length);  
 }   
+
+var cprot;
 function extractvolumes(){
     var voltypes = ['NFS', 'CIFS', 'HOME'];
-    var vols = {};
     $.each(voltypes, function(e,prot){
-        vols[prot] = getdata('api/v1/volumes/'+prot+'/volumesinfo')['allvolumes'];
+        cprot = prot
+        vols[ prot] ='';
+        getdata('api/v1/volumes/'+prot+'/volumesinfo',volumesfn);
     });
+ }
+function volumesfn(data){
+    vols[cprot] = data;
     var count = 0
+    vols[cprot] = vols[cprot]['allvolumes'];
     $.each(vols, function(e,t){
         count += vols[e].length
     });
@@ -185,9 +217,10 @@ function extractvolumes(){
 }   
 
 function extractonedaylog(){
-    var newonedaylog = getdata('api/v1/info/onedaylog');
-;
- 
+    getdata('api/v1/info/onedaylog',onedaylogfn);
+}
+function onedaylogfn(data){
+    newonedaylog = data;
     var tconn = 0;
     if(onedaylog['error'].length != newonedaylog['error'].length || 
       onedaylog['warning'].length != newonedaylog['warning'].length ||
@@ -204,9 +237,14 @@ function extractonedaylog(){
 }
 
 function extractconns(){
-    var newallconns = getdata('api/v1/volumes/connections');
-    var newallusers = getdata('api/v1/users/userlist');
- 
+    getdata('api/v1/volumes/connections',connsfn);
+}
+function connsfn(data){
+    newallconns = data;
+    getdata('api/v1/users/userlist',consusersfn);
+}
+function consusersfn(data){
+    newallusers = data;
     var tconn = 0;
     if(allusers != newallusers['allusers'].length || allconns.length != newallconns['connections'].length){
        allusers = newallusers['allusers'];
@@ -220,10 +258,13 @@ function extractconns(){
    $(".tuser").trigger('change');  
 }
 function extractstorage(){
+    getdata('api/v1/pools/dgsinfo', storagefn);
+}
+function storagefn(data){
+    alldgs = data;
     var newtotalstorage = 0;
     var newtotalstoragealloc = 0;
     var change = 0;
-    alldgs = getdata('api/v1/pools/dgsinfo');
     $.each(alldgs['pools'],function(pname,pool){
         if(pname.includes('dhcp') > 0){ 
             newtotalstorage = newtotalstorage + pool['alloc'] + pool['available']; 
@@ -271,10 +312,10 @@ function refreshall(){
   
   ;
 }
-refreshall();
+//refreshall();
 
-setInterval(refreshall,10000);
-refreshall();
+//setInterval(refreshall,10000);
+//refreshall();
 
 
 

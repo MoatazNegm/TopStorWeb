@@ -226,50 +226,50 @@ function auserdel(){
 };
 
 function refreshall(){
-  console.log('hi');
 
   var newallgroups='new0';
   $.ajax({
     url: "api/v1/users/grouplist", 
     type: "GET",
-    async: false,
+    async: true,
     //beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
     
-    success: function(data) {  newallgroups=data; }
+    success: function(data) {  newallgroups=data; 
+      if(JSON.stringify(allgroups) != JSON.stringify(newallgroups)) {
+        allgroups = newallgroups; 
+        console.log('allgroupchange',allgroups,newallgroups)
+        groupsrefresh();
+     }
+    }
    });
-   if(JSON.stringify(allgroups) != JSON.stringify(newallgroups)) {
-     allgroups = newallgroups; 
-     console.log('allgroupchange',allgroups,newallgroups)
-     groupsrefresh();
-   }
-
   var newallpools = 'new0';
   $.ajax({
     url: "api/v1/pools/poolsinfo", 
     type: "GET",
-    async: false,
+    async: true,
     //beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
     
-    success: function(data) {  newallpools=data; }
-   });
-   if(JSON.stringify(allpools) != JSON.stringify(newallpools)) { 
-      allpools = newallpools;
-      poolsrefresh();
-    }
-  
+    success: function(data) {  newallpools=data; 
+      if(JSON.stringify(allpools) != JSON.stringify(newallpools)) { 
+         allpools = newallpools;
+         poolsrefresh();
+      }
+    } 
+  });
 
   var newallusers = 'new0';
   $.ajax({
     url: 'api/v1/users/userlist',
-    async: false,
+    async: true,
     type: 'GET',
     dataSrc: 'allusers',
-    success: function(data) {  newallusers=data; }
-  });
-  if(JSON.stringify(allusers) != JSON.stringify(newallusers)){ 
-    allusers = newallusers;
-    userlistrefresh(); 
-  }
+    success: function(data) {  newallusers=data; 
+     if(JSON.stringify(allusers) != JSON.stringify(newallusers)){ 
+       allusers = newallusers;
+       userlistrefresh(); 
+     }   
+    }
+   });
 }
 setInterval(refreshall, 2000);
 
