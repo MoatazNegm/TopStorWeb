@@ -98,13 +98,12 @@ jQuery(function($){
       success: function(data) {  notif=data;
       if(notif['response'].includes('baduser') > 0){
          location.replace('login.html');
-      }}
-    });
+      }
     // for fixing the time zone presentation
-    if(notif['msgcode'].includes('_')  && notif['msgcode'].includes('%') && notif['msgcode'].includes('!')){
+     if(notif['msgcode'].includes('_')  && notif['msgcode'].includes('%') && notif['msgcode'].includes('!')){
        notif['msgcode'] = notif['msgocde'].split('%')[2]
      }
-    if(globalnotif['time'] != notif['time'] || globalnotif['msgcode'] != notif['msgcode']){
+     if(globalnotif['time'] != notif['time'] || globalnotif['msgcode'] != notif['msgcode']){
       globalnotif = notif;
       dirtylog = 1;
       //console.log('notif',notif['type'], bg[notif['type']]['class'],bg[notif['type']]['loc'], bg[notif['type']]['delay'] );
@@ -120,7 +119,9 @@ jQuery(function($){
         body: notifbody
       });
       
-    } else { dirtylog = 0}
+     } else { dirtylog = 0}
+    }
+   });
     }, 5000);
     $('body').click(function(e){
       var apiurl = 'api/v1/login/renewtoken';

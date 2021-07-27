@@ -1,4 +1,5 @@
 //input mask bundle/ ip address
+var refresh = 0;
 var trendstamps = [];
 var newtrends ;
 var trendsizes = [];
@@ -44,7 +45,7 @@ function getdata(url,fn){
   $.ajax({
     url: url,
     //timeout: 3000,
-    async: false,
+    async: true,
     type: 'GET',
     data: {'token':hypetoken },
     success: function(data){  fn(data);}
@@ -298,7 +299,9 @@ function storagefn(data){
 
 
 function refreshall(){
-    
+   console.log('refresh',refresh);
+   if(refresh==0){ 
+    refresh = 1;
     extractstorage();
     extracthosts();
     extractconns();
@@ -307,15 +310,19 @@ function refreshall(){
     extractvolumes();
     extractdisks();
     extractload();
+    refresh = 0;
+} else {
+ refresh += 1; 
+}
     //$(".tstorage").trigger('configure', {'fgColor': tstoragecolor});
 
   
   ;
 }
-//refreshall();
+refreshall();
 
-//setInterval(refreshall,10000);
-//refreshall();
+setInterval(refreshall,100000);
+refreshall();
 
 
 
