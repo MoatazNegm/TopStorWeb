@@ -27,7 +27,7 @@ function postlogin(url,data){
         if(hypetoken.includes('baduser') < 1){
             localStorage.setItem("token",hypetoken);
             var wloc = localStorage.getItem('lastlocation');
-            if(wloc == null  ) { wloc = 'QuickStor.html';}
+            if(wloc == null ||  wloc == "" ) { wloc = 'QuickStor.html';}
             location.replace(wloc);
         }
         else {
