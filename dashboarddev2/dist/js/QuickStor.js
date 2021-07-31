@@ -51,13 +51,10 @@ function getdata(url,fn){
     success: function(data){  fn(data);}
   });
 }
-function extractload(data){
-    if(dskperf == 'init'){
-        getdata('api/v1/stats/dskperf',loadfn);
-    }
- }
+
 function loadfn(data){
-    dskperf = data
+  if (typeof(dskperf) == "undefined") { return; }
+    dskperf = data;
     var thecpucolor=0;
     var newtcpu = 0;
     $.each(dskperf['cpu'],function(e,t){
@@ -87,7 +84,6 @@ function dskperffn(data){
         thru += parseFloat(t['thr']);
         readn += parseFloat(t['readpercent']);
     });
-    console.log('dskperf',dskperf)
     readn = readn/dskperf['dsk'].length
     iodata['tps'].shift();
     iodata['thru'].shift();
@@ -95,6 +91,7 @@ function dskperffn(data){
     iodata['tps'].push(tps);
     iodata['thru'].push(thru)
     iodata['readpercent'].push(readn);
+    loadfn(data);
 }
 function extracttrends(){
     getdata('api/v1/volumes/stats',trendsfn)
@@ -195,25 +192,30 @@ function snapsfn(data){
         $("#weeksnaps").text(lstweeksnaps);  
         $("#allsnaps").text(snaps.length);  
 }   
-
+var overallcount = 0;
 var cprot;
 function extractvolumes(){
-    var voltypes = ['NFS', 'CIFS', 'HOME'];
+  $("#allvols").text(overallcount); 
+    var voltypes = ['ISCSI','NFS', 'CIFS', 'HOME'];
     $.each(voltypes, function(e,prot){
-        cprot = prot
-        vols[ prot] ='';
-        getdata('api/v1/volumes/'+prot+'/volumesinfo',volumesfn);
+        cprot = voltypes[e];
+        console.log('prot',voltypes[e]);
+        vols[prot] ='';
+        getdata('api/v1/volumes/'+voltypes[e]+'/volumesinfo',volumesfn);
     });
+    
  }
 function volumesfn(data){
+    if(cprot == 'ISCSI'){ overallcount = 0;}
     vols[cprot] = data;
     var count = 0
     vols[cprot] = vols[cprot]['allvolumes'];
     $.each(vols, function(e,t){
         count += vols[e].length
-    });
         
-    $("#allvols").text(count);  
+    });
+    console.log('cprot',cprot,count)
+    overallcount += count; 
      
 }   
 
@@ -309,7 +311,6 @@ function refreshall(){
     extractsnaps();
     extractvolumes();
     extractdisks();
-    extractload();
     refresh = 0;
 } else {
  refresh += 1; 
@@ -467,6 +468,7 @@ function getRandomDatatps() {
 
   return res
 }
+var sampledata;
 function getRandomDatathru() {
 
   
@@ -478,7 +480,7 @@ function getRandomDatathru() {
       res.push([i, iodata['thru'][i]])
   
     }
-  
+    sampledata=res;
     return res
   }
 
@@ -503,7 +505,7 @@ var interactive_plottps = $.plot('#interactivetps', [
     },
     yaxis: {
       min: 0,
-      max: 100,
+      max: Math.max(...iodata['tps'])+3,
       show: true
     },
     xaxis: {
@@ -532,7 +534,7 @@ var interactive_plotthru = $.plot('#interactivethru', [
     },
     yaxis: {
       min: 0,
-      max: 100,
+      max: Math.max(...iodata['thru'])+3,
       show: true
     },
     xaxis: {
@@ -549,8 +551,14 @@ function update() {
   interactive_plotthru.setData([getRandomDatathru()])
 
   // Since the axes don't change, we don't need to call plot.setupGrid()
+  interactive_plottps.getOptions().yaxes[0].max =  Math.max(...iodata['tps'])+3;
+  interactive_plotthru.getOptions().yaxes[0].max =  Math.max(...iodata['thru'])+3;
+
+  interactive_plottps.setupGrid();
+  interactive_plotthru.setupGrid()
   interactive_plottps.draw();
   interactive_plotthru.draw();
+  
   if (realtime === 'on') {
     setTimeout(update, updateInterval)
   }
