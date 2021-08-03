@@ -79,8 +79,8 @@ $("#createvol").click(function(e){
   var thevol;
   thevol = $("#volname").val();
   var apiurl = "api/v1/volumes/create";
-  var apidata = {"type": prot, "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(),
-   "Subnet": $("#Subnet").val(), 'Initiators': $("#Initiators").val().replaceAll('\n',',').replaceAll(' ',','), "size": $("#volsize").val()+'G'}
+  var apidata = {"type": prot, "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), 'portalport':$("#portalport").val(),
+   "Subnet": $("#Subnet").val(), 'initiators': $("#Initiators").val().replaceAll('\n',',').replaceAll(' ',','), "size": $("#volsize").val()+'G'}
 
   postdata(apiurl,apidata);
 
