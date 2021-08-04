@@ -193,29 +193,14 @@ function snapsfn(data){
         $("#allsnaps").text(snaps.length);  
 }   
 var overallcount = 0;
-var cprot;
 function extractvolumes(){
-  $("#allvols").text(overallcount); 
-    var voltypes = ['ISCSI','NFS', 'CIFS', 'HOME'];
-    $.each(voltypes, function(e,prot){
-        cprot = voltypes[e];
-        console.log('prot',voltypes[e]);
-        vols[prot] ='';
-        getdata('api/v1/volumes/'+voltypes[e]+'/volumesinfo',volumesfn);
-    });
+  getdata('api/v1/volumes/volumesinfo',volumesfn);
     
  }
 function volumesfn(data){
-    if(cprot == 'ISCSI'){ overallcount = 0;}
-    vols[cprot] = data;
-    var count = 0
-    vols[cprot] = vols[cprot]['allvolumes'];
-    $.each(vols, function(e,t){
-        count += vols[e].length
-        
-    });
-    console.log('cprot',cprot,count)
-    overallcount += count; 
+    vols = data;
+    overallcount = vols['allvolumes'].length; 
+    $("#allvols").text(overallcount); 
      
 }   
 
