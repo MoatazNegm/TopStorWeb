@@ -1,1 +1,1 @@
-chkuser2.sh admin 1626279348 admin
+chkuser.py admin chk YousefNadody admin

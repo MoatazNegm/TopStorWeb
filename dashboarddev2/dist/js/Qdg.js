@@ -135,7 +135,8 @@ function initdgs(){
       poolcard.addClass('phdcp');
       poolcard.prop('id',pool);
       $('#'+pool+" .title").text(pool);
-      $('#'+pool+" .spansize").text('size:'+t['available'].toString().slice(-5)+'GB');
+      var allsize = Math.round(100*(parseFloat(t['available'])+parseFloat(t['used'])))/100 ;
+      $('#'+pool+" .spansize").text('size:'+allsize.toString()+'GB');
       $('#'+pool+" .spanused").text('used:'+t['used'].toString().slice(0,5)+'GB');
       var avtype = 'Highly Available';
       var avcolor = 'blue';
@@ -257,7 +258,6 @@ $('#createpool').click(function(e){
   var apiurl = "api/v1/pools/newpool";
   var redundancy = $(this).data('redundancy');
   var useable = $("#select"+redundancy).val();
-  console.log('submit',redundancy,useable);
   var apidata = {"redundancy": $(this).data('redundancy'), 'useable': useable, 'user':'mezo' }
   postdata(apiurl,apidata);
 });
@@ -267,7 +267,6 @@ $('.addtopool').click(function(e){
   var redundancy = $(this).data('redundancy');
   var pool = $(this).data('pool');
   var useable = $("#"+pool+" .select"+redundancy).val();
-  console.log('submit',pool, redundancy,useable);
   var apidata = {"pool": pool, "redundancy": redundancy, 'useable': useable, 'user':'mezo' }
   postdata(apiurl,apidata);
 })
@@ -314,7 +313,6 @@ function getChanges(prev, now) {
 
 function dgrefresh(newdgs){
   var needupdate = 0;
-  console.log(newdgs) 
   if((JSON.stringify(alldgs['disks']) != JSON.stringify(newdgs['disks'])) ||
   (JSON.stringify(alldgs['raids']) != JSON.stringify(newdgs['raids']))) {
     
