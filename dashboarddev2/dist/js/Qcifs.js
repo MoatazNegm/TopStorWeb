@@ -102,14 +102,45 @@ function groupsrefresh(){
      // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
      type: 'GET',
      async: false,
-     success: function(data){ allgroups = data;}
+     success: function(data){ allgroups = data;
+      
    },
+ }
  });
 } 
-groupsrefresh();
 poolsrefresh();
 usersnohomerefresh();
 
+function refreshrows()
+{
+ $(".usergroups").each(function(){
+       var thisvolume=$(this)
+       var grps;
+       var assignedgrps = thisvolume.data('grps');
+       var option;
+        if(typeof(assignedgrps) == 'number') {
+         grps = [assignedgrps];
+       } else {
+         grps = assignedgrps.split(',');
+       }
+       console.log('hi',grps)
+       thisvolume.trigger({
+           type: 'select2:select',
+           params: {
+               allgroups: allgroups
+           }
+
+       });
+       $.each(grps, function(e,t){
+         console.log('t',t)
+         if(t !="NoGroup" && t in allgroups["results"]) {
+           var grp = allgroups["results"][t];
+           option = new Option(grp.text, grp.id, true, true)
+           thisvolume.append(option)
+          }
+        });
+      });
+}
 //$.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+Groupprot, passwd:$("#Address"+prot).val().toString()+" "+$("#Subnet"+prot).val().toString()+" "+myname+" "+pools[thepool].host+" "+myname }, function (data){
             
 $("#createvol").click(function(e){
@@ -149,21 +180,6 @@ function volumelistrefresh(){
       var thisvolume=$(this)
       var grps;
       var assignedgrps = thisvolume.data("grps");
-      
-      if(typeof(assignedgrps) == 'number') {
-        grps = [assignedgrps];
-      } else {
-        grps = assignedgrps.split(',');
-      }
-      
-      $.each(grps, function(e,t){
-        if(t !="NoGroup" && t in allgroups["results"]) {
-          var grp = allgroups["results"][t];
-          option = new Option(grp.text, grp.id, true, true)
-          thisvolume.append(option).trigger('change');
-        }
-      });
-      // manually trigger the `select2:select` event
       thisvolume.trigger({
           type: 'select2:select',
           params: {
@@ -171,6 +187,23 @@ function volumelistrefresh(){
           }
 
       });
+      
+      if(typeof(assignedgrps) == 'number') {
+        grps = [assignedgrps];
+      } else {
+        grps = assignedgrps.split(',');
+      }
+      if(grps[0] == ""){ grps = "";}
+      $.each(grps, function(e,t){
+        console.log('t',t)
+        if(t !="NoGroup" && t in allgroups["results"]) {
+          var grp = allgroups["results"][t];
+          option = new Option(grp.text, grp.id, true, true)
+          thisvolume.append(option)
+        }
+      });
+      // manually trigger the `select2:select` event
+      thisvolume.trigger('change');
     });
     groupsrefresh();
     
@@ -227,6 +260,7 @@ function volumelistrefresh(){
 
 
 function initVolumelist(){
+  groupsfn()
   volumelisttable=$("#VolumeList").DataTable({
       "order": [[ 1, "desc" ]],
       "ajax" : {
@@ -291,9 +325,11 @@ function initVolumelist(){
           data:"groups",
           "visible": prot != 'HOME',
           render: function(data, type, row){
-            return '<select class="select2 multiple changeprop usergroups '+row.name+' form-control"' 
+            var therow= '<select class="select2 multiple changeprop usergroups '+row.name+' form-control"' 
             + ' multiple="multiple" data-name='+row.name+'  '
-            + 'data-grps="'+row.groups+'" data-key="groups" data-value="'+data+'" data-name='+row.name+' value=[0] data-change="" id="sel'+row.name+'"></select>';
+            + 'data-grps="'+row.groups+'" data-key="groups" data-value="'+data+'" data-name='+row.name+' value="'+row.groups+'" data-change="" id="sel'+row.name+'"></select>';
+           refreshrows()
+            return therow; 
           }
         },
         {
@@ -328,9 +364,7 @@ function initVolumelist(){
 };
   $.fn.dataTable.ext.errMode = 'throw';
   $('.volumes').hide();
-  
-  
-  
+   groupsrefresh() 
 }
 initVolumelist();
 
@@ -471,19 +505,13 @@ function initcharts(){
 }
 //initcharts()
 
-
-
-
-
-
-
-function refreshall(){
+function groupsfn(){
   var newallgroups='new0';
   $.ajax({
     url: "api/v1/volumes/grouplist", 
     type: "GET",
     //timeout: 3000,
-    async: true,
+    async: false,
     //beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
     
     success: function(data) {  newallgroups=data
@@ -493,8 +521,15 @@ function refreshall(){
       }
     }
    });
-   
+}
 
+
+
+
+
+
+function refreshall(){
+  groupsfn();
   var newallpools = 'new0';
   $.ajax({
     url: "api/v1/volumes/poolsinfo", 
@@ -521,7 +556,7 @@ function refreshall(){
     success: function(data) {  newallvolumes=data; 
      if(JSON.stringify(allvolumes) != JSON.stringify(newallvolumes)) { 
         allvolumes = JSON.parse(JSON.stringify(newallvolumes));
-        volumelistrefresh();
+        //volumelistrefresh();
      }
     }
    });
@@ -552,6 +587,6 @@ function refreshall(){
   });
 }
 refreshall();
-setInterval(refreshall, 2000);
+setInterval(refreshall, 10000);
 //setInterval(function(){allvolumes='refresh';}, 5000);
 
