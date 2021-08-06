@@ -517,7 +517,7 @@ function refreshall(){
     success: function(data) {  newallvolumes=data; 
      if(JSON.stringify(allvolumes) != JSON.stringify(newallvolumes)) { 
         allvolumes = JSON.parse(JSON.stringify(newallvolumes));
-        //volumelistrefresh();
+        volumelistrefresh();
      }
     }
    });
