@@ -118,6 +118,7 @@ function refreshrows()
        var grps;
        var assignedgrps = thisvolume.data('grps');
        var option;
+        thisvolume.addClass('select2');
         if(typeof(assignedgrps) == 'number') {
          grps = [assignedgrps];
        } else {
@@ -137,7 +138,10 @@ function refreshrows()
            thisvolume.append(option)
           }
         });
-      });
+     });
+ $(".changeprop").each(function(){
+      updatebtn($(this));
+ });
 }
 //$.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+Groupprot, passwd:$("#Address"+prot).val().toString()+" "+$("#Subnet"+prot).val().toString()+" "+myname+" "+pools[thepool].host+" "+myname }, function (data){
             
@@ -175,80 +179,42 @@ function volumelistrefresh(){
   volumelisttable.ajax.reload(function(){
     var option;
     $(".usergroups").each(function(){
-      var thisvolume=$(this)
-      var grps;
-      var assignedgrps = thisvolume.data("grps");
-      thisvolume.trigger({
-          type: 'select2:select',
-          params: {
-              allgroups: allgroups
-          }
-
+       refreshrows();
+       groupsrefresh() ;
       });
-      
-      if(typeof(assignedgrps) == 'number') {
-        grps = [assignedgrps];
-      } else {
-        grps = assignedgrps.split(',');
-      }
-      if(grps[0] == ""){ grps = "";}
-      $.each(grps, function(e,t){
-        if(t !="NoGroup" && t in allgroups["results"]) {
-          var grp = allgroups["results"][t];
-          option = new Option(grp.text, grp.id, true, true)
-          thisvolume.append(option)
-        }
-      });
-      // manually trigger the `select2:select` event
-      thisvolume.trigger('change');
-    });
-    groupsrefresh();
-    
-});
+  });
+  propchange();
 }
-    
+function updatebtn(ths){
+
+ var changedkey = ths.data('key');
+      var oldpropvalue = ths.data('value').toString();
+      var newpropvalue = ths.val().toString();
+      if(!(ths.data('name') in changedprop)){ changedprop[ths.data('name')] = {}; }
+      if(oldpropvalue == 'NoGroup') { oldpropvalue = ''}
+      if( oldpropvalue !== newpropvalue ){
+        changedprop[ths.data('name')][changedkey] =  newpropvalue
+        $("#btn"+ths.data('name')).show();
+      }
+      else {
+          delete changedprop[ths.data('name')][changedkey];
+          if($.isEmptyObject(changedprop[ths.data('name')])) {
+            $("#btn"+ths.data('name')).hide();
+            delete changedprop[ths.data('name')];
+          }
+        }
+
+    if($.isEmptyObject(changedprop)) { $("button.volumes").hide();}
+        if($.isEmptyObject(changedprop[ths.data('name')])) {
+          $("#btn"+ths.data('name')).hide();
+          delete changedprop[ths.data('name')];
+        }
+  }
   
 function propchange(){
 
     $(".changeprop").on('change',function(e){
-        
-      var changedkey = $(this).data('key');
-      var oldpropvalue = $(this).data('value').toString();
-      var newpropvalue = $(this).val().toString();
-      if(!($(this).data('name') in changedprop)){ changedprop[$(this).data('name')] = {}; }
-
-
-      if(oldpropvalue == 'NoGroup') { oldpropvalue = ''}
-      if( oldpropvalue !== newpropvalue ){
-        changedprop[$(this).data('name')][changedkey] =  newpropvalue
-        $("#btn"+$(this).data('name')).show();
-      }
-      else {
-        try{
-          delete changedprop[$(this).data('name')][changedkey];
-          if($.isEmptyObject(changedprop[$(this).data('name')])) { 
-            $("#btn"+$(this).data('name')).hide();
-            delete changedprop[$(this).data('name')];
-          }
-        } catch{
-          ;
-        }
-        
-      }
-     
-    if($.isEmptyObject(changedprop)) { $("button.volumes").hide();}
-    try{
-        if($.isEmptyObject(changedprop[$(this).data('name')])) { 
-          $("#btn"+$(this).data('name')).hide();
-          delete changedprop[$(this).data('name')];
-        }
-      } catch {
-        ;
-      }
-
-    
-
-    //$(".changeprop").trigger('change');    
+      updatebtn($(this));  
   });
   
 }
@@ -322,10 +288,9 @@ function initVolumelist(){
           data:"groups",
           "visible": prot != 'HOME',
           render: function(data, type, row){
-            var therow= '<select class="select2 multiple changeprop usergroups '+row.name+' form-control"' 
+            var therow= '<select class="multiple changeprop usergroups '+row.name+' form-control"' 
             + ' multiple="multiple" data-name='+row.name+'  '
             + 'data-grps="'+row.groups+'" data-key="groups" data-value="'+data+'" data-name='+row.name+' value="'+row.groups+'" data-change="" id="sel'+row.name+'"></select>';
-           refreshrows()
             return therow; 
           }
         },
@@ -360,6 +325,7 @@ function initVolumelist(){
 };
   $.fn.dataTable.ext.errMode = 'throw';
   $('.volumes').hide();
+   refreshrows()
    groupsrefresh() 
 }
 initVolumelist();
@@ -391,6 +357,7 @@ function selbtnclickeduser(ths){
         }
         apidata['type'] = prot;
         postdata(apiurl,apidata);
+        volumelistrefresh();
 }
 
 function avoldel(volname){
