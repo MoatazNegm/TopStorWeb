@@ -123,7 +123,6 @@ function refreshrows()
        } else {
          grps = assignedgrps.split(',');
        }
-       console.log('hi',grps)
        thisvolume.trigger({
            type: 'select2:select',
            params: {
@@ -132,7 +131,6 @@ function refreshrows()
 
        });
        $.each(grps, function(e,t){
-         console.log('t',t)
          if(t !="NoGroup" && t in allgroups["results"]) {
            var grp = allgroups["results"][t];
            option = new Option(grp.text, grp.id, true, true)
@@ -195,7 +193,6 @@ function volumelistrefresh(){
       }
       if(grps[0] == ""){ grps = "";}
       $.each(grps, function(e,t){
-        console.log('t',t)
         if(t !="NoGroup" && t in allgroups["results"]) {
           var grp = allgroups["results"][t];
           option = new Option(grp.text, grp.id, true, true)
@@ -207,10 +204,11 @@ function volumelistrefresh(){
     });
     groupsrefresh();
     
-
+});
+}
     
   
-
+function propchange(){
 
     $(".changeprop").on('change',function(e){
         
@@ -238,7 +236,6 @@ function volumelistrefresh(){
         
       }
      
-    });
     if($.isEmptyObject(changedprop)) { $("button.volumes").hide();}
     try{
         if($.isEmptyObject(changedprop[$(this).data('name')])) { 
@@ -251,7 +248,7 @@ function volumelistrefresh(){
 
     
 
-    $(".changeprop").trigger('change');    
+    //$(".changeprop").trigger('change');    
   });
   
 }
@@ -360,7 +357,6 @@ function initVolumelist(){
   volumelisttable.buttons().container().appendTo('#VolumeList_wrapper .col-6:eq(0)');
   //volumelistrefresh();
   volumelisttable.errMode = function ( settings, helpPage, message ) { 
-    console.log(message);
 };
   $.fn.dataTable.ext.errMode = 'throw';
   $('.volumes').hide();
@@ -394,7 +390,6 @@ function selbtnclickeduser(ths){
           apidata['groups'] = newgrps
         }
         apidata['type'] = prot;
-        console.log('config',apidata);
         postdata(apiurl,apidata);
 }
 
@@ -415,7 +410,6 @@ function tocheck(){
     try {
       if($("#Pool2").val().length  > 0 && $("#Address").val().length < 3) { $("#createvol").prop('disabled', 'disabled'); }
      } catch(err){
-      console.log('Pool2 error',$("#Pool2").val());
       console.log('Pool2 error allpools',allpools['results'])
      }
      
@@ -586,6 +580,7 @@ function refreshall(){
    }
   });
 }
+propchange();
 refreshall();
 setInterval(refreshall, 10000);
 //setInterval(function(){allvolumes='refresh';}, 5000);
