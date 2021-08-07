@@ -55,3 +55,7 @@ font-size: large;
  font-style: normal;
  font-size: medium;
 }
+.btn-add {
+ background-color: #2939C6;
+ color: white;
+}
