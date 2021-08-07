@@ -6,6 +6,24 @@
     font-style: normal;
 
 }
+@font-face {
+    font-family: dosismedium;
+    src: url('Dosis-Medium.woff2') format('woff2'),
+         url('Dosis-Medium.woff') format('woff');
+    font-weight: bold; 
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: dosissemibold;
+    src: url('Dosis-SemiBold.woff2') format('woff2'),
+         url('Dosis-SemiBold.woff') format('woff');
+    font-weight: normal; 
+    font-style: normal;
+
+}
+
 
 @font-face {
     font-family: dosisextralight;
@@ -24,4 +42,16 @@ font-size: xx-large;
 .headtitle {
  font-size: x-large;
  padding-top: 1rem;
+}
+.mosttext, body {
+ font-family: dosismedium, sans-serif;
+font-weight: normal;
+font-style:normal;
+font-size: large;
+}
+.alerttitle {
+ font-family: dosisbold, sans-serif;
+ font-weight: normal;
+ font-style: normal;
+ font-size: medium;
 }
