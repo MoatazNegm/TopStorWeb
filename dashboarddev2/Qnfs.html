@@ -110,7 +110,7 @@
       <!-- SidebarSearch Form -->
       <div class="form-inline" >
         <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" style="background-color: white;" type="search" placeholder="Search" aria-label="Search">
+          <input class="form-control form-control-sidebar" style="color:black; background-color: white;" type="search" placeholder="Search" aria-label="Search">
           <div class="input-group-append">
             <button style="background: #0D0D7F;" class="btn btn-sidebar">
               <i class="fas fa-search fa-fw"></i>
@@ -135,21 +135,27 @@
               </p>
             </a>
            <ul class="nav nav-treeview">
-             <li class="nav-item  pages " style="box-shadow:none;font-size: small; margin:0px; border-radius: 0px;">
+             <li class="nav-item  auths Active_Directory " style="box-shadow:none;font-size: small; margin:0px; border-radius: 0px;">
               
-               <a href="./Qactivedirectory.html" style='margin:0px; border-radius: 0px; background-color: #0E2996;' class="nav-link auths Active_Directory">
+               <a href="./Qactivedirectory.html" style='margin:0px; border-radius: 0px; background-color: #0E2996;' class="nav-link ">
                  <i class="fab fa-windows nav-icon" ></i>
                  <p>Active Directory</p>
                </a>
-              <a href="./Qusers.html" class="nav-link auths Box_Users" style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+               </li>
+               <li class="nav-item auths Box_Users " style="box-shadow:none;font-size: small; margin:0px; border-radius: 0px;">
+              <a href="./Qusers.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
                 <i class="fas fa-user-plus nav-icon" ></i>
                 <p>Users</p>
               </a>
+              </li>
+              <li class="nav-item auths Box_Users " style="box-shadow:none;font-size: small; margin:0px; border-radius: 0px;">
               <a href="./Qgroups.html" class="nav-link auths Box_Users" style='margin:0px; border-radius: 0px;background-color: #0E2996;'>
                 <i class="fas fa-users nav-icon" ></i>
                 <p> Groups</p>
               </a>
-              <a href="./Qnodes.html" class="nav-link auths Error" style='margin:0px; border-radius: 0px;background-color: #0E2996;'>
+              </li>
+              <li class="nav-item auths Error " style="box-shadow:none;font-size: small; margin:0px; border-radius: 0px;">
+              <a href="./Qnodes.html" class="nav-link auths " style='margin:0px; border-radius: 0px;background-color: #0E2996;'>
                 <i class="fas fa-server nav-icon" ></i>
                 <p>Nodes</p>
               </a>
@@ -161,19 +167,21 @@
 
          <li class="nav-item  status auths Service_Charts Logs " style=' margin:0px; border-radius: 0px;'>
             <a href="#" class="nav-link" style="box-shadow:none;background-color: #0D0D7F; font-size:1rem; margin:0px; border-radius: 0px;"   >
-              <i class="nav-icon fas fa-stream "></i>
+              <i class="nav-icon fas fa-crosshairs "></i>
               <p>
                 System Status
                 <i class="right  fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item " style="font-size: small; margin:0px; border-radius: 0px;">
-                <a href="./QLogs.html" class="nav-link auths Logs" style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+              <li class="nav-item auths Logs " style="font-size: small; margin:0px; border-radius: 0px;">
+                <a href="./QLogs.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
                   <i class="fas fa-clipboard-list nav-icon" ></i>
                   <p>Logs</p>
                 </a>
-                <a href="./Qserviceperformance.html" class="nav-link auths Service_Charts" style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                </li>
+                <li class="nav-item auths Service_Charts " style="font-size: small; margin:0px; border-radius: 0px;">
+                <a href="./Qserviceperformance.html" class="nav-link auths " style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
                   <i class="far fa-chart-bar nav-icon" ></i>
                   <p>Service Performance</p>
                 </a>
@@ -182,31 +190,39 @@
           </li>
           <li class="nav-item Volumes auths SnapShots CIFS NFS HOME ISCSI menu-open" style=' margin:0px; border-radius: 0px;'> 
              <a href="#" class="nav-link active" style="box-shadow:none;font-size:1rem;background-color: #0D0D7F; margin:0px; border-radius: 0px;">
-               <i class="nav-icon fas fa-stream "></i>
+               <i class="nav-icon fas fa-hdd "></i>
                <p>
                  Volumes
                  <i class="right  fas fa-angle-left"></i>
                </p>
              </a>
              <ul class="nav nav-treeview">
-               <li class="nav-item " style="font-size: small; margin:0px; border-radius: 0px;">
-                 <a href="./Qcifs.html" class="nav-link auths CIFS" style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+               <li class="nav-item auths CIFS " style="font-size: small; margin:0px; border-radius: 0px;">
+                 <a href="./Qcifs.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
                    <i class="fab fa-windows nav-icon" ></i>
                    <p>CIFS</p>
                  </a>
-                 <a href="./Qnfs.html" class="nav-link auths NFS"style='margin:0px; border-radius: 0px;color: white; background-color: #8a8abe;'>
+                 </li>
+                 <li class="nav-item auths NFS " style="font-size: small; margin:0px; border-radius: 0px;">
+                 <a href="./Qnfs.html" class="nav-link " style='margin:0px; border-radius: 0px;color: white; background-color: #8a8abe;'>
                    <i class="fab fa-linux nav-icon" ></i>
                    <p> NFS</p>
                  </a>
-                  <a href="./Qhome.html" class="nav-link auths HOME" style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                 </li>
+                 <li class="nav-item  auths HOME " style="font-size: small; margin:0px; border-radius: 0px;">
+                  <a href="./Qhome.html" class="nav-link" style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
                    <i class="fas fa-house-user nav-icon" ></i>
                    <p> Home Folders</p>
                  </a>
-                <a href="./Qiscsi.html" class="nav-link auths ISCSI" style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                </li>
+                <li class="nav-item auths ISCSI " style="font-size: small; margin:0px; border-radius: 0px;">
+                <a href="./Qiscsi.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
                   <i class="fas fa-database nav-icon" ></i>
                   <p> ISCSI LUNs</p>
                 </a>
-                <a href="./Qsnapshots.html" class="nav-link auths SnapShots" style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+              </li>
+              <li class="nav-item auths SnapShots " style="font-size: small; margin:0px; border-radius: 0px;">
+                <a href="./Qsnapshots.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
                    <i class="fas fa-camera nav-icon" ></i>
                    <p>Snapshots</p>
                  </a>
@@ -214,7 +230,7 @@
 
              </ul>
           </li>
-          <li class="nav-item  replication  auths Replication Partners Senders" style=' margin:0px; border-radius: 0px;'>
+          <li class="nav-item  replication  auths Replication Partners Senders " style=' margin:0px; border-radius: 0px;'>
               <a href="#" class="nav-link " style="box-shadow:none;font-size:1rem; margin:0px;background-color: #0D0D7F; border-radius: 0px;" >
                 <i class="nav-icon far fa-clone "></i>
                 <p>
@@ -223,16 +239,20 @@
                 </p>
               </a>
               <ul class="nav nav-treeview" style="font-size: small; margin:0px; border-radius: 0px;">
-                <li class="nav-item "  style="font-size: small; margin:0px; border-radius: 0px;">
-                  <a href="./Qpartner.html" class="nav-link auths Partners" style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                <li class="nav-item  auths Partners"  style="font-size: small; margin:0px; border-radius: 0px;">
+                  <a href="./Qpartner.html" class="nav-link"style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
                     <i class="fas fa-hands-helping nav-icon" ></i>
                     <p>Partner</p>
                   </a>
-                <a href="./Qsender.html" class="nav-link auths Senders" style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                  </li>
+                  <li class="nav-item auths Senders"  style="font-size: small; margin:0px; border-radius: 0px;"> 
+                <a href="./Qsender.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;'  >
                     <i class="fab fa-perbyte nav-icon" ></i>
                     <p>Sender Schedule</p>
                   </a>
-               <a href="./Qreceived.html" class="nav-link  auths Replication" style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                  </li>
+                  <li class="nav-item  auths Replication"  style="font-size: small; margin:0px; border-radius: 0px;"> 
+               <a href="./Qreceived.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
                     <i class="fas fa-paper-plane nav-icon" ></i>
                     <p>Received Snapshots</p>
                   </a>
@@ -240,8 +260,8 @@
 
               </ul>
           </li>
-          <li class="nav-item Pools auths DiskGroups" style=' margin:0px; border-radius: 0px;'>
-             <a href="#" class="nav-link " style="box-shadow:none;font-size:1rem;background-color: #0D0D7F; margin:0px; border-radius: 0px;" >
+          <li class="nav-item Pools auths DiskGroups " style=' margin:0px; border-radius: 0px;'>
+             <a href="#" class="nav-link  " style="box-shadow:none;font-size:1rem;background-color: #0D0D7F; margin:0px; border-radius: 0px;" >
                <i class="nav-icon fas fa-stream "></i>
                <p>
                  Pools
@@ -249,16 +269,16 @@
                </p>
              </a>
              <ul class="nav nav-treeview">
-               <li class="nav-item " style="font-size: small; margin:0px; border-radius: 0px;">
-                 <a href="./Qdg.html" class="nav-link auths DiskGroups" style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+               <li class="nav-item auths DiskGroups" style="font-size: small; margin:0px; border-radius: 0px;">
+                 <a href="./Qdg.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
                    <i class="fas fa-database   nav-icon" ></i>
                    <p>Disk Groups</p>
                  </a>
                </li>
              </ul>
            </li>
-           <li class="nav-item Settings  auths Uploadch UserPrivilegesch" style=' margin:0px; border-radius: 0px;'>
-              <a href="#" class="nav-link " style="box-shadow:none; font-size:1rem; margin:0px;background-color: #0D0D7F; border-radius: 0px;" >
+           <li class="nav-item Settings  auths Uploadch UserPrivilegesch " style=' margin:0px; border-radius: 0px;'>
+              <a href="#" class="nav-link  " style="box-shadow:none; font-size:1rem; margin:0px;background-color: #0D0D7F; border-radius: 0px;" >
                 <i class="nav-icon fas fa-cog "></i>
                 <p>
                   Settings
@@ -266,12 +286,14 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item " style="font-size: small; margin:0px; border-radius: 0px;">
-                  <a href="./Quserpriv.html" class="nav-link auths UserPrivilegesch" style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                <li class="nav-item auths UserPrivilegesch" style="font-size: small; margin:0px; border-radius: 0px;">
+                  <a href="./Quserpriv.html" class="nav-link "style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
                     <i class="fas fa-unlock-alt nav-icon" ></i>
                     <p>User Privelideges</p>
                   </a>
-                <a href="./Qupdates.html" class="nav-link auths Uploadch" style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                  </li>
+                  <li class="nav-item auths Uploadch" style="font-size: small; margin:0px; border-radius: 0px;">
+                <a href="./Qupdates.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
                     <i class="fas fa-pen-fancy nav-icon" ></i>
                     <p>Updates</p>
                   </a>
