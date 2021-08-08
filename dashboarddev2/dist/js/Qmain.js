@@ -58,7 +58,7 @@ function postdata(url,data){
 
 }
 
-$(".main-sidebar").css("background","#131010")
+$(".main-sidebar").css("background","#0D0D7F")
 var ipv4_address = $(".ipaddress");
 try{
 ipv4_address.inputmask({ "clearIncomplete": true });
@@ -128,4 +128,4 @@ jQuery(function($){
       var apidata = {'token':hypetoken};
       postdata(apiurl,apidata);
     })
-      
+$("li.auths a.active").css('background-color','#4558FC');      

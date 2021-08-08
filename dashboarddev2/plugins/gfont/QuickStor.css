@@ -58,4 +58,11 @@ font-size: large;
 .btn-add {
  background-color: #2939C6;
  color: white;
+ opacity: 1;
+}
+.cardshead {
+ font-family: dosissemibold, sans-serif;
+ font-weight: normal;
+ font-style: normal;
+ font-size: x-large; 
 }
