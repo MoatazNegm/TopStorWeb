@@ -492,6 +492,7 @@ function groupsfn(){
 function refreshall(){
   groupsfn();
   var newallpools = 'new0';
+  $(".odd").css("background-color","rgba(41,57,198,.1)");
   $.ajax({
     url: "api/v1/volumes/poolsinfo", 
     type: "GET",

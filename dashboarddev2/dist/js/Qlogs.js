@@ -103,6 +103,7 @@ function initlogs(){
 initlogs();
 
 function refreshall(){
+  $(".odd").css("background-color","rgba(41,57,198,.1)");
   if(dirtylog > 0) {
     console.log('hi');
     logstable.ajax.reload();

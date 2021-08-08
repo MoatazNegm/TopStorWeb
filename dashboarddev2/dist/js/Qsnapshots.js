@@ -375,6 +375,7 @@ function snapsreferesh(){
    
 }
 function refreshall(){
+  $(".odd").css("background-color","rgba(41,57,198,.1)");
   snapsreferesh();
 }
 $("table").css('width','100%');
