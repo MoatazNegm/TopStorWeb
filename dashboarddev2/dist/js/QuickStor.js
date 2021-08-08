@@ -486,7 +486,7 @@ var interactive_plottps = $.plot('#interactivetps', [
       tickColor: '#f3f3f3'
     },
     series: {
-      color: '#3c8dbc',
+      color: '#2626F1',
       lines: {
         lineWidth: 2,
         show: true,
@@ -515,7 +515,7 @@ var interactive_plotthru = $.plot('#interactivethru', [
       tickColor: '#f3f3f3'
     },
     series: {
-      color: '#3c8dbc',
+      color: '#2626F1',
       lines: {
         lineWidth: 2,
         show: true,
