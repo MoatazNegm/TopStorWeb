@@ -1,8 +1,11 @@
 
 //var ipv4_address = $(".ipaddress");
 //ipv4_address.inputmask();
+var statusdict = {'running': '25%', 'start': '10%', 'stop': '100%', 'finish': '100%', 'cancel': '0%'}
+var statuscolors = {'running': 'bg-primary', 'start': 'pg-secondary%', 'stop': 'bg-success', 'finish': 'bg-success', 'cancel': 'bg-warning'}
 var wpath = window.location.pathname;
 var wpage = wpath.split("/").pop();
+var requests = {};
 localStorage.setItem("lastlocation",wpage);
 
 var globalnotif = {'msgcode':'init','time':'init'};
@@ -95,7 +98,7 @@ jQuery(function($){
       async: false,
       type: 'GET',
       data: {'token': hypetoken},
-      success: function(data) {  notif=data;
+      success: function(data) {  notif=data; requests=data['requests'];
       if(notif['response'].includes('baduser') > 0){
          location.replace('login.html');
       }

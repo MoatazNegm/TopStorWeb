@@ -41,7 +41,7 @@ var oldcurrentinfo='dlkfajsdl;';
  var seldhosts="";
  var modaltill=idletill-120000
  var userlisttable;
- var dirtylog = 1;
+ var tasks = {};
  var myid="<?php echo $_REQUEST['myid'] ?>";
  myidhash=myid;
  var myname="<?php echo $_REQUEST['name'] ?>";
@@ -224,11 +224,51 @@ function auserdel(){
   var apidata = {'name': arguments[0], 'Myname':'mezo'}
   postdata(apiurl,apidata);
 };
-
+function updatetasks(){
+  $.each(requests,function(task,hosts){
+    if(task in tasks){
+      $.each(hosts,function(host,status){
+        tasks[task][host] = status;
+        var statusp = statusdict[status];
+        var statusc = statuscolors[status];
+        $("#"+task+host).css('width',statusp);
+        $("#n"+task+host).text(statusp);
+        $("#"+task+host).removeClass (function (index, className) {
+          return (className.match (/(^|\s)bg-\S+/g) || []).join(' ');
+         });
+        $("#n"+task+host).removeClass (function (index, className) {
+          return (className.match (/(^|\s)bg-\S+/g) || []).join(' ');
+        });
+        $("#"+task+host).addClass(statusc);
+        $("#n"+task+host).addClass(statusc);
+        });
+      } 
+    else {
+        tasks[task] = {};
+        $.each(hosts, function(host,status){
+          var statusp = statusdict[status];
+          var statusc = statuscolors[status];
+          $('#tasktable').append('<tr>' 
+          + '<td class="'+task+'">'+task+'</td>' 
+          + '<td class="'+task+' '+host+'">'+host+'</td>' 
+          +  '<td class="'+task+' '+host+'"><div class="progress progress-xs">'
+          +   '<div id="'+task+host+'"  class="'+task+' '+host+'  progress-bar '+statusc+'"'
+          +    'style="width: '+statusp+'"></div>'
+          + ' </div></td>'
+          + ' <td><span id="n'+task+host+'" class=" badge '+statusc+'">'+statusp+'</span></td>'
+          + '</tr>'
+          );
+          tasks[task][host] = status;
+        });
+        
+    }
+  });
+}
 function refreshall(){
 
   var newallgroups='new0';
   $(".odd").css("background-color","rgba(41,57,198,.1)");
+  updatetasks();
   $.ajax({
     url: "api/v1/users/grouplist", 
     type: "GET",
