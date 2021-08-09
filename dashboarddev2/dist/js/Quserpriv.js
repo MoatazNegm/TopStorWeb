@@ -88,6 +88,6 @@ function userschange(){
    updateauths('manual');
    currentuser = $("#UserList").val()
  })
- setInterval(function(){ userschange();},5000);
+ setInterval(function(){ updatetasks(); userschange();},2000);
 
   

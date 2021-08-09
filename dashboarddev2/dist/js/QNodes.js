@@ -212,7 +212,7 @@ $("#readysubmit").click(function (ev){
 
 
 setInterval(function(){
-  console.log('hi')
+  updatetasks();
   $("#runninghosts > form > div:nth-child(5) > span > span.selection > span").css('margin-top','0.1rem');
   $('#runninghosts > form > div:nth-child(5) > span > span.selection > span').css('height','97%');
   $('#select2-TZ-container').css('margin-top','0.2rem');

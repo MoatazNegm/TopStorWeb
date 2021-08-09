@@ -337,6 +337,7 @@ function dgrefresh(newdgs){
 }
 
 function refreshall(){
+  updatetasks();
   
   getdgs();
 }

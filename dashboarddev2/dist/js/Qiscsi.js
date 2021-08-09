@@ -436,6 +436,7 @@ function refreshvolumes(){
 }
 function refreshall(){
   $(".odd").css("background-color","rgba(41,57,198,.1)");
+  updatetasks();
   refreshvolumes();
   refreshpools();
  }

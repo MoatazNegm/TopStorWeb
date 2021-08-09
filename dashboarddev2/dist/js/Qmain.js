@@ -6,6 +6,7 @@ var statuscolors = {'running': 'bg-primary', 'start': 'pg-secondary%', 'stop': '
 var wpath = window.location.pathname;
 var wpage = wpath.split("/").pop();
 var requests = {};
+var tasks = {};
 localStorage.setItem("lastlocation",wpage);
 
 var globalnotif = {'msgcode':'init','time':'init'};
@@ -43,7 +44,59 @@ $.ajax({
   
   } 
 });
-
+function updatetasks(){
+  $.each(tasks,function(task,hosts){
+    $.each(hosts,function(host,status){
+      var statusp = statusdict[status];
+      if(statusp=='100%'){
+        if($('#tr'+task+host).data('100')=='0'){
+          $('#tr'+task+host).data('100','1')
+        } else {
+         $('#tr'+task+host).hide();
+        }
+      }
+    });
+  });
+  $.each(requests,function(task,hosts){
+    if(task in tasks){
+      $.each(hosts,function(host,status){
+        tasks[task][host] = status;
+        var statusp = statusdict[status];
+        var statusc = statuscolors[status];
+        if(statusp !="100%"){  $('#tr'+task+host).show();}
+        $("#"+task+host).css('width',statusp);
+        $("#n"+task+host).text(statusp);
+        $("#"+task+host).removeClass (function (index, className) {
+          return (className.match (/(^|\s)bg-\S+/g) || []).join(' ');
+         });
+        $("#n"+task+host).removeClass (function (index, className) {
+          return (className.match (/(^|\s)bg-\S+/g) || []).join(' ');
+        });
+        $("#"+task+host).addClass(statusc);
+        $("#n"+task+host).addClass(statusc);
+        });
+      } 
+    else {
+        tasks[task] = {};
+        $.each(hosts, function(host,status){
+          var statusp = statusdict[status];
+          var statusc = statuscolors[status];
+          $('#tasktable').append('<tr data-100="0" id="tr'+task+host+'">' 
+          + '<td class="'+task+' '+host+'">'+task+'</td>' 
+          + '<td class="'+task+' '+host+'">'+host+'</td>' 
+          +  '<td class="'+task+' '+host+'"><div class="progress progress-xs">'
+          +   '<div id="'+task+host+'"  class="'+task+' '+host+'  progress-bar '+statusc+'"'
+          +    'style="width: '+statusp+'"></div>'
+          + ' </div></td>'
+          + ' <td><span id="n'+task+host+'" class=" badge '+statusc+'">'+statusp+'</span></td>'
+          + '</tr>'
+          );
+          tasks[task][host] = status;
+        });
+        
+    }
+  });
+}
 
 dirtylog = 1;
 function postdata(url,data){

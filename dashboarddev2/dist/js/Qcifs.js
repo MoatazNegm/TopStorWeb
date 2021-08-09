@@ -494,6 +494,7 @@ function groupsfn(){
 
 function refreshall(){
   groupsfn();
+  updatetasks();
   var newallpools = 'new0';
   $(".odd").css("background-color","rgba(41,57,198,.1)");
   $.ajax({
