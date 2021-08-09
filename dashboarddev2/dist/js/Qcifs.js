@@ -390,11 +390,12 @@ $(".tocheck").focusout(function(e){ tocheck(); });
 
 
 function initcharts(){
+  var pos='top';
   $.each(chartcards,function(e,t){
-
-
-
-  $(function () {
+    
+   if( e < 2) { pos = 'top';} else { pos = 'right';}
+   
+  
     /* ChartJS
     * -------
     * Here we will create a few charts using ChartJS
@@ -425,6 +426,7 @@ function initcharts(){
     donutData['datasets'] = [{
       data: volstats[t]['stats'],
       backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef']
+
     }];
 
 
@@ -439,8 +441,9 @@ function initcharts(){
               color: 'rgb(255, 99, 132)',
               boxWidth : 10,
               padding : 4,
+              
           },
-          
+          position : pos,
       },
       title: { 
         text: t,
@@ -462,7 +465,7 @@ function initcharts(){
 
 
   });
-  });
+
 }
 //initcharts()
 

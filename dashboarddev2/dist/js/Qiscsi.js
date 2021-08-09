@@ -287,11 +287,12 @@ $(".tocheck").focusout(function(e){ tocheck(); });
 
 
 function initcharts(){
+  var pos = 'top';
   $.each(chartcards,function(e,t){
 
+    if( e < 2) { pos = 'top';} else { pos = 'right';}
 
-
-  $(function () {
+  
     /* ChartJS
     * -------
     * Here we will create a few charts using ChartJS
@@ -337,6 +338,7 @@ function initcharts(){
               boxWidth : 10,
               padding : 4,
           },
+          position: pos,
           
       },
       title: { 
@@ -359,7 +361,7 @@ function initcharts(){
 
 
   });
-  });
+
 }
 //initcharts()
 

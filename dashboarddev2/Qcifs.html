@@ -322,7 +322,7 @@
     <div class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-6">
            <div class="card tocheck ">
               <!-- form start -->
               <form>
@@ -385,62 +385,40 @@
               </form>
             </div> <!-- /.card -->
           </div>
-          <div class="col-md-8">
+          <div class="col-md-6">
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-6">
                 <div class="card">
                   <div class="card-body">
                     <div class="chart">
-                      <canvas id="quotaChart" style="min-height: 300px; height: 300px; max-height: 300px; max-width: 100%;"></canvas>
+                      <canvas id="quotaChart" style="min-height: 209px; height: 209px; max-height: 209px; max-width: 100%;"></canvas>
                     </div>
                   </div>
                 </div> <!-- /.card -->
               </div>
-              <div class="col-md-4">
+              <div class="col-md-6">
                 <div class="card">
                   <div class="card-body">
                     <div class="chart">
-                      <canvas id="usedChart" style="min-height: 300px; height: 300px; max-height: 300px; max-width: 100%;"></canvas>
+                      <canvas id="usedChart" style="min-height: 209px; height: 209px; max-height: 209px; max-width: 100%;"></canvas>
                     </div>
                   </div>
                 </div> <!-- /.card -->
               </div>
-              <div class="col-md-4">
+            </div>
+            <div class="row">
+              <div class="col-md-12">
                 <div class="card">
                   <div class="card-body">
                     <div class="chart">
-                      <canvas id="usedbysnapshotsChart" style="min-height: 300px; height: 300px; max-height: 300px; max-width: 100%;"></canvas>
+                      <canvas id="usedbysnapshotsChart" style="min-height: 209px; height: 209px; max-height: 209px; max-width: 100%;"></canvas>
                     </div>
                   </div>
                 </div> <!-- /.card -->
               </div>
              
             </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="card">
-                  <div class="card-body p-0">
-                    <table class="table table-sm">
-                      <thead style="background-color:#2939C6; color: white;">
-                        <tr>
-                          <th style="width: 10px">#</th>
-                          <th>Volume Task</th>
-                          <th>Progress</th>
-                          <th style="width: 40px">Label</th>
-                        </tr>
-                      </thead>
-                      <tbody style="color:#2939C6; ">
-
-                      </tbody>
-                    </table>
-                  </div>
-                  <!-- /.card-body -->
-                </div>
-
-
-
-              </div>
-            </div>
+            
           </div>
         </div>
         <div class="row">
@@ -498,10 +476,30 @@
 
   <!-- Main Footer -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-    All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.1.0
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body p-0">
+            <table class="table table-sm">
+              <thead style="background-color:#2939C6; color: white;">
+                <tr>
+                  <th style="width: 10px">#</th>
+                  <th>Volume Task</th>
+                  <th>Progress</th>
+                  <th style="width: 40px">Label</th>
+                </tr>
+              </thead>
+              <tbody style="color:#2939C6; ">
+
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+
+
+
+      </div>
     </div>
   </footer>
 </div>

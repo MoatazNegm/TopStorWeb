@@ -322,7 +322,7 @@
     <div class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-6">
            <div class="card tocheck ">
               <!-- form start -->
               <form>
@@ -332,136 +332,91 @@
 
                 <div class="card-body">
                   <div class="form-group row">
-		                <label  for="Pool2" class="col-1 col-form-label" >Pool</label>
-                    <select  class=" select2 form-control pool  col-3" id="Pool2">
+                    <div class="col-5">
+		                <label  for="Pool2" class=" " >Pool</label>
+                    <select  class=" select2 form-control pool " id="Pool2">
                       <option></option>
                     </select>
-                    <label  for="volname" class="offset-1 col-1 col-form-label">Volume</label>
-                    <input type="text" class="form-control col-2 " id="volname" placeholder="Volume Name">
-                    <label  for="volsize" class="offset-1 col-1 col-form-label">Size (GB)</label>
-                    <input type="number" min="1"  step="1" value=1 class="form-control col-1 "  id="volsize">
+                    </div>
+                    <div class="offset-2 col-5">
+                    <label  for="volname" class="">Volume</label>
+                    <input type="text" class="form-control " id="volname" placeholder="Volume Name">
+                     </div>
+                   
                   </div>
                   
                   <div class="form-group row">
-                    <label  for="Address"  class="col-2 col-form-label">IP Address</label>
-                    <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control  ipaddress col-2" name="Address" id="Address"  data-inputmask="'alias': 'ip'">
-                    <label  for="Subnet"  class="offset-1 col-1 col-form-label">Subnet</label>
-                    <input type="number"  min="8" max="32" step="8" value=24 class="form-control  col-1"  id="Subnet">
-                    <label  for="portalport"  class="offset-1 col-1 col-form-label">Port</label>
-                    <input type="number"  min="3260" max="100000" step="1" value=3260 class="form-control  col-2"  id="portalport">
+                    <div class="col-4">
+                    <label  for="Address"  class="">IP Address</label>
+                    <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control  ipaddress " name="Address" id="Address"  data-inputmask="'alias': 'ip'">
+                    </div>
+                    <div class="offset-1 col-2">
+                    <label  for="Subnet"  class="">Subnet</label>
+                    <input type="number"  min="8" max="32" step="8" value=24 class="form-control "  id="Subnet">
+                    </div>
+                    <div class="offset-2 col-3">
+                      <label  for="volsize" class="offset-1">Size<span style="font-size: 0.7rem;">(GB)</span></label>
+                      <input type="number" min="1"  step="1" value=1 class="form-control "  id="volsize">
+                      </div>
                   </div>
-                  <div class="form-group row">
-                    <label  for="Initiators" class="col-2 col-form-label">Initiators IQN</label>
-                    <textarea rows=3 class="form-control col-5 " id="Initiators" placeholder="initiator1 &#13;&#10;initiator2,initiator3 &#13;&#10;initiator4 initiator5"></textarea>
-                  </div>
-                  <div class="row">
-                    <sub class="offset-2" style="color:#9d9eaa;  margin-top:-0.5rem;">add initiators IQNs comma/space/newline separated</sub>
                   
-                   </div>
+                  <div class="form-group row">
+                    <div class='col-8'>
+                    <label  for="Initiators" class="">Initiators IQN</label>
+                    <textarea rows=3 class="form-control  " id="Initiators" placeholder="initiator1 &#13;&#10;initiator2,initiator3 &#13;&#10;initiator4 initiator5"></textarea>
+                    <div class="row" style=" margin-left: -2rem;">
+                      <sub class="offset-2" style="color:#9d9eaa;  margin-top:0.3rem;">add IQNs comma/space/newline separated</sub>
+                     </div>  
+                  </div>
+                    <div class='offset-1 col-3'>
+                      <label  for="portalport"  class="">Port</label>
+                      <input type="number"  min="3260" max="100000" step="1" value=3260 class="form-control"  id="portalport">
+                    </div>
+                  </div>
+                  
                 </div>
                 <!-- /.card-body -->
 
-                <div class="card-footer"style="background-color: white;">
+                <div class="card-footer"style="background-color: white; margin-bottom: 0.1rem;">
                   <button type="submit" id="createvol" class="btn btn-add" style="opacity:1;">Add Volume</button>
                 </div>
               </form>
             </div> <!-- /.card -->
           </div>
-          <div class="col-md-8">
+          <div class="col-md-6">
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-6">
                 <div class="card">
                   <div class="card-body">
                     <div class="chart">
-                      <canvas id="quotaChart" style="min-height: 300px; height: 300px; max-height: 300px; max-width: 100%;"></canvas>
+                      <canvas id="quotaChart" style="min-height: 190px; height: 190px; max-height: 190px; max-width: 100%;"></canvas>
                     </div>
                   </div>
                 </div> <!-- /.card -->
               </div>
-              <div class="col-md-4">
+              <div class="col-md-6">
                 <div class="card">
                   <div class="card-body">
                     <div class="chart">
-                      <canvas id="usedChart" style="min-height: 300px; height: 300px; max-height: 300px; max-width: 100%;"></canvas>
+                      <canvas id="usedChart" style="min-height: 190px; height: 190px; max-height: 190px; max-width: 100%;"></canvas>
                     </div>
                   </div>
                 </div> <!-- /.card -->
               </div>
-              <div class="col-md-4">
+              </div>
+              <div class="row">
+              <div class="col-md-12">
                 <div class="card">
                   <div class="card-body">
                     <div class="chart">
-                      <canvas id="usedbysnapshotsChart" style="min-height: 300px; height: 300px; max-height: 300px; max-width: 100%;"></canvas>
+                      <canvas id="usedbysnapshotsChart" style="min-height: 190px; height: 190px; max-height: 190px; max-width: 100%;"></canvas>
                     </div>
                   </div>
                 </div> <!-- /.card -->
               </div>
              
             </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="card">
-                  <div class="card-body p-0">
-                    <table class="table table-sm">
-                      <thead>
-                        <tr>
-                          <th style="width: 10px">#</th>
-                          <th>Volume Task</th>
-                          <th>Progress</th>
-                          <th style="width: 40px">Label</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>1.</td>
-                          <td>Update software</td>
-                          <td>
-                            <div class="progress progress-xs">
-                              <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                            </div>
-                          </td>
-                          <td><span class="badge bg-danger">55%</span></td>
-                        </tr>
-                        <tr>
-                          <td>2.</td>
-                          <td>Clean database</td>
-                          <td>
-                            <div class="progress progress-xs">
-                              <div class="progress-bar bg-warning" style="width: 70%"></div>
-                            </div>
-                          </td>
-                          <td><span class="badge bg-warning">70%</span></td>
-                        </tr>
-                        <tr>
-                          <td>3.</td>
-                          <td>Cron job running</td>
-                          <td>
-                            <div class="progress progress-xs progress-striped active">
-                              <div class="progress-bar bg-primary" style="width: 30%"></div>
-                            </div>
-                          </td>
-                          <td><span class="badge bg-primary">30%</span></td>
-                        </tr>
-                        <tr>
-                          <td>4.</td>
-                          <td>Fix and squish bugs</td>
-                          <td>
-                            <div class="progress progress-xs progress-striped active">
-                              <div class="progress-bar bg-success" style="width: 90%"></div>
-                            </div>
-                          </td>
-                          <td><span class="badge bg-success">90%</span></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <!-- /.card-body -->
-                </div>
-
-
-
-              </div>
-            </div>
+            
           </div>
         </div>
         <div class="row">
@@ -519,10 +474,69 @@
 
   <!-- Main Footer -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-    All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.1.0
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body p-0">
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th style="width: 10px">#</th>
+                  <th>Volume Task</th>
+                  <th>Progress</th>
+                  <th style="width: 40px">Label</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1.</td>
+                  <td>Update software</td>
+                  <td>
+                    <div class="progress progress-xs">
+                      <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                    </div>
+                  </td>
+                  <td><span class="badge bg-danger">55%</span></td>
+                </tr>
+                <tr>
+                  <td>2.</td>
+                  <td>Clean database</td>
+                  <td>
+                    <div class="progress progress-xs">
+                      <div class="progress-bar bg-warning" style="width: 70%"></div>
+                    </div>
+                  </td>
+                  <td><span class="badge bg-warning">70%</span></td>
+                </tr>
+                <tr>
+                  <td>3.</td>
+                  <td>Cron job running</td>
+                  <td>
+                    <div class="progress progress-xs progress-striped active">
+                      <div class="progress-bar bg-primary" style="width: 30%"></div>
+                    </div>
+                  </td>
+                  <td><span class="badge bg-primary">30%</span></td>
+                </tr>
+                <tr>
+                  <td>4.</td>
+                  <td>Fix and squish bugs</td>
+                  <td>
+                    <div class="progress progress-xs progress-striped active">
+                      <div class="progress-bar bg-success" style="width: 90%"></div>
+                    </div>
+                  </td>
+                  <td><span class="badge bg-success">90%</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+
+
+
+      </div>
     </div>
   </footer>
 </div>
