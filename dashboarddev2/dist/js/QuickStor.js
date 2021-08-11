@@ -3,7 +3,7 @@ var refresh = 0;
 var trendstamps = [];
 var newtrends ;
 var trendsizes = [];
-var onedaylog = { 'error':-1, 'warning':-1};
+var onedaylog = { 'error':-1, 'warning':-1, 'failedlogon':-1 };
 var allhosts= {};
 var newallhosts;
 var newdisks;
@@ -212,18 +212,20 @@ function extractonedaylog(){
 }
 function onedaylogfn(data){
     newonedaylog = data;
+    var tot = 0
+    tot = newonedaylog['error'].length - newonedaylog['failedlogon'].length + newonedaylog['warning'].length
+        
     var tconn = 0;
-    if(onedaylog['error'].length != newonedaylog['error'].length || 
-      onedaylog['warning'].length != newonedaylog['warning'].length ||
-      onedaylog['failedlogon'].length != newonedaylog['failedlogon'].length  ){
-        onedaylog['error'] = newonedaylog['error'];
-        onedaylog['warning'] = newonedaylog['warning'];
-        onedaylog['failedlogon'] = newonedaylog['failedlogon'];
-      $("#error").text(onedaylog['error'].length);
-      $("#warning").text(onedaylog['warning'].length);
-      $("#failedlogon").text(onedaylog['failedlogon'].length);
-      
-   }   
+    
+      $("#error").text(newonedaylog['error'].length);
+      $("#warning").text(newonedaylog['warning'].length);
+      $("#failedlogon").text(newonedaylog['failedlogon'].length);
+      $("#tot").text(tot);
+      $("#warns").text(newonedaylog['warning'].length);
+      $("#errs").text(newonedaylog['error'].length - newonedaylog['failedlogon'].length);
+      $("#logonfails").text(newonedaylog['failedlogon'].length);
+    
+   
    
 }
 

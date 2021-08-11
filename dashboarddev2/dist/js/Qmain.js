@@ -1,6 +1,7 @@
 
 //var ipv4_address = $(".ipaddress");
 //ipv4_address.inputmask();
+var onedaylog = { 'error':-1, 'warning':-1, 'failedlogon':-1 };
 var statusdict = {'running': '25%', 'start': '10%', 'stop': '100%', 'finish': '100%', 'cancel': '0%'}
 var statuscolors = {'running': 'bg-primary', 'start': 'pg-secondary%', 'stop': 'bg-success', 'finish': 'bg-success', 'cancel': 'bg-warning'}
 var wpath = window.location.pathname;
@@ -140,18 +141,43 @@ jQuery(function($){
       });
     });
   });
+   
+  function extractonedaylog(){
+    $.ajax({
+      url: 'api/v1/info/onedaylog',
+      //timeout: 3000,
+      async: true,
+      type: 'GET',
+      data: {'token':hypetoken },
+      success: function(newonedaylog){  
+        var tot = 0
+        tot = newonedaylog['error'].length - newonedaylog['failedlogon'].length + newonedaylog['warning'].length
+        var tconn = 0;
+        onedaylog['error'] = newonedaylog['error'];
+        onedaylog['warning'] = newonedaylog['warning'];
+        onedaylog['failedlogon'] = newonedaylog['failedlogon'];
+        $("#tot").text(tot);
+        $("#warns").text(newonedaylog['warning'].length);
+        $("#errs").text(newonedaylog['error'].length - newonedaylog['failedlogon'].length);
+        $("#logonfails").text(newonedaylog['failedlogon'].length);
+      
+      }
+    });
+  }
+ 
   var bg = {'warning':{'class':'bg-warning', 'loc':'bottomLeft', 'delay':10000},
      'error':{'class':'bg-danger', 'loc':'topRight', 'delay':10000}, 
      'info':{'class':'bg-info','loc':'bottomRight', 'delay':4000},};
   setInterval(function(){
     var notif;
-    
+  
     $.ajax({
       url: 'api/v1/info/notification',
       async: false,
       type: 'GET',
       data: {'token': hypetoken},
-      success: function(data) {  notif=data; requests=data['requests'];
+      success: function(data){  
+        notif=data; requests=data['requests'];
       if(notif['response'].includes('baduser') > 0){
          location.replace('login.html');
       }
