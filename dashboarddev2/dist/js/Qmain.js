@@ -141,8 +141,10 @@ jQuery(function($){
       });
     });
   });
-   
   function extractonedaylog(){
+    ;
+  }
+  function onedaylogfn(){
     $.ajax({
       url: 'api/v1/info/onedaylog',
       //timeout: 3000,
@@ -160,7 +162,7 @@ jQuery(function($){
         $("#warns").text(newonedaylog['warning'].length);
         $("#errs").text(newonedaylog['error'].length - newonedaylog['failedlogon'].length);
         $("#logonfails").text(newonedaylog['failedlogon'].length);
-      
+        extractonedaylog();
       }
     });
   }
@@ -170,10 +172,10 @@ jQuery(function($){
      'info':{'class':'bg-info','loc':'bottomRight', 'delay':4000},};
   setInterval(function(){
     var notif;
-  
+    onedaylogfn();
     $.ajax({
       url: 'api/v1/info/notification',
-      async: false,
+      async: true,
       type: 'GET',
       data: {'token': hypetoken},
       success: function(data){  

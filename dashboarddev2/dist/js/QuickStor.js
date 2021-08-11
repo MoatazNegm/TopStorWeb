@@ -3,7 +3,6 @@ var refresh = 0;
 var trendstamps = [];
 var newtrends ;
 var trendsizes = [];
-var onedaylog = { 'error':-1, 'warning':-1, 'failedlogon':-1 };
 var allhosts= {};
 var newallhosts;
 var newdisks;
@@ -207,23 +206,17 @@ function volumesfn(data){
      
 }   
 
+
 function extractonedaylog(){
-    getdata('api/v1/info/onedaylog',onedaylogfn);
-}
-function onedaylogfn(data){
-    newonedaylog = data;
     var tot = 0
-    tot = newonedaylog['error'].length - newonedaylog['failedlogon'].length + newonedaylog['warning'].length
+    tot = onedaylog['error'].length - onedaylog['failedlogon'].length + onedaylog['warning'].length
         
     var tconn = 0;
     
-      $("#error").text(newonedaylog['error'].length);
-      $("#warning").text(newonedaylog['warning'].length);
-      $("#failedlogon").text(newonedaylog['failedlogon'].length);
-      $("#tot").text(tot);
-      $("#warns").text(newonedaylog['warning'].length);
-      $("#errs").text(newonedaylog['error'].length - newonedaylog['failedlogon'].length);
-      $("#logonfails").text(newonedaylog['failedlogon'].length);
+      $("#error").text(onedaylog['error'].length - onedaylog['failedlogon'].length);
+      $("#warning").text(onedaylog['warning'].length);
+      $("#failedlogon").text(onedaylog['failedlogon'].length);
+      
     
    
    
@@ -292,7 +285,7 @@ function storagefn(data){
 
 
 
-function refreshall(){
+function refreshdash(){
   
    if(refresh==0){ 
     refresh = 1;
@@ -312,10 +305,11 @@ function refreshall(){
   
   ;
 }
-refreshall();
+refreshdash();
 
-setInterval(refreshall,100000);
-refreshall();
+
+setInterval(refreshdash,100000);
+
 
 
 
