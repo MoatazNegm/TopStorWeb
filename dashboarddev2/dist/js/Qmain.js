@@ -224,7 +224,7 @@ $(".chgpasswd").click(function(e){
 });
 $('#passwrd').click(function(e){
   var apiurl = 'api/v1/user/changepass';
-  var apidata = {'user': userofpass, 'password': $("#pass").val()};
+  var apidata = {'username': userofpass, 'password': $("#pass").val()};
   postdata(apiurl,apidata);
 })
 $(".chpass").focusout(function(e){ 

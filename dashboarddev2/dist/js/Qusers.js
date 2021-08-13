@@ -106,6 +106,9 @@ function userlistrefresh(){
           }
 
       });
+      $(".chgpasswd").click(function(e){
+        userofpass=$(this).data('username');
+       });
     });
     groupsrefresh();
     $(".select2.usergroups").on('change',function(e){
@@ -162,7 +165,7 @@ function initUserlist(){
         {
           data: null,
           render: function(data, type, row){
-            return '<a href="javascript:userPassword(\''+row.name+'\')" >'
+            return '<a href="#modal-sm" data-username="'+row.name+'" data-toggle="modal" data-target="#modal-sm" class="chgpasswd">'
             + '<img src="dist/img/edit.png" alt="cannott upload edit icon">'
             + '</a>';
           }
@@ -273,4 +276,7 @@ function refreshall(){
    });
 }
 setInterval(refreshall, 2000);
+$(".chgpasswd").click(function(e){
+  userofpass=$(this).data('username');
+ });
 
