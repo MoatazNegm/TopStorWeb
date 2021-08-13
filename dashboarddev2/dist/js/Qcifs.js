@@ -425,7 +425,7 @@ function initcharts(){
     donutData['labels'] = volstats[t]['labels']
     donutData['datasets'] = [{
       data: volstats[t]['stats'],
-      backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef']
+      backgroundColor : ['#0019AD', '#0023FF', '#D1D5FF', '#42F3DC']
 
     }];
 

@@ -21,6 +21,9 @@ $.ajax({
   success: function(isok) {  
     if(isok['response'].includes('baduser') > 0){
       location.href = 'login.html';
+    } else {
+      $("#username").text(isok['response']);
+     
     };
   } 
 });

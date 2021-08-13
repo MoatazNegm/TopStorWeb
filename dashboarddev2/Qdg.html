@@ -74,16 +74,21 @@
           <i class="fas fa-expand-arrows-alt"></i>
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" data-step=0.01 href="#" role="button" style="color: black;">
-          <i class="fas fa-th-large"></i>
+      <li class="nav-item dropdown" >
+        <a class="nav-link" data-toggle="dropdown" href="#" style="color: rgb(3, 3, 49);" >
+          <i class="fas fa-user mr-1 "></i><span id="username"></span>
         </a>
+        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+          <a href="./login.html" class="dropdown-item" >
+            <i class="fas fa-sign-out-alt mr-2 "></i><span class='' ></span> logout
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="./login.html" class="dropdown-item " >
+            <i class="fas fa-key mr-2 "></i><span class='' ></span> change password
+          </a>
+        </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" data-step=0.01 href="./login.html" role="button" style="color: black;">
-          <i class="fas fa-sign-out-alt"></i>
-        </a>
-      </li>
+      
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -762,8 +767,7 @@
   <script src="plugins/select2/js/select2.full.min.js"></script>
   <script src="plugins/chart.js/Chart.min.js"></script>
   <script src="dist/js/demo.js"></script>
-  <script src="dist/js/Qmain.js"></script>
-  <script src="dist/js/Qdg.js"></script>
+ 
   
   <script>
   $('.datacard').CardWidget('collapse')
@@ -787,5 +791,7 @@
   });
 });
   </script>
+   <script src="dist/js/Qmain.js"></script>
+   <script src="dist/js/Qdg.js"></script>
 </body>
 </html>
