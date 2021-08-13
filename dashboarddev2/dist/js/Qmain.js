@@ -1,6 +1,7 @@
 
 //var ipv4_address = $(".ipaddress");
 //ipv4_address.inputmask();
+var userofpass='00';
 var onedaylog = { 'error':-1, 'warning':-1, 'failedlogon':-1 };
 var statusdict = {'running': '25%', 'start': '10%', 'stop': '100%', 'finish': '100%', 'cancel': '0%'}
 var statuscolors = {'running': 'bg-primary', 'start': 'pg-secondary%', 'stop': 'bg-success', 'finish': 'bg-success', 'cancel': 'bg-warning'}
@@ -23,6 +24,8 @@ $.ajax({
       location.href = 'login.html';
     } else {
       $("#username").text(isok['response']);
+      $("#chgpasswd").data('username',isok['response']);
+      
      
     };
   } 
@@ -215,4 +218,21 @@ jQuery(function($){
       var apidata = {'token':hypetoken};
       postdata(apiurl,apidata);
     })
-$("li.auths a.active").css('background-color','#4558FC');      
+$("li.auths a.active").css('background-color','#4558FC');   
+$(".chgpasswd").click(function(e){
+ userofpass=$(this).data('username');
+});
+$('#passwrd').click(function(e){
+  var apiurl = 'api/v1/user/changepass';
+  var apidata = {'user': userofpass, 'password': $("#pass").val()};
+  postdata(apiurl,apidata);
+})
+$(".chpass").focusout(function(e){ 
+  if($('#pass').val() != $('#newpass').val()){
+     $('#passerr').css('color','red');
+     $('#passwrd').prop('disabled',true);
+  } else {
+    $('#passerr').css('color','white'); 
+    $('#passwrd').prop('disabled',false);
+  }
+});
