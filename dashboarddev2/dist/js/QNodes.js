@@ -116,6 +116,7 @@ function memberclick(thisclck,status){
       $(thisclck).children('img').addClass("SelectedFreered");
       updaterunninghosts(status);
       $("#"+status+"submit").attr('disabled',false);
+      if((allhosts.ready.length - allhosts.possible.length) < 2){ $("#activesubmit").attr('disabled',true)}
        
     }
   //thisclck.preventDefault();
@@ -124,10 +125,18 @@ function memberclick(thisclck,status){
 function evacuate(){
   var host = selectedhost['active'];
   var apiurl = "api/v1/hosts/evacuate";
-  var apidata = {"name": allhosts['active'][host]['name'], "Myname":"mezo"}
+  var apidata = {"name": allhosts['active'][host]['name']}
   postdata(apiurl,apidata);
   
 }
+
+$("#possiblesubmit").click(function(e){
+  var host = selectedhost['possible'];
+  var apiurl = "api/v1/hosts/joincluster";
+  var apidata = {"name": allhosts['possible'][host]['name']}
+  postdata(apiurl,apidata);
+  
+});
 
 $("#readysubmit").click(function (ev){ 
   ev.preventDefault();
@@ -219,7 +228,7 @@ setInterval(function(){
   $('#runninghosts > form > div:nth-child(5) > span > span.selection > span > span.select2-selection__arrow').css('margin-top','0.2rem');
 
   refreshhosts();
- console.log('hihi')
+ 
 },5000);
 
 
