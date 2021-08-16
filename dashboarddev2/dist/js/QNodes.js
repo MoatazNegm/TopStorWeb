@@ -110,8 +110,8 @@ function memberclick(thisclck,status){
         updaterunninghosts(status);
         $("#"+status+"submit").attr('disabled',true);
     } else {
-      $('img.server.'+status).removeClass("SelectedFreered")
-      $('img.server'+status).addClass("SelectedFreewhite");
+      $('img.server').removeClass("SelectedFreered")
+      $('img.server').addClass("SelectedFreewhite");
       $(thisclck).children('img').removeClass("SelectedFreewhite")
       $(thisclck).children('img').addClass("SelectedFreered");
       updaterunninghosts(status);
