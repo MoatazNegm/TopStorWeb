@@ -76,33 +76,38 @@ function poolsrefresh(){
  
 }
 function grouplistrefresh(){
+ 
   grouplisttable.ajax.reload(function(){
     var option;
+   
     $(".groupusers").each(function(){
-      thisgroup=$(this)
+      var thisgroup=$(this)
       var usrs;
+       // manually trigger the `select2:select` event
+    thisgroup.trigger({
+      type: 'select2:select',
+      params: {
+          allusers: allusers
+      }
+
+    });
       assignedusrs = thisgroup.data("usrs")
       if(typeof(assignedusrs) == 'number') {
         usrs = [assignedusrs];
       } else {
         usrs = assignedusrs.split(',');
       }
-      
-      $.each(usrs, function(e,t){
-        if(t !="NoUser") {
-          var usr = allusers["results"][t];
-          option = new Option(usr.text, usr.id, true, true)
-          thisgroup.append(option).trigger('change');
-        }
-      });
-      // manually trigger the `select2:select` event
-      thisgroup.trigger({
-          type: 'select2:select',
-          params: {
-              allusers: allusers
+      if(usrs.length <= allusers['results'].length) {
+        $.each(usrs, function(e,t)  {
+        
+          if( allusers["results"][t]['text'] !="NoUser") {
+            var usr = allusers["results"][t];
+            option = new Option(usr.text, usr.id, true, true)
+            thisgroup.append(option).trigger('change');
           }
-
-      });
+        });
+      }
+      
     });
     usersrefresh();
     $(".select2.groupusers").on('change',function(e){
