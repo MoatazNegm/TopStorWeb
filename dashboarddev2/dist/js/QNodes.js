@@ -116,8 +116,8 @@ function memberclick(thisclck,status){
       $(thisclck).children('img').addClass("SelectedFreered");
       updaterunninghosts(status);
       $("#"+status+"submit").attr('disabled',false);
-      if((allhosts.ready.length - allhosts.possible.length) < 2){ $("#activesubmit").attr('disabled',true)}
-       
+      if((allhosts.ready.length - allhosts.possible.length) < 2){ $("#activesubmit").attr('disabled',true);}
+      if($(thisclck).children('img').prop('src').includes('Off') > 0){ $("#activesubmit").attr('disabled',false);}
     }
   //thisclck.preventDefault();
 }
