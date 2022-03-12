@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QuickStor</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="dist/css/fonts/google-fonts.css">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+
+  <!-- Select2 -->
+  <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <link rel="stylesheet" href="dist/css/Qmain.css">
+  <link rel="stylesheet" href="plugins/gfont/QuickStor.css">
+</head>
+<!--
+`body` tag options:
+
+  Apply one or more of the following classes to to the body tag
+  to get the desired effect
+
+  * sidebar-collapse
+  * sidebar-mini
+-->
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light" style="background-color: #F1F2FE; border:0px;">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item" >
+        <a class="boldit nav-link" style="color: black;" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars "></i></a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="./QuickStor.html" class="boldit nav-link" style="color: black;"  >Cluster Management</a>
+      </li>
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto headtitle"  >
+      <!-- Notifications Dropdown Menu -->
+      <li class="nav-item dropdown" >
+        <a class="nav-link" data-toggle="dropdown" href="#" style="color: black;" >
+          <i class="far fa-bell"></i>
+          <span class="badge badge-warning navbar-badge" id="tot">00</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <span class="dropdown-item dropdown-header">Notifications through last 7 days</span>
+          <div class="dropdown-divider"></div>
+          <a href="./QLogs.html" class="dropdown-item bg-warning" >
+            <i class="fas fa-exclamation-triangle mr-2 "></i><span class='' id="warns"></span> warnings
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="./QLogs.html" class="dropdown-item bg-danger">
+            <i class="fas fa-microchip mr-2"></i><span class='' id="errs"></span> system related errors
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="./QLogs.html" class="dropdown-item bg-info">
+            <i class="fas fa-users  mr-2 "></i><span class="" id="logonfails"></span> failed logons/session outs
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="./QLogs.html" class="dropdown-item dropdown-footer">See All Notifications</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-widget="fullscreen" href="#" role="button" style="color: black;">
+          <i class="fas fa-expand-arrows-alt"></i>
+        </a>
+      </li>
+      <li class="nav-item dropdown" >
+        <a class="nav-link" data-toggle="dropdown" href="#" style="color: rgb(3, 3, 49);" >
+          <i class="fas fa-user mr-1 "></i><span id="username"></span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+          <a href="./login.html" class="dropdown-item" >
+            <i class="fas fa-sign-out-alt mr-2 "></i><span class='' ></span> logout
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#modal-sm" id="chgpasswd" data-toggle="modal" data-target="#modal-sm" class="dropdown-item chgpasswd" >
+            <i class="fas fa-key mr-2 "></i><span class='' ></span> change password
+          </a>
+        </div>
+      </li>
+      
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background: rgb(19, 16, 16);">
+    <!-- Brand Logo -->
+    <a href="./QuickStor.html" class="brand-link navbar-brand " style="padding:0px; margin:0px;">
+      <img src="img/logo.png" widht="250" height="90" alt="nothing" class="" style="opacity: .8">
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+      <!-- SidebarSearch Form -->
+      <div class="form-inline" >
+        <div class="input-group" data-widget="sidebar-search">
+          <input class="form-control form-control-sidebar" style="color:black; background-color: white;" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button style="background: #0D0D7F;" class="btn btn-sidebar">
+              <i class="fas fa-search fa-fw"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+   
+        <ul class="nav nav-pills nav-sidebar flex-column "  data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+              with font-awesome or any other icon font library -->
+
+          <li class="nav-item  system  selpages auths Box_Users Active_Directory Error menu-open " style=' margin:0px; border-radius: 0px;'>
+            <a href="#" class="nav-link active" style="font-size:1rem; margin:0px; border-radius: 0px;" style="background-color: #4558FC;font-size:1rem; margin:0px; border-radius: 0px;" >
+              <i class="nav-icon fa fa-cogs "></i>
+              <p>
+                System configuration
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+           <ul class="nav nav-treeview">
+             <li class="nav-item  auths Active_Directory " style="box-shadow:none;font-size: small; margin:0px; border-radius: 0px;">
+              
+               <a href="./Qactivedirectory.html" style='margin:0px; border-radius: 0px; background-color: #0E2996;' class="nav-link ">
+                 <i class="fab fa-windows nav-icon" ></i>
+                 <p>Active Directory</p>
+               </a>
+               </li>
+               <li class="nav-item auths Box_Users " style="box-shadow:none;font-size: small; margin:0px; border-radius: 0px;">
+              <a href="./Qusers.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                <i class="fas fa-user-plus nav-icon" ></i>
+                <p>Users</p>
+              </a>
+              </li>
+              <li class="nav-item auths Box_Users " style="box-shadow:none;font-size: small; margin:0px; border-radius: 0px;">
+              <a href="./Qgroups.html" class="nav-link auths Box_Users" style='margin:0px; border-radius: 0px;background-color: #0E2996;'>
+                <i class="fas fa-users nav-icon" ></i>
+                <p> Groups</p>
+              </a>
+              </li>
+              <li class="nav-item auths Error " style="box-shadow:none;font-size: small; margin:0px; border-radius: 0px;">
+              <a href="./Qnodes.html" class="nav-link auths " style='margin:0px; border-radius: 0px;color: white; background-color: #8a8abe;'>
+                <i class="fas fa-server nav-icon" ></i>
+                <p>Nodes</p>
+              </a>
+          
+             </li>
+             
+           </ul>
+         </li>
+
+         <li class="nav-item  status auths Service_Charts Logs  " style=' margin:0px; border-radius: 0px;'>
+            <a href="#" class="nav-link " style="box-shadow:none;background-color: #0D0D7F; font-size:1rem; margin:0px; border-radius: 0px;"   >
+              <i class="nav-icon fas fa-crosshairs "></i>
+              <p>
+                System Status
+                <i class="right  fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item auths Logs  " style="font-size: small; margin:0px; border-radius: 0px;">
+                <a href="./QLogs.html" class="nav-link " class="nav-link auths " style='margin:0px; border-radius: 0px; background-color: #0E2996;'  >
+                  <i class="fas fa-clipboard-list nav-icon" ></i>
+                  <p>Logs</p>
+                </a>
+                </li>
+                <li class="nav-item auths Service_Charts " style="font-size: small; margin:0px; border-radius: 0px;">
+                <a href="./Qserviceperformance.html" class="nav-link auths " style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                  <i class="far fa-chart-bar nav-icon" ></i>
+                  <p>Service Performance</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item Volumes auths SnapShots CIFS NFS HOME ISCSI " style=' margin:0px; border-radius: 0px;'> 
+             <a href="#" class="nav-link" style="box-shadow:none;font-size:1rem;background-color: #0D0D7F; margin:0px; border-radius: 0px;">
+               <i class="nav-icon fas fa-hdd "></i>
+               <p>
+                 Volumes
+                 <i class="right  fas fa-angle-left"></i>
+               </p>
+             </a>
+             <ul class="nav nav-treeview">
+               <li class="nav-item auths CIFS " style="font-size: small; margin:0px; border-radius: 0px;">
+                 <a href="./Qcifs.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                   <i class="fab fa-windows nav-icon" ></i>
+                   <p>CIFS</p>
+                 </a>
+                 </li>
+                 <li class="nav-item auths NFS " style="font-size: small; margin:0px; border-radius: 0px;">
+                 <a href="./Qnfs.html" class="nav-link "  style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                   <i class="fab fa-linux nav-icon" ></i>
+                   <p> NFS</p>
+                 </a>
+                 </li>
+                 <li class="nav-item  auths HOME " style="font-size: small; margin:0px; border-radius: 0px;">
+                  <a href="./Qhome.html" class="nav-link" style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                   <i class="fas fa-house-user nav-icon" ></i>
+                   <p> Home Folders</p>
+                 </a>
+                </li>
+                <li class="nav-item auths ISCSI " style="font-size: small; margin:0px; border-radius: 0px;">
+                <a href="./Qiscsi.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
+                  <i class="fas fa-database nav-icon" ></i>
+                  <p> ISCSI LUNs</p>
+                </a>
+              </li>
+              <li class="nav-item auths SnapShots " style="font-size: small; margin:0px; border-radius: 0px;">
+                <a href="./Qsnapshots.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
+                   <i class="fas fa-camera nav-icon" ></i>
+                   <p>Snapshots</p>
+                 </a>
+               </li>
+
+             </ul>
+          </li>
+          <li class="nav-item  replication  auths Replication Partners Senders " style=' margin:0px; border-radius: 0px;'>
+              <a href="#" class="nav-link " style="box-shadow:none;font-size:1rem; margin:0px;background-color: #0D0D7F; border-radius: 0px;" >
+                <i class="nav-icon far fa-clone "></i>
+                <p>
+                  Replication
+                  <i class="right  fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview" style="font-size: small; margin:0px; border-radius: 0px;">
+                <li class="nav-item  auths Partners"  style="font-size: small; margin:0px; border-radius: 0px;">
+                  <a href="./Qpartner.html" class="nav-link"style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
+                    <i class="fas fa-hands-helping nav-icon" ></i>
+                    <p>Partner</p>
+                  </a>
+                  </li>
+                  <li class="nav-item auths Senders"  style="font-size: small; margin:0px; border-radius: 0px;"> 
+                <a href="./Qsender.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;'  >
+                    <i class="fab fa-perbyte nav-icon" ></i>
+                    <p>Sender Schedule</p>
+                  </a>
+                  </li>
+                  <li class="nav-item  auths Replication"  style="font-size: small; margin:0px; border-radius: 0px;"> 
+               <a href="./Qreceived.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
+                    <i class="fas fa-paper-plane nav-icon" ></i>
+                    <p>Received Snapshots</p>
+                  </a>
+                </li>
+
+              </ul>
+          </li>
+          <li class="nav-item Pools auths DiskGroups " style=' margin:0px; border-radius: 0px;'>
+             <a href="#" class="nav-link  " style="box-shadow:none;font-size:1rem;background-color: #0D0D7F; margin:0px; border-radius: 0px;" >
+               <i class="nav-icon fas fa-stream "></i>
+               <p>
+                 Pools
+                 <i class="right  fas fa-angle-left"></i>
+               </p>
+             </a>
+             <ul class="nav nav-treeview">
+               <li class="nav-item auths DiskGroups" style="font-size: small; margin:0px; border-radius: 0px;">
+                 <a href="./Qdg.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
+                   <i class="fas fa-database   nav-icon" ></i>
+                   <p>Disk Groups</p>
+                 </a>
+               </li>
+             </ul>
+           </li>
+           <li class="nav-item Settings  auths Uploadch UserPrivilegesch " style=' margin:0px; border-radius: 0px;'>
+              <a href="#" class="nav-link  " style="box-shadow:none; font-size:1rem; margin:0px;background-color: #0D0D7F; border-radius: 0px;" >
+                <i class="nav-icon fas fa-cog "></i>
+                <p>
+                  Settings
+                  <i class="right  fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item auths UserPrivilegesch" style="font-size: small; margin:0px; border-radius: 0px;">
+                  <a href="./Quserpriv.html" class="nav-link "style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
+                    <i class="fas fa-unlock-alt nav-icon" ></i>
+                    <p>User Privelideges</p>
+                  </a>
+                  </li>
+                  <li class="nav-item auths Uploadch" style="font-size: small; margin:0px; border-radius: 0px;">
+                <a href="./Qupdates.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
+                    <i class="fas fa-pen-fancy nav-icon" ></i>
+                    <p>Updates</p>
+                  </a>
+                </li>
+
+              </ul>
+            </li>
+      </ul>
+    </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-outline card-primary datacard">
+              <div class="card-header" style="cursor: cell;">
+                <div class="card-tools" >
+                  <!-- Collapse Button -->
+                  <button type="button" class="btn btn-tool "  data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                </div>
+                <div class="row" data-card-widget="collapse">
+                  <div class='col-5'>
+                    <h3 class="card-title text-lg cardshead" >Running Nodes</h3>
+                  </div>
+                </div>
+
+              </div>
+              <div class="card-header">
+                <div class="row" id="hostsready">
+                 <div id="memname" class="hostsready col-2">
+                   <a  href="#" class='img-clck' data-htname='hnameall'>
+                     <img class="img-responsive server SelectedFreewhite" style="object-fit:cover; max-width:80%;"
+                      class="server" src="dist/img/Server1-On.png" />
+                     <p class="psize1" style="color:green;">
+                       hname:hip
+                     </p>
+                   </a>
+                 </div>
+                 <div id="memhname" class="hostsready col-2">
+                   <a  href="#" class='img-clck'>
+                     <img class="img-responsive server" style="object-fit:cover; max-width:80%;"
+                      class="server" src="dist/img/Server1-On.png" />
+                     <p class="psize1" style="color:green;">
+                       hname2:hip2
+                     </p>
+                   </a>
+                 </div>
+
+                </div>
+              </div>
+
+              <div class="card-body  " id='runninghosts' >
+                <!-- form start -->
+                <form class='hostform'  >
+                  <div class="form-group row" >
+                    <label class="offset-1 col-5" >Ready to join an existing cluster</label>
+                    <div class="custom-control custom-switch offset-1 col-2 ">
+                      <input type="checkbox" class=" custom-control-input runningnodes" data-toggle='toggle' id="customSwitch1">
+                      <label class="custom-control-label " for="customSwitch1"></label>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="User" class='offset-1 col-2'>Node Name</label>
+                    <input type="text" class="form-control runningnodes col-2" id="BoxName" placeholder="Node Name">
+                    <div  class="form-control bg-secondary color-palette offset-4 col-2"><span id="cBoxName">node_1</span></div>
+                  </div>
+                
+                  <div class="form-group row" >
+                    <label  for="IPAddress" class='offset-1 col-2'>Node Address</label>
+                    <input type="text" placeholder="xxx.xxx.xxx.xxx" 
+                          class="form-control col-2 runningnodes ipaddress" name="IPAddress" \
+                          id="IPAddress"  data-inputmask="'alias': 'ip'"> 
+                    <label  for="ipaddrsubnet" class='offset-1 col-1'>Subnet</label>
+                    <input type="number"  min="8" max="32" step="8" value=24 class="form-control runningnodes col-1"  id="ipaddrsubnet">
+                    <div  class="form-control bg-secondary offset-1 col-2 color-palette">
+                      <span id="cIPAddress">10.11.11.11/24</span>
+                    </div>
+                  </div>
+                  <div class="form-group row" >
+                    <label  for="Mgmt" class='offset-1 col-2'>Cluster Address</label>
+                    <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes col-2 ipaddress" 
+                          name="IPAddress" id="Mgmt"  data-inputmask="'alias': 'ip'">
+                    <label  for="MgmtSub" class='offset-1 col-1'>Subnet</label>
+                    <input type="number"  min="8" max="32" step="8" value=24 class="form-control runningnodes col-1"  id="MgmtSub">
+                    <div  class="form-control bg-secondary  color-palette offset-1 col-2"><span id="cMgmt">10.11.11.139/24</span>
+                    </div>
+                  </div>
+                  <div class="form-group row" >
+                    <label for="TZ" class='offset-1 col-2'>Time Zone</label>
+                    <select id='TZ' class="select2  runningnodes col-4" style="margin-top:5px;">
+                    <option id="dimthis" city='0' timeZoneId="-1" value="-100"  style="
+                          color: #939ba2;">-----------</option>
+                    <option city='Chatham' timeZoneId="1" gmtAdjustment="GMT-12:00" useDaylightTime="0" value="-12">(GMT-12:00) International Date Line West</option>
+                    <option city='Midway' timeZoneId="2" gmtAdjustment="GMT-11:00" useDaylightTime="0" value="-11">(GMT-11:00) Midway Island, Samoa</option>
+                    <option city='Kirit' timeZoneId="3" gmtAdjustment="GMT-10:00" useDaylightTime="0" value="-10">(GMT-10:00) Hawaii</option>
+                    <option city='Gambier' timeZoneId="4" gmtAdjustment="GMT-09:00" useDaylightTime="1" value="-9">(GMT-09:00) Alaska</option>
+                    <option city='Anchorage' timeZoneId="5" gmtAdjustment="GMT-08:00" useDaylightTime="1" value="-8">(GMT-08:00) Pacific Time (US & Canada)</option>
+                    <option city='Tijuana' timeZoneId="6" gmtAdjustment="GMT-08:00" useDaylightTime="1" value="-8">(GMT-08:00) Tijuana, Baja California</option>
+                    <option city='Whitehorse' timeZoneId="7" gmtAdjustment="GMT-07:00" useDaylightTime="0" value="-7">(GMT-07:00) Arizona</option>
+                    <option city='Whitehorse' timeZoneId="8" gmtAdjustment="GMT-07:00" useDaylightTime="1" value="-7">(GMT-07:00) Chihuahua, La Paz, Mazatlan</option>
+                    <option city='Whitehorse' timeZoneId="9" gmtAdjustment="GMT-07:00" useDaylightTime="1" value="-7">(GMT-07:00) Mountain Time (US & Canada)</option>
+                    <option city='Yello' timeZoneId="10" gmtAdjustment="GMT-06:00" useDaylightTime="0" value="-6">(GMT-06:00) Central America</option>
+                    <option city='Yello' timeZoneId="11" gmtAdjustment="GMT-06:00" useDaylightTime="1" value="-6">(GMT-06:00) Central Time (US & Canada)</option>
+                    <option city='Yello' timeZoneId="12" gmtAdjustment="GMT-06:00" useDaylightTime="1" value="-6">(GMT-06:00) Guadalajara, Mexico City, Monterrey</option>
+                    <option city='Yello' timeZoneId="13" gmtAdjustment="GMT-06:00" useDaylightTime="0" value="-6">(GMT-06:00) Saskatchewan</option>
+                    <option city='Lima' timeZoneId="14" gmtAdjustment="GMT-05:00" useDaylightTime="0" value="-5">(GMT-05:00) Bogota, Lima, Quito, Rio Branco</option>
+                    <option city='Lima' timeZoneId="15" gmtAdjustment="GMT-05:00" useDaylightTime="1" value="-5">(GMT-05:00) Eastern Time (US & Canada)</option>
+                    <option city='Lima' timeZoneId="16" gmtAdjustment="GMT-05:00" useDaylightTime="1" value="-5">(GMT-05:00) Indiana (East)</option>
+                    <option city='Detro' timeZoneId="17" gmtAdjustment="GMT-04:00" useDaylightTime="1" value="-4">(GMT-04:00) Atlantic Time (Canada)</option>
+                    <option city='Detro' timeZoneId="18" gmtAdjustment="GMT-04:00" useDaylightTime="0" value="-4">(GMT-04:00) Caracas, La Paz</option>
+                    <option city='Detro' timeZoneId="19" gmtAdjustment="GMT-04:00" useDaylightTime="0" value="-4">(GMT-04:00) Manaus</option>
+                    <option city='Detro' timeZoneId="20" gmtAdjustment="GMT-04:00" useDaylightTime="1" value="-4">(GMT-04:00) Santiago</option>
+                    <option city='Buen' timeZoneId="22" gmtAdjustment="GMT-03:00" useDaylightTime="1" value="-3">(GMT-03:00) Brasilia</option>
+                    <option city='Buen' timeZoneId="23" gmtAdjustment="GMT-03:00" useDaylightTime="0" value="-3">(GMT-03:00) Buenos Aires, Georgetown</option>
+                    <option city='Buen' timeZoneId="24" gmtAdjustment="GMT-03:00" useDaylightTime="1" value="-3">(GMT-03:00) Greenland</option>
+                    <option city='Buen' timeZoneId="25" gmtAdjustment="GMT-03:00" useDaylightTime="1" value="-3">(GMT-03:00) Montevideo</option>
+                    <option city='Verde' timeZoneId="27" gmtAdjustment="GMT-01:00" useDaylightTime="0" value="-1">(GMT-01:00) Cape Verde Is.</option>
+                    <option city='Verde' timeZoneId="28" gmtAdjustment="GMT-01:00" useDaylightTime="1" value="-1">(GMT-01:00) Azores</option>
+                    <option city='Casa' timeZoneId="29" gmtAdjustment="GMT+00:00" useDaylightTime="0" value="0">(GMT+00:00) Casablanca, Monrovia, Reykjavik</option>
+                    <option city='Casa' timeZoneId="30" gmtAdjustment="GMT+00:00" useDaylightTime="1" value="0">(GMT+00:00) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London</option>
+                    <option city='Berl' timeZoneId="31" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna</option>
+                    <option city='Berl' timeZoneId="32" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague</option>
+                    <option city='Berl' timeZoneId="33" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Brussels, Copenhagen, Madrid, Paris</option>
+                    <option city='Berl' timeZoneId="34" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb</option>
+                    <option city='Berl' timeZoneId="35" gmtAdjustment="GMT+01:00" useDaylightTime="1" value="1">(GMT+01:00) West Central Africa</option>
+                    <option city='Amman' timeZoneId="36" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Amman</option>
+                    <option city='Amman' timeZoneId="37" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Athens, Bucharest, Istanbul</option>
+                    <option city='Amman' timeZoneId="38" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Beirut</option>
+                    <option city='Amman' timeZoneId="39" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Cairo</option>
+                    <option city='Amman' timeZoneId="40" gmtAdjustment="GMT+02:00" useDaylightTime="0" value="2">(GMT+02:00) Harare, Pretoria</option>
+                    <option city='Amman' timeZoneId="41" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius</option>
+                    <option city='Amman' timeZoneId="42" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Jerusalem</option>
+                    <option city='Amman' timeZoneId="43" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Minsk</option>
+                    <option city='Amman' timeZoneId="44" gmtAdjustment="GMT+02:00" useDaylightTime="1" value="2">(GMT+02:00) Windhoek</option>
+                    <option city='Kuw' timeZoneId="45" gmtAdjustment="GMT+03:00" useDaylightTime="0" value="3">(GMT+03:00) Kuwait, Riyadh, Baghdad</option>
+                    <option city='Kuw' timeZoneId="46" gmtAdjustment="GMT+03:00" useDaylightTime="1" value="3">(GMT+03:00) Moscow, St. Petersburg, Volgograd</option>
+                    <option city='Kuw' timeZoneId="47" gmtAdjustment="GMT+03:00" useDaylightTime="0" value="3">(GMT+03:00) Nairobi</option>
+                    <option city='Kuw' timeZoneId="48" gmtAdjustment="GMT+03:00" useDaylightTime="0" value="3">(GMT+03:00) Tbilisi</option>
+                    <option city='Tehr' timeZoneId="49" gmtAdjustment="GMT+03:30" useDaylightTime="1" value="3.5">(GMT+03:30) Tehran</option>
+                    <option city='Dubai' timeZoneId="50" gmtAdjustment="GMT+04:00" useDaylightTime="0" value="4">(GMT+04:00) Abu Dhabi, Muscat</option>
+                    <option city='Dubai' timeZoneId="51" gmtAdjustment="GMT+04:00" useDaylightTime="1" value="4">(GMT+04:00) Baku</option>
+                    <option city='Dubai' timeZoneId="52" gmtAdjustment="GMT+04:00" useDaylightTime="1" value="4">(GMT+04:00) Yerevan</option>
+                    <option city='Kab' timeZoneId="53" gmtAdjustment="GMT+04:30" useDaylightTime="0" value="4.5">(GMT+04:30) Kabul</option>
+                    <option city='Yekat' timeZoneId="54" gmtAdjustment="GMT+05:00" useDaylightTime="1" value="5">(GMT+05:00) Yekaterinburg</option>
+                    <option city='Yekat' timeZoneId="55" gmtAdjustment="GMT+05:00" useDaylightTime="0" value="5">(GMT+05:00) Islamabad, Karachi, Tashkent</option>
+                    <option city='Kol' timeZoneId="56" gmtAdjustment="GMT+05:30" useDaylightTime="0" value="5.5">(GMT+05:30) Sri Jayawardenapura</option>
+                    <option city='Kol' timeZoneId="57" gmtAdjustment="GMT+05:30" useDaylightTime="0" value="5.5">(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi</option>
+                    <option city='Kath' timeZoneId="58" gmtAdjustment="GMT+05:45" useDaylightTime="0" value="5.75">(GMT+05:45) Kathmandu</option>
+                    <option city='Almat' timeZoneId="59" gmtAdjustment="GMT+06:00" useDaylightTime="1" value="6">(GMT+06:00) Almaty, Novosibirsk</option>
+                    <option city='Almat' timeZoneId="60" gmtAdjustment="GMT+06:00" useDaylightTime="0" value="6">(GMT+06:00) Astana, Dhaka</option>
+                    <option city='Yan' timeZoneId="61" gmtAdjustment="GMT+06:30" useDaylightTime="0" value="6.5">(GMT+06:30) Yangon (Rangoon)</option>
+                    <option city='Jak' timeZoneId="62" gmtAdjustment="GMT+07:00" useDaylightTime="0" value="7">(GMT+07:00) Bangkok, Hanoi, Jakarta</option>
+                    <option city='Jak' timeZoneId="63" gmtAdjustment="GMT+07:00" useDaylightTime="1" value="7">(GMT+07:00) Krasnoyarsk</option>
+                    <option city='Hong' timeZoneId="64" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi</option>
+                    <option city='Hong' timeZoneId="65" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Kuala Lumpur, Singapore</option>
+                    <option city='Hong' timeZoneId="66" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Irkutsk, Ulaan Bataar</option>
+                    <option city='Hong' timeZoneId="67" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Perth</option>
+                    <option city='Hong' timeZoneId="68" gmtAdjustment="GMT+08:00" useDaylightTime="0" value="8">(GMT+08:00) Taipei</option>
+                    <option city='Tok' timeZoneId="69" gmtAdjustment="GMT+09:00" useDaylightTime="0" value="9">(GMT+09:00) Osaka, Sapporo, Tokyo</option>
+                    <option city='Tok' timeZoneId="70" gmtAdjustment="GMT+09:00" useDaylightTime="0" value="9">(GMT+09:00) Seoul</option>
+                    <option city='Tok' timeZoneId="71" gmtAdjustment="GMT+09:00" useDaylightTime="1" value="9">(GMT+09:00) Yakutsk</option>
+                    <option city='Adel' timeZoneId="72" gmtAdjustment="GMT+09:30" useDaylightTime="0" value="9.5">(GMT+09:30) Adelaide</option>
+                    <option city='Adel' timeZoneId="73" gmtAdjustment="GMT+09:30" useDaylightTime="0" value="9.5">(GMT+09:30) Darwin</option>
+                    <option city='Bris' timeZoneId="74" gmtAdjustment="GMT+10:00" useDaylightTime="0" value="10">(GMT+10:00) Brisbane</option>
+                    <option city='Bris' timeZoneId="75" gmtAdjustment="GMT+10:00" useDaylightTime="1" value="10">(GMT+10:00) Canberra, Melbourne, Sydney</option>
+                    <option city='Bris' timeZoneId="76" gmtAdjustment="GMT+10:00" useDaylightTime="1" value="10">(GMT+10:00) Hobart</option>
+                    <option city='Bris' timeZoneId="77" gmtAdjustment="GMT+10:00" useDaylightTime="0" value="10">(GMT+10:00) Guam, Port Moresby</option>
+                    <option city='Bris' timeZoneId="78" gmtAdjustment="GMT+10:00" useDaylightTime="1" value="10">(GMT+10:00) Vladivostok</option>
+                    <option city='Mag' timeZoneId="79" gmtAdjustment="GMT+11:00" useDaylightTime="1" value="11">(GMT+11:00) Magadan, Solomon Is., New Caledonia</option>
+                    <option city='Auc' timeZoneId="80" gmtAdjustment="GMT+12:00" useDaylightTime="1" value="12">(GMT+12:00) Auckland, Wellington</option>
+                    <option city='Auc' timeZoneId="81" gmtAdjustment="GMT+12:00" useDaylightTime="0" value="12">(GMT+12:00) Fiji, Kamchatka, Marshall Is.</option>
+
+                    </select>
+                    <div  class="form-control bg-secondary runningnodes offset-1 col-3 color-palette"><span id="cTZ">(00+3)Istanubl</span>
+                    </div>
+                  </div>
+                  <div class="form-group row" >
+                    <label  for="NTP" class='offset-1 col-2'>NTP Server</label>
+                    <pre style="padding-left:0; padding-right:2px;">IP:</pre><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes col-2 ipaddress" name="IPAddress" id="NTP"  data-inputmask="'alias': 'ip'">
+                    <pre style="padding-left:1rem; padding-right:2px;">Name:</pre><input type="text" placeholder="NTP Name" class="form-control runningnodes col-2 name" name="NTPname" id="NTPname">
+                    <div  class="form-control bg-secondary offset-1 col-2 color-palette"><span id="cNTP">4.4.4.2</span>
+                    </div>
+                  </div>
+               
+                  <div class="form-group row" >
+                    <label  for="GW" class='offset-1 col-2'>Gateway/router</label>
+                    <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes col-2 ipaddress" name="IPAddress" id="GW"  data-inputmask="'alias': 'ip'">
+                    <div  class="form-control bg-secondary offset-4 col-2 color-palette"><span id="cGW">10.11.11.1</span>
+                    </div>
+                  </div>
+                <!-- /.card-body -->
+                 <div class="card-footer">
+                  <button type="submit" id="readysubmit" class="btn runningnodes btn-add" style="opacity: 1;">Update Node</button>
+                 </div>
+               </form>
+              </div>
+              <!-- /card body -->
+            </div> <!-- /.card -->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-outline card-danger datacard">
+              <div class="card-header" style="cursor: cell;">
+                <div class="card-tools" >
+                  <!-- Collapse Button -->
+                  <button type="button" class="btn btn-tool "  data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                </div>
+                <div class="row" data-card-widget="collapse">
+                  <div class='col-5'>
+                    <h3 class="card-title text-lg cardshead" >Nodes Status</h3>
+                  </div>
+                </div>
+
+              </div>
+              <div class="card-header">
+                <div class="row" id="hostsactive">
+                 <div id="memhname" class="hostsactive col-2">
+                   <a  href="javascript:memberclick(hname)">
+                     <img class="img-responsive server" style="object-fit:cover; max-width:80%;"
+                      class="server" src="dist/img/Server1-On.png" />
+                     <p class="psize1" style="color:green;">
+                       hname:hip
+                     </p>
+                   </a>
+                 </div>
+                 <div id="memhname" class="hostsactive col-2">
+                   <a  href="javascript:memberclick(hname)">
+                     <img class="img-responsive server" style="object-fit:cover; max-width:80%;"
+                      class="server" src="dist/img/Server1-Off.png" />
+                     <p class="psize1" style="color:green;">
+                       hname2:hip2
+                     </p>
+                   </a>
+                 </div>
+
+                </div>
+              </div>
+
+              <div class="card-body">
+                <!-- form start -->
+                <form>
+                 <div class="form-group" >
+                   <div class="row">
+                    <div class="offset-4 col-4">
+                      <button type="button" disabled id="activesubmit" onclick="evacuate()" class="btn btn-block bg-gradient-warning btn-lg">Evacuate Node</button>
+                    </div>
+                   </div>
+                 </div>
+               </form>
+              </div><!-- /.card body -->
+            </div> <!-- /.card -->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-outline card-info datacard">
+              <div class="card-header" style="cursor: cell;">
+                <div class="card-tools" >
+                  <!-- Collapse Button -->
+                  <button type="button" class="btn btn-tool "  data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                </div>
+                <div class="row" data-card-widget="collapse">
+                  <div class='col-5'>
+                    <h3 class="card-title text-lg cardshead" >Discovered Nodes</h3>
+                  </div>
+                </div>
+
+              </div>
+              <div class="card-header">
+                <div class="row" id="hostspossible">
+                 <div id="memhname" class="hostspossible col-2">
+                   <a  href="#" class='img-clck'>
+                     <img class="img-responsive server SelectedFreeWhite" style="object-fit:cover; max-width:80%;"
+                      class="server" src="dist/img/Server1-On.png" />
+                     <p class="psize1" style="color:green;">
+                       hname:hip
+                     </p>
+                   </a>
+                 </div>
+                 <div id="memhname" class="hostspossible col-2">
+                   <a  href="#" class='img-clck'>
+                     <img class="img-responsive server SelectedFreeWhite" style="object-fit:cover; max-width:80%;"
+                      class="server" src="dist/img/Server1-On.png" />
+                     <p class="psize1" style="color:green;">
+                       hname2:hip2
+                     </p>
+                   </a>
+                 </div>
+
+                </div>
+              </div>
+
+              <div class="card-body">
+                <!-- form start -->
+                <form>
+                 <div class="form-group" >
+                   <div class="row">
+                    <div class="offset-4 col-4">
+                      <button type="button" id="possiblesubmit" disabled class="btn btn-block bg-gradient-info btn-lg">Allow to join the cluster</button>
+                    </div>
+                   </div>
+                 </div>
+               </form>
+              </div><!-- /.card body -->
+            </div> <!-- /.card -->
+          </div>
+        </div>
+
+      </div> <!-- /.container-fluid -->
+    </div> <!-- /.content -->
+  </div> <!-- /.content-wrapper -->
+
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+
+  <!-- Main Footer -->
+  <footer class="main-footer">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body p-0">
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th> Task</th>
+                  <th> Node</th>
+                  <th>Progress</th>
+                  <th style="width: 40px">Label</th>
+                </tr>
+              </thead>
+              <tbody id="tasktable">
+               
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+
+
+
+      </div>
+    </div>
+  </footer>
+  <div class="modal fade" id="modal-sm">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Change Password</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+          <div class="input-group mb-3">
+            <input type="password" id='pass' class="form-control chpass" placeholder="Password">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="password" id='newpass' class="form-control chpass" placeholder="re-type password">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+          <p  id="passerr" style='font-size:small; margin-left: 1.4rem; color: white; margin-top: 0.5rem;'>retype the same passowrd in both fields</p>
+          </form>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" id="passwrd" class="btn btn-primary" disabled>Save</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+
+<!-- jQuery -->
+  <script src="plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE -->
+  <script src="dist/js/adminlte.js"></script>
+  <!-- DataTables  & Plugins -->
+  <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+  <script src="plugins/jszip/jszip.min.js"></script>
+  <script src="plugins/pdfmake/pdfmake.min.js"></script>
+  <script src="plugins/pdfmake/vfs_fonts.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+  <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+  <!-- OPTIONAL SCRIPTS -->
+  <script src="dist/js/Qjquery.inputmask.bundle.js"></script>
+  <script src="plugins/select2/js/select2.full.min.js"></script>
+  <script src="dist/js/QNodes.js" ></script>
+  <script src="plugins/chart.js/Chart.min.js"></script>
+  <script src="dist/js/demo.js"></script>
+  <script src="dist/js/Qmain.js"></script>
+  <script>
+  $('.select2').select2();
+  $(".select2-selection").css('padding','0');
+  $('.datacard').CardWidget('collapse')
+  jQuery(function($){
+  $('.card-header').each(function(){
+    let $card_header = $(this);
+    let $collapse_element = $card_header.next();
+    $collapse_element.on('show.bs.collapse', function () {
+      let $card_header_top = $card_header.offset().top;
+      let $visible_collapse = $('.collapse.show');
+      if($visible_collapse.length){
+        let $visible_collapse_top = $visible_collapse.offset().top;
+        if($visible_collapse_top < $card_header_top){
+          $card_header_top -= $visible_collapse.height();
+        }
+      }
+      $([document.documentElement, document.body]).animate({
+        scrollTop: $card_header_top
+      });
+    });
+  });
+});
+  </script>
+</body>
+</html>

@@ -49,10 +49,13 @@
 </nav>
 <!--MESSAGES-->
 <div class="dr-messages">
+
     <div class="bg-success" ><div id="texthere"></div>
         <button type="button" id="close-success" style="margin-top: -2.4rem" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
+    </div>
+    <div class="bg-danger" ><div id="redhere"></div>
     </div>
 </div>
 <!--BODY CONTENT-->
@@ -113,6 +116,24 @@
         <div class="col-md-9 main-content">
             <div class="tab-content">
                 <div class="tab-pane " id="servicestatus" role="tabpanel">
+                    <div class="row table-responsive">
+                        <table  class="col-12 table  dr-table-show">
+                            <thead>
+                            <tr class="row">
+                                <th class="text-left col-3" style="padding-left: 2rem; ">Date and time</th>                                
+                                <th class="text-center col-1">Host</th>
+                                <th class="text-center col-2">Task</th>
+                                <th class="text-center col-6">Status</th>
+                            </tr>
+                            </thead>
+                            <tbody id="Qdetails">
+                            </tbody>
+                        </table>
+                    </div>
+ 
+
+
+
 
                 </div>
                 <div class="tab-pane active" id="Logspanel" role="tabpanel">
@@ -229,6 +250,7 @@
 <!--CUSTOM JS-->
 		<script>
 			var topresent=0;
+			var hosts=[];
 			var msgdata= "no no no";
 			var msgs="no data";
 			var datalogf = [];
@@ -266,19 +288,33 @@
 			var timechanged=0;
 			var counter = 1;
 			var activepage=0; var lastpage=-1;
-			
+			var redflag="";
+			var propdata='dkfjasdlk'
+		        var frsttimeq = 1	
  var myid="<?php echo $_REQUEST['myid'] ?>";
  var myname="<?php echo $_REQUEST['name'] ?>";
  $(".myname").val(myname)
  $("#usrnm").text(myname)
  $(".params").val(myid)
+ function updatehosts() {
+  $.get("gump2.php", { req: "prop", name:"--prefix"  },function(data){ 
+   if(propdata==data){;} else {
+    propdata=data
+    prop2=$.parseJSON(propdata)
+    $.each(prop2,function(r,s){
+     prop=$.parseJSON(prop2[r]["prop"].replace('{','{"').replace('}','"}').replace(/:/g,'":"').replace(/,/g,'","'))
+     hosts[prop2[r]['name'].replace('prop/','')]=prop.name
+     if( prop.configured.includes('yes') < 1 ) { if(redflag.includes('need') >0 ) { redflag=redflag+', Node: '+prop.name+' needs to be configured'; } else { redflag='Node: '+prop.name+' needs to be configured';  }} else { redflag="";};
+  });
+ }				
+});
+};
+
 
 function chkuser(){
-			$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid+" "+myname},function(data){ 
+	$.get("./pumpy.php", { req:"chkuser2.sh", name:myname+" "+myid+" "+myname},function(data){ 
          var data2=data.replace(" ","").replace('\n','');
 	if (myid != data2) { 
-	   console.log('username',myname)
-           console.log('myid,data2',myid,'and',data2)
 		document.getElementById('Login'+'ref').submit();
  	}		;
 				});
@@ -291,7 +327,6 @@ chkuser();
 						document.getElementById('Login'+'ref').submit();
 						
 					} else {
-					console.log('id',$(this).attr('id')+'ref');
 					document.getElementById($(this).attr('id')+'ref').submit();
 					}
 		 //console.log($(this).attr('id'));
@@ -383,17 +418,16 @@ chkuser();
 					var curuser=myname;
 					if(curuser!="admin"){
 					$.get("gump2.php", { req: 'usersinfo/'+curuser, name:"" },function(data){ 
-	console.log('ss-user',data.split('/'));
 	var gdata=data.split('/')
 	gdata.shift(); gdata.shift();
 						if(gdata[3].split('-')[1]!="true") { $(".activeDirectory").hide(); $("#activeDirectory").hide(); alltabsAcco=1;} 
 						if(gdata[7].split('-')[1]!="true") { $(".boxUsers").hide(); $("#boxUsers").hide(); alltabsAcco=alltabsAcco+1;} 
 						if(gdata[10].split('-')[1]!="true") { $(".boxProperties").hide(); $("#boxProperties").hide(); alltabsAcco=alltabsAcco+1;} 
-						if(alltabsAcco==3) { console.log('hi');$(".accounts").hide()}
-						if(gdata[4].split('-')[1]!="true") { $(".servicestatus").hide(); $("#servicestatus").hide(); alltabsStat=1;} 	else { $(".servicestatus").show(); $("#servicestatus").show();}
+						if(alltabsAcco==3) { $(".accounts").hide()}
+						if(gdata[4].split('-')[1]!="true") { $(".servicestatus").hide();frsttimeq = 1; $("#servicestatus").hide(); alltabsStat=1;} 	else { $(".servicestatus").show();frsttimeq=1; $("#servicestatus").show();}
 						if(gdata[8].split('-')[1]!="true") { $("#Logs").hide(); $("#Logspanel").hide();alltabsStat=alltabsStat+1;}
 						if(alltabsStat==2) { $(".status").hide();}
-						if(gdata[11].split('-')[1]!="true") { $(".cifs").hide(); $("#cifspane").hide(); alltabsProt=1;$(".HOMe").hide(); $("#HOMespane").hide();} 
+						if(gdata[11].split('-')[1]!="true") { $(".cifs").hide(); $("#cifspane").hide(); alltabsProt=1;$(".Home").hide(); $("#Homespane").hide();} 
 						if(gdata[5].split('-')[1]!="true") { $(".nfs").hide(); $("#nfspane").hide(); alltabsProt=alltabsProt+1;}
 						if(alltabsProt==2) { $(".protocol").hide()}
 						if(gdata[15].split('-')[1]!="true") { $(".partner").hide(); $("#partner").hide(); alltabsRepli=1;} 
@@ -479,11 +513,12 @@ chkuser();
 	function refreshall() {
 		
 		$.get("requestdata3.php", { file: 'Data/currentinfo2.log2' }, function(data){
-		if(data!=oldcurrentinfo && data != ''){linerfact=-1;oldcurrentinfo=data;  $(".bg-success").fadeIn(800); $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
+		if(redflag.includes('need')>0){ $('#redhere').text(redflag); $(".bg-danger").show(); } else { $(".bg-danger").hide(); }
+		if(data!=oldcurrentinfo && data != ''){linerfact=-1;oldcurrentinfo=data;  $(".bg-success").fadeIn(800);if(data.includes('zone') > 0) { data=data.split('!').join(':').split('_').join(' ').split('^').join(',');}; $("#texthere").text(data);$(".bg-success").fadeOut(8000);}
 	});
 		topresentlog();
 		counter=counter+1;
-		if(counter > 2 ) { if(topresent==0){topresentlog();}; updatelogarea(); infochange(); counter = 1; }
+		if(counter > 2 ) { if(topresent==0){topresentlog();topresentq();}; updatehosts(); updatelogarea(); infochange(); counter = 1; }
 		//refreshList("GetDisklist","#Disks","Data/disklist.txt");
 		
 			var date
@@ -504,18 +539,50 @@ chkuser();
 		
 	}
 	var data2;
+	var datalst =[]
 	var reprint=1
+        function topresentq(){
+	 if($("#servicestatus").hasClass('active')<=0) {return; }
+           if(frsttimeq > 0){
+            frsttimeq = -1
+            color = 'blue'
+	    //$("#Qdetails tr.datarow").remove();
+            for(r=1; r<11; r++){
+	     $("#Qdetails").append('<tr style="padding-left: 3.9rem; color:'+color+'" class="row idatarow" ><td id="td'+r+'1" style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-3 text-left tdlog Volnam " data-toggle="popover" rel="popover" data-trigger="hover" data-container="body"  >...</td><td id="td'+r+'2" style="margin-left: -1.2rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-1 text-left tdlog " >...</td><td id="td'+r+'3" style="margin-left: 0rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-2 text-center tdlog" ></td>...<td id="td'+r+'4" style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-6 text-center tdlog"  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this >...</td></tr>');
+            }
+           }
+         $.get("./pumpy.php", { req:"readq.sh", name:'nothing'},
+					function(data){  
+                   datalst=data.split('|')
+		   //$("#Qdetails tr.datarow").remove();
+                   ln = 0
+    		   $.each(datalst,function(r,s){
+                    ln = r+1
+                    color = "blue"
+		    dataitems = s.split(' ')
+                    $("#td"+ln+"1").text(dataitems[0]+' '+dataitems[1])
+                    $("#td"+ln+"2").text(dataitems[2])
+                    $("#td"+ln+"3").text(dataitems[3])
+                    $("#td"+ln+"4").text(dataitems[4])
+		   });
+                   for(r=ln+1; r<10; r++){
+                    $("#td"+r+"1").text("...")
+                    $("#td"+r+"2").text("...")
+                    $("#td"+r+"3").text("...")
+                    $("#td"+r+"4").text("...")
+                   }
+
+ 
+	 });
+        }
 	function topresentlog(){
 if($("#Logspanel").hasClass('active')<=0) { return ; }
 	var date
-	console.log('before',linerfact)
 	topresent=1;
-	console.log('after',topresent)
 			if( $("#dater").val() == "") { 
 				date = new Date
 				$("#dater").val(date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + (date.getDate() + 0)).slice(-2) +"T"+("0" + date.getHours()).slice(-2)+":"+("0" +date.getMinutes()).slice(-2)+":"+("0" + date.getSeconds()).slice(-2)) 
 			} 		
-		///dateri=date.getFullYear()+'/' +("0" + (date.getDate() + 0)).slice(-2)+'/'+("0" + (date.getMonth() + 1)).slice(-2)+"T"+("0" + date.getUTCHours()).slice(-2)+":"+("0" +date.getUTCMinutes()).slice(-2)+":"+("0" + date.getUTCSeconds()).slice(-2) 	
 		if(linerfact==-1) {
 				linerfact=2
 				date=new Date($("td.first").text());
@@ -535,7 +602,6 @@ if($("#Logspanel").hasClass('active')<=0) { return ; }
 					}
 					catch(err){ //console.log(obj[1]);
 						reprint=0;}
-			console.log('reprint:',reprint,'data:',data)
 			if (reprint==1){
 				if(obj[1].length < 11) {
 					date = new Date
@@ -746,7 +812,8 @@ themsgarr.splice(1,1)
 							if (k == 0) { y="first"; };
 							if (k == (obj[ii].length-1)) {y="last";};
 							if(obj[ii][k].msg == "info") { color="blue"}; if(obj[ii][k].msg == "warning") { color="#cabc55"}; if(obj[ii][k].msg == "error") { color="red"}						
-							$("#Logdetails").append('<tr style="padding-left: 3.9rem; color:'+color+'" class="row datarow '+obj[ii][k].msg+'" ><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-3 text-left tdlog Volname '+y+' '+obj[ii][k].msg+' " data-toggle="popover" rel="popover" data-trigger="hover" data-container="body"  >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td style="margin-left: -1.2rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-1 text-left tdlog '+obj[ii][k].msg+' "  data-content='+objdata+' >'+obj[ii][k].user+'</td><td style="margin-left: 0rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-2 text-center tdlog'+obj[ii].msg+' " data-content='+objdata+' >'+obj[ii][k].fromhost+'</td><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-6 text-center tdlog '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
+							if(objdata.includes('zone') > 0){objdata1=objdata.split('%')[0];objdata=objdata.split('!').join(':').split('_').join(' ').split('^').join(',')}
+							$("#Logdetails").append('<tr style="padding-left: 3.9rem; color:'+color+'" class="row datarow '+obj[ii][k].msg+'" ><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-3 text-left tdlog Volname '+y+' '+obj[ii][k].msg+' " data-toggle="popover" rel="popover" data-trigger="hover" data-container="body"  >' +obj[ii][k].Date+' '+obj[ii][k].time+'</td><td style="margin-left: -1.2rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-1 text-left tdlog '+obj[ii][k].msg+' "  data-content='+objdata+' >'+obj[ii][k].user+'</td><td style="margin-left: 0rem; padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-2 text-center tdlog'+obj[ii].msg+' " data-content='+objdata+' >'+obj[ii][k].fromhost+':'+hosts[obj[ii][k].fromhost]+'</td><td style="padding-top: 0.1rem; padding-bottom: 0.1rem;" class="col-6 text-center tdlog '+obj[ii][k].msg+' "  data-toggle="popover" rel="popover" data-trigger="hover" data-container=this data-content='+objdata+' >'+objdata+'</td></tr>');
 							
 							
 										infochange();			
