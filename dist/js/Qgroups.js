@@ -99,11 +99,14 @@ function grouplistrefresh(){
       }
       if(usrs.length <= allusers['results'].length) {
         $.each(usrs, function(e,t)  {
-        
-          if( allusers["results"][t]['text'] !="NoUser") {
-            var usr = allusers["results"][t];
-            option = new Option(usr.text, usr.id, true, true)
-            thisgroup.append(option).trigger('change');
+          if(t != 'NoUser'){
+            console.log('allusers:',e,t)
+            console.log('allusers',allusers)
+            if( allusers["results"][t]['text'] !="NoUser") {
+              var usr = allusers["results"][t];
+              option = new Option(usr.text, usr.id, true, true)
+              thisgroup.append(option).trigger('change');
+            }
           }
         });
       }
