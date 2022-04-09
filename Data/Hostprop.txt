@@ -1,1 +1,1 @@
-{"hostname":"dhcp6981","name":"dhcp6981","addr":"10.11.11.244","addrsubnet":"24","rout":"10.11.11.253","dns":"10.11.11.253","mgmtip":"192.168.43.7","mgmtsubnet":"24","ntp":"0.pool.ntp.org","tz":"Amman%(GMT+02!00)_Cairo","gw":"10.11.11.253","configured":"yes"}
+{"hostname":"dhcp6981","name":"dhcp6981","addr":"10.11.11.244","addrsubnet":"24","rout":"10.11.11.253","dns":"10.11.11.253","mgmtip":"192.168.43.7","mgmtsubnet":"24","ntp":"0.pool.ntp.org","tz":"Kuw%(GMT+03!00)_Kuwait^_Riyadh^_Baghdad","gw":"10.11.11.253","configured":"yes"}
