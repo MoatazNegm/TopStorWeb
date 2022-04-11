@@ -92,6 +92,7 @@ function grouplistrefresh(){
 
     });
       assignedusrs = thisgroup.data("usrs")
+      console.log('assignedusers',assignedusrs)
       if(typeof(assignedusrs) == 'number') {
         usrs = [assignedusrs];
       } else {
@@ -99,9 +100,8 @@ function grouplistrefresh(){
       }
       if(usrs.length <= allusers['results'].length) {
         $.each(usrs, function(e,t)  {
-          if(t != 'NoUser'){
-            console.log('allusers:',e,t)
-            console.log('allusers',allusers)
+          if(t != 'NoUser' ){
+            console.log('allusers:',e,t, allusers["results"][t] )
             if( allusers["results"][t]['text'] !="NoUser") {
               var usr = allusers["results"][t];
               option = new Option(usr.text, usr.id, true, true)
@@ -219,7 +219,6 @@ function selbtnclickedgroup(ths){
   //$.post("./pump.php", { req:"UnixChangegroup", name:x.id.replace('btnsel',''), passwd:'users'+$("#"+x.id.replace('btn','')).val()+" "+myname });
         var apiurl = 'api/v1/groups/groupchange';
         nam = $(ths).data('name');
-        console.log('name',nam)
         var apidata = {'name': nam, "users": $("#sel"+nam).val().toString() };
         postdata(apiurl,apidata);
 }
@@ -251,7 +250,6 @@ function refreshall(){
     success: function(data) {  newallusers=data; 
       if(JSON.stringify(allusers) != JSON.stringify(newallusers)) {
         allusers = newallusers; 
-        console.log('alluserchange',allusers,newallusers)
         usersrefresh();
      }
    }
