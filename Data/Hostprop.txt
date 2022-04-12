@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"hostname":"dhcp17797","name":"dhcp17797","addr":"10.11.11.244","addrsubnet":"24","rout":"10.0.2.3","10.11.11.253":"dns","10.11.11.253":"mgmtip","192.168.43.7":"mgmtsubnet","24":"ntp","0.pool.ntp.org":"tz","Kuw%(GMT+03!00)_Moscow^_St._Petersburg^_Volgograd":"gw","10.11.11.253":"configured"}
+=======
+{"hostname":"dhcp6981","name":"dhcp6981","addr":"10.11.11.244","addrsubnet":"24","rout":"10.11.11.253","dns":"10.11.11.253","mgmtip":"192.168.43.7","mgmtsubnet":"24","ntp":"0.pool.ntp.org","tz":"Kuwait%(GMT+03!00)_Kuwait^_Riyadh^_Baghdad","gw":"10.11.11.253","configured":"yes"}
+>>>>>>> a3064011dbb1e294f610b98d726c42744ce87f51
