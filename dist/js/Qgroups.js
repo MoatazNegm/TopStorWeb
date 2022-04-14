@@ -75,6 +75,7 @@ function poolsrefresh(){
  });
  
 }
+groupnotready = 0;
 function grouplistrefresh(){
  
   grouplisttable.ajax.reload(function(){
@@ -99,13 +100,19 @@ function grouplistrefresh(){
         usrs = assignedusrs.split(',');
       }
       if(usrs.length <= allusers['results'].length) {
+        console.log('users',usrs)
         $.each(usrs, function(e,t)  {
-          if(t != 'NoUser' ){
-            console.log('allusers:',e,t, allusers["results"][t] )
-            if( allusers["results"][t]['text'] !="NoUser") {
-              var usr = allusers["results"][t];
-              option = new Option(usr.text, usr.id, true, true)
-              thisgroup.append(option).trigger('change');
+          if(t >= allusers['results'].length){
+            groupnotready = 1;
+          }
+          else{
+            if(t != 'NoUser'){
+              console.log('allusers:',e,t, allusers["results"] )
+              if( allusers["results"][t]['text'] !="NoUser") {
+                var usr = allusers["results"][t];
+                option = new Option(usr.text, usr.id, true, true)
+                thisgroup.append(option).trigger('change');
+              }
             }
           }
         });
@@ -204,7 +211,7 @@ function initgrouplist(){
     
   grouplisttable.buttons().container().appendTo('#groupList_wrapper .col-6:eq(0)');
   //grouplistrefresh();
-  
+  groupnotready = 1;
   
 }
 initgrouplist();
@@ -237,6 +244,10 @@ function agroupdel(){
 };
 
 function refreshall(){
+  if(groupnotready == 1){
+    groupnotready = 2;
+    grouplistrefresh()
+  }
 
   var newallusers='new0';
   $(".odd").css("background-color","rgba(41,57,198,.1)");
