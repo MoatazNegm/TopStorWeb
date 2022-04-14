@@ -184,6 +184,7 @@ function volumelistrefresh(){
       });
   });
   propchange();
+  refreshrows();
 }
 function updatebtn(ths){
 
