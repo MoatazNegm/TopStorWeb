@@ -49,6 +49,7 @@ var oldcurrentinfo='dlkfajsdl;';
  var modaltill=idletill-120000
  var volumelisttable;
  var dirtylog = 1;
+ var grpsets = {};
 
 
 
@@ -119,6 +120,7 @@ function refreshrows()
        var assignedgrps = thisvolume.data('grps');
        var option;
         thisvolume.addClass('select2');
+        thisvolume.val(null).trigger('change');
         if(typeof(assignedgrps) == 'number') {
          grps = [assignedgrps];
        } else {
@@ -132,6 +134,7 @@ function refreshrows()
 
        });
        $.each(grps, function(e,t){
+         
          if(t !="NoGroup" && t in allgroups["results"]) {
            var grp = allgroups["results"][t];
            option = new Option(grp.text, grp.id, true, true)
@@ -363,6 +366,7 @@ function selbtnclickeduser(ths){
 function avoldel(volname){
   var apiurl = "api/v1/volumes/volumedel";
   var apidata = {'name': volname, 'type': prot, 'user':'mezo'}
+  console.log(volname, prot)
   postdata(apiurl,apidata);
 };
 
