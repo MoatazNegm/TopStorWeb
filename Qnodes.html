@@ -485,10 +485,16 @@
                     <label  for="NTP" class='offset-1 col-2'>NTP Server</label>
                     <pre style="padding-left:0; padding-right:2px;">IP:</pre><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes col-2 ipaddress" name="IPAddress" id="NTP"  data-inputmask="'alias': 'ip'">
                     <pre style="padding-left:1rem; padding-right:2px;">Name:</pre><input type="text" placeholder="NTP Name" class="form-control runningnodes col-2 name" name="NTPname" id="NTPname">
-                    <div  class="form-control bg-secondary offset-1 col-2 color-palette"><span id="cNTP">4.4.4.2</span>
+                    <div  class="form-control bg-secondary offset-1 col-2 color-palette" style="margin-left: 4.4rem;"><span id="cNTP">4.4.4.2</span>
                     </div>
                   </div>
-               
+                  <div class="form-group row" >
+                    <label  for="NTP" class='offset-1 col-2'>DNS Server</label>
+                    <pre style="padding-left:0; padding-right:2px;">IP:</pre><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes col-2 ipaddress" name="DNSname" id="DNSname"  data-inputmask="'alias': 'ip'">
+                    <pre style="padding-left:1rem; padding-right:2px;">Search:</pre><input type="text" placeholder="Domain Name" class="form-control runningnodes col-2 name" name="DNSsearch" id="DNSsearch">
+                    <div  class="form-control bg-secondary offset-1 col-2 color-palette" style="margin-left: 3.2rem;"><span id="cDNS">4.4.4.2</span>
+                    </div>
+                  </div>
                   <div class="form-group row" >
                     <label  for="GW" class='offset-1 col-2'>Gateway/router</label>
                     <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes col-2 ipaddress" name="IPAddress" id="GW"  data-inputmask="'alias': 'ip'">
