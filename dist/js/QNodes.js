@@ -90,7 +90,7 @@ function updaterunninghosts(status){
       }
       $("#cNTP").text(hostdata['ntp']);
       $("#cGW").text(hostdata['gw']);
-      $("#cDNS").text(hostdata['DNSname']+'/'+hostdata['DNSsearch']);
+      $("#cDNS").text(hostdata['dnsname']+'/'+hostdata['dnssearch']);
       if (hostdata['configured'] == 'no') { $("#customSwitch1").prop('checked',true);}
       else{ $("#customSwitch1").prop('checked',false); }
       $("#readysubmit").data('selected',selectedhost[status])
@@ -201,12 +201,14 @@ $("#readysubmit").click(function (ev){
     hostsubmit["gw"] = $("#GW").val();
     tochange = 1;
   }
-  if($("#DNSname").val().length > 3 && $("#DNSname").val().includes('__') < 1 && $("#DNSname").val() != hostconfig['DNSname']) {
-    hostsubmit["DNSname"] = $("#DNSname").val();
+  if($("#DNSname").val().length > 3 && $("#DNSname").val().includes('__') < 1 && $("#DNSname").val() != hostconfig['dnsname']) {
+    hostsubmit["dnsname"] = $("#DNSname").val();
+    hostsubmit["dnssearch"] = $("#DNSsearch").val();
     tochange = 1;
   }
-  if($("#DNSsearch").val().length > 3 &&  $("#DNSsearch").val() != hostconfig['DNSsearch']) {
-    hostsubmit["DNSsearch"] = $("#DNSsearch").val();
+  if($("#DNSsearch").val().length > 3 &&  $("#DNSsearch").val() != hostconfig['dnssearch']) {
+    hostsubmit["dnssearch"] = $("#DNSsearch").val();
+    hostsubmit["dnsname"] = $("#DNSname").val();
     tochange = 1;
   }
   if($("#customSwitch1").prop('checked') == false && hostconfig['configured'] == 'no'){
