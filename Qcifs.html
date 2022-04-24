@@ -334,12 +334,12 @@
 
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-4">
+                    <div class="col-3">
                       <div class="form-group">
                         <label  for="Domtype">Serving</label>
                         <select  class="form-control" id="Domtype">
-                          <option>Domain</option>
-                          <option default>Workgroup</option>
+                          <option value="domain" >Domain</option>
+                          <option value="workgroup">Workgrp</option>
                         </select>
                       </div>
                     </div>
@@ -351,7 +351,7 @@
                         </select>
                       </div>
                     </div>
-                    <div class='col-3'>
+                    <div class='col-4'>
                       <div class="form-group">
                         <label  for="volname">Volume</label>
                         <input type="text" class="form-control " id="volname" placeholder="Name">
@@ -369,12 +369,12 @@
                        <label  for="Subnet">Subnet</label>
                        <input type="number"  min="8" max="32" step="8" value=24 class="form-control"  id="Subnet">
                     </div>
-                    <div class='offset-1 col-3'>
+                    <div class='offset-2 col-3'>
                       <label  for="volsize">Size(GB)</label>
                       <input type="number" min="1"  step="1" value=1 class="form-control "  id="volsize">
                    </div>
                   </div>
-                  <div class="row domain">
+                  <div class="row domain" >
                     <div class='col-4'>
                       <div class="form-group">
                         <label  for="domain">Domain</label>
@@ -390,18 +390,18 @@
                     <div class='col-4'>
                       <div class="form-group">
                         <label  for="domip">xDC ip</label>
-                        <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control  ipaddress" name="domip" id="Address"  data-inputmask="'alias': 'ip'">
+                        <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control  ipaddress" name="domip" id="domip"  data-inputmask="'alias': 'ip'">
                       </div>
                     </div>
                   </div>
-                  <div class="row domain">
-                    <div class='col-5'>
+                  <div class="row domain" >
+                    <div class='col-4'>
                       <div class="form-group ">
-                        <label  for="domadmin">Domain Administrator</label>
+                        <label  for="domadmin">Domain Admin</label>
                         <input type="text" class="form-control " id="domadmin" placeholder="Name">
                       </div>
                     </div>
-                    <div class='col-5'>
+                    <div class='col-5 offset-3'>
                       <div class="form-group ">
                         <label for="dompass">Password</label>
                         <input type="password" class="form-control" id="dompass" placeholder="Password">
@@ -409,7 +409,7 @@
                     </div>
                   </div>
                   
-                  <div class="row workgroup">
+                  <div class="row workgroup" style="display: none;">
                     <div class='col-7'>
                       <div class="form-group">
                         <label  for="workname">Workgroup Name_preset</label>
@@ -417,7 +417,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row workgroup">
+                  <div class="row workgroup" style="display: none;">
                     <div class='col-12'>
                       <div class="form-group ">
                         <label  for="Group">Allowed Groups</label>
