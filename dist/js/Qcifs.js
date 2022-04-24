@@ -56,7 +56,7 @@ var oldcurrentinfo='dlkfajsdl;';
 function poolsrefresh(){
  
   $('.select2.pool').select2({
-    placeholder: "Select a state",
+    placeholder: "Select a pool",
     ajax: {
      url: '/api/v1/volumes/poolsinfo',
      dataType: 'json',
@@ -170,9 +170,18 @@ $("#createvol").click(function(e){
     groups = thevol;
   }
   var apiurl = "api/v1/volumes/create";
-  var apidata = {"type": prot, "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(),
+  if($("#Domtype").val() == "workgroup"){
+   var apidata = {"type": prot, "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), "domtype":"workgroup",
    "Subnet": $("#Subnet").val(), 'groups': groups, "Myname":"mezo", "size": $("#volsize").val()+'G', 'owner':owner }
-
+  }
+  else{
+    var apidata = {"type": prot, "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), "domtype":"domain",
+   "Subnet": $("#Subnet").val(), 'groups': groups, "Myname":"mezo", "size": $("#volsize").val()+'G', 'owner':owner,
+   "domname": $("#domain").val(), "domsrv": $("#domsrv").val(), "domip": $("#domip").val(),
+   "domadmin": $("#domadmin").val(), "dompass": $("#dompass").val(), 
+  }
+  
+  }
   postdata(apiurl,apidata);
 
  
@@ -369,8 +378,26 @@ function avoldel(volname){
   console.log(volname, prot)
   postdata(apiurl,apidata);
 };
-
-
+$(".form-group").focusout(function(){
+  checksubmit();
+})
+function checksubmit(){
+ if($("#Domtype").val() == "domain") {
+   if($("#Pool2").val().length > 0  && $("#volname").val().length > 2 && $("#Address").val().length > 5 &&
+    $("#Subnet").val() > 1 && $("#volsize").val() > 0 && $("#domain").val().length > 2 &&
+    $("#domsrv").val().length > 2 && $("#domip").val().length > 5 && $("#domadmin").val().length > 2 &&
+    $("#dompass").val().length > 2){
+      $("#createvol").prop('disabled', false);
+    } else { $("#createvol").prop('disabled','disabled' );}
+  }
+  if($("#Domtype").val() == "workgroup") {
+    if($("#Pool2").val().length > 0 && $("#volname").val().length > 2 && $("#Address").val().length > 5 &&
+      $("#Subnet").val() > 1 && $("#volsize").val() > 0 ){
+        $("#createvol").prop('disabled', false);
+    } else { $("#createvol").prop('disabled', 'disabled');}
+  }
+}
+checksubmit();
 function tocheck(){
   
     var vollimit = 3;
@@ -387,10 +414,10 @@ function tocheck(){
      if($("#volsize").val() < 0) { $("#createvol").prop('disabled', 'disabled'); }
 }
 
-tocheck();
+//tocheck();
 
-$(".tocheck").click(function(e){ tocheck(); });
-$(".tocheck").focusout(function(e){ tocheck(); });
+//$(".tocheck").click(function(e){ tocheck(); });
+//$(".tocheck").focusout(function(e){ tocheck(); });
 
 
 function initcharts(){
@@ -491,8 +518,14 @@ function groupsfn(){
    });
 }
 
+$('#Domtype').on('change', function() {
+ if(this.value == 'domain'){ $('.domain').show(); $('.workgroup').hide()}
+ else{ $('.domain').hide(); $('.workgroup').show()}
+});
 
-
+$('#volname').focusout( function() {
+  $("#workname").val('cifs-'+$("#volname").val());
+});
 
 
 function refreshall(){
