@@ -175,8 +175,8 @@ $("#createvol").click(function(e){
    "Subnet": $("#Subnet").val(), 'groups': groups, "Myname":"mezo", "size": $("#volsize").val()+'G', 'owner':owner }
   }
   else{
-    var apidata = {"type": prot, "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), "domtype":"domain",
-   "Subnet": $("#Subnet").val(), 'groups': groups, "Myname":"mezo", "size": $("#volsize").val()+'G', 'owner':owner,
+    var apidata = {"type": prot+'dom', "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), "domtype":"domain",
+   "Subnet": $("#Subnet").val(), "Myname":"mezo", "size": $("#volsize").val()+'G', 'owner':owner,
    "domname": $("#domain").val(), "domsrv": $("#domsrv").val(), "domip": $("#domip").val(),
    "domadmin": $("#domadmin").val(), "dompass": $("#dompass").val(), 
   }
@@ -398,26 +398,6 @@ function checksubmit(){
   }
 }
 checksubmit();
-function tocheck(){
-  
-    var vollimit = 3;
-    if(prot == 'HOME') { vollimit = 1; }
-    $("#createvol").prop('disabled', false);
-    if($("#volname").val().length < vollimit) { $("#createvol").prop('disabled', 'disabled'); }
-    if($("#Pool2").val().length < 1) { $("#createvol").prop('disabled', 'disabled'); }
-    try {
-      if($("#Pool2").val().length  > 0 && $("#Address").val().length < 3) { $("#createvol").prop('disabled', 'disabled'); }
-     } catch(err){
-      console.log('Pool2 error allpools',allpools['results'])
-     }
-     
-     if($("#volsize").val() < 0) { $("#createvol").prop('disabled', 'disabled'); }
-}
-
-//tocheck();
-
-//$(".tocheck").click(function(e){ tocheck(); });
-//$(".tocheck").focusout(function(e){ tocheck(); });
 
 
 function initcharts(){
