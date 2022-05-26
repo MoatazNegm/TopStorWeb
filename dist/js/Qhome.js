@@ -49,14 +49,13 @@ var oldcurrentinfo='dlkfajsdl;';
  var modaltill=idletill-120000
  var volumelisttable;
  var dirtylog = 1;
- var grpsets = {};
 
 
 
 function poolsrefresh(){
  
   $('.select2.pool').select2({
-    placeholder: "Select a pool",
+    placeholder: "Select a state",
     ajax: {
      url: '/api/v1/volumes/poolsinfo',
      dataType: 'json',
@@ -120,7 +119,6 @@ function refreshrows()
        var assignedgrps = thisvolume.data('grps');
        var option;
         thisvolume.addClass('select2');
-        thisvolume.val(null).trigger('change');
         if(typeof(assignedgrps) == 'number') {
          grps = [assignedgrps];
        } else {
@@ -134,7 +132,6 @@ function refreshrows()
 
        });
        $.each(grps, function(e,t){
-         
          if(t !="NoGroup" && t in allgroups["results"]) {
            var grp = allgroups["results"][t];
            option = new Option(grp.text, grp.id, true, true)
@@ -170,18 +167,9 @@ $("#createvol").click(function(e){
     groups = thevol;
   }
   var apiurl = "api/v1/volumes/create";
-  if($("#Domtype").val() == "workgroup"){
-   var apidata = {"type": prot, "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), "domtype":"workgroup",
+  var apidata = {"type": prot, "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(),
    "Subnet": $("#Subnet").val(), 'groups': groups, "Myname":"mezo", "size": $("#volsize").val()+'G', 'owner':owner }
-  }
-  else{
-    var apidata = {"type": prot+'dom', "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), "domtype":"domain",
-   "Subnet": $("#Subnet").val(), "Myname":"mezo", "size": $("#volsize").val()+'G', 'owner':owner,
-   "domname": $("#domain").val(), "domsrv": $("#domsrv").val(), "domip": $("#domip").val(),
-   "domadmin": $("#domadmin").val(), "dompass": $("#dompass").val(), 
-  }
-  
-  }
+
   postdata(apiurl,apidata);
 
  
@@ -196,6 +184,7 @@ function volumelistrefresh(){
       });
   });
   propchange();
+  refreshrows();
 }
 function updatebtn(ths){
 
@@ -374,30 +363,31 @@ function selbtnclickeduser(ths){
 
 function avoldel(volname){
   var apiurl = "api/v1/volumes/volumedel";
-  var apidata = {'name': volname, 'type': prot, 'user':'mezo'}
-  console.log(volname, prot)
+  var apidata = {'name': volname, 'type': CIFS, 'user':'mezo'}
   postdata(apiurl,apidata);
 };
-$(".form-group").focusout(function(){
-  checksubmit();
-})
-function checksubmit(){
- if($("#Domtype").val() == "domain") {
-   if($("#Pool2").val().length > 0  && $("#volname").val().length > 2 && $("#Address").val().length > 5 &&
-    $("#Subnet").val() > 1 && $("#volsize").val() > 0 && $("#domain").val().length > 2 &&
-    $("#domsrv").val().length > 2 && $("#domip").val().length > 5 && $("#domadmin").val().length > 2 &&
-    $("#dompass").val().length > 2){
-      $("#createvol").prop('disabled', false);
-    } else { $("#createvol").prop('disabled','disabled' );}
-  }
-  if($("#Domtype").val() == "workgroup") {
-    if($("#Pool2").val().length > 0 && $("#volname").val().length > 2 && $("#Address").val().length > 5 &&
-      $("#Subnet").val() > 1 && $("#volsize").val() > 0 ){
-        $("#createvol").prop('disabled', false);
-    } else { $("#createvol").prop('disabled', 'disabled');}
-  }
+
+
+function tocheck(){
+  
+    var vollimit = 3;
+    if(prot == 'HOME') { vollimit = 1; }
+    $("#createvol").prop('disabled', false);
+    if($("#volname").val().length < vollimit) { $("#createvol").prop('disabled', 'disabled'); }
+    if($("#Pool2").val().length < 1) { $("#createvol").prop('disabled', 'disabled'); }
+    try {
+      if($("#Pool2").val().length  > 0 && $("#Address").val().length < 3) { $("#createvol").prop('disabled', 'disabled'); }
+     } catch(err){
+      console.log('Pool2 error allpools',allpools['results'])
+     }
+     
+     if($("#volsize").val() < 0) { $("#createvol").prop('disabled', 'disabled'); }
 }
-checksubmit();
+
+tocheck();
+
+$(".tocheck").click(function(e){ tocheck(); });
+$(".tocheck").focusout(function(e){ tocheck(); });
 
 
 function initcharts(){
@@ -498,14 +488,8 @@ function groupsfn(){
    });
 }
 
-$('#Domtype').on('change', function() {
- if(this.value == 'domain'){ $('.domain').show(); $('.workgroup').hide()}
- else{ $('.domain').hide(); $('.workgroup').show()}
-});
 
-$('#volname').focusout( function() {
-  $("#workname").val('cifs-'+$("#volname").val());
-});
+
 
 
 function refreshall(){
