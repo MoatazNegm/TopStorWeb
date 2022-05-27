@@ -261,15 +261,17 @@ $('#createpool').click(function(e){
   var apidata = {"redundancy": $(this).data('redundancy'), 'useable': useable, 'user':'mezo' }
   postdata(apiurl,apidata);
 });
-$('.addtopool').click(function(e){
+//$('.addtopool').click(function(e){
+$("body").on('click','.addtopool', function(e){
   e.preventDefault();
   var apiurl = "api/v1/pools/addtopool";
   var redundancy = $(this).data('redundancy');
   var pool = $(this).data('pool');
   var useable = $("#"+pool+" .select"+redundancy).val();
   var apidata = {"pool": pool, "redundancy": redundancy, 'useable': useable, 'user':'mezo' }
+  console.log('addtopol',apidata)
   postdata(apiurl,apidata);
-})
+});
 
 function memberclick(thisclck){
   //hname=$(thisclck).attr('data-disk');
