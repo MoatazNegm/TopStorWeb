@@ -134,13 +134,14 @@ function refreshrows()
 
        });
        $.each(grps, function(e,t){
-         
+         var grp = ''
          if(t !="NoGroup" && t in allgroups["results"]) {
-           var grp = allgroups["results"][t];
+           grp = allgroups["results"][t];
            option = new Option(grp.text, grp.id, true, true)
            thisvolume.append(option)
           }
         });
+        $(".DOMAIN").attr('disabled','disabled')
      });
  $(".changeprop").each(function(){
       updatebtn($(this));
@@ -300,7 +301,7 @@ function initVolumelist(){
           data:"groups",
           "visible": prot != 'HOME',
           render: function(data, type, row){
-            var therow= '<select class="multiple changeprop usergroups '+row.name+' form-control"' 
+            var therow= '<select class="multiple changeprop usergroups '+row.type+' '+row.name+' form-control"' 
             + ' multiple="multiple" data-name='+row.name+'  '
             + 'data-grps="'+row.groups+'" data-key="groups" data-value="'+data+'" data-name='+row.name+' value="'+row.groups+'" data-change="" id="sel'+row.name+'"></select>';
             return therow; 

@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"header":{"cluster_id":4784203300614245395,"member_id":9599981840191834464,"raft_term":55},"members":[{"ID":9599981840191834464,"name":"dhcp17797","peerURLs":["http://10.11.11.244:2380"],"clientURLs":["http://10.11.11.244:2379"]}]}
+=======
+{"header":{"cluster_id":4784203300614245395,"member_id":9599981840191834464,"raft_term":71},"members":[{"ID":9599981840191834464,"name":"dhcp26226","peerURLs":["http://10.11.11.244:2380"],"clientURLs":["http://10.11.11.244:2379"]}]}
+>>>>>>> 9cd82e02a550e205a7f2d41d1d9e543b098c349f
