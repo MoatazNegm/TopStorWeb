@@ -123,6 +123,8 @@ function initaddgs(){
 }
 function initdgs(){
   var poolcard;
+  var col;
+  var colsmean;
   var pool, host, status, grouptype, raid, changeop,shortdisk, size;
   if(typeof alldgs == 'undefined' ) {return;}
   $('.phdcp').remove();
@@ -162,6 +164,14 @@ function initdgs(){
 
       $.each(t['raids'],function(ee,tt){
         raid = tt;
+        cols = alldgs['raids'][raid]['disks'].length + alldgs['raids'][raid]['missingdisks'][0]
+        colsmean = Math.ceil(12/(cols))
+        $('#'+pool+' .disks').append(
+          '<div class="col-'+cols+'">'
+          +'<sub id="sub'+raid+'">'+raid.split('_')[0]+'</sub>'
+	  +'<div class="row" id='+raid+' style="border: solid; border-color: grey; border-width:1px;"></div>'
+          +'</div>'
+        );
         $.each(alldgs['raids'][raid]['disks'],function(eee,disk){
           shortdisk = disk.slice(-5);
           status = alldgs['disks'][disk]['status'];
@@ -173,25 +183,32 @@ function initdgs(){
           } else {
             imgf = 'invaliddisk.png';
           }
-          $('#'+pool+' .disks').append(
-            '<div id="'+disk+'" data-disk="'+disk+'" class=" col-'+col+' '+raid+' '+pool+' '+status+' '+changeop+'">'
+          $('#'+raid).append(
+            '<div class="col-'+colsmean+'">'
+            +'<div id="'+disk+'" data-disk="'+disk+'" class="'+raid+' '+pool+' '+status+' '+changeop+'">'
               +'  <a href="javascript:memberclick(\'#'+disk+'\')" class="img-clck" >'
               +'     <img class="img412 imgstyle '+diskimg+' '+disk+'" src="img/'+imgf+'" />'
-              +'  <p class="psize">'+size+'</p></a><p class="pimage">'+shortdisk+'</p>'
+              +'  <p class="psize">'+size+'</p></a><p class="ptext">'+shortdisk+'</p>'
               //+' <p class="pimage">'+changeop+'</p><p class="pimage">'+e+'</p>'
               +'  </a>'
+            +'</div>'
             +'</div>'
           );
         });
         for ( x=0; x < alldgs['raids'][raid]['missingdisks'][0]; x++){
          imgf = 'invaliddisk.png';
-         $('#'+pool+' .disks').append(
-            '<div id="'+raid['name']+'dm_'+x+'" data-disk="'+raid['name']+'dm_'+x+'" class=" col-'+col+' '+raid+' '+pool+' '+status+' '+changeop+'">'
+         $("#"+raid).css('border-color','red');
+         $("#sub"+raid).css('color','red');
+         $('#'+raid).append(
+
+            '<div class="col-'+colsmean+'">'
+            +'<div id="'+raid['name']+'dm_'+x+'" data-disk="'+raid['name']+'dm_'+x+'" class=" col-'+col+' '+raid+' '+pool+' '+status+' '+changeop+'">'
               +'  <a href="javascript:memberclick(\'#'+raid['name']+'dm_'+x+'\')" class="img-clck" >'
               +'     <img class="img412 imgstyle '+diskimg+' '+raid['name']+'dm_'+x+'" src="img/'+imgf+'" />'
-              +'  <p class="psize">'+'-'+'</p></a><p class="pimage">'+'missing'+'</p>'
+              +'  <p class="psize">'+'-'+'</p></a><p class="ptext">'+'missing'+'</p>'
               //+' <p class="pimage">'+changeop+'</p><p class="pimage">'+e+'</p>'
               +'  </a>'
+            +'</div>'
             +'</div>'
           );
 

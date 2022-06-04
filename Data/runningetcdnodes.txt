@@ -1,10 +1,16 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 {"header":{"cluster_id":4784203300614245395,"member_id":9599981840191834464,"raft_term":59},"members":[{"ID":9599981840191834464,"name":"dhcp17797","peerURLs":["http://10.11.11.244:2380"],"clientURLs":["http://10.11.11.244:2379"]}]}
 =======
 {"header":{"cluster_id":4784203300614245395,"member_id":9599981840191834464,"raft_term":31},"members":[{"ID":9599981840191834464,"name":"dhcp32570","peerURLs":["http://10.11.11.244:2380"],"clientURLs":["http://10.11.11.245:2379"]}]}
 >>>>>>> 3019c1f7ed4e71243b3ef1e810c94f69a6fbd458
 =======
+=======
+{"header":{"cluster_id":4784203300614245395,"member_id":9599981840191834464,"raft_term":180},"members":[{"ID":9599981840191834464,"name":"dhcp10426","peerURLs":["http://10.11.11.244:2380"],"clientURLs":["http://10.11.11.246:2379"]}]}
+=======
+<<<<<<< HEAD
+>>>>>>> a4bcadba2c8babbcd16a616cfcf2503861415029
 {"header":{"cluster_id":4784203300614245395,"member_id":9599981840191834464,"raft_term":145},"members":[{"ID":9599981840191834464,"name":"dhcp32570","peerURLs":["http://10.11.11.244:2380"],"clientURLs":["http://10.11.11.245:2379"]}]}
 =======
 {"header":{"cluster_id":4784203300614245395,"member_id":9599981840191834464,"raft_term":165},"members":[{"ID":9599981840191834464,"name":"dhcp10426","peerURLs":["http://10.11.11.244:2380"],"clientURLs":["http://10.11.11.246:2379"]}]}
