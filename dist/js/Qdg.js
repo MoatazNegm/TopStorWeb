@@ -97,7 +97,7 @@ function initaddgs(){
                 $('#'+pool+" .select"+en).append(o)
               });
             }
-            if (alldgs['pools'][pool]['Availability'].includes('Availability')){
+            if (alldgs['pools'][pool]['name'] != 'pree' && alldgs['pools'][pool]['availtype'].includes('Availability')){
               $('#'+pool+" .adiv"+en).show();
               $('#'+pool+" .adivvolset").hide();
             } else {
@@ -140,10 +140,25 @@ function initdgs(){
       $('#'+pool+" .spanused").text('used:'+t['used'].toString().slice(0,5)+'GB');
       var avtype = 'Highly Available';
       var avcolor = 'blue';
-      if(t["Availability"] != "Availability") { avtype = 'No Redundancy'; avcolor='red'}
+      if(t['name'] != 'pree' && t["availtype"] != "Availability") { avtype = 'No Redundancy'; avcolor='red'}
+      else {
+         balanced = ', balanced'
+         $.each(t['raids'],function(traide,traid){ 
+          if(alldgs['raids'][traid]['missingdisks'][0] != 0) { 
+            avcolor = 'red'
+            balanced = ', missing disks';
+            return false;
+          }
+          if(alldgs['raids'][traid]['raidrank'][0] < 0) {
+           avcolor='#f39c12'; balanced = ', not balanced';
+           return false;
+          }
+         });
+         avtype = avtype+balanced;
+      }
       $('#'+pool+" .spanredundancy").text(avtype);
       $('#'+pool+" .spanredundancy").css('color',avcolor);
-      $('#'+pool+" .spandedup").text('dedupped:'+t['dedup']);
+      $('#'+pool+" .spandedup").text('dedup:'+t['dedup']);
 
       $.each(t['raids'],function(ee,tt){
         raid = tt;
@@ -168,8 +183,19 @@ function initdgs(){
             +'</div>'
           );
         });
-        
-        
+        for ( x=0; x < alldgs['raids'][raid]['missingdisks'][0]; x++){
+         imgf = 'invaliddisk.png';
+         $('#'+pool+' .disks').append(
+            '<div id="'+raid['name']+'dm_'+x+'" data-disk="'+raid['name']+'dm_'+x+'" class=" col-'+col+' '+raid+' '+pool+' '+status+' '+changeop+'">'
+              +'  <a href="javascript:memberclick(\'#'+raid['name']+'dm_'+x+'\')" class="img-clck" >'
+              +'     <img class="img412 imgstyle '+diskimg+' '+raid['name']+'dm_'+x+'" src="img/'+imgf+'" />'
+              +'  <p class="psize">'+'-'+'</p></a><p class="pimage">'+'missing'+'</p>'
+              //+' <p class="pimage">'+changeop+'</p><p class="pimage">'+e+'</p>'
+              +'  </a>'
+            +'</div>'
+          );
+
+        }
       });
      
       
