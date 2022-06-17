@@ -97,7 +97,7 @@ function initaddgs(){
                 $('#'+pool+" .select"+en).append(o)
               });
             }
-            if (alldgs['pools'][pool]['availtype'].includes('Availability')){
+            if (alldgs['pools'][pool]['name'] != 'pree' && alldgs['pools'][pool]['availtype'].includes('Availability')){
               $('#'+pool+" .adiv"+en).show();
               $('#'+pool+" .adivvolset").hide();
             } else {
@@ -138,13 +138,21 @@ function initdgs(){
       var allsize = Math.round(100*(parseFloat(t['available'])+parseFloat(t['used'])))/100 ;
       $('#'+pool+" .spansize").text('size:'+allsize.toString()+'GB');
       $('#'+pool+" .spanused").text('used:'+t['used'].toString().slice(0,5)+'GB');
-      var avtype = 'No Redundancy';
-      var avcolor = 'red';
-      console.log(t["availtype"])
-      if(t["availtype"].includes("Availability")) { avtype = 'Highly Available'; avcolor='blue'}
+      var avtype = 'Highly Available';
+      var avcolor = 'blue';
+      if(t['name'] != 'pree' && t["availtype"] != "Availability") { avtype = 'No Redundancy'; avcolor='red'}
+      else {
+         balanced = ' and balanced'
+         $.each(t['raids'],function(traide,traid){ 
+          if(alldgs['raids'][traid]['raidrank'][0] < 0) {
+           avcolor='yellow'; balanced = ' but not balanced';
+          }
+         });
+         avtype = avtype+balanced;
+      }
       $('#'+pool+" .spanredundancy").text(avtype);
       $('#'+pool+" .spanredundancy").css('color',avcolor);
-      $('#'+pool+" .spandedup").text('dedupped:'+t['dedup']);
+      $('#'+pool+" .spandedup").text('dedup:'+t['dedup']);
 
       $.each(t['raids'],function(ee,tt){
         raid = tt;
