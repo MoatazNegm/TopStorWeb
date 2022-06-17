@@ -97,7 +97,7 @@ function initaddgs(){
                 $('#'+pool+" .select"+en).append(o)
               });
             }
-            if (alldgs['pools'][pool]['Availability'].includes('Availability')){
+            if (alldgs['pools'][pool]['availtype'].includes('Availability')){
               $('#'+pool+" .adiv"+en).show();
               $('#'+pool+" .adivvolset").hide();
             } else {
@@ -138,9 +138,10 @@ function initdgs(){
       var allsize = Math.round(100*(parseFloat(t['available'])+parseFloat(t['used'])))/100 ;
       $('#'+pool+" .spansize").text('size:'+allsize.toString()+'GB');
       $('#'+pool+" .spanused").text('used:'+t['used'].toString().slice(0,5)+'GB');
-      var avtype = 'Highly Available';
-      var avcolor = 'blue';
-      if(t["Availability"] != "Availability") { avtype = 'No Redundancy'; avcolor='red'}
+      var avtype = 'No Redundancy';
+      var avcolor = 'red';
+      console.log(t["availtype"])
+      if(t["availtype"].includes("Availability")) { avtype = 'Highly Available'; avcolor='blue'}
       $('#'+pool+" .spanredundancy").text(avtype);
       $('#'+pool+" .spanredundancy").css('color',avcolor);
       $('#'+pool+" .spandedup").text('dedupped:'+t['dedup']);
