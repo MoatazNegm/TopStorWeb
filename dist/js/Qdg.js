@@ -144,8 +144,14 @@ function initdgs(){
       else {
          balanced = ' and balanced'
          $.each(t['raids'],function(traide,traid){ 
+          if(alldgs['raids'][traid]['raidrank'][2] != 0) { 
+            avcolor = 'red'
+            balanced = ' but missing disks';
+            return false;
+          }
           if(alldgs['raids'][traid]['raidrank'][0] < 0) {
            avcolor='yellow'; balanced = ' but not balanced';
+           return false;
           }
          });
          avtype = avtype+balanced;
