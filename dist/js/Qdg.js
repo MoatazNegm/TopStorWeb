@@ -144,8 +144,14 @@ function initdgs(){
       else {
          balanced = ' and balanced'
          $.each(t['raids'],function(traide,traid){ 
+          if(alldgs['raids'][traid]['raidrank'][2] != 0) { 
+            avcolor = 'red'
+            balanced = ', missing disks';
+            return false;
+          }
           if(alldgs['raids'][traid]['raidrank'][0] < 0) {
            avcolor='yellow'; balanced = ' but not balanced';
+           return false;
           }
          });
          avtype = avtype+balanced;
@@ -177,8 +183,19 @@ function initdgs(){
             +'</div>'
           );
         });
-        
-        
+        for ( x=0; x < alldgs['raids'][raid]['missingdisks'][0]; x++){
+         imgf = 'invaliddisk.png';
+         $('#'+pool+' .disks').append(
+            '<div id="'+raid['name']+'dm_'+x+'" data-disk="'+raid['name']+'dm_'+x+'" class=" col-'+col+' '+raid+' '+pool+' '+status+' '+changeop+'">'
+              +'  <a href="javascript:memberclick(\'#'+raid['name']+'dm_'+x+'\')" class="img-clck" >'
+              +'     <img class="img412 imgstyle '+diskimg+' '+raid['name']+'dm_'+x+'" src="img/'+imgf+'" />'
+              +'  <p class="psize">'+'-'+'</p></a><p class="pimage">'+'missing'+'</p>'
+              //+' <p class="pimage">'+changeop+'</p><p class="pimage">'+e+'</p>'
+              +'  </a>'
+            +'</div>'
+          );
+
+        }
       });
      
       
