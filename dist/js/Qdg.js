@@ -142,7 +142,7 @@ function initdgs(){
       var avcolor = 'blue';
       if(t['name'] != 'pree' && t["availtype"] != "Availability") { avtype = 'No Redundancy'; avcolor='red'}
       else {
-         balanced = ' and balanced'
+         balanced = ', balanced'
          $.each(t['raids'],function(traide,traid){ 
           if(alldgs['raids'][traid]['missingdisks'][0] != 0) { 
             avcolor = 'red'
@@ -150,7 +150,7 @@ function initdgs(){
             return false;
           }
           if(alldgs['raids'][traid]['raidrank'][0] < 0) {
-           avcolor='yellow'; balanced = ' but not balanced';
+           avcolor='yellow'; balanced = ', not balanced';
            return false;
           }
          });
