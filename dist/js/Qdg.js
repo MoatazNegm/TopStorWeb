@@ -150,7 +150,7 @@ function initdgs(){
             return false;
           }
           if(alldgs['raids'][traid]['raidrank'][0] < 0) {
-           avcolor='yellow'; balanced = ', not balanced';
+           avcolor='#f39c12'; balanced = ', not balanced';
            return false;
           }
          });
