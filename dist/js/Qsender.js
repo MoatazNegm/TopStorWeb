@@ -19,6 +19,7 @@ var oldcurrentinfo='dlkfajsdl;';
  var mydate;
  var tempvar;
  var allusers="init";
+ var allpartners="init";
  var allusersnohome="init";
  var allvolumes = "init";
  var allgroups= "";
@@ -30,7 +31,6 @@ var oldcurrentinfo='dlkfajsdl;';
  var mytimer;
  var mymodal;
  var cgrp={};
- var alls;
  var cuser={};
  var volumelistflag=0;
  var userdata="dksfj";
@@ -54,6 +54,7 @@ var oldcurrentinfo='dlkfajsdl;';
  var allpsnapstable = {}
  var cpool = 'init';
  var cvolume = 'init';
+ var cpartner = 'init';
  var dirtylog = 1;
  var allperiods = ['Minutely', 'Hourly', 'Weekly'];
  //var allperiods = ['Minutely', 'Minutely', 'Minutely'];
@@ -113,6 +114,44 @@ function volumesrefresh(){
 
 
   }
+
+function partnersrefresh(){
+  var newallpartners = '';
+  var reload = 0
+  if($("#volname").val() == '') {  newallpartners = '';}
+  else{
+    $.ajax({
+      url: '/api/v1/partners/partnerlist',
+      dataType: 'json',
+      timeout: 3000,
+      // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+      type: 'GET',
+      async: false,
+      success: function(data){ newallpartners = data;}
+    });
+    if(JSON.stringify(allvolumes) != JSON.stringify(newallpartners)) {
+      allpartners = JSON.parse(JSON.stringify(newallpartners)); 
+      newallpartners=[];
+      $.each(allpartners['allpartners'],function(e,t){
+         if(t['type'].includes('ceiver') > 0){
+          t['text'] = t['alias'] 
+          t['id'] = e
+          newallpartners.push(t);
+	}
+      });
+      reload = 1
+    }
+  }
+  console.log('newall',newallpartners)
+  $('.select2.receiver').select2({
+    placeholder: "Select a partner",
+    data: newallpartners
+  });
+
+
+  }
+
+
 function getsnaps(){
   $.ajax({
     url: 'api/v1/volumes/snapshots/snapshotsinfo',
@@ -125,12 +164,15 @@ function getsnaps(){
 //allsnaps = getsnaps();
 
 function initalltables(){
-
+  var alls=[]
+  $.each(allsnaps['once'],function(e,t){
+   if(t['partnerR'].length > 2) {alls.push(t)}
+  });
   onceinittable=$("#Oncetable").DataTable({
     "order": [[ 0, "desc" ],[ 1, "desc" ]],
-    "data": allsnaps['Once'],
+    "data": alls,
     "columns": [
-      {data: "date"}, {data:"time"},{data: "name" }, 
+      {data: "date"}, {data:"time"},{data: "name" }, {data: "partnerR"}, 
       {data: null,
         render: function(data, type, row){
           return row.volume.split('_')[0]
@@ -163,21 +205,25 @@ function initalltables(){
     
   });
   onceinittable.buttons().container().appendTo('#Oncetable_wrapper .col-6:eq(0)');
+  alls = [] 
+  $.each(allsnaps['allsnaps'],function(e,t){
+   if(t['partnerR'].length > 2) {alls.push(t)}
+  });
   allpsnapstable["allsnaps"] =$("#allsnapstable").DataTable({
     "order": [[ 0, "desc" ],[ 1, "desc" ]],
-    "data": allsnaps["allsnaps"],
+    "data": alls,
     "columns": [
       {data: "date"}, {data:"time"},
       {data: "name",
        render: function(data,type,row){
          return data.split('.')[0]+'.'+data.split('.').pop();
        }
-      }, 
+      }, {data: "partnerR"},
       {data: null,
         render: function(data, type, row){
           return row.volume.split('_')[0]
         }
-      }, {data: "partnerR"},
+      },
       {data: "used"}, {data:"refcompressratio"}, 
       {
         data: null,
@@ -208,16 +254,20 @@ function initalltables(){
   allpsnapstable["allsnaps"].buttons().container().appendTo('#allsnapstable_wrapper .col-6:eq(0)');
   try{
     t='Minutely';
+    alls = [] 
+    $.each(allsnaps[t+'period'],function(e,tt){
+     if(tt['receiver'] != 'NoReceiver') {alls.push(tt)}
+    });
     allperiodstable[t]=$("#"+t+"periods").DataTable({
       "order": [[ 0, "desc" ],[ 1, "desc" ]],
-      "data": allsnaps[t+'period'],
+      "data": alls,
       "columns": [
         {data: "id"}, 
         {data: null,
           render: function(data, type, row){
             return row.volume.split('_')[0]
           }
-        }, {data:"every"},{data: "keep" }, 
+        }, {data: "receiver"},{data:"every"},{data: "keep" }, 
         {
           data: null,
           render: function(data, type, row){
@@ -240,9 +290,8 @@ function initalltables(){
     t='Hourly';
     alls = [] 
     $.each(allsnaps[t+'period'],function(e,tt){
-     if(tt['receiver'] == 'NoReceiver') {alls.push(tt)}
+     if(tt['receiver'] != 'NoReceiver') {alls.push(tt)}
     });
- 
     allperiodstable[t]=$("#"+t+"periods").DataTable({
       "order": [[ 0, "desc" ],[ 1, "desc" ]],
       "data": alls,
@@ -252,7 +301,7 @@ function initalltables(){
           render: function(data, type, row){
             return row.volume.split('_')[0]
           }
-        },{data:"every"}, {data:'sminute'}, {data: "keep" }, 
+        },{data:"receiver"},{data:"every"}, {data:'sminute'}, {data: "keep" }, 
         {
           data: null,
           render: function(data, type, row){
@@ -275,9 +324,8 @@ function initalltables(){
     t='Weekly';
     alls = [] 
     $.each(allsnaps[t+'period'],function(e,tt){
-     if(tt['receiver'] == 'NoReceiver') {alls.push(tt)}
+     if(tt['receiver'] != 'NoReceiver') {alls.push(tt)}
     });
- 
     allperiodstable[t]=$("#"+t+"periods").DataTable({
       "order": [[ 0, "desc" ],[ 1, "desc" ]],
       "data": alls,
@@ -287,7 +335,7 @@ function initalltables(){
           render: function(data, type, row){
             return row.volume.split('_')[0]
           }
-        },{data:"stime"}, {data:'every'}, {data: "keep" }, 
+        },{data: "receiver"},{data:"stime"}, {data:'every'}, {data: "keep" }, 
         {
           data: null,
           render: function(data, type, row){
@@ -308,9 +356,13 @@ function initalltables(){
     });
     allperiodstable[t].buttons().container().appendTo('#'+t+'periods_wrapper .col-6:eq(0)');
     $.each(allperiods, function(e,t){
+      alls = [] 
+      $.each(allsnaps['allsnaps'],function(e,tt){
+      if(tt['partnerR'].length > 2) {alls.push(tt)}
+      });
       allpsnapstable[t] =$("#"+t+"table").DataTable({
         "order": [[ 0, "desc" ],[ 1, "desc" ]],
-        "data": allsnaps[t],
+        "data": alls,
         "columns": [
           {data: "date"}, {data:"time"},
           {data: "name",
@@ -322,7 +374,7 @@ function initalltables(){
             render: function(data, type, row){
               return row.volume.split('_')[0]
             }
-          },{data: 'partnerR'},
+          }, {data: "partnerR"},
           {data: "used"}, {data:"refcompressratio"}, 
           {
             data: null,
@@ -365,25 +417,32 @@ function snapsreferesh(){
   getsnaps();
   if(JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
     allsnaps = JSON.parse(JSON.stringify(newsnaps)); 
-    alls = [] 
-    $.each(allsnaps["Once"],function(e,tt){
-     if(tt['receiver'] == 'NoReceiver') {alls.push(tt)}
-    });
- 
     onceinittable.clear();
-    onceinittable.rows.add(allsnaps['Once']);
+    alls = [] 
+    $.each(allsnaps['Once'],function(e,tt){
+     if(tt['partnerR'].length > 2) {alls.push(tt)}
+    });
+    onceinittable.rows.add(alls);
     onceinittable.draw();
     try{
+      alls = [] 
+      $.each(allsnaps['allsnaps'],function(e,tt){
+       if(tt['partnerR'].length > 2) {alls.push(tt)}
+      });
       allpsnapstable["allsnaps"].clear();
-      allpsnapstable["allsnaps"].rows.add(allsnaps["allsnaps"]);
+      allpsnapstable["allsnaps"].rows.add(alls);
       allpsnapstable["allsnaps"].draw();
       $.each(allperiods, function(e,t){
+        alls = [] 
+        $.each(allsnaps[t],function(e,tt){
+         if(tt['partnerR'].length > 2) {alls.push(tt)}
+        });
         allpsnapstable[t].clear();
-        allpsnapstable[t].rows.add(allsnaps[t]);
+        allpsnapstable[t].rows.add(alls);
         allpsnapstable[t].draw();
         alls = [] 
         $.each(allsnaps[t+'period'],function(e,tt){
-        if(tt['receiver'] == 'NoReceiver') {alls.push(tt)}
+         if(tt['receiver'] != 'NoReceiver') {alls.push(tt)}
         });
         allperiodstable[t].clear();
         allperiodstable[t].rows.add(alls);
@@ -436,9 +495,9 @@ var thepool = allpools['results'][$("#Pool2").val()]['text'];
 var owner = allpools['results'][$("#Pool2").val()]['owner'];
 var thevol = allvolumes[$("#volname").val()]['fullname'];
 var thesnap = $("#Oncename").val();
-
+var receiver = allpartners['allpartners'][$("#receiver").val()]['alias']
 var apiurl = "api/v1/volumes/snapshots/create";
-var apidata = {"snapsel": 'Once', "pool": thepool, "volume": thevol, 'name': thesnap, 'owner':owner }
+var apidata = {"snapsel": 'Once', "pool": thepool, "volume": thevol, 'name': thesnap, 'receiver':receiver, 'owner':owner }
 
 postdata(apiurl,apidata);
 
@@ -452,8 +511,9 @@ $("#Minutelycreate").click(function(e){
   var thevol = allvolumes[$("#volname").val()]['fullname'];
   var every = $("#EveryMinutely").val();
   var keep = $("#KeepMinutely").val();
+  var receiver = allpartners['allpartners'][$("#receiver").val()]['alias']
   var apiurl = "api/v1/volumes/snapshots/create";
-  var apidata = {"snapsel": 'Minutely', "pool": thepool, "volume": thevol, 'every': every, 
+  var apidata = {"snapsel": 'Minutely', "pool": thepool, "volume": thevol, 'every': every, 'receiver':receiver,
                   'keep': keep, 'owner':owner }
   postdata(apiurl,apidata);
   });
@@ -466,8 +526,9 @@ $("#Minutelycreate").click(function(e){
     var every = $("#EveryHourly").val();
     var keep = $("#KeepHourly").val();
     var sminute = $("#Sminute").val();
+    var receiver = allpartners['allpartners'][$("#receiver").val()]['alias']
     var apiurl = "api/v1/volumes/snapshots/create";
-    var apidata = {"snapsel": 'Hourly', "pool": thepool, "volume": thevol, 'every': every, 
+    var apidata = {"snapsel": 'Hourly', "pool": thepool, "volume": thevol, 'every': every, 'receiver':receiver,
                     'keep': keep,'sminute':sminute, 'owner':owner }
     console.log('apidata',apidata);
     
@@ -484,8 +545,9 @@ $("#Minutelycreate").click(function(e){
     var every = $("#Sday").val();
     var keep = $("#KeepWeekly").val();
     var stime = $("#Stime").val();
+    var receiver = allpartners['allpartners'][$("#receiver").val()]['alias']
     var apiurl = "api/v1/volumes/snapshots/create";
-    var apidata = {"snapsel": 'Weekly', "pool": thepool, "volume": thevol, 'every': every, 
+    var apidata = {"snapsel": 'Weekly', "pool": thepool, "volume": thevol, 'every': every, 'receiver': receiver,
                     'keep': keep,'stime':stime, 'owner':owner }
     console.log('apidata',apidata);
     
@@ -505,9 +567,10 @@ function changeoncesubmit(){
 
  
 $("#Pool2").change(function(e){   volumesrefresh(); });
-$("#volname").change(function(e){
-  cvolume = $("#volname").val();
-  if($("#volname").val() == ''){
+$("#volname").change(function(e){   partnersrefresh(); });
+$("#receiver").change(function(e){
+  cpartner = $("#receiver").val();
+  if($("#receiver").val() == ''){
     $("#Oncename").attr('disabled','disabled');
     $("#oncecreate").attr('disabled','disabled');
     $(".Minute").prop('disabled','disabled');
