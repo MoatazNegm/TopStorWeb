@@ -58,7 +58,7 @@ $("#address").change(function(e){
  commondisable();
 });
 
-$("#pass").change(function(e){
+$("#ppass").change(function(e){
  commondisable();
 });
 
