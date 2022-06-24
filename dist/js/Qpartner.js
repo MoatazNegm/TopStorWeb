@@ -43,22 +43,23 @@ var oldcurrentinfo='dlkfajsdl;';
  var partnerlisttable; 
  var myid="<?php echo $_REQUEST['myid'] ?>";
 $("#AddPartner").prop('disabled',true);
-$("#DNSname").change(function(e){
- if(($("#DNSname").val().length > 2 || $("#address").val().length > 6)&& $("#alias").val().length > 2 && $("#pass").val()>2) { $("#AddPartner").prop('disabled',false); }
+function commondisable(){
+ if(($("#DNSname").val().length > 2 || $("#address").val().length > 6)&& $("#alias").val().length > 2 && $("#ppass").val().length>2) { $("#AddPartner").prop('disabled',false); }
  else { $("#AddPartner").prop('disabled',true); }
+};
+
+$("#DNSname").change(function(e){
+ commondisable();
 });
 $("#alias").change(function(e){
- if(($("#DNSname").val().length > 2 || $("#address").val().length > 6)&& $("#alias").val().length > 2 && $("#pass").val()>2) { $("#AddPartner").prop('disabled',false); }
- else { $("#AddPartner").prop('disabled',true); }
+ commondisable();
 });
 $("#address").change(function(e){
- if(($("#DNSname").val().length > 2 || $("#address").val().length > 6)&& $("#alias").val().length > 2 && $("#pass").val()>2) { $("#AddPartner").prop('disabled',false); }
- else { $("#AddPartner").prop('disabled',true); }
+ commondisable();
 });
 
 $("#pass").change(function(e){
- if(($("#DNSname").val().length > 2 || $("#address").val().length > 6)&& $("#alias").val().length > 2 && $("#pass").val()>2) { $("#AddPartner").prop('disabled',false); }
- else { $("#AddPartner").prop('disabled',true); }
+ commondisable();
 });
 
 
@@ -114,9 +115,10 @@ $("#AddPartner").click( function (e){
   var ipaddr = $("#address").val();
   var name = $("#address").val()
   if($("#address").val() == ""){ name = $("#DNSname").val()}
-  var apidata = {"name":name, 'pass': $("#pass").val(), 'port':$("#port").val(), "type":$("type").val(),
+  var apidata = {"ip":name, 'pass': $("#ppass").val(), 'port':$("#port").val(), "type":$("#type").val(),
             "alias": $("#alias").val()
                 }
+  console.log('submit',apidata)
   postdata(apiurl,apidata);
  
   e.preventDefault();

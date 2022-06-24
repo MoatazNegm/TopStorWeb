@@ -15,6 +15,11 @@
   <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <!-- Chartjs -->
+  <link rel="stylesheet" href="plugins/chart.js/Chart.min.css">
 
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
@@ -40,7 +45,7 @@
         <a class="boldit nav-link" style="color: black;" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars "></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="./QuickStor.html" class="boldit nav-link" style="color: black;"  >Volume Replication Management</a>
+        <a href="./QuickStor.html" class="boldit nav-link" style="color: black;"  >Sender Replication Management</a>
       </li>
     </ul>
 
@@ -97,7 +102,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background: rgb(19, 16, 16);">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link navbar-brand ">
+    <a href="./QuickStor.html" class="brand-link navbar-brand " style="padding:0px; margin:0px;">
       <img src="img/logo.png" widht="250" height="90" alt="nothing" class="" style="opacity: .8">
     </a>
 
@@ -185,8 +190,8 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item Volumes auths SnapShots CIFS NFS HOME ISCSI " style=' margin:0px; border-radius: 0px;'> 
-             <a href="#" class="nav-link" style="box-shadow:none;font-size:1rem;background-color: #0D0D7F; margin:0px; border-radius: 0px;">
+          <li class="nav-item Volumes auths SnapShots CIFS NFS HOME ISCSI" style=' margin:0px; border-radius: 0px;'> 
+             <a href="#" class="nav-link " style="box-shadow:none;font-size:1rem; margin:0px;background-color: #0D0D7F; border-radius: 0px;" >
                <i class="nav-icon fas fa-hdd "></i>
                <p>
                  Volumes
@@ -219,7 +224,7 @@
                 </a>
               </li>
               <li class="nav-item auths SnapShots " style="font-size: small; margin:0px; border-radius: 0px;">
-                <a href="./Qsnapshots.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
+                <a href="./Qsnapshots.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
                    <i class="fas fa-camera nav-icon" ></i>
                    <p>Snapshots</p>
                  </a>
@@ -228,7 +233,7 @@
              </ul>
           </li>
           <li class="nav-item  replication  auths Replication Partners Senders menu-open" style=' margin:0px; border-radius: 0px;'>
-              <a href="#" class="nav-link active" style="box-shadow:none;font-size:1rem; margin:0px;background-color: #0D0D7F; border-radius: 0px;" >
+              <a href="#" class="nav-link active" style="box-shadow:none;font-size:1rem;background-color: #0D0D7F; margin:0px; border-radius: 0px;">
                 <i class="nav-icon far fa-clone "></i>
                 <p>
                   Replication
@@ -237,13 +242,13 @@
               </a>
               <ul class="nav nav-treeview" style="font-size: small; margin:0px; border-radius: 0px;">
                 <li class="nav-item  auths Partners"  style="font-size: small; margin:0px; border-radius: 0px;">
-                  <a href="./Qpartner.html" class="nav-link" style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                  <a href="./Qpartner.html" class="nav-link"style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
                     <i class="fas fa-hands-helping nav-icon" ></i>
                     <p>Partner</p>
                   </a>
                   </li>
                   <li class="nav-item auths Senders"  style="font-size: small; margin:0px; border-radius: 0px;"> 
-                <a href="./Qsender.html" class="nav-link " style='margin:0px; border-radius: 0px;color: white; background-color: #8a8abe;' >
+                <a href="./Qsender.html" class="nav-link " style='margin:0px; border-radius: 0px;color: white; background-color: #8a8abe;'>
                     <i class="fab fa-perbyte nav-icon" ></i>
                     <p>Sender Schedule</p>
                   </a>
@@ -310,7 +315,7 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
-        
+       
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
@@ -323,28 +328,29 @@
             <div class="col-md-12">
                 <div class="card card-primary card-outline card-outline-tabs">
                   <div class="card-header border-bottom-0">
-                    <div class="form-group row">
-                      <label  for="Poolrec" class="col-1 col-form-label" >Pool</label>
-                      <select  class="form-control col-2" id="Poolrec">
-                        <option value="0">32435245446</option>
-                      </select>
-                      <label  for="Volrec" class="offset-1 col-1 col-form-label">Volume</label>
-                      <select  class="form-control col-2" id="Volrec">
-                        <option value="0">peckFinacne</option>
-                      </select>
-                      <label  for="partnercrec" class="offset-1 col-1 col-form-label">receiver</label>
-                      <select  class="form-control col-2" id="partnercrec">
-                        <option value="0">HeadQuarter</option>
-                      </select>
+                      <div class="form-group row">
+                        <label  for="Pool2" class="col-1 col-form-label" >Pool</label>
+                        <select  class=" select2 form-control pool col-2" id="Pool2">
+                          <option></option>
+                        </select>
+                        <label  for="volname" class="offset-1 col-1  col-form-label">Volume</label>
+                        <select  class="select2 form-control volume col-2"  id="volname">
+                          <option></option>
+                        </select>
+                        <label  for="receiver" class="offset-1 col-1  col-form-label">Receiver</label>
+                        <select  class="select2 form-control receiver col-2"  id="receiver">
+                          <option></option>
+                        </select>
+
+                      </div>
                     </div>
-                  </div>
                   <div class="card-body">
                       <ul class="nav nav-tabs row" id="custom-tabs-four-tab" role="tablist">
                       <li class="nav-item col-3">
-                        <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href=".custom-tabs-four-Once" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Once</a>
+                        <a class="nav-link  active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-Once" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Once</a>
                       </li>
                       <li class="nav-item  col-3">
-                        <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href=".custom-tabs-four-Minutely" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Minutely</a>
+                        <a class="nav-link " id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-Minutely" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Minutely</a>
                       </li>
                       <li class="nav-item  col-3">
                         <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#custom-tabs-four-Hourly" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">Hourly</a>
@@ -356,133 +362,79 @@
                     </div>
                   <div class="card-body">
                     <div class="tab-content" id="custom-tabs-four-tabContent"  >
-                      <div class="tab-pane fade show  custom-tabs-four-Once active" id="custom-tabs-four-Once" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab" >
+                      <div class="tab-pane fade show active " id="custom-tabs-four-Once" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab" >
                         <div class="form-group row" style="padding-bottom: 1rem; border-bottom: 1px solid #dee2e6;" >
                           <label  for="Oncename" class="col-2 col-form-label" style="text-align: right;">Snapshot name</label>
-                          <input type="text" class="form-control col-3" id="Oncename" >
+                          <input type="text" class="form-control col-3" disabled id="Oncename" >
                         </div>
                         <div class=" form-group row"  >
                           <div class=" offset-md-3 col-md-9" >
-                              <button type="submit" id="oncecreate" class="form-control btn btn-primary col-md-6 ">Create Snapshot Now</button>
+                              <button type="submit" id="oncecreate" disabled class="form-control btn btn-primary col-md-6 ">Create Snapshot Now</button>
                           </div>
                         </div>
                         <div class="form-group row">
                           <div class="col-md-12">
                             <div class="card card-primary card-outline card-outline-tab" style="padding: 5px;">
-                              <h4>Snapshots Created manually</h4>
+                              <h4 class="cardshead">Snapshots Created Manually</h4>
                               <table id="Oncetable" class="table table-sm table-hover example1  table-striped">
                                 <thead style="background-color:#2939C6; color: white;">
                                 <tr>
-                                  <th>date</th>
-                                  <th>time</th>
-                                  <th>name</th>
-                                  <th>size(MB)</th>
-                                  <th>compression%</th>
-                                  <th>Rollback</th>
-                                  <th>Remove Volume</th>
+                                  <th style="width:14%;">date</th>
+                                  <th style="width:5%;">time</th>
+                                  <th style="width:15%;">name</th>
+                                  <th style="width:10%;">volume</th>
+                                  <th style="width:10%;">receiver</th>
+                                  <th style="width:5%;">size(MB)</th>
+                                  <th style="width:5%;">compress%</th>
+                                  <th style="width:5%;"> Rollback</th>
+                                  <th style="width:5%;">Delete</th>
                                 </tr>
                                 </thead>
                                 <tbody style="font-size: 90%; color:#2939C6;">
-                                 <tr class="dontdelete" >
-                                   <td >12April</td>
-                                   <td >12:10am</td>
-                                   <td >pecoFinance</td>
-                                   <td >32</td>
-                                   <td >1.2x</td>
-                                   <td  class="text-center">
-                                     <a  href="javascript:auserdel(\'username\')" >
-                                       <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                                     </a>
-                                   </td>
-                                  <td  class="text-center">
-                                    <a  href="javascript:auserdel(\'username\')" >
-                                      <img  src="dist/img/return.png" alt="cannott upload delete icon">
-                                    </a>
-                                  </td>
-                                  <tr class="dontdelete" >
-                                    <td >pecolow</td>
-                                    <td >74828239292</td>
-                                    <td >10</td>
-                                    <td >4</td>
-                                    <td >1.98x</td>
-                                   <td  class="text-center">
-                                     <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                                       <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                                     </a>
-                                   </td>
-                                   <td  class="text-center">
-                                     <a  href="javascript:auserdel(\'username\')" >
-                                       <img  src="dist/img/return.png" alt="cannott upload delete icon">
-                                     </a>
-                                   </td>
-
-                                </tr>
+                                 
                                 </tbody>
-                               
+                                <tfoot >
+                                
+                                </tfoot>
                               </table>
                             </div>
                           </div>
                         </div>
                       </div>
-
-
-                      <div class="tab-pane fade " id="custom-tabs-four-Hourly" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
-                        <div class="form-group row" style="padding-bottom: 1rem; border-bottom: 1px solid #dee2e6;">
-                          <label  for="Sminute" class=" col-md-3 col-form-label" style="text-align: right;">At the</label>
-                          <input type="number" min='0' max='59' step=1 value=0 class="form-control col-md-1" id="Sminute" >
-                          <label  for="Sminute" class="  col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;" ><sup>th</sup> minute, </label>
-                          <label  for="Sminute" class="  col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;" >  every</label>
-                          <input type="number" min='1' max='23' step=1 value=1 class="form-control col-md-1" id="Hour" >
-                          <label  for="Hour" class=" col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">hours,</label>
-                          <label  for="KeepHourly" class=" col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">Keep</label>
-                          <input type="number" min='1' max='100' step=1 value=1 class="form-control col-md-1" id="KeepHourly" >
-                          <label  for="KeepHourly" class=" col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">Snapshots</label>
+                      <div class="tab-pane fade " id="custom-tabs-four-Minutely" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
+                        <div class="form-group row"  style="padding-bottom: 1rem; border-bottom: 1px solid #dee2e6;">
+                          <label  for="EveryMinutely" class="col-md-3 col-form-label"
+                              style="text-align: right; margin-right: 5px; margin-left:5px;">Every</label>
+                          <input type="number" min='1' max='59' step=1 value=10 class="form-control Minute col-md-1" disabled id="EveryMinutely" >
+                          <label  for="EveryMinutely" class="col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">minute, </label>
+                          <label  for="KeepMinutely" class=" col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">Keep</label>
+                          <input type="number" min='1' max='100' step=1 value=5 class="form-control Minute col-md-1" disabled id="KeepMinutely" >
+                          <label  for="KeepMinutely" class=" col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;" >Snapshots</label>
                         </div>
                         <div class=" form-group row"  >
                           <div class=" offset-md-3 col-md-9" >
-                              <button type="submit" id="oncecreate" class="form-control btn btn-primary col-md-6 ">Create Snapshot Period</button>
+                              <button type="submit" id="Minutelycreate" class="form-control Minute btn btn-primary col-md-6 " disabled>Create Snapshot Now</button>
                           </div>
                         </div>
                         <div class="form-group row">
                           <div class="col-md-12">
-                            <div class="card card-primary card-outline card-outline-tab" style="padding: 5px;">
-                              <h4>list of hourly periods</h4>
-                              <table id="" class="table table-sm table-hover example1  table-striped">
+                            <div class="card card-primary card-outline  card-outline-tab" style="padding: 5px;">
+                              <h4 class="cardshead">list of minutley periods</h4>
+                              <table id="Minutelyperiods" class="table table-sm  table-hover table-striped dataTable">
                                 <thead style="background-color:#2939C6; color: white;">
                                 <tr>
-                                  <th>Every(hrs)</th>
-                                  <th>at(minute)</th>
-                                  <th>keep(snapshots)</th>
-                                  <th>identifier</th>
+                                  <th>SequenceID</th>
+                                  <th>Volume</th>
+                                  <th>Receiver</th>
+                                  <th>Every(minutes)</th>
+                                  <th>Keep(snapshots)</th>
                                   <th>delete</th>
                                 </tr>
                                 </thead>
-                                <tbody class="Hourlylist " style="font-size: 90%; color:#2939C6;">
-                                 <tr class="dontdelete" >
-                                   <td >1</td>
-                                   <td >5</td>
-                                   <td >4</td>
-                                   <td >334545433</td>
-                                   <td  class="text-center">
-                                     <a  href="javascript:auserdel(\'username\')" >
-                                       <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                                     </a>
-                                   </td>
-                                 </tr>
-                                  <tr class="dontdelete" >
-                                    <td >6</td>
-                                    <td >0</td>
-                                    <td >4</td>
-                                    <td>3452435353</td>
-                                   <td  class="text-center">
-                                     <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                                       <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                                     </a>
-                                   </td>
-                                </tr>
+                                <tbody style="font-size: 90%; color:#2939C6;">
                                 </tbody>
-                                <tfoot>
-                               
+                                <tfoot >
+                                  
                                 </tfoot>
                               </table>
                             </div>
@@ -491,54 +443,69 @@
                         <div class="form-group row">
                           <div class="col-md-12">
                             <div class="card card-primary card-outline card-outline-tab" style="padding: 5px;">
-                              <h4>Snapshots Created Hourly</h4>
-                              <table id="Oncetable" class="table table-sm table-hover example1  table-striped">
-                                <thead style="background-color:#2939C6; color: white;">
+                              <h4 class="cardshead">Snapshots Created Minutely</h4>
+                              <table id="Minutelytable" class="table table-sm table-hover example1  table-striped">
+                                <thead  style="background-color:#2939C6; color: white;">
                                 <tr>
-                                  <th>date</th>
-                                  <th>time</th>
-                                  <th>name</th>
-                                  <th>size(MB)</th>
-                                  <th>compression%</th>
-                                  <th>Rollback</th>
-                                  <th>Remove Volume</th>
+                                  <th style="width:14%;">date</th>
+                                  <th style="width:5%;">time</th>
+                                  <th style="width:15%;">name</th>
+                                  <th style="width:10%;">volume</th>
+                                  <th style="width:10%;" >Receiver</th>
+                                  <th style="width:5%;">size(MB)</th>
+                                  <th style="width:5%;">compress%</th>
+                                  <th style="width:5%;"> Rollback</th>
+                                  <th style="width:5%;">Delete</th>
                                 </tr>
                                 </thead>
-                                <tbody id="Snaplist"  style="font-size: 90%; color:#2939C6;">
-                                 <tr class="dontdelete" >
-                                   <td >12April</td>
-                                   <td >12:10am</td>
-                                   <td >pecoFinance</td>
-                                   <td >32</td>
-                                   <td >1.2x</td>
-                                   <td  class="text-center">
-                                     <a  href="javascript:auserdel(\'username\')" >
-                                       <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                                     </a>
-                                   </td>
-                                  <td  class="text-center">
-                                    <a  href="javascript:auserdel(\'username\')" >
-                                      <img  src="dist/img/return.png" alt="cannott upload delete icon">
-                                    </a>
-                                  </td>
-                                  <tr class="dontdelete" >
-                                    <td >pecolow</td>
-                                    <td >74828239292</td>
-                                    <td >10</td>
-                                    <td >4</td>
-                                    <td >1.98x</td>
-                                   <td  class="text-center">
-                                     <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                                       <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                                     </a>
-                                   </td>
-                                   <td  class="text-center">
-                                     <a  href="javascript:auserdel(\'username\')" >
-                                       <img  src="dist/img/return.png" alt="cannott upload delete icon">
-                                     </a>
-                                   </td>
+                                <tbody style="font-size: 90%; color:#2939C6;">
+                                 
+                                </tbody>
+                                <tfoot>
+                              
+                                </tfoot>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
 
+                      </div>
+
+                      <div class="tab-pane fade " id="custom-tabs-four-Hourly" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
+                        <div class="form-group row" style="padding-bottom: 1rem; border-bottom: 1px solid #dee2e6;">
+                          <label  for="Sminute" class=" col-md-3 col-form-label" style="text-align: right;">At the</label>
+                          <input type="number" min='0' max='59' step=1 value=0 class="form-control Hour col-md-1" disabled id="Sminute" >
+                          <label  for="Sminute" class="  col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;" ><sup>th</sup> minute, </label>
+                          <label  for="EveryHourly" class="  col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;" >  every</label>
+                          <input type="number" min='1' max='48' step=1 value=1 class="form-control Hour col-md-1" disabled id="EveryHourly" >
+                          <label  for="EveryHourly" class=" col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">hours,</label>
+                          <label  for="KeepHourly" class=" col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">Keep</label>
+                          <input type="number" min='1' max='100' step=1 value=1 class="form-control Hour col-md-1" disabled id="KeepHourly" >
+                          <label  for="KeepHourly" class=" col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">Snapshots</label>
+                        </div>
+                        <div class=" form-group row"  >
+                          <div class=" offset-md-3 col-md-9" >
+                              <button type="submit" id="Hourlycreate" class="form-control Hour btn btn-primary col-md-6 " disabled >Create Snapshot Period</button>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <div class="col-md-12">
+                            <div class="card card-primary card-outline card-outline-tab" style="padding: 5px;">
+                              <h4 class="cardshead">list of hourly periods</h4>
+                              <table id="Hourlyperiods" class="table table-sm table-hover example1  table-striped dataTable">
+                                <thead style="background-color:#2939C6; color: white;">
+                                <tr>
+                                  <th>SequenceID</th>
+                                  <th>Volume</th>
+                                  <th>Receiver</th>
+                                  <th>Every(hrs)</th>
+                                  <th>Snap at(minute)</th>
+                                  <th>keep(snapshots)</th>
+                                  <th>delete</th>
                                 </tr>
+                                </thead>
+                                <tbody  style="font-size: 90%; color:#2939C6;">
+                                 
                                 </tbody>
                                 <tfoot>
                                 
@@ -547,198 +514,82 @@
                             </div>
                           </div>
                         </div>
+                        <div class="form-group row">
+                          <div class="col-md-12">
+                            <div class="card card-primary card-outline card-outline-tab" style="padding: 5px;">
+                              <h4 class="cardshead">Snapshots Created Hourly</h4>
+                              <table id="Hourlytable" class="table table-sm table-hover table-striped">
+                                <thead style="background-color:#2939C6; color: white;">
+   
+                                  <th style="width:14%;">date</th>
+                                  <th style="width:5%;">time</th>
+                                  <th style="width:15%;">name</th>
+                                  <th style="width:10%;">volume</th>
+                                  <th style="width:10%">receiver</th>
+                                  <th style="width:5%;">size(MB)</th>
+                                  <th style="width:5%;">compress%</th>
+                                  <th style="width:5%;"> Rollback</th>
+                                  <th style="width:5%;">Delete</th>
+                              
+                                </thead>
+                                <tbody  style="font-size: 90%; color:#2939C6;">
+                                 
+                                </tbody>
+                                <tfoot class="">
+                                
+                                </tfoot>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <div class="tab-pane fade custom-tabs-four-Minutely" id="custom-tabs-four-Minutely" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
-                            <div class="form-group row"  style="padding-bottom: 1rem; border-bottom: 1px solid #dee2e6;">
-                              <label  for="Minute" class="col-md-3 col-form-label"
-                                  style="text-align: right; margin-right: 5px; margin-left:5px;">Every</label>
-                              <input type="number" min='0' max='59' step=1 value=0 class="form-control  col-md-1" id="Minute" >
-                              <label  for="Minute" class="col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">minute, </label>
-                              <label  for="KeepMinutely" class=" col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">Keep</label>
-                              <input type="number" min='1' max='100' step=1 value=1 class="form-control col-md-1" id="KeepMinutely" >
-                              <label  for="KeepMinutely" class=" col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;" >Snapshots</label>
-                            </div>
-                            <div class=" form-group row"  >
-                              <div class=" offset-md-3 col-md-9" >
-                                  <button type="submit" id="oncecreate" class="form-control btn btn-primary col-md-6 ">Create Snapshot Now</button>
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <div class="col-md-12">
-                                <div class="card card-primary card-outline card-outline-tab" style="padding: 5px;">
-                                  <h4>list of minutley periods</h4>
-                                  <table id="" class="table table-sm table-hover example1  table-striped">
-                                    <thead  style="background-color:#2939C6; color: white;">
-                                    <tr>
-                                      <th>Every(minutes)</th>
-                                      <th>keep(snapshots)</th>
-                                      <th>identifier</th>
-                                      <th>delete</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody class="Hourlylist"  style="font-size: 90%; color:#2939C6;">
-                                     <tr class="dontdelete" >
-                                       <td >1</td>
-                                       <td >4</td>
-                                       <td >334545433</td>
-                                       <td  class="text-center">
-                                         <a  href="javascript:auserdel(\'username\')" >
-                                           <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                                         </a>
-                                       </td>
-                                     </tr>
-                                      <tr class="dontdelete" >
-                                        <td >6</td>
-                                        <td >4</td>
-                                        <td>3452435353</td>
-                                       <td  class="text-center">
-                                         <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                                           <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                                         </a>
-                                       </td>
-                                    </tr>
-                                    </tbody>
-                                    <tfoot >
-                                   
-                                    </tfoot>
-                                  </table>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <div class="col-md-12">
-                                <div class="card card-primary card-outline card-outline-tab" style="padding: 5px;">
-                                  <h4>Snapshots Created Minutely</h4>
-                                  <table id="Oncetable" class="table table-sm table-hover example1  table-striped">
-                                    <thead class="bg-info">
-                                    <tr>
-                                      <th>date</th>
-                                      <th>time</th>
-                                      <th>name</th>
-                                      <th>size(MB)</th>
-                                      <th>compression%</th>
-                                      <th>Rollback</th>
-                                      <th>Remove Volume</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="Snaplist">
-                                     <tr class="dontdelete" >
-                                       <td >12April</td>
-                                       <td >12:10am</td>
-                                       <td >pecoFinance</td>
-                                       <td >32</td>
-                                       <td >1.2x</td>
-                                       <td  class="text-center">
-                                         <a  href="javascript:auserdel(\'username\')" >
-                                           <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                                         </a>
-                                       </td>
-                                      <td  class="text-center">
-                                        <a  href="javascript:auserdel(\'username\')" >
-                                          <img  src="dist/img/return.png" alt="cannott upload delete icon">
-                                        </a>
-                                      </td>
-                                      <tr class="dontdelete" >
-                                        <td >pecolow</td>
-                                        <td >74828239292</td>
-                                        <td >10</td>
-                                        <td >4</td>
-                                        <td >1.98x</td>
-                                       <td  class="text-center">
-                                         <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                                           <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                                         </a>
-                                       </td>
-                                       <td  class="text-center">
-                                         <a  href="javascript:auserdel(\'username\')" >
-                                           <img  src="dist/img/return.png" alt="cannott upload delete icon">
-                                         </a>
-                                       </td>
-
-                                    </tr>
-                                    </tbody>
-                                    <tfoot class="bg-info">
-                                    <tr>
-                                      <th>date</th>
-                                      <th>time</th>
-                                      <th>name</th>
-                                      <th>size(MB)</th>
-                                      <th>compression%</th>
-                                      <th>Rollback</th>
-                                      <th>Remove Volume</th>
-                                    </tr>
-                                    </tfoot>
-                                  </table>
-                                </div>
-                              </div>
-                            </div>
-
-                      </div>
+                     
                       <div class="tab-pane fade" id="custom-tabs-four-Weekly" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
                             <div class="form-group row"  style="padding-bottom: 1rem; border-bottom: 1px solid #dee2e6;">
                               <label class="col-md-3 col-form-label"
                                   style="text-align: right; margin-right: 5px; margin-left:5px;">Snaptshot at</label>
-                              <div class="input-group date col-md-2" id="timepicker" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input" data-target="#timepicker"/>
+                              <div class="input-group date  col-md-2" id="timepicker" data-target-input="nearest">
+                                <input type="text" id="Stime" class="form-control Week datetimepicker-input" value="11:50 PM" disabled data-target="#timepicker"/>
                                 <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="far fa-clock"></i></div>
                                 </div>
                               </div>
                               <label class="col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">o'clock,</label>
-                              <label  for="Week" class="col-form-label" style="text-align: right; margin-right: 5px; margin-left:5px;"> on</label>
-                              <select id="Week" class="form-control col-md-2">
+                              <label  for="Sday" class="col-form-label" style="text-align: right; margin-right: 5px; margin-left:5px;"> on</label>
+                              <select id="Sday" class="form-control Week col-md-2" disabled>
     					                 <option value="Sat">Saturday</option><option value="Sun">Sunday</option><option value="Mon">Monday</option><option value="Tue">Tuesday</option><option value="Wed">Wednesday</option><option value="Thu">Thursday</option><option value="Fri">Friday</option>
                               </select>
-                              <label  for="Week" class="col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">.</label>
+                              <label  for="Sday" class="col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">.</label>
 
                               <label  for="KeepWeekly" class="col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">Keep</label>
-                              <input type="number" min='1' max='100' step=1 value=1 class="form-control col-md-1" id="KeepWeekly" >
+                              <input type="number" min='1' max='100' step=1 value=1 class="form-control Week col-md-1" disabled id="KeepWeekly" >
                               <label  for="KeepWeekly" class="col-form-label" style="text-align: center; margin-right: 5px; margin-left:5px;">Snapshots</label>
                             </div>
                             <div class=" form-group row"  >
                               <div class=" offset-md-3 col-md-9" >
-                                  <button type="submit" id="oncecreate" class="form-control btn btn-primary col-md-6 ">Create Snapshot Now</button>
+                                  <button type="submit" id="Weeklycreate" class="form-control Week btn btn-primary col-md-6 " disabled>Create Snapshot Now</button>
                               </div>
                             </div>
                             <div class="form-group row">
                               <div class="col-md-12">
                                 <div class="card card-primary card-outline card-outline-tab" style="padding: 5px;">
-                                  <h4>list of weekly periods</h4>
-                                  <table id="" class="table table-sm table-hover example1  table-striped">
+                                  <h4 class="cardshead">list of weekly periods</h4>
+                                  <table id="Weeklyperiods" class="table table-sm table-hover   table-striped dataTable">
                                     <thead  style="background-color:#2939C6; color: white;">
                                     <tr>
-                                      <th>at(hh:mm)</th>
-                                      <th>day of week</th>
-                                      <th>keep(snapshots)</th>
-                                      <th>identifier</th>
-                                      <th>delete</th>
+                                      <th>SequenceID</th>
+                                      <th>Volume</th>
+                                      <th>Receiver</th>
+                                      <th>At(hh:mm)</th>
+                                      <th>Day of week</th>
+                                      <th>Keep(snapshots)</th>
+                                      <th>Delete</th>
                                     </tr>
                                     </thead>
-                                    <tbody class="Hourlylist" style="font-size: 90%; color:#2939C6;">
-                                     <tr class="dontdelete"  >
-                                       <td >10:00pm</td>
-                                       <td >Thursday</td>
-                                       <td >4</td>
-                                       <td >334545433</td>
-                                       <td  class="text-center">
-                                         <a  href="javascript:auserdel(\'username\')" >
-                                           <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                                         </a>
-                                       </td>
-                                     </tr>
-                                      <tr class="dontdelete" >
-                                        <td >1:30am</td>
-                                        <td >Friday</td>
-                                        <td >52</td>
-                                        <td >334534534534</td>
-                                        <td  class="text-center">
-                                          <a  href="javascript:auserdel(\'username\')" >
-                                            <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                                          </a>
-                                        </td>
-                                    </tr>
+                                    <tbody  style="font-size: 90%; color:#2939C6;" >
+                                     
                                     </tbody>
-                                    <tfoot>
+                                    <tfoot >
                                     
                                     </tfoot>
                                   </table>
@@ -748,57 +599,26 @@
                             <div class="form-group row">
                               <div class="col-md-12">
                                 <div class="card card-primary card-outline card-outline-tab" style="padding: 5px;">
-                                  <h4>Snapshots Created Weekly</h4>
-                                  <table id="Oncetable" class="table table-sm table-hover example1  table-striped">
-                                    <thead style="background-color:#2939C6; color: white;">
+                                  <h4 class="cardshead">Snapshots Created Weekly</h4>
+                                  <table id="Weeklytable" class="table table-sm table-hover example1  table-striped">
+                                    <thead  style="background-color:#2939C6; color: white;">
                                     <tr>
-                                      <th>date</th>
-                                      <th>time</th>
-                                      <th>name</th>
-                                      <th>size(MB)</th>
-                                      <th>compression%</th>
-                                      <th>Rollback</th>
-                                      <th>Remove Volume</th>
+                                      <th style="width:14%;">date</th>
+                                      <th style="width:5%;">time</th>
+                                      <th style="width:15%;">name</th>
+                                      <th style="width:10%;">volume</th>
+                                      <th style="width:10%;">Receiver</th>
+                                      <th style="width:5%;">size(MB)</th>
+                                      <th style="width:5%;">compress%</th>
+                                      <th style="width:5%;"> Rollback</th>
+                                      <th style="width:5%;">Delete</th>
                                     </tr>
                                     </thead>
-                                    <tbody id="Snaplist" style="font-size: 90%; color:#2939C6;">
-                                     <tr class="dontdelete" >
-                                       <td >12April</td>
-                                       <td >12:10am</td>
-                                       <td >pecoFinance</td>
-                                       <td >32</td>
-                                       <td >1.2x</td>
-                                       <td  class="text-center">
-                                         <a  href="javascript:auserdel(\'username\')" >
-                                           <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                                         </a>
-                                       </td>
-                                      <td  class="text-center">
-                                        <a  href="javascript:auserdel(\'username\')" >
-                                          <img  src="dist/img/return.png" alt="cannott upload delete icon">
-                                        </a>
-                                      </td>
-                                      <tr class="dontdelete" >
-                                        <td >pecolow</td>
-                                        <td >74828239292</td>
-                                        <td >10</td>
-                                        <td >4</td>
-                                        <td >1.98x</td>
-                                       <td  class="text-center">
-                                         <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                                           <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                                         </a>
-                                       </td>
-                                       <td  class="text-center">
-                                         <a  href="javascript:auserdel(\'username\')" >
-                                           <img  src="dist/img/return.png" alt="cannott upload delete icon">
-                                         </a>
-                                       </td>
-
-                                    </tr>
+                                    <tbody style="font-size: 90%; color:#2939C6;">
+                                     
                                     </tbody>
                                     <tfoot>
-                                 
+                                   
                                     </tfoot>
                                   </table>
                                 </div>
@@ -812,164 +632,34 @@
             </div>
           </div>
         </form>
-        <div class="row">
-            <div class="col-md-6">
-                  <div class="card">
-                    <div class="card-header">
-                      <h3 class="card-title"> Metadata+Snapshot on Volumes </h3>
-                    </div>
-                    <div class="card-body" style="padding:0.2rem;">
-                      <div class="chart">
-                        <canvas id="stackedBarChart" style="min-height: 160px; height: 160px; max-height: 100%; max-width: 100%;"></canvas>
-                      </div>
-                    </div>
-                  </div> <!-- /.card -->
-            </div>
-            <div class="col-md-6">
-              <div class="card">
-                <div class="card-body p-0">
-                  <table class="table table-sm">
-                    <thead>
-                      <tr>
-                        <th style="width: 10px">Time</th>
-                        <th>Volume Task</th>
-                        <th>Progress</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>1.</td>
-                        <td>Update software</td>
-                        <td>
-                          <div class="progress progress-xs">
-                            <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>2.</td>
-                        <td>Clean database</td>
-                        <td>
-                          <div class="progress progress-xs">
-                            <div class="progress-bar bg-warning" style="width: 70%"></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>3.</td>
-                        <td>Cron job running</td>
-                        <td>
-                          <div class="progress progress-xs progress-striped active">
-                            <div class="progress-bar bg-primary" style="width: 30%"></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>4.</td>
-                        <td>Fix and squish bugs</td>
-                        <td>
-                          <div class="progress progress-xs progress-striped active">
-                            <div class="progress-bar bg-success" style="width: 90%"></div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>4.</td>
-                        <td>Fix and squish bugs</td>
-                        <td>
-                          <div class="progress progress-xs progress-striped active">
-                            <div class="progress-bar bg-success" style="width: 90%"></div>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <!-- /.card-body -->
-              </div>
-            </div>
-
-        </div>
+       
               <!-- Period list -->
           <div class="row">
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">CIFS volume list</h3>
+                  <h3 class="card-title cardshead">All Snapshots list</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                  <table id="example1" class="table table-sm table-hover example1  table-striped">
+                  <table id="allsnapstable" class="table table-sm table-hover example1  table-striped">
                     <thead style="background-color:#2939C6; color: white;">
                     <tr>
-                      <th>Volume</th>
-                      <th>pool</th>
-                      <th>Size(GB)</th>
-                      <th>Snapshots(MB)</th>
-                      <th>Compression%</th>
-                      <th>IP Address</th>
-                      <th>Subnet</th>
-                      <th>Allowed Groups</th>
-                      <th>Need update</th>
-                      <th>Remove Volume</th>
+                      <th style="width:14%;">date</th>
+                      <th style="width:5%;">time</th>
+                      <th style="width:15%;">name</th>
+                      <th style="width:15%;">receiver</th>
+                      <th style="width:10%;">volume</th>
+                      <th style="width:5%;">size(MB)</th>
+                      <th style="width:5%;">compress%</th>
+                      <th style="width:5%;"> Rollback</th>
+                      <th style="width:5%;">Delete</th>
                     </tr>
                     </thead>
                     <tbody style="font-size: 90%; color:#2939C6;">
-                     <tr class="dontdelete" >
-                       <td >pecoFinance</td>
-                       <td >74828239292</td>
-                       <td >32</td>
-                       <td >4</td>
-                       <td >1.2x</td>
-                       <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="s" id="s"  data-inputmask="'alias': 'ip'">
-                       </td>
-                       <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="sd">
-                       </td>
-                       <td>
-                         <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
-                          multiple data-actions-box="true" data-live-search="true">
-                         </select>
-                       </td>
-                      <td>
-                        <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
-                          update
-                        </button>
-                      </td>
-                      <td  class="text-center">
-                        <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                          <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                        </a>
-                      </td>
-                      <tr class="dontdelete" >
-                        <td >pecolow</td>
-                        <td >74828239292</td>
-                        <td >10</td>
-                        <td >4</td>
-                        <td >1.98x</td>
-                        <td><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control ipaddress" name="ss" id="ss"  data-inputmask="'alias': 'ip'">
-                        </td>
-                        <td><input type="number"  min="8" max="32" step="8" value=8 class="form-control"  id="ssd">
-                        </td>
-                        <td>
-                          <select style="width: 100%;" size=1 onclick="tdisclicked(this)" id="selusername" title="No Group" data-container="body" data-width="auto" class="username selectpicker "
-                           multiple data-actions-box="true" data-live-search="true">
-                          </select>
-                        </td>
-                       <td>
-                         <button onclick="selbtnclickeduser(this)" id="btnselusername" type="button" class="btn btn-primary" >
-                           update
-                         </button>
-                       </td>
-                       <td  class="text-center">
-                         <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                           <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                         </a>
-                       </td>
-
-                    </tr>
-
+                     
                     </tbody>
-                    <tfoot>
+                    <tfoot >
                    
                     </tfoot>
                   </table>
@@ -1073,6 +763,7 @@
 <!-- AdminLTE -->
 <script src="dist/js/adminlte.js"></script>
 <!-- DataTables  & Plugins -->
+<script src="plugins/select2/js/select2.full.min.js"></script>
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -1092,13 +783,12 @@
 <script src="plugins/moment/moment.min.js"></script>
 <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <script src="dist/js/Qjquery.inputmask.bundle.js"></script>
-<script src="dist/js/Qsnapshots.js" ></script>
+
 <script src="plugins/chart.js/Chart.min.js"></script>
 <script src="dist/js/demo.js"></script>
 <script src="dist/js/Qmain.js"></script>
-<script>
-  updatetasks();
-</script>
+<script src="dist/js/Qsender.js" ></script>
+
 <script>
 
 </script>
