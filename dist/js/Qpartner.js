@@ -85,7 +85,7 @@ function initPartnerlist(){
         {
           data: null,
           render: function(data, type, row){
-            return '<a class="delpartner" val="partnername" href="javascript:apartnerdel(\''+row.name+'\')" >'
+            return '<a class="delpartner" val="partnername" href="javascript:apartnerdel(\''+data.alias+'\')" >'
             + '<img  src="dist/img/delete.png" alt="cannott upload delete icon">'
             + '</a>';
           }

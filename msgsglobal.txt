@@ -158,22 +158,23 @@ CIFS1004: Success creating volume :
 CIFS1005: Deleting : .....
 CIFS1006: Prolbem deleting :
 CIFS1007: Success deleting :
-Partst01:1: : from :: Partner : booted with ip :  wait till complete joining cluster
-Partsu01:2: : from :: Partner : completed joining cluster with ip : 
-Partst02:2: : from :: Partner : is down
-Partst03:1: : from :: Partner : booting with ip : as master. please wait ... 
-Partsu03:2: : from :: Partner : booted with ip : as a master.
-Partst04:1: : from :: Partner : booting with ip : as a cluster node please wait ... 
-Partsu04:2: : from :: Partner : booted with ip : as a cluster node.
-Partst05:2: : from :: Partner : raised alert that some node is down
-Partsu05:0: : from :: Partner : is taking action due to lost node
+Partst01:1: : from :: Node : booted with ip :  wait till complete joining cluster
+Partsu01:2: : from :: Node : completed joining cluster with ip : 
+Partst02:2: : from :: Node : is down
+Partst03:1: : from :: Node : booting with ip : as master. please wait ... 
+Partsu03:2: : from :: Node : booted with ip : as a master.
+Partst04:1: : from :: Node : booting with ip : as a cluster node please wait ... 
+Partsu04:2: : from :: Node : booted with ip : as a cluster node.
+Partst05:2: : from :: Node : raised alert that some node is down
+Partsu05:0: : from :: Node : is taking action due to lost node
 Partst06:0: : from :: started checking and syncing this partner active pools 
 Partsu06:0: : from :: finished checking and syncing this partner active pools 
-Partner1000: Adding partner : ......
-Partner1001: Partner : already exists
-Partner1002: Success adding partner : of type :
-Partner1003: Deleting partner : ......
-Partner1004: Success deleting partner :
+Partner1000:1: : from :: Adding partner : in : mode......
+Partner1001:1: : from :: Partner : already exists
+Partner1002:1: : from :: Success adding partner : in : mode
+Partner1fa2:1: : from :: Failed Aadding partner : in : mode, pls try again later. make sure the partner is accessible and up and running
+Partner1003:1: : from :: Deleting partner : ......
+Partner1004:1: : from :: Success deleting partner :
 Partner1005:1: : from :: Deleting partner : ......
 Partner1006:2: : from :: Success deleting partner :
 Partner1007:1: : from :: Adding partner : ......
