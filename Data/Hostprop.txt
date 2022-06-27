@@ -1,1 +1,22 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+{"hostname":"dhcp17797","name":"dhcp17797","addr":"10.11.11.244","addrsubnet":"24","rout":"10.11.11.253","dns":"10.11.11.253","mgmtip":"192.168.43.7","mgmtsubnet":"24","ntp":"0.pool.ntp.org","tz":"Kuw%(GMT+03!00)_Moscow^_St._Petersburg^_Volgograd","gw":"10.11.11.253","dnsname":"10.11.11.253","dnssearch":"zenty.localdomain","configured":"yes"}
+=======
+{"hostname":"dhcp10426","name":"-1","addr":"10.11.11.246","addrsubnet":"24","rout":"0","dns":"10.11.11.253","mgmtip":"10.11.11.250","mgmtsubnet":"24","ntp":"0.pool.ntp.org","tz":"Kuwait%(GMT+03!00)_Kuwait^_Riyadh^_Baghdad","gw":"10.11.11.253","dnsname":"10.11.11.253","dnssearch":"zenty.localdomain","configured":"yes"}
+>>>>>>> 3019c1f7ed4e71243b3ef1e810c94f69a6fbd458
+=======
+=======
 {"hostname":"dhcp10426","name":"dhcp10426","addr":"10.11.11.246","addrsubnet":"24","rout":"10.11.11.253","dns":"zenty.localdomain","mgmtip":"10.11.11.250","mgmtsubnet":"24","ntp":"0.pool.ntp.org","tz":"Kuw%(GMT+03!00)_Moscow^_St._Petersburg^_Volgograd","gw":"10.11.11.253","dnsname":"zenty.localdomain","dnssearch":"zenty.localdomain","configured":"yes"}
+=======
+<<<<<<< HEAD
+>>>>>>> a4bcadba2c8babbcd16a616cfcf2503861415029
+{"hostname":"dhcp32570","name":"node_1","addr":"10.11.11.245","addrsubnet":"24","rout":"10.11.11.253","dns":"10.11.11.253","mgmtip":"10.11.11.250","mgmtsubnet":"24","ntp":"0.pool.ntp.org","tz":"Kuw%(GMT+03!00)_Moscow^_St._Petersburg^_Volgograd","gw":"10.11.11.253","dnsname":"10.11.11.253","dnssearch":"zenty.localdomain","configured":"yes"}
+=======
+{"hostname":"dhcp10426","name":"dhcp10426","addr":"10.11.11.246","addrsubnet":"24","rout":"10.11.11.253","dns":"10.11.11.253","mgmtip":"10.11.11.250","mgmtsubnet":"24","ntp":"0.pool.ntp.org","tz":"Kuw%(GMT+03!00)_Moscow^_St._Petersburg^_Volgograd","gw":"10.11.11.253","dnsname":"10.11.11.253","dnssearch":"zenty.localdomain","configured":"yes"}
+>>>>>>> c8c086ce70eec642243419d186225ebf0e6f7daa
+>>>>>>> 5f1b0d54ea55085a54be3e52f98273751ad8a84f
+=======
+{"hostname":"dhcp10426","name":"dhcp10426","addr":"10.11.11.246","addrsubnet":"24","rout":"10.11.11.253","dns":"zenty.localdomain","mgmtip":"10.11.11.250","mgmtsubnet":"24","ntp":"0.pool.ntp.org","tz":"Kuw%(GMT+03!00)_Moscow^_St._Petersburg^_Volgograd","gw":"10.11.11.253","dnsname":"zenty.localdomain","dnssearch":"zenty.localdomain","configured":"yes"}
+>>>>>>> f2018c1e7f9270b06f038f30c995545a1a85a0fc
