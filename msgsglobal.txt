@@ -169,7 +169,7 @@ Partst05:2: : from :: Node : raised alert that some node is down
 Partsu05:0: : from :: Node : is taking action due to lost node
 Partst06:0: : from :: started checking and syncing this partner active pools 
 Partsu06:0: : from :: finished checking and syncing this partner active pools 
-Partner1000:1: : from :: Adding partner : in : mode......
+Partner1000:2: : from :: Adding partner : in : mode.
 Partner1001:1: : from :: Partner : already exists
 Partner1002:1: : from :: Success adding partner : in : mode
 Partner1fa2:1: : from :: Failed Aadding partner : in : mode, pls try again later. make sure the partner is accessible and up and running
