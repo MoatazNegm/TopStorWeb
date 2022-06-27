@@ -178,7 +178,7 @@ function initdgs(){
           host = alldgs['disks'][disk]['host'];
           changeop = alldgs['disks'][disk]['changeop'];
           size = parseFloat(alldgs['disks'][disk]['size']).toFixed(2);
-          if(status.includes('ONLINE')){
+          if(status.includes('ONLINE') || (status.includes('NA') && alldgs['disks'][disk]['raid'].includes('stripe'))){
             imgf = 'disk-image.png';
           } else {
             imgf = 'invaliddisk.png';
