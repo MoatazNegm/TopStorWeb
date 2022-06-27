@@ -1,1 +1,26 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+{"header":{"cluster_id":4784203300614245395,"member_id":9599981840191834464,"raft_term":7},"members":[{"ID":9599981840191834464,"name":"dhcp15779","peerURLs":["http://10.11.11.244:2380"],"clientURLs":["http://10.11.11.30:2379"]}]}
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+{"header":{"cluster_id":4784203300614245395,"member_id":9599981840191834464,"raft_term":59},"members":[{"ID":9599981840191834464,"name":"dhcp17797","peerURLs":["http://10.11.11.244:2380"],"clientURLs":["http://10.11.11.244:2379"]}]}
+=======
+{"header":{"cluster_id":4784203300614245395,"member_id":9599981840191834464,"raft_term":31},"members":[{"ID":9599981840191834464,"name":"dhcp32570","peerURLs":["http://10.11.11.244:2380"],"clientURLs":["http://10.11.11.245:2379"]}]}
+>>>>>>> 3019c1f7ed4e71243b3ef1e810c94f69a6fbd458
+=======
+=======
+{"header":{"cluster_id":4784203300614245395,"member_id":9599981840191834464,"raft_term":180},"members":[{"ID":9599981840191834464,"name":"dhcp10426","peerURLs":["http://10.11.11.244:2380"],"clientURLs":["http://10.11.11.246:2379"]}]}
+=======
+<<<<<<< HEAD
+>>>>>>> a4bcadba2c8babbcd16a616cfcf2503861415029
+{"header":{"cluster_id":4784203300614245395,"member_id":9599981840191834464,"raft_term":145},"members":[{"ID":9599981840191834464,"name":"dhcp32570","peerURLs":["http://10.11.11.244:2380"],"clientURLs":["http://10.11.11.245:2379"]}]}
+=======
+{"header":{"cluster_id":4784203300614245395,"member_id":9599981840191834464,"raft_term":165},"members":[{"ID":9599981840191834464,"name":"dhcp10426","peerURLs":["http://10.11.11.244:2380"],"clientURLs":["http://10.11.11.246:2379"]}]}
+>>>>>>> c8c086ce70eec642243419d186225ebf0e6f7daa
+>>>>>>> 5f1b0d54ea55085a54be3e52f98273751ad8a84f
+>>>>>>> a163e8dbf327fa7ffb79c8465b3c8d5ccc8f3b2e
+=======
 {"header":{"cluster_id":4784203300614245395,"member_id":9599981840191834464,"raft_term":182},"members":[{"ID":9599981840191834464,"name":"dhcp10426","peerURLs":["http://10.11.11.244:2380"],"clientURLs":["http://10.11.11.246:2379"]}]}
+>>>>>>> f2018c1e7f9270b06f038f30c995545a1a85a0fc
