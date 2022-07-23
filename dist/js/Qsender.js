@@ -504,7 +504,7 @@ var thepool = allpools['results'][$("#Pool2").val()]['text'];
 var owner = allpools['results'][$("#Pool2").val()]['owner'];
 var thevol = allvolumes[$("#volname").val()]['fullname'];
 var thesnap = $("#Oncename").val();
-var receiver = allpartners['allpartners'][$("#receiver").val()+'_Receiver']['alias']
+var receiver = allpartners['allpartners'][$("#receiver").val()]['alias']
 var apiurl = "api/v1/volumes/snapshots/create";
 var apidata = {"snapsel": 'Once', "pool": thepool, "volume": thevol, 'name': thesnap, 'receiver':receiver, 'owner':owner }
 
@@ -520,7 +520,7 @@ $("#Minutelycreate").click(function(e){
   var thevol = allvolumes[$("#volname").val()]['fullname'];
   var every = $("#EveryMinutely").val();
   var keep = $("#KeepMinutely").val();
-  var receiver = allpartners['allpartners'][$("#receiver").val()+'_Receiver']['alias']
+  var receiver = allpartners['allpartners'][$("#receiver").val()]['alias']
   var apiurl = "api/v1/volumes/snapshots/create";
   var apidata = {"snapsel": 'Minutely', "pool": thepool, "volume": thevol, 'every': every, 'receiver':receiver,
                   'keep': keep, 'owner':owner }
@@ -535,7 +535,7 @@ $("#Minutelycreate").click(function(e){
     var every = $("#EveryHourly").val();
     var keep = $("#KeepHourly").val();
     var sminute = $("#Sminute").val();
-    var receiver = allpartners['allpartners'][$("#receiver").val()+'_Receiver']['alias']
+    var receiver = allpartners['allpartners'][$("#receiver").val()]['alias']
     var apiurl = "api/v1/volumes/snapshots/create";
     var apidata = {"snapsel": 'Hourly', "pool": thepool, "volume": thevol, 'every': every, 'receiver':receiver,
                     'keep': keep,'sminute':sminute, 'owner':owner }
@@ -554,7 +554,7 @@ $("#Minutelycreate").click(function(e){
     var every = $("#Sday").val();
     var keep = $("#KeepWeekly").val();
     var stime = $("#Stime").val();
-    var receiver = allpartners['allpartners'][$("#receiver").val()+'_Receiver']['alias']
+    var receiver = allpartners['allpartners'][$("#receiver").val()]['alias']
     var apiurl = "api/v1/volumes/snapshots/create";
     var apidata = {"snapsel": 'Weekly', "pool": thepool, "volume": thevol, 'every': every, 'receiver': receiver,
                     'keep': keep,'stime':stime, 'owner':owner }
