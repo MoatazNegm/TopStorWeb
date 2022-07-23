@@ -80,12 +80,12 @@ function initPartnerlist(){
       },
       "columns": [
         {
-          data: "alias"
+          data: function(data){ return data.alias.split('_')[0]; }
         }, {data:"ip"}, {data:"port"}, {data:"type"}, 
         {
           data: null,
           render: function(data, type, row){
-            return '<a class="delpartner" val="partnername" href="javascript:apartnerdel(\''+data.alias+'\')" >'
+            return '<a class="delpartner" val="'+data.alias+'" href="javascript:apartnerdel(\''+data.alias+'\')" >'
             + '<img  src="dist/img/delete.png" alt="cannott upload delete icon">'
             + '</a>';
           }
