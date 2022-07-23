@@ -134,7 +134,7 @@ function partnersrefresh(){
       newallpartners=[];
       $.each(allpartners['allpartners'],function(e,t){
          if(t['type'].includes('ceiver') > 0){
-          t['text'] = t['alias'] 
+          t['text'] = t['alias'].split('_')[0] 
           t['id'] = e
           newallpartners.push(t);
 	}
@@ -172,13 +172,19 @@ function initalltables(){
     "order": [[ 0, "desc" ],[ 1, "desc" ]],
     "data": alls,
     "columns": [
-      {data: "date"}, {data:"time"},{data: "name" }, {data: "partnerR"}, 
+      {data: "date"}, {data:"time"},
+      {data: "name" },  
       {data: null,
         render: function(data, type, row){
           return row.volume.split('_')[0]
         }
       },
-      {data: "used"}, {data:"refcompressratio"}, 
+ 
+      { data: null,
+        render: function(data){ return data["partnerR"].split('_')[0];
+        }
+      },
+     {data: "used"}, {data:"refcompressratio"}, 
       {
         data: null,
         render: function(data, type, row){
@@ -218,7 +224,10 @@ function initalltables(){
        render: function(data,type,row){
          return data.split('.')[0]+'.'+data.split('.').pop();
        }
-      }, {data: "partnerR"},
+      }, {data: null,
+          render: function(data){ return data["partnerR"].split('_')[0];
+          }
+         },
       {data: null,
         render: function(data, type, row){
           return row.volume.split('_')[0]
@@ -495,7 +504,7 @@ var thepool = allpools['results'][$("#Pool2").val()]['text'];
 var owner = allpools['results'][$("#Pool2").val()]['owner'];
 var thevol = allvolumes[$("#volname").val()]['fullname'];
 var thesnap = $("#Oncename").val();
-var receiver = allpartners['allpartners'][$("#receiver").val()]['alias']
+var receiver = allpartners['allpartners'][$("#receiver").val()+'_Receiver']['alias']
 var apiurl = "api/v1/volumes/snapshots/create";
 var apidata = {"snapsel": 'Once', "pool": thepool, "volume": thevol, 'name': thesnap, 'receiver':receiver, 'owner':owner }
 
@@ -511,7 +520,7 @@ $("#Minutelycreate").click(function(e){
   var thevol = allvolumes[$("#volname").val()]['fullname'];
   var every = $("#EveryMinutely").val();
   var keep = $("#KeepMinutely").val();
-  var receiver = allpartners['allpartners'][$("#receiver").val()]['alias']
+  var receiver = allpartners['allpartners'][$("#receiver").val()+'_Receiver']['alias']
   var apiurl = "api/v1/volumes/snapshots/create";
   var apidata = {"snapsel": 'Minutely', "pool": thepool, "volume": thevol, 'every': every, 'receiver':receiver,
                   'keep': keep, 'owner':owner }
@@ -526,7 +535,7 @@ $("#Minutelycreate").click(function(e){
     var every = $("#EveryHourly").val();
     var keep = $("#KeepHourly").val();
     var sminute = $("#Sminute").val();
-    var receiver = allpartners['allpartners'][$("#receiver").val()]['alias']
+    var receiver = allpartners['allpartners'][$("#receiver").val()+'_Receiver']['alias']
     var apiurl = "api/v1/volumes/snapshots/create";
     var apidata = {"snapsel": 'Hourly', "pool": thepool, "volume": thevol, 'every': every, 'receiver':receiver,
                     'keep': keep,'sminute':sminute, 'owner':owner }
@@ -545,7 +554,7 @@ $("#Minutelycreate").click(function(e){
     var every = $("#Sday").val();
     var keep = $("#KeepWeekly").val();
     var stime = $("#Stime").val();
-    var receiver = allpartners['allpartners'][$("#receiver").val()]['alias']
+    var receiver = allpartners['allpartners'][$("#receiver").val()+'_Receiver']['alias']
     var apiurl = "api/v1/volumes/snapshots/create";
     var apidata = {"snapsel": 'Weekly', "pool": thepool, "volume": thevol, 'every': every, 'receiver': receiver,
                     'keep': keep,'stime':stime, 'owner':owner }
