@@ -188,6 +188,10 @@ Replica1004: Problem occurred while deleting period :
 Replica1005: Success deleting period :
 Replica1006: Rolling back snapshot : ......
 Replica1007: Problem occurred while rolling back snapshot :
+Replispacest01:1: : from :: Preparing to replicate volume : to the replication partner :
+Replispacesu01:1: : from :: Success to replicate volume : to the replication partner : 
+Replispacefa01:1: : from :: No Space is found in replication partner : to replicate volume :
+Streamfa01:1: : from :: Couldn't replicate the volume : to Partner :
 DGst5:1: : from :: Deleting Pool : ......
 DGsu5:2: : from :: Success deleting Pool :
 DGfa5:2: : from :: Failed deleting Pool :
