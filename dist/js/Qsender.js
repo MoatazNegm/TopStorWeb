@@ -134,7 +134,7 @@ function partnersrefresh(){
       newallpartners=[];
       $.each(allpartners['allpartners'],function(e,t){
          if(t['type'].includes('ceiver') > 0){
-          t['text'] = t['alias'] 
+          t['text'] = t['alias'].split('_')[0] 
           t['id'] = e
           newallpartners.push(t);
 	}
@@ -172,13 +172,19 @@ function initalltables(){
     "order": [[ 0, "desc" ],[ 1, "desc" ]],
     "data": alls,
     "columns": [
-      {data: "date"}, {data:"time"},{data: "name" }, {data: "partnerR"}, 
+      {data: "date"}, {data:"time"},
+      {data: "name" },  
       {data: null,
         render: function(data, type, row){
           return row.volume.split('_')[0]
         }
       },
-      {data: "used"}, {data:"refcompressratio"}, 
+ 
+      { data: null,
+        render: function(data){ return data["partnerR"].split('_')[0];
+        }
+      },
+     {data: "used"}, {data:"refcompressratio"}, 
       {
         data: null,
         render: function(data, type, row){
@@ -218,7 +224,10 @@ function initalltables(){
        render: function(data,type,row){
          return data.split('.')[0]+'.'+data.split('.').pop();
        }
-      }, {data: "partnerR"},
+      }, {data: null,
+          render: function(data){ return data["partnerR"].split('_')[0];
+          }
+         },
       {data: null,
         render: function(data, type, row){
           return row.volume.split('_')[0]
