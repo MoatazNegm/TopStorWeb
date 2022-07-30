@@ -135,11 +135,12 @@ function initalltables(){
         render: function(data, type, row){
           return row.volume.split('_')[0]
         }
-      },
+      }, {data: "partnerR" }, { data: "partnerS" }, 
       {data: "used"}, {data:"refcompressratio"}, 
       {
         data: null,
         render: function(data, type, row){
+          console.log('row',row)
           return '<a class="snapdelegt" val="username" href="javascript:rollback(\''+row.name+'\')" >'
           + '<img  src="dist/img/return.png" data-name='+row.name+' alt="cannott upload delete icon">'
           + '</a>';          }
@@ -177,7 +178,7 @@ function initalltables(){
         render: function(data, type, row){
           return row.volume.split('_')[0]
         }
-      }, {data: "partnerR"},
+      }, {data: "partnerR"}, {data : "partnerS"},
       {data: "used"}, {data:"refcompressratio"}, 
       {
         data: null,
@@ -322,7 +323,7 @@ function initalltables(){
             render: function(data, type, row){
               return row.volume.split('_')[0]
             }
-          },{data: 'partnerR'},
+          },{data: 'partnerR'}, { data: 'partnerS'},
           {data: "used"}, {data:"refcompressratio"}, 
           {
             data: null,

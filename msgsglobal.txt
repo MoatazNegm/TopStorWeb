@@ -160,7 +160,7 @@ CIFS1006: Prolbem deleting :
 CIFS1007: Success deleting :
 Unmoutst01:1: : from :: Start process to let the volume : be : 
 Unmoutfa01:1: : from :: failed to let the volume : be :
-Unmoutsu0:1: : from :: The volume : is now :
+Unmoutsu01:1: : from :: The volume : is now :
 Partst01:1: : from :: Node : booted with ip :  wait till complete joining cluster
 Partsu01:2: : from :: Node : completed joining cluster with ip : 
 Partst02:2: : from :: Node : is down
