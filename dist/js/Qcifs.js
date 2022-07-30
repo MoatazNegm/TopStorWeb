@@ -322,6 +322,22 @@ function initVolumelist(){
             + '</a>';
           }
         },
+        {
+          data: null,
+          render: function(data, type, row){
+            if (row.statusmount.includes('active') > 0) {
+             color='red';
+             plug='fa-plug-circle-xmark';
+            } else {
+             color='green';
+             plug='fa-plug-circle-bolt';
+            }
+            return '<a style="font-size: 1.25rem; color:'+color+';" class="Active" val="username" href="javascript:activethis(\''+row.name+'\',\''+row.statusmount+'\')" >'
+            + '<i class="fa-solid '+plug+'"></i>'
+            + '</a>';
+          }
+        },
+
       ],
       'columnDefs': [
         {
@@ -372,6 +388,14 @@ function selbtnclickeduser(ths){
         postdata(apiurl,apidata);
         volumelistrefresh();
 }
+
+function activethis(volname,statusmount){
+  var apiurl = "api/v1/volumes/volumeactive";
+  var active = 'active'
+  if(statusmount.includes('active') > 0){ active = 'disabled';}
+  var apidata = {'name': volname , 'active': active, 'user':'mezo'}
+  postdata(apiurl,apidata);
+};
 
 function avoldel(volname){
   var apiurl = "api/v1/volumes/volumedel";

@@ -401,14 +401,20 @@
                         <input type="text" class="form-control " id="domadmin" placeholder="Name">
                       </div>
                     </div>
-                    <div class='col-5 offset-3'>
+                    <div class='col-4 '>
                       <div class="form-group ">
                         <label for="dompass">Password</label>
                         <input type="password" class="form-control" id="dompass" placeholder="Password">
                       </div>
                     </div>
+                    <div class="col-1" >
+                     <div class="form-group ">
+                      <label for='domactive'>Active</label>
+                      <input type="checkbox" class=" form-control-input" data-toggle='toggle' id="domactive" checked>
+                     </div>
+                    </div>
                   </div>
-                  
+
                   <div class="row workgroup" style="display: none;">
                     <div class='col-7'>
                       <div class="form-group">
@@ -416,6 +422,13 @@
                         <input type="text" class="form-control " id="workname" placeholder="Name" disabled>
                       </div>
                     </div>
+                    <div class="offset-2 col-1" >
+                     <div class="form-group ">
+                      <label for='wrkactive'>Active</label>
+                      <input type="checkbox" class=" form-control-input" data-toggle='toggle' id="wrkactive" checked>
+                     </div>
+                    </div>
+
                   </div>
                   <div class="row workgroup" style="display: none;">
                     <div class='col-12'>
@@ -492,7 +505,8 @@
                       <th style="width:3%;">Subnet</th>
                       <th style="width:40%;">Allowed Groups</th>
                       <th style="width:10%;">Need update</th>
-                      <th style="width:3%;">Remove Volume</th>
+                      <th style="width:3%;"></th>
+                      <th style="width:3%;"></th>
                     </tr>
 
                   </thead>
