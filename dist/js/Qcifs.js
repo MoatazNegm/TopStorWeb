@@ -171,12 +171,15 @@ $("#createvol").click(function(e){
     groups = thevol;
   }
   var apiurl = "api/v1/volumes/create";
+  var active = 'false';
   if($("#Domtype").val() == "workgroup"){
-   var apidata = {"type": prot, "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), "domtype":"workgroup",
+   if($("#wrkactive").is(":checked") == true ) { active = 'active' } else { active = 'false' }
+   var apidata = {"type": prot, "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), "domtype":"workgroup", "active":active,
    "Subnet": $("#Subnet").val(), 'groups': groups, "Myname":"mezo", "size": $("#volsize").val()+'G', 'owner':owner }
   }
   else{
-    var apidata = {"type": prot+'dom', "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), "domtype":"domain",
+    if($("#domactive").is(":checked") == true ) { active = 'active' } else { active = 'false' }
+    var apidata = {"type": prot+'dom', "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), "domtype":"domain", "active":active,
    "Subnet": $("#Subnet").val(), "Myname":"mezo", "size": $("#volsize").val()+'G', 'owner':owner,
    "domname": $("#domain").val(), "domsrv": $("#domsrv").val(), "domip": $("#domip").val(),
    "domadmin": $("#domadmin").val(), "dompass": $("#dompass").val(), 
