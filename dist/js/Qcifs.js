@@ -174,6 +174,7 @@ $("#createvol").click(function(e){
   var active = 'false';
   if($("#Domtype").val() == "workgroup"){
    if($("#wrkactive").is(":checked") == true ) { active = 'active' } else { active = 'false' }
+
    var apidata = {"type": prot, "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), "domtype":"workgroup", "active":active,
    "Subnet": $("#Subnet").val(), 'groups': groups, "Myname":"mezo", "size": $("#volsize").val()+'G', 'owner':owner }
   }
