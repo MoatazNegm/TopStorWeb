@@ -37,8 +37,8 @@ function postlogin(url, data) {
 			console.log("token", hypetoken);
 			$("#user").prop("disabled", false);
 			$("#pass").prop("disabled", false);
-			$("#signin").text("Username or Password is invalid");
 			$("#Loading").remove();
+			$("#signin").text("Username or Password is invalid");
 			$("#signin").show();
 		}
 	}
