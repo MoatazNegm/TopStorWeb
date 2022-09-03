@@ -59,7 +59,3 @@ select.btn-mini + .caret {
 	margin-left: -20px;
 	margin-top: 9px;
 }
-
-.no_scroll_overlay {
-	overflow: hidden;
-}
