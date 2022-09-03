@@ -72,9 +72,12 @@ function getdata(url, fn, first = 0) {
 		success: function (data) {
 			fn(data);
 			{
-				if (first == 1) firstRequests = firstRequests - 1;
-				console.log("done");
-				console.log(firstRequests);
+				if (first == 1) {
+					console.log(url);
+					firstRequests = firstRequests - 1;
+					console.log("done");
+					console.log(firstRequests);
+				}
 			}
 		},
 	});
