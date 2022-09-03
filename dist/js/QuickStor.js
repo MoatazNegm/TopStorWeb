@@ -61,7 +61,7 @@ function clrcomp(xx) {
 	}
 	return clr;
 }
-function getdata(url, fn) {
+function getdata(url, fn, first = 0) {
 	var newdgs;
 	$.ajax({
 		url: url,
@@ -71,9 +71,11 @@ function getdata(url, fn) {
 		data: { token: hypetoken },
 		success: function (data) {
 			fn(data);
-			firstRequests = firstRequests - 1;
-			console.log("done");
-			console.log(firstRequests);
+			{
+				if (first == 1) firstRequests = firstRequests - 1;
+				console.log("done");
+				console.log(firstRequests);
+			}
 		},
 	});
 }
@@ -165,8 +167,8 @@ function trendsfn(data) {
 	linechartpls();
 }
 
-function extracthosts() {
-	getdata("api/v1/hosts/allinfo", hostsfn);
+function extracthosts(first) {
+	getdata("api/v1/hosts/allinfo", hostsfn, first);
 }
 function hostsfn(data) {
 	newallhosts = data;
@@ -196,17 +198,17 @@ function hostsfn(data) {
 	$(".thost").trigger("change");
 	$("#thost").css("color", "black");
 }
-function extractdisks() {
-	getdata("api/v1/pools/dgsinfo", disksfn);
+function extractdisks(first) {
+	getdata("api/v1/pools/dgsinfo", disksfn, first);
 }
 function disksfn(data) {
 	newdisks = data;
 	disks = newdisks["disks"];
 	$("#disks").text(Object.keys(disks).length);
 }
-function extractsnaps() {
+function extractsnaps(first) {
 	var newsnaps;
-	getdata("api/v1/volumes/snapshots/snapshotsinfo", snapsfn);
+	getdata("api/v1/volumes/snapshots/snapshotsinfo", snapsfn, first);
 }
 function snapsfn(data) {
 	var newsnaps = data;
@@ -225,8 +227,8 @@ function snapsfn(data) {
 	$("#allsnaps").text(snaps.length);
 }
 var overallcount = 0;
-function extractvolumes() {
-	getdata("api/v1/volumes/volumesinfo", volumesfn);
+function extractvolumes(first) {
+	getdata("api/v1/volumes/volumesinfo", volumesfn, first);
 }
 function volumesfn(data) {
 	vols = data;
@@ -245,8 +247,8 @@ function extractonedaylog() {
 	$("#failedlogon").text(onedaylog["failedlogon"].length);
 }
 
-function extractconns() {
-	getdata("api/v1/volumes/connections", connsfn);
+function extractconns(first) {
+	getdata("api/v1/volumes/connections", connsfn, first);
 }
 function connsfn(data) {
 	newallconns = data;
@@ -274,8 +276,8 @@ function consusersfn(data) {
 	$(".tuser").trigger("change");
 	$(".tuser").css("color", "black");
 }
-function extractstorage() {
-	getdata("api/v1/pools/dgsinfo", storagefn);
+function extractstorage(first) {
+	getdata("api/v1/pools/dgsinfo", storagefn, first);
 }
 function storagefn(data) {
 	alldgs = data;
@@ -314,23 +316,23 @@ function storagefn(data) {
 }
 //$(".addraid").click(function(){ console.log(this); $(this).find('input').prop('checked','checked'); });
 
-function refreshdash() {
+function refreshdash(first = 0) {
 	if (refresh == 0) {
 		refresh = 1;
-		extractstorage();
-		extracthosts();
-		extractconns();
-		extractonedaylog();
-		extractsnaps();
-		extractvolumes();
-		extractdisks();
+		extractstorage(first);
+		extracthosts(first);
+		extractconns(first);
+		extractonedaylog(first);
+		extractsnaps(first);
+		extractvolumes(first);
+		extractdisks(first);
 		refresh = 0;
 	} else {
 		refresh += 1;
 	}
 	//$(".tstorage").trigger('configure', {'fgColor': tstoragecolor});
 }
-refreshdash();
+refreshdash(1);
 firstRequestsInterval = setInterval(() => {
 	if (firstRequests == 0) {
 		$("#Loading").remove();
