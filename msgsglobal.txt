@@ -319,9 +319,9 @@ Snap1024: Success in deleting snapshot :
 Snap1025:1: : from :: Success in deleting snapshot :
 Snap1026:0: : from :: Adding snapshot :
 Snap1027: Problem occurred while creating Snapshot :
-Snap1028:2: : from :: Problem occurred while creating Snapshot :
+Snap1028:0: : from :: Problem occurred while creating Snapshot :
 Snap1029: Success creating Snapshot :
-Snap1030:1: : from :: Success creating Snapshot :
+Snap1030:0: : from :: Success creating Snapshot :
 Snap1031:1: : from :: Adding Weekly snapshot schedule for : ......
 Snap1032:2: : from :: Problem occurred adding Weekly snapshot schedule for :
 Snap1033:2: : from :: Success adding Weekly snapshot schedule : for volume :
