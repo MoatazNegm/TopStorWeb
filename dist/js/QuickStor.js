@@ -28,6 +28,7 @@ var loadingBody =
 var firstRequests = 6;
 $("body").prepend(loadingBody);
 $("body").addClass("no_scroll_overlay");
+$("wrapper").css("z-index") =1;
 
 iodata["tps"] = Array.from({ length: 50 }).map((x) => 0);
 iodata["thru"] = Array.from({ length: 50 }).map((y) => 0);
@@ -332,6 +333,7 @@ function refreshdash() {
 refreshdash();
 if (firstRequests == 0) {
 	$("#Loading").remove();
+  console.log('removed');
 }
 setInterval(refreshdash, 100000);
 
