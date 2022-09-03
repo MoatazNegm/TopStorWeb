@@ -62,7 +62,6 @@ $("button").click(function (e) {
 		localStorage.setItem("user", $("#user").val());
 		$("#user").prop("disabled", true);
 		$("#pass").prop("disabled", true);
-		$("body").prepend(loadingBody);
 		$("#signin").hide();
 		postlogin(urlapi, datapi);
 	}, 20);
