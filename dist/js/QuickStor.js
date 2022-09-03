@@ -331,10 +331,14 @@ function refreshdash() {
 	//$(".tstorage").trigger('configure', {'fgColor': tstoragecolor});
 }
 refreshdash();
-if (firstRequests == 0) {
-	$("#Loading").remove();
-	console.log("removed");
-}
+firstRequestsInterval = setInterval(() => {
+	if (firstRequests == 0) {
+		$("#Loading").remove();
+		console.log("removed");
+		clearInterval(firstRequestsInterval);
+	}
+}, 100);
+
 setInterval(refreshdash, 100000);
 
 /* jQueryKnob */
