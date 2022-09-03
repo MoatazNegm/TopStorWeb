@@ -97,7 +97,7 @@ function initaddgs(){
                 $('#'+pool+" .select"+en).append(o)
               });
             }
-            if (alldgs['pools'][pool]['Availability'].includes('Availability')){
+            if (alldgs['pools'][pool]['name'] != 'pree' && alldgs['pools'][pool]['availtype'].includes('Availability')){
               $('#'+pool+" .adiv"+en).show();
               $('#'+pool+" .adivvolset").hide();
             } else {
@@ -123,6 +123,8 @@ function initaddgs(){
 }
 function initdgs(){
   var poolcard;
+  var col;
+  var colsmean;
   var pool, host, status, grouptype, raid, changeop,shortdisk, size;
   if(typeof alldgs == 'undefined' ) {return;}
   $('.phdcp').remove();
@@ -140,36 +142,77 @@ function initdgs(){
       $('#'+pool+" .spanused").text('used:'+t['used'].toString().slice(0,5)+'GB');
       var avtype = 'Highly Available';
       var avcolor = 'blue';
-      if(t["Availability"] != "Availability") { avtype = 'No Redundancy'; avcolor='red'}
+      if(t['name'] != 'pree' && t["availtype"] != "Availability") { avtype = 'No Redundancy'; avcolor='red'}
+      else {
+         balanced = ', balanced'
+         $.each(t['raids'],function(traide,traid){ 
+          if(alldgs['raids'][traid]['missingdisks'][0] != 0) { 
+            avcolor = 'red'
+            balanced = ', missing disks';
+            return false;
+          }
+          if(alldgs['raids'][traid]['raidrank'][0] < 0) {
+           avcolor='#f39c12'; balanced = ', not balanced';
+           return false;
+          }
+         });
+         avtype = avtype+balanced;
+      }
       $('#'+pool+" .spanredundancy").text(avtype);
       $('#'+pool+" .spanredundancy").css('color',avcolor);
-      $('#'+pool+" .spandedup").text('dedupped:'+t['dedup']);
+      $('#'+pool+" .spandedup").text('dedup:'+t['dedup']);
 
       $.each(t['raids'],function(ee,tt){
         raid = tt;
+        cols = alldgs['raids'][raid]['disks'].length + alldgs['raids'][raid]['missingdisks'][0]
+        colsmean = Math.ceil(12/(cols))
+        $('#'+pool+' .disks').append(
+          '<div class="col-'+cols+'">'
+          +'<sub id="sub'+raid+'">'+raid.split('_')[0]+'</sub>'
+	  +'<div class="row" id='+raid+' style="border: solid; border-color: grey; border-width:1px;"></div>'
+          +'</div>'
+        );
         $.each(alldgs['raids'][raid]['disks'],function(eee,disk){
           shortdisk = disk.slice(-5);
           status = alldgs['disks'][disk]['status'];
           host = alldgs['disks'][disk]['host'];
           changeop = alldgs['disks'][disk]['changeop'];
           size = parseFloat(alldgs['disks'][disk]['size']).toFixed(2);
-          if(status.includes('ONLINE')){
+          if(status.includes('ONLINE') || (status.includes('NA') && alldgs['disks'][disk]['raid'].includes('stripe'))){
             imgf = 'disk-image.png';
           } else {
             imgf = 'invaliddisk.png';
           }
-          $('#'+pool+' .disks').append(
-            '<div id="'+disk+'" data-disk="'+disk+'" class=" col-'+col+' '+raid+' '+pool+' '+status+' '+changeop+'">'
+          $('#'+raid).append(
+            '<div class="col-'+colsmean+'">'
+            +'<div id="'+disk+'" data-disk="'+disk+'" class="'+raid+' '+pool+' '+status+' '+changeop+'">'
               +'  <a href="javascript:memberclick(\'#'+disk+'\')" class="img-clck" >'
               +'     <img class="img412 imgstyle '+diskimg+' '+disk+'" src="img/'+imgf+'" />'
-              +'  <p class="psize">'+size+'</p></a><p class="pimage">'+shortdisk+'</p>'
+              +'  <p class="psize">'+size+'</p></a><p class="ptext">'+shortdisk+'</p>'
               //+' <p class="pimage">'+changeop+'</p><p class="pimage">'+e+'</p>'
               +'  </a>'
             +'</div>'
+            +'</div>'
           );
         });
-        
-        
+        for ( x=0; x < alldgs['raids'][raid]['missingdisks'][0]; x++){
+         imgf = 'invaliddisk.png';
+         $("#"+raid).css('border-color','red');
+         $("#sub"+raid).css('color','red');
+         $('#'+raid).append(
+
+            '<div class="col-'+colsmean+'">'
+            +'<div id="'+raid['name']+'dm_'+x+'" data-disk="'+raid['name']+'dm_'+x+'" class=" col-'+col+' '+raid+' '+pool+' '+status+' '+changeop+'">'
+              +'  <a href="javascript:memberclick(\'#'+raid['name']+'dm_'+x+'\')" class="img-clck" >'
+              +'     <img class="img412 imgstyle '+diskimg+' '+raid['name']+'dm_'+x+'" src="img/'+imgf+'" />'
+              +'  <p class="psize">'+'-'+'</p></a><p class="ptext">'+'missing'+'</p>'
+              //+' <p class="pimage">'+changeop+'</p><p class="pimage">'+e+'</p>'
+              +'  </a>'
+            +'</div>'
+            +'</div>'
+          );
+
+        }
       });
      
       
@@ -261,15 +304,17 @@ $('#createpool').click(function(e){
   var apidata = {"redundancy": $(this).data('redundancy'), 'useable': useable, 'user':'mezo' }
   postdata(apiurl,apidata);
 });
-$('.addtopool').click(function(e){
+//$('.addtopool').click(function(e){
+$("body").on('click','.addtopool', function(e){
   e.preventDefault();
   var apiurl = "api/v1/pools/addtopool";
   var redundancy = $(this).data('redundancy');
   var pool = $(this).data('pool');
   var useable = $("#"+pool+" .select"+redundancy).val();
   var apidata = {"pool": pool, "redundancy": redundancy, 'useable': useable, 'user':'mezo' }
+  console.log('addtopol',apidata)
   postdata(apiurl,apidata);
-})
+});
 
 function memberclick(thisclck){
   //hname=$(thisclck).attr('data-disk');

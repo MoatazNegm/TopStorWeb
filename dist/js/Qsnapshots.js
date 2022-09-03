@@ -30,6 +30,7 @@ var oldcurrentinfo='dlkfajsdl;';
  var mytimer;
  var mymodal;
  var cgrp={};
+ var alls;
  var cuser={};
  var volumelistflag=0;
  var userdata="dksfj";
@@ -134,11 +135,12 @@ function initalltables(){
         render: function(data, type, row){
           return row.volume.split('_')[0]
         }
-      },
+      }, {data: "partnerR" }, { data: "partnerS" }, 
       {data: "used"}, {data:"refcompressratio"}, 
       {
         data: null,
         render: function(data, type, row){
+          console.log('row',row)
           return '<a class="snapdelegt" val="username" href="javascript:rollback(\''+row.name+'\')" >'
           + '<img  src="dist/img/return.png" data-name='+row.name+' alt="cannott upload delete icon">'
           + '</a>';          }
@@ -171,12 +173,12 @@ function initalltables(){
        render: function(data,type,row){
          return data.split('.')[0]+'.'+data.split('.').pop();
        }
-      }, {data: "snaptype"},
+      }, 
       {data: null,
         render: function(data, type, row){
           return row.volume.split('_')[0]
         }
-      },
+      }, {data: "partnerR"}, {data : "partnerS"},
       {data: "used"}, {data:"refcompressratio"}, 
       {
         data: null,
@@ -237,9 +239,14 @@ function initalltables(){
     });
     allperiodstable[t].buttons().container().appendTo('#'+t+'periods_wrapper .col-6:eq(0)');
     t='Hourly';
+    alls = [] 
+    $.each(allsnaps[t+'period'],function(e,tt){
+     if(tt['receiver'] == 'NoReceiver') {alls.push(tt)}
+    });
+ 
     allperiodstable[t]=$("#"+t+"periods").DataTable({
       "order": [[ 0, "desc" ],[ 1, "desc" ]],
-      "data": allsnaps[t+'period'],
+      "data": alls,
       "columns": [
         {data: "id"}, 
         {data: null,
@@ -267,9 +274,14 @@ function initalltables(){
     });
     allperiodstable[t].buttons().container().appendTo('#'+t+'periods_wrapper .col-6:eq(0)');
     t='Weekly';
+    alls = [] 
+    $.each(allsnaps[t+'period'],function(e,tt){
+     if(tt['receiver'] == 'NoReceiver') {alls.push(tt)}
+    });
+ 
     allperiodstable[t]=$("#"+t+"periods").DataTable({
       "order": [[ 0, "desc" ],[ 1, "desc" ]],
-      "data": allsnaps[t+'period'],
+      "data": alls,
       "columns": [
         {data: "id"}, 
         {data: null,
@@ -311,7 +323,7 @@ function initalltables(){
             render: function(data, type, row){
               return row.volume.split('_')[0]
             }
-          },
+          },{data: 'partnerR'}, { data: 'partnerS'},
           {data: "used"}, {data:"refcompressratio"}, 
           {
             data: null,
@@ -354,6 +366,11 @@ function snapsreferesh(){
   getsnaps();
   if(JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
     allsnaps = JSON.parse(JSON.stringify(newsnaps)); 
+    alls = [] 
+    $.each(allsnaps["Once"],function(e,tt){
+     if(tt['receiver'] == 'NoReceiver') {alls.push(tt)}
+    });
+ 
     onceinittable.clear();
     onceinittable.rows.add(allsnaps['Once']);
     onceinittable.draw();
@@ -365,8 +382,12 @@ function snapsreferesh(){
         allpsnapstable[t].clear();
         allpsnapstable[t].rows.add(allsnaps[t]);
         allpsnapstable[t].draw();
+        alls = [] 
+        $.each(allsnaps[t+'period'],function(e,tt){
+        if(tt['receiver'] == 'NoReceiver') {alls.push(tt)}
+        });
         allperiodstable[t].clear();
-        allperiodstable[t].rows.add(allsnaps[t+'period']);
+        allperiodstable[t].rows.add(alls);
         allperiodstable[t].draw();
       });
       

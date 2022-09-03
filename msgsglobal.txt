@@ -149,6 +149,8 @@ HostManual2st12:2: : from :: Preparing the node to be able to join a cluster
 HostManual2su12:2: : from :: The node is ready to join any cluser, the node will reboot 
 HostManual1st12:2: : from :: Locking the node for not joining any cluster
 HostManual1su12:2: : from :: The node is locked for not joining any cluser, the node will reboot 
+HostManual1st13:2: : from :: Start changing cluster DNS name : and domain search : to : and :
+HostManual1su13:2: : from :: Success changing cluster DNS name : and domain search : to : and :
 CIFS1001: Creating Volume : ....
 CIFS1002: Volume : already exists
 CIFS1003: Problem occurred while creating volume :
@@ -156,22 +158,26 @@ CIFS1004: Success creating volume :
 CIFS1005: Deleting : .....
 CIFS1006: Prolbem deleting :
 CIFS1007: Success deleting :
-Partst01:1: : from :: Partner : booted with ip :  wait till complete joining cluster
-Partsu01:2: : from :: Partner : completed joining cluster with ip : 
-Partst02:2: : from :: Partner : is down
-Partst03:1: : from :: Partner : booting with ip : as master. please wait ... 
-Partsu03:2: : from :: Partner : booted with ip : as a master.
-Partst04:1: : from :: Partner : booting with ip : as a cluster node please wait ... 
-Partsu04:2: : from :: Partner : booted with ip : as a cluster node.
-Partst05:2: : from :: Partner : raised alert that some node is down
-Partsu05:0: : from :: Partner : is taking action due to lost node
+Unmoutst01:1: : from :: Start process to let the volume : be : 
+Unmoutfa01:1: : from :: failed to let the volume : be :
+Unmoutsu01:1: : from :: The volume : is now :
+Partst01:1: : from :: Node : booted with ip :  wait till complete joining cluster
+Partsu01:2: : from :: Node : completed joining cluster with ip : 
+Partst02:2: : from :: Node : is down
+Partst03:1: : from :: Node : booting with ip : as master. please wait ... 
+Partsu03:2: : from :: Node : booted with ip : as a master.
+Partst04:1: : from :: Node : booting with ip : as a cluster node please wait ... 
+Partsu04:2: : from :: Node : booted with ip : as a cluster node.
+Partst05:2: : from :: Node : raised alert that some node is down
+Partsu05:0: : from :: Node : is taking action due to lost node
 Partst06:0: : from :: started checking and syncing this partner active pools 
 Partsu06:0: : from :: finished checking and syncing this partner active pools 
-Partner1000: Adding partner : ......
-Partner1001: Partner : already exists
-Partner1002: Success adding partner : of type :
-Partner1003: Deleting partner : ......
-Partner1004: Success deleting partner :
+Partner1000:2: : from :: Adding partner : in : mode.
+Partner1001:1: : from :: Partner : already exists
+Partner1002:1: : from :: Success adding partner : in : mode
+Partner1fa2:1: : from :: Failed Aadding partner : in : mode, pls try again later. make sure the partner is accessible and up and running
+Partner1003:1: : from :: Deleting partner : ......
+Partner1004:1: : from :: Success deleting partner :
 Partner1005:1: : from :: Deleting partner : ......
 Partner1006:2: : from :: Success deleting partner :
 Partner1007:1: : from :: Adding partner : ......
@@ -185,6 +191,10 @@ Replica1004: Problem occurred while deleting period :
 Replica1005: Success deleting period :
 Replica1006: Rolling back snapshot : ......
 Replica1007: Problem occurred while rolling back snapshot :
+Replispacest01:1: : from :: Preparing to replicate volume : to the replication partner :
+Replispacesu01:1: : from :: Success to replicate volume : to the replication partner : 
+Replispacefa01:1: : from :: No Space is found in replication partner : to replicate volume :
+Streamfa01:1: : from :: Couldn't replicate the volume : to Partner :
 DGst5:1: : from :: Deleting Pool : ......
 DGsu5:2: : from :: Success deleting Pool :
 DGfa5:2: : from :: Failed deleting Pool :
@@ -299,8 +309,8 @@ NFS1004:1: : from :: Creating volume :
 NFS1005:2: : from :: Volume name : is registered in system. Please check for lost hosts/volumes
 NFS1006:2: : from :: Problem occurred while creating volume :
 NFS1007:2: : from :: Success creating volume :
-Evacuaest01:2: : from :: Start Evacuating node :
-Evacuaesu01:2: : from :: Success Evacuating node :
+Evacuaest01:1: : from :: Start Evacuating node :
+Evacuaesu01:1: : from :: Success Evacuating node :
 AddHostst01:2: : from :: Start Adding the new node : to the cluster
 AddHostsu01:2: : from :: Success Adding the new node : to the cluster
 Snap1022:0: : from :: Deleting Snapshot :
