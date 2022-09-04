@@ -1,21 +1,21 @@
 /* #heart {
 	stroke: url(#radialGradient);
 } */
-html,
+/* html,
 body {
 	height: 100%;
 	width: 100%;
 	margin: 0;
 	padding: 0;
-}
+} */
 
 .container {
-	background-color: rgba(255, 255, 255, 0.7);
+	/* background-color: rgba(255, 255, 255, 0.7);
 	display: flex;
 	height: 100%;
 	width: 100%;
 	align-items: center;
-	justify-content: center;
+	justify-content: center; */
 	animation: 1.5s ease 0s infinite pulse;
 }
 
@@ -42,7 +42,7 @@ body {
 	}
 }
 
-@keyframes pulse {
+/* @keyframes pulse {
 	0%,
 	50%,
 	100% {
@@ -52,4 +52,4 @@ body {
 	80% {
 		background: #fff;
 	}
-}
+} */
