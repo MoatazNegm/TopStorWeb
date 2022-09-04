@@ -57,13 +57,15 @@ if (typeof Storage !== "undefined") {
 
 $("button").click(function (e) {
 	$("#Loading").toggle();
-	urlapi = "api/v1/login";
-	datapi = { user: $("#user").val(), pass: $("#pass").val() };
-	localStorage.setItem("user", $("#user").val());
-	$("#user").prop("disabled", true);
-	$("#pass").prop("disabled", true);
-	$("#signin").hide();
-	postlogin(urlapi, datapi);
+	setTimeout(function () {
+		urlapi = "api/v1/login";
+		datapi = { user: $("#user").val(), pass: $("#pass").val() };
+		localStorage.setItem("user", $("#user").val());
+		$("#user").prop("disabled", true);
+		$("#pass").prop("disabled", true);
+		$("#signin").hide();
+		postlogin(urlapi, datapi);
+	}, 20);
 });
 
 dirtylog = 1;
