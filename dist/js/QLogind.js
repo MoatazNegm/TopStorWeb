@@ -1,3 +1,5 @@
+var loadingBody =
+	'<div id="Loading" class="card card-primary" style="margin-bottom: 0; position: absolute;top: 0;right: 0;bottom: 0;left: 0;"><div class="overlay" style="height:100vh; width:100vw"><div class="spinner-border" role="status" style="width: 3rem; height: 3rem; color: #0D0D7F"><span class="sr-only">Loading...</span></div></div></div>';
 //var ipv4_address = $(".ipaddress");
 //ipv4_address.inputmask();
 function postdata(url, data) {
@@ -35,6 +37,7 @@ function postlogin(url, data) {
 			console.log("token", hypetoken);
 			$("#user").prop("disabled", false);
 			$("#pass").prop("disabled", false);
+			$("#Loading").remove();
 			$("#signin").text("Username or Password is invalid");
 			$("#signin").show();
 		}
@@ -52,13 +55,16 @@ if (typeof Storage !== "undefined") {
 }
 
 $("button").click(function (e) {
-	urlapi = "api/v1/login";
-	datapi = { user: $("#user").val(), pass: $("#pass").val() };
-	localStorage.setItem("user", $("#user").val());
-	$("#user").prop("disabled", true);
-	$("#pass").prop("disabled", true);
-	$("#signin").hide();
-	postlogin(urlapi, datapi);
+	$("body").prepend(loadingBody);
+	setTimeout(function () {
+		urlapi = "api/v1/login";
+		datapi = { user: $("#user").val(), pass: $("#pass").val() };
+		localStorage.setItem("user", $("#user").val());
+		$("#user").prop("disabled", true);
+		$("#pass").prop("disabled", true);
+		$("#signin").hide();
+		postlogin(urlapi, datapi);
+	}, 20);
 });
 
 dirtylog = 1;
