@@ -18,13 +18,8 @@ body {
 	animation: 1.5s ease 0s infinite pulse;
 }
 
-.box {
-	max-height: 200px;
-}
-
 #pumping {
 	height: 100%;
-	margin-left: auto;
 	animation: 1.5s ease 0s infinite beat;
 }
 
