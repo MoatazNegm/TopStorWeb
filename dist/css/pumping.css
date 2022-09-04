@@ -19,13 +19,50 @@ body {
 }
 
 .box {
-	height: 90%;
+	max-height: 200px;
 }
 
-#heart {
+#pumping {
 	height: 100%;
 	margin-left: auto;
 	animation: 1.5s ease 0s infinite beat;
+}
+
+/*MEDIA QUERIES*/
+@media (min-width: 1200px) {
+	#pumping {
+		max-width: 50rem;
+		max-height: 15rem;
+		width: auto;
+		height: auto;
+	}
+}
+
+@media (min-width: 992px) {
+	#pumping {
+		max-width: 45rem;
+		max-height: 12rem;
+		width: auto;
+		height: auto;
+	}
+}
+
+@media (min-width: 768px) {
+	#pumping {
+		max-width: 40rem;
+		max-height: 9rem;
+		width: auto;
+		height: auto;
+	}
+}
+
+@media (max-width: 768px) {
+	#pumping {
+		max-width: 35rem;
+		max-height: 7rem;
+		width: auto;
+		height: auto;
+	}
 }
 
 @keyframes beat {
