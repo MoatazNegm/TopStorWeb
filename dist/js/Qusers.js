@@ -87,7 +87,7 @@ function poolsrefresh() {
 				async: false,
 			},
 		})
-		.on("change", () => {
+		.on("change", function () {
 			var selectedValue = $('#UserVol option[value="' + this.value + '"]')[0].innerHTML;
 			if ((selectedValue != "-----") & (selectedValue != "-------")) {
 				$("#volsize").prop("disabled", false);
