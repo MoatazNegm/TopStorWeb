@@ -24,7 +24,6 @@ var totalstoragealloc = 0;
 var iodata = {};
 var tcpu = 0;
 var firstRequests = 6;
-$(".wrapper").css("z-index", 1);
 
 iodata["tps"] = Array.from({ length: 50 }).map((x) => 0);
 iodata["thru"] = Array.from({ length: 50 }).map((y) => 0);

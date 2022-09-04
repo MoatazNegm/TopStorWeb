@@ -18,6 +18,10 @@ body {
 	animation: 1.5s ease 0s infinite pulse;
 }
 
+.wrapper {
+	z-index: 1;
+}
+
 #pumping {
 	height: 100%;
 	animation: 1.5s ease 0s infinite beat;
