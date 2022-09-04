@@ -37,7 +37,7 @@ function postlogin(url, data) {
 			console.log("token", hypetoken);
 			$("#user").prop("disabled", false);
 			$("#pass").prop("disabled", false);
-			$("#Loading").remove();
+			$("#Loading").toggle();
 			$("#signin").text("Username or Password is invalid");
 			$("#signin").show();
 		}
@@ -55,7 +55,7 @@ if (typeof Storage !== "undefined") {
 }
 
 $("button").click(function (e) {
-	$("body").prepend(loadingBody);
+	$("Loading").toggle();
 	setTimeout(function () {
 		urlapi = "api/v1/login";
 		datapi = { user: $("#user").val(), pass: $("#pass").val() };
