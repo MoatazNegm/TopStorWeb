@@ -1,5 +1,6 @@
 var loadingBody =
 	'<div id="Loading" class="card card-primary"><div id="overlay-container" class="overlay box"><img id="pumping" src="dist/img/Quickstor logo.png"/></div></div>';
+$("#Loading").toggle();
 //var ipv4_address = $(".ipaddress");
 //ipv4_address.inputmask();
 function postdata(url, data) {
@@ -56,15 +57,13 @@ if (typeof Storage !== "undefined") {
 
 $("button").click(function (e) {
 	$("#Loading").toggle();
-	setTimeout(function () {
-		urlapi = "api/v1/login";
-		datapi = { user: $("#user").val(), pass: $("#pass").val() };
-		localStorage.setItem("user", $("#user").val());
-		$("#user").prop("disabled", true);
-		$("#pass").prop("disabled", true);
-		$("#signin").hide();
-		postlogin(urlapi, datapi);
-	}, 20);
+	urlapi = "api/v1/login";
+	datapi = { user: $("#user").val(), pass: $("#pass").val() };
+	localStorage.setItem("user", $("#user").val());
+	$("#user").prop("disabled", true);
+	$("#pass").prop("disabled", true);
+	$("#signin").hide();
+	postlogin(urlapi, datapi);
 });
 
 dirtylog = 1;
