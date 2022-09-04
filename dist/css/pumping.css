@@ -1,6 +1,6 @@
-#heart {
+/* #heart {
 	stroke: url(#radialGradient);
-}
+} */
 html,
 body {
 	height: 100%;
@@ -10,6 +10,7 @@ body {
 }
 
 .container {
+	background-color: rgba(255, 255, 255, 0.7);
 	display: flex;
 	height: 100%;
 	width: 100%;
@@ -20,7 +21,7 @@ body {
 
 .box {
 	height: 90%;
-	max-height: 700px;
+	max-height: 200px;
 }
 
 #heart {
@@ -45,7 +46,7 @@ body {
 	0%,
 	50%,
 	100% {
-		background: #fee;
+		background: #fff;
 	}
 	30%,
 	80% {
