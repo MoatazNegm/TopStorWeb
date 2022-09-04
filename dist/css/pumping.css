@@ -9,13 +9,12 @@ body {
 	padding: 0;
 } */
 
-.container {
-	/* background-color: rgba(255, 255, 255, 0.7);
+#Loading {
 	display: flex;
 	height: 100%;
 	width: 100%;
 	align-items: center;
-	justify-content: center; */
+	justify-content: center;
 	animation: 1.5s ease 0s infinite pulse;
 }
 
