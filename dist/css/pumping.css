@@ -1,0 +1,54 @@
+#heart {
+	stroke: url(#radialGradient);
+}
+html,
+body {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+.container {
+	display: flex;
+	height: 100%;
+	width: 100%;
+	align-items: center;
+	justify-content: center;
+	animation: 1.5s ease 0s infinite pulse;
+}
+
+.box {
+	height: 90%;
+	max-height: 700px;
+}
+
+#heart {
+	height: 100%;
+	margin-left: auto;
+	animation: 1.5s ease 0s infinite beat;
+}
+
+@keyframes beat {
+	0%,
+	50%,
+	100% {
+		transform: scale(1, 1);
+	}
+	30%,
+	80% {
+		transform: scale(0.92, 0.95);
+	}
+}
+
+@keyframes pulse {
+	0%,
+	50%,
+	100% {
+		background: #fee;
+	}
+	30%,
+	80% {
+		background: #fff;
+	}
+}
