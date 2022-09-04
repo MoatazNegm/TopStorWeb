@@ -23,7 +23,8 @@ var totalstorage = 0;
 var totalstoragealloc = 0;
 var iodata = {};
 var tcpu = 0;
-('<link rel="stylesheet" href="dist/css/pumping.css"><link rel="stylesheet" href="dist/css/pumping.css"><div id="Loading" class="card card-primary"><div id="overlay-container" class="overlay"><img id="heart" src="dist/img/Quickstor logo.png"/></div></div>');
+var loadingBody =
+	'<link rel="stylesheet" href="dist/css/pumping.css"><link rel="stylesheet" href="dist/css/pumping.css"><div id="Loading" class="card card-primary"><div id="overlay-container" class="overlay"><img id="heart" src="dist/img/Quickstor logo.png"/></div></div>';
 var firstRequests = 6;
 $("body").prepend(loadingBody);
 $("body").addClass("no_scroll_overlay");
