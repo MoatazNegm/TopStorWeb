@@ -56,7 +56,7 @@ if (typeof Storage !== "undefined") {
 }
 
 $("button").click(function (e) {
-	$("ELoading").toggle();
+	$("#Loading").toggle();
 	setTimeout(function () {
 		urlapi = "api/v1/login";
 		datapi = { user: $("#user").val(), pass: $("#pass").val() };
