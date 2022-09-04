@@ -1,5 +1,5 @@
 var loadingBody =
-	'<link rel="stylesheet" href="dist/css/pumping.css"><div id="Loading" class="card card-primary"><div id="overlay-container" class="overlay box"><img id="pumping" src="dist/img/Quickstor logo.png"/></div></div>';
+	'<div id="Loading" class="card card-primary"><div id="overlay-container" class="overlay box"><img id="pumping" src="dist/img/Quickstor logo.png"/></div></div>';
 //var ipv4_address = $(".ipaddress");
 //ipv4_address.inputmask();
 function postdata(url, data) {

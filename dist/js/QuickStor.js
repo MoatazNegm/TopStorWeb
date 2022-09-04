@@ -23,11 +23,7 @@ var totalstorage = 0;
 var totalstoragealloc = 0;
 var iodata = {};
 var tcpu = 0;
-var loadingBody =
-	'<link rel="stylesheet" href="dist/css/pumping.css"><div id="Loading" class="card card-primary"><div id="overlay-container" class="overlay box"><img id="pumping" src="dist/img/Quickstor logo.png"/></div></div>';
 var firstRequests = 6;
-$("body").prepend(loadingBody);
-$("body").addClass("no_scroll_overlay");
 $(".wrapper").css("z-index", 1);
 
 iodata["tps"] = Array.from({ length: 50 }).map((x) => 0);
