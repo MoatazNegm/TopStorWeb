@@ -336,6 +336,7 @@ firstRequestsInterval = setInterval(() => {
 		$("#Loading").remove();
 		console.log("removed");
 		$("body").removeClass("no_scroll_overlay");
+		$(".wrapper").removeClass("wrapper-index");
 		clearInterval(firstRequestsInterval);
 	}
 }, 100);
