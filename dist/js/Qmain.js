@@ -69,7 +69,7 @@ firstRequestsInterval = setInterval(() => {
 }, 100);
 
 removeLoadingInterval = setInterval(() => {
-	loadingClasslist = $("#Loading").attr("class");
+	loadingClasslist = $("#Loading").attr("class").split(" ");
 	console.log(loadingClasslist);
 	if (loadingClasslist.length() == 4) {
 		$("#Loading").remove();
