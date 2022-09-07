@@ -65,17 +65,14 @@ firstRequestsInterval = setInterval(() => {
 	if (firstRequests == 0) {
 		$("#Loading").addClass("show_or_hide_main");
 		setTimeout(() => {
+			console.log("FirstRequests Done");
 			clearInterval(firstRequestsInterval);
 		}, 20);
 	}
 }, 100);
 
 removeLoadingInterval = setInterval(() => {
-	loadingClasslist = $("#Loading").attr("class");
-	console.log(loadingClasslist);
 	loadingClasslist = $("#Loading").attr("class").split(" ");
-	console.log(loadingClasslist);
-	console.log(loadingClasslist.length);
 	if (loadingClasslist.length == 4) {
 		$("#Loading").remove();
 		clearInterval(removeLoadingInterval);
