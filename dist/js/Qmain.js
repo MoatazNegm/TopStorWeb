@@ -75,6 +75,7 @@ removeLoadingInterval = setInterval(() => {
 	loadingClasslist = $("#Loading").attr("class").split(" ");
 	if (loadingClasslist.length == 4) {
 		$("#Loading").remove();
+		$("body").removeClass("no_scroll_overlay");
 		console.log("Loading Removed");
 		clearInterval(removeLoadingInterval);
 	}

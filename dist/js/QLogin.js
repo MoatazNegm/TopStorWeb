@@ -1,5 +1,3 @@
-var loadingBody =
-	'<div id="Loading" class="card card-primary"><div id="overlay-container" class="overlay box"><img id="pumping" src="dist/img/Quickstor logo.png"/></div></div>';
 $("#Loading").toggle();
 //var ipv4_address = $(".ipaddress");
 //ipv4_address.inputmask();
