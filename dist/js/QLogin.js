@@ -1,5 +1,3 @@
-var loadingBody =
-	'<div id="Loading" class="card card-primary"><div id="overlay-container" class="overlay box"><img id="pumping" src="dist/img/Quickstor logo.png"/></div></div>';
 $("#Loading").toggle();
 //var ipv4_address = $(".ipaddress");
 //ipv4_address.inputmask();
@@ -38,7 +36,8 @@ function postlogin(url, data) {
 			console.log("token", hypetoken);
 			$("#user").prop("disabled", false);
 			$("#pass").prop("disabled", false);
-			$("#Loading").toggle();
+			// $("#Loading").toggle();
+			$("#Loading").addClass("show_or_hide");
 			$("#signin").text("Username or Password is invalid");
 			$("#signin").show();
 		}
@@ -98,3 +97,11 @@ var bg = {
 	error: { class: "bg-danger", loc: "topRight", delay: 10000 },
 	info: { class: "bg-info", loc: "bottomRight", delay: 4000 },
 };
+
+setInterval(() => {
+	loadingClasslist = $("#Loading").attr("class");
+	console.log(loadingClasslist);
+	if (loadingClasslist.length() == 4) {
+		$("#Loading").remove();
+	}
+}, 100);
