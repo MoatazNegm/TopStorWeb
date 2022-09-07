@@ -65,7 +65,7 @@ firstRequestsInterval = setInterval(() => {
 	if (firstRequests == 0) {
 		$("#Loading").addClass("show_or_hide_main");
 		setTimeout(() => {
-			clearInterval(removeLoadingInterval);
+			clearInterval(firstRequestsInterval);
 		}, 20);
 	}
 }, 100);
