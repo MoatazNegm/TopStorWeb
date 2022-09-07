@@ -144,11 +144,6 @@ function initgrouplist() {
 			async: false,
 			type: "GET",
 			dataSrc: "allgroups",
-			success: () => {
-				if (firstRequests == 1) {
-					firstRequests = 0;
-				}
-			},
 		},
 		columns: [
 			{
@@ -227,6 +222,10 @@ function initgrouplist() {
 			},
 		],
 	});
+
+	if (firstRequests == 1) {
+		firstRequests = 0;
+	}
 
 	grouplisttable.buttons().container().appendTo("#groupList_wrapper .col-6:eq(0)");
 	//grouplistrefresh();
