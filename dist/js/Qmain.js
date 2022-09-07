@@ -64,21 +64,23 @@ $.ajax({
 firstRequestsInterval = setInterval(() => {
 	if (firstRequests == 0) {
 		$("#Loading").addClass("show_or_hide_main");
-		clearInterval(removeLoadingInterval);
+		setTimeout(() => {
+			clearInterval(removeLoadingInterval);
+		}, 20);
 	}
 }, 100);
 
 removeLoadingInterval = setInterval(() => {
-	console.log("CLASSES");
 	loadingClasslist = $("#Loading").attr("class");
 	console.log(loadingClasslist);
 	loadingClasslist = $("#Loading").attr("class").split(" ");
 	console.log(loadingClasslist);
 	console.log(loadingClasslist.length);
-	console.log("DONE");
 	if (loadingClasslist.length == 4) {
 		$("#Loading").remove();
-		clearInterval(removeLoadingInterval);
+		setTimeout(() => {
+			clearInterval(removeLoadingInterval);
+		}, 2000);
 	}
 }, 100);
 
