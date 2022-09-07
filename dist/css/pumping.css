@@ -22,6 +22,10 @@ body {
 	z-index: 1;
 }
 
+.no_scroll_overlay {
+	overflow: hidden;
+}
+
 #pumping {
 	height: 100%;
 	animation: 1.5s ease 0s infinite beat;
