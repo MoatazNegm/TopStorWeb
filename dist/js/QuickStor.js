@@ -334,6 +334,9 @@ refreshdash(1);
 firstRequestsInterval = setInterval(() => {
 	if (firstRequests == 0) {
 		$("#Loading").addClass("show_or_hide_other");
+		setTimeout(() => {
+			clearInterval(removeLoadingInterval);
+		}, 20);
 	}
 }, 100);
 
