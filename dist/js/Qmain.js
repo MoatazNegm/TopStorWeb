@@ -64,7 +64,7 @@ $.ajax({
 firstRequestsInterval = setInterval(() => {
 	console.log(firstRequests);
 	if (firstRequests == 0) {
-		$("#Loading").addClass("show_or_hide");
+		$("#Loading").addClass("show_or_hide_main");
 	}
 }, 100);
 

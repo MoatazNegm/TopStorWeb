@@ -37,7 +37,7 @@ function postlogin(url, data) {
 			$("#user").prop("disabled", false);
 			$("#pass").prop("disabled", false);
 			// $("#Loading").toggle();
-			$("#Loading").addClass("show_or_hide");
+			$("#Loading").addClass("show_or_hide_other");
 			$("#signin").text("Username or Password is invalid");
 			$("#signin").show();
 		}
