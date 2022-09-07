@@ -21,7 +21,7 @@ var hypetoken = localStorage.getItem("token");
 if (hypetoken == null || hypetoken == "0") {
 	location.replace("login.html");
 }
-firstRequests = 2;
+mainRequests = 2;
 $.ajax({
 	url: "api/v1/login/test",
 	async: false,
@@ -34,7 +34,7 @@ $.ajax({
 			$("#username").text(isok["response"]);
 			$("#chgpasswd").data("username", isok["response"]);
 		}
-		firstRequests = firstRequests - 1;
+		mainRequests = mainRequests - 1;
 	},
 });
 var puser = localStorage.getItem("user");
@@ -57,16 +57,16 @@ $.ajax({
 				$("." + theauth).show();
 			}
 		});
-		firstRequests = firstRequests - 1;
+		mainRequests = mainRequests - 1;
 	},
 });
 
-firstRequestsInterval = setInterval(() => {
-	if (firstRequests == 0) {
+mainRequestsInterval = setInterval(() => {
+	if (mainRequests == 0) {
 		$("#Loading").addClass("show_or_hide_main");
 		setTimeout(() => {
-			console.log("FirstRequests Done");
-			clearInterval(firstRequestsInterval);
+			console.log("MainRequests Done");
+			clearInterval(mainRequestsInterval);
 		}, 20);
 	}
 }, 100);
@@ -75,6 +75,7 @@ removeLoadingInterval = setInterval(() => {
 	loadingClasslist = $("#Loading").attr("class").split(" ");
 	if (loadingClasslist.length == 4) {
 		$("#Loading").remove();
+		console.log("REMOVED");
 		clearInterval(removeLoadingInterval);
 	}
 }, 100);
