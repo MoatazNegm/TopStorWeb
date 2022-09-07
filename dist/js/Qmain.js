@@ -78,9 +78,7 @@ removeLoadingInterval = setInterval(() => {
 	console.log(loadingClasslist.length);
 	if (loadingClasslist.length == 4) {
 		$("#Loading").remove();
-		setTimeout(() => {
-			clearInterval(removeLoadingInterval);
-		}, 2000);
+		clearInterval(removeLoadingInterval);
 	}
 }, 100);
 
