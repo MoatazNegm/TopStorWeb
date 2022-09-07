@@ -64,7 +64,10 @@ $.ajax({
 firstRequestsInterval = setInterval(() => {
 	if (firstRequests == 0) {
 		$("#Loading").addClass("show_or_hide_main");
-		clearInterval(firstRequestsInterval);
+		setTimeout(() => {
+			console.log("FirstRequests Done");
+			clearInterval(firstRequestsInterval);
+		}, 20);
 	}
 }, 100);
 
