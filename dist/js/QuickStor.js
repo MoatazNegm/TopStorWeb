@@ -333,11 +333,7 @@ function refreshdash(first = 0) {
 refreshdash(1);
 firstRequestsInterval = setInterval(() => {
 	if (firstRequests == 0) {
-		$("#Loading").remove();
-		console.log("removed");
-		$("body").removeClass("no_scroll_overlay");
-		$(".wrapper").removeClass("wrapper-index");
-		clearInterval(firstRequestsInterval);
+		$("#Loading").addClass("show_or_hide");
 	}
 }, 100);
 
