@@ -21,6 +21,7 @@ var hypetoken = localStorage.getItem("token");
 if (hypetoken == null || hypetoken == "0") {
 	location.replace("login.html");
 }
+firstRequests = 2;
 $.ajax({
 	url: "api/v1/login/test",
 	async: false,
@@ -33,7 +34,7 @@ $.ajax({
 			$("#username").text(isok["response"]);
 			$("#chgpasswd").data("username", isok["response"]);
 		}
-		$("#Loading").addClass("show_or_hide");
+		firstRequests = firstRequests - 1;
 	},
 });
 var puser = localStorage.getItem("user");
@@ -56,8 +57,25 @@ $.ajax({
 				$("." + theauth).show();
 			}
 		});
+		firstRequests = firstRequests - 1;
 	},
 });
+
+firstRequestsInterval = setInterval(() => {
+	if (firstRequests == 0) {
+		$("#Loading").addClass("show_or_hide");
+	}
+}, 100);
+
+removeLoadingInterval = setInterval(() => {
+	loadingClasslist = $("#Loading").attr("class");
+	console.log(loadingClasslist);
+	if (loadingClasslist.length() == 4) {
+		$("#Loading").remove();
+	}
+	clearInterval(removeLoadingInterval);
+}, 100);
+
 function updatetasks() {
 	$.each(tasks, function (task, hosts) {
 		$.each(hosts, function (host, status) {

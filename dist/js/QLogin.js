@@ -97,11 +97,3 @@ var bg = {
 	error: { class: "bg-danger", loc: "topRight", delay: 10000 },
 	info: { class: "bg-info", loc: "bottomRight", delay: 4000 },
 };
-
-setInterval(() => {
-	loadingClasslist = $("#Loading").attr("class");
-	console.log(loadingClasslist);
-	if (loadingClasslist.length() == 4) {
-		$("#Loading").remove();
-	}
-}, 100);
