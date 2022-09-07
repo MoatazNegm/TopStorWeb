@@ -145,6 +145,7 @@ function initgrouplist() {
 			type: "GET",
 			dataSrc: "allgroups",
 			success: function () {
+				console.log("hey");
 				if (firstRequests == 1) {
 					firstRequests = firstRequests - 1;
 				}
@@ -234,6 +235,7 @@ function initgrouplist() {
 }
 initgrouplist();
 firstRequestsInterval = setInterval(() => {
+	console.log("again");
 	if (firstRequests == 0) {
 		$("#Loading").addClass("show_or_hide_other");
 		setTimeout(() => {
