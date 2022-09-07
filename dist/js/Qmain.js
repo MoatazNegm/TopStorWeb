@@ -71,10 +71,10 @@ firstRequestsInterval = setInterval(() => {
 removeLoadingInterval = setInterval(() => {
 	loadingClasslist = $("#Loading").attr("class");
 	console.log(loadingClasslist);
-	// if (loadingClasslist.length() == 4) {
-	// 	$("#Loading").remove();
-	// 	clearInterval(removeLoadingInterval);
-	// }
+	if (loadingClasslist.length() == 4) {
+		$("#Loading").remove();
+		clearInterval(removeLoadingInterval);
+	}
 }, 100);
 
 function updatetasks() {

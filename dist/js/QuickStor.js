@@ -333,7 +333,7 @@ function refreshdash(first = 0) {
 refreshdash(1);
 firstRequestsInterval = setInterval(() => {
 	if (firstRequests == 0) {
-		$("#Loading").addClass("show_or_hide");
+		$("#Loading").addClass("show_or_hide_other");
 	}
 }, 100);
 
