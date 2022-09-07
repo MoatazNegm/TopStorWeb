@@ -45,6 +45,7 @@ var myid = "<?php echo $_REQUEST['myid'] ?>";
 myidhash = myid;
 var myname = "<?php echo $_REQUEST['name'] ?>";
 var example1_filter = $("#groupList_filter");
+var firstRequests = 1;
 $("#UnixAddgroup").prop("disabled", true);
 $("#Group").change(function (e) {
 	if ($("#Group").val().length > 2) {
@@ -143,6 +144,11 @@ function initgrouplist() {
 			async: false,
 			type: "GET",
 			dataSrc: "allgroups",
+			success: () => {
+				if (firstRequests == 1) {
+					firstRequests = 0;
+				}
+			},
 		},
 		columns: [
 			{
@@ -227,7 +233,15 @@ function initgrouplist() {
 	groupnotready = 1;
 }
 initgrouplist();
-
+firstRequestsInterval = setInterval(() => {
+	if (firstRequests == 0) {
+		$("#Loading").addClass("show_or_hide_other");
+		setTimeout(() => {
+			console.log("FirstRequests Done");
+			clearInterval(firstRequestsInterval);
+		}, 20);
+	}
+}, 100);
 var ipv4_address = $(".ipaddress");
 ipv4_address.inputmask();
 
