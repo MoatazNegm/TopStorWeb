@@ -45,7 +45,7 @@ var myid = "<?php echo $_REQUEST['myid'] ?>";
 myidhash = myid;
 var myname = "<?php echo $_REQUEST['name'] ?>";
 var example1_filter = $("#UserList_filter");
-
+var firstRequests = 3;
 $("#volsize").prop("disabled", true);
 $("#HomeAddress").prop("disabled", true);
 $("#HomeSubnet").prop("disabled", true);
@@ -294,6 +294,11 @@ function refreshall() {
 				console.log("allgroupchange", allgroups, newallgroups);
 				groupsrefresh();
 			}
+			if (firstRequests > 0) {
+				firstRequests = firstRequests - 1;
+				console.log(firstRequests);
+				console.log("api/v1/users/grouplist");
+			}
 		},
 	});
 	var newallpools = "new0";
@@ -308,6 +313,11 @@ function refreshall() {
 			if (JSON.stringify(allpools) != JSON.stringify(newallpools)) {
 				allpools = newallpools;
 				poolsrefresh();
+			}
+			if (firstRequests > 0) {
+				firstRequests = firstRequests - 1;
+				console.log(firstRequests);
+				console.log("api/v1/pools/poolsinfo");
 			}
 		},
 	});
@@ -324,10 +334,25 @@ function refreshall() {
 				allusers = newallusers;
 				userlistrefresh();
 			}
+			if (firstRequests > 0) {
+				firstRequests = firstRequests - 1;
+				console.log(firstRequests);
+				console.log("api/v1/users/userlist");
+			}
 		},
 	});
 }
 setInterval(refreshall, 2000);
+firstRequestsInterval = setInterval(() => {
+	if (firstRequests == 0) {
+		$("#Loading").addClass("show_or_hide_other");
+		setTimeout(() => {
+			console.log("FirstRequests Done");
+			clearInterval(firstRequestsInterval);
+		}, 20);
+	}
+}, 100);
+
 $(".chgpasswd").click(function (e) {
 	userofpass = $(this).data("username");
 });
