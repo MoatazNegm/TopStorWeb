@@ -51,7 +51,7 @@ var volumelisttable;
 var dirtylog = 1;
 var grpsets = {};
 var firstRequests = 7;
-console.log(window.location.pathname.endsWith("Qcifs.html"));
+if (window.location.pathname.endsWith("Qnfs.html")) firstRequests = 6;
 
 function poolsrefresh(first = 0) {
 	$(".select2.pool").select2({
