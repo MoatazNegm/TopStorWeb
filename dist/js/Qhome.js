@@ -82,7 +82,7 @@ function usersnohomerefresh() {
 		DataSrc: "usersnohome",
 		success: function (data) {
 			newallusersnohome = data["usersnohome"];
-			if (first == 1) firstRequests = firstRequests - 1;
+			firstRequests = firstRequests - 1;
 		},
 	});
 	if (JSON.stringify(allusersnohome) != JSON.stringify(newallusersnohome)) {
@@ -94,7 +94,7 @@ function usersnohomerefresh() {
 	}
 }
 
-function groupsrefresh() {
+function groupsrefresh(first = 0) {
 	$(".select2.multiple").select2({
 		ajax: {
 			url: "api/v1/volumes/grouplist",
@@ -388,7 +388,7 @@ function initVolumelist() {
 	$.fn.dataTable.ext.errMode = "throw";
 	$(".volumes").hide();
 	refreshrows();
-	groupsrefresh();
+	groupsrefresh(1);
 }
 initVolumelist();
 
