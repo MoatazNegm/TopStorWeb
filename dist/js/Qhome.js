@@ -644,5 +644,14 @@ function refreshall(first = 0) {
 }
 propchange();
 refreshall(1);
+firstRequestsInterval = setInterval(() => {
+	if (firstRequests == 0) {
+		$("#Loading").addClass("show_or_hide_other");
+		setTimeout(() => {
+			console.log("FirstRequests Done");
+			clearInterval(firstRequestsInterval);
+		}, 10);
+	}
+}, 100);
 setInterval(refreshall, 10000);
 //setInterval(function(){allvolumes='refresh';}, 5000);
