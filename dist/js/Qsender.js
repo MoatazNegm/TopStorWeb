@@ -58,7 +58,7 @@ var cpartner = "init";
 var dirtylog = 1;
 var allperiods = ["Minutely", "Hourly", "Weekly"];
 //var allperiods = ['Minutely', 'Minutely', 'Minutely'];
-var firstRequests = 1;
+
 function poolsrefresh() {
 	$(".select2.pool").select2({
 		placeholder: "Select a pool",
@@ -68,22 +68,15 @@ function poolsrefresh() {
 			timeout: 3000,
 			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
 			type: "GET",
-			async: true,
+			async: false,
 			success: function (data) {
 				allpools = data;
-				console.log("hey");
-				console.log(data);
-			},
-			error: function (XMLHttpRequest, textStatus, errorThrown) {
-				alert("Status: " + textStatus);
-				alert("Error: " + errorThrown);
 			},
 		},
 	});
 }
-console.log("as");
 poolsrefresh();
-console.log("af");
+
 function volumesrefresh() {
 	var newallvolumes = "";
 	var reload = 0;
