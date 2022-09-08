@@ -77,8 +77,9 @@ function poolsrefresh() {
 		},
 	});
 }
+console.log("as");
 poolsrefresh();
-
+console.log("af");
 function volumesrefresh() {
 	var newallvolumes = "";
 	var reload = 0;
