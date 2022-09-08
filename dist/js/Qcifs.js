@@ -459,6 +459,7 @@ function initVolumelist(first = 0) {
 		],
 	});
 	if (first == 1) {
+		console.log("hey");
 		console.log("api/v1/volumes/" + prot + "/volumesinfo");
 		firstRequests = firstRequests - 1;
 		console.log(firstRequests);
