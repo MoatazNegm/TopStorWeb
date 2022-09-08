@@ -121,7 +121,16 @@ function groupsrefresh(first = 0) {
 
 poolsrefresh(1);
 usersnohomerefresh(1);
-
+firstRequestsInterval = setInterval(() => {
+	console.log(firstRequests);
+	if (firstRequests == 0) {
+		$("#Loading").addClass("show_or_hide_other");
+		setTimeout(() => {
+			console.log("FirstRequests Done");
+			clearInterval(firstRequestsInterval);
+		}, 10);
+	}
+}, 100);
 function refreshrows() {
 	$(".usergroups").each(function () {
 		var thisvolume = $(this);
@@ -737,15 +746,6 @@ function refreshall(first = 0) {
 }
 propchange();
 refreshall(1);
-firstRequestsInterval = setInterval(() => {
-	console.log(firstRequests);
-	if (firstRequests == 0) {
-		$("#Loading").addClass("show_or_hide_other");
-		setTimeout(() => {
-			console.log("FirstRequests Done");
-			clearInterval(firstRequestsInterval);
-		}, 10);
-	}
-}, 100);
+
 setInterval(refreshall, 10000);
 //setInterval(function(){allvolumes='refresh';}, 5000);
