@@ -58,7 +58,7 @@ var cpartner = "init";
 var dirtylog = 1;
 var allperiods = ["Minutely", "Hourly", "Weekly"];
 //var allperiods = ['Minutely', 'Minutely', 'Minutely'];
-
+var firstRequests = 1;
 function poolsrefresh() {
 	$(".select2.pool").select2({
 		placeholder: "Select a pool",
@@ -160,6 +160,7 @@ function getsnaps() {
 		type: "GET",
 		success: function (data) {
 			newsnaps = data;
+			if (firstRequests == 1) firstRequests = 0;
 		},
 	});
 }
@@ -596,6 +597,15 @@ function refreshall() {
 }
 $("table").css("width", "100%");
 setInterval(refreshall, 2000);
+firstRequestsInterval = setInterval(() => {
+	if (firstRequests == 0) {
+		$("#Loading").addClass("show_or_hide_other");
+		setTimeout(() => {
+			console.log("FirstRequests Done");
+			clearInterval(firstRequestsInterval);
+		}, 10);
+	}
+}, 100);
 
 function rollback(csnap) {
 	var apiurl = "api/v1/volumes/snapshots/snaprollback";

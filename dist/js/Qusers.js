@@ -294,11 +294,7 @@ function refreshall() {
 				console.log("allgroupchange", allgroups, newallgroups);
 				groupsrefresh();
 			}
-			if (firstRequests > 0) {
-				firstRequests = firstRequests - 1;
-				console.log(firstRequests);
-				console.log("api/v1/users/grouplist");
-			}
+			if (firstRequests > 0) firstRequests = firstRequests - 1;
 		},
 	});
 	var newallpools = "new0";
@@ -314,11 +310,7 @@ function refreshall() {
 				allpools = newallpools;
 				poolsrefresh();
 			}
-			if (firstRequests > 0) {
-				firstRequests = firstRequests - 1;
-				console.log(firstRequests);
-				console.log("api/v1/pools/poolsinfo");
-			}
+			if (firstRequests > 0) firstRequests = firstRequests - 1;
 		},
 	});
 
@@ -336,8 +328,6 @@ function refreshall() {
 			}
 			if (firstRequests > 0) {
 				firstRequests = firstRequests - 1;
-				console.log(firstRequests);
-				console.log("api/v1/users/userlist");
 			}
 		},
 	});
