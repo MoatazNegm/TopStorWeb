@@ -67,7 +67,7 @@ mainRequestsInterval = setInterval(() => {
 		setTimeout(() => {
 			console.log("MainRequests Done");
 			clearInterval(mainRequestsInterval);
-		}, 20);
+		}, 10);
 	}
 }, 100);
 

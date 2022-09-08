@@ -63,7 +63,7 @@ $("button").click(function (e) {
 		$("#pass").prop("disabled", true);
 		$("#signin").hide();
 		postlogin(urlapi, datapi);
-	}, 20);
+	}, 10);
 });
 
 dirtylog = 1;

@@ -349,7 +349,7 @@ firstRequestsInterval = setInterval(() => {
 		setTimeout(() => {
 			console.log("FirstRequests Done");
 			clearInterval(firstRequestsInterval);
-		}, 20);
+		}, 10);
 	}
 }, 100);
 
