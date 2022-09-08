@@ -68,7 +68,7 @@ function poolsrefresh() {
 			timeout: 3000,
 			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
 			type: "GET",
-			async: false,
+			async: true,
 			success: function (data) {
 				allpools = data;
 				console.log("hey");
