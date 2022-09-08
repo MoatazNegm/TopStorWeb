@@ -381,7 +381,7 @@ function initVolumelist() {
 			},
 		],
 	});
-	if (first == 1) firstRequests = firstRequests - 1;
+	firstRequests = firstRequests - 1;
 	volumelisttable.buttons().container().appendTo("#VolumeList_wrapper .col-6:eq(0)");
 	//volumelistrefresh();
 	volumelisttable.errMode = function (settings, helpPage, message) {};
