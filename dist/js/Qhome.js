@@ -82,8 +82,6 @@ function usersnohomerefresh() {
 		success: function (data) {
 			newallusersnohome = data["usersnohome"];
 			firstRequests = firstRequests - 1;
-			console.log("/api/v1/users/userlist");
-			console.log(firstRequests);
 		},
 	});
 	if (JSON.stringify(allusersnohome) != JSON.stringify(newallusersnohome)) {
@@ -106,11 +104,7 @@ function groupsrefresh(first = 0) {
 			async: false,
 			success: function (data) {
 				allgroups = data;
-				if (first == 1) {
-					firstRequests = firstRequests - 1;
-					console.log("api/v1/volumes/grouplist");
-					console.log(firstRequests);
-				}
+				if (first == 1) firstRequests = firstRequests - 1;
 			},
 		},
 	});
@@ -387,8 +381,6 @@ function initVolumelist() {
 		],
 	});
 	firstRequests = firstRequests - 1;
-	console.log("api/v1/volumes/" + prot + "/volumesinfo");
-	console.log(firstRequests);
 	volumelisttable.buttons().container().appendTo("#VolumeList_wrapper .col-6:eq(0)");
 	//volumelistrefresh();
 	volumelisttable.errMode = function (settings, helpPage, message) {};
@@ -553,11 +545,7 @@ function groupsfn(first) {
 				allgroups = JSON.parse(JSON.stringify(newallgroups));
 				groupsrefresh();
 			}
-			if (first == 1) {
-				firstRequests = firstRequests - 1;
-				console.log("api/v1/volumes/grouplist");
-				console.log(firstRequests);
-			}
+			if (first == 1) firstRequests = firstRequests - 1;
 		},
 	});
 }
@@ -580,11 +568,7 @@ function refreshall(first = 0) {
 				allpools = JSON.parse(JSON.stringify(newallpools));
 				poolsrefresh();
 			}
-			if (first == 1) {
-				firstRequests = firstRequests - 1;
-				console.log("api/v1/volumes/poolsinfo");
-				console.log(firstRequests);
-			}
+			if (first == 1) firstRequests = firstRequests - 1;
 		},
 	});
 	var newallvolumes = "new0";
@@ -601,11 +585,7 @@ function refreshall(first = 0) {
 				allvolumes = JSON.parse(JSON.stringify(newallvolumes));
 				volumelistrefresh();
 			}
-			if (first == 1) {
-				firstRequests = firstRequests - 1;
-				console.log("api/v1/volumes/" + prot + "/volumesinfo");
-				console.log(firstRequests);
-			}
+			if (first == 1) firstRequests = firstRequests - 1;
 		},
 	});
 
@@ -634,11 +614,7 @@ function refreshall(first = 0) {
 					} catch {}
 				}
 			}
-			if (first == 1) {
-				firstRequests = firstRequests - 1;
-				console.log("api/v1/volumes/stats");
-				console.log(firstRequests);
-			}
+			if (first == 1) firstRequests = firstRequests - 1;
 		},
 	});
 }
