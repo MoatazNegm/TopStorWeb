@@ -65,6 +65,7 @@ function poolsrefresh(first = 0) {
 			success: function (data) {
 				allpools = data;
 				if (first == 1) {
+					console.log("/api/v1/volumes/poolsinfo");
 					firstRequests = firstRequests - 1;
 					console.log(firstRequests);
 				}
@@ -87,6 +88,7 @@ function usersnohomerefresh(first = 0) {
 		success: function (data) {
 			newallusersnohome = data["usersnohome"];
 			if (first == 1) {
+				console.log("/api/v1/users/userlist");
 				firstRequests = firstRequests - 1;
 				console.log(firstRequests);
 			}
@@ -113,6 +115,7 @@ function groupsrefresh(first = 0) {
 			success: function (data) {
 				allgroups = data;
 				if (first == 1) {
+					console.log("api/v1/volumes/grouplist");
 					firstRequests = firstRequests - 1;
 					console.log(firstRequests);
 				}
@@ -456,6 +459,7 @@ function initVolumelist(first = 0) {
 		],
 	});
 	if (first == 1) {
+		console.log("api/v1/volumes/" + prot + "/volumesinfo");
 		firstRequests = firstRequests - 1;
 		console.log(firstRequests);
 	}
@@ -643,6 +647,7 @@ function groupsfn(first = 0) {
 				groupsrefresh();
 			}
 			if (first == 1) {
+				console.log("api/v1/volumes/grouplist");
 				firstRequests = firstRequests - 1;
 				console.log(firstRequests);
 			}
@@ -665,7 +670,7 @@ $("#volname").focusout(function () {
 });
 
 function refreshall(first = 0) {
-	groupsfn();
+	groupsfn(1);
 	updatetasks();
 	var newallpools = "new0";
 	$(".odd").css("background-color", "rgba(41,57,198,.1)");
@@ -683,6 +688,7 @@ function refreshall(first = 0) {
 				poolsrefresh();
 			}
 			if (first == 1) {
+				console.log(api / v1 / volumes / poolsinfo);
 				firstRequests = firstRequests - 1;
 				console.log(firstRequests);
 			}
@@ -704,6 +710,7 @@ function refreshall(first = 0) {
 				volumelistrefresh();
 			}
 			if (first == 1) {
+				console.log("api/v1/volumes/" + prot + "/volumesinfo");
 				firstRequests = firstRequests - 1;
 				console.log(firstRequests);
 			}
@@ -736,6 +743,7 @@ function refreshall(first = 0) {
 				}
 			}
 			if (first == 1) {
+				console.log("api/v1/volumes/stats");
 				firstRequests = firstRequests - 1;
 				console.log(firstRequests);
 			}
