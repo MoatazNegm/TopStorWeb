@@ -50,8 +50,8 @@ var modaltill = idletill - 120000;
 var volumelisttable;
 var dirtylog = 1;
 var grpsets = {};
-var firstRequests = 2;
-if (window.location.pathname.endsWith("Qnfs.html")) firstRequests = 6;
+var firstRequests = 7;
+if (window.location.pathname.endsWith("Qnfs.html")) firstRequests = 2;
 
 function poolsrefresh(first = 0) {
 	$(".select2.pool").select2({
