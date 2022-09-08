@@ -49,7 +49,7 @@ var changedprop = {};
 var modaltill = idletill - 120000;
 var volumelisttable;
 var dirtylog = 1;
-var firstRequests = 7;
+var firstRequests = 8;
 
 function poolsrefresh() {
 	$(".select2.pool").select2({
@@ -63,7 +63,6 @@ function poolsrefresh() {
 			async: false,
 			success: function (data) {
 				allpools = data;
-				console.log("asd");
 			},
 		},
 	});
