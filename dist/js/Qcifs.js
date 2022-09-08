@@ -280,7 +280,7 @@ function propchange() {
 }
 
 function initVolumelist(first = 0) {
-	groupsfn(1);
+	groupsfn(first);
 	volumelisttable = $("#VolumeList").DataTable({
 		order: [[1, "desc"]],
 		ajax: {
@@ -458,6 +458,7 @@ function initVolumelist(first = 0) {
 			},
 		],
 	});
+	console.log(first);
 	if (first == 1) {
 		console.log("hey");
 		console.log("api/v1/volumes/" + prot + "/volumesinfo");
@@ -473,7 +474,7 @@ function initVolumelist(first = 0) {
 	groupsrefresh();
 }
 
-initVolumelist();
+initVolumelist(1);
 
 function selbtnclickeduser(ths) {
 	//$.post("./pump.php", { req:"UnixChangeUser", name:x.id.replace('btnsel',''), passwd:'groups'+$("#"+x.id.replace('btn','')).val()+" "+myname });
