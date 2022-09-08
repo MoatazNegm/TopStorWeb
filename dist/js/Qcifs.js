@@ -664,7 +664,7 @@ $("#volname").focusout(function () {
 	$("#workname").val("cifs-" + $("#volname").val());
 });
 
-function refreshall() {
+function refreshall(first = 0) {
 	groupsfn();
 	updatetasks();
 	var newallpools = "new0";
