@@ -620,6 +620,6 @@ function refreshall(first = 0) {
 	});
 }
 propchange();
-refreshall();
+refreshall(1);
 setInterval(refreshall, 10000);
 //setInterval(function(){allvolumes='refresh';}, 5000);
