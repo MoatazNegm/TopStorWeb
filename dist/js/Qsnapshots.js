@@ -56,6 +56,7 @@ var cpool = "init";
 var cvolume = "init";
 var dirtylog = 1;
 var allperiods = ["Minutely", "Hourly", "Weekly"];
+var firstRequests = 1;
 //var allperiods = ['Minutely', 'Minutely', 'Minutely'];
 
 function poolsrefresh() {
