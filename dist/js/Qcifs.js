@@ -738,6 +738,7 @@ function refreshall(first = 0) {
 propchange();
 refreshall(1);
 firstRequestsInterval = setInterval(() => {
+	console.log(firstRequests);
 	if (firstRequests == 0) {
 		$("#Loading").addClass("show_or_hide_other");
 		setTimeout(() => {
