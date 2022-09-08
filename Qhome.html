@@ -25,6 +25,7 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <link rel="stylesheet" href="plugins/gfont/QuickStor.css">
+  <link rel="stylesheet" href="dist/css/pumping.css">
 
 </head>
 <!--
@@ -36,8 +37,13 @@
   * sidebar-collapse
   * sidebar-mini
 -->
-<body class="hold-transition sidebar-mini nadaclas layout-fixed">
-<div id="Nadadiv" class="wrapper">
+<body class="hold-transition sidebar-mini nadaclas layout-fixed no_scroll_overlay">
+  <div id="Loading" class="card card-primary">
+    <div id="overlay-container" class="overlay box">
+      <img id="pumping" src="dist/img/Quickstor icon.png"/>
+    </div>
+  </div>
+<div id="Nadadiv" class="wrapper wrapper-index">
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light" style="background-color: #F1F2FE; border:0px;">
     <!-- Left navbar links -->
