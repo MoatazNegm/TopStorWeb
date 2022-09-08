@@ -670,7 +670,7 @@ $("#volname").focusout(function () {
 });
 
 function refreshall(first = 0) {
-	groupsfn(1);
+	groupsfn(first);
 	updatetasks();
 	var newallpools = "new0";
 	$(".odd").css("background-color", "rgba(41,57,198,.1)");
