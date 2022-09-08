@@ -230,7 +230,7 @@ function propchange() {
 }
 
 function initVolumelist() {
-	groupsfn();
+	groupsfn(1);
 	volumelisttable = $("#VolumeList").DataTable({
 		order: [[1, "desc"]],
 		ajax: {
@@ -531,7 +531,7 @@ function initcharts() {
 }
 //initcharts()
 
-function groupsfn() {
+function groupsfn(first) {
 	var newallgroups = "new0";
 	$.ajax({
 		url: "api/v1/volumes/grouplist",
