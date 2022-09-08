@@ -688,7 +688,7 @@ function refreshall(first = 0) {
 				poolsrefresh();
 			}
 			if (first == 1) {
-				console.log(api / v1 / volumes / poolsinfo);
+				console.log("api/v1/volumes/poolsinfo");
 				firstRequests = firstRequests - 1;
 				console.log(firstRequests);
 			}
