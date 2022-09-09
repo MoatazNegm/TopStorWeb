@@ -608,6 +608,9 @@ $("#Weeklycreate").click(function (e) {
 	var every = $("#Sday").val();
 	var keep = $("#KeepWeekly").val();
 	var stime = $("#Stime").val();
+	console.log(every);
+	console.log(stime);
+	console.log(keep);
 	var apiurl = "api/v1/volumes/snapshots/create";
 	var apidata = {
 		snapsel: "Weekly",
