@@ -376,6 +376,7 @@ function initalltables() {
 				{
 					data: null,
 					render: function (data, type, row) {
+						print(row);
 						return (
 							'<a class="snapdelegt" val="username" href="javascript:aperioddel(\'' +
 							row.id +
