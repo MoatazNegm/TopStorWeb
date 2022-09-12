@@ -154,7 +154,7 @@ function initalltables() {
 				render: function (data, type, row) {
 					var date = new Date(row.date);
 					var newDate =
-						date.getDay() + "-" + monthNames[date.getMonth()] + "-" + date.getFullYear();
+						date.getDate() + "-" + monthNames[date.getMonth()] + "-" + date.getFullYear();
 					row.date = newDate;
 					return row.date;
 				},
@@ -224,7 +224,7 @@ function initalltables() {
 				render: function (data, type, row) {
 					var date = new Date(row.date);
 					var newDate =
-						date.getDay() + "-" + monthNames[date.getMonth()] + "-" + date.getFullYear();
+						date.getDate() + "-" + monthNames[date.getMonth()] + "-" + date.getFullYear();
 					row.date = newDate;
 					return row.date;
 				},
