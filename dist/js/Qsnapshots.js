@@ -167,8 +167,6 @@ function initalltables() {
 			{
 				data: null,
 				render: function (data, type, row) {
-					console.log(row);
-					console.log(row.volume.split("_")[0]);
 					return row.volume.split("_")[0];
 				},
 			},
@@ -433,6 +431,7 @@ function initalltables() {
 			.container()
 			.appendTo("#" + t + "periods_wrapper .col-6:eq(0)");
 		$.each(allperiods, function (e, t) {
+			console.log(t);
 			allpsnapstable[t] = $("#" + t + "table").DataTable({
 				order: [
 					[0, "desc"],
