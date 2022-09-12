@@ -115,7 +115,7 @@ body {
 }
 
 .bootstrap-datetimepicker-widget,
-.timepicker-picker .table-condensed:nth-child(2) {
+.timepicker-picker .table-condensed:nth-child(2) td {
 	display: flex;
 	justify-content: center;
 	align-items: center;
