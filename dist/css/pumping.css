@@ -115,5 +115,5 @@ body {
 }
 
 .bootstrap-datetimepicker-widget {
-	inset: auto;
+	inset: auto !important;
 }
