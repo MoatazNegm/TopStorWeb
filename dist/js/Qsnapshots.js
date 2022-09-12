@@ -58,7 +58,9 @@ var dirtylog = 1;
 var allperiods = ["Minutely", "Hourly", "Weekly"];
 var firstRequests = 1;
 //var allperiods = ['Minutely', 'Minutely', 'Minutely'];
-
+$("#timepicker").datetimepicker({
+	format: "HH:mm",
+});
 function poolsrefresh() {
 	$(".select2.pool").select2({
 		placeholder: "Select a pool",
