@@ -152,15 +152,10 @@ function initalltables() {
 			{
 				data: null,
 				render: function (data, type, row) {
-					console.log(row);
-					console.log(row.date);
 					var date = new Date(row.date);
-					console.log("New Date: " + date);
 					var newDate =
 						date.getDay() + "-" + monthNames[date.getMonth()] + "-" + date.getFullYear();
-					console.log(newDate);
 					row.date = newDate;
-					console.log(row.date);
 					return row.date;
 				},
 			},
@@ -224,7 +219,16 @@ function initalltables() {
 		],
 		data: allsnaps["allsnaps"],
 		columns: [
-			{ data: "date" },
+			{
+				data: null,
+				render: function (data, type, row) {
+					var date = new Date(row.date);
+					var newDate =
+						date.getDay() + "-" + monthNames[date.getMonth()] + "-" + date.getFullYear();
+					row.date = newDate;
+					return row.date;
+				},
+			},
 			{ data: "time" },
 			{
 				data: "name",
