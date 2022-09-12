@@ -155,9 +155,10 @@ function initalltables() {
 					console.log(row);
 					console.log(row.date);
 					var date = new Date(row.date);
-					console.log("New Date: " + newDate);
+					console.log("New Date: " + date);
 					var newDate =
 						date.getDay() + "-" + monthNames[date.getMonth()] + "-" + date.getFullYear();
+					console.log(newDate);
 					row.date = newDate;
 					console.log(row.date);
 					return row.date;
