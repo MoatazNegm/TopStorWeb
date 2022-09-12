@@ -118,6 +118,13 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin: 0;
+	padding: 0;
+	min-width: 7.5rem;
+}
+
+.bootstrap-datetimepicker-widget .list-unstyled {
+	margin: 0;
 }
 
 .timepicker .timepicker-picker .table-condensed tr:nth-child(2) td:nth-child(odd) {
