@@ -141,6 +141,13 @@ const monthNames = [
 	"Nov",
 	"Dec",
 ];
+
+function fixDate(row) {
+	var date = new Date(row.date);
+	var newDate = date.getDate() + "-" + monthNames[date.getMonth()] + "-" + date.getFullYear();
+	row.date = newDate;
+	return row.date;
+}
 function initalltables() {
 	onceinittable = $("#Oncetable").DataTable({
 		order: [
@@ -152,11 +159,9 @@ function initalltables() {
 			{
 				data: null,
 				render: function (data, type, row) {
-					var date = new Date(row.date);
-					var newDate =
-						date.getDate() + "-" + monthNames[date.getMonth()] + "-" + date.getFullYear();
-					row.date = newDate;
-					return row.date;
+					console.log(row);
+					console.log(fixDate(row));
+					return fixDate(row);
 				},
 			},
 			{ data: "time" },
