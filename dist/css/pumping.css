@@ -114,6 +114,9 @@ body {
 	width: auto !important;
 }
 
-.bootstrap-datetimepicker-widget {
-	inset: auto !important;
+.bootstrap-datetimepicker-widget,
+.bootstrap-datetimepicker-widget td {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
