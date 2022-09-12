@@ -109,3 +109,7 @@ body {
 #Minutelytable th {
 	width: auto !important;
 }
+
+#Hourlytable th {
+	width: auto !important;
+}
