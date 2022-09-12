@@ -177,7 +177,6 @@ function initalltables() {
 			{
 				data: null,
 				render: function (data, type, row) {
-					console.log("row", row);
 					return (
 						'<a class="snapdelegt" val="username" href="javascript:rollback(\'' +
 						row.name +
