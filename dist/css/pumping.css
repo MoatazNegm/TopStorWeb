@@ -120,7 +120,7 @@ body {
 	align-items: center;
 }
 
-.timepicker .timepicker-picker .table-condensed tr:nth-child(2) td {
+.timepicker .timepicker-picker .table-condensed tr:nth-child(2) td:nth-child(odd) {
 	display: flex;
 	justify-content: center;
 	align-items: center;
