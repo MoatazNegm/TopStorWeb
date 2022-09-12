@@ -431,7 +431,6 @@ function initalltables() {
 			.container()
 			.appendTo("#" + t + "periods_wrapper .col-6:eq(0)");
 		$.each(allperiods, function (e, t) {
-			console.log(t);
 			allpsnapstable[t] = $("#" + t + "table").DataTable({
 				order: [
 					[0, "desc"],
