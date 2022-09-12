@@ -159,8 +159,6 @@ function initalltables() {
 			{
 				data: null,
 				render: function (data, type, row) {
-					console.log(row);
-					console.log(fixDate(row));
 					return fixDate(row);
 				},
 			},
@@ -227,11 +225,7 @@ function initalltables() {
 			{
 				data: null,
 				render: function (data, type, row) {
-					var date = new Date(row.date);
-					var newDate =
-						date.getDate() + "-" + monthNames[date.getMonth()] + "-" + date.getFullYear();
-					row.date = newDate;
-					return row.date;
+					return fixDate(row);
 				},
 			},
 			{ data: "time" },
