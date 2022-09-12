@@ -127,7 +127,20 @@ function getsnaps() {
 	});
 }
 //allsnaps = getsnaps();
-
+const monthNames = [
+	"Jan",
+	"Feb",
+	"Mar",
+	"Apr",
+	"May",
+	"Jun",
+	"Jul",
+	"Aug",
+	"Sep",
+	"Oct",
+	"Nov",
+	"Dec",
+];
 function initalltables() {
 	onceinittable = $("#Oncetable").DataTable({
 		order: [
@@ -136,7 +149,20 @@ function initalltables() {
 		],
 		data: allsnaps["Once"],
 		columns: [
-			{ data: "date" },
+			{
+				data: null,
+				render: function (data, type, row) {
+					console.log(row);
+					console.log(row.date);
+					var date = new Date(row.date);
+					console.log("New Date: " + newDate);
+					var newDate =
+						date.getDay() + "-" + monthNames[date.getMonth()] + "-" + date.getFullYear();
+					row.date = newDate;
+					console.log(row.date);
+					return row.date;
+				},
+			},
 			{ data: "time" },
 			{ data: "name" },
 			{
