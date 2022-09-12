@@ -659,8 +659,6 @@ $("#Weeklycreate").click(function (e) {
 $("#Stime").focusout(function (e) {
 	if ($("#Stime").val() == "") {
 		$("#Stime").val("11:50 PM");
-	} else {
-		console.log($("#Stime").val());
 	}
 });
 
