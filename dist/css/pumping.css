@@ -113,3 +113,7 @@ body {
 #Hourlytable th {
 	width: auto !important;
 }
+
+.bootstrap-datetimepicker-widget {
+	inset: auto;
+}
