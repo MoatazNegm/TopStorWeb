@@ -551,6 +551,10 @@ $("#oncecreate").click(function (e) {
 	var owner = allpools["results"][$("#Pool2").val()]["owner"];
 	var thevol = allvolumes[$("#volname").val()]["fullname"];
 	var thesnap = $("#Oncename").val();
+	console.log(thepool);
+	console.log(owner);
+	console.log(thevol);
+	console.log(thesnap);
 
 	var apiurl = "api/v1/volumes/snapshots/create";
 	var apidata = { snapsel: "Once", pool: thepool, volume: thevol, name: thesnap, owner: owner };
