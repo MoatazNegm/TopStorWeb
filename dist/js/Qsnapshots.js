@@ -129,20 +129,6 @@ function getsnaps() {
 	});
 }
 //allsnaps = getsnaps();
-const monthNames = [
-	"Jan",
-	"Feb",
-	"Mar",
-	"Apr",
-	"May",
-	"Jun",
-	"Jul",
-	"Aug",
-	"Sep",
-	"Oct",
-	"Nov",
-	"Dec",
-];
 
 function initalltables() {
 	onceinittable = $("#Oncetable").DataTable({

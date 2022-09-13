@@ -312,6 +312,21 @@ $(".chpass").focusout(function (e) {
 	}
 });
 
+const monthNames = [
+	"Jan",
+	"Feb",
+	"Mar",
+	"Apr",
+	"May",
+	"Jun",
+	"Jul",
+	"Aug",
+	"Sep",
+	"Oct",
+	"Nov",
+	"Dec",
+];
+
 function fixDate(row) {
 	var date = new Date(row.date);
 	var newDate = date.getDate() + "-" + monthNames[date.getMonth()] + "-" + date.getFullYear();
