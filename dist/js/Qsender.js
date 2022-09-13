@@ -475,6 +475,7 @@ function initalltables() {
 			.buttons()
 			.container()
 			.appendTo("#" + t + "periods_wrapper .col-6:eq(0)");
+		console.log(alls);
 		$.each(allperiods, function (e, t) {
 			alls = [];
 			$.each(allsnaps["allsnaps"], function (e, tt) {
