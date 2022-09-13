@@ -311,3 +311,10 @@ $(".chpass").focusout(function (e) {
 		$("#passwrd").prop("disabled", false);
 	}
 });
+
+function fixDate(row) {
+	var date = new Date(row.date);
+	var newDate = date.getDate() + "-" + monthNames[date.getMonth()] + "-" + date.getFullYear();
+	row.date = newDate;
+	return row.date;
+}
