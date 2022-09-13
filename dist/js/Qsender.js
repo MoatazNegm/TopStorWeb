@@ -475,9 +475,29 @@ function initalltables() {
 			.buttons()
 			.container()
 			.appendTo("#" + t + "periods_wrapper .col-6:eq(0)");
-		console.log(alls);
 		$.each(allperiods, function (e, t) {
-			alls = [];
+			alls = [
+				{
+					creation: "Tue Sep 13 2022",
+					date: "13-September-2022",
+					fullname: "pdhcp2329314757/Vol_3_1430225367@Snap_04.1663023907",
+					host: "dhcp18762",
+					name: "Snap_04.1663023907",
+					partnerR: "-",
+					partnerS: "-",
+					pool: "pdhcp2329314757",
+					prot: "CIFS",
+					quota: "-",
+					refcompressratio: "1.00x",
+					referenced: "140K",
+					snaptype: "Once",
+					statusmount: "active",
+					time: "2:05",
+					used: 0,
+					usedbysnapshots: "-",
+					volume: "Vol_3_1430225367",
+				},
+			];
 			$.each(allsnaps["allsnaps"], function (e, tt) {
 				if (tt["partnerR"].length > 2) {
 					alls.push(tt);
