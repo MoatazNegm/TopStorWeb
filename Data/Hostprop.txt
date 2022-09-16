@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"hostname":"dhcp17797","name":"dhcp17797","addr":"10.11.11.244","addrsubnet":"24","rout":"10.0.2.3","dns":"10.11.11.253","mgmtip":"192.168.43.7","mgmtsubnet":"24","ntp":"0.pool.ntp.org","tz":"Kuw%(GMT+03!00)_Moscow^_St._Petersburg^_Volgograd","gw":"10.0.2.3","dnsname":"10.11.11.253","dnssearch":"zenty.localdomain","configured":"yes"}
+=======
+{"hostname":"dhcp11170","name":"dhcp11170","addr":"10.11.11.244","addrsubnet":"24","rout":"10.11.11.253","dns":"-1","mgmtip":"192.168.43.7","mgmtsubnet":"24","ntp":"0.pool.ntp.org","tz":"Kuw%(GMT+03!00)_Moscow^_St._Petersburg^_Volgograd","gw":"10.11.11.253","dnsname":"-1","dnssearch":"-1","configured":"yes"}
+>>>>>>> c8cedda20f36527ab3844613d2ccd67f3114dd5f

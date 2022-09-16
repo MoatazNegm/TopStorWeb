@@ -24,6 +24,7 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <link rel="stylesheet" href="plugins/gfont/QuickStor.css">
+  <link rel="stylesheet" href="dist/css/pumping.css">
 
 </head>
 <!--
@@ -35,8 +36,13 @@
   * sidebar-collapse
   * sidebar-mini
 -->
-<body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
+<body class="hold-transition sidebar-mini layout-fixed no_scroll_overlay">
+  <div id="Loading" class="card card-primary">
+    <div id="overlay-container" class="overlay box">
+      <img id="pumping" src="dist/img/Quickstor icon.png"/>
+    </div>
+  </div>
+<div class="wrapper wrapper-index">
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light" style="background-color: #F1F2FE; border:0px;">
     <!-- Left navbar links -->
@@ -442,16 +448,16 @@
                               <table id="Minutelytable" class="table table-sm table-hover example1  table-striped">
                                 <thead  style="background-color:#2939C6; color: white;">
                                 <tr>
-                                  <th style="width:14%;">date</th>
-                                  <th style="width:5%;">time</th>
-                                  <th style="width:15%;">name</th>
-                                  <th style="width:10%;">volume</th>
-                                  <th style="width:10%;">receiver</th>
-                                  <th style="width:10%;">sender</th>
-                                  <th style="width:5%;">size(MB)</th>
-                                  <th style="width:5%;">compress%</th>
-                                  <th style="width:5%;"> Rollback</th>
-                                  <th style="width:5%;">Delete</th>
+                                  <th>Date</th>
+                                  <th>Time</th>
+                                  <th>Name</th>
+                                  <th>Volume</th>
+                                  <th>Receiver</th>
+                                  <th>Sender</th>
+                                  <th>Size(MB)</th>
+                                  <th>Compress%</th>
+                                  <th>Rollback</th>
+                                  <th>Delete</th>
                                 </tr>
                                 </thead>
                                 <tbody style="font-size: 90%; color:#2939C6;">
@@ -516,15 +522,15 @@
                               <table id="Hourlytable" class="table table-sm table-hover table-striped">
                                 <thead style="background-color:#2939C6; color: white;">
    
-                                  <th style="width:14%;">date</th>
-                                  <th style="width:5%;">time</th>
-                                  <th style="width:15%;">name</th>
-                                  <th style="width:10%;">volume</th>
-                                  <th style="width:10%;">receiver</th>
-                                  <th style="width:10%;">sender</th>
-                                  <th style="width:5%;">size(MB)</th>
-                                  <th style="width:5%;">compress%</th>
-                                  <th style="width:5%;"> Rollback</th>
+                                  <th style="width:14%;">Date</th>
+                                  <th style="width:5%;">Time</th>
+                                  <th style="width:15%;">Name</th>
+                                  <th style="width:10%;">Volume</th>
+                                  <th style="width:10%;">Receiver</th>
+                                  <th style="width:10%;">Sender</th>
+                                  <th style="width:5%;">Size(MB)</th>
+                                  <th style="width:5%;">Compress%</th>
+                                  <th style="width:5%;">Rollback</th>
                                   <th style="width:5%;">Delete</th>
                               
                                 </thead>

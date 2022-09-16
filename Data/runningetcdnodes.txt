@@ -1,5 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 {"header":{"cluster_id":4784203300614245395,"member_id":9599981840191834464,"raft_term":67},"members":[{"ID":9599981840191834464,"name":"dhcp17797","peerURLs":["http://10.11.11.244:2380"],"clientURLs":["http://10.11.11.244:2379"]}]}
 =======
 {"header":{"cluster_id":4784203300614245395,"member_id":9599981840191834464,"raft_term":22},"members":[{"ID":9599981840191834464,"name":"dhcp14895","peerURLs":["http://10.11.11.244:2380"],"clientURLs":["http://10.11.11.241:2379"]}]}
 >>>>>>> 74139a88c078333e9b68570138529c4fc238b22f
+=======
+{"header":{"cluster_id":4784203300614245395,"member_id":9599981840191834464,"raft_term":3},"members":[{"ID":9599981840191834464,"name":"dhcp11170","peerURLs":["http://10.11.11.244:2380"],"clientURLs":["http://10.11.11.244:2379"]}]}
+>>>>>>> c8cedda20f36527ab3844613d2ccd67f3114dd5f
