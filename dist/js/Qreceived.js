@@ -97,6 +97,7 @@ function partnersrefresh() {
 		data: newallpartners,
 	});
 }
+partnersrefresh();
 
 function getsnaps() {
 	$.ajax({
@@ -110,6 +111,7 @@ function getsnaps() {
 		},
 	});
 }
+
 function snapsreferesh() {
 	getsnaps();
 	if (JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
@@ -120,7 +122,23 @@ function snapsreferesh() {
 	}
 }
 function initalltables() {
-	snapsreferesh();
+	$.ajax({
+		url: "api/v1/volumes/snapshots/snapshotsinfo",
+		//timeout: 3000,
+		async: false,
+		type: "GET",
+		success: function (data) {
+			newsnaps = data;
+			// if (firstRequests == 1) firstRequests = 0;
+		},
+	});
+	if (JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
+		allsnaps = JSON.parse(JSON.stringify(newsnaps));
+		allpsnapstable["allsnaps"].clear();
+		allpsnapstable["allsnaps"].rows.add(allsnaps["allsnaps"]);
+		allpsnapstable["allsnaps"].draw();
+	}
+
 	allpsnapstable["allsnaps"] = $("#allsnapstable").DataTable({
 		order: [
 			[0, "desc"],
