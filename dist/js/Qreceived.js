@@ -122,6 +122,7 @@ function snapsreferesh() {
 	}
 }
 function initalltables() {
+	getsnaps();
 	allpsnapstable["allsnaps"] = $("#allsnapstable").DataTable({
 		order: [
 			[0, "desc"],
@@ -191,7 +192,13 @@ function initalltables() {
 		],
 	});
 	allpsnapstable["allsnaps"].buttons().container().appendTo("#allsnapstable_wrapper .col-6:eq(0)");
-	snapsreferesh();
+	if (JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
+		allsnaps = JSON.parse(JSON.stringify(newsnaps));
+		allpsnapstable["allsnaps"].clear();
+		allpsnapstable["allsnaps"].rows.add(allsnaps["allsnaps"]);
+		allpsnapstable["allsnaps"].draw();
+	}
+	console.log("done");
 }
 initalltables();
 
