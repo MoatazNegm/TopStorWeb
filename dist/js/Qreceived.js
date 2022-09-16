@@ -453,6 +453,7 @@ setInterval(refreshall, 2000);
 $("#Pool2").change(function (e) {
 	console.log($("#Pool2 :selected").text());
 	volumesrefresh();
+	console.log(newallvolumes);
 });
 
 $("#volname").change(function (e) {
