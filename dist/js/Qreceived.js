@@ -192,6 +192,7 @@ function initalltables() {
 		],
 	});
 	allpsnapstable["allsnaps"].buttons().container().appendTo("#allsnapstable_wrapper .col-6:eq(0)");
+	console.log(allsnaps);
 	if (JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
 		allsnaps = JSON.parse(JSON.stringify(newsnaps));
 		allpsnapstable["allsnaps"].clear();
@@ -199,6 +200,7 @@ function initalltables() {
 		allpsnapstable["allsnaps"].draw();
 	}
 	console.log("done");
+	console.log(allsnaps);
 }
 initalltables();
 
