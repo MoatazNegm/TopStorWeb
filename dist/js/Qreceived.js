@@ -130,6 +130,18 @@ function partnersrefresh() {
 			newallpartners = data;
 		},
 	});
+	if (JSON.stringify(allvolumes) != JSON.stringify(newallpartners)) {
+		allpartners = JSON.parse(JSON.stringify(newallpartners));
+		newallpartners = [];
+		$.each(allpartners["allpartners"], function (e, t) {
+			if (t["type"].includes("ender") > 0) {
+				t["text"] = t["alias"].split("_")[0];
+				t["id"] = e;
+				newallpartners.push(t);
+			}
+		});
+		reload = 1;
+	}
 	$(".select2.Sender").select2({
 		placeholder: "Select a partner",
 		data: newallpartners,
