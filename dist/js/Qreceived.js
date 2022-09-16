@@ -1,5 +1,6 @@
 var allpools = "init";
 var allvolumes = "init";
+var allpartners = "init";
 var cpool = "init";
 function poolsrefresh() {
 	$(".select2.pool").select2({
@@ -57,6 +58,47 @@ function volumesrefresh() {
 	});
 }
 
+function partnersrefresh() {
+	var newallpartners = "";
+	var reload = 0;
+	if ($("#volname").val() == "") {
+		newallpartners = "";
+	} else {
+		$.ajax({
+			url: "/api/v1/partners/partnerlist",
+			dataType: "json",
+			timeout: 3000,
+			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+			type: "GET",
+			async: false,
+			success: function (data) {
+				newallpartners = data;
+			},
+		});
+		if (JSON.stringify(allvolumes) != JSON.stringify(newallpartners)) {
+			allpartners = JSON.parse(JSON.stringify(newallpartners));
+			newallpartners = [];
+			$.each(allpartners["allpartners"], function (e, t) {
+				if (t["type"].includes("ceiver") > 0) {
+					t["text"] = t["alias"].split("_")[0];
+					t["id"] = e;
+					newallpartners.push(t);
+				}
+			});
+			reload = 1;
+		}
+	}
+	console.log("newall", newallpartners);
+	$(".select2.Sender").select2({
+		placeholder: "Select a partner",
+		data: newallpartners,
+	});
+}
+
 $("#Pool2").change(function (e) {
 	volumesrefresh();
+});
+
+$("#volname").change(function (e) {
+	partnersrefresh();
 });
