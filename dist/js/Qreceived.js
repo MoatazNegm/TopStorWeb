@@ -122,7 +122,7 @@ function snapsreferesh() {
 	}
 }
 function initalltables() {
-	getsnaps();
+	// getsnaps();
 	allpsnapstable["allsnaps"] = $("#allsnapstable").DataTable({
 		order: [
 			[0, "desc"],
@@ -192,6 +192,16 @@ function initalltables() {
 		],
 	});
 	allpsnapstable["allsnaps"].buttons().container().appendTo("#allsnapstable_wrapper .col-6:eq(0)");
+	$.ajax({
+		url: "api/v1/volumes/snapshots/snapshotsinfo",
+		//timeout: 3000,
+		async: false,
+		type: "GET",
+		success: function (data) {
+			newsnaps = data;
+			// if (firstRequests == 1) firstRequests = 0;
+		},
+	});
 	console.log(newsnaps);
 	if (JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
 		allsnaps = JSON.parse(JSON.stringify(newsnaps));
