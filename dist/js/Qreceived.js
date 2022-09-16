@@ -2,6 +2,7 @@ var allpools = "init";
 var allvolumes = "init";
 var allpartners = "init";
 var allsnaps = "init";
+var allpsnapstable = {};
 var cpool = "init";
 
 function poolsrefresh() {
