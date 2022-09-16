@@ -142,6 +142,12 @@ function partnersrefresh() {
 		});
 		reload = 1;
 	}
+	newallpartners.append({
+		alias: "Clu03_Sender",
+		ip: "10.11.11.253",
+		port: "2400",
+		type: "Sender",
+	});
 	$(".select2.Sender").select2({
 		placeholder: "Select a partner",
 		data: newallpartners,
@@ -171,6 +177,7 @@ function snapsreferesh() {
 		allpsnapstable["allsnaps"].draw();
 	}
 }
+
 function initalltables() {
 	allpsnapstable["allsnaps"] = $("#allsnapstable").DataTable({
 		order: [
@@ -320,8 +327,6 @@ function initalltables() {
 			newsnaps = data;
 		},
 	});
-
-	console.log(filterstable["allsnaps"].columns());
 	if (JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
 		allsnaps = JSON.parse(JSON.stringify(newsnaps));
 		allpsnapstable["allsnaps"].clear();
