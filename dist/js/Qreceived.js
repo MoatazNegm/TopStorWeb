@@ -40,6 +40,7 @@ function volumesrefresh() {
 			async: false,
 			success: function (data) {
 				newallvolumes = data;
+				console.log(newallvolumes);
 			},
 		});
 		if (JSON.stringify(allvolumes) != JSON.stringify(newallvolumes)) {
@@ -194,7 +195,7 @@ function getsnaps() {
 				{
 					creation: "Wed Sep 14 2022",
 					date: "14-September-2022",
-					fullname: "pdhcp3329314757/Vol_3_1430225367@Snap_05.1663023907",
+					fullname: "pdhcp3329314757/Vol_4_1430225367@Snap_05.1663023907",
 					host: "dhcp18762",
 					name: "Snap_05.1663023907",
 					partnerR: "-",
@@ -211,8 +212,27 @@ function getsnaps() {
 					usedbysnapshots: "-",
 					volume: "Vol_4_1430225367",
 				},
+				{
+					creation: "Thur Sep 15 2022",
+					date: "15-September-2022",
+					fullname: "pdhcp4329314757/Vol_5_1430225367@Snap_06.1663023907",
+					host: "dhcp18762",
+					name: "Snap_06.1663023907",
+					partnerR: "-",
+					partnerS: "-",
+					pool: "pdhcp4329314757",
+					prot: "CIFS",
+					quota: "-",
+					refcompressratio: "1.00x",
+					referenced: "140K",
+					snaptype: "Once",
+					statusmount: "active",
+					time: "4:05",
+					used: 0,
+					usedbysnapshots: "-",
+					volume: "Vol_5_1430225367",
+				},
 			];
-			console.log(newsnaps);
 			// if (firstRequests == 1) firstRequests = 0;
 		},
 	});
@@ -398,12 +418,12 @@ $("table").css("width", "100%");
 // refreshall();
 setInterval(refreshall, 2000);
 $("#Pool2").change(function (e) {
-	console.log(e.target.innerText);
+	console.log($("#Pool2 :selected").text());
 	volumesrefresh();
 });
 
 $("#volname").change(function (e) {
-	console.log(e.target.innerText);
+	console.log($("#volname :selected").text());
 	// partnersrefresh();
 });
 
