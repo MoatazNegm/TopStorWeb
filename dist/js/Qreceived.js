@@ -122,8 +122,6 @@ function snapsreferesh() {
 	}
 }
 function initalltables() {
-	snapsreferesh();
-
 	allpsnapstable["allsnaps"] = $("#allsnapstable").DataTable({
 		order: [
 			[0, "desc"],
@@ -203,8 +201,8 @@ function refreshall() {
 	snapsreferesh();
 }
 $("table").css("width", "100%");
-refreshall();
-setInterval(refreshall, 2000);
+// refreshall();
+// setInterval(refreshall, 2000);
 $("#Pool2").change(function (e) {
 	volumesrefresh();
 });
