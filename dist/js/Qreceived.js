@@ -132,8 +132,8 @@ function partnersrefresh() {
 	});
 
 	if (JSON.stringify(allvolumes) != JSON.stringify(newallpartners)) {
-		console.log(allpartners);
 		allpartners = JSON.parse(JSON.stringify(newallpartners));
+		console.log(allpartners);
 		allpartners.push({
 			alias: "Clu03_Sender",
 			ip: "10.11.11.252",
