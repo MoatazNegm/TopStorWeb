@@ -62,6 +62,7 @@ function volumesrefresh() {
 		data: newallvolumes,
 	});
 }
+volumesrefresh();
 
 function partnersrefresh() {
 	var newallpartners = "";
