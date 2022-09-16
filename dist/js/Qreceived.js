@@ -88,6 +88,7 @@ function partnersrefresh() {
 				}
 			});
 			reload = 1;
+			console.log("hi again");
 		}
 	}
 	console.log(newallpartners);
