@@ -2,6 +2,7 @@ var allpools = "init";
 var allvolumes = "init";
 var allpartners = "init";
 var cpool = "init";
+
 function poolsrefresh() {
 	$(".select2.pool").select2({
 		placeholder: "Select a pool",
@@ -88,7 +89,6 @@ function partnersrefresh() {
 			reload = 1;
 		}
 	}
-	console.log("newall", newallpartners);
 	$(".select2.Sender").select2({
 		placeholder: "Select a partner",
 		data: newallpartners,
@@ -101,4 +101,5 @@ $("#Pool2").change(function (e) {
 
 $("#volname").change(function (e) {
 	partnersrefresh();
+	allpartners.append({ alias: "Clu02_Sender", ip: "10.11.11.253", port: "2400", type: "Sender" });
 });
