@@ -499,6 +499,7 @@ function snapsreferesh() {
 			console.log(tt);
 			if (tt["receiver"] == "NoReceiver") {
 				alls.push(tt);
+				console.log("hi");
 			}
 		});
 		console.log(allsnaps);
