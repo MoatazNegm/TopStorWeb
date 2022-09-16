@@ -19,6 +19,7 @@ function poolsrefresh() {
 			async: false,
 			success: function (data) {
 				allpools = data;
+				console.log(allpools);
 			},
 		},
 	});
