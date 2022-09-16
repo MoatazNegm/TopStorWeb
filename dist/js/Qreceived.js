@@ -340,10 +340,16 @@ $("table").css("width", "100%");
 // refreshall();
 setInterval(refreshall, 2000);
 $("#Pool2").change(function (e) {
-	console.log(e);
+	console.log(e.target.innerText);
 	// volumesrefresh();
 });
 
 $("#volname").change(function (e) {
+	console.log(e.target.innerText);
+	// partnersrefresh();
+});
+
+$("#Sender").change(function (e) {
+	console.log(e.target.innerText);
 	// partnersrefresh();
 });
