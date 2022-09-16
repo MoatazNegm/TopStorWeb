@@ -1,6 +1,7 @@
 var allpools = "init";
 var allvolumes = "init";
 var allpartners = "init";
+var allsnaps = "init";
 var cpool = "init";
 
 function poolsrefresh() {
@@ -92,6 +93,19 @@ function partnersrefresh() {
 	$(".select2.Sender").select2({
 		placeholder: "Select a partner",
 		data: newallpartners,
+	});
+}
+
+function getsnaps() {
+	$.ajax({
+		url: "api/v1/volumes/snapshots/snapshotsinfo",
+		//timeout: 3000,
+		async: true,
+		type: "GET",
+		success: function (data) {
+			newsnaps = data;
+			if (firstRequests == 1) firstRequests = 0;
+		},
 	});
 }
 
