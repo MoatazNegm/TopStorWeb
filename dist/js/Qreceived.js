@@ -122,7 +122,6 @@ function snapsreferesh() {
 	}
 }
 function initalltables() {
-	// getsnaps();
 	allpsnapstable["allsnaps"] = $("#allsnapstable").DataTable({
 		order: [
 			[0, "desc"],
@@ -199,7 +198,6 @@ function initalltables() {
 		type: "GET",
 		success: function (data) {
 			newsnaps = data;
-			// if (firstRequests == 1) firstRequests = 0;
 		},
 	});
 	console.log(newsnaps);
@@ -209,8 +207,6 @@ function initalltables() {
 		allpsnapstable["allsnaps"].rows.add(allsnaps["allsnaps"]);
 		allpsnapstable["allsnaps"].draw();
 	}
-	console.log("done");
-	console.log(allsnaps);
 }
 initalltables();
 
