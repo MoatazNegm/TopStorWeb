@@ -79,21 +79,12 @@ function volumesrefresh() {
 			allvolumes = JSON.parse(JSON.stringify(newallvolumes));
 			newallvolumes = [];
 			$.each(allvolumes, function (e, t) {
-				console.log(allvolumes[e]["pool"] + "  " + allpools["results"][$("#Pool2").val()]["text"]);
 				if (allvolumes[e]["pool"] == allpools["results"][$("#Pool2").val()]["text"]) {
 					newallvolumes.push(t);
 				}
 			});
 			reload = 1;
 		}
-		allvolumes = JSON.parse(JSON.stringify(newallvolumes));
-		newallvolumes = [];
-		$.each(allvolumes, function (e, t) {
-			console.log(allvolumes[e]["pool"] + "  " + allpools["results"][$("#Pool2").val()]["text"]);
-			if (allvolumes[e]["pool"] == allpools["results"][$("#Pool2").val()]["text"]) {
-				newallvolumes.push(t);
-			}
-		});
 		reload = 1;
 	}
 	if (cpool != $("#Pool2").val()) {
