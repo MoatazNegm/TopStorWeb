@@ -28,6 +28,7 @@ poolsrefresh();
 function volumesrefresh() {
 	var newallvolumes = "";
 	var reload = 0;
+	console.log($("#Pool2").val());
 	if ($("#Pool2").val() == "") {
 		newallvolumes = "";
 	} else {
@@ -80,7 +81,7 @@ function volumesrefresh() {
 // 		data: newallvolumes,
 // 	});
 // }
-volumesrefresh();
+// volumesrefresh();
 
 // function partnersrefresh() {
 // 	var newallpartners = "";
@@ -341,7 +342,7 @@ $("table").css("width", "100%");
 setInterval(refreshall, 2000);
 $("#Pool2").change(function (e) {
 	console.log(e.target.innerText);
-	// volumesrefresh();
+	volumesrefresh();
 });
 
 $("#volname").change(function (e) {
