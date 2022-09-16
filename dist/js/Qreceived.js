@@ -42,6 +42,36 @@ function volumesrefresh() {
 			async: false,
 			success: function (data) {
 				newallvolumes = data;
+				newallvolumes.push({
+					fullname: "Vol_4_1430225367",
+					id: 1,
+					pool: "pdhcp3329314757",
+					text: "Vol4",
+				});
+				newallvolumes.push({
+					fullname: "Vol_5_1430225367",
+					id: 2,
+					pool: "pdhcp4329314757",
+					text: "Vol5",
+				});
+				newallvolumes.push({
+					fullname: "Vol_6_1430225367",
+					id: 3,
+					pool: "pdhcp3329314757",
+					text: "Vol6",
+				});
+				newallvolumes.push({
+					fullname: "Vol_7_1430225367",
+					id: 4,
+					pool: "pdhcp3329314757",
+					text: "Vol7",
+				});
+				newallvolumes.push({
+					fullname: "Vol_8_1430225367",
+					id: 5,
+					pool: "pdhcp4329314757",
+					text: "Vol8",
+				});
 				console.log(newallvolumes);
 			},
 		});
