@@ -496,10 +496,12 @@ function snapsreferesh() {
 		allsnaps = JSON.parse(JSON.stringify(newsnaps));
 		alls = [];
 		$.each(allsnaps["Once"], function (e, tt) {
+			console.log(tt);
 			if (tt["receiver"] == "NoReceiver") {
 				alls.push(tt);
 			}
 		});
+		console.log(allsnaps);
 
 		onceinittable.clear();
 		onceinittable.rows.add(allsnaps["Once"]);
