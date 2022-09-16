@@ -321,7 +321,7 @@ function initalltables() {
 		},
 	});
 
-	console.log(filterstable.columns);
+	console.log(filterstable["allsnaps"].columns);
 	if (JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
 		allsnaps = JSON.parse(JSON.stringify(newsnaps));
 		allpsnapstable["allsnaps"].clear();
