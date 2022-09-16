@@ -95,6 +95,78 @@ function partnersrefresh() {
 	});
 }
 
+function initalltables() {
+	allpsnapstable["allsnaps"] = $("#allsnapstable").DataTable({
+		order: [
+			[0, "desc"],
+			[1, "desc"],
+		],
+		data: allsnaps["allsnaps"],
+		columns: [
+			{
+				data: null,
+				render: function (data, type, row) {
+					return fixDate(row);
+				},
+			},
+			{ data: "time" },
+			{
+				data: "name",
+				render: function (data, type, row) {
+					return data.split(".")[0] + "." + data.split(".").pop();
+				},
+			},
+			{
+				data: null,
+				render: function (data, type, row) {
+					return row.volume.split("_")[0];
+				},
+			},
+			{ data: "partnerR" },
+			{ data: "partnerS" },
+			{ data: "used" },
+			{ data: "refcompressratio" },
+			{
+				data: null,
+				render: function (data, type, row) {
+					return (
+						'<a class="snapdelegt" val="username" href="javascript:rollback(\'' +
+						row.name +
+						"')\" >" +
+						'<img  src="dist/img/return.png" data-name=' +
+						row.name +
+						' alt="cannott upload delete icon">' +
+						"</a>"
+					);
+				},
+			},
+			{
+				data: null,
+				render: function (data, type, row) {
+					return (
+						'<a class="snapdelegt" val="username" href="javascript:asnapdel(\'' +
+						row.name +
+						"')\" >" +
+						'<img  src="dist/img/delete.png" data-name=' +
+						row.name +
+						' alt="cannott upload delete icon">' +
+						"</a>"
+					);
+				},
+			},
+		],
+		columnDefs: [
+			{
+				createdCell: function (td, cellData, rowData, row, col) {
+					$(td).data("grps", "cell-" + cellData);
+				},
+			},
+		],
+	});
+	allpsnapstable["allsnaps"].buttons().container().appendTo("#allsnapstable_wrapper .col-6:eq(0)");
+}
+initalltables();
+
 $("#Pool2").change(function (e) {
 	volumesrefresh();
 });

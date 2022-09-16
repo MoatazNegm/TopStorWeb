@@ -326,98 +326,136 @@
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <!-- form start -->
-              <form>
-                <div class="card-body">
-                  <div class="form-group row">
-                    <label  for="Pool2" class="col-1 col-form-label" >Pool</label>
-                    <select  class=" select2 form-control pool col-3" id="Pool2">
-                      <option></option>
-                    </select>
-                    <!-- <select  class="form-control col-2" id="Poolsend">
-                      <option value="0">32435245446</option>
-                    </select> -->
-                    <label  for="volname" class="offset-1 col-1 col-form-label">Volume</label>
-                    <select  class="select2 form-control volume col-3"  id="volname">
-                      <option></option>
-                    </select>
-                    <label  for="Sender" class="offset-1 col-1  col-form-label">Sender</label>
-                        <select  class="select2 form-control Sender col-2"  id="Sender">
-                          <option></option>
-                        </select>
+            <div class="row">
+              <div class="col-md-12">
+              <div class="card">
+                <!-- form start -->
+                <form>
+                  <div class="card-body">
+                    <div class="form-group row">
+                      <label  for="Pool2" class="col-1 col-form-label" >Pool</label>
+                      <select  class=" select2 form-control pool col-3" id="Pool2">
+                        <option></option>
+                      </select>
+                      <!-- <select  class="form-control col-2" id="Poolsend">
+                        <option value="0">32435245446</option>
+                      </select> -->
+                      <label  for="volname" class="offset-1 col-1 col-form-label">Volume</label>
+                      <select  class="select2 form-control volume col-3"  id="volname">
+                        <option></option>
+                      </select>
+                      <label  for="Sender" class="offset-1 col-1  col-form-label">Sender</label>
+                          <select  class="select2 form-control Sender col-2"  id="Sender">
+                            <option></option>
+                          </select>
+                    </div>
                   </div>
+                  <!-- /.card-body -->
+                </form>
+                <div class="card-footer">
+                    <h3 class="card-title cardshead">Received Snapshtos List</h3>
                 </div>
-                <!-- /.card-body -->
-              </form>
-              <div class="card-footer">
-                  <h3 class="card-title cardshead">Received Snapshtos List</h3>
-              </div>
-                <!-- /.card-header -->
-              <div class="card-body ">
-                <table id="example1" class="table table-sm table-hover  table-striped">
-                  <thead style="background-color:#2939C6; color: white;">
-                  <tr>
-                    <th>Name</th>
-                    <th>Date</th>
-                    <th>time</th>
-                    <th>Remove</th>
-                    <th>Rollbak</th>
-                  </tr>
-                  </thead>
-                  <tbody style="font-size: 90%; color:#2939C6;">
-                   <tr class="dontdelete" >
-                     <td >Snapshotname</td>
-                     <td >12April2019</td>
-                     <td >12:10am</td>
-                     <td style="width: 15%;" class="text-center">
+                  <!-- /.card-header -->
+                <div class="card-body ">
+                  <table id="example1" class="table table-sm table-hover  table-striped">
+                    <thead style="background-color:#2939C6; color: white;">
+                    <tr>
+                      <th>Name</th>
+                      <th>Date</th>
+                      <th>time</th>
+                      <th>Remove</th>
+                      <th>Rollbak</th>
+                    </tr>
+                    </thead>
+                    <tbody style="font-size: 90%; color:#2939C6;">
+                    <tr class="dontdelete" >
+                      <td >Snapshotname</td>
+                      <td >12April2019</td>
+                      <td >12:10am</td>
+                      <td style="width: 15%;" class="text-center">
+                        <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
+                          <img  src="dist/img/delete.png" alt="cannott upload delete icon">
+                        </a>
+                      </td>
+                      <td  class="text-center">
+                        <a  href="javascript:auserdel(\'username\')" >
+                          <img  src="dist/img/return.png" alt="cannott upload delete icon">
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Trident</td>
+                      <td>20May2020</td>
+                      <td >10:23pm</td>
+                      <td style="width: 15%;" class="text-center">
                       <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
                         <img  src="dist/img/delete.png" alt="cannott upload delete icon">
                       </a>
-                    </td>
-                    <td  class="text-center">
-                      <a  href="javascript:auserdel(\'username\')" >
-                        <img  src="dist/img/return.png" alt="cannott upload delete icon">
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Trident</td>
-                    <td>20May2020</td>
-                    <td >10:23pm</td>
-                    <td style="width: 15%;" class="text-center">
-                     <a class="UnixDelUser" val="username" href="javascript:auserdel(\'username\')" >
-                       <img  src="dist/img/delete.png" alt="cannott upload delete icon">
-                     </a>
-                    </td>
-                    <td  class="text-center">
-                      <a  href="javascript:auserdel(\'username\')" >
-                        <img  src="dist/img/return.png" alt="cannott upload delete icon">
-                      </a>
-                    </td>
-                  </tr>
-                  </tbody>
-                  <tfoot>
-                  <tr>
-                    <th>Name</th>
-                    <th>Date</th>
-                    <th>time</th>
-                    <th>Remove</th>
-                    <th>Rollbak</th>
-                  </tr>
-                  </tfoot>
-                </table>
+                      </td>
+                      <td  class="text-center">
+                        <a  href="javascript:auserdel(\'username\')" >
+                          <img  src="dist/img/return.png" alt="cannott upload delete icon">
+                        </a>
+                      </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                      <th>Name</th>
+                      <th>Date</th>
+                      <th>time</th>
+                      <th>Remove</th>
+                      <th>Rollbak</th>
+                    </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <!-- /.card-body -->
               </div>
-              <!-- /.card-body -->
-            </div>
 
-            </div> <!-- /.card -->
-          </div>
+              </div> <!-- /.card -->
+            </div>
+            <!-- Period list -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title cardshead">All Snapshots list</h3>
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body">
+                    <table id="allsnapstable" class="table table-sm table-hover example1  table-striped">
+                      <thead style="background-color:#2939C6; color: white;">
+                      <tr>
+                        <th style="width:14%;">date</th>
+                        <th style="width:5%;">time</th>
+                        <th style="width:15%;">name</th>
+                        <th style="width:10%;">volume</th>
+                        <th style="width:15%;">receiver</th>
+                        <th style="width:15%;">sender</th>
+                        <th style="width:5%;">size(MB)</th>
+                        <th style="width:5%;">compress%</th>
+                        <th style="width:5%;"> Rollback</th>
+                        <th style="width:5%;">Delete</th>
+                      </tr>
+                      </thead>
+                      <tbody style="font-size: 90%; color:#2939C6;">
+                       
+                      </tbody>
+                      <tfoot >
+                     
+                      </tfoot>
+                    </table>
+                  </div>
+                  <!-- /.card-body -->
+                </div>
+  
+              </div>
+            </div>
+  
         </div> <!-- /.row -->
 
-      </div> <!-- /.container-fluid -->
+    </div> <!-- /.container-fluid -->
 
     </div> <!-- /.content -->
 
