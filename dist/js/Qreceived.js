@@ -91,6 +91,7 @@ function volumesrefresh() {
 		cpool = $("#Pool2").val();
 		reload = 1;
 	}
+	console.log(newallvolumes);
 	$(".select2.volume").select2({
 		placeholder: "Select a volume",
 		data: newallvolumes,
@@ -453,7 +454,6 @@ setInterval(refreshall, 2000);
 $("#Pool2").change(function (e) {
 	console.log($("#Pool2 :selected").text());
 	volumesrefresh();
-	console.log(newallvolumes);
 });
 
 $("#volname").change(function (e) {
