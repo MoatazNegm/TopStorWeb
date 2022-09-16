@@ -291,10 +291,10 @@ function refreshall() {
 $("table").css("width", "100%");
 // refreshall();
 // setInterval(refreshall, 2000);
-$("#Pool2").change(function (e) {
-	volumesrefresh();
-});
+// $("#Pool2").change(function (e) {
+// 	volumesrefresh();
+// });
 
-$("#volname").change(function (e) {
-	partnersrefresh();
-});
+// $("#volname").change(function (e) {
+// 	partnersrefresh();
+// });
