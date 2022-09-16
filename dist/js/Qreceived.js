@@ -139,7 +139,7 @@ function partnersrefresh() {
 			port: "2400",
 			type: "Sender",
 		});
-		allpartners.push({
+		allpartners["allpartners"].push({
 			alias: "Clu04_Sender",
 			ip: "10.11.11.251",
 			port: "2400",
