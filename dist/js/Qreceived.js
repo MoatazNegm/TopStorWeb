@@ -85,13 +85,19 @@ function volumesrefresh() {
 			});
 			reload = 1;
 		}
+		allvolumes = JSON.parse(JSON.stringify(newallvolumes));
+		newallvolumes = [];
+		$.each(allvolumes, function (e, t) {
+			if (allvolumes[e]["pool"] == allpools["results"][$("#Pool2").val()]["text"]) {
+				newallvolumes.push(t);
+			}
+		});
 		reload = 1;
 	}
 	if (cpool != $("#Pool2").val()) {
 		cpool = $("#Pool2").val();
 		reload = 1;
 	}
-	console.log(newallvolumes);
 	$(".select2.volume").empty().trigger("change");
 	$(".select2.volume").select2({
 		placeholder: "Select a volume",
