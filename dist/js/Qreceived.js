@@ -130,6 +130,18 @@ function partnersrefresh() {
 			newallpartners = data;
 		},
 	});
+	newallpartners.push({
+		alias: "Clu03_Sender",
+		ip: "10.11.11.252",
+		port: "2400",
+		type: "Sender",
+	});
+	newallpartners.push({
+		alias: "Clu04_Sender",
+		ip: "10.11.11.251",
+		port: "2400",
+		type: "Sender",
+	});
 	if (JSON.stringify(allvolumes) != JSON.stringify(newallpartners)) {
 		allpartners = JSON.parse(JSON.stringify(newallpartners));
 		newallpartners = [];
@@ -143,18 +155,6 @@ function partnersrefresh() {
 		reload = 1;
 	}
 	console.log(newallpartners);
-	newallpartners.push({
-		alias: "Clu03_Sender",
-		ip: "10.11.11.252",
-		port: "2400",
-		type: "Sender",
-	});
-	newallpartners.push({
-		alias: "Clu04_Sender",
-		ip: "10.11.11.251",
-		port: "2400",
-		type: "Sender",
-	});
 	$(".select2.Sender").select2({
 		placeholder: "Select a partner",
 		data: newallpartners,
