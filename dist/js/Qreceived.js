@@ -366,8 +366,7 @@ $("#volname").change(function (e) {
 
 $("#Sender").change(function (e) {
 	console.log($("#Sender").val());
-	console.log($("#Sender").innerText);
-	console.log($("#Sender").innerText());
+	console.log($("#Sender").text());
 	console.log(e);
 	console.log(e.target);
 	console.log(e.target.innerText);
