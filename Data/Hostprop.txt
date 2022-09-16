@@ -1,9 +1,1 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-{"hostname":"dhcp25464","name":"dhcp25464","addr":"10.11.11.244","addrsubnet":"24","rout":"10.11.11.253","dns":"-1","mgmtip":"192.168.43.7","mgmtsubnet":"24","ntp":"0.pool.ntp.org","tz":"Kuw%(GMT+03!00)_Moscow^_St._Petersburg^_Volgograd","gw":"10.11.11.253","dnsname":"-1","dnssearch":"-1","configured":"yes"}
-=======
-{"hostname":"dhcp23884","name":"node_02","addr":"10.11.11.242","addrsubnet":"24","rout":"10.11.11.253","dns":"10.11.11.253","mgmtip":"10.11.11.250","mgmtsubnet":"24","ntp":"0.pool.ntp.org","tz":"Cairo%(GMT+02!00)_Cairo","gw":"10.11.11.253","dnsname":"10.11.11.253","dnssearch":"zenty.localdomain","configured":"yes"}
->>>>>>> 7086e7acfc695a6c57e44e5f4354f533b49d8e92
-=======
-{"hostname":"dhcp15779","name":"Bravo","addr":"10.11.11.30","addrsubnet":"24","rout":"10.11.11.253","dns":"10.11.11.253","mgmtip":"10.11.11.249","mgmtsubnet":"24","ntp":"0.pool.ntp.org","tz":"Kuwait%(GMT+03!00)_Kuwait^_Riyadh^_Baghdad","gw":"10.11.11.253","dnsname":"10.11.11.253","dnssearch":"zenty.localdomain","configured":"yes"}
->>>>>>> ff9c04a51a4231614ec3cf0fb861609bdcf53948
+{"hostname":"dhcp17797","name":"dhcp17797","addr":"10.11.11.244","addrsubnet":"24","rout":"10.0.2.3","dns":"10.11.11.253","mgmtip":"192.168.43.7","mgmtsubnet":"24","ntp":"0.pool.ntp.org","tz":"Kuw%(GMT+03!00)_Moscow^_St._Petersburg^_Volgograd","gw":"10.0.2.3","dnsname":"10.11.11.253","dnssearch":"zenty.localdomain","configured":"yes"}
