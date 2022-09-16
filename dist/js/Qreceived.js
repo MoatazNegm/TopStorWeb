@@ -143,9 +143,15 @@ function partnersrefresh() {
 		reload = 1;
 	}
 	console.log(newallpartners);
-	newallpartners.append({
+	newallpartners.push({
 		alias: "Clu03_Sender",
-		ip: "10.11.11.253",
+		ip: "10.11.11.252",
+		port: "2400",
+		type: "Sender",
+	});
+	newallpartners.push({
+		alias: "Clu04_Sender",
+		ip: "10.11.11.251",
 		port: "2400",
 		type: "Sender",
 	});
