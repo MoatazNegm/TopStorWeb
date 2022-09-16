@@ -3,6 +3,7 @@ var allvolumes = "init";
 var allpartners = "init";
 var allsnaps = "init";
 var allpsnapstable = {};
+var filterstable = {};
 var newsnaps = "init";
 var cpool = "init";
 
@@ -259,10 +260,7 @@ function initalltables() {
 			},
 		],
 	});
-	allpsnapstfilterstableable["allsnaps"]
-		.buttons()
-		.container()
-		.appendTo("#allsnapstable_wrapper .col-6:eq(0)");
+	filterstable["allsnaps"].buttons().container().appendTo("#allsnapstable_wrapper .col-6:eq(0)");
 	$.ajax({
 		url: "api/v1/volumes/snapshots/snapshotsinfo",
 		//timeout: 3000,
