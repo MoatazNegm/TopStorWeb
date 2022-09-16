@@ -338,11 +338,12 @@ function refreshall() {
 }
 $("table").css("width", "100%");
 // refreshall();
-// setInterval(refreshall, 2000);
-// $("#Pool2").change(function (e) {
-// 	volumesrefresh();
-// });
+setInterval(refreshall, 2000);
+$("#Pool2").change(function (e) {
+	console.log(e.target.value);
+	// volumesrefresh();
+});
 
-// $("#volname").change(function (e) {
-// 	partnersrefresh();
-// });
+$("#volname").change(function (e) {
+	// partnersrefresh();
+});
