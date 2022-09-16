@@ -1,5 +1,6 @@
 var allpools = "init";
 var allvolumes = "init";
+var cpool = "init";
 function poolsrefresh() {
 	$(".select2.pool").select2({
 		placeholder: "Select a pool",
