@@ -101,5 +101,5 @@ $("#Pool2").change(function (e) {
 
 $("#volname").change(function (e) {
 	partnersrefresh();
-	allpartners.append({ alias: "Clu02_Sender", ip: "10.11.11.253", port: "2400", type: "Sender" });
+	allpartners = [{ alias: "Clu02_Sender", ip: "10.11.11.253", port: "2400", type: "Sender" }];
 });
