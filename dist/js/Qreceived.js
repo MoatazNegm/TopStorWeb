@@ -142,6 +142,7 @@ function partnersrefresh() {
 		});
 		reload = 1;
 	}
+	console.log(newallpartners);
 	newallpartners.append({
 		alias: "Clu03_Sender",
 		ip: "10.11.11.253",
