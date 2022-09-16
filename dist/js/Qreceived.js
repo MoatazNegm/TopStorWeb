@@ -186,6 +186,9 @@ function snapsreferesh() {
 	getsnaps();
 	if (JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
 		allsnaps = JSON.parse(JSON.stringify(newsnaps));
+		allpsnapstable["allsnaps"].clear();
+		allpsnapstable["allsnaps"].rows.add(allsnaps["allsnaps"]);
+		allpsnapstable["allsnaps"].draw();
 	}
 }
 function refreshall() {
