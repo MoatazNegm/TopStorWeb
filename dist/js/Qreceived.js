@@ -110,7 +110,15 @@ function getsnaps() {
 		},
 	});
 }
-
+function snapsreferesh() {
+	getsnaps();
+	if (JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
+		allsnaps = JSON.parse(JSON.stringify(newsnaps));
+		allpsnapstable["allsnaps"].clear();
+		allpsnapstable["allsnaps"].rows.add(allsnaps["allsnaps"]);
+		allpsnapstable["allsnaps"].draw();
+	}
+}
 function initalltables() {
 	snapsreferesh();
 	allpsnapstable["allsnaps"] = $("#allsnapstable").DataTable({
@@ -184,15 +192,7 @@ function initalltables() {
 	console.log("AllSnaps initiliazed");
 }
 initalltables();
-function snapsreferesh() {
-	getsnaps();
-	if (JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
-		allsnaps = JSON.parse(JSON.stringify(newsnaps));
-		allpsnapstable["allsnaps"].clear();
-		allpsnapstable["allsnaps"].rows.add(allsnaps["allsnaps"]);
-		allpsnapstable["allsnaps"].draw();
-	}
-}
+
 function refreshall() {
 	updatetasks();
 	$(".odd").css("background-color", "rgba(41,57,198,.1)");
