@@ -65,6 +65,7 @@ function partnersrefresh() {
 	if ($("#volname").val() == "") {
 		newallpartners = "";
 	} else {
+		print("hi");
 		$.ajax({
 			url: "/api/v1/partners/partnerlist",
 			dataType: "json",
@@ -89,6 +90,7 @@ function partnersrefresh() {
 			reload = 1;
 		}
 	}
+	print(newallpartners);
 	$(".select2.Sender").select2({
 		placeholder: "Select a partner",
 		data: newallpartners,
@@ -101,4 +103,5 @@ $("#Pool2").change(function (e) {
 
 $("#volname").change(function (e) {
 	partnersrefresh();
+	print(allpartners);
 });
