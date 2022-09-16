@@ -101,10 +101,7 @@ function volumesrefresh() {
 		reload = 1;
 	}
 	console.log(newallvolumes);
-	$(".select2.volume").select2({
-		placeholder: "Select a volume",
-		data: [],
-	});
+	$(".select2.volume").empty().trigger("change");
 	$(".select2.volume").select2({
 		placeholder: "Select a volume",
 		data: newallvolumes,
