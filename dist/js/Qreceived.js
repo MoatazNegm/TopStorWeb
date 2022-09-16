@@ -134,18 +134,26 @@ function partnersrefresh() {
 	if (JSON.stringify(allvolumes) != JSON.stringify(newallpartners)) {
 		allpartners = JSON.parse(JSON.stringify(newallpartners));
 		console.log(allpartners);
-		allpartners.push({
-			alias: "Clu03_Sender",
-			ip: "10.11.11.252",
-			port: "2400",
-			type: "Sender",
-		});
-		allpartners.push({
-			alias: "Clu04_Sender",
-			ip: "10.11.11.251",
-			port: "2400",
-			type: "Sender",
-		});
+		allpartners = [
+			{
+				alias: "Clu04_Sender",
+				ip: "10.11.11.251",
+				port: "2400",
+				type: "Sender",
+			},
+			{
+				alias: "Clu03_Sender",
+				ip: "10.11.11.252",
+				port: "2400",
+				type: "Sender",
+			},
+			{
+				alias: "Clu04_Sender",
+				ip: "10.11.11.251",
+				port: "2400",
+				type: "Sender",
+			},
+		];
 		newallpartners = [];
 		$.each(allpartners["allpartners"], function (e, t) {
 			if (t["type"].includes("ender") > 0) {
