@@ -43,31 +43,31 @@ function volumesrefresh() {
 			success: function (data) {
 				newallvolumes = data;
 				newallvolumes.push({
-					fullname: "Vol_4_1430225367",
+					fullname: "Vol4_1430225367",
 					id: 1,
 					pool: "pdhcp3329314757",
 					text: "Vol4",
 				});
 				newallvolumes.push({
-					fullname: "Vol_5_1430225367",
+					fullname: "Vol5_1430225367",
 					id: 2,
 					pool: "pdhcp4329314757",
 					text: "Vol5",
 				});
 				newallvolumes.push({
-					fullname: "Vol_6_1430225367",
+					fullname: "Vol6_1430225367",
 					id: 3,
 					pool: "pdhcp3329314757",
 					text: "Vol6",
 				});
 				newallvolumes.push({
-					fullname: "Vol_7_1430225367",
+					fullname: "Vol7_1430225367",
 					id: 4,
 					pool: "pdhcp3329314757",
 					text: "Vol7",
 				});
 				newallvolumes.push({
-					fullname: "Vol_8_1430225367",
+					fullname: "Vol8_1430225367",
 					id: 5,
 					pool: "pdhcp4329314757",
 					text: "Vol8",
@@ -219,7 +219,7 @@ function getsnaps() {
 				{
 					creation: "Tue Sep 13 2022",
 					date: "13-September-2022",
-					fullname: "pdhcp2329314757/Vol_3_1430225367@Snap_04.1663023907",
+					fullname: "pdhcp2329314757/Vol3_1430225367@Snap_04.1663023907",
 					host: "dhcp18762",
 					name: "Snap_04.1663023907",
 					partnerR: "-",
@@ -234,12 +234,12 @@ function getsnaps() {
 					time: "2:05",
 					used: 0,
 					usedbysnapshots: "-",
-					volume: "Vol_3_1430225367",
+					volume: "Vol3_1430225367",
 				},
 				{
 					creation: "Wed Sep 14 2022",
 					date: "14-September-2022",
-					fullname: "pdhcp3329314757/Vol_4_1430225367@Snap_05.1663023907",
+					fullname: "pdhcp3329314757/Vol4_1430225367@Snap_05.1663023907",
 					host: "dhcp18762",
 					name: "Snap_05.1663023907",
 					partnerR: "-",
@@ -254,12 +254,12 @@ function getsnaps() {
 					time: "3:05",
 					used: 0,
 					usedbysnapshots: "-",
-					volume: "Vol_4_1430225367",
+					volume: "Vol4_1430225367",
 				},
 				{
 					creation: "Thur Sep 15 2022",
 					date: "15-September-2022",
-					fullname: "pdhcp4329314757/Vol_5_1430225367@Snap_06.1663023907",
+					fullname: "pdhcp4329314757/Vol5_1430225367@Snap_06.1663023907",
 					host: "dhcp18762",
 					name: "Snap_06.1663023907",
 					partnerR: "-",
@@ -274,7 +274,7 @@ function getsnaps() {
 					time: "4:05",
 					used: 0,
 					usedbysnapshots: "-",
-					volume: "Vol_5_1430225367",
+					volume: "Vol5_1430225367",
 				},
 			];
 			// if (firstRequests == 1) firstRequests = 0;
