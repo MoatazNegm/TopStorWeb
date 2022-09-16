@@ -26,7 +26,7 @@ function poolsrefresh() {
 	});
 }
 poolsrefresh();
-var firstRequests = 1;
+
 function volumesrefresh() {
 	var newallvolumes = "";
 	var reload = 0;
@@ -41,40 +41,37 @@ function volumesrefresh() {
 			type: "GET",
 			async: false,
 			success: function (data) {
-				if (firstRequests == 1) {
-					newallvolumes = data;
-					newallvolumes.push({
-						fullname: "Vol_4_1430225367",
-						id: 1,
-						pool: "pdhcp3329314757",
-						text: "Vol4",
-					});
-					newallvolumes.push({
-						fullname: "Vol_5_1430225367",
-						id: 2,
-						pool: "pdhcp4329314757",
-						text: "Vol5",
-					});
-					newallvolumes.push({
-						fullname: "Vol_6_1430225367",
-						id: 3,
-						pool: "pdhcp3329314757",
-						text: "Vol6",
-					});
-					newallvolumes.push({
-						fullname: "Vol_7_1430225367",
-						id: 4,
-						pool: "pdhcp3329314757",
-						text: "Vol7",
-					});
-					newallvolumes.push({
-						fullname: "Vol_8_1430225367",
-						id: 5,
-						pool: "pdhcp4329314757",
-						text: "Vol8",
-					});
-					firstRequests = 0;
-				}
+				newallvolumes = data;
+				newallvolumes.push({
+					fullname: "Vol_4_1430225367",
+					id: 1,
+					pool: "pdhcp3329314757",
+					text: "Vol4",
+				});
+				newallvolumes.push({
+					fullname: "Vol_5_1430225367",
+					id: 2,
+					pool: "pdhcp4329314757",
+					text: "Vol5",
+				});
+				newallvolumes.push({
+					fullname: "Vol_6_1430225367",
+					id: 3,
+					pool: "pdhcp3329314757",
+					text: "Vol6",
+				});
+				newallvolumes.push({
+					fullname: "Vol_7_1430225367",
+					id: 4,
+					pool: "pdhcp3329314757",
+					text: "Vol7",
+				});
+				newallvolumes.push({
+					fullname: "Vol_8_1430225367",
+					id: 5,
+					pool: "pdhcp4329314757",
+					text: "Vol8",
+				});
 			},
 		});
 
@@ -89,6 +86,15 @@ function volumesrefresh() {
 			});
 			reload = 1;
 		}
+		allvolumes = JSON.parse(JSON.stringify(newallvolumes));
+		newallvolumes = [];
+		$.each(allvolumes, function (e, t) {
+			console.log(allvolumes[e]["pool"] + "  " + allpools["results"][$("#Pool2").val()]["text"]);
+			if (allvolumes[e]["pool"] == allpools["results"][$("#Pool2").val()]["text"]) {
+				newallvolumes.push(t);
+			}
+		});
+		reload = 1;
 	}
 	if (cpool != $("#Pool2").val()) {
 		cpool = $("#Pool2").val();
