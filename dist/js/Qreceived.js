@@ -320,6 +320,8 @@ function initalltables() {
 			newsnaps = data;
 		},
 	});
+
+	console.log(filterstable.columns);
 	if (JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
 		allsnaps = JSON.parse(JSON.stringify(newsnaps));
 		allpsnapstable["allsnaps"].clear();
