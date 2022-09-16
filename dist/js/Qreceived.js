@@ -72,9 +72,10 @@ function volumesrefresh() {
 					pool: "pdhcp4329314757",
 					text: "Vol8",
 				});
-				console.log(newallvolumes);
 			},
 		});
+		console.log(allpools["results"][$("#Pool2").val()]["text"]);
+
 		if (JSON.stringify(allvolumes) != JSON.stringify(newallvolumes)) {
 			allvolumes = JSON.parse(JSON.stringify(newallvolumes));
 			newallvolumes = [];
