@@ -174,9 +174,14 @@ $("#createvol").click(function(e){
   var active = 'false';
   if($("#Domtype").val() == "workgroup"){
    if($("#wrkactive").is(":checked") == true ) { active = 'active' } else { active = 'false' }
+<<<<<<< HEAD
 
    var apidata = {"type": prot, "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), "domtype":"workgroup", "active":active,
    "Subnet": $("#Subnet").val(), 'groups': groups, "Myname":"mezo", "size": $("#volsize").val()+'G', 'owner':owner }
+=======
+   var apidata = {"type": prot, "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), "domtype":"workgroup", "active":active, "Subnet": $("#Subnet").val(), 'groups': groups, "Myname":"mezo",
+	 "size": $("#volsize").val()+'G', 'owner':owner }
+>>>>>>> 74139a88c078333e9b68570138529c4fc238b22f
   }
   else{
     if($("#domactive").is(":checked") == true ) { active = 'active' } else { active = 'false' }

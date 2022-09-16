@@ -78,9 +78,11 @@ $("#createvol").click(function(e){
   var owner = allpools['results'][$("#Pool2").val()]['owner'];
   var thevol;
   thevol = $("#volname").val();
+  var active = 'false';
+  if($("#active").is(":checked") == true ) { active = 'active' } else { active = 'false' }
   var apiurl = "api/v1/volumes/create";
-  var apidata = {"type": prot, "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), 'portalport':$("#portalport").val(),
-   "Subnet": $("#Subnet").val(), 'initiators': $("#Initiators").val().replaceAll('\n',',').replaceAll(' ',','), "size": $("#volsize").val()+'G'}
+  var apidata = {"type": prot, "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), 'portalport':$("#portalport").val(), "active":active, "Subnet": $("#Subnet").val(),
+ 'initiators': $("#Initiators").val().replaceAll('\n',',').replaceAll(' ',','), "size": $("#volsize").val()+'G'}
 
   postdata(apiurl,apidata);
 
