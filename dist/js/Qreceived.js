@@ -101,22 +101,4 @@ $("#Pool2").change(function (e) {
 
 $("#volname").change(function (e) {
 	partnersrefresh();
-	var newallpartners = [
-		{ alias: "Clu02_Sender", ip: "10.11.11.253", port: "2400", type: "Sender" },
-	];
-	if (JSON.stringify(allvolumes) != JSON.stringify(newallpartners)) {
-		allpartners = JSON.parse(JSON.stringify(newallpartners));
-		newallpartners = [];
-		$.each(allpartners["allpartners"], function (e, t) {
-			if (t["type"].includes("ceiver") > 0) {
-				t["text"] = t["alias"].split("_")[0];
-				t["id"] = e;
-				newallpartners.push(t);
-			}
-		});
-	}
-	$(".select2.Sender").select2({
-		placeholder: "Select a partner",
-		data: newallpartners,
-	});
 });
