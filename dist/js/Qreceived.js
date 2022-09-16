@@ -340,7 +340,7 @@ $("table").css("width", "100%");
 // refreshall();
 setInterval(refreshall, 2000);
 $("#Pool2").change(function (e) {
-	console.log(e.target.value);
+	console.log(e);
 	// volumesrefresh();
 });
 
