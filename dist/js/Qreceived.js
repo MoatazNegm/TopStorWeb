@@ -170,6 +170,7 @@ function getsnaps() {
 		type: "GET",
 		success: function (data) {
 			newsnaps = data;
+			console.log(newsnaps);
 			// if (firstRequests == 1) firstRequests = 0;
 		},
 	});
@@ -365,7 +366,6 @@ $("#volname").change(function (e) {
 });
 
 $("#Sender").change(function (e) {
-	console.log($("#Sender").val());
 	console.log($("#Sender :selected").text());
 	// partnersrefresh();
 });
