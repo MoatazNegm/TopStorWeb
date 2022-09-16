@@ -28,7 +28,6 @@ poolsrefresh();
 function volumesrefresh() {
 	var newallvolumes = "";
 	var reload = 0;
-	console.log($("#Pool2").val());
 	if ($("#Pool2").val() == "") {
 		newallvolumes = "";
 	} else {
@@ -193,13 +192,14 @@ function initalltables() {
 					return data.split(".")[0] + "." + data.split(".").pop();
 				},
 			},
+			{ data: "pool" },
 			{
 				data: null,
 				render: function (data, type, row) {
 					return row.volume.split("_")[0];
 				},
 			},
-			{ data: "partnerR" },
+
 			{ data: "partnerS" },
 			{ data: "snaptype" },
 			{ data: "used" },
@@ -262,13 +262,13 @@ function initalltables() {
 					return data.split(".")[0] + "." + data.split(".").pop();
 				},
 			},
+			{ data: "pool" },
 			{
 				data: null,
 				render: function (data, type, row) {
 					return row.volume.split("_")[0];
 				},
 			},
-			{ data: "partnerR" },
 			{ data: "partnerS" },
 			{ data: "snaptype" },
 			{ data: "used" },
