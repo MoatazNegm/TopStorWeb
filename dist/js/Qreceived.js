@@ -105,7 +105,7 @@ function getsnaps() {
 		type: "GET",
 		success: function (data) {
 			newsnaps = data;
-			if (firstRequests == 1) firstRequests = 0;
+			// if (firstRequests == 1) firstRequests = 0;
 		},
 	});
 }
