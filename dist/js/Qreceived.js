@@ -19,7 +19,8 @@ function poolsrefresh() {
 			async: false,
 			success: function (data) {
 				allpools = data;
-				console.log(allpools);
+				allpools["results"].push({ id: 1, owner: "dhcp18762", text: "pdhcp3329314757" });
+				allpools["results"].push({ id: 2, owner: "dhcp18762", text: "pdhcp4329314757" });
 			},
 		},
 	});
