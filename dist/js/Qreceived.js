@@ -191,6 +191,78 @@ function initalltables() {
 		],
 	});
 	allpsnapstable["allsnaps"].buttons().container().appendTo("#allsnapstable_wrapper .col-6:eq(0)");
+	filterstable["allsnaps"] = $("#filterstable").DataTable({
+		order: [
+			[0, "desc"],
+			[1, "desc"],
+		],
+		data: allsnaps["allsnaps"],
+		columns: [
+			{
+				data: null,
+				render: function (data, type, row) {
+					return fixDate(row);
+				},
+			},
+			{ data: "time" },
+			{
+				data: "name",
+				render: function (data, type, row) {
+					return data.split(".")[0] + "." + data.split(".").pop();
+				},
+			},
+			{
+				data: null,
+				render: function (data, type, row) {
+					return row.volume.split("_")[0];
+				},
+			},
+			{ data: "partnerR" },
+			{ data: "partnerS" },
+			{ data: "snaptype" },
+			{ data: "used" },
+			{ data: "refcompressratio" },
+			{
+				data: null,
+				render: function (data, type, row) {
+					return (
+						'<a class="snapdelegt" val="username" href="javascript:rollback(\'' +
+						row.name +
+						"')\" >" +
+						'<img  src="dist/img/return.png" data-name=' +
+						row.name +
+						' alt="cannott upload delete icon">' +
+						"</a>"
+					);
+				},
+			},
+			{
+				data: null,
+				render: function (data, type, row) {
+					return (
+						'<a class="snapdelegt" val="username" href="javascript:asnapdel(\'' +
+						row.name +
+						"')\" >" +
+						'<img  src="dist/img/delete.png" data-name=' +
+						row.name +
+						' alt="cannott upload delete icon">' +
+						"</a>"
+					);
+				},
+			},
+		],
+		columnDefs: [
+			{
+				createdCell: function (td, cellData, rowData, row, col) {
+					$(td).data("grps", "cell-" + cellData);
+				},
+			},
+		],
+	});
+	allpsnapstfilterstableable["allsnaps"]
+		.buttons()
+		.container()
+		.appendTo("#allsnapstable_wrapper .col-6:eq(0)");
 	$.ajax({
 		url: "api/v1/volumes/snapshots/snapshotsinfo",
 		//timeout: 3000,
@@ -200,12 +272,14 @@ function initalltables() {
 			newsnaps = data;
 		},
 	});
-	console.log(newsnaps);
 	if (JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
 		allsnaps = JSON.parse(JSON.stringify(newsnaps));
 		allpsnapstable["allsnaps"].clear();
 		allpsnapstable["allsnaps"].rows.add(allsnaps["allsnaps"]);
 		allpsnapstable["allsnaps"].draw();
+		filterstable["allsnaps"].clear();
+		filterstable["allsnaps"].rows.add(allsnaps["allsnaps"]);
+		filterstable["allsnaps"].draw();
 	}
 }
 initalltables();
