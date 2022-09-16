@@ -74,12 +74,12 @@ function volumesrefresh() {
 				});
 			},
 		});
-		console.log(allpools["results"][$("#Pool2").val()]["text"]);
 
 		if (JSON.stringify(allvolumes) != JSON.stringify(newallvolumes)) {
 			allvolumes = JSON.parse(JSON.stringify(newallvolumes));
 			newallvolumes = [];
 			$.each(allvolumes, function (e, t) {
+				console.log(allvolumes[e]["pool"] + "  " + allpools["results"][$("#Pool2").val()]["text"]);
 				if (allvolumes[e]["pool"] == allpools["results"][$("#Pool2").val()]["text"]) {
 					newallvolumes.push(t);
 				}
