@@ -70,23 +70,6 @@ function poolsrefresh() {
 poolsrefresh();
 
 //$.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+Groupprot, passwd:$("#Address"+prot).val().toString()+" "+$("#Subnet"+prot).val().toString()+" "+myname+" "+pools[thepool].host+" "+myname }, function (data){
-<<<<<<< HEAD
-            
-$("#createvol").click(function(e){
-  e.preventDefault();
-  var thepool = allpools['results'][$("#Pool2").val()]['text'];
-  var owner = allpools['results'][$("#Pool2").val()]['owner'];
-  var thevol;
-  thevol = $("#volname").val();
-  var active = 'false';
-  if($("#active").is(":checked") == true ) { active = 'active' } else { active = 'false' }
-  var apiurl = "api/v1/volumes/create";
-  var apidata = {"type": prot, "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), 'portalport':$("#portalport").val(), "active":active, "Subnet": $("#Subnet").val(),
- 'initiators': $("#Initiators").val().replaceAll('\n',',').replaceAll(' ',','), "size": $("#volsize").val()+'G'}
-
-  postdata(apiurl,apidata);
-=======
->>>>>>> c8cedda20f36527ab3844613d2ccd67f3114dd5f
 
 $("#createvol").click(function (e) {
 	e.preventDefault();
@@ -94,6 +77,8 @@ $("#createvol").click(function (e) {
 	var owner = allpools["results"][$("#Pool2").val()]["owner"];
 	var thevol;
 	thevol = $("#volname").val();
+        var active = 'false';
+        if($("#active").is(":checked") == true ) { active = 'active' } else { active = 'false' }
 	var apiurl = "api/v1/volumes/create";
 	var apidata = {
 		type: prot,
@@ -104,6 +89,7 @@ $("#createvol").click(function (e) {
 		Subnet: $("#Subnet").val(),
 		initiators: $("#Initiators").val().replaceAll("\n", ",").replaceAll(" ", ","),
 		size: $("#volsize").val() + "G",
+		active: active,
 	};
 
 	postdata(apiurl, apidata);

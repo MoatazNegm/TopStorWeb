@@ -165,55 +165,6 @@ function refreshrows() {
 	});
 }
 //$.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+Groupprot, passwd:$("#Address"+prot).val().toString()+" "+$("#Subnet"+prot).val().toString()+" "+myname+" "+pools[thepool].host+" "+myname }, function (data){
-<<<<<<< HEAD
-            
-$("#createvol").click(function(e){
-  e.preventDefault();
-  var thepool = allpools['results'][$("#Pool2").val()]['text'];
-  var owner = allpools['results'][$("#Pool2").val()]['owner'];
-  var thevol;
-  var groups;
-  if(prot != 'HOME'){
-    if($("#Group").val().toString().length > 0){
-      groups = '';
-      $.each($("#Group").val(),function(e,t){
-        groups +=allgroups['results'][t]['text']+',';
-      });
-      groups = groups.slice(0,-1);
-    } else {
-      groups='NoGroup'
-    }
-    thevol = $("#volname").val();
-  } else{
-    thevol = allusersnohome[$("#volname").val()]['text'];
-    groups = thevol;
-  }
-  var apiurl = "api/v1/volumes/create";
-  var active = 'false';
-  if($("#Domtype").val() == "workgroup"){
-   if($("#wrkactive").is(":checked") == true ) { active = 'active' } else { active = 'false' }
-<<<<<<< HEAD
-
-   var apidata = {"type": prot, "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), "domtype":"workgroup", "active":active,
-   "Subnet": $("#Subnet").val(), 'groups': groups, "Myname":"mezo", "size": $("#volsize").val()+'G', 'owner':owner }
-=======
-   var apidata = {"type": prot, "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), "domtype":"workgroup", "active":active, "Subnet": $("#Subnet").val(), 'groups': groups, "Myname":"mezo",
-	 "size": $("#volsize").val()+'G', 'owner':owner }
->>>>>>> 74139a88c078333e9b68570138529c4fc238b22f
-  }
-  else{
-    if($("#domactive").is(":checked") == true ) { active = 'active' } else { active = 'false' }
-    var apidata = {"type": prot+'dom', "pool": thepool, "name": thevol, 'ipaddress':$("#Address").val(), "domtype":"domain", "active":active,
-   "Subnet": $("#Subnet").val(), "Myname":"mezo", "size": $("#volsize").val()+'G', 'owner':owner,
-   "domname": $("#domain").val(), "domsrv": $("#domsrv").val(), "domip": $("#domip").val(),
-   "domadmin": $("#domadmin").val(), "dompass": $("#dompass").val(), 
-  }
-  
-  }
-  postdata(apiurl,apidata);
-
- 
-=======
 
 $("#createvol").click(function (e) {
 	e.preventDefault();
@@ -283,7 +234,6 @@ $("#createvol").click(function (e) {
 		};
 	}
 	postdata(apiurl, apidata);
->>>>>>> c8cedda20f36527ab3844613d2ccd67f3114dd5f
 });
 
 function volumelistrefresh() {
