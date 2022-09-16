@@ -134,6 +134,7 @@ function partnersrefresh() {
 	if (JSON.stringify(allvolumes) != JSON.stringify(newallpartners)) {
 		allpartners = JSON.parse(JSON.stringify(newallpartners));
 		console.log(allpartners);
+		console.log(type(allpartners));
 		allpartners = [
 			{
 				alias: "Clu04_Sender",
