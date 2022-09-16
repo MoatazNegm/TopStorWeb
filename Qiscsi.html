@@ -370,16 +370,24 @@
                       <sub class="offset-2" style="color:#9d9eaa;  margin-top:0.3rem;">add IQNs comma/space/newline separated</sub>
                      </div>  
                   </div>
-                    <div class='offset-1 col-3'>
+                   <div class='offset-1 col-3'>
+                    <div class='row'>
                       <label  for="portalport"  class="">Port</label>
                       <input type="number"  min="3260" max="100000" step="1" value=3260 class="form-control"  id="portalport">
                     </div>
+	            <div class="row" style='margin-top: 1.5rem;'>
+                     <div class="form-group ">
+                      <label for='isactive'>Active</label>
+                      <input type="checkbox" class=" form-control-input" data-toggle='toggle' id="isactive" checked>
+                     </div>
+                    </div>
+                   </div>
                   </div>
                   
                 </div>
                 <!-- /.card-body -->
 
-                <div class="card-footer"style="background-color: white; margin-bottom: 0.1rem;">
+                <div class="card-footer"style="background-color: white; margin-bottom: 0.1rem; margin-top: -1.45rem;">
                   <button type="submit" id="createvol" class="btn btn-add" style="opacity:1;">Add Volume</button>
                 </div>
               </form>
