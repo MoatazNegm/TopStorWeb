@@ -88,13 +88,12 @@ function partnersrefresh() {
 				}
 			});
 			reload = 1;
-			console.log("hi again");
 		}
 	}
-	console.log(newallpartners);
+	console.log(allpartners);
 	$(".select2.Sender").select2({
 		placeholder: "Select a partner",
-		data: newallpartners,
+		data: allpartners,
 	});
 }
 
