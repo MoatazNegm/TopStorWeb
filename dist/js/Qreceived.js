@@ -149,6 +149,7 @@ function initalltables() {
 			},
 			{ data: "partnerR" },
 			{ data: "partnerS" },
+			{ data: "snaptype" },
 			{ data: "used" },
 			{ data: "refcompressratio" },
 			{
