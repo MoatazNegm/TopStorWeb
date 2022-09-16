@@ -181,7 +181,16 @@ function initalltables() {
 	allpsnapstable["allsnaps"].buttons().container().appendTo("#allsnapstable_wrapper .col-6:eq(0)");
 }
 initalltables();
-
+function snapsreferesh() {
+	getsnaps();
+}
+function refreshall() {
+	updatetasks();
+	$(".odd").css("background-color", "rgba(41,57,198,.1)");
+	snapsreferesh();
+}
+$("table").css("width", "100%");
+setInterval(refreshall, 2000);
 $("#Pool2").change(function (e) {
 	volumesrefresh();
 });
