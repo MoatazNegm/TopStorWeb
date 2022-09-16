@@ -102,7 +102,7 @@ function getsnaps() {
 	$.ajax({
 		url: "api/v1/volumes/snapshots/snapshotsinfo",
 		//timeout: 3000,
-		async: true,
+		async: false,
 		type: "GET",
 		success: function (data) {
 			newsnaps = data;
