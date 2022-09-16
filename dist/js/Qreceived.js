@@ -366,9 +366,6 @@ $("#volname").change(function (e) {
 
 $("#Sender").change(function (e) {
 	console.log($("#Sender").val());
-	console.log($("#Sender").text());
-	console.log(e);
-	console.log(e.target);
-	console.log(e.target.innerText);
+	console.log($("#Sender :selected").text());
 	// partnersrefresh();
 });
