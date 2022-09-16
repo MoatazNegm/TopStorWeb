@@ -155,7 +155,6 @@ function partnersrefresh() {
 		});
 		reload = 1;
 	}
-	console.log(newallpartners);
 	$(".select2.Sender").select2({
 		placeholder: "Select a partner",
 		data: newallpartners,
@@ -366,6 +365,8 @@ $("#volname").change(function (e) {
 });
 
 $("#Sender").change(function (e) {
+	console.log(e);
+	console.log(e.target);
 	console.log(e.target.innerText);
 	// partnersrefresh();
 });
