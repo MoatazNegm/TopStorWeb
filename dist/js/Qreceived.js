@@ -81,7 +81,7 @@ function partnersrefresh() {
 			allpartners = JSON.parse(JSON.stringify(newallpartners));
 			newallpartners = [];
 			$.each(allpartners["allpartners"], function (e, t) {
-				if (t["type"].includes("ceiver") > 0) {
+				if (t["type"].includes("ender") > 0) {
 					t["text"] = t["alias"].split("_")[0];
 					t["id"] = e;
 					newallpartners.push(t);
@@ -90,10 +90,10 @@ function partnersrefresh() {
 			reload = 1;
 		}
 	}
-	console.log(allpartners);
+	console.log(newallpartners);
 	$(".select2.Sender").select2({
 		placeholder: "Select a partner",
-		data: allpartners,
+		data: newallpartners,
 	});
 }
 
