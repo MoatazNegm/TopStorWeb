@@ -121,7 +121,6 @@ function snapsreferesh() {
 }
 function initalltables() {
 	snapsreferesh();
-	console.log(allsnaps);
 	allpsnapstable["allsnaps"] = $("#allsnapstable").DataTable({
 		order: [
 			[0, "desc"],
@@ -190,7 +189,6 @@ function initalltables() {
 		],
 	});
 	allpsnapstable["allsnaps"].buttons().container().appendTo("#allsnapstable_wrapper .col-6:eq(0)");
-	console.log("AllSnaps initiliazed");
 }
 initalltables();
 
@@ -200,7 +198,8 @@ function refreshall() {
 	snapsreferesh();
 }
 $("table").css("width", "100%");
-// setInterval(refreshall, 2000);
+refreshall();
+setInterval(refreshall, 2000);
 $("#Pool2").change(function (e) {
 	volumesrefresh();
 });
