@@ -285,7 +285,7 @@ function propchange() {
 
 function initVolumelist(first = 0) {
 	groupsfn(first);
-	volumelisttable = $("#VolumeList").DataTable({
+volumelisttable = $("#VolumeList").DataTable({
 		order: [[1, "desc"]],
 		ajax: {
 			url: "api/v1/volumes/" + prot + "/volumesinfo",
