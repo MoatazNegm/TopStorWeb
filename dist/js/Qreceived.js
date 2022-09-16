@@ -103,6 +103,10 @@ function volumesrefresh() {
 	console.log(newallvolumes);
 	$(".select2.volume").select2({
 		placeholder: "Select a volume",
+		data: [],
+	});
+	$(".select2.volume").select2({
+		placeholder: "Select a volume",
 		data: newallvolumes,
 	});
 }
