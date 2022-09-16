@@ -132,6 +132,7 @@ function partnersrefresh() {
 	});
 
 	if (JSON.stringify(allvolumes) != JSON.stringify(newallpartners)) {
+		console.log(allpartners);
 		allpartners = JSON.parse(JSON.stringify(newallpartners));
 		allpartners.push({
 			alias: "Clu03_Sender",
