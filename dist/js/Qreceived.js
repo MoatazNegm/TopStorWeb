@@ -133,7 +133,7 @@ function partnersrefresh() {
 
 	if (JSON.stringify(allvolumes) != JSON.stringify(newallpartners)) {
 		allpartners = JSON.parse(JSON.stringify(newallpartners));
-		allpartners.allpartners.push({
+		allpartners["allpartners"].push({
 			alias: "Clu03_Sender",
 			ip: "10.11.11.252",
 			port: "2400",
