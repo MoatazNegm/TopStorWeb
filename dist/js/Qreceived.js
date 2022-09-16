@@ -3,6 +3,7 @@ var allvolumes = "init";
 var allpartners = "init";
 var allsnaps = "init";
 var allpsnapstable = {};
+var newsnaps = "init";
 var cpool = "init";
 
 function poolsrefresh() {
@@ -183,6 +184,9 @@ function initalltables() {
 initalltables();
 function snapsreferesh() {
 	getsnaps();
+	if (JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
+		allsnaps = JSON.parse(JSON.stringify(newsnaps));
+	}
 }
 function refreshall() {
 	updatetasks();
