@@ -120,9 +120,8 @@ function snapsreferesh() {
 	}
 }
 function initalltables() {
-	updatetasks();
-	$(".odd").css("background-color", "rgba(41,57,198,.1)");
 	snapsreferesh();
+	console.log(allsnaps);
 	allpsnapstable["allsnaps"] = $("#allsnapstable").DataTable({
 		order: [
 			[0, "desc"],
