@@ -87,19 +87,11 @@ function volumesrefresh() {
 			allvolumes = JSON.parse(JSON.stringify(newallvolumes));
 			newallvolumes = [];
 			$.each(allvolumes, function (e, t) {
-				console.log(allvolumes[e]["pool"]);
-				console.log($("#Pool2").val());
-				console.log($("#Pool2").val() + 1);
-				console.log(allpools["results"][parseInt($("#Pool2").val()) + 1]);
-				console.log(allpools["results"][parseInt($("#Pool2").val()) + 1]["text"]);
-
-				if (allvolumes[e]["pool"] == "Any") {
-					newallvolumes.push(t);
-				} else if (
+				if (allvolumes[e]["pool"] == "Any") newallvolumes.push(t);
+				else if (
 					allvolumes[e]["pool"] == allpools["results"][parseInt($("#Pool2").val()) + 1]["text"]
-				) {
+				)
 					newallvolumes.push(t);
-				}
 			});
 			reload = 1;
 		}
