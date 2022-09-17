@@ -13,7 +13,7 @@ function poolsrefresh() {
 		ajax: {
 			url: "/api/v1/volumes/poolsinfo",
 			dataType: "json",
-			timeout: 3000,
+			// timeout: 3000,
 			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
 			type: "GET",
 			async: false,
@@ -35,7 +35,7 @@ function volumesrefresh() {
 		$.ajax({
 			url: "/api/v1/volumes/volumelist",
 			dataType: "json",
-			timeout: 3000,
+			// timeout: 3000,
 			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
 			type: "GET",
 			async: false,
@@ -372,8 +372,16 @@ function refreshall() {
 	snapsreferesh();
 }
 $("table").css("width", "100%");
-refreshall();
 setInterval(refreshall, 2000);
+firstRequestsInterval = setInterval(() => {
+	if (firstRequests == 0) {
+		$("#Loading").addClass("show_or_hide_other");
+		setTimeout(() => {
+			console.log("FirstRequests Done");
+			clearInterval(firstRequestsInterval);
+		}, 10);
+	}
+}, 100);
 $("#Pool2").change(function (e) {
 	var volumeFilter = $("#Pool2 :selected").text();
 	var filteredtable = $("#filterstable").DataTable();
