@@ -21,7 +21,7 @@ function poolsrefresh() {
 				allpools = data;
 				allpools["results"].push({ id: 1, owner: "dhcp18762", text: "pdhcp3329314757" });
 				allpools["results"].push({ id: 2, owner: "dhcp18762", text: "pdhcp4329314757" });
-				allpools["results"].unshift({ id: 3, owner: "Any", text: "Any" });
+				allpools["results"].unshift({ id: -1, owner: "Any", text: "Any" });
 				console.log(allpools["results"]);
 			},
 		},
@@ -90,6 +90,8 @@ function volumesrefresh() {
 				console.log($("#Pool2"));
 				console.log($("#Pool2").val());
 				console.log(allpools["results"][$("#Pool2").val()]);
+				console.log(allvolumes[e]["pool"]);
+				console.log(allvolumes[e]["pool"] == "Any");
 				if (allvolumes[e]["pool"] == "Any") {
 					newallvolumes.push(t);
 				} else if (allvolumes[e]["pool"] == allpools["results"][$("#Pool2").val()]["text"]) {
