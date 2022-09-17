@@ -22,7 +22,6 @@ function poolsrefresh() {
 				allpools["results"].push({ id: 1, owner: "dhcp18762", text: "pdhcp3329314757" });
 				allpools["results"].push({ id: 2, owner: "dhcp18762", text: "pdhcp4329314757" });
 				allpools["results"].unshift({ id: -1, owner: "Any", text: "Any" });
-				console.log(allpools["results"]);
 			},
 		},
 	});
@@ -273,6 +272,26 @@ function getsnaps() {
 					volume: "Vol3_1430225367",
 				},
 				{
+					creation: "Tue Sep 13 2022",
+					date: "13-September-2022",
+					fullname: "pdhcp2329314757/Vol3_1430225367@Snap_13.1663023907",
+					host: "dhcp18762",
+					name: "Snap_13.1663023907",
+					partnerR: "-",
+					partnerS: "Clu02",
+					pool: "pdhcp2329314757",
+					prot: "CIFS",
+					quota: "-",
+					refcompressratio: "1.00x",
+					referenced: "140K",
+					snaptype: "Once",
+					statusmount: "active",
+					time: "2:05",
+					used: 0,
+					usedbysnapshots: "-",
+					volume: "Vol3_1430225367",
+				},
+				{
 					creation: "Wed Sep 14 2022",
 					date: "14-September-2022",
 					fullname: "pdhcp3329314757/Vol4_1430225367@Snap_04.1663023907",
@@ -293,6 +312,26 @@ function getsnaps() {
 					volume: "Vol4_1430225367",
 				},
 				{
+					creation: "Wed Sep 14 2022",
+					date: "14-September-2022",
+					fullname: "pdhcp3329314757/Vol4_1430225367@Snap_14.1663023907",
+					host: "dhcp18762",
+					name: "Snap_14.1663023907",
+					partnerR: "-",
+					partnerS: "Clu04",
+					pool: "pdhcp3329314757",
+					prot: "CIFS",
+					quota: "-",
+					refcompressratio: "1.00x",
+					referenced: "140K",
+					snaptype: "Once",
+					statusmount: "active",
+					time: "3:05",
+					used: 0,
+					usedbysnapshots: "-",
+					volume: "Vol4_1430225367",
+				},
+				{
 					creation: "Thur Sep 15 2022",
 					date: "15-September-2022",
 					fullname: "pdhcp4329314757/Vol5_1430225367@Snap_05.1663023907",
@@ -300,6 +339,26 @@ function getsnaps() {
 					name: "Snap_05.1663023907",
 					partnerR: "-",
 					partnerS: "Clu04",
+					pool: "pdhcp4329314757",
+					prot: "CIFS",
+					quota: "-",
+					refcompressratio: "1.00x",
+					referenced: "140K",
+					snaptype: "Once",
+					statusmount: "active",
+					time: "4:05",
+					used: 0,
+					usedbysnapshots: "-",
+					volume: "Vol5_1430225367",
+				},
+				{
+					creation: "Thur Sep 15 2022",
+					date: "15-September-2022",
+					fullname: "pdhcp4329314757/Vol5_1430225367@Snap_15.1663023907",
+					host: "dhcp18762",
+					name: "Snap_15.1663023907",
+					partnerR: "-",
+					partnerS: "Clu03",
 					pool: "pdhcp4329314757",
 					prot: "CIFS",
 					quota: "-",
@@ -335,11 +394,51 @@ function getsnaps() {
 				{
 					creation: "Tue Sep 13 2022",
 					date: "13-September-2022",
+					fullname: "pdhcp3329314757/Vol7_1430225367@Snap_17.1663023907",
+					host: "dhcp18762",
+					name: "Snap_17.1663023907",
+					partnerR: "-",
+					partnerS: "Clu02",
+					pool: "pdhcp3329314757",
+					prot: "CIFS",
+					quota: "-",
+					refcompressratio: "1.00x",
+					referenced: "140K",
+					snaptype: "Once",
+					statusmount: "active",
+					time: "2:05",
+					used: 0,
+					usedbysnapshots: "-",
+					volume: "Vol7_1430225367",
+				},
+				{
+					creation: "Tue Sep 13 2022",
+					date: "13-September-2022",
 					fullname: "pdhcp4329314757/Vol8_1430225367@Snap_08.1663023907",
 					host: "dhcp18762",
 					name: "Snap_08.1663023907",
 					partnerR: "-",
 					partnerS: "Clu04",
+					pool: "pdhcp4329314757",
+					prot: "CIFS",
+					quota: "-",
+					refcompressratio: "1.00x",
+					referenced: "140K",
+					snaptype: "Once",
+					statusmount: "active",
+					time: "2:05",
+					used: 0,
+					usedbysnapshots: "-",
+					volume: "Vol8_1430225367",
+				},
+				{
+					creation: "Tue Sep 13 2022",
+					date: "13-September-2022",
+					fullname: "pdhcp4329314757/Vol8_1430225367@Snap_18.1663023907",
+					host: "dhcp18762",
+					name: "Snap_18.1663023907",
+					partnerR: "-",
+					partnerS: "Clu03",
 					pool: "pdhcp4329314757",
 					prot: "CIFS",
 					quota: "-",
@@ -375,6 +474,26 @@ function getsnaps() {
 				{
 					creation: "Tue Sep 13 2022",
 					date: "13-September-2022",
+					fullname: "pdhcp3329314757/Vol6_1430225367@Snap_16.1663023907",
+					host: "dhcp18762",
+					name: "Snap_16.1663023907",
+					partnerR: "-",
+					partnerS: "Clu04",
+					pool: "pdhcp3329314757",
+					prot: "CIFS",
+					quota: "-",
+					refcompressratio: "1.00x",
+					referenced: "140K",
+					snaptype: "Once",
+					statusmount: "active",
+					time: "2:05",
+					used: 0,
+					usedbysnapshots: "-",
+					volume: "Vol6_1430225367",
+				},
+				{
+					creation: "Tue Sep 13 2022",
+					date: "13-September-2022",
 					fullname: "pdhcp2329314757/Vol9_1430225367@Snap_09.1663023907",
 					host: "dhcp18762",
 					name: "Snap_09.1663023907",
@@ -395,11 +514,51 @@ function getsnaps() {
 				{
 					creation: "Tue Sep 13 2022",
 					date: "13-September-2022",
+					fullname: "pdhcp2329314757/Vol9_1430225367@Snap_19.1663023907",
+					host: "dhcp18762",
+					name: "Snap_19.1663023907",
+					partnerR: "-",
+					partnerS: "Clu04",
+					pool: "pdhcp2329314757",
+					prot: "CIFS",
+					quota: "-",
+					refcompressratio: "1.00x",
+					referenced: "140K",
+					snaptype: "Once",
+					statusmount: "active",
+					time: "2:05",
+					used: 0,
+					usedbysnapshots: "-",
+					volume: "Vol9_1430225367",
+				},
+				{
+					creation: "Tue Sep 13 2022",
+					date: "13-September-2022",
 					fullname: "pdhcp2329314757/Vol10_1430225367@Snap_10.1663023907",
 					host: "dhcp18762",
 					name: "Snap_10.1663023907",
 					partnerR: "-",
 					partnerS: "Clu02",
+					pool: "pdhcp2329314757",
+					prot: "CIFS",
+					quota: "-",
+					refcompressratio: "1.00x",
+					referenced: "140K",
+					snaptype: "Once",
+					statusmount: "active",
+					time: "2:05",
+					used: 0,
+					usedbysnapshots: "-",
+					volume: "Vol10_1430225367",
+				},
+				{
+					creation: "Tue Sep 13 2022",
+					date: "13-September-2022",
+					fullname: "pdhcp2329314757/Vol10_1430225367@Snap_20.1663023907",
+					host: "dhcp18762",
+					name: "Snap_20.1663023907",
+					partnerR: "-",
+					partnerS: "Clu04",
 					pool: "pdhcp2329314757",
 					prot: "CIFS",
 					quota: "-",
@@ -602,7 +761,6 @@ $("table").css("width", "100%");
 setInterval(refreshall, 2000);
 $("#Pool2").change(function (e) {
 	var volumeFilter = $("#Pool2 :selected").text();
-	console.log(volumeFilter);
 	var filteredtable = $("#filterstable").DataTable();
 	if (volumeFilter == "Any" || volumeFilter == "")
 		filteredtable.columns(3).search("", true, false).draw();
@@ -612,7 +770,6 @@ $("#Pool2").change(function (e) {
 
 $("#volname").change(function (e) {
 	var volumeFilter = $("#volname :selected").text();
-	console.log(volumeFilter);
 	var filteredtable = $("#filterstable").DataTable();
 	if (volumeFilter == "Any" || volumeFilter == "")
 		filteredtable.columns(4).search("", true, false).draw();
@@ -622,7 +779,6 @@ $("#volname").change(function (e) {
 
 $("#Sender").change(function (e) {
 	var volumeFilter = $("#Sender :selected").text();
-	console.log(volumeFilter);
 	var filteredtable = $("#filterstable").DataTable();
 	if (volumeFilter == "Any" || volumeFilter == "")
 		filteredtable.columns(5).search("", true, false).draw();
