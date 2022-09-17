@@ -89,7 +89,7 @@ function volumesrefresh() {
 			$.each(allvolumes, function (e, t) {
 				console.log($("#Pool2"));
 				console.log($("#Pool2").val());
-				console.log(allpools["results"][$("#Pool2").val()]);
+				console.log(allpools["results"][$("#Pool2").val() + 1]);
 				console.log(allvolumes[e]["pool"]);
 				console.log(allvolumes[e]["pool"] == "Any");
 				if (allvolumes[e]["pool"] == "Any") {
