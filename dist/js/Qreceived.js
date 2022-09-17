@@ -108,7 +108,9 @@ function volumesrefresh() {
 		$.each(allvolumes, function (e, t) {
 			if (allvolumes[e]["pool"] == "Any") {
 				newallvolumes.push(t);
-			} else if (allvolumes[e]["pool"] == allpools["results"][$("#Pool2").val()]["text"]) {
+			} else if (
+				allvolumes[e]["pool"] == allpools["results"][parseInt($("#Pool2").val()) + 1]["text"]
+			) {
 				newallvolumes.push(t);
 			}
 		});
