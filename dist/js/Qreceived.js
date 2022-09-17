@@ -488,6 +488,7 @@ $("#Pool2").change(function (e) {
 
 $("#volname").change(function (e) {
 	console.log($("#volname :selected").text());
+	var filterstable = $("#filterstable").DataTable();
 	filterstable.columns(4).search("4", true, false).draw();
 	// partnersrefresh();
 });
