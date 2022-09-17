@@ -18,7 +18,6 @@ function poolsrefresh() {
 		success: function (data) {
 			allpools = data;
 			allpools["results"].unshift({ id: -1, owner: "Any", text: "Any" });
-			console.log(allpools);
 			firstRequests = firstRequests - 1;
 		},
 	});
@@ -415,7 +414,7 @@ $("#Pool2").change(function (e) {
 	var filteredtable = $("#filterstable").DataTable();
 	if (volumeFilter == "Any" || volumeFilter == "")
 		filteredtable.columns(3).search("", true, false).draw();
-	else filteredtable.columns(3).search(volumeFilter, true, false).draw();
+	else filteredtable.columns(3).search(volumeFilter, true, false, true).draw();
 	volumesrefresh();
 });
 
@@ -424,7 +423,7 @@ $("#volname").change(function (e) {
 	var filteredtable = $("#filterstable").DataTable();
 	if (volumeFilter == "Any" || volumeFilter == "")
 		filteredtable.columns(4).search("", true, false).draw();
-	else filteredtable.columns(4).search(volumeFilter, true, false).draw();
+	else filteredtable.columns(4).search(volumeFilter, true, false, true).draw();
 });
 
 $("#Sender").change(function (e) {
@@ -432,5 +431,5 @@ $("#Sender").change(function (e) {
 	var filteredtable = $("#filterstable").DataTable();
 	if (volumeFilter == "Any" || volumeFilter == "")
 		filteredtable.columns(5).search("", true, false).draw();
-	else filteredtable.columns(5).search(volumeFilter, true, false).draw();
+	else filteredtable.columns(5).search(volumeFilter, true, false, true).draw();
 });
