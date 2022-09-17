@@ -94,7 +94,7 @@ function volumesrefresh() {
 				console.log(allvolumes[e]["pool"] == "Any");
 				if (allvolumes[e]["pool"] == "Any") {
 					newallvolumes.push(t);
-				} else if (allvolumes[e]["pool"] == allpools["results"][$("#Pool2").val()]["text"]) {
+				} else if (allvolumes[e]["pool"] == allpools["results"][$("#Pool2").val() + 1]["text"]) {
 					newallvolumes.push(t);
 				}
 			});
