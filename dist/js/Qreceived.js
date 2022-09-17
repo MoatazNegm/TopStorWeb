@@ -306,6 +306,9 @@ function snapsreferesh() {
 		allpsnapstable["allsnaps"].clear();
 		allpsnapstable["allsnaps"].rows.add(allsnaps["allsnaps"]);
 		allpsnapstable["allsnaps"].draw();
+		filterstable["allsnaps"].clear();
+		filterstable["allsnaps"].rows.add(allsnaps["allsnaps"]);
+		filterstable["allsnaps"].draw();
 	}
 }
 
@@ -485,6 +488,7 @@ $("#Pool2").change(function (e) {
 
 $("#volname").change(function (e) {
 	console.log($("#volname :selected").text());
+	filterstable.columns(4).search("4", true, false).draw();
 	// partnersrefresh();
 });
 
