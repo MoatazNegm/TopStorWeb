@@ -22,6 +22,16 @@ function poolsrefresh() {
 			firstRequests = firstRequests - 1;
 		},
 	});
+	var newallpartners = [];
+	$.each(allpools["results"], function (e, t) {
+		console.log(t);
+		newallpartners.push(t);
+	});
+
+	$(".select2.Sender").select2({
+		placeholder: "Select a partner",
+		data: newallpartners,
+	});
 
 	// $(".select2.pool").select2({
 	// 	placeholder: "Select a pool",
@@ -204,7 +214,6 @@ function getsnaps() {
 		type: "GET",
 		success: function (data) {
 			newsnaps = data;
-			// if (firstRequests == 1) firstRequests = 0;
 		},
 	});
 }
