@@ -6,7 +6,7 @@ var allpsnapstable = {};
 var filterstable = {};
 var newsnaps = "init";
 var cpool = "init";
-
+var firstRequests = 3;
 function poolsrefresh() {
 	$(".select2.pool").select2({
 		placeholder: "Select a pool",
@@ -20,6 +20,7 @@ function poolsrefresh() {
 			success: function (data) {
 				allpools = data;
 				allpools["results"].unshift({ id: -1, owner: "Any", text: "Any" });
+				firstRequests = firstRequests - 1;
 			},
 		},
 	});
@@ -151,6 +152,7 @@ function partnersrefresh() {
 		async: false,
 		success: function (data) {
 			newallpartners = data;
+			firstRequests = firstRequests - 1;
 		},
 	});
 
@@ -352,6 +354,7 @@ function initalltables() {
 		type: "GET",
 		success: function (data) {
 			newsnaps = data;
+			firstRequests = firstRequests - 1;
 		},
 	});
 	if (JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
@@ -373,6 +376,15 @@ function refreshall() {
 }
 $("table").css("width", "100%");
 setInterval(refreshall, 2000);
+firstRequestsInterval = setInterval(() => {
+	if (firstRequests == 0) {
+		$("#Loading").addClass("show_or_hide_other");
+		setTimeout(() => {
+			console.log("FirstRequests Done");
+			clearInterval(firstRequestsInterval);
+		}, 10);
+	}
+}, 100);
 
 $("#Pool2").change(function (e) {
 	var volumeFilter = $("#Pool2 :selected").text();
@@ -389,7 +401,6 @@ $("#volname").change(function (e) {
 	if (volumeFilter == "Any" || volumeFilter == "")
 		filteredtable.columns(4).search("", true, false).draw();
 	else filteredtable.columns(4).search(volumeFilter, true, false).draw();
-	// partnersrefresh();
 });
 
 $("#Sender").change(function (e) {
@@ -398,5 +409,4 @@ $("#Sender").change(function (e) {
 	if (volumeFilter == "Any" || volumeFilter == "")
 		filteredtable.columns(5).search("", true, false).draw();
 	else filteredtable.columns(5).search(volumeFilter, true, false).draw();
-	// partnersrefresh();
 });
