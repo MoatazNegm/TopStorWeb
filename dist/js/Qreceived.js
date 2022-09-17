@@ -6,7 +6,7 @@ var allpsnapstable = {};
 var filterstable = {};
 var newsnaps = "init";
 var cpool = "init";
-
+var firstRequests = 3;
 function poolsrefresh() {
 	$.ajax({
 		url: "/api/v1/volumes/poolsinfo",
@@ -19,6 +19,7 @@ function poolsrefresh() {
 			allpools = data;
 			allpools["results"].unshift({ id: -1, owner: "Any", text: "Any" });
 			console.log(allpools);
+			firstRequests = firstRequests - 1;
 		},
 	});
 
@@ -166,6 +167,7 @@ function partnersrefresh() {
 		async: false,
 		success: function (data) {
 			newallpartners = data;
+			firstRequests = firstRequests - 1;
 		},
 	});
 
@@ -367,6 +369,7 @@ function initalltables() {
 		type: "GET",
 		success: function (data) {
 			newsnaps = data;
+			firstRequests = firstRequests - 1;
 		},
 	});
 	if (JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
