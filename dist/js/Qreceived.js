@@ -85,8 +85,10 @@ function volumesrefresh() {
 		if (JSON.stringify(allvolumes) != JSON.stringify(newallvolumes)) {
 			allvolumes = JSON.parse(JSON.stringify(newallvolumes));
 			newallvolumes = [];
+			console.log(allvolumes);
 			$.each(allvolumes, function (e, t) {
-				if (allvolumes[e]["pool"] == "Any") {
+				console.log(allvolumes[e]["pool"]);
+				if (allvolumes[e]["pool"].equals("Any")) {
 					newallvolumes.push(t);
 				} else if (allvolumes[e]["pool"] == allpools["results"][$("#Pool2").val()]["text"]) {
 					newallvolumes.push(t);
