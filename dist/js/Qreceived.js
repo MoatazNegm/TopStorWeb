@@ -482,7 +482,12 @@ $("table").css("width", "100%");
 // refreshall();
 setInterval(refreshall, 2000);
 $("#Pool2").change(function (e) {
-	console.log($("#Pool2 :selected").text());
+	var volumeFilter = $("#Pool2 :selected").text();
+	console.log(volumeFilter);
+	var filteredtable = $("#filterstable").DataTable();
+	if (volumeFilter == "Any" || volumeFilter == "")
+		filteredtable.columns(3).search("", true, false).draw();
+	else filteredtable.columns(3).search(volumeFilter, true, false).draw();
 	volumesrefresh();
 });
 
@@ -497,6 +502,11 @@ $("#volname").change(function (e) {
 });
 
 $("#Sender").change(function (e) {
-	console.log($("#Sender :selected").text());
+	var volumeFilter = $("#Sender :selected").text();
+	console.log(volumeFilter);
+	var filteredtable = $("#filterstable").DataTable();
+	if (volumeFilter == "Any" || volumeFilter == "")
+		filteredtable.columns(5).search("", true, false).draw();
+	else filteredtable.columns(5).search(volumeFilter, true, false).draw();
 	// partnersrefresh();
 });
