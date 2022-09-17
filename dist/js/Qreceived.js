@@ -90,12 +90,14 @@ function volumesrefresh() {
 				console.log(allvolumes[e]["pool"]);
 				console.log($("#Pool2").val());
 				console.log($("#Pool2").val() + 1);
-				console.log(allpools["results"][$("#Pool2").val() + 1]);
-				console.log(allpools["results"][$("#Pool2").val() + 1]["text"]);
+				console.log(allpools["results"][parseInt($("#Pool2").val()) + 1]);
+				console.log(allpools["results"][parseInt($("#Pool2").val()) + 1]["text"]);
 
 				if (allvolumes[e]["pool"] == "Any") {
 					newallvolumes.push(t);
-				} else if (allvolumes[e]["pool"] == allpools["results"][$("#Pool2").val() + 1]["text"]) {
+				} else if (
+					allvolumes[e]["pool"] == allpools["results"][parseInt($("#Pool2").val()) + 1]["text"]
+				) {
 					newallvolumes.push(t);
 				}
 			});
