@@ -373,15 +373,7 @@ function refreshall() {
 }
 $("table").css("width", "100%");
 setInterval(refreshall, 2000);
-firstRequestsInterval = setInterval(() => {
-	if (firstRequests == 0) {
-		$("#Loading").addClass("show_or_hide_other");
-		setTimeout(() => {
-			console.log("FirstRequests Done");
-			clearInterval(firstRequestsInterval);
-		}, 10);
-	}
-}, 100);
+
 $("#Pool2").change(function (e) {
 	var volumeFilter = $("#Pool2 :selected").text();
 	var filteredtable = $("#filterstable").DataTable();
