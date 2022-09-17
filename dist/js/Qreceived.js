@@ -23,7 +23,6 @@ function poolsrefresh() {
 	});
 	var newallpartners = [];
 	$.each(allpools["results"], function (e, t) {
-		console.log(t);
 		newallpartners.push(t);
 	});
 
