@@ -248,7 +248,7 @@ function getsnaps() {
 				{
 					creation: "Tue Sep 13 2022",
 					date: "13-September-2022",
-					fullname: "pdhcp2329314757/Vol3_1430225367@Snap_04.1663023907",
+					fullname: "pdhcp2329314757/Vol_3_1430225367@Snap_04.1663023907",
 					host: "dhcp18762",
 					name: "Snap_04.1663023907",
 					partnerR: "-",
@@ -263,7 +263,7 @@ function getsnaps() {
 					time: "2:05",
 					used: 0,
 					usedbysnapshots: "-",
-					volume: "Vol3_1430225367",
+					volume: "Vol_3_1430225367",
 				},
 				{
 					creation: "Wed Sep 14 2022",
