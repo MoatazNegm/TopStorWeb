@@ -87,11 +87,10 @@ function volumesrefresh() {
 			allvolumes = JSON.parse(JSON.stringify(newallvolumes));
 			newallvolumes = [];
 			$.each(allvolumes, function (e, t) {
-				console.log($("#Pool2"));
-				console.log($("#Pool2").val());
-				console.log(allpools["results"][$("#Pool2").val() + 1]);
 				console.log(allvolumes[e]["pool"]);
-				console.log(allvolumes[e]["pool"] == "Any");
+				console.log(allpools["results"][$("#Pool2").val() + 1]);
+				console.log(allpools["results"][$("#Pool2").val() + 1]["text"]);
+
 				if (allvolumes[e]["pool"] == "Any") {
 					newallvolumes.push(t);
 				} else if (allvolumes[e]["pool"] == allpools["results"][$("#Pool2").val() + 1]["text"]) {
