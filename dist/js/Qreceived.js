@@ -487,9 +487,12 @@ $("#Pool2").change(function (e) {
 });
 
 $("#volname").change(function (e) {
-	console.log($("#volname :selected").text());
-	var filterstable = $("#filterstable").DataTable();
-	filterstable.columns(4).search("4", true, false).draw();
+	var volumeFilter = $("#volname :selected").text();
+	console.log(volumeFilter);
+	var filteredtable = $("#filterstable").DataTable();
+	if (volumeFilter == "Any" || volumeFilter == "")
+		filteredtable.columns(4).search("", true, false).draw();
+	else filteredtable.columns(4).search(volumeFilter, true, false).draw();
 	// partnersrefresh();
 });
 
