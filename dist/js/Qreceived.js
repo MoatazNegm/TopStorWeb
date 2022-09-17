@@ -22,6 +22,7 @@ function poolsrefresh() {
 				allpools["results"].push({ id: 1, owner: "dhcp18762", text: "pdhcp3329314757" });
 				allpools["results"].push({ id: 2, owner: "dhcp18762", text: "pdhcp4329314757" });
 				allpools["results"].unshift({ id: -1, owner: "Any", text: "Any" });
+				console.log(allpools["results"]);
 			},
 		},
 	});
