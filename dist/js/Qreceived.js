@@ -757,7 +757,7 @@ function refreshall() {
 	snapsreferesh();
 }
 $("table").css("width", "100%");
-// refreshall();
+refreshall();
 setInterval(refreshall, 2000);
 $("#Pool2").change(function (e) {
 	var volumeFilter = $("#Pool2 :selected").text();
