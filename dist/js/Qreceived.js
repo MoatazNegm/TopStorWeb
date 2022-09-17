@@ -21,6 +21,7 @@ function poolsrefresh() {
 				allpools = data;
 				allpools["results"].push({ id: 1, owner: "dhcp18762", text: "pdhcp3329314757" });
 				allpools["results"].push({ id: 2, owner: "dhcp18762", text: "pdhcp4329314757" });
+				allpools["results"].unshift({ id: -1, owner: "Any", text: "Any" });
 			},
 		},
 	});
@@ -71,6 +72,12 @@ function volumesrefresh() {
 					id: 5,
 					pool: "pdhcp4329314757",
 					text: "Vol8",
+				});
+				newallvolumes.unshift({
+					fullname: "Any",
+					id: -1,
+					pool: "Any",
+					text: "Any",
 				});
 			},
 		});
@@ -185,6 +192,12 @@ function partnersrefresh() {
 			alias: "Clu04_Sender",
 			ip: "10.11.11.251",
 			port: "2400",
+			type: "Sender",
+		});
+		allpartners["allpartners"].unshift({
+			alias: "Any",
+			ip: "Any",
+			port: "Any",
 			type: "Sender",
 		});
 		newallpartners = [];
