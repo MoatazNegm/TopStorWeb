@@ -6,23 +6,38 @@ var allpsnapstable = {};
 var filterstable = {};
 var newsnaps = "init";
 var cpool = "init";
-var firstRequests = 1;
+
 function poolsrefresh() {
-	$(".select2.pool").select2({
-		placeholder: "Select a pool",
-		ajax: {
-			url: "/api/v1/volumes/poolsinfo",
-			dataType: "json",
-			// timeout: 3000,
-			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
-			type: "GET",
-			async: true,
-			success: function (data) {
-				allpools = data;
-				allpools["results"].unshift({ id: -1, owner: "Any", text: "Any" });
-			},
+	$.ajax({
+		url: "/api/v1/volumes/poolsinfo",
+		dataType: "json",
+		// timeout: 3000,
+		// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+		type: "GET",
+		async: false,
+		success: function (data) {
+			allpools = data;
+			allpools["results"].unshift({ id: -1, owner: "Any", text: "Any" });
+			console.log(allpools);
 		},
 	});
+
+	// $(".select2.pool").select2({
+	// 	placeholder: "Select a pool",
+	// 	ajax: {
+	// 		url: "/api/v1/volumes/poolsinfo",
+	// 		dataType: "json",
+	// 		// timeout: 3000,
+	// 		// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+	// 		type: "GET",
+	// 		async: false,
+	// 		success: function (data) {
+	// 			allpools = data;
+	// 			allpools["results"].unshift({ id: -1, owner: "Any", text: "Any" });
+	// 			firstRequests = firstRequests - 1;
+	// 		},
+	// 	},
+	// });
 }
 poolsrefresh();
 
@@ -142,18 +157,15 @@ function volumesrefresh() {
 // }
 
 function partnersrefresh() {
-	$(".select2.Sender").select2({
-		placeholder: "Select a Sender",
-		ajax: {
-			url: "/api/v1/partners/partnerlist",
-			dataType: "json",
-			// timeout: 3000,
-			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
-			type: "GET",
-			async: true,
-			success: function (data) {
-				newallpartners = data;
-			},
+	$.ajax({
+		url: "/api/v1/partners/partnerlist",
+		dataType: "json",
+		// timeout: 3000,
+		// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+		type: "GET",
+		async: false,
+		success: function (data) {
+			newallpartners = data;
 		},
 	});
 
@@ -355,7 +367,6 @@ function initalltables() {
 		type: "GET",
 		success: function (data) {
 			newsnaps = data;
-			firstRequests = 0;
 		},
 	});
 	if (JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
