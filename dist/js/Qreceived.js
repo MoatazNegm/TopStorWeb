@@ -88,7 +88,8 @@ function volumesrefresh() {
 			newallvolumes = [];
 			$.each(allvolumes, function (e, t) {
 				console.log(allvolumes[e]["pool"]);
-                console.log("#Pool2").val());
+				console.log($("#Pool2").val());
+				console.log($("#Pool2").val() + 1);
 				console.log(allpools["results"][$("#Pool2").val() + 1]);
 				console.log(allpools["results"][$("#Pool2").val() + 1]["text"]);
 
