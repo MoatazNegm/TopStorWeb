@@ -28,8 +28,8 @@ function poolsrefresh() {
 		newallpartners.push(t);
 	});
 
-	$(".select2.Sender").select2({
-		placeholder: "Select a partner",
+	$(".select2.pool").select2({
+		placeholder: "Select a pool",
 		data: newallpartners,
 	});
 
