@@ -87,6 +87,7 @@ function volumesrefresh() {
 			allvolumes = JSON.parse(JSON.stringify(newallvolumes));
 			newallvolumes = [];
 			$.each(allvolumes, function (e, t) {
+				console.log($("#Pool2"));
 				console.log(allpools["results"][$("#Pool2").val()]);
 				if (allvolumes[e]["pool"] == "Any") {
 					newallvolumes.push(t);
