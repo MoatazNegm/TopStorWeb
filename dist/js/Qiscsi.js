@@ -83,7 +83,6 @@ $("#createvol").click(function (e) {
 	} else {
 		active = "false";
 	}
-	console.log(active);
 	var apiurl = "api/v1/volumes/create";
 	var apidata = {
 		type: prot,
@@ -95,7 +94,6 @@ $("#createvol").click(function (e) {
 		Subnet: $("#Subnet").val(),
 		initiators: $("#Initiators").val().replaceAll("\n", ",").replaceAll(" ", ","),
 		size: $("#volsize").val() + "G",
-		active: active,
 	};
 
 	postdata(apiurl, apidata);
