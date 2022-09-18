@@ -58,7 +58,9 @@ var dirtylog = 1;
 var allperiods = ["Minutely", "Hourly", "Weekly"];
 var firstRequests = 1;
 //var allperiods = ['Minutely', 'Minutely', 'Minutely'];
-
+$("#timepicker").datetimepicker({
+	format: "HH:mm",
+});
 function poolsrefresh() {
 	$(".select2.pool").select2({
 		placeholder: "Select a pool",
@@ -127,27 +129,7 @@ function getsnaps() {
 	});
 }
 //allsnaps = getsnaps();
-const monthNames = [
-	"Jan",
-	"Feb",
-	"Mar",
-	"Apr",
-	"May",
-	"Jun",
-	"Jul",
-	"Aug",
-	"Sep",
-	"Oct",
-	"Nov",
-	"Dec",
-];
 
-function fixDate(row) {
-	var date = new Date(row.date);
-	var newDate = date.getDate() + "-" + monthNames[date.getMonth()] + "-" + date.getFullYear();
-	row.date = newDate;
-	return row.date;
-}
 function initalltables() {
 	onceinittable = $("#Oncetable").DataTable({
 		order: [

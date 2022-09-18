@@ -248,7 +248,7 @@ var bg = {
 setInterval(function () {
 	var notif;
 	onedaylogfn();
-	$(".modal-backdrop").css('z-index','0')
+	$(".modal-backdrop").css("z-index", "0");
 	$.ajax({
 		url: "api/v1/info/notification",
 		async: true,
@@ -293,7 +293,7 @@ $("body").click(function (e) {
 	var apiurl = "api/v1/login/renewtoken";
 	var apidata = { token: hypetoken };
 	postdata(apiurl, apidata);
-	$(".modal-backdrop").css('z-index','0')
+	$(".modal-backdrop").css("z-index", "0");
 });
 $("li.auths a.active").css("background-color", "#4558FC");
 $(".chgpasswd").click(function (e) {
@@ -312,6 +312,27 @@ $(".chpass").focusout(function (e) {
 		$("#passerr").css("color", "white");
 		$("#passwrd").prop("disabled", false);
 	}
-	$(".modal-backdrop").css('z-index','0')
+	$(".modal-backdrop").css("z-index", "0");
 });
-$(".modal-backdrop").css('z-index','0')
+
+const monthNames = [
+	"Jan",
+	"Feb",
+	"Mar",
+	"Apr",
+	"May",
+	"Jun",
+	"Jul",
+	"Aug",
+	"Sep",
+	"Oct",
+	"Nov",
+	"Dec",
+];
+
+function fixDate(row) {
+	var date = new Date(row.date);
+	var newDate = date.getDate() + "-" + monthNames[date.getMonth()] + "-" + date.getFullYear();
+	row.date = newDate;
+	return row.date;
+}
