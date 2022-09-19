@@ -533,8 +533,7 @@ function checksubmit() {
 			$("#Subnet").val() > 1 &&
 			$("#volsize").val() > 0 &&
 			$("#domain").val().length > 2 &&
-			$("#domsrv").val().length > 2 &&
-			$("#domip").val().length > 5 &&
+			($("#domsrv").val().length > 2 || $("#domip").val().length > 5) &&
 			$("#domadmin").val().length > 2 &&
 			$("#dompass").val().length > 2
 		) {

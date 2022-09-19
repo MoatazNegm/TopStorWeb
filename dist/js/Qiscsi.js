@@ -78,7 +78,7 @@ $("#createvol").click(function (e) {
 	var thevol;
 	thevol = $("#volname").val();
         var active = 'false';
-        if($("#active").is(":checked") == true ) { active = 'active' } else { active = 'false' }
+        if($("#isactive").is(":checked") == true ) { active = 'active' } else { active = 'false' }
 	var apiurl = "api/v1/volumes/create";
 	var apidata = {
 		type: prot,
