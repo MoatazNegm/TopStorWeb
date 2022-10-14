@@ -1,5 +1,1 @@
-<<<<<<< HEAD
 {"hostname":"dhcp14895","name":"node_1","addr":"10.11.11.241","addrsubnet":"24","rout":"10.11.11.253","dns":"10.11.11.11","mgmtip":"10.11.11.250","mgmtsubnet":"24","ntp":"10.11.11.11","tz":"Kuw%(GMT+03!00)_Moscow^_St._Petersburg^_Volgograd","gw":"10.11.11.253","dnsname":"10.11.11.11","dnssearch":"qstor.com","configured":"yes"}
-=======
-{"hostname":"dhcp28109","name":"dhcp28109","addr":"10.11.11.244","addrsubnet":"24","rout":"10.11.11.253","dns":"-1","mgmtip":"192.168.43.7","mgmtsubnet":"24","ntp":"0.pool.ntp.org","tz":"Kuw%(GMT+03!00)_Moscow^_St._Petersburg^_Volgograd","gw":"10.11.11.253","dnsname":"-1","dnssearch":"-1","configured":"yes"}
->>>>>>> d12d956e0e0d13dcae108d0700e9b779eeedd55c
