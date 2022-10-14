@@ -180,7 +180,12 @@ function initalltables() {
 		],
 		data: alls,
 		columns: [
-			{ data: "date" },
+			{
+				data: null,
+				render: function (data, type, row) {
+					return fixDate(row);
+				},
+			},
 			{ data: "time" },
 			{ data: "name" },
 			{
@@ -249,7 +254,12 @@ function initalltables() {
 		],
 		data: alls,
 		columns: [
-			{ data: "date" },
+			{
+				data: null,
+				render: function (data, type, row) {
+					return fixDate(row);
+				},
+			},
 			{ data: "time" },
 			{
 				data: "name",
@@ -479,7 +489,12 @@ function initalltables() {
 				],
 				data: alls,
 				columns: [
-					{ data: "date" },
+					{
+						data: null,
+						render: function (data, type, row) {
+							return fixDate(row);
+						},
+					},
 					{ data: "time" },
 					{
 						data: "name",

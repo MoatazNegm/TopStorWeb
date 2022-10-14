@@ -41270,6 +41270,7 @@
 09/17/2022 20:40:52 dhcp28109 info admin HostManual1st5@@@dhcp28109@Repli_1 1663436455
 09/17/2022 20:40:58 dhcp28109 info admin HostManual1su5@@@dhcp28109@Repli_1 1663436461
 >>>>>>> d12d956e0e0d13dcae108d0700e9b779eeedd55c
+<<<<<<< HEAD
 09/19/2022 16:00:35 dhcp14895 warning system Lognsa0@@@admin 1663592437
 09/20/2022 02:35:19 dhcp14895 info system Partst05@@@dhcp14895 1663630523
 09/20/2022 02:35:30 dhcp14895 warning system Partst02@@@dhcp14895 1663630532
@@ -41289,3 +41290,8 @@
 10/14/2022 16:02:16 dhcp14895 warning system Lognno0@@@0 1665752537
 10/14/2022 16:02:26 dhcp14895 info system Lognsu0@@@admin 1665752547
 10/14/2022 17:55:02 dhcp14895 warning system Lognsa0@@@admin 1665759304
+=======
+10/14/2022 16:08:00 dhcp17797 info system Partst03@@@dhcp17797@10.11.11.244 1665752917
+10/14/2022 16:09:50 dhcp17797 info system Partsu03@@@dhcp17797@10.11.11.244 1665752993
+10/14/2022 16:11:50 dhcp17797 info system Upnu1010@@ 1665753113
+>>>>>>> 34f3289e263ce04baa57273ddeb2dc6ef4d67126
