@@ -172,6 +172,17 @@ $("#createvol").click(function (e) {
 	var owner = allpools["results"][$("#Pool2").val()]["owner"];
 	var thevol;
 	var groups;
+	switch (prot) {
+		case "HOME":
+			console.log('HOME');
+			break;
+		case "NFS":
+			console.log('NFS');
+			break;
+		default:
+			console.log('non-home/nfs');
+			break;
+	}
 	if (prot != "HOME") {
 		if ($("#Group").val().toString().length > 0) {
 			groups = "";
@@ -223,6 +234,7 @@ $("#createvol").click(function (e) {
 			domtype: "domain",
 			active: active,
 			Subnet: $("#Subnet").val(),
+			groups: groups,
 			Myname: "mezo",
 			size: $("#volsize").val() + "G",
 			owner: owner,
@@ -233,6 +245,7 @@ $("#createvol").click(function (e) {
 			dompass: $("#dompass").val(),
 		};
 	}
+	console.log('apidata',apidata)
 	postdata(apiurl, apidata);
 });
 
