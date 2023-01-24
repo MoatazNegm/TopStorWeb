@@ -51,7 +51,8 @@ var volumelisttable;
 var dirtylog = 1;
 var grpsets = {};
 var firstRequests = 7;
-if (window.location.pathname.endsWith("Qnfs.html")) firstRequests = 2;
+//if (window.location.pathname.endsWith("Qnfs.html")) firstRequests = 2;
+//if (prot == 'NFS') firstRequests = 7;
 
 function poolsrefresh(first = 0) {
 	$(".select2.pool").select2({
@@ -172,12 +173,15 @@ $("#createvol").click(function (e) {
 	var owner = allpools["results"][$("#Pool2").val()]["owner"];
 	var thevol;
 	var groups;
+	var active = "false";
 	switch (prot) {
 		case "HOME":
 			console.log('HOME');
 			break;
 		case "NFS":
-			console.log('NFS');
+			if ($("#nfsactive").is(":checked") == true) {
+			active = "active";
+			}
 			break;
 		default:
 			console.log('non-home/nfs');
@@ -199,12 +203,9 @@ $("#createvol").click(function (e) {
 		groups = thevol;
 	}
 	var apiurl = "api/v1/volumes/create";
-	var active = "false";
 	if ($("#Domtype").val() == "workgroup") {
 		if ($("#wrkactive").is(":checked") == true) {
 			active = "active";
-		} else {
-			active = "false";
 		}
 
 		var apidata = {
@@ -223,11 +224,11 @@ $("#createvol").click(function (e) {
 	} else {
 		if ($("#domactive").is(":checked") == true) {
 			active = "active";
-		} else {
-			active = "false";
 		}
+		var protype = 'NFS'
+		if(prot != 'NFS' ) { protype = prot + "dom"; }
 		var apidata = {
-			type: prot + "dom",
+			type: protype,
 			pool: thepool,
 			name: thevol,
 			ipaddress: $("#Address").val(),

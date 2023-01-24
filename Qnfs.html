@@ -339,7 +339,7 @@
 
                 <div class="card-body">
                   <div class="row">
-                    <div class='col-12'>
+                    <div class='col-7'>
                       <div class="form-group">
                         <label  for="Pool2">Pool</label>
                         <select  class="select2 pool  form-control" id="Pool2">
@@ -347,6 +347,13 @@
                         </select>
                       </div>
                     </div>
+		   <div class="offset-1 col-1" >
+                     <div class="form-group ">
+                      <label for='nfsactive'>Active</label>
+                      <input type="checkbox" class=" form-control-input" data-toggle='toggle' id="nfsactive" checked>
+                     </div>
+                    </div>
+
                   </div>
                   <div class="row">
                     <div class='col-7'>
@@ -439,7 +446,7 @@
                 <table id="VolumeList" class="table table-sm table-hover  table-striped" style="font-size:90%;">
                   <thead style="background-color:#2939C6; color: white;">
                     <tr>
-                      <th style="width:10%;">Volume</th>
+		      <th style="width:10%;">Volume</th>
                       <th style="width:10%;">pool</th>
                       <th style="width:3%;">Size (GB)</th>
                       <th style="width:3%;">Snaps. (MB)</th>
@@ -448,7 +455,8 @@
                       <th style="width:3%;">Subnet</th>
                       <th style="width:40%;">Allowed Groups</th>
                       <th style="width:10%;">Need update</th>
-                      <th style="width:3%;">Remove Volume</th>
+                      <th style="width:3%;"></th>
+                      <th style="width:3%;"></th>
                     </tr>
 
                   </thead>
