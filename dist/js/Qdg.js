@@ -379,9 +379,6 @@ function initdgs() {
 		$(this).css("background-color", !!(index & 1) ? "rgba(0,0,0,.05)" : "rgba(0,0,0,0)");
 	});
 }
-getdgs();
-initdgs();
-initaddgs();
 firstRequestsInterval = setInterval(() => {
 	if (firstRequests == 0) {
 		$("#Loading").addClass("show_or_hide_other");
@@ -488,11 +485,20 @@ function dgrefresh(newdgs) {
 		initaddgs();
 	}
 }
-
+var dirty = 1
 function refreshall() {
 	updatetasks();
-
+	if (firstRequests == 0 && dirty == 1){
+		initdgs();
+		getdgs();
+		initaddgs();
+		dirty = 0
+	}
 	getdgs();
 }
 
 setInterval(refreshall, 2000);
+initdgs();
+getdgs();
+initaddgs();
+
