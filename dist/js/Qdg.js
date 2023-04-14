@@ -197,11 +197,13 @@ function initdgs() {
 						"</div>"
 				);
 				$.each(alldgs["raids"][raid]["disks"], function (eee, disk) {
+					var silvering = ''
 					if(alldgs["disks"][disk]["name"].includes('dm-') > 0) { return true; }
 					shortdisk = disk.slice(-5);
 					status = alldgs["disks"][disk]["status"];
 					host = alldgs["disks"][disk]["host"];
 					if(alldgs["disks"][disk]["silvering"] != 'no') { silvering = 'silvering' } else { silvering = '' }
+					//console.log('short silver', shortdisk, silvering)
 					changeop = alldgs["disks"][disk]["changeop"];
 					size = parseFloat(alldgs["disks"][disk]["size"]).toFixed(2);
 					if (
