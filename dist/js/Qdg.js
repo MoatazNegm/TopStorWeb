@@ -174,7 +174,13 @@ function initdgs() {
 
 			$.each(t["raids"], function (ee, tt) {
 				raid = tt;
-				cols = alldgs["raids"][raid]["disks"].length + alldgs["raids"][raid]["missingdisks"][0];
+				dcols = 0
+				$.each(alldgs["raids"][raid]["disks"], function (eee, disk) {
+                                        if(alldgs["disks"][disk]["name"].includes('dm-') > 0) { return true; }
+					dcols = dcols + 1
+				});
+				//cols = alldgs["raids"][raid]["disks"].length + alldgs["raids"][raid]["missingdisks"][0];
+				cols =  dcols + alldgs["raids"][raid]["missingdisks"][0];
 				colsmean = Math.ceil(12 / cols);
 				$("#" + pool + " .disks").append(
 					'<div class="col-' +
@@ -191,9 +197,11 @@ function initdgs() {
 						"</div>"
 				);
 				$.each(alldgs["raids"][raid]["disks"], function (eee, disk) {
+					if(alldgs["disks"][disk]["name"].includes('dm-') > 0) { return true; }
 					shortdisk = disk.slice(-5);
 					status = alldgs["disks"][disk]["status"];
 					host = alldgs["disks"][disk]["host"];
+					if(alldgs["disks"][disk]["silvering"] != 'no') { silvering = 'silvering' } else { silvering = '' }
 					changeop = alldgs["disks"][disk]["changeop"];
 					size = parseFloat(alldgs["disks"][disk]["size"]).toFixed(2);
 					if (
@@ -212,7 +220,7 @@ function initdgs() {
 							disk +
 							'" data-disk="' +
 							disk +
-							'" class="' +
+							'" class=" ' +
 							raid +
 							" " +
 							pool +
@@ -223,8 +231,8 @@ function initdgs() {
 							'">' +
 							"  <a href=\"javascript:memberclick('#" +
 							disk +
-							'\')" class="img-clck" >' +
-							'     <img class="img412 imgstyle ' +
+							'\')" class="'+silvering+' img-clck" >' +
+							'     <img class=" img412 imgstyle ' +
 							diskimg +
 							" " +
 							disk +
