@@ -180,7 +180,14 @@ function initdgs() {
 					dcols = dcols + 1
 				});
 				//cols = alldgs["raids"][raid]["disks"].length + alldgs["raids"][raid]["missingdisks"][0];
-				cols =  dcols + alldgs["raids"][raid]["missingdisks"][0];
+				var dms = 0
+				 $.each(alldgs["raids"][raid]["disks"], function (eee, disk) {
+					if(alldgs["disks"][disk]["name"].includes('dm-') > 0) { dms += 1 }
+				 else { if(alldgs["disks"][disk]['changeop'].includes('ONLINE') <= 0) { dms -= 1 } }
+				 });
+				if(dms < 0) dms = 0 ;
+				cols =  dcols + alldgs["raids"][raid]["missingdisks"][0] - dms;
+				cols =  dcols + dms;
 				colsmean = Math.ceil(12 / cols);
 				$("#" + pool + " .disks").append(
 					'<div class="col-' +
@@ -198,7 +205,7 @@ function initdgs() {
 				);
 				$.each(alldgs["raids"][raid]["disks"], function (eee, disk) {
 					var silvering = ''
-					if(alldgs["disks"][disk]["name"].includes('dm-') > 0) { return true; }
+					if(alldgs["disks"][disk]["name"].includes('dm-') > 0) {  return true; }
 					shortdisk = disk.slice(-5);
 					status = alldgs["disks"][disk]["status"];
 					host = alldgs["disks"][disk]["host"];
@@ -252,7 +259,8 @@ function initdgs() {
 							"</div>"
 					);
 				});
-				for (x = 0; x < alldgs["raids"][raid]["missingdisks"][0]; x++) {
+				//for (x = 0; x < alldgs["raids"][raid]["missingdisks"][0]-dms; x++) {
+				for (x = 0; x < dms; x++) {
 					imgf = "invaliddisk.png";
 					$("#" + raid).css("border-color", "red");
 					$("#sub" + raid).css("color", "red");
