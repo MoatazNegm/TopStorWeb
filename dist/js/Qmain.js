@@ -296,7 +296,7 @@ function gettheversion(){
 		type: "GET",
 		data: { token: hypetoken },
 		success: function (data) {
-			$("#thever").text(data['cversion'])
+			$("#thever").text('ver: '+data['cversion'])
 		}
 	});
 }
