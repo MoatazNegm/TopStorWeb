@@ -289,6 +289,19 @@ setInterval(function () {
 		},
 	});
 }, 5000);
+function gettheversion(){
+	$.ajax({
+		url: "api/v1/info/cversion",
+		async: true,
+		type: "GET",
+		data: { token: hypetoken },
+		success: function (data) {
+			$("#thever").text(data['cversion'])
+		}
+	});
+}
+gettheversion();
+			
 $("body").click(function (e) {
 	var apiurl = "api/v1/login/renewtoken";
 	var apidata = { token: hypetoken };
