@@ -256,6 +256,13 @@ setInterval(function () {
 		data: { token: hypetoken },
 		success: function (data) {
 			notif = data;
+			if(data['isinsync'] == 'yes'){
+				$("#isinsync").css('color','green');
+				$("#isinsync").removeClass('blink-bg')
+			} else {
+				$("#isinsync").css('color','red');
+				$("#isinsync").addClass('blink-bg')
+			}	
 			requests = data["requests"];
 			if (notif["response"].includes("baduser") > 0) {
 				location.replace("login.html");
