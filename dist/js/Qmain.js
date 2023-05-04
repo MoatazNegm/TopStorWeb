@@ -295,6 +295,7 @@ setInterval(function () {
 			}
 		},
 	});
+	gettheversion();
 }, 5000);
 function gettheversion(){
 	$.ajax({
