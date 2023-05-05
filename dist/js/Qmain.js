@@ -309,6 +309,7 @@ function gettheversion(){
 	});
 }
 gettheversion();
+$("#isinsync").css('color','white');
 			
 $("body").click(function (e) {
 	var apiurl = "api/v1/login/renewtoken";
