@@ -420,7 +420,7 @@ function selbtnclickeduser(ths) {
 
 function avoldel(volname) {
 	var apiurl = "api/v1/volumes/volumedel";
-	var apidata = { name: volname, type: CIFS, user: "mezo" };
+	var apidata = { name: volname, type: "CIFS", user: "mezo" };
 	postdata(apiurl, apidata);
 }
 
