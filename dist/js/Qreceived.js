@@ -372,7 +372,7 @@ function initalltables() {
 	filterstable["allsnaps"].buttons().container().appendTo("#allsnapstable_wrapper .col-6:eq(0)");
 	$.fn.dataTable.ext.search.push(function(settings,data,dataIndex){
 		if(settings.nTable.id === 'filterstable'){
-			if(data[5] !== '-')
+			if(data[5].length == 1 )
 				return false;
 		}
 		return true;
