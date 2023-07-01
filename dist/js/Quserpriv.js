@@ -105,7 +105,7 @@ $("#SubmitPriv").click(function (e) {
 		auths.push($(t).prop("id") + "-" + $(t).prop("checked"));
 	});
 	apiurl = "api/v1/users/usersauth";
-	apidata = { tochange: allusers[$("#UserList").val()]["name"], auths: auths.join() };
+	apidata = { 'tochange': allusers[$("#UserList").val()]["name"], 'auths': auths.join() };
 	postdata(apiurl, apidata);
 });
 $("#UserList").change(function (e) {
