@@ -174,7 +174,20 @@ function initdgs() {
 
 			$.each(t["raids"], function (ee, tt) {
 				raid = tt;
-				cols = alldgs["raids"][raid]["disks"].length + alldgs["raids"][raid]["missingdisks"][0];
+				dcols = 0
+				$.each(alldgs["raids"][raid]["disks"], function (eee, disk) {
+                                        if(alldgs["disks"][disk]["name"].includes('dm-') > 0) { return true; }
+					dcols = dcols + 1
+				});
+				//cols = alldgs["raids"][raid]["disks"].length + alldgs["raids"][raid]["missingdisks"][0];
+				var dms = 0
+				 $.each(alldgs["raids"][raid]["disks"], function (eee, disk) {
+					if(alldgs["disks"][disk]["name"].includes('dm-') > 0) { dms += 1 }
+				 else { if(alldgs["disks"][disk]['changeop'].includes('ONLINE') <= 0) { dms -= 1 } }
+				 });
+				if(dms < 0) dms = 0 ;
+				cols =  dcols + alldgs["raids"][raid]["missingdisks"][0] - dms;
+				cols =  dcols + dms;
 				colsmean = Math.ceil(12 / cols);
 				$("#" + pool + " .disks").append(
 					'<div class="col-' +
@@ -191,9 +204,13 @@ function initdgs() {
 						"</div>"
 				);
 				$.each(alldgs["raids"][raid]["disks"], function (eee, disk) {
+					var silvering = ''
+					if(alldgs["disks"][disk]["name"].includes('dm-') > 0) {  return true; }
 					shortdisk = disk.slice(-5);
 					status = alldgs["disks"][disk]["status"];
 					host = alldgs["disks"][disk]["host"];
+					if(alldgs["disks"][disk]["silvering"] != 'no') { silvering = 'silvering' } else { silvering = '' }
+					//console.log('short silver', shortdisk, silvering)
 					changeop = alldgs["disks"][disk]["changeop"];
 					size = parseFloat(alldgs["disks"][disk]["size"]).toFixed(2);
 					if (
@@ -212,7 +229,7 @@ function initdgs() {
 							disk +
 							'" data-disk="' +
 							disk +
-							'" class="' +
+							'" class=" ' +
 							raid +
 							" " +
 							pool +
@@ -223,8 +240,8 @@ function initdgs() {
 							'">' +
 							"  <a href=\"javascript:memberclick('#" +
 							disk +
-							'\')" class="img-clck" >' +
-							'     <img class="img412 imgstyle ' +
+							'\')" class="'+silvering+' img-clck" >' +
+							'     <img class=" img412 imgstyle ' +
 							diskimg +
 							" " +
 							disk +
@@ -242,7 +259,8 @@ function initdgs() {
 							"</div>"
 					);
 				});
-				for (x = 0; x < alldgs["raids"][raid]["missingdisks"][0]; x++) {
+				//for (x = 0; x < alldgs["raids"][raid]["missingdisks"][0]-dms; x++) {
+				for (x = 0; x < dms; x++) {
 					imgf = "invaliddisk.png";
 					$("#" + raid).css("border-color", "red");
 					$("#sub" + raid).css("color", "red");

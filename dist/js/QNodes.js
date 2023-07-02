@@ -171,6 +171,12 @@ $("#possiblesubmit").click(function (e) {
 	postdata(apiurl, apidata);
 });
 
+$("#refresh").click(function (e) {
+	var apiurl = "api/v1/hosts/discover";
+	var apidata = { name: ''};
+	postdata(apiurl, apidata);
+});
+
 $("#readysubmit").click(function (ev) {
 	ev.preventDefault();
 	var tochange = 0;
