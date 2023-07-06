@@ -19,6 +19,10 @@ imgf = "disk-image.png";
 diskimg = "disk-image";
 clickdisk = 'href="#"';
 var firstRequests = 1;
+$(function () {
+  $('[data-toggle="popover"]').popover()
+ console.log('act');
+})
 function getdgs() {
 	$.ajax({
 		url: "api/v1/pools/dgsinfo",
@@ -237,7 +241,10 @@ function initdgs() {
 							status +
 							" " +
 							changeop +
-							'">' +
+							'" ' + 
+							'data-toggle="popover" data-popover-content=".a3" data-html="true"  tabindex="0"  data-trigger="focus" data-content="<div><button>HI</button></div>"'
+							+ '>' +
+"<div  class=\'a3 hidden d-none\'><div class='popover-heading'>This is the heading for #2</div><div class=\'popover-body\'>This is the body for #2<br> With <b>html</b> content<button class='btn btn-primary mx-auto'>Button</button></div></div>"+
 							"  <a href=\"javascript:memberclick('#" +
 							disk +
 							'\')" class="'+silvering+' img-clck" >' +
@@ -259,6 +266,21 @@ function initdgs() {
 							"</div>"
 					);
 				});
+
+$(function() {
+  $("[data-toggle=popover]").popover({
+    html: true,
+    placement:"bottom",
+    content: function() {
+      var content = $(this).attr("data-popover-content");
+      return $(content).children(".popover-body").html();
+    },
+    title: function() {
+      var title = $(this).attr("data-popover-content");
+      return $(title).children(".popover-heading").html();
+    }
+  });
+});
 				//for (x = 0; x < alldgs["raids"][raid]["missingdisks"][0]-dms; x++) {
 				for (x = 0; x < dms; x++) {
 					imgf = "invaliddisk.png";
@@ -454,6 +476,7 @@ function memberclick(thisclck) {
 		selhosts = hname;
 		$("#RhostForget").attr("disabled", false);
 	}
+	
 }
 
 function getChanges(prev, now) {
