@@ -19,10 +19,6 @@ imgf = "disk-image.png";
 diskimg = "disk-image";
 clickdisk = 'href="#"';
 var firstRequests = 1;
-$(function () {
-  $('[data-toggle="popover"]').popover()
- console.log('act');
-})
 function getdgs() {
 	$.ajax({
 		url: "api/v1/pools/dgsinfo",
@@ -130,6 +126,7 @@ function initaddgs() {
 		$(".addto" + pool).data("redundancy", $(this).find("input").data("redundancy"));
 	});
 }
+
 function initdgs() {
 	var poolcard;
 	var col;
@@ -207,6 +204,7 @@ function initdgs() {
 						' style="border: solid; border-color: grey; border-width:1px;"></div>' +
 						"</div>"
 				);
+
 				$.each(alldgs["raids"][raid]["disks"], function (eee, disk) {
 					var silvering = ''
 					if(alldgs["disks"][disk]["name"].includes('dm-') > 0) {  return true; }
@@ -233,7 +231,7 @@ function initdgs() {
 							disk +
 							'" data-disk="' +
 							disk +
-							'" class=" ' +
+							'" class="' +
 							raid +
 							" " +
 							pool +
@@ -242,9 +240,8 @@ function initdgs() {
 							" " +
 							changeop +
 							'" ' + 
-							'data-toggle="popover" data-popover-content=".a3" data-html="true"  tabindex="0"  data-trigger="focus" data-content="<div><button>HI</button></div>"'
+							'data-toggle="popover" data-html="true" tabindex="0"' 
 							+ '>' +
-"<div  class=\'a3 hidden d-none\'><div class='popover-heading'>This is the heading for #2</div><div class=\'popover-body\'>This is the body for #2<br> With <b>html</b> content<button class='btn btn-primary mx-auto'>Button</button></div></div>"+
 							"  <a href=\"javascript:memberclick('#" +
 							disk +
 							'\')" class="'+silvering+' img-clck" >' +
@@ -265,22 +262,21 @@ function initdgs() {
 							"</div>" +
 							"</div>"
 					);
-				});
+			let actualDisk = alldgs["disks"][disk]["actualdisk"];	
+			const popoverContent = `<div id="` + pool + '_' + actualDisk + `">
+							<a id = 'popover-offline_` + pool + '-' + actualDisk + `' type="button" class="btn btn-sm btn-danger">Offline</a>
+    							<a id = 'popover-online_` + pool  + '-' + actualDisk + `'type="button" class="btn btn-sm btn-success">Online</a>
+						</div>`;
+ 			$('#'+ disk).popover({
+				trigger: 'focus',
+    				placement: 'bottom',
+    				html: true,
+    				title: 'Control Disk',
+    				content: popoverContent,
+    				template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
+			});		
+		});
 
-$(function() {
-  $("[data-toggle=popover]").popover({
-    html: true,
-    placement:"bottom",
-    content: function() {
-      var content = $(this).attr("data-popover-content");
-      return $(content).children(".popover-body").html();
-    },
-    title: function() {
-      var title = $(this).attr("data-popover-content");
-      return $(title).children(".popover-heading").html();
-    }
-  });
-});
 				//for (x = 0; x < alldgs["raids"][raid]["missingdisks"][0]-dms; x++) {
 				for (x = 0; x < dms; x++) {
 					imgf = "invaliddisk.png";
@@ -459,10 +455,14 @@ $("body").on("click", ".addtopool", function (e) {
 	postdata(apiurl, apidata);
 });
 
+
+
 function memberclick(thisclck) {
+	$('[data-toggle="popover"]').not(thisclck).each(function(){
+		$(this).popover('hide');
+     	});
 	//hname=$(thisclck).attr('data-disk');
 	var hname = thisclck;
-
 	if ($(thisclck + " img").hasClass("SelectedFreered") > 0) {
 		$(thisclck + " img").removeClass("SelectedFreered");
 		$(thisclck + " img").addClass("SelectedFreewhite");
@@ -477,6 +477,24 @@ function memberclick(thisclck) {
 		$("#RhostForget").attr("disabled", false);
 	}
 	
+	var apiurl = "api/v1/pools/actionOnDisk";
+		$.each(alldgs["pools"], function (pool, poolInfo) {
+			$.each(poolInfo["raids"], function (ee, raid) {	
+				$.each(alldgs["raids"][raid]["disks"], function (eee, disk) {
+					let actualDisk = alldgs["disks"][disk]["actualdisk"];	
+					$('#popover-offline_' + pool  + '-' + actualDisk).unbind();
+					$('#popover-online_' + pool  + '-' + actualDisk).unbind();
+					$('#popover-offline_' + pool  + '-' + actualDisk).click(function(e){
+						var apidata = {action: 'offline', pool: pool, disk: actualDisk};
+						postdata(apiurl, apidata);
+					})
+					$('#popover-online_' + pool + '-' + actualDisk).click(function(e){
+						var apidata = {action: 'online', pool: pool, disk: actualDisk};
+						postdata(apiurl, apidata);
+					})
+				})
+			})
+		});
 }
 
 function getChanges(prev, now) {
