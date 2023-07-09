@@ -127,6 +127,12 @@ function initaddgs() {
 	});
 }
 
+function offlineAndOnlineDisk(action, pool, actualDisk){
+	var apiurl = "api/v1/pools/actionOnDisk";	
+	var apidata = {action: action, pool: pool, disk: actualDisk};
+	postdata(apiurl, apidata);
+}
+
 function initdgs() {
 	var poolcard;
 	var col;
@@ -274,7 +280,23 @@ function initdgs() {
     				title: 'Control Disk',
     				content: popoverContent,
     				template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
-			});		
+			})
+			var apiurl = "api/v1/pools/actionOnDisk";	
+			$('#' + disk).on('shown.bs.popover', function() {
+				$("#popover-offline_" + pool + '-' + actualDisk).on('click', function(){
+					var apidata = {action: 'offline', pool: pool, disk: actualDisk};
+					postdata(apiurl, apidata);
+				});
+				$("#popover-online_" + pool + '-' + actualDisk).on('click', function(){
+					var apidata = {action: 'online', pool: pool, disk: actualDisk};
+					postdata(apiurl, apidata);
+				});
+			});
+			$('#' + disk).on('hidden.bs.popover', function(){
+			 	$("#popover-offline_" + pool + '-' + actualDisk).off('click');
+			 	$("#popover-online_" + pool + '-' + actualDisk).off('click');
+			});
+		
 		});
 
 				//for (x = 0; x < alldgs["raids"][raid]["missingdisks"][0]-dms; x++) {
@@ -458,9 +480,9 @@ $("body").on("click", ".addtopool", function (e) {
 
 
 function memberclick(thisclck) {
-	$('[data-toggle="popover"]').not(thisclck).each(function(){
-		$(this).popover('hide');
-     	});
+	//$('[data-toggle="popover"]').not(thisclck).each(function(){
+	//	$(this).popover('hide');
+     	//});
 	//hname=$(thisclck).attr('data-disk');
 	var hname = thisclck;
 	if ($(thisclck + " img").hasClass("SelectedFreered") > 0) {
@@ -478,23 +500,23 @@ function memberclick(thisclck) {
 	}
 	
 	var apiurl = "api/v1/pools/actionOnDisk";
-		$.each(alldgs["pools"], function (pool, poolInfo) {
-			$.each(poolInfo["raids"], function (ee, raid) {	
-				$.each(alldgs["raids"][raid]["disks"], function (eee, disk) {
-					let actualDisk = alldgs["disks"][disk]["actualdisk"];	
-					$('#popover-offline_' + pool  + '-' + actualDisk).unbind();
-					$('#popover-online_' + pool  + '-' + actualDisk).unbind();
-					$('#popover-offline_' + pool  + '-' + actualDisk).click(function(e){
-						var apidata = {action: 'offline', pool: pool, disk: actualDisk};
-						postdata(apiurl, apidata);
-					})
-					$('#popover-online_' + pool + '-' + actualDisk).click(function(e){
-						var apidata = {action: 'online', pool: pool, disk: actualDisk};
-						postdata(apiurl, apidata);
-					})
-				})
-			})
-		});
+		//$.each(alldgs["pools"], function (pool, poolInfo) {
+		//	$.each(poolInfo["raids"], function (ee, raid) {	
+		//		$.each(alldgs["raids"][raid]["disks"], function (eee, disk) {
+		//			let actualDisk = alldgs["disks"][disk]["actualdisk"];	
+		//			$('#popover-offline_' + pool  + '-' + actualDisk).unbind();
+		//			$('#popover-online_' + pool  + '-' + actualDisk).unbind();
+		//			$('#popover-offline_' + pool  + '-' + actualDisk).click(function(e){
+		///				var apidata = {action: 'offline', pool: pool, disk: actualDisk};
+		//				postdata(apiurl, apidata);
+		//			})
+		//			$('#popover-online_' + pool + '-' + actualDisk).click(function(e){
+		//				var apidata = {action: 'online', pool: pool, disk: actualDisk};
+		//				postdata(apiurl, apidata);
+		//			})
+		//		})
+		//	})
+		//});
 }
 
 function getChanges(prev, now) {
