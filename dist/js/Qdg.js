@@ -276,9 +276,7 @@ function initdgs() {
     				content: popoverContent,
 			}).click(function (event) {
 		    		event.stopPropagation();
-				$("[data-toggle='popover']").click(function(){
-    					$("[data-toggle='popover']").not(this).popover('hide'); //all but this
-}				);	
+				$("[data-toggle='popover']").not(this).popover('hide'); //all but this
   			}).on('inserted.bs.popover', function() {
 				$("#popover-offline_" + pool + '-' + actualDisk).on('click', function(event){
 					event.stopPropagation();
