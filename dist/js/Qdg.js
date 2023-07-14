@@ -127,12 +127,6 @@ function initaddgs() {
 	});
 }
 
-function offlineAndOnlineDisk(action, pool, actualDisk){
-	var apiurl = "api/v1/pools/actionOnDisk";	
-	var apidata = {action: action, pool: pool, disk: actualDisk};
-	postdata(apiurl, apidata);
-}
-
 function initdgs() {
 	var poolcard;
 	var col;
@@ -488,9 +482,6 @@ $("body").on("click", ".addtopool", function (e) {
 
 
 function memberclick(thisclck) {
-	//$('[data-toggle="popover"]').not(thisclck).each(function(){
-	//	$(this).popover('hide');
-     	//});
 	//hname=$(thisclck).attr('data-disk');
 	var hname = thisclck;
 	if ($(thisclck + " img").hasClass("SelectedFreered") > 0) {
@@ -506,25 +497,6 @@ function memberclick(thisclck) {
 		selhosts = hname;
 		$("#RhostForget").attr("disabled", false);
 	}
-	
-	var apiurl = "api/v1/pools/actionOnDisk";
-		//$.each(alldgs["pools"], function (pool, poolInfo) {
-		//	$.each(poolInfo["raids"], function (ee, raid) {	
-		//		$.each(alldgs["raids"][raid]["disks"], function (eee, disk) {
-		//			let actualDisk = alldgs["disks"][disk]["actualdisk"];	
-		//			$('#popover-offline_' + pool  + '-' + actualDisk).unbind();
-		//			$('#popover-online_' + pool  + '-' + actualDisk).unbind();
-		//			$('#popover-offline_' + pool  + '-' + actualDisk).click(function(e){
-		///				var apidata = {action: 'offline', pool: pool, disk: actualDisk};
-		//				postdata(apiurl, apidata);
-		//			})
-		//			$('#popover-online_' + pool + '-' + actualDisk).click(function(e){
-		//				var apidata = {action: 'online', pool: pool, disk: actualDisk};
-		//				postdata(apiurl, apidata);
-		//			})
-		//		})
-		//	})
-		//});
 }
 
 function getChanges(prev, now) {
