@@ -268,34 +268,42 @@ function initdgs() {
 							"</div>" +
 							"</div>"
 					);
+			let apiurl = "api/v1/pools/actionOnDisk";	
 			let actualDisk = alldgs["disks"][disk]["actualdisk"];	
 			const popoverContent = `<div id="` + pool + '_' + actualDisk + `">
 							<a id = 'popover-offline_` + pool + '-' + actualDisk + `' type="button" class="btn btn-sm btn-danger">Offline</a>
     							<a id = 'popover-online_` + pool  + '-' + actualDisk + `'type="button" class="btn btn-sm btn-success">Online</a>
 						</div>`;
  			$('#'+ disk).popover({
-				trigger: 'focus',
+				trigger: 'click',
     				placement: 'bottom',
     				html: true,
     				title: 'Control Disk',
     				content: popoverContent,
-    				template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
-			})
-			var apiurl = "api/v1/pools/actionOnDisk";	
-			$('#' + disk).on('shown.bs.popover', function() {
-				$("#popover-offline_" + pool + '-' + actualDisk).on('click', function(){
+			}).click(function (event) {
+		    		event.stopPropagation();
+				$("[data-toggle='popover']").click(function(){
+    					$("[data-toggle='popover']").not(this).popover('hide'); //all but this
+}				);	
+  			}).on('inserted.bs.popover', function() {
+				$("#popover-offline_" + pool + '-' + actualDisk).on('click', function(event){
+					event.stopPropagation();
 					var apidata = {action: 'offline', pool: pool, disk: actualDisk};
 					postdata(apiurl, apidata);
 				});
 				$("#popover-online_" + pool + '-' + actualDisk).on('click', function(){
+					event.stopPropagation();
 					var apidata = {action: 'online', pool: pool, disk: actualDisk};
 					postdata(apiurl, apidata);
 				});
 			});
-			$('#' + disk).on('hidden.bs.popover', function(){
-			 	$("#popover-offline_" + pool + '-' + actualDisk).off('click');
-			 	$("#popover-online_" + pool + '-' + actualDisk).off('click');
-			});
+			//$('#' + disk).on('hidden.bs.popover', function(){
+			// 	$("#popover-offline_" + pool + '-' + actualDisk).off('click');
+			// 	$("#popover-online_" + pool + '-' + actualDisk).off('click');
+			//});
+			$(document).click(function () {
+    				$('#' + disk).popover('hide')
+  			})	
 		
 		});
 
