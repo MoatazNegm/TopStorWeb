@@ -7,6 +7,7 @@ var filterstable = {};
 var newsnaps = "init";
 var cpool = "init";
 var firstRequests = 3;
+var filteredsnaps = {};
 function poolsrefresh() {
 	$.ajax({
 		url: "/api/v1/volumes/poolsinfo",
@@ -305,7 +306,7 @@ function initalltables() {
 			[0, "desc"],
 			[1, "desc"],
 		],
-		data: allsnaps["allsnaps"],
+		data: filteredsnaps,
 		columns: [
 			{
 				data: null,
@@ -369,6 +370,13 @@ function initalltables() {
 		],
 	});
 	filterstable["allsnaps"].buttons().container().appendTo("#allsnapstable_wrapper .col-6:eq(0)");
+	$.fn.dataTable.ext.search.push(function(settings,data,dataIndex){
+		if(settings.nTable.id === 'filterstable'){
+			if(data[5].length == 1 )
+				return false;
+		}
+		return true;
+	});
 	$.ajax({
 		url: "api/v1/volumes/snapshots/snapshotsinfo",
 		//timeout: 3000,
@@ -381,11 +389,13 @@ function initalltables() {
 	});
 	if (JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
 		allsnaps = JSON.parse(JSON.stringify(newsnaps));
+		filteredsnaps = allsnaps['allsnaps'].filter(function(el){  return el['partnerS'] !== '-'; })
 		allpsnapstable["allsnaps"].clear();
 		allpsnapstable["allsnaps"].rows.add(allsnaps["allsnaps"]);
 		allpsnapstable["allsnaps"].draw();
 		filterstable["allsnaps"].clear();
-		filterstable["allsnaps"].rows.add(allsnaps["allsnaps"]);
+		console.log('allsnap',filteredsnaps)
+		filterstable["allsnaps"].rows.add(filteredsnaps);
 		filterstable["allsnaps"].draw();
 	}
 }
