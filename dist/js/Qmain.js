@@ -295,6 +295,7 @@ setInterval(function () {
 			}
 		},
 	});
+	gettheversion();
 }, 5000);
 function gettheversion(){
 	$.ajax({
@@ -308,6 +309,7 @@ function gettheversion(){
 	});
 }
 gettheversion();
+$("#isinsync").css('color','white');
 			
 $("body").click(function (e) {
 	var apiurl = "api/v1/login/renewtoken";

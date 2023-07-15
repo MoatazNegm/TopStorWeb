@@ -290,6 +290,7 @@ $("#readysubmit").click(function (ev) {
 		hostsubmit["name"] = allhosts["ready"][selstatus]["name"];
 		var apiurl = "api/v1/hosts/config";
 		var apidata = hostsubmit;
+		console.log('tochange',apidata)
 		postdata(apiurl, apidata);
 	}
 });
