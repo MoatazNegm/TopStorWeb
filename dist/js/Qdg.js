@@ -126,6 +126,7 @@ function initaddgs() {
 		$(".addto" + pool).data("redundancy", $(this).find("input").data("redundancy"));
 	});
 }
+
 function initdgs() {
 	var poolcard;
 	var col;
@@ -174,7 +175,20 @@ function initdgs() {
 
 			$.each(t["raids"], function (ee, tt) {
 				raid = tt;
-				cols = alldgs["raids"][raid]["disks"].length + alldgs["raids"][raid]["missingdisks"][0];
+				dcols = 0
+				$.each(alldgs["raids"][raid]["disks"], function (eee, disk) {
+                                        if(alldgs["disks"][disk]["name"].includes('dm-') > 0) { return true; }
+					dcols = dcols + 1
+				});
+				//cols = alldgs["raids"][raid]["disks"].length + alldgs["raids"][raid]["missingdisks"][0];
+				var dms = 0
+				 $.each(alldgs["raids"][raid]["disks"], function (eee, disk) {
+					if(alldgs["disks"][disk]["name"].includes('dm-') > 0) { dms += 1 }
+				 else { if(alldgs["disks"][disk]['changeop'].includes('ONLINE') <= 0) { dms -= 1 } }
+				 });
+				if(dms < 0) dms = 0 ;
+				cols =  dcols + alldgs["raids"][raid]["missingdisks"][0] - dms;
+				cols =  dcols + dms;
 				colsmean = Math.ceil(12 / cols);
 				$("#" + pool + " .disks").append(
 					'<div class="col-' +
@@ -190,10 +204,15 @@ function initdgs() {
 						' style="border: solid; border-color: grey; border-width:1px;"></div>' +
 						"</div>"
 				);
+
 				$.each(alldgs["raids"][raid]["disks"], function (eee, disk) {
+					var silvering = ''
+					if(alldgs["disks"][disk]["name"].includes('dm-') > 0) {  return true; }
 					shortdisk = disk.slice(-5);
 					status = alldgs["disks"][disk]["status"];
 					host = alldgs["disks"][disk]["host"];
+					if(alldgs["disks"][disk]["silvering"] != 'no') { silvering = 'silvering' } else { silvering = '' }
+					//console.log('short silver', shortdisk, silvering)
 					changeop = alldgs["disks"][disk]["changeop"];
 					size = parseFloat(alldgs["disks"][disk]["size"]).toFixed(2);
 					if (
@@ -220,11 +239,13 @@ function initdgs() {
 							status +
 							" " +
 							changeop +
-							'">' +
+							'" ' + 
+							'data-toggle="popover" data-html="true" tabindex="0"' 
+							+ '>' +
 							"  <a href=\"javascript:memberclick('#" +
 							disk +
-							'\')" class="img-clck" >' +
-							'     <img class="img412 imgstyle ' +
+							'\')" class="'+silvering+' img-clck" >' +
+							'     <img class=" img412 imgstyle ' +
 							diskimg +
 							" " +
 							disk +
@@ -241,8 +262,45 @@ function initdgs() {
 							"</div>" +
 							"</div>"
 					);
+			let apiurl = "api/v1/pools/actionOnDisk";	
+			let actualDisk = alldgs["disks"][disk]["actualdisk"];	
+			const popoverContent = `<div id="` + pool + '_' + actualDisk + `">
+							<a id = 'popover-offline_` + pool + '-' + actualDisk + `' type="button" class="btn btn-sm btn-danger">Offline</a>
+    							<a id = 'popover-online_` + pool  + '-' + actualDisk + `'type="button" class="btn btn-sm btn-success">Online</a>
+						</div>`;
+ 			$('#'+ disk).popover({
+				trigger: 'click',
+    				placement: 'bottom',
+    				html: true,
+    				title: 'Control Disk',
+    				content: popoverContent,
+			}).click(function (event) {
+		    		event.stopPropagation();
+				$("[data-toggle='popover']").not(this).popover('hide'); //all but this
+  			}).on('inserted.bs.popover', function() {
+				$("#popover-offline_" + pool + '-' + actualDisk).on('click', function(event){
+					event.stopPropagation();
+					var apidata = {action: 'offline', pool: pool, disk: actualDisk};
+					postdata(apiurl, apidata);
 				});
-				for (x = 0; x < alldgs["raids"][raid]["missingdisks"][0]; x++) {
+				$("#popover-online_" + pool + '-' + actualDisk).on('click', function(){
+					event.stopPropagation();
+					var apidata = {action: 'online', pool: pool, disk: actualDisk};
+					postdata(apiurl, apidata);
+				});
+			});
+			//$('#' + disk).on('hidden.bs.popover', function(){
+			// 	$("#popover-offline_" + pool + '-' + actualDisk).off('click');
+			// 	$("#popover-online_" + pool + '-' + actualDisk).off('click');
+			//});
+			$(document).click(function () {
+    				$('#' + disk).popover('hide')
+  			})	
+		
+		});
+
+				//for (x = 0; x < alldgs["raids"][raid]["missingdisks"][0]-dms; x++) {
+				for (x = 0; x < dms; x++) {
 					imgf = "invaliddisk.png";
 					$("#" + raid).css("border-color", "red");
 					$("#sub" + raid).css("color", "red");
@@ -419,10 +477,11 @@ $("body").on("click", ".addtopool", function (e) {
 	postdata(apiurl, apidata);
 });
 
+
+
 function memberclick(thisclck) {
 	//hname=$(thisclck).attr('data-disk');
 	var hname = thisclck;
-
 	if ($(thisclck + " img").hasClass("SelectedFreered") > 0) {
 		$(thisclck + " img").removeClass("SelectedFreered");
 		$(thisclck + " img").addClass("SelectedFreewhite");
