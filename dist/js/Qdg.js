@@ -128,6 +128,7 @@ function initaddgs() {
 }
 
 function initdgs() {
+	$("[data-toggle='popover']").popover('hide');
 	var poolcard;
 	var col;
 	var colsmean;
