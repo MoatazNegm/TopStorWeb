@@ -53,7 +53,7 @@ if (typeof Storage !== "undefined") {
 	console.log("Sorry, your browser does not support Web Storage...");
 }
 
-$("button").click(function (e) {
+$("#signInButton").click(function (e) {
 	$("#Loading").toggle();
 	setTimeout(function () {
 		urlapi = "api/v1/login";
