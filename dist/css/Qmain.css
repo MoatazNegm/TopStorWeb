@@ -89,3 +89,9 @@ select.btn-mini + .caret {
 		75%		{ background-color: #254878;}
 		100%	        { background-color: #04a1d5;}
 	}
+.isDisabled {
+  color: currentColor;
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
+}
