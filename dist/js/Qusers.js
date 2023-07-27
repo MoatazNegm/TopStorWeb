@@ -65,6 +65,299 @@ $("#User").change(function (e) {
 		$("#UnixAddUser").prop("disabled", true);
 	}
 });
+
+
+function uploadUsersChecker(user, usersNames, poolNames, groupNames)
+{
+	let flag = false;
+	// Checks if there is a name  and it is unique.
+	if ( user['name'] === undefined || user['name'] === '')
+	{
+		flag = true;
+	} else if (usersNames.includes(user['name'].trimEnd()))
+	{
+		flag = true;
+	}
+	if ( user['Password'] === undefined || user['Password'].length < 3)
+		flag = true;
+	// Checks if the user selected a Pool.
+	
+	if (!(user['Volpool'] === undefined || user['Volpool'] === ''))
+	{
+		// Checks that the Pool is valid.
+		if (!(poolNames.includes(user['Volpool'].trimEnd().toLowerCase()) || '-'.repeat(user['Volpool'].length) === user['Volpool'].trimEnd() ))
+			flag = true;
+	}
+	// Checks if the user selected a group.
+	if (!(user['groups'] === undefined || user['groups'] === ''))
+	{
+		// Checks that each group selected is valid.
+		user['groups'].trimEnd().split(',').forEach(group => {
+			if (!(groupNames.includes(group) || group === ''))
+				flag = true
+		});
+	}
+	// Checks if the user selected a HomeAddress.
+	if (!(user['HomeAddress'] === undefined || user['HomeAddress'] === '' || user['HomeAddress'].toLowerCase().trimEnd() === 'No Address'.toLowerCase() || user['HomeAddress'].toLowerCase().trimEnd() === 'NoAddress'.toLowerCase()))
+	{
+		// Checks if the HomeAddress is in the correct form.
+		if (!/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(user['HomeAddress'].trimEnd())) {  
+			flag = true;
+		}
+	}
+	return flag;
+}
+function generateBadUsersDataTable(badusers,usersNames,groupNames,poolNames)
+{
+	let badUserListDataTable = $("#BadUserListDataTable").DataTable({
+		data: badusers,
+		columns: [
+			{
+				data: null,
+				render: function (data, type, user) {return `<p>${user['index']}</p>`;},
+			},
+			{
+				data: null,
+				render: function (data, type, user) {
+					if(user['name'] === undefined || user['name'] === '')
+						return `<p class="table-danger emptyCell">|</p>`;
+					else if (usersNames.includes(user['name'].trimEnd()))
+						return `<p class="table-danger text-danger">${user['name']}</p>`;
+					else return`<p>${user['name']}</p>`;
+				},
+			},
+			{
+				data: null,
+				render: function (data, type, user) {
+					if (user['Password'] === undefined || user['Password'] === '')
+						return `<p class="table-danger emptyCell">|</p>`;
+					else if (user['Password'].length < 3)
+						return `<p class="table-danger text-danger">${user['Password']}</p>`;
+					else return `<p>${user['Password']}</p>`;
+				},
+			},
+			{
+				data: null,
+				render: function (data, type, user) {
+					if (!(user['Volpool'] === undefined || user['Volpool'] === ''))
+					{
+						if (!(poolNames.includes(user['Volpool'].trimEnd().toLowerCase()) || '-'.repeat(user['Volpool'].length) === user['Volpool'].trimEnd() ))
+							return `<p class="table-danger text-danger">${user['Volpool']}</p>`;
+						else return`<p>${user['Volpool']}</p>`;
+					}
+					else if (user['Volpool'] === undefined || user['Volpool'] === '')
+						return `<p>NoHome</p>`;
+					else return `<p>${user['Volpool']}</p>`;
+				},
+			},
+			{
+				data: null,
+				render: function (data, type, user) {
+					if (!(user['Volsize'] === undefined || user['Volsize'] === ''))
+						return `<p>${user['Volsize']}</p>`;
+					else return `<p>1</p>`;
+				},
+			},
+			{
+				data: null,
+				render: function (data, type, user) {
+					if (!(user['HomeAddress'] === undefined || user['HomeAddress'] === '' || user['HomeAddress'].toLowerCase().trimEnd() === 'No Address'.toLowerCase() || user['HomeAddress'].toLowerCase().trimEnd() === 'NoAddress'.toLowerCase()))
+					{
+						if (user['HomeAddress'].split('.').length === 4)
+						{
+							let addressFlag = false;
+							let addressHtml = [];
+							user['HomeAddress'].split('.').forEach(number => {
+								if (/^\d+$/.test(number)){
+									if (parseInt(number) > 255 || parseInt(number) < 0)
+									{
+										addressHtml.push(`<span class='text-danger'>${number}</span>`)
+										addressFlag = true;
+									} else addressHtml.push(`<span>${number}</span>`);
+								} else {
+										addressFlag = true;
+										addressHtml.push(`<span class='text-danger'>${number}</span>`)
+									}
+							});
+							if (addressFlag)
+							return `<p class="table-danger d-flex">${addressHtml.join('.')}</p>`;
+							else return `<p>${user['HomeAddress']}</p>`;	
+						} 
+						else return `<p class="table-danger">${user['HomeAddress']}</p>`;
+					} else return `<p>NoAddress</p>`;
+				},
+			},
+			{
+				data: null,
+				render: function (data, type, user) {
+					if (!(user['HomeSubnet'] === undefined || user['HomeSubnet'] === ''))
+					return `<p>${user['HomeSubnet']}</p>`;
+					else return `<p>8</p>`;
+				},
+			},
+			{
+				data: null,
+				render: function (data, type, user) {
+					if (!(user['groups'] === undefined || user['groups'] === ''))
+					{
+						let groupsFlag = false;
+						let groupHtml = [];
+						user['groups'].trimEnd().split(',').forEach(group => {
+							if (!(groupNames.includes(group) || group === ''))
+							{
+								groupHtml.push(`<span class='text-danger'>${group}</span>`)
+								groupsFlag = true;
+							} else groupHtml.push(`<span>${group}</span>`);
+						});
+						if (groupsFlag) return `<p class='table-danger d-flex'>${groupHtml.join(',')}</p>`;
+						else  return `<p>${user['groups']}</p>`;
+					}
+					else return `<p>NoGroup</p>`;
+				},
+			},
+			// {
+			// 	data: null,
+			// 	render: function (data, type, row) {
+			// 		return (
+			// 			'<a class="UnixDelUser" val="username" href="javascript:auserdel(\'' +
+			// 			row.name +
+			// 			"')\" >" +
+			// 			'<img  src="dist/img/delete.png" alt="cannott upload delete icon">' +
+			// 			"</a>"
+			// 		);
+			// 	},
+			// },
+		],
+		rowReorder: true,
+        columnDefs: [
+            { orderable: true, className: 'reorder', targets: 0 },
+			{ orderable: true, className: 'reorder', targets: 1 },
+			{ orderable: true, className: 'reorder', targets: 3 },
+			{ orderable: true, className: 'reorder', targets: 5 },
+            { orderable: false, targets: '_all' }
+        ]
+	});
+	$('#BadUserList').show();
+	badUserListDataTable.buttons().container().appendTo("#BadUserListDataTable_wrapper .col-6:eq(0)");
+}
+let ExcelToJSONParser = function() {
+    this.parseExcel = function(file) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var data = e.target.result;
+        var workbook = XLSX.read(data, {type: 'binary'});
+        workbook.SheetNames.forEach(function(sheetName) {
+			var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+			var json_object = JSON.stringify(XL_row_object);
+			let parsedUsers = JSON.parse(json_object)
+			let grouplist;
+			let poolsList;
+			let usersList;
+			$.ajax({
+				url: "api/v1/users/grouplist",
+				dataType: "json",
+				type: "GET",
+				async: false,
+				success: function(data) {
+					grouplist = data.results;
+				},
+			});
+			$.ajax({
+				url: "api/v1/pools/poolsinfo",
+				dataType: "json",
+				type: "GET",
+				async: false,
+				success: function(data) {
+					poolsList = data.results;
+				},
+			})
+			$.ajax({
+				url: "api/v1/users/userlist",
+				async: false,
+				type: "GET",
+				dataSrc: "allusers",
+				success: function(data) {
+					usersList = data.allusers;
+				},
+			})
+			let usersNames = usersList.map(user => user['name']);
+			let poolNames = poolsList.map(pool => pool['text'].toLowerCase());
+			poolNames.push('no home');
+			poolNames.push('nohome');
+			poolNames.push('no pool');
+			poolNames.push('nopool');
+			let groupNames = grouplist.map(group => group['text']);
+			groupNames.push('No Group');
+			groupNames.push('NoGroup');
+			let badusers = [];
+			parsedUsers.forEach((user, index) => {
+				let flag = uploadUsersChecker(user, usersNames, poolNames, groupNames);
+				if (flag === true)
+				{
+					let newBaduser = user;
+					newBaduser['index'] = index
+					badusers.push(newBaduser);
+				}
+				else usersNames.push(user['name']);
+			});
+			generateBadUsersDataTable(badusers,usersNames,groupNames,poolNames);
+        })
+      };
+      reader.onerror = function(ex) {
+        console.log(ex);
+      };
+      reader.readAsBinaryString(file);
+    };
+  };
+
+$('#uploaderInput').click(function(e) {
+var files = e.target.files; 
+if (files.length === 0)
+{
+	$('#BadUserList').hide();
+	$('#upload-file-btn').hide();
+	$('#fileUploadSuccess').hide();
+	$('#fileUploadFailed').hide();
+	$("#BadUserListDataTable").dataTable().fnDestroy();
+}
+})
+
+$('#uploaderInput').change(function(e) {
+	var files = e.target.files; 
+	if (files.length === 0)
+	{
+		$('#upload-file-btn').hide();
+		$('#BadUserList').hide();
+		$('#fileUploadSuccess').hide();
+		$('#fileUploadFailed').hide();
+		return
+	}
+    var parsedExcel = new ExcelToJSONParser();
+    parsedExcel.parseExcel(files[0]);
+	$('#upload-file-btn').show();
+})
+$('#upload-file-btn').click(function() {
+	var form_data = new FormData($('#upload-file')[0]);
+	$('#fileUploadFailed').hide();
+	$('#fileUploadFailed').hide();
+	let token = localStorage.getItem('token')
+	$.ajax({
+		type: 'POST',
+		url: `api/v1/users/uploadUsers?token=${token}`,
+		data: form_data,
+		contentType: false,
+		cache: false,
+		processData: false,
+		success: function(data) {
+			$('#fileUploadSuccess').show();
+		},
+		error: function(data) {
+			$('#fileUploadFailed').show();
+		},
+		
+	});
+});
+
 function groupsrefresh() {
 	$(".select2.multiple").select2({
 		ajax: {

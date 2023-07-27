@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <link rel="stylesheet" href="plugins/gfont/QuickStor.css">
   <link rel="stylesheet" href="dist/css/pumping.css">
+  <link rel="stylesheet" href="dist/css/BadUsersTable.css">
 </head>
 <!--
 `body` tag options:
@@ -338,7 +339,7 @@
           <div class="offset-1 col-md-10">
             <div class="card">
               <!-- form start -->
-              <form>
+              <form  id="upload-file" method="post" enctype="multipart/form-data">
                 <div class="card-body">
                   <div class="form-group row">
                     <label for="User" class="col-2 col-form-label">User Name</label>
@@ -368,10 +369,60 @@
                     </select>
                   </div>
                 </div>
+                <div id="BadUserList" class="card-body" style="display:none;">
+                  <h3>Bad Users List</h3>
+                  <h5>These Users will not be added!</h5>
+                  <table id="BadUserListDataTable" class="table table-sm table-hover table-striped card-body">
+                    <thead style="background-color:#2939C6; color: white;">
+                      <tr>
+                        <th style="width:5%;">index</th>
+                        <th style="width:20%;">name</th>
+                        <th style="width:15%;">Password</th>
+                        <th style="width:15%;">Volpool</th>
+                        <th style="width:10%;">Volsize</th>
+                        <th style="width:20%;">HomeAddress</th>
+                        <th style="width:5%;">Subnet</th>
+                        <th style="width:15%;">groups</th>
+                      </tr>
+                    </thead>
+                    <tbody style="color:#2939C6; ">
+                        
+                    </tbody>
+                    <tfoot>
+                    
+                    
+                    </tfoot>
+                  </table>
+                </div>
+                <div id="BadUserList" class="card-body" style="display:none;">
+                  <h3>Bad Users List</h3>
+                  <h5>These Users will not be added!</h5>
+                <table class="table table-sm table-hover  table-striped">
+                  <thead style="background-color:#2939C6; color: white;">
+                    <tr>
+                      <th style="width:5%;">index</th>
+                      <th style="width:20%;">name</th>
+                      <th style="width:15%;">Password</th>
+                      <th style="width:15%;">Volpool</th>
+                      <th style="width:10%;">Volsize</th>
+                      <th style="width:20%;">HomeAddress</th>
+                      <th style="width:5%;">Subnet</th>
+                      <th style="width:15%;">groups</th>
+                    </tr>
+                  </thead>
+                  <tbody id='badUsersBody' style="color:#2939C6; ">
+                    
+                  </tbody>
+                </table>
+              </div>
                 <!-- /.card-body -->
-
-                <div class="card-footer" style="background-color: white">
-                  <button type="submit"  id="UnixAddUser" class="btn btn-add" style="opacity: 1;">Add User</button>
+                <div class="card-footer d-flex" style="background-color: white">
+                  <button id="UnixAddUser" class="btn btn-add" style="opacity: 1;">Add User</button>
+                  <input id="uploaderInput" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onclick="this.value=null;" type="file" name="file" class="btn btn-add mx-2" style="opacity: 1;">
+                  <button id="upload-file-btn" class="btn btn-add" type="button" style="display:none;">Upload</button>
+                  <p id ='fileUploadSuccess' class= 'alert alert-success my-auto ml-2' style="display:none; padding:0.4rem!important;">File Upload Successfully!</p>
+                  <p id ='fileUploadFailed' class= 'alert alert-danger my-auto ml-2' style="display:none; padding:0.4rem!important;">File Upload Failed!</p>
+                  <a class="btn btn-add ml-auto" href="dist/Template.xlsx" download>Download Template </a>
                 </div>
               </form>
             </div> <!-- /.card -->
@@ -527,6 +578,9 @@
 <script src="plugins/chart.js/Chart.min.js"></script>
 <script src="dist/js/demo.js"></script>
 <script src="dist/js/Qmain.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
 </body>
 <script>
 
