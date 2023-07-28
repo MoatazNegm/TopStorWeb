@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
 
   <link rel="stylesheet" href="dist/css/pumping.css">
-  
+  <link rel="stylesheet" href="dist/css/viewPassword.css">  
 </head>
 <body class="hold-transition login-page">
   <div id="Loading" class="card card-primary">
@@ -52,17 +52,22 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" id='pass' class="form-control" placeholder="Password">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
+              	<div class="input-group flex-grow-1" style="width:auto">
+         		<input type="password" id='pass' class="form-control" placeholder="Password">
+                	<button id="toggle-password-pass" type="button" class="d-none toggle-password"
+                	  aria-label="Show password as plain text. Warning: this will display your password on the screen.">
+                	</button>
+        	</div>  
+		<div class="input-group-append">
+            		<div class="input-group-text">
+              			<span class="fas fa-lock"></span>
+            		</div>
+          	</div>
         </div>
         <div class="row">
 
           <div class="offset-4 col-4">
-            <button type="button" class="btn btn-primary btn-block">Sign In</button>
+            <button id="signInButton" type="button" class="btn btn-primary btn-block">Sign In</button>
           </div>
           <!-- /.col -->  
         </div>
@@ -106,5 +111,6 @@
 <script src="dist/js/Qjquery.inputmask.bundle.js"></script>
 <script src="plugins/chart.js/Chart.min.js"></script>
 <script src="dist/js/QLogin.js"></script>
+<script src="dist/js/viewLoginPasswordButton.js"></script>
 </body>
 </html>
