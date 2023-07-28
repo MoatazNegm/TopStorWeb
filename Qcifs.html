@@ -417,9 +417,13 @@
                     <div class='col-4 '>
                       <div class="form-group ">
                         <label for="dompass">Password</label>
-                        <input type="password" class="form-control" id="dompass" placeholder="Password">
+			<div class='input-group'>
+                        	<input type="password" class="form-control" id="dompass" placeholder="Password">
+                		<button id="toggle-dompass" type="button" class="d-none toggle-password" aria-label="Show password as plain text. Warning: this will display your password on the screen."></button>
+                      	</div>
                       </div>
                     </div>
+			
                     <div class="col-1" >
                      <div class="form-group ">
                       <label for='domactive'>Active</label>
