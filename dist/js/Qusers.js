@@ -350,6 +350,8 @@ $('#upload-file-btn').click(function() {
 		processData: false,
 		success: function(data) {
 			$('#fileUploadSuccess').show();
+			$('#uploaderInput').val('');
+			$('#upload-file-btn').hide();
 		},
 		error: function(data) {
 			$('#fileUploadFailed').show();
