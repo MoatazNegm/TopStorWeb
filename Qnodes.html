@@ -389,7 +389,9 @@
                     <input type="text" placeholder="xxx.xxx.xxx.xxx" 
                           class="form-control col-2 runningnodes ipaddress" name="IPAddress" \
                           id="IPAddress"  data-inputmask="'alias': 'ip'"> 
-                    <select name="NodePorts" class="col-1 form-control" id="NodePorts"></select>
+                    <select name="NodePorts" class="col-1 form-control runningnodes" id="NodePorts">
+		    	<option>Port</option>
+		    </select>
 		    <label  for="ipaddrsubnet" class='offset-1 col-1'>Subnet</label>
                     <input type="number"  min="8" max="32" step="8" value=24 class="form-control runningnodes col-1"  id="ipaddrsubnet">
                     <div  class="form-control bg-secondary offset-1 col-2 color-palette">
@@ -400,8 +402,10 @@
                     <label  for="Mgmt" class='offset-1 col-2'>Cluster Address</label>
                     <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes col-2 ipaddress" 
                           name="IPAddress" id="Mgmt"  data-inputmask="'alias': 'ip'">
-                    <select name="ClusterPorts" class="col-1 form-control" id="ClusterPorts"></select>
-                    <label  for="MgmtSub" class='offset-1 col-1'>Subnet</label>
+                    <select name="ClusterPorts" class="col-1 form-control runningnodes" id="ClusterPorts">
+                    	<option>Port</option>
+                    </select> 
+		   <label  for="MgmtSub" class='offset-1 col-1'>Subnet</label>
                     <input type="number"  min="8" max="32" step="8" value=24 class="form-control runningnodes col-1"  id="MgmtSub">
                     <div  class="form-control bg-secondary  color-palette offset-1 col-2"><span id="cMgmt">10.11.11.139/24</span>
                     </div>
