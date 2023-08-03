@@ -103,12 +103,38 @@ function updaterunninghosts(status) {
 			$("#cDNS").css("font-size", "0.8rem").text("select a node...");
 			$("#customSwitch1").prop("checked", false);
 			$(".runningnodes").attr("disabled", "disabled");
+			$("#NodePorts option").remove();
+			$("#ClusterPorts option").remove();
+			var nodePort = new Option("Port","Port");
+			var clusterPort = new Option("Port","Port");
+                        $("#NodePorts").append(nodePort).css("color","#939ba2");
+                        $("#ClusterPorts").append(clusterPort).css("color","#939ba2");
+
+			
 		} else {
 			var hostdata = hostsinfo[allhosts[status][selectedhost[status]]["name"]];
 			$(".runningnodes").attr("disabled", false);
 			$("#cBoxName").text(hostdata["alias"]);
 			$("#cIPAddress").text(hostdata["ipaddr"] + "/" + hostdata["ipaddrsubnet"]);
 			$("#cMgmt").text(hostdata["cluster"]);
+			$("#NodePorts option").remove();
+			$.each(hostdata["ports"], function (_, portInfo) {
+                        	var o = new Option(portInfo[1], portInfo[1]);
+                       		$("#NodePorts").append(o);
+                        });
+                        $("#NodePorts").css("color","");
+                        $("#ClusterPorts").css("color","");
+			let clusterPorts = []
+			for (const node in hostsinfo) {
+				if (hostsinfo[node]['isLeader'])
+					clusterPorts = hostsinfo[node]['ports'];
+			}
+			$("#ClusterPorts option").remove();
+			$.each(clusterPorts, function (_, portInfo) {
+                        	var o = new Option(portInfo[1], portInfo[1]);
+                       		$("#ClusterPorts").append(o);
+                        });
+		
 			try {
 				$("#cTZ").text(
 					hostdata["tz"].split("%")[1].replace("!", ":").replace(/\^/g, ",").replace(/_/g, " ")

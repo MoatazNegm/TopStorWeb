@@ -421,15 +421,22 @@ function initdgs() {
 				}
 				$(".divsingle").show();
 			} else {
-				if (Object.keys(t).length > 0) {
-					$.each(t, function (psize, raid) {
-						var diskcount = raid["diskcount"];
-						var size = psize.slice(0, 5);
-						var o = new Option((size * 0.9).toString().slice(0, 5), size);
-						$("#select" + e).append(o);
-					});
-				}
-				$(".div" + e).show();
+				if (Object.keys(t).length > 0 ) {
+                                        $.each(t, function (psize, raid) {
+                                                var diskcount = raid["diskcount"];
+                                                var size = psize.slice(0, 5);
+                                                var o = new Option((size * 0.9).toString().slice(0, 5), size);
+                                                if (e != 'volset' || (e == 'volset' && diskcount != 1))
+                                                {
+                                                        $("#select" + e).append(o);
+                                                }
+                                        });
+                                }
+                                let volsetOptions = $("#select" + e + " option").length;
+                                if (e != 'volset' || (e == 'volset' && volsetOptions > 0))
+                                {
+                                        $(".div" + e).show();
+                                }
 			}
 		});
 	}
