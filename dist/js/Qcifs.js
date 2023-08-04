@@ -762,3 +762,30 @@ refreshall(1);
 
 setInterval(refreshall, 10000);
 //setInterval(function(){allvolumes='refresh';}, 5000);
+
+let ShowDompassToggle = document.querySelector("#dompass");
+
+function showOrHideButton(){
+        if (passwordInputDompass.value.length > 0) {
+                document.querySelector("#dompass").classList.add("input-password");
+                document.getElementById("toggle-dompass").classList.remove("d-none");
+    } else {
+    document.querySelector("#dompass").classList.remove("input-password");
+    document.getElementById("toggle-dompass").classList.add("d-none");
+    }
+}
+
+ShowDompassToggle.addEventListener("keyup", showOrHideButton);
+let passwordInputDompass = document.querySelector("#dompass");
+let togglePasswordButtonDompass = document.getElementById("toggle-dompass");
+togglePasswordButtonDompass.addEventListener("click", togglePassword);
+function togglePassword() {
+    if (passwordInputDompass.type === "password") {
+        passwordInputDompass.type = "text";
+        togglePasswordButtonDompass.setAttribute("aria-label", "Hide password.")
+    } else {
+        passwordInputDompass.type = "password";
+        togglePasswordButtonDompass.setAttribute("aria-label", "Show password as plain text.")
+    }
+}
+

@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <link rel="stylesheet" href="plugins/gfont/QuickStor.css">
   <link rel="stylesheet" href="dist/css/pumping.css">
+  <link rel="stylesheet" href="dist/css/viewPassword.css">
 </head>
 <!--
 `body` tag options:
@@ -416,9 +417,13 @@
                     <div class='col-4 '>
                       <div class="form-group ">
                         <label for="dompass">Password</label>
-                        <input type="password" class="form-control" id="dompass" placeholder="Password">
+			<div class='input-group'>
+                        	<input type="password" class="form-control" id="dompass" placeholder="Password">
+                		<button id="toggle-dompass" type="button" class="d-none toggle-password" aria-label="Show password as plain text. Warning: this will display your password on the screen."></button>
+                      	</div>
                       </div>
                     </div>
+			
                     <div class="col-1" >
                      <div class="form-group ">
                       <label for='domactive'>Active</label>
@@ -590,23 +595,33 @@
         </div>
         <div class="modal-body">
           <form>
-          <div class="input-group mb-3">
-            <input type="password" id='pass' class="form-control chpass" placeholder="Password">
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-lock"></span>
+	  <div class="input-group mb-3">
+              <div class="input-group flex-grow-1" style="width:auto">
+                <input type="password" class="form-control chpass" id="pass" placeholder="Password">
+                <button id="toggle-password-pass" type="button" class="d-none toggle-password"
+                  aria-label="Show password as plain text. Warning: this will display your password on the screen.">
+                </button>
+              </div>
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-lock"></span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="input-group mb-3">
-            <input type="password" id='newpass' class="form-control chpass" placeholder="re-type password">
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-lock"></span>
+            <div class="input-group mb-3">
+              <div class="input-group flex-grow-1" style="width:auto">
+                <input type="password" class="form-control chpass" id="newpass" placeholder="Re-type Password">
+                <button id="toggle-password-newpass" type="button" class="d-none toggle-password"
+                  aria-label="Show password as plain text. Warning: this will display your password on the screen.">
+                </button>
+              </div>
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-lock"></span>
+                </div>
               </div>
             </div>
-          </div>
-          <p  id="passerr" style='font-size:small; margin-left: 1.4rem; color: white; margin-top: 0.5rem;'>retype the same passowrd in both fields</p>
+            <p  id="passerr" style='font-size:small; margin-left: 1.4rem; color: white; margin-top: 0.5rem;'>retype the same passowrd in both fields</p>
           </form>
         </div>
         <div class="modal-footer justify-content-between">
@@ -653,7 +668,7 @@
 
 <script src="plugins/chart.js/Chart.bundle.min.js"></script>
 <script src="dist/js/demo.js"></script>
-
+<script src="dist/js/viewPasswordButton.js" ></script>
 
 
 </body>
