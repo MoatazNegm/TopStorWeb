@@ -128,6 +128,7 @@ function initaddgs() {
 }
 
 function initdgs() {
+	$("[data-toggle='popover']").popover('hide');
 	var poolcard;
 	var col;
 	var colsmean;
@@ -262,11 +263,12 @@ function initdgs() {
 							"</div>" +
 							"</div>"
 					);
+			let diskPool = e;
 			let apiurl = "api/v1/pools/actionOnDisk";	
-			let actualDisk = alldgs["disks"][disk]["actualdisk"];	
-			const popoverContent = `<div id="` + pool + '_' + actualDisk + `">
-							<a id = 'popover-offline_` + pool + '-' + actualDisk + `' type="button" class="btn btn-sm btn-danger">Offline</a>
-    							<a id = 'popover-online_` + pool  + '-' + actualDisk + `'type="button" class="btn btn-sm btn-success">Online</a>
+			let diskStatus = alldgs['disks'][disk]['status'];
+			const popoverContent = `<div id="` + diskPool + '_' + disk + `">
+							<a id = 'popover-offline_` + diskPool + '-' + disk + `' type="button" class="btn btn-sm btn-danger">Offline</a>
+    							<a id = 'popover-online_` + diskPool  + '-' + disk + `'type="button" class="btn btn-sm btn-success">Online</a>
 						</div>`;
  			$('#'+ disk).popover({
 				trigger: 'click',
@@ -278,23 +280,39 @@ function initdgs() {
 		    		event.stopPropagation();
 				$("[data-toggle='popover']").not(this).popover('hide'); //all but this
   			}).on('inserted.bs.popover', function() {
-				$("#popover-offline_" + pool + '-' + actualDisk).on('click', function(event){
-					event.stopPropagation();
-					var apidata = {action: 'offline', pool: pool, disk: actualDisk};
-					postdata(apiurl, apidata);
-				});
-				$("#popover-online_" + pool + '-' + actualDisk).on('click', function(){
-					event.stopPropagation();
-					var apidata = {action: 'online', pool: pool, disk: actualDisk};
-					postdata(apiurl, apidata);
-				});
+				if (diskStatus == 'ONLINE')
+				{
+					$("#popover-offline_" + diskPool + '-' + disk).on('click', function(event){
+						event.stopPropagation();
+						var apidata = alldgs["disks"][disk];
+						apidata['action'] = 'offline';
+						postdata(apiurl, apidata);
+    						$('#' + disk).popover('hide');
+					});
+					$("#popover-online_" + diskPool + '-' + disk).unbind();
+					$("#popover-online_" + diskPool + '-' + disk).addClass('disabled');
+					$("#popover-offline_" + diskPool + '-' + disk).removeClass('disabled');
+				} 
+				else
+				{
+					$("#popover-online_" + diskPool + '-' + disk).on('click', function(){
+						event.stopPropagation();
+						var apidata = alldgs["disks"][disk];
+						apidata['action'] = 'online';
+						postdata(apiurl, apidata);
+    						$('#' + disk).popover('hide');
+					});
+					$("#popover-offline_" + diskPool + '-' + disk).unbind();
+					$("#popover-offline_" + diskPool + '-' + disk).addClass('disabled');
+					$("#popover-online_" + diskPool + '-' + disk).removeClass('disabled');
+				}
 			});
 			//$('#' + disk).on('hidden.bs.popover', function(){
-			// 	$("#popover-offline_" + pool + '-' + actualDisk).off('click');
-			// 	$("#popover-online_" + pool + '-' + actualDisk).off('click');
+			// 	$("#popover-offline_" + diskPool + '-' + disk).off('click');
+			// 	$("#popover-online_" + diskPool + '-' + disk).off('click');
 			//});
 			$(document).click(function () {
-    				$('#' + disk).popover('hide')
+    				$('#' + disk).popover('hide');
   			})	
 		
 		});
