@@ -91,6 +91,11 @@ firstRequestsInterval = setInterval(() => {
 	}
 }, 100);
 
+function Comparator(a, b) {
+	if (a[1] < b[1]) return -1;
+	if (a[1] >= b[1]) return 1;
+}
+
 function updaterunninghosts(status) {
 	if (status == "ready") {
 		if (selectedhost[status] == "-1") {
@@ -117,23 +122,28 @@ function updaterunninghosts(status) {
 			$("#cBoxName").text(hostdata["alias"]);
 			$("#cIPAddress").text(hostdata["ipaddr"] + "/" + hostdata["ipaddrsubnet"]);
 			$("#cMgmt").text(hostdata["cluster"]);
+			
 			$("#NodePorts option").remove();
-			$.each(hostdata["ports"], function (_, portInfo) {
+			let sortedNodePorts = hostdata["ports"].sort(Comparator);
+			$.each(sortedNodePorts, function (_, portInfo) {
                         	var o = new Option(portInfo[1], portInfo[1]);
                        		$("#NodePorts").append(o);
                         });
-                        $("#NodePorts").css("color","");
-                        $("#ClusterPorts").css("color","");
+
 			let clusterPorts = []
 			for (const node in hostsinfo) {
 				if (hostsinfo[node]['isLeader'])
 					clusterPorts = hostsinfo[node]['ports'];
 			}
 			$("#ClusterPorts option").remove();
-			$.each(clusterPorts, function (_, portInfo) {
+			let sortedClusterPorts = clusterPorts.sort(Comparator);
+			$.each(sortedClusterPorts, function (_, portInfo) {
                         	var o = new Option(portInfo[1], portInfo[1]);
                        		$("#ClusterPorts").append(o);
                         });
+                        
+			$("#NodePorts").css("color","");
+                        $("#ClusterPorts").css("color","");
 		
 			try {
 				$("#cTZ").text(
