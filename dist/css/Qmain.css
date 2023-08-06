@@ -95,3 +95,12 @@ select.btn-mini + .caret {
   opacity: 0.5;
   text-decoration: none;
 }
+
+.hostform
+{
+       padding: 0 3rem;
+}
+
+.hostform label{
+       margin: auto 0;
+}
