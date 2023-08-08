@@ -39,6 +39,7 @@ function postlogin(url, data) {
 			$("#Loading").toggle();
 			$("#signin").text("Username or Password is invalid");
 			$("#signin").show();
+			$('#user').focus();
 		}
 	}
 }
@@ -64,6 +65,24 @@ $("#signInButton").click(function (e) {
 		$("#signin").hide();
 		postlogin(urlapi, datapi);
 	}, 10);
+});
+
+$('#user').keypress(function (e) {
+	var key = e.which;
+	if(key == 13)  // the enter key code
+	{
+		$('#pass').focus();
+		return false;
+	}
+});
+
+$('#pass').keypress(function (e) {
+	var key = e.which;
+	if(key == 13)  // the enter key code
+	{
+		$('#signInButton').click();
+		return false;
+	}
 });
 
 dirtylog = 1;
