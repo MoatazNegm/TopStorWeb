@@ -91,9 +91,10 @@ function uploadUsersChecker(user, usersNames, poolNames, groupNames)
 	// Checks if the user selected a group.
 	if (!(user['groups'] === undefined || user['groups'] === ''))
 	{
+		
 		// Checks that each group selected is valid.
 		user['groups'].trimEnd().split(',').forEach(group => {
-			if (!(groupNames.includes(group) || group === ''))
+			if (!(groupNames.includes(group)) && group.length < 3 && group.trimEnd() !== "")
 				flag = true
 		});
 	}
@@ -203,14 +204,19 @@ function generateBadUsersDataTable(badusers,usersNames,groupNames,poolNames)
 						let groupsFlag = false;
 						let groupHtml = [];
 						user['groups'].trimEnd().split(',').forEach(group => {
-							if (!(groupNames.includes(group) || group === ''))
-							{
-								groupHtml.push(`<span class='text-danger'>${group}</span>`)
-								groupsFlag = true;
-							} else groupHtml.push(`<span>${group}</span>`);
+						if (group === '')
+							return	
+						else if ((!(groupNames.includes(group)) && group.length < 3))
+						{
+							groupHtml.push(`<span class='text-danger'>${group}</span>`)
+							groupsFlag = true;
+						} 
+						else if (!(groupNames.includes(group)))
+                                                	groupHtml.push(`<span class='text-success'>${group}</span>`)
+						else groupHtml.push(`<span>${group}</span>`);
 						});
 						if (groupsFlag) return `<p class='table-danger d-flex'>${groupHtml.join(',')}</p>`;
-						else  return `<p>${user['groups']}</p>`;
+						else  return `<p class='d-flex'>${groupHtml.join(',')}</p>`;
 					}
 					else return `<p>NoGroup</p>`;
 				},
@@ -338,7 +344,7 @@ $('#uploaderInput').change(function(e) {
 })
 $('#upload-file-btn').click(function() {
 	var form_data = new FormData($('#upload-file')[0]);
-	$('#fileUploadFailed').hide();
+	$('#fileUploadSuccess').hide();
 	$('#fileUploadFailed').hide();
 	let token = localStorage.getItem('token')
 	$.ajax({
@@ -352,6 +358,8 @@ $('#upload-file-btn').click(function() {
 			$('#fileUploadSuccess').show();
 			$('#uploaderInput').val('');
 			$('#upload-file-btn').hide();
+			$('#BadUserList').hide();
+			$("#BadUserListDataTable").dataTable().fnDestroy();
 		},
 		error: function(data) {
 			$('#fileUploadFailed').show();
