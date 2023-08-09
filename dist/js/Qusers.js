@@ -322,8 +322,6 @@ if (files.length === 0)
 {
 	$('#BadUserList').hide();
 	$('#upload-file-btn').hide();
-	$('#fileUploadSuccess').hide();
-	$('#fileUploadFailed').hide();
 	$("#BadUserListDataTable").dataTable().fnDestroy();
 }
 })
@@ -334,8 +332,6 @@ $('#uploaderInput').change(function(e) {
 	{
 		$('#upload-file-btn').hide();
 		$('#BadUserList').hide();
-		$('#fileUploadSuccess').hide();
-		$('#fileUploadFailed').hide();
 		return
 	}
     var parsedExcel = new ExcelToJSONParser();
@@ -344,8 +340,6 @@ $('#uploaderInput').change(function(e) {
 })
 $('#upload-file-btn').click(function() {
 	var form_data = new FormData($('#upload-file')[0]);
-	$('#fileUploadSuccess').hide();
-	$('#fileUploadFailed').hide();
 	let token = localStorage.getItem('token')
 	$.ajax({
 		type: 'POST',
@@ -355,16 +349,11 @@ $('#upload-file-btn').click(function() {
 		cache: false,
 		processData: false,
 		success: function(data) {
-			$('#fileUploadSuccess').show();
 			$('#uploaderInput').val('');
 			$('#upload-file-btn').hide();
 			$('#BadUserList').hide();
 			$("#BadUserListDataTable").dataTable().fnDestroy();
 		},
-		error: function(data) {
-			$('#fileUploadFailed').show();
-		},
-		
 	});
 });
 
