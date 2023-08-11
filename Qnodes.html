@@ -372,46 +372,50 @@
                 <!-- form start -->
                 <form class='hostform'  >
                   <div class="form-group row" >
-                    <label class="offset-1 col-5" >Ready to join an existing cluster</label>
-                    <div class="custom-control custom-switch offset-1 col-2 ">
+                    <label class="col-3 mb-1" >Ready to join an existing cluster</label>
+                    <div class="custom-control custom-switch col-2 my-auto">
                       <input type="checkbox" class=" custom-control-input runningnodes" data-toggle='toggle' id="customSwitch1">
                       <label class="custom-control-label " for="customSwitch1"></label>
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label for="User" class='offset-1 col-2'>Node Name</label>
+                    <label for="User" class=' col-2'>Node Name</label>
                     <input type="text" class="form-control runningnodes col-2" id="BoxName" placeholder="Node Name">
-                    <div  class="form-control bg-secondary color-palette offset-4 col-2"><span id="cBoxName">node_1</span></div>
+                    <div  class="form-control bg-secondary col-2 color-palette ml-auto"><span id="cBoxName">node_1</span></div>
                   </div>
                 
                   <div class="form-group row" >
-                    <label  for="IPAddress" class='offset-1 col-2'>Node Address</label>
+                    <label  for="IPAddress" class=' col-2'>Node Address</label>
                     <input type="text" placeholder="xxx.xxx.xxx.xxx" 
                           class="form-control col-2 runningnodes ipaddress" name="IPAddress" \
                           id="IPAddress"  data-inputmask="'alias': 'ip'"> 
-                    <select name="NodePorts" class="col-1 form-control runningnodes" id="NodePorts">
+                    <select name="NodePorts" class="ml-2 col-1 form-control runningnodes" id="NodePorts">
 		    	<option>Port</option>
 		    </select>
-		    <label  for="ipaddrsubnet" class='offset-1 col-1'>Subnet</label>
-                    <input type="number"  min="8" max="32" step="8" value=24 class="form-control runningnodes col-1"  id="ipaddrsubnet">
-                    <div  class="form-control bg-secondary offset-1 col-2 color-palette">
+		    <div class='d-flex col-3 ml-5'>
+		    	<label for="ipaddrsubnet" class=''>Subnet</label>
+                    	<input type="number"  min="8" max="32" step="8" value=24 class="col-4 ml-3 form-control runningnodes"  id="ipaddrsubnet">
+                    </div>
+			<div class="form-control bg-secondary col-2 color-palette ml-auto">
                       <span id="cIPAddress">10.11.11.11/24</span>
                     </div>
                   </div>
                   <div class="form-group row" >
-                    <label  for="Mgmt" class='offset-1 col-2'>Cluster Address</label>
+                    <label  for="Mgmt" class=' col-2'>Cluster Address</label>
                     <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes col-2 ipaddress" 
                           name="IPAddress" id="Mgmt"  data-inputmask="'alias': 'ip'">
-                    <select name="ClusterPorts" class="col-1 form-control runningnodes" id="ClusterPorts">
+                    <select name="ClusterPorts" class="ml-2 col-1 form-control runningnodes" id="ClusterPorts">
                     	<option>Port</option>
                     </select> 
-		   <label  for="MgmtSub" class='offset-1 col-1'>Subnet</label>
-                    <input type="number"  min="8" max="32" step="8" value=24 class="form-control runningnodes col-1"  id="MgmtSub">
-                    <div  class="form-control bg-secondary  color-palette offset-1 col-2"><span id="cMgmt">10.11.11.139/24</span>
+		   <div class='d-flex col-3 ml-5'>
+		   	<label  for="MgmtSub" class=''>Subnet</label>
+                   	<input type="number"  min="8" max="32" step="8" value=24 class="col-4 ml-3 form-control runningnodes col-1"  id="MgmtSub">
+                   </div>  
+		<div  class="form-control bg-secondary col-2 color-palette ml-auto"><span id="cMgmt">10.11.11.139/24</span>
                     </div>
                   </div>
                   <div class="form-group row" >
-                    <label for="TZ" class='offset-1 col-2'>Time Zone</label>
+                    <label for="TZ" class=' col-2'>Time Zone</label>
                     <select id='TZ' class="select2  runningnodes col-4" style="margin-top:5px;">
                     <option id="dimthis" city='0' timeZoneId="-1" value="-100"  style="
                           color: #939ba2;">-----------</option>
@@ -496,31 +500,38 @@
                     <option city='Fiji' timeZoneId="81" gmtAdjustment="GMT+12:00" useDaylightTime="0" value="12">(GMT+12:00) Fiji, Kamchatka, Marshall Is.</option>
 
                     </select>
-                    <div  class="form-control bg-secondary runningnodes offset-1 col-3 color-palette"><span id="cTZ">(00+3)Istanubl</span>
+                    <div  class="form-control bg-secondary runningnodes color-palette ml-auto" style="width: fit-content; min-width: 16.666667%;">
+			<span id="cTZ">(00+3)Istanubl</span>
                     </div>
                   </div>
                   <div class="form-group row" >
-                    <label  for="NTP" class='offset-1 col-2'>NTP Server</label>
-                    <pre style="padding-left:0; padding-right:2px;">IP:</pre><input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes col-2 ipaddress" name="IPAddress" id="NTP"  data-inputmask="'alias': 'ip'">
-                    <pre style="padding-left:1rem; padding-right:2px;">Name:</pre><input type="text" placeholder="NTP Name" class="form-control runningnodes col-2 name" name="NTPname" id="NTPname">
-                    <div  class="form-control bg-secondary offset-1 col-2 color-palette" style="margin-left: 4.4rem;"><span id="cNTP">4.4.4.2</span>
+                    <label  for="NTP" class=' col-2'>NTP Server</label>
+                    <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes col-2 ipaddress" name="IPAddress" id="NTP"  data-inputmask="'alias': 'ip'">
+                    <div class='d-flex col-3 ml-5'>
+		    	<label for="NTPname">Name</label>
+		    	<input type="text" placeholder="NTP Name" class="ml-3 form-control runningnodes name" name="NTPname" id="NTPname">
+                    </div>
+		    <div  class="form-control bg-secondary col-2 color-palette ml-auto"><span id="cNTP">4.4.4.2</span>
                     </div>
                   </div>
                   <div class="form-group row" >
-                    <label  for="NTP" class='offset-1 col-2'>DNS Server</label>
+                    <label  for="NTP" class=' col-2'>DNS Server</label>
                     <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes col-2 ipaddress" name="DNSname" id="DNSname"  data-inputmask="'alias': 'ip'">
-                    <pre style="padding-left:1rem; padding-right:2px;">Search:</pre><input type="text" placeholder="Domain Name" class="form-control runningnodes col-2 name" name="DNSsearch" id="DNSsearch">
-                    <div  class="form-control bg-secondary offset-1 col-3 color-palette" style="margin-left: 0.2rem;"><span id="cDNS">4.4.4.2</span>
+		    <div class='d-flex col-3 ml-5'>
+			<label for="DNSsearch">Search</label>
+			<input type="text" placeholder="Domain Name" class="ml-3 form-control runningnodes name" name="DNSsearch" id="DNSsearch">
+                    </div>
+		    <div  class="form-control bg-secondary col-2 color-palette ml-auto" style="margin-left: 0.2rem;"><span id="cDNS">4.4.4.2</span>
                     </div>
                   </div>
                   <div class="form-group row" >
-                    <label  for="GW" class='offset-1 col-2'>Gateway/router</label>
+                    <label  for="GW" class=' col-2'>Gateway/router</label>
                     <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes col-2 ipaddress" name="IPAddress" id="GW"  data-inputmask="'alias': 'ip'">
-                    <div  class="form-control bg-secondary offset-4 col-2 color-palette"><span id="cGW">10.11.11.1</span>
+                    <div  class="form-control bg-secondary col-2 color-palette ml-auto"><span id="cGW">10.11.11.1</span>
                     </div>
                   </div>
                 <!-- /.card-body -->
-                 <div class="card-footer">
+                 <div class="form-group row mt-4">
                   <button type="submit" id="readysubmit" class="btn runningnodes btn-add" style="opacity: 1;">Update Node</button>
                  </div>
                </form>
@@ -573,7 +584,7 @@
                 <form>
                  <div class="form-group" >
                    <div class="row">
-                    <div class="offset-4 col-4">
+                    <div class=" col-4">
                       <button type="button" disabled id="activesubmit" onclick="evacuate()" class="btn btn-block bg-gradient-warning btn-lg">Evacuate Node</button>
                     </div>
                    </div>
@@ -595,13 +606,8 @@
                   <div class='col-5'>
                     <h3 class="card-title text-lg cardshead" >Discovered Nodes</h3>
                   </div>
-		  <div class="offset-4 col-2">
-                   	<button type="button" id="refresh" class="btn btn-block bg-gradient-info btn-sm d-flex justify-content-center align-self-center">
-				<img class="img-responsive" src="dist/img/refresh-icon.svg"/>
-				<div class='mx-2 d-flex justify-content-center align-self-center'>
-					<p class="p-0 m-0">Discovery</p>
-				</div>
-			</button>
+		  <div class=" col-2">
+                      <button type="button" id="refresh" class="btn btn-block bg-gradient-info btn-sm">discovery</button>
                   </div>
 
                 </div>
@@ -636,7 +642,7 @@
                 <form>
                  <div class="form-group" >
                    <div class="row">
-                    <div class="offset-4 col-4">
+                    <div class=" col-4">
                       <button type="button" id="possiblesubmit" disabled class="btn btn-block bg-gradient-info btn-lg">Allow to join the cluster</button>
                     </div>
                    </div>
