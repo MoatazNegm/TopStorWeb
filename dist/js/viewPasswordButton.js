@@ -1,5 +1,3 @@
-var ShowPasswordTogglePass = document.querySelector("#pass");
-
 function showOrHideButton(){
         if (passwordInputPass.value.length > 0) {
                 document.querySelector("#pass").classList.add("input-password");
@@ -10,6 +8,17 @@ function showOrHideButton(){
     }
 }
 
+function showOrHideButtonNewpass(){
+    if (passwordInputPass.value.length > 0) {
+	document.querySelector("#newpass").classList.add("input-password");
+	document.getElementById("toggle-password-newpass").classList.remove("d-none");
+    } else {
+	document.querySelector("#newpass").classList.remove("input-password");
+	document.getElementById("toggle-password-newpass").classList.add("d-none");
+    }
+}
+
+var ShowPasswordTogglePass = document.querySelector("#pass");
 ShowPasswordTogglePass.addEventListener("keyup", showOrHideButton);
 const passwordInputPass = document.querySelector("#pass");
 const togglePasswordButtonPass = document.getElementById("toggle-password-pass");
@@ -25,11 +34,7 @@ function togglePassword() {
 }
 
 var ShowPasswordToggleNewpass = document.querySelector("#newpass");
-ShowPasswordToggleNewpass.onclick = function() {
-    document.querySelector("#newpass").classList.add("input-password");
-    document.getElementById("toggle-password-newpass").classList.remove("d-none");
-};
-
+ShowPasswordToggleNewpass.addEventListener("keyup", showOrHideButtonNewpass);
 const passwordInputNewpass = document.querySelector("#newpass");
 const togglePasswordButtonNewpass = document.getElementById("toggle-password-newpass");
 togglePasswordButtonNewpass.addEventListener("click", togglePasswordNewpass);
@@ -42,3 +47,24 @@ function togglePasswordNewpass() {
         togglePasswordButtonNewpass.setAttribute("aria-label", "Show password as plain text.")
     }
 }
+
+$('#pass').keydown(function (e) {
+        var key = e.which;
+        if(key == 13 || key == 9)  // the enter key code
+        {
+                $('#newpass').focus();
+                return false;
+        }
+});
+
+$('#newpass').keydown(function (e) {
+	var key = e.which;
+        if(key == 13 || key == 9)  // the enter key code
+        {
+		$("#newpass").blur();
+       	    	setTimeout(function () {
+			$('#passwrd').focus();
+		}, 100);
+                return false;
+        }
+});
