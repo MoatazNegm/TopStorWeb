@@ -213,6 +213,30 @@ $("#refresh").click(function (e) {
 	postdata(apiurl, apidata);
 });
 
+$("#getConfig").click(function (ev) {
+	ev.preventDefault();
+	var selstatus = $("#readysubmit").data("selected");
+	hostname = allhosts["ready"][selstatus]["name"];
+	var apiurl = "api/v1/hosts/getConfig";
+	var hypetoken = localStorage.getItem("token");
+	var apidata = {"token": hypetoken, "nodeName": hostname};
+	$.ajax({
+                url: apiurl,
+                data: apidata,error: function(req, err){ console.log('my message' + err); },
+                success: function(data) {
+			var blob = new Blob([data], { type: "text/plain" });
+			var fileName = hostname +"_config.txt";
+ 			var url = window.URL || window.webkitURL;
+                        link = url.createObjectURL(blob);
+                        var a = $("<a />");
+                        a.attr("download", fileName);
+                        a.attr("href", link);
+                        $("body").append(a);
+                        a[0].click();
+                        $("body").remove(a);       
+	}});
+})
+
 $("#readysubmit").click(function (ev) {
 	ev.preventDefault();
 	var tochange = 0;
