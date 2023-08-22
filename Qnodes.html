@@ -337,9 +337,12 @@
                   <!-- Collapse Button -->
                   <button type="button" class="btn btn-tool "  data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                 </div>
-                <div class="row" data-card-widget="collapse">
+                <div class="row justify-content-between" data-card-widget="collapse">
                   <div class='col-5'>
                     <h3 class="card-title text-lg cardshead" >Running Nodes</h3>
+                  </div>
+		  <div class="col-2">
+                  	<button type="button" id="getAllConfig" class="btn btn-block bg-gradient-info btn-sm">Download all configs</button>
                   </div>
                 </div>
 
@@ -533,7 +536,7 @@
                 <!-- /.card-body -->
                  <div class="form-group row mt-4 justify-content-between">
                   <button type="submit" id="readysubmit" class="btn runningnodes btn-add" style="opacity: 1;">Update Node</button>
-                  <button id="getConfig" class="btn runningnodes btn-success" style="opacity: 1;">Download Config</button>
+                  <button id="getConfig" class="btn runningnodes bg-gradient-info" style="opacity: 1;">Download Config</button>
                  </div>
                </form>
               </div>
@@ -603,7 +606,7 @@
                   <!-- Collapse Button -->
                   <button type="button" class="btn btn-tool "  data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                 </div>
-                <div class="row" data-card-widget="collapse">
+                <div class="row justify-content-between" data-card-widget="collapse">
                   <div class='col-5'>
                     <h3 class="card-title text-lg cardshead" >Discovered Nodes</h3>
                   </div>

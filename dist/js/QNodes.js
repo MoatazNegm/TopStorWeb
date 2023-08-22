@@ -237,6 +237,31 @@ $("#getConfig").click(function (ev) {
 	}});
 })
 
+$("#getAllConfig").click(function (e) {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        var apiurl = "api/v1/hosts/getAllConfig";
+        $.ajax({
+                url: apiurl,
+                xhrFields:{
+                        responseType: 'blob'
+                },
+                success: function(data) {
+                        var blob = new Blob([data], { type: "application/zip" });
+                        //saveAs(blob, 'file.zip');
+                        var fileName = "All_Config.zip";
+                      	var url = window.URL || window.webkitURL;
+                        link = url.createObjectURL(blob);
+                        var a = $("<a />");
+                        a.attr("download", fileName);
+                        a.attr("href", link);
+                        $("body").append(a);
+                        a[0].click();
+                        $("body").remove(a);
+                }
+        });
+});
+
 $("#readysubmit").click(function (ev) {
 	ev.preventDefault();
 	var tochange = 0;
