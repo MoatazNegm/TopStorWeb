@@ -241,8 +241,11 @@ $("#getAllConfig").click(function (e) {
         e.stopImmediatePropagation();
         e.preventDefault();
         var apiurl = "api/v1/hosts/getAllConfig";
-        $.ajax({
+        var hypetoken = localStorage.getItem("token");
+	var apidata = {"token": hypetoken};
+	$.ajax({
                 url: apiurl,
+		data: apidata,
                 xhrFields:{
                         responseType: 'blob'
                 },
