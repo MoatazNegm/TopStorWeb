@@ -12,6 +12,7 @@ function showOrHideButtonNewpass(){
     if (passwordInputPass.value.length > 0) {
 	document.querySelector("#newpass").classList.add("input-password");
 	document.getElementById("toggle-password-newpass").classList.remove("d-none");
+	$("#toggle-password-pass").prop('tabindex','-1')
     } else {
 	document.querySelector("#newpass").classList.remove("input-password");
 	document.getElementById("toggle-password-newpass").classList.add("d-none");
