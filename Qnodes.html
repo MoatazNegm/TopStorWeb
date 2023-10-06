@@ -389,32 +389,40 @@
                 
                   <div class="form-group row" >
                     <label  for="IPAddress" class=' col-2'>Node Address</label>
-                    <input type="text" placeholder="xxx.xxx.xxx.xxx" 
-                          class="form-control col-2 runningnodes ipaddress" name="IPAddress" \
-                          id="IPAddress"  data-inputmask="'alias': 'ip'"> 
-                    <select name="NodePorts" class="ml-2 col-1 form-control runningnodes" id="NodePorts">
-		    	<option>Port</option>
-		    </select>
-		    <div class='d-flex col-3 ml-5'>
-		    	<label for="ipaddrsubnet" class=''>Subnet</label>
-                    	<input type="number"  min="8" max="32" step="8" value=24 class="col-4 ml-3 form-control runningnodes"  id="ipaddrsubnet">
-                    </div>
-			<div class="form-control bg-secondary col-2 color-palette ml-auto">
-                      <span id="cIPAddress">10.11.11.11/24</span>
+                    <div class="d-flex col-6 p-0">
+			<div class="d-flex col-8 p-0">
+				<input type="text" placeholder="xxx.xxx.xxx.xxx" 
+                         		class="form-control col-6 runningnodes ipaddress" name="IPAddress" \
+                          		id="IPAddress"  data-inputmask="'alias': 'ip'"> 
+                    		<select name="NodePorts" class="ml-2 col-4 form-control runningnodes" id="NodePorts">
+		    			<option>Port</option>
+		    		</select>
+			</div>
+		    	<div class='d-flex col-4 ml-auto justify-content-end'>
+		    		<label for="ipaddrsubnet" class=''>Subnet</label>
+                    		<input type="number"  min="8" max="32" step="8" value=24 class="col-6 ml-3 form-control runningnodes"  id="ipaddrsubnet">
+                    	</div>
+		    </div>
+		    <div class="form-control bg-secondary col-2 color-palette ml-auto">
+                    	<span id="cIPAddress">10.11.11.11/24</span>
                     </div>
                   </div>
                   <div class="form-group row" >
                     <label  for="Mgmt" class=' col-2'>Cluster Address</label>
-                    <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes col-2 ipaddress" 
-                          name="IPAddress" id="Mgmt"  data-inputmask="'alias': 'ip'">
-                    <select name="ClusterPorts" class="ml-2 col-1 form-control runningnodes" id="ClusterPorts">
-                    	<option>Port</option>
-                    </select> 
-		   <div class='d-flex col-3 ml-5'>
-		   	<label  for="MgmtSub" class=''>Subnet</label>
-                   	<input type="number"  min="8" max="32" step="8" value=24 class="col-4 ml-3 form-control runningnodes col-1"  id="MgmtSub">
-                   </div>  
-		<div  class="form-control bg-secondary col-2 color-palette ml-auto"><span id="cMgmt">10.11.11.139/24</span>
+                    <div class="d-flex col-6 p-0">
+                        <div class="d-flex col-8 p-0">
+                    		<input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes col-6 ipaddress" 
+                         		name="IPAddress" id="Mgmt"  data-inputmask="'alias': 'ip'">
+                    		<select name="ClusterPorts" class="ml-2 col-4 form-control runningnodes" id="ClusterPorts">
+                    			<option>Port</option>
+                    		</select> 
+		   	</div>
+		   	<div class='d-flex col-4 ml-auto justify-content-end'>
+		   		<label  for="MgmtSub" class=''>Subnet</label>
+                   		<input type="number"  min="8" max="32" step="8" value=24 class="col-6 ml-3 form-control runningnodes col-1"  id="MgmtSub">
+                   	</div> 
+		    </div> 
+		    <div  class="form-control bg-secondary col-2 color-palette ml-auto"><span id="cMgmt">10.11.11.139/24</span>
                     </div>
                   </div>
                   <div class="form-group row" >
@@ -509,21 +517,29 @@
                   </div>
                   <div class="form-group row" >
                     <label  for="NTP" class=' col-2'>NTP Server</label>
-                    <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes col-2 ipaddress" name="IPAddress" id="NTP"  data-inputmask="'alias': 'ip'">
-                    <div class='d-flex col-3 ml-5'>
-		    	<label for="NTPname">Name</label>
-		    	<input type="text" placeholder="NTP Name" class="ml-3 form-control runningnodes name" name="NTPname" id="NTPname">
-                    </div>
+		    <div class="d-flex col-6 p-0 justify-content-between"> 
+		    	<div class="col-4 p-0">
+                    		<input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes ipaddress" name="IPAddress" id="NTP"  data-inputmask="'alias': 'ip'">
+                    	</div>
+		    	<div class='d-flex col-6 ml-5'>
+		    		<label for="NTPname">Name</label>
+		    		<input type="text" placeholder="NTP Name" class="ml-3 form-control runningnodes name" name="NTPname" id="NTPname">
+                    	</div>
+		    </div>
 		    <div  class="form-control bg-secondary col-2 color-palette ml-auto"><span id="cNTP">4.4.4.2</span>
                     </div>
                   </div>
                   <div class="form-group row" >
                     <label  for="NTP" class=' col-2'>DNS Server</label>
-                    <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes col-2 ipaddress" name="DNSname" id="DNSname"  data-inputmask="'alias': 'ip'">
-		    <div class='d-flex col-3 ml-5'>
-			<label for="DNSsearch">Search</label>
-			<input type="text" placeholder="Domain Name" class="ml-3 form-control runningnodes name" name="DNSsearch" id="DNSsearch">
-                    </div>
+		    <div class="d-flex col-6 p-0 justify-content-between"> 
+		    	<div class="col-4 p-0">
+                    		<input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes ipaddress" name="DNSname" id="DNSname"  data-inputmask="'alias': 'ip'">
+			</div>
+		    	<div class='d-flex col-6 ml-5'>
+				<label for="DNSsearch">Search</label>
+				<input type="text" placeholder="Domain Name" class="ml-3 form-control runningnodes name" name="DNSsearch" id="DNSsearch">
+                    	</div>
+		    </div>
 		    <div  class="form-control bg-secondary col-2 color-palette ml-auto" style="margin-left: 0.2rem;"><span id="cDNS">4.4.4.2</span>
                     </div>
                   </div>
