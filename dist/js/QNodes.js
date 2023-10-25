@@ -251,6 +251,8 @@ $("#getAllConfig").click(function (e) {
                 },
                 success: function(data) {
                         var blob = new Blob([data], { type: "application/zip" });
+			responseReceived = true;
+        		clearTimeout(ajaxTimeout); // Clear the timer
                         //saveAs(blob, 'file.zip');
                         var fileName = "All_Config.zip";
                       	var url = window.URL || window.webkitURL;
@@ -263,6 +265,13 @@ $("#getAllConfig").click(function (e) {
                         $("body").remove(a);
                 }
         });
+	ajaxTimeout = setTimeout(function() {
+    		if (!responseReceived) {
+        	// Handle the case when the response doesn't arrive within 100 seconds
+        		console.log("Request timed out after 100 seconds.");
+        	// You can take additional actions, such as showing an error message or retrying the request.
+    		}
+	}, 100000); // 100,000 milliseconds (100 seconds)
 });
 
 $("#readysubmit").click(function (ev) {
