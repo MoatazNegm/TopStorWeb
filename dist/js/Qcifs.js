@@ -266,6 +266,10 @@ function updatebtn(ths) {
 	var changedkey = ths.data("key");
 	var oldpropvalue = ths.data("value").toString();
 	var newpropvalue = ths.val().toString();
+	if(newpropvalue == oldpropvalue){
+		$("#btn" + ths.data("name")).hide();
+		return
+	}
 	if (!(ths.data("name") in changedprop)) {
 		changedprop[ths.data("name")] = {};
 	}
