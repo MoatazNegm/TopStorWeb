@@ -815,4 +815,16 @@ ul.chec-radioc li.pzc {
     font-family: 'Glyphicons Halflings';
 }
 
+.blink {
+  animation: blink 0.5s linear infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 /*end code*/

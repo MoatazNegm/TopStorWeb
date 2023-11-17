@@ -300,6 +300,7 @@ function propchange() {
 }
 function initVolumelist(first = 0) {
 	groupsfn(first);
+	var tcolor = 'red';
 volumelisttable = $("#VolumeList").DataTable({
 		order: [[1, "desc"]],
 		ajax: {
@@ -392,7 +393,20 @@ volumelisttable = $("#VolumeList").DataTable({
 				visible: prot != "HOME" ,
 				render: function (data, type, row) {
 					if (row.type === 'DOMAIN'){
-						return row.runtime;
+						var msg = row.runtime
+						switch(row.runtime){
+							case 'serviceok':
+							 	tcolor = 'green'; msg='The service is up';break;
+							case 'servicedown':
+								tcolor = 'red'; msg='The service is down';break;
+							case 'ADnameerror':
+								tcolor = 'orange';msg='The Active Directory name is not correct '; break;
+							case 'adminpasserror':
+								tcolor = 'orange';msg='The admin or password is incorrect'; break;
+							case 'ADservererror':
+								tcolor= 'orange';msg='The Active Directory server is down or incorrect'; break;
+						}
+						return '<div style="text-align:center; color:'+tcolor+'">'+msg+'</div>';
 					} else {
 						var therow =
 						'<select class="multiple changeprop usergroups ' +
@@ -456,6 +470,11 @@ volumelisttable = $("#VolumeList").DataTable({
 					} else {
 						color = "red";
 						plug = "fa-plug-circle-xmark";
+					}
+
+					if (tcolor == 'orange'){
+						color = 'orange';
+						plug = "fa-plug-circle-xmark"		
 					}
 					return (
 						'<a style="font-size: 1.25rem; color:' +
