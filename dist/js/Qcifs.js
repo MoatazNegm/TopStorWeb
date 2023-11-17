@@ -393,7 +393,8 @@ volumelisttable = $("#VolumeList").DataTable({
 				visible: prot != "HOME" ,
 				render: function (data, type, row) {
 					if (row.type === 'DOMAIN'){
-						var msg = row.runtime
+						var msg = row.runtime;
+						console.log(row.runtime)
 						switch(row.runtime){
 							case 'serviceok':
 							 	tcolor = 'green'; msg='The service is up';break;
@@ -405,6 +406,8 @@ volumelisttable = $("#VolumeList").DataTable({
 								tcolor = 'orange';msg='The admin or password is incorrect'; break;
 							case 'ADservererror':
 								tcolor= 'orange';msg='The Active Directory server is down or incorrect'; break;
+							default:
+								tcolor = 'orange';break;
 						}
 						return '<div style="text-align:center; color:'+tcolor+'">'+msg+'</div>';
 					} else {
@@ -472,8 +475,8 @@ volumelisttable = $("#VolumeList").DataTable({
 						plug = "fa-plug-circle-xmark";
 					}
 
-					if (tcolor == 'orange'){
-						color = 'orange';
+					if (tcolor != 'green'){
+						color = tcolor;
 						plug = "fa-plug-circle-xmark"		
 					}
 					return (
@@ -483,6 +486,8 @@ volumelisttable = $("#VolumeList").DataTable({
 						row.name +
 						"','" +
 						row.statusmount +
+						"','" +
+						row.runtime +
 						"')\" >" +
 						'<i class="fa-solid ' +
 						plug +
@@ -541,7 +546,7 @@ function selbtnclickeduser(ths) {
 	volumelistrefresh();
 }
 
-function activethis(volname, statusmount) {
+function activethis(volname, statusmount, runtime) {
 	var apiurl = "api/v1/volumes/volumeactive";
 	var active = "active";
 	if (statusmount.includes("active") > 0) {
@@ -812,4 +817,3 @@ function togglePassword() {
         togglePasswordButtonDompass.setAttribute("aria-label", "Show password as plain text.")
     }
 }
-
