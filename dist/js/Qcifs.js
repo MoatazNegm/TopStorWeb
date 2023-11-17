@@ -129,6 +129,7 @@ firstRequestsInterval = setInterval(() => {
 		setTimeout(() => {
 			console.log("FirstRequests Done");
 			clearInterval(firstRequestsInterval);
+ 			$("button.volumes").hide();
 		}, 10);
 	}
 }, 100);
@@ -274,6 +275,7 @@ function updatebtn(ths) {
 	if (oldpropvalue !== newpropvalue) {
 		changedprop[ths.data("name")][changedkey] = newpropvalue;
 		$("#btn" + ths.data("name")).show();
+        	console.log('button '+newpropvalue+' '+oldpropvalue+' '+changedkey)
 	} else {
 		delete changedprop[ths.data("name")][changedkey];
 		if ($.isEmptyObject(changedprop[ths.data("name")])) {
@@ -296,7 +298,6 @@ function propchange() {
 		updatebtn($(this));
 	});
 }
-
 function initVolumelist(first = 0) {
 	groupsfn(first);
 volumelisttable = $("#VolumeList").DataTable({
@@ -388,9 +389,12 @@ volumelisttable = $("#VolumeList").DataTable({
 			},
 			{
 				data: "groups",
-				visible: prot != "HOME",
+				visible: prot != "HOME" ,
 				render: function (data, type, row) {
-					var therow =
+					if (row.type === 'DOMAIN'){
+						return row.runtime;
+					} else {
+						var therow =
 						'<select class="multiple changeprop usergroups ' +
 						row.type +
 						" " +
@@ -410,7 +414,8 @@ volumelisttable = $("#VolumeList").DataTable({
 						'" data-change="" id="sel' +
 						row.name +
 						'"></select>';
-					return therow;
+						return therow;
+					}
 				},
 			},
 			{
