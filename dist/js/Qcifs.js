@@ -446,11 +446,11 @@ volumelisttable = $("#VolumeList").DataTable({
 				data: null,
 				render: function (data, type, row) {
 					if (row.statusmount.includes("active") > 0) {
-						color = "red";
-						plug = "fa-plug-circle-xmark";
-					} else {
 						color = "green";
 						plug = "fa-plug-circle-bolt";
+					} else {
+						color = "red";
+						plug = "fa-plug-circle-xmark";
 					}
 					return (
 						'<a style="font-size: 1.25rem; color:' +
