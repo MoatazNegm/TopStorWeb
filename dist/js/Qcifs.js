@@ -553,7 +553,7 @@ function selbtnclickeduser(ths) {
 function activethis(volname, statusmount, runtime) {
 	var apiurl = "api/v1/volumes/volumeactive";
 	var active = "active";
-	if (statusmount.includes("active") > 0) {
+	if (statusmount.includes("active") > 0 && runtime == 'serviceok') {
 		active = "disabled";
 	}
 	var apidata = { name: volname, active: active, user: "mezo" };
