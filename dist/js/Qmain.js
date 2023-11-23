@@ -324,11 +324,18 @@ $(".chgpasswd").click(function (e) {
 $("#passwrd").click(function (e) {
 	var apiurl = "api/v1/user/changepass";
 	var apidata = { username: userofpass, password: $("#pass").val() };
-	postdata(apiurl, apidata);
+	console.log('userofpass',apidata)
+
+	//postdata(apiurl, apidata);
 	$('#modal-sm').modal('toggle');
 });
 $(".chpass").focusout(function (e) {
-	if ($("#pass").val() != $("#newpass").val()) {
+	if ($("#pass").val() != $("#newpass").val() || $("#newpass").val().length < 3) {
+		if ($("#pass").val() == $("#newpass").val()){
+			$("#passerr").text("password length is too small");
+		} else {
+			$("#passerr").text("please retype the same password in both fields");
+		}
 		$("#passerr").css("color", "red");
 		$("#passwrd").prop("disabled", true);
 	} else {
