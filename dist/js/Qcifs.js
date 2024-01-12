@@ -435,6 +435,7 @@ volumelisttable = $("#VolumeList").DataTable({
 						'" data-change="" id="sel' +
 						row.name +
 						'"></select>';
+						tcolor = 'green'
 						return therow;
 					}
 				},
@@ -472,10 +473,10 @@ volumelisttable = $("#VolumeList").DataTable({
 				data: null,
 				render: function (data, type, row) {
 					if (row.statusmount.includes("active") > 0) {
-						color = "green";
+						color = "red";
 						plug = "fa-plug-circle-bolt";
 					} else {
-						color = "red";
+						color = "green";
 						plug = "fa-plug-circle-xmark";
 					}
 
