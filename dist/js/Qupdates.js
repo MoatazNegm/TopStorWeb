@@ -17,6 +17,8 @@ sortsofts();
 
 function getversions(){
   var newallusers;
+  var newallversions = "";
+/*
    $.ajax({
      url: '/api/v1/software/versions',
      dataType: 'json',
@@ -34,8 +36,9 @@ function getversions(){
      $.each(allversions,function(e,t){
         $("#softs").append("<option>"+t['text']+"</option>")
      });
-     $("#soft").text(cversion);
    }
+*/
+     $('#soft').text($("#thever").text().replace('ver:',''));
  }
  
  $("#ApplyAvailable").click(function(e){
