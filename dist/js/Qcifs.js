@@ -162,9 +162,9 @@ function refreshrows() {
 		});
 		$(".DOMAIN").attr("disabled", "disabled");
 	});
-	$(".changeprop").each(function () {
-		updatebtn($(this));
-	});
+	//$(".changeprop").each(function () {
+	//	updatebtn($(this));
+	//});
 }
 //$.post("./pump.php", { req:"VolumeCreate"+prot+".py", name:pools[thepool].name+" "+$("#volname"+prot+"").val()+" "+$("#volsize"+prot+"").val()+"G "+Groupprot, passwd:$("#Address"+prot).val().toString()+" "+$("#Subnet"+prot).val().toString()+" "+myname+" "+pools[thepool].host+" "+myname }, function (data){
 
@@ -258,6 +258,9 @@ function volumelistrefresh() {
 			refreshrows();
 			groupsrefresh();
 		});
+	});
+	$(".runtime").each(function(){
+		$('#btn'+$(this).data("name")).hide()
 	});
 	propchange();
 }
@@ -413,7 +416,7 @@ volumelisttable = $("#VolumeList").DataTable({
 							default:
 								tcolor = 'orange';break;
 						}
-						return '<div style="text-align:center; color:'+tcolor+'">'+msg+'</div>';
+						return '<div class="runtime" data-name="'+row.name+'" style="text-align:center; color:'+tcolor+'">'+msg+'</div>';
 					} else {
 						var therow =
 						'<select class="multiple changeprop usergroups ' +
@@ -451,7 +454,7 @@ volumelisttable = $("#VolumeList").DataTable({
 						row.name +
 						" data-name=" +
 						row.name +
-						'  class="btn btn-primary volumes" > update</button>'
+						'  class="btn btn-primary volumes '+row.name+'" > update</button>'
 					);
 				},
 			},
@@ -518,8 +521,8 @@ volumelisttable = $("#VolumeList").DataTable({
 	volumelisttable.errMode = function (settings, helpPage, message) {};
 	$.fn.dataTable.ext.errMode = "throw";
 	$(".volumes").hide();
-	refreshrows();
-	groupsrefresh();
+	//refreshrows();
+	//groupsrefresh();
 }
 
 initVolumelist(1);
