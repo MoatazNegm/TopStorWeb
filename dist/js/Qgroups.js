@@ -61,7 +61,7 @@ function usersrefresh() {
 			data: { 'token': hypetoken },
 			dataType: "json",
 			type: "GET",
-			async: true,
+			async: false,
 		},
 	});
 }
@@ -142,7 +142,7 @@ function initgrouplist() {
 		ajax: {
 			url: "api/v1/groups/grouplist",
 			data: { 'token': hypetoken },
-			async: true,
+			async: false,
 			type: "GET",
 			dataSrc: "allgroups",
 		},
@@ -336,3 +336,4 @@ function refreshall() {
 	});
 }
 setInterval(refreshall, 2000);
+grouplistrefresh()
