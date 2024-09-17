@@ -134,6 +134,7 @@ function getsnaps() {
 //allsnaps = getsnaps();
 
 function initalltables() {
+	console.log(allsnaps["Once"]);
 	onceinittable = $("#Oncetable").DataTable({
 		order: [
 			[0, "desc"],
@@ -141,12 +142,7 @@ function initalltables() {
 		],
 		data: allsnaps["Once"],
 		columns: [
-			{
-				data: null,
-				render: function (data, type, row) {
-					return fixDate(row);
-				},
-			},
+			{ data: "date" },
 			{ data: "time" },
 			{ data: "name" },
 			{
@@ -194,6 +190,21 @@ function initalltables() {
 					$(td).data("grps", "cell-" + cellData);
 				},
 			},
+			{
+				targets: 0,
+				render: function (data, type, row) {
+					if (type === 'display') {
+						return fixDate(row); 
+					} else if (type === 'sort') {
+						return row.name.split('.')[1];
+					}
+					return data;
+				}
+			},
+			{
+				targets: 1,
+				"orderable": false,
+			},
 		],
 	});
 	onceinittable.buttons().container().appendTo("#Oncetable_wrapper .col-6:eq(0)");
@@ -204,12 +215,7 @@ function initalltables() {
 		],
 		data: allsnaps["allsnaps"],
 		columns: [
-			{
-				data: null,
-				render: function (data, type, row) {
-					return fixDate(row);
-				},
-			},
+			{ data: "date" },
 			{ data: "time" },
 			{
 				data: "name",
@@ -261,6 +267,21 @@ function initalltables() {
 				createdCell: function (td, cellData, rowData, row, col) {
 					$(td).data("grps", "cell-" + cellData);
 				},
+			},
+			{
+				targets: 0,
+				render: function (data, type, row) {
+					if (type === 'display') {
+						return fixDate(row); 
+					} else if (type === 'sort') {
+						return row.name.split('.')[1];
+					}
+					return data;
+				}
+			},
+			{
+				targets: 1,
+				"orderable": false,
 			},
 		],
 	});
@@ -422,12 +443,7 @@ function initalltables() {
 				],
 				data: allsnaps[t],
 				columns: [
-					{
-						data: null,
-						render: function (data, type, row) {
-							return fixDate(row);
-						},
-					},
+					{ data: "date" },
 					{ data: "time" },
 					{
 						data: "name",
@@ -480,6 +496,21 @@ function initalltables() {
 							$(td).data("grps", "cell-" + cellData);
 						},
 					},
+					{
+						targets: 0,
+						render: function (data, type, row) {
+							if (type === 'display') {
+								return fixDate(row); 
+							} else if (type === 'sort') {
+								return row.name.split('.')[1];
+							}
+							return data;
+						}
+					},
+					{
+						targets: 1,
+						"orderable": false,
+					},
 				],
 			});
 			allpsnapstable[t]
@@ -503,6 +534,7 @@ function snapsreferesh() {
 				alls.push(tt);
 			}
 		});
+
 
 		onceinittable.clear();
 		onceinittable.rows.add(allsnaps["Once"]);
