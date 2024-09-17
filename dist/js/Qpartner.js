@@ -80,6 +80,7 @@ function initPartnerlist() {
 		ajax: {
 			url: "api/v1/partners/partnerlist",
 			async: false,
+			data: { 'token' : hypetoken },
 			type: "GET",
 			dataSrc: "allpartners",
 		},
@@ -145,6 +146,7 @@ $("#AddPartner").click(function (e) {
 		ip: name,
 		pass: $("#ppass").val(),
 		port: $("#port").val(),
+		token : hypetoken ,
 		type: $("#type").val(),
 		alias: $("#alias").val(),
 	};
@@ -156,7 +158,7 @@ $("#AddPartner").click(function (e) {
 
 function apartnerdel() {
 	var apiurl = "api/v1/partners/partnerdel";
-	var apidata = { name: arguments[0] };
+	var apidata = { name: arguments[0],  token : hypetoken };
 	postdata(apiurl, apidata);
 }
 
@@ -171,6 +173,7 @@ function refreshall() {
 		async: true,
 		type: "GET",
 		dataSrc: "allpartners",
+		data: { token: hypetoken },
 		success: function (data) {
 			newallpartners = data;
 			if (JSON.stringify(allpartners) != JSON.stringify(newallpartners)) {
