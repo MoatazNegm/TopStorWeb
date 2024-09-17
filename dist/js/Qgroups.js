@@ -58,10 +58,8 @@ function usersrefresh() {
 	$(".select2.multiple").select2({
 		ajax: {
 			url: "api/v1/groups/userlist",
-		data: { 'token': hypetoken },
 			data: { 'token': hypetoken },
 			dataType: "json",
-			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
 			type: "GET",
 			async: false,
 		},
@@ -73,7 +71,6 @@ function poolsrefresh() {
 			url: "api/v1/pools/poolsinfo",
 			data: { 'token': hypetoken },
 			dataType: "json",
-			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
 			type: "GET",
 			async: false,
 		},
