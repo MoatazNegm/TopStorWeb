@@ -557,8 +557,8 @@ $("#UnixAddUser").click(function (e) {
 	}
 	var apidata = {
 		name: $("#User").val(),
-		Volpool: $("#UserVol").val(),
-		groups: $("#Usergroups").val().toString(),
+		Volpool: $('#UserVol').find(":selected").text(),
+		groups: $("#Usergroups").val(),
 		Password: $("#UserPass").val(),
 		Volsize: $("#volsize").val(),
 		HomeAddress: ipaddr,
