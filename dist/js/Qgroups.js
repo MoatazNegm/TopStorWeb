@@ -4,6 +4,7 @@ var refreshergroup = 2;
 var grouppass = "hi";
 var proptime = "55:55:55";
 var olddata = 0;
+var btnvisible = 0;
 var propdata = "hi";
 var oldproprdata = "dakfj";
 var proptimenew = "33:333:33";
@@ -278,6 +279,14 @@ function agroupdel() {
 }
 
 function refreshall() {
+	if($("#btnselEveryone").is(":visible")){
+		btnvisible += 1;
+	} else {
+		btnvisible = 0;
+	}
+	if (btnvisible > 4 ){
+		grouplistrefresh();
+	}
 	if (groupnotready == 1) {
 		groupnotready = 2;
 		grouplistrefresh();
