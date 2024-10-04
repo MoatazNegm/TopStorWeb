@@ -105,6 +105,7 @@ function usersnohomerefresh(first = 0) {
 
 function groupsrefresh(first = 0) {
 	$(".select2.multiple").select2({
+		closeOnSelect: true,
 		ajax: {
 			url: "api/v1/volumes/grouplist",
 			dataType: "json",
@@ -274,6 +275,7 @@ function updatebtn(ths) {
 	var changedkey = ths.data("key");
 	var oldpropvalue = ths.data("value").toString();
 	var newpropvalue = ths.val().toString();
+	$("#btn" + ths.data("name")).show();
 	if(newpropvalue == oldpropvalue){
 		$("#btn" + ths.data("name")).hide();
 		return
@@ -304,10 +306,31 @@ function updatebtn(ths) {
 		delete changedprop[ths.data("name")];
 	}
 }
-
+var cyclechangeprop = 0;
 function propchange() {
 	$(".changeprop").on("change", function (e) {
 		updatebtn($(this));
+		if(cyclechangeprop) return;
+		cyclechangeprop = 1
+                        	var el = $(this);
+                        	var selected = el.select2('data');
+                       		var uniqueIds = new Set();
+                        	var uniqueSelected = selected.filter(function(item) {
+                                                        if (!uniqueIds.has(item.id)) {
+                                                                uniqueIds.add(item.id);
+                                                                return true;
+                                                        }
+                                                        return false;
+                                                });
+                        	console.log('uniqueS is', uniqueSelected)
+                        	el.val(null).trigger('change');
+                        	uniqueSelected.forEach(function(item) {
+                                	el.select2("trigger", "select", {
+                                	data: item
+                                	});
+                        	});
+
+		cyclechangeprop = 0
 	});
 }
 function initVolumelist(first = 0) {
@@ -731,6 +754,12 @@ function refreshall(first = 0) {
 	groupsfn(first);
 	updatetasks();
 	var newallpools = "new0";
+	$(".changeprop").each(function(e){   updatebtn($(this));  });
+	//$("button[id^='btn']").each(function(e) { 
+	// 	if($(this).is(":visible") && $(this).data('value') == undefined) { 
+	//				$(this).hide();
+	//	} 
+        //});
 	$(".odd").css("background-color", "rgba(41,57,198,.1)");
 	$.ajax({
 		url: "api/v1/volumes/poolsinfo",
