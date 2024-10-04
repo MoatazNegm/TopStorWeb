@@ -580,6 +580,7 @@ function selbtnclickeduser(ths) {
 		apidata["groups"] = newgrps;
 	}
 	apidata["type"] = prot;
+	console.log('apidata is',apidata)
 	postdata(apiurl, apidata);
 	volumelistrefresh();
 }
