@@ -4,6 +4,7 @@ var refreshergroup = 2;
 var grouppass = "hi";
 var proptime = "55:55:55";
 var olddata = 0;
+var btnvisible = 0;
 var propdata = "hi";
 var oldproprdata = "dakfj";
 var proptimenew = "33:333:33";
@@ -58,8 +59,8 @@ function usersrefresh() {
 	$(".select2.multiple").select2({
 		ajax: {
 			url: "api/v1/groups/userlist",
+			data: { 'token': hypetoken },
 			dataType: "json",
-			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
 			type: "GET",
 			async: false,
 		},
@@ -69,8 +70,8 @@ function poolsrefresh() {
 	$(".select2.pool").select2({
 		ajax: {
 			url: "api/v1/pools/poolsinfo",
+			data: { 'token': hypetoken },
 			dataType: "json",
-			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
 			type: "GET",
 			async: false,
 		},
@@ -141,6 +142,7 @@ function initgrouplist() {
 		//"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
 		ajax: {
 			url: "api/v1/groups/grouplist",
+			data: { 'token': hypetoken },
 			async: false,
 			type: "GET",
 			dataSrc: "allgroups",
@@ -261,6 +263,7 @@ function selbtnclickedgroup(ths) {
 			.val()
 			.toString(),
 	};
+	apidata['token'] = hypetoken;
 	postdata(apiurl, apidata);
 }
 $("#UnixAddgroup").click(function (e) {
@@ -268,19 +271,29 @@ $("#UnixAddgroup").click(function (e) {
 	var apidata = {
 		name: $("#Group").val(),
 		users: $("#groupusers").val().toString(),
+		token: hypetoken,
 		Myname: "mezo",
 	};
+	console.log('click group',apidata)
 	postdata(apiurl, apidata);
 	e.preventDefault();
 });
 
 function agroupdel() {
 	var apiurl = "api/v1/groups/groupdel";
-	var apidata = { name: arguments[0], Myname: "mezo" };
+	var apidata = { name: arguments[0], Myname: "mezo", token: hypetoken };
 	postdata(apiurl, apidata);
 }
 
 function refreshall() {
+	if($("#btnselEveryone").is(":visible")){
+		btnvisible += 1;
+	} else {
+		btnvisible = 0;
+	}
+	if (btnvisible > 4 ){
+		grouplistrefresh();
+	}
 	if (groupnotready == 1) {
 		groupnotready = 2;
 		grouplistrefresh();
@@ -291,6 +304,7 @@ function refreshall() {
 	updatetasks();
 	$.ajax({
 		url: "api/v1/groups/userlist",
+		data: { 'token': hypetoken },
 		type: "GET",
 		async: true,
 		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
@@ -307,6 +321,7 @@ function refreshall() {
 	var newallpools = "new0";
 	$.ajax({
 		url: "api/v1/pools/poolsinfo",
+		data: { 'token': hypetoken },
 		type: "GET",
 		async: true,
 		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
@@ -323,6 +338,7 @@ function refreshall() {
 	var newallgroups = "new0";
 	$.ajax({
 		url: "api/v1/groups/grouplist",
+		data: { 'token': hypetoken },
 		async: true,
 		type: "GET",
 		dataSrc: "allgroups",
@@ -336,3 +352,4 @@ function refreshall() {
 	});
 }
 setInterval(refreshall, 2000);
+grouplistrefresh()

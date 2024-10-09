@@ -261,7 +261,8 @@ let ExcelToJSONParser = function() {
 			let usersList;
 			$.ajax({
 				url: "api/v1/users/grouplist",
-				data: { 'token': hypetoken },
+				//data: { 'token': hypetoken },
+				data : { 'token': hypetoken },
 				dataType: "json",
 				type: "GET",
 				async: false,
@@ -557,7 +558,7 @@ $("#UnixAddUser").click(function (e) {
 	}
 	var apidata = {
 		name: $("#User").val(),
-		Volpool: $("#UserVol").val(),
+		Volpool: $('#UserVol').find(":selected").text(),
 		groups: $("#Usergroups").val().toString(),
 		Password: $("#UserPass").val(),
 		Volsize: $("#volsize").val(),
@@ -584,7 +585,8 @@ function refreshall() {
 	$.ajax({
 		url: "api/v1/users/grouplist",
 		type: "GET",
-		data: { 'token': hypetoken },
+		//data: { 'token': hypetoken },
+		data: { 'token': hypetoken},
 		async: true,
 		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
 

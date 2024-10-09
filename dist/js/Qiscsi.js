@@ -85,6 +85,10 @@ $("#createvol").click(function (e) {
 		active = "false";
 	}
 	var apiurl = "api/v1/volumes/create";
+	var initiatorval=$("#Initiators").val();
+	if(initiatorval.length == 0 ){
+		initiatorval = 'This_lun_is_not_mapped';
+	}
 	var apidata = {
 		type: prot,
 		token: hypetoken,
@@ -94,7 +98,7 @@ $("#createvol").click(function (e) {
 		ipaddress: $("#Address").val(),
 		portalport: $("#portalport").val(),
 		Subnet: $("#Subnet").val(),
-		initiators: $("#Initiators").val().replaceAll("\n", ",").replaceAll(" ", ","),
+		initiators: initiatorval.replaceAll("\n", ",").replaceAll(" ", ","),
 		size: $("#volsize").val() + "G",
 	};
 
