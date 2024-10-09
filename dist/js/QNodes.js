@@ -200,19 +200,21 @@ function evacuate() {
 	var host = selectedhost["active"];
 	var apiurl = "api/v1/hosts/evacuate";
 	var apidata = { name: allhosts["active"][host]["name"] };
+	apidata['token'] = hypetoken;
 	postdata(apiurl, apidata);
 }
 
 $("#possiblesubmit").click(function (e) {
 	var host = selectedhost["possible"];
 	var apiurl = "api/v1/hosts/joincluster";
-	var apidata = { name: allhosts["possible"][host]["name"] };
+	var apidata = { name: allhosts["possible"][host]["name"],'token':hypetoken };
 	postdata(apiurl, apidata);
 });
 
-$("#refresh").click(function (e) {
+$(".refresh").click(function (e) {
 	var apiurl = "api/v1/hosts/discover";
-	var apidata = { name: ''};
+	var apidata = { name: 'nothing', token: hypetoken};
+	console.log('token',hypetoken)
 	postdata(apiurl, apidata);
 });
 
@@ -388,6 +390,7 @@ $("#readysubmit").click(function (ev) {
 		hostsubmit["id"] = $("#readysubmit").data("selected");
 		hostsubmit["user"] = "mezo";
 		hostsubmit["name"] = allhosts["ready"][selstatus]["name"];
+		hostsubmit['token'] = hypetoken
 		var apiurl = "api/v1/hosts/config";
 		var apidata = hostsubmit;
 		console.log('tochange',apidata)

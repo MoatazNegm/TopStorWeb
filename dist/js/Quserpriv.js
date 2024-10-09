@@ -49,6 +49,7 @@ function userschange() {
 	var newallusers;
 	$.ajax({
 		url: "/api/v1/users/userlist",
+	 	data: { 'token': hypetoken },	
 		dataType: "json",
 		timeout: 3000,
 		// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
@@ -105,7 +106,7 @@ $("#SubmitPriv").click(function (e) {
 		auths.push($(t).prop("id") + "-" + $(t).prop("checked"));
 	});
 	apiurl = "api/v1/users/usersauth";
-	apidata = { 'tochange': allusers[$("#UserList").val()]["name"], 'auths': auths.join() };
+	apidata = { 'tochange': allusers[$("#UserList").val()]["name"], 'auths': auths.join(), 'token': hypetoken };
 	postdata(apiurl, apidata);
 });
 $("#UserList").change(function (e) {
