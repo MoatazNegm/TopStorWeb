@@ -532,9 +532,6 @@ function initUserlist() {
 }
 initUserlist();
 
-var ipv4_address = $(".ipaddress");
-ipv4_address.inputmask();
-
 function selbtnclickeduser(ths) {
 	//$.post("./pump.php", { req:"UnixChangeUser", name:x.id.replace('btnsel',''), passwd:'groups'+$("#"+x.id.replace('btn','')).val()+" "+myname });
 	var apiurl = "api/v1/users/userchange";
