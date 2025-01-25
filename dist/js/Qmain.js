@@ -259,15 +259,14 @@ setInterval(function () {
 			notif = data;
 			if(data['isinsync'] == 'yes'){
 				// Update the content to "Cluster" and "In Sync"
-				$('#syncStatus')
-				.html('Cluster <br> <span> in Sync </span>')
-				.removeClass('not-in-sync')
-				.addClass('in-sync');
+				$('#syncStatus').html('Cluster <br> < class="in-sync" span> in Sync </span>');
+				//.removeClass('not-in-sync')
+				//.addClass('in-sync');
 			} else {
 				// Update the content to "Nodes" and "Not In Sync" with a blinking effect
-				$('#syncStatus').html('Nodes <br> <span>Not in Sync </span>')
-				.removeClass('in-sync')
-				.addClass('not-in-sync');
+				$('#syncStatus').html('Nodes <br> <class="not-in-sync" span>Not in Sync </span>');
+				//.removeClass('in-sync')
+				//.addClass('not-in-sync');
 			}
 			requests = data["requests"];
 			if (notif["response"].includes("baduser") > 0) {
