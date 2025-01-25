@@ -255,17 +255,18 @@ setInterval(function () {
 		type: "GET",
 		data: { token: hypetoken },
 		success: function (data) {
+			console.log('isinsyncdata',data['isinsync'])
 			notif = data;
 			if(data['isinsync'] == 'yes'){
 				// Update the content to "Cluster" and "In Sync"
 				$('#syncStatus')
 				.html('Cluster <br> <span> in Sync </span>')
-				.remove('not-in-sync')
+				.removeClass('not-in-sync')
 				.addClass('in-sync');
 			} else {
 				// Update the content to "Nodes" and "Not In Sync" with a blinking effect
 				$('#syncStatus').html('Nodes <br> <span>Not in Sync </span>')
-				.remove('in-sync')
+				.removeClass('in-sync')
 				.addClass('not-in-sync');
 			}
 			requests = data["requests"];
