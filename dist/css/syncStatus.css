@@ -7,20 +7,20 @@
     font-size: small;
 }
 
-#old-syncStatus.in-sync span {
+#syncStatus.in-sync span {
     color: green;
 }
 
-#old-syncStatus.not-in-sync span {
+#syncStatus.not-in-sync span {
     color: red;
     animation: flash 1s infinite;
 }
 
-.in-sync {
+.temp-in-sync {
     color: green;
 }
 
-.not-in-sync {
+.temp-not-in-sync {
     color: red;
     animation: flash 1s infinite;
 }
