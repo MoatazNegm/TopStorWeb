@@ -18,17 +18,19 @@ sortsofts();
 function getversions(){
   var newallusers;
   var newallversions = "";
-/*
+
    $.ajax({
      url: '/api/v1/software/versions',
      dataType: 'json',
+     data: { 'token': hypetoken },
      timeout: 3000,
      // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
      type: 'GET',
      async: false,
-     DataSrc: 'usersnohome',
      success: function(data){ cversion = data['current'];
-                               newallversions = data['versions'];}
+                               newallversions = data['versions'];
+			       console.log(data)
+				}
    });
    if(JSON.stringify(allversions) != JSON.stringify(newallversions)){
      allversions = JSON.parse(JSON.stringify(newallversions)); 
@@ -37,8 +39,8 @@ function getversions(){
         $("#softs").append("<option>"+t['text']+"</option>")
      });
    }
-*/
-     $('#soft').text($("#thever").text().replace('ver:',''));
+
+     $('#soft').text(cversion);
  }
  
  $("#ApplyAvailable").click(function(e){
@@ -49,7 +51,9 @@ function getversions(){
      
  })
  
- getversions()
- setInterval(function(){ updatetasks(); getversions();},2000);
+
+ updatetasks();
+ getversions();
+ //setInterval(function(){ updatetasks(); getversions();},10000);
 
   
