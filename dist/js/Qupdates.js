@@ -29,7 +29,7 @@ function getversions(){
      async: false,
      success: function(data){ cversion = data['current'];
                                newallversions = data['versions'];
-			       console.log(data)
+			       console.log('current_version',data['current'])
 				}
    });
    if(JSON.stringify(allversions) != JSON.stringify(newallversions)){
