@@ -56,7 +56,7 @@ function clrcomp(xx) {
 	}
 	return clr;
 }
-function getdata(url, fn, first = 0) {
+function getdata(url, fn, first = firstRequests) {
 	var newdgs;
 	$.ajax({
 		url: url,
@@ -67,7 +67,7 @@ function getdata(url, fn, first = 0) {
 		success: function (data) {
 			fn(data);
 			{
-				if (first == 1) {
+				if (first > 0) {
 					firstRequests = firstRequests - 1;
 				}
 			}
