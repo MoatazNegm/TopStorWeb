@@ -392,13 +392,15 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class='col-12'>
-                      <div class="form-group">
-                        <label  for="Group">Allowed Groups</label>
-                        <select  multiple size=3 class=" select2 multiple form-control" multiple="multiple" id="Group" value="NoGroup">
-                          
-                        </select>
-                      </div>
+                    <div class='col-4'>
+                      	<div class="form-group">
+                        	<label  for="rootname">root name</label>
+                        	<input type="text" class="form-control " id="rootname" placeholder="root">
+                    	</div>
+                    </div>
+                    <div class='offset-4 col-4'>
+                     		<label  for="rootid">root id</label>
+                       		<input type="number"  min="0"  value=0 class="form-control"  id="rootid">
                     </div>
                   </div>
                 </div>
@@ -598,7 +600,7 @@
 <!-- OPTIONAL SCRIPTS -->
 <script src="dist/js/Qjquery.inputmask.bundle.js"></script>
 <script src="dist/js/Qmain.js"></script>
-<script src="dist/js/Qcifs.js" ></script>
+<script src="dist/js/Qnfs.js" ></script>
 
 <script src="plugins/chart.js/Chart.bundle.min.js"></script>
 <script src="dist/js/demo.js"></script>

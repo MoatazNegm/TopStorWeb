@@ -191,28 +191,9 @@ $("#createvol").click(function (e) {
 			console.log('non-home/nfs');
 			break;
 	}
-	if (prot != "HOME") {
-		if ($("#Group").val().toString().length > 0) {
-			groups = "";
-			$.each($("#Group").val(), function (e, t) {
-				groups += allgroups["results"][t]["text"] + ",";
-			});
-			groups = groups.slice(0, -1);
-		} else {
-			groups = "NoGroup";
-		}
-		thevol = $("#volname").val();
-	} else {
-		thevol = allusersnohome[$("#volname").val()]["text"];
-		groups = thevol;
-	}
+	thevol = $("#volname").val();
 	var apiurl = "api/v1/volumes/create";
-	if ($("#Domtype").val() == "workgroup") {
-		if ($("#wrkactive").is(":checked") == true) {
-			active = "active";
-		}
-
-		var apidata = {
+	var apidata = {
 			type: prot,
 			pool: thepool,
 			name: thevol,
@@ -227,32 +208,6 @@ $("#createvol").click(function (e) {
 			size: $("#volsize").val() + "G",
 			owner: owner,
 		};
-	} else {
-		if ($("#domactive").is(":checked") == true) {
-			active = "active";
-		}
-		var protype = 'NFS'
-		if(prot != 'NFS' ) { protype = prot + "dom"; }
-		var apidata = {
-			type: protype,
-			pool: thepool,
-			name: thevol,
-			token: hypetoken,
-			ipaddress: $("#Address").val(),
-			domtype: "domain",
-			active: active,
-			Subnet: $("#Subnet").val(),
-			groups: groups,
-			Myname: "mezo",
-			size: $("#volsize").val() + "G",
-			owner: owner,
-			domname: $("#domain").val(),
-			domsrv: $("#domsrv").val(),
-			domip: $("#domip").val(),
-			domadmin: $("#domadmin").val(),
-			dompass: $("#dompass").val(),
-		};
-	}
 	console.log('apidata',apidata)
 	postdata(apiurl, apidata);
 });
