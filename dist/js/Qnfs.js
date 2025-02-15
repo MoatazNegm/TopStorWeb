@@ -193,6 +193,14 @@ $("#createvol").click(function (e) {
 	}
 	thevol = $("#volname").val();
 	var apiurl = "api/v1/volumes/create";
+	var rootid = $("#rootid").val();
+	var rootname =  $("#rootname").val();
+	var groupname =  $("#groupname").val();
+	var groupid=  $("#groupid").val();
+	if(rootid == ''){ rootid = '0';}
+	if(groupid == ''){ groupid = '0';}
+	if(rootname.length < 3){ rootname = 'root'; }
+	if(groupname.length < 3){ groupname = 'root'; }
 	var apidata = {
 			type: prot,
 			pool: thepool,
@@ -202,8 +210,10 @@ $("#createvol").click(function (e) {
 			domtype: "workgroup",
 			active: active,
 			Subnet: $("#Subnet").val(),
-			rootid: $("#rootid").val(),
-			rootname: $("#rootname").val(),
+			rootid: rootid,
+			rootname: rootname,
+			groupname: groupname,
+			groupid: groupid,
 			Myname: "mezo",
 			size: $("#volsize").val() + "G",
 			owner: owner,
