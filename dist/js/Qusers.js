@@ -372,6 +372,28 @@ function groupsrefresh() {
 		},
 	});
 }
+function tenantsrefresh(){
+		$(".select2.tenant")
+		.select2({
+			ajax: {
+				url: "api/v1/tenants/tenantinfo",
+				data: { 'token': hypetoken },
+				dataType: "json",
+				// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+				type: "GET",
+				async: false,
+			},
+		})
+		.on("change", function () {
+			var selectedValue = $('#Tenant :selected').text()
+			if ((selectedValue == "Cluster") & (selectedValue == "Cluster")) {
+				$(".nontenant").prop("hidden", false);
+			} else {
+				$(".nontenant").prop("hidden", true);
+			}
+		});
+
+}
 function poolsrefresh() {
 	$(".select2.pool")
 		.select2({
@@ -609,6 +631,7 @@ function refreshall() {
 			if (JSON.stringify(allpools) != JSON.stringify(newallpools)) {
 				allpools = newallpools;
 				poolsrefresh();
+				tenantsrefresh();
 			}
 			if (firstRequests > 0) firstRequests = firstRequests - 1;
 		},
