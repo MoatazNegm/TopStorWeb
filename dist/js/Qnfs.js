@@ -393,7 +393,6 @@ volumelisttable = $("#VolumeList").DataTable({
 				data: "groups",
 				visible: prot != "HOME" ,
 				render: function (data, type, row) {
-					if (row.type === 'DOMAIN'){
 						var msg = row.runtime;
 						console.log(row.runtime)
 						switch(row.runtime){
@@ -411,31 +410,7 @@ volumelisttable = $("#VolumeList").DataTable({
 								tcolor = 'orange';break;
 						}
 						return '<div class="runtime" data-name="'+row.name+'" style="text-align:center; color:'+tcolor+'">'+msg+'</div>';
-					} else {
-						var therow =
-						'<select class="multiple changeprop usergroups ' +
-						row.type +
-						" " +
-						row.name +
-						' form-control"' +
-						' multiple="multiple" data-name=' +
-						row.name +
-						"  " +
-						'data-grps="' +
-						row.groups +
-						'" data-key="groups" data-value="' +
-						data +
-						'" data-name=' +
-						row.name +
-						' value="' +
-						row.groups +
-						'" data-change="" id="sel' +
-						row.name +
-						'"></select>';
-						tcolor = 'green'
-						return therow;
-					}
-				},
+					},
 			},
 			{
 				data: null,
@@ -477,10 +452,6 @@ volumelisttable = $("#VolumeList").DataTable({
 						plug = "fa-plug-circle-xmark";
 					}
 
-					if (tcolor != 'green'){
-						color = tcolor;
-						plug = "fa-plug-circle-xmark"		
-					}
 					return (
 						'<a style="font-size: 1.25rem; color:' +
 						color +
