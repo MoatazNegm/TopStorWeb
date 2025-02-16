@@ -354,8 +354,10 @@
                   <div class="form-group row">
                     <label for="User" class="col-2 col-form-label">User Name</label>
                     <input type="text" class="form-control col-3" id="User" placeholder="User Name">
-                    <label for="Pass" class="offset-2 col-2 col-form-label">Password</label>
-                    <input type="password" class="form-control col-3" id="UserPass" placeholder="Password">
+                    <label for="userid" class="tenant offset-2 col-2 col-form-label" hidden>User ID</label>
+                    <input type="text" class="tenant form-control col-3" id="userid" placeholder="User ID" hidden>
+                    <label for="Pass" class="nontenant offset-2 col-2 col-form-label" >Password</label>
+                    <input type="password" class="nontenant form-control col-3" id="UserPass" placeholder="Password">
                   </div>
                   <div class="nontenant form-group row">
                     <label  for="UserVol" class="col-2 col-form-label">Home Pool</label>

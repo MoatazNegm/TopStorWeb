@@ -64,7 +64,22 @@ $("#User").change(function (e) {
 	} else {
 		$("#UnixAddUser").prop("disabled", true);
 	}
+	if ($("#User").val().length > 2 && $("#userid").val().length > 3) {
+		$("#UnixAddUser").prop("disabled", false);
+	} else {
+		$("#UnixAddUser").prop("disabled", true);
+	}
+
 });
+
+$("#userid").change(function (e) {
+	if ($("#User").val().length > 2 && $("#userid").val().length > 3) {
+		$("#UnixAddUser").prop("disabled", false);
+	} else {
+		$("#UnixAddUser").prop("disabled", true);
+	}
+});
+
 
 
 function uploadUsersChecker(user, usersNames, poolNames, groupNames)
@@ -388,8 +403,10 @@ function tenantsrefresh(){
 			var selectedValue = $('#Tenant :selected').text()
 			if ((selectedValue == "Cluster") & (selectedValue == "Cluster")) {
 				$(".nontenant").prop("hidden", false);
+				$(".tenant").prop("hidden", true);
 			} else {
 				$(".nontenant").prop("hidden", true);
+				$(".tenant").prop("hidden", false);
 			}
 		});
 
@@ -569,22 +586,32 @@ function selbtnclickeduser(ths) {
 	postdata(apiurl, apidata);
 }
 $("#UnixAddUser").click(function (e) {
-	var apiurl = "api/v1/users/UnixAddUser";
-	var ipaddr = $("#HomeAddress").val();
-	if ($("#HomeAddress").val() == "") {
-		ipaddr = "NoAddress";
+	if($('#Tenant :selected').text() != "Cluster"){
+		var apiurl = "api/v1/tenant/adduser";
+		var apidata = {
+			name: $("#User").val(),
+			tenant: $('#Tenant :selected').text(),
+			userid: $("#userid").val(),
+			token: hypetoken,
+		}
+	} else {
+		var apiurl = "api/v1/users/UnixAddUser";
+		var ipaddr = $("#HomeAddress").val();
+		if ($("#HomeAddress").val() == "") {
+			ipaddr = "NoAddress";
+		}
+		var apidata = {
+			name: $("#User").val(),
+			Volpool: $('#UserVol').find(":selected").text(),
+			groups: $("#Usergroups").val().toString(),
+			Password: $("#UserPass").val(),
+			Volsize: $("#volsize").val(),
+			HomeAddress: ipaddr,
+			HomeSubnet: $("#HomeSubnet").val(),
+			token: hypetoken,
+			Myname: "mezo",
+		};
 	}
-	var apidata = {
-		name: $("#User").val(),
-		Volpool: $('#UserVol').find(":selected").text(),
-		groups: $("#Usergroups").val().toString(),
-		Password: $("#UserPass").val(),
-		Volsize: $("#volsize").val(),
-		HomeAddress: ipaddr,
-		HomeSubnet: $("#HomeSubnet").val(),
-		token: hypetoken,
-		Myname: "mezo",
-	};
 	postdata(apiurl, apidata);
 
 	e.preventDefault();
