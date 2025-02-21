@@ -296,7 +296,7 @@ let ExcelToJSONParser = function() {
 			})
 			$.ajax({
 				url: "api/v1/users/userlist",
-				data: { 'token': hypetoken },
+				data: { 'token': hypetoken, 'tenant':$("#Tenant :selected").text() },
 				async: false,
 				type: "GET",
 				dataSrc: "allusers",
@@ -442,42 +442,46 @@ function userlistrefresh() {
 		$(".usergroups").each(function () {
 			var thisuser = $(this);
 			var grps;
-			assignedgrps = thisuser.data("grps");
-			if (typeof assignedgrps == "number") {
-				grps = [assignedgrps];
-			} else {
-				grps = assignedgrps.split(",");
-			}
-			$.each(grps, function (e, t) {
-				if (t != "NoGroup") {
-					var grp = allgroups["results"][t];
-					option = new Option(grp.text, grp.id, true, true);
-					thisuser.append(option).trigger("change");
+			if ($("#Tenant :selected").text()== "Cluster"){
+				assignedgrps = thisuser.data("grps");
+				if (typeof assignedgrps == "number") {
+					grps = [assignedgrps];
+				} else {
+					grps = assignedgrps.split(",");
 				}
-			});
-			// manually trigger the `select2:select` event
-			thisuser.trigger({
-				type: "select2:select",
-				params: {
-					allgroups: allgroups,
-				},
-			});
-			$(".chgpasswd").click(function (e) {
-				userofpass = $(this).data("username");
-			});
+				$.each(grps, function (e, t) {
+					if (t != "NoGroup") {
+						var grp = allgroups["results"][t];
+						option = new Option(grp.text, grp.id, true, true);
+						thisuser.append(option).trigger("change");
+					}
+				});
+				// manually trigger the `select2:select` event
+				thisuser.trigger({
+					type: "select2:select",
+					params: {
+						allgroups: allgroups,
+					},
+				});
+				$(".chgpasswd").click(function (e) {
+					userofpass = $(this).data("username");
+				});
+			}
 		});
 		groupsrefresh();
 		$(".select2.usergroups").on("change", function (e) {
-			grpsval = $(this).data("grps").toString();
-			if (grpsval == "NoGroup") {
-				grpsval = "";
-			}
-			if (grpsval !== $(this).val().toString()) {
-				$("#btn" + $(this).attr("id")).show();
-				$(this).data("change", $(this).val().toString());
-			} else {
-				$(this).data("change", "");
-				$("#btn" + $(this).attr("id")).hide();
+			if ($("#Tenant :selected").text()== "Cluster"){
+				grpsval = $(this).data("grps").toString();
+				if (grpsval == "NoGroup") {
+					grpsval = "";
+				}
+				if (grpsval !== $(this).val().toString()) {
+					$("#btn" + $(this).attr("id")).show();
+					$(this).data("change", $(this).val().toString());
+				} else {
+					$(this).data("change", "");
+					$("#btn" + $(this).attr("id")).hide();
+				}
 			}
 		});
 		$(".select2.usergroups").trigger("change");
@@ -667,7 +671,7 @@ function refreshall() {
 	var newallusers = "new0";
 	$.ajax({
 		url: "api/v1/users/userlist",
-		data: { 'token': hypetoken },
+		data: { 'token': hypetoken, 'tenant':$("#Tenant :selected").text() },
 		async: true,
 		type: "GET",
 		dataSrc: "allusers",
