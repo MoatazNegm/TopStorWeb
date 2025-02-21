@@ -442,7 +442,6 @@ function userlistrefresh() {
 		$(".usergroups").each(function () {
 			var thisuser = $(this);
 			var grps;
-			if ($("#Tenant :selected").text()== "Cluster"){
 				assignedgrps = thisuser.data("grps");
 				if (typeof assignedgrps == "number") {
 					grps = [assignedgrps];
@@ -466,11 +465,9 @@ function userlistrefresh() {
 				$(".chgpasswd").click(function (e) {
 					userofpass = $(this).data("username");
 				});
-			}
 		});
 		groupsrefresh();
 		$(".select2.usergroups").on("change", function (e) {
-			if ($("#Tenant :selected").text()== "Cluster"){
 				grpsval = $(this).data("grps").toString();
 				if (grpsval == "NoGroup") {
 					grpsval = "";
@@ -482,7 +479,6 @@ function userlistrefresh() {
 					$(this).data("change", "");
 					$("#btn" + $(this).attr("id")).hide();
 				}
-			}
 		});
 		$(".select2.usergroups").trigger("change");
 	});
