@@ -491,7 +491,7 @@ function initUserlist() {
 		//"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
 		ajax: {
 			url: "api/v1/users/userlist",
-			data: { 'token': hypetoken },
+			data: { 'token': hypetoken, 'tenant':$("#Tenant :selected").text() },
 			async: false,
 			type: "GET",
 			dataSrc: "allusers",
