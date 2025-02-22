@@ -631,6 +631,7 @@ $("#UnixAddUser").click(function (e) {
 			tenant: $('#Tenant :selected').text(),
 			userid: $("#userid").val(),
 			token: hypetoken,
+			groups: $("#Usergroups").val().toString(),
 		}
 	} else {
 		var apiurl = "api/v1/users/UnixAddUser";
