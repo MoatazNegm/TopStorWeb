@@ -657,7 +657,7 @@ $("#UnixAddUser").click(function (e) {
 
 function auserdel() {
 	var apiurl = "api/v1/users/userdel";
-	var apidata = { name: arguments[0], token:hypetoken, Myname: "mezo" };
+	var apidata = { name: arguments[0], token:hypetoken, 'tenant': $("#Tenant :selected").text() };
 	postdata(apiurl, apidata);
 }
 

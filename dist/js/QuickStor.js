@@ -329,7 +329,7 @@ function refreshdash(first = 0) {
 }
 refreshdash(1);
 firstRequestsInterval = setInterval(() => {
-	if (firstRequests == 0) {
+	if (firstRequests < 1) {
 		$("#Loading").addClass("show_or_hide_other");
 		setTimeout(() => {
 			console.log("FirstRequests Done");
