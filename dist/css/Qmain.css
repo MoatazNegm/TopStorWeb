@@ -104,3 +104,35 @@ select.btn-mini + .caret {
 .hostform label{
        margin: auto 0;
 }
+
+#UserList.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+#UserList.thead-dark th {
+    background-color: #2939C6;
+    color: white;
+}
+#UserListth1 {
+	width:15% !important;
+}
+#UserListth2 {
+	width:15% !important;
+}
+#UserListth3 {
+	width:6% !important;
+}
+#UserListth4 {
+	width:45% !important;
+}
+#UserListth5 {
+	width:10% !important;
+}
+#UserListth6 {
+	width:5% !important;
+}
+#UserListth7 {
+	width:4%  !important;
+}
+#UserListbody {
+        color:#2939C6;
+} 

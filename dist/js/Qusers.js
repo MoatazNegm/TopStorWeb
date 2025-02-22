@@ -408,6 +408,15 @@ function tenantsrefresh(){
 				$(".nontenant").prop("hidden", true);
 				$(".tenant").prop("hidden", false);
 			}
+			initUserlist()
+			userlistrefresh()
+			$('#UserListth1').css('width', '15%');
+			$('#UserListth2').css('width', '15%');
+			$('#UserListth3').css('width', '6%');
+			$('#UserListth4').css('width', '45%');
+			$('#UserListth5').css('width', '10%');
+			$('#UserListth6').css('width', '5%');
+			$('#UserListth7').css('width', '4%');
 		});
 
 }
@@ -496,53 +505,82 @@ function initUserlist() {
 			type: "GET",
 			dataSrc: "allusers",
 		},
+		destroy: true,
 		columns: [
 			{
 				data: "name",
 			},
-			{ data: "pool" },
-			{ data: "size" },
+			{ data: "pool",
+			  render: function(data,type,row){
+				if($("#Tenant :selected").text() != "Cluster"){
+					return "";
+				} else {
+				 return data;
+				}
+			  }
+			},
+			{ data: "size",  
+			  render: function(data,type,row){
+				if($("#Tenant :selected").text() != "Cluster"){
+					return "";
+				} else {
+				 return data;
+				}
+			  }
+			},
 			{
 				data: "groups",
 				render: function (data, type, row) {
-					return (
-						'<select class="select2 multiple usergroups ' +
-						row.name +
-						' form-control"' +
-						' multiple="multiple" data-name=' +
-						row.name +
-						'  onclick="tdisclicked(this)"' +
-						'data-grps="' +
-						row.groups +
-						'" value=[0] data-change="" id="sel' +
-						row.name +
-						'"></select>'
-					);
+					if($("#Tenant :selected").text() != "Cluster"){
+						return "";
+					} else {
+						return (
+							'<select class="select2 multiple usergroups ' +
+							row.name +
+							' form-control"' +
+							' multiple="multiple" data-name=' +
+							row.name +
+							'  onclick="tdisclicked(this)"' +
+							'data-grps="' +
+							row.groups +
+							'" value=[0] data-change="" id="sel' +
+							row.name +
+							'"></select>'
+						);
+					}
 				},
 			},
 			{
 				data: null,
 				render: function (data, type, row) {
-					return (
-						'<button onclick="selbtnclickeduser(this)" id="btnsel' +
-						row.name +
-						'" ' +
-						'type="button" data-name=' +
-						row.name +
-						'  class="btn btn-primary" > update</button>'
-					);
+					if($("#Tenant :selected").text() != "Cluster"){
+						return "";
+					} else {
+						return (
+							'<button onclick="selbtnclickeduser(this)" id="btnsel' +
+							row.name +
+							'" ' +
+							'type="button" data-name=' +
+							row.name +
+							'  class="btn btn-primary" > update</button>'
+						);
+					}
 				},
 			},
 			{
 				data: null,
 				render: function (data, type, row) {
-					return (
-						'<a href="#modal-sm" data-username="' +
-						row.name +
-						'" data-toggle="modal" data-target="#modal-sm" class="chgpasswd">' +
-						'<img src="dist/img/edit.png" alt="cannott upload edit icon">' +
-						"</a>"
-					);
+					if($("#Tenant :selected").text() != "Cluster"){
+						return "";
+					} else {
+						return (
+							'<a href="#modal-sm" data-username="' +
+							row.name +
+							'" data-toggle="modal" data-target="#modal-sm" class="chgpasswd">' +
+							'<img src="dist/img/edit.png" alt="cannott upload edit icon">' +
+							"</a>"
+						);
+					}
 				},
 			},
 			{
