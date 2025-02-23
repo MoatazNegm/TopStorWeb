@@ -46,6 +46,9 @@ myidhash = myid;
 var myname = "<?php echo $_REQUEST['name'] ?>";
 var example1_filter = $("#UserList_filter");
 var firstRequests = 3;
+var newallgroups = "new0";
+var newallpools = "new0";
+var newallusers = "new0";
 $("#volsize").prop("disabled", true);
 $("#HomeAddress").prop("disabled", true);
 $("#HomeSubnet").prop("disabled", true);
@@ -377,6 +380,7 @@ $('#upload-file-btn').click(function() {
 
 function groupsrefresh() {
 	$(".select2.multiple").select2({
+		width: '100%',
 		ajax: {
 			url: "api/v1/users/grouplist",
 			data: { 'token': hypetoken, 'tenant':$("#Tenant :selected").text() },
@@ -430,8 +434,11 @@ function tenantsrefresh(){
 				userlistrefresh();
 			}
 		});
+	$("span.select2").addClass('col-sm-3')
+	$("span.select2").css('margin-left','-0.5rem')
 
 }
+$("span.select2").addClass('col-sm-3')
 function poolsrefresh() {
 	$(".select2.pool")
 		.select2({
@@ -745,7 +752,7 @@ function auserdel() {
 }
 
 function refreshall() {
-	var newallgroups = "new0";
+	//var newallgroups = "new0";
 	$(".odd").css("background-color", "rgba(41,57,198,.1)");
 	updatetasks();
 	$.ajax({
@@ -766,7 +773,7 @@ function refreshall() {
 			if (firstRequests > 0) firstRequests = firstRequests - 1;
 		},
 	});
-	var newallpools = "new0";
+	//var newallpools = "new0";
 	$.ajax({
 		url: "api/v1/pools/poolsinfo",
 		data: { 'token': hypetoken },
@@ -784,8 +791,7 @@ function refreshall() {
 			if (firstRequests > 0) firstRequests = firstRequests - 1;
 		},
 	});
-
-	var newallusers = "new0";
+	//var newallusers = "new0";
 	$.ajax({
 		url: "api/v1/users/userlist",
 		data: { 'token': hypetoken, 'tenant':$("#Tenant :selected").text() },
