@@ -702,14 +702,18 @@ function selbtnclickeduser(ths) {
 	//$.post("./pump.php", { req:"UnixChangeUser", name:x.id.replace('btnsel',''), passwd:'groups'+$("#"+x.id.replace('btn','')).val()+" "+myname });
 	var apiurl = "api/v1/users/userchange";
 	nam = $(ths).data("name");
-	console.log("name", nam);
+	if ($("#sel" + nam).val().toString().length > 0 ){
+		groups=allgroups['results'][$("#sel" + nam).val()[0]]['text'];
+	} else {
+		groups='';
+	}
 	var apidata = {
 		name: nam,
-		groups: $("#sel" + nam)
-			.val()
-			.toString(),
+		groups: groups,
 		token: hypetoken,
+		tenant: $("#Tenant :selected").text(),
 	};
+	console.log("apiapi", apidata);
 	postdata(apiurl, apidata);
 }
 $("#UnixAddUser").click(function (e) {
