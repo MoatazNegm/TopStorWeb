@@ -438,14 +438,44 @@
             </div> <!-- /.card -->
           </div>
         </div>
-        <div class="row">
+        <div class="row tenant">
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title cardshead">User List</h3>
               </div>
-                <!-- /.card-header -->
-                <div class="card-body">
+	      <div class="card-body ">
+                  <table id="TenantList" class="table table-sm table-hover  table-striped">
+                    <thead style="background-color:#2939C6; color: white;">
+                    </tr >
+                      <th id="TenantListth1" style="width:20%;">User name</th>
+                      <th id="TenantListth4" style="width:60%;">Groups</th>
+                      <th id="TenantListth5" style="width:10%;">Need update</th>
+                      <th id="TenantListth7" style="width:10%;">Remove</th>
+                    </tr>
+                    </thead>
+                    <tbody id="Tenantbody" style="color:#2939C6; ">
+                        
+                    </tbody>
+                    <tfoot>
+                     
+                    
+                    </tfoot>
+                  </table>
+                </div>
+              <!-- /.card-body -->
+            </div>
+
+            </div>
+        </div> <!-- /.row -->
+        <div class="row nontenant">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title cardshead">User List</h3>
+              </div>
+     <!-- /.card-header -->
+                <div class="card-body nontenant ">
                   <table id="UserList" class="table table-sm table-hover  table-striped">
                     <thead style="background-color:#2939C6; color: white;">
                     </tr >
@@ -469,9 +499,9 @@
                 </div>
               <!-- /.card-body -->
             </div>
+	  </div>
+	</div>
 
-          </div>
-        </div> <!-- /.row -->
         
       </div> <!-- /.container-fluid -->
       

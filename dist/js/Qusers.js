@@ -277,7 +277,7 @@ let ExcelToJSONParser = function() {
 			$.ajax({
 				url: "api/v1/users/grouplist",
 				//data: { 'token': hypetoken },
-				data : { 'token': hypetoken },
+				data: { 'token': hypetoken, 'tenant':$("#Tenant :selected").text() },
 				dataType: "json",
 				type: "GET",
 				async: false,
@@ -379,7 +379,7 @@ function groupsrefresh() {
 	$(".select2.multiple").select2({
 		ajax: {
 			url: "api/v1/users/grouplist",
-			data: { 'token': hypetoken },
+			data: { 'token': hypetoken, 'tenant':$("#Tenant :selected").text() },
 			dataType: "json",
 			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
 			type: "GET",
@@ -387,6 +387,9 @@ function groupsrefresh() {
 		},
 	});
 }
+
+$(".nontenant").prop("hidden", false);
+$(".tenant").prop("hidden", true);
 function tenantsrefresh(){
 		$(".select2.tenant")
 		.select2({
@@ -404,19 +407,28 @@ function tenantsrefresh(){
 			if ((selectedValue == "Cluster") & (selectedValue == "Cluster")) {
 				$(".nontenant").prop("hidden", false);
 				$(".tenant").prop("hidden", true);
+				initUserlist()
+				refreshall()
+				$("#UserListth1").css('width','15%');
+				$("#UserListth2").css('width','15%');
+				$("#UserListth3").css('width','10%');
+				$("#UserListth4").css('width','40%');
+				$("#UserListth5").css('width','10%');
+				$("#UserListth6").css('width','5%');
+				$("#UserListth7").css('width','5%');
+				userlistrefresh();
+				
 			} else {
 				$(".nontenant").prop("hidden", true);
 				$(".tenant").prop("hidden", false);
+				initUserlist()
+				refreshall()
+				$("#TenantListth1").css('width','20%');
+				$("#TenantListth4").css('width','60%');
+				$("#TenantListth5").css('width','10%');
+				$("#TenantListth7").css('width','20%');
+				userlistrefresh();
 			}
-			initUserlist()
-			userlistrefresh()
-			$('#UserListth1').css('width', '15%');
-			$('#UserListth2').css('width', '15%');
-			$('#UserListth3').css('width', '6%');
-			$('#UserListth4').css('width', '45%');
-			$('#UserListth5').css('width', '10%');
-			$('#UserListth6').css('width', '5%');
-			$('#UserListth7').css('width', '4%');
 		});
 
 }
@@ -446,9 +458,10 @@ function poolsrefresh() {
 		});
 }
 function userlistrefresh() {
+	var tenant = $("#Tenant :selected").text();
 	userlisttable.ajax.reload(function () {
 		var option;
-		$(".usergroups").each(function () {
+		$(".usergroups."+tenant).each(function () {
 			var thisuser = $(this);
 			var grps;
 				assignedgrps = thisuser.data("grps");
@@ -482,130 +495,199 @@ function userlistrefresh() {
 					grpsval = "";
 				}
 				if (grpsval !== $(this).val().toString()) {
+					console.log('checking1',grpsval,$(this).val().toString())
 					$("#btn" + $(this).attr("id")).show();
 					$(this).data("change", $(this).val().toString());
 				} else {
+					console.log('checking2',grpsval,$(this).val().toString())
 					$(this).data("change", "");
 					$("#btn" + $(this).attr("id")).hide();
 				}
 		});
-		$(".select2.usergroups").trigger("change");
+		$(".select2.usergroups."+tenant).trigger("change");
 	});
 }
 
 function initUserlist() {
-	userlisttable = $("#UserList").DataTable({
-		//"responsive": true, "lengthChange": true, "autoWidth": true, "info":true,
-		order: [[1, "desc"]],
-		//"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-		ajax: {
-			url: "api/v1/users/userlist",
-			data: { 'token': hypetoken, 'tenant':$("#Tenant :selected").text() },
-			async: false,
-			type: "GET",
-			dataSrc: "allusers",
-		},
-		destroy: true,
-		columns: [
-			{
-				data: "name",
+	if($("#Tenant :selected").text() != 'Cluster') {
+		userlisttable = $("#TenantList").DataTable({
+			//"responsive": true, "lengthChange": true, "autoWidth": true, "info":true,
+			order: [[1, "desc"]],
+			//"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+			ajax: {
+				url: "api/v1/users/userlist",
+				data: { 'token': hypetoken, 'tenant':$("#Tenant :selected").text() },
+				async: false,
+				type: "GET",
+				dataSrc: "allusers",
 			},
-			{ data: "pool",
-			  render: function(data,type,row){
-				if($("#Tenant :selected").text() != "Cluster"){
-					return "";
-				} else {
-				 return data;
-				}
-			  }
-			},
-			{ data: "size",  
-			  render: function(data,type,row){
-				if($("#Tenant :selected").text() != "Cluster"){
-					return "";
-				} else {
-				 return data;
-				}
-			  }
-			},
-			{
-				data: "groups",
-				render: function (data, type, row) {
-					if($("#Tenant :selected").text() != "Cluster"){
-						return "";
-					} else {
-						return (
-							'<select class="select2 multiple usergroups ' +
-							row.name +
-							' form-control"' +
-							' multiple="multiple" data-name=' +
-							row.name +
-							'  onclick="tdisclicked(this)"' +
-							'data-grps="' +
-							row.groups +
-							'" value=[0] data-change="" id="sel' +
-							row.name +
-							'"></select>'
-						);
-					}
+			destroy: true,
+			columns: [
+				{
+					data: "name",
 				},
-			},
-			{
-				data: null,
-				render: function (data, type, row) {
-					if($("#Tenant :selected").text() != "Cluster"){
-						return "";
-					} else {
-						return (
-							'<button onclick="selbtnclickeduser(this)" id="btnsel' +
-							row.name +
-							'" ' +
-							'type="button" data-name=' +
-							row.name +
-							'  class="btn btn-primary" > update</button>'
-						);
-					}
+				{
+					data: "groups",
+					render: function (data, type, row) {
+							return (
+								'<select class="select2 multiple usergroups ' +
+								row.name +
+								' '+ $("#Tenant :selected").text() +
+								' form-control"' +
+								' multiple="multiple" data-name=' +
+								row.name +
+								'  onclick="tdisclicked(this)"' +
+								'data-grps="' +
+								row.groups +
+								'" value=[0] data-change="" id="sel' +
+								row.name +
+								'"></select>'
+							);
+					},
 				},
-			},
-			{
-				data: null,
-				render: function (data, type, row) {
-					if($("#Tenant :selected").text() != "Cluster"){
-						return "";
-					} else {
+				{
+					data: null,
+					render: function (data, type, row) {
+							return (
+								'<button onclick="selbtnclickeduser(this)" id="btnsel' +
+								row.name +
+								'" ' +
+								'type="button" data-name=' +
+								row.name +
+								'  class="btn btn-primary" > update</button>'
+							);
+					},
+				},
+				{
+					data: null,
+					render: function (data, type, row) {
 						return (
-							'<a href="#modal-sm" data-username="' +
+							'<a class="UnixDelUser" val="username" href="javascript:auserdel(\'' +
 							row.name +
-							'" data-toggle="modal" data-target="#modal-sm" class="chgpasswd">' +
-							'<img src="dist/img/edit.png" alt="cannott upload edit icon">' +
+							"')\" >" +
+							'<img  src="dist/img/delete.png" alt="cannott upload delete icon">' +
 							"</a>"
 						);
+					},
+				},
+			],
+			columnDefs: [
+				{
+					createdCell: function (td, cellData, rowData, row, col) {
+						$(td).data("grps", "cell-" + cellData);
+					},
+				},
+			],
+		});
+		userlisttable.buttons().container().appendTo("#UserList_wrapper .col-6:eq(0)");
+		//userlistrefresh();
+	} else {
+			userlisttable = $("#UserList").DataTable({
+			//"responsive": true, "lengthChange": true, "autoWidth": true, "info":true,
+			order: [[1, "desc"]],
+			//"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+			ajax: {
+				url: "api/v1/users/userlist",
+				data: { 'token': hypetoken, 'tenant':$("#Tenant :selected").text() },
+				async: false,
+				type: "GET",
+				dataSrc: "allusers",
+			},
+			destroy: true,
+			columns: [
+				{
+					data: "name",
+				},
+				{ data: "pool",
+				  render: function(data,type,row){
+					if($("#Tenant :selected").text() != "Cluster"){
+						return "";
+					} else {
+					 return data;
 					}
+				  }
 				},
-			},
-			{
-				data: null,
-				render: function (data, type, row) {
-					return (
-						'<a class="UnixDelUser" val="username" href="javascript:auserdel(\'' +
-						row.name +
-						"')\" >" +
-						'<img  src="dist/img/delete.png" alt="cannott upload delete icon">' +
-						"</a>"
-					);
+				{ data: "size",  
+				  render: function(data,type,row){
+					if($("#Tenant :selected").text() != "Cluster"){
+						return "";
+					} else {
+					 return data;
+					}
+				  }
 				},
-			},
-		],
-		columnDefs: [
-			{
-				createdCell: function (td, cellData, rowData, row, col) {
-					$(td).data("grps", "cell-" + cellData);
+				{
+					data: "groups",
+					render: function (data, type, row) {
+							return (
+								'<select class="select2 multiple usergroups ' +
+								row.name +
+								' '+ $("#Tenant :selected").text() +
+								' form-control"' +
+								' multiple="multiple" data-name=' +
+								row.name +
+								'  onclick="tdisclicked(this)"' +
+								'data-grps="' +
+								row.groups +
+								'" value=[0] data-change="" id="sel' +
+								row.name +
+								'"></select>'
+							);
+					},
 				},
-			},
-		],
-	});
-	userlisttable.buttons().container().appendTo("#UserList_wrapper .col-6:eq(0)");
-	//userlistrefresh();
+				{
+					data: null,
+					render: function (data, type, row) {
+							return (
+								'<button onclick="selbtnclickeduser(this)" id="btnsel' +
+								row.name +
+								'" ' +
+								'type="button" data-name=' +
+								row.name +
+								'  class="btn btn-primary" > update</button>'
+							);
+					},
+				},
+				{
+					data: null,
+					render: function (data, type, row) {
+						if($("#Tenant :selected").text() != "Cluster"){
+							return "";
+						} else {
+							return (
+								'<a href="#modal-sm" data-username="' +
+								row.name +
+								'" data-toggle="modal" data-target="#modal-sm" class="chgpasswd">' +
+								'<img src="dist/img/edit.png" alt="cannott upload edit icon">' +
+								"</a>"
+							);
+						}
+					},
+				},
+				{
+					data: null,
+					render: function (data, type, row) {
+						return (
+							'<a class="UnixDelUser" val="username" href="javascript:auserdel(\'' +
+							row.name +
+							"')\" >" +
+							'<img  src="dist/img/delete.png" alt="cannott upload delete icon">' +
+							"</a>"
+						);
+					},
+				},
+			],
+			columnDefs: [
+				{
+					createdCell: function (td, cellData, rowData, row, col) {
+						$(td).data("grps", "cell-" + cellData);
+					},
+				},
+			],
+		});
+		userlisttable.buttons().container().appendTo("#UserList_wrapper .col-6:eq(0)");
+		//userlistrefresh();
+	}
 }
 initUserlist();
 
@@ -670,8 +752,8 @@ function refreshall() {
 		url: "api/v1/users/grouplist",
 		type: "GET",
 		//data: { 'token': hypetoken },
-		data: { 'token': hypetoken},
-		async: true,
+		data: { 'token': hypetoken, 'tenant':$("#Tenant :selected").text() },
+		async: false,
 		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
 
 		success: function (data) {
@@ -689,7 +771,7 @@ function refreshall() {
 		url: "api/v1/pools/poolsinfo",
 		data: { 'token': hypetoken },
 		type: "GET",
-		async: true,
+		async: false,
 		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
 
 		success: function (data) {
