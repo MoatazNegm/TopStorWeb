@@ -43,10 +43,11 @@ function getversions(){
      $('#soft').text(cversion);
  }
  
- $("#ApplyAvailable").click(function(e){
+ $("#ApplyAvailableSW").click(function(e){
 
   apiurl = 'api/v1/software/apply';
   apidata = {'version': $('#softs').val().split(',')[0] }
+  console.log('apiapi',apidata)
   postdata(apiurl,apidata)
      
  })
