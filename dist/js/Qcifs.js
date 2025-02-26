@@ -219,6 +219,7 @@ $("#createvol").click(function (e) {
 			token: hypetoken,
 			ipaddress: $("#Address").val(),
 			domtype: "workgroup",
+			groups: groups,
 			active: active,
 			Subnet: $("#Subnet").val(),
 			rootid: $("#rootid").val(),

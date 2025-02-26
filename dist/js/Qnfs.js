@@ -273,6 +273,9 @@ function updatebtn(ths) {
 }
 var cyclechangeprop = 0;
 function propchange() {
+ 	$(".changeprop2").on("change", function (e) {
+                updatebtn($(this)); 
+	});
 	$(".changeprop").on("change", function (e) {
 		updatebtn($(this));
 		if(cyclechangeprop) return;
@@ -359,7 +362,7 @@ volumelisttable = $("#VolumeList").DataTable({
 				data: "ipaddress",
 				render: function (data, type, row) {
 					return (
-						'<input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control changeprop" ' +
+						'<input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control changeprop2" ' +
 						'name="s" id="ip' +
 						row.name +
 						'" data-value="' +
@@ -376,7 +379,7 @@ volumelisttable = $("#VolumeList").DataTable({
 				data: "Subnet",
 				render: function (data, type, row) {
 					return (
-						'<input type="number"  style="font-size: 99.9%;" min="8" max="32" step="8" class="form-control changeprop"' +
+						'<input type="number"  style="font-size: 99.9%;" min="8" max="32" step="8" class="form-control changeprop2"' +
 						'id="sub' +
 						row.name +
 						'" data-key="Subnet" data-name=' +
