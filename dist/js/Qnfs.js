@@ -218,7 +218,7 @@ $("#createvol").click(function (e) {
 			size: $("#volsize").val() + "G",
 			owner: owner,
 		};
-	console.log('apidata',apidata)
+	console.log('apiapi',apidata)
 	postdata(apiurl, apidata);
 });
 
@@ -537,7 +537,6 @@ function activethis(volname, statusmount, runtime) {
 function avoldel(volname) {
 	var apiurl = "api/v1/volumes/volumedel";
 	var apidata = { name: volname, type: prot, user: "mezo", 'token':hypetoken };
-	console.log(volname, prot);
 	postdata(apiurl, apidata);
 }
 
