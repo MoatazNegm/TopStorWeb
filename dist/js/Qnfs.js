@@ -531,6 +531,7 @@ function activethis(volname, statusmount, runtime) {
 		active = "disabled";
 	}
 	var apidata = { name: volname, active: active, user: "mezo" , 'token':hypetoken};
+	console.log('apiactive',apidata)
 	postdata(apiurl, apidata);
 }
 
