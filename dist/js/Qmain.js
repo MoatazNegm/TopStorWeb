@@ -181,6 +181,7 @@ function postdata(url, data) {
 		dataType: "json",
 		data: data,
 		success: function (data) {
+			console.log('api response',data);
 			if (data["response"].includes("baduser") > 0) {
 				location.replace("login.html");
 			}
