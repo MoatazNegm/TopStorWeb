@@ -45,8 +45,8 @@ function getversions(){
  
  $("#ApplyAvailableSW").click(function(e){
 
-  apiurl = 'api/v1/software/apply';
-  apidata = {'version': $('#softs').val().split(',')[0] }
+  var apiurl = 'api/v1/software/apply';
+  var apidata = {'version': $('#softs').val().split(',')[0] , 'token': hypetoken }
   console.log('apiapi',apidata)
   postdata(apiurl,apidata)
      
