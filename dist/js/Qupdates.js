@@ -55,6 +55,6 @@ function getversions(){
 
  updatetasks();
  getversions();
- //setInterval(function(){ updatetasks(); getversions();},10000);
+ setInterval(function(){getversions();},2000);
 
   
