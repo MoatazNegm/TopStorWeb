@@ -174,7 +174,7 @@ function updatetasks() {
 }
 
 dirtylog = 1;
-function postdata(url, data) {
+function postdata2(url, data) {
 	data["token"] = hypetoken;
 	$.ajax({
 		url: url,
@@ -187,6 +187,39 @@ function postdata(url, data) {
 			}
 		},
 	});
+}
+
+function postdata(url, pata) {
+    // Add the token to the data
+    const data = { ...pata, token: hypetoken }; // Merge pata and token
+    console.log('api submit', data);
+
+    // Convert data to query parameters
+    const queryParams = new URLSearchParams(data).toString();
+    const fullUrl = `${url}?${queryParams}`; // Append query params to the URL
+
+    // Use fetch to make the GET request
+    fetch(fullUrl, {
+        method: 'GET', // Specify the method
+        headers: {
+            'Content-Type': 'application/json', // Optional for GET requests
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json(); // Parse the JSON response
+    })
+    .then(data => {
+        console.log('api response', data);
+        if (data["response"].includes("baduser")) {
+            location.replace("login.html"); // Redirect if "baduser" is found
+        }
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
 }
 
 $(".main-sidebar").css("background", "#0D0D7F");

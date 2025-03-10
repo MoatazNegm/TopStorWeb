@@ -412,7 +412,7 @@ function tenantsrefresh(){
 				$(".nontenant").prop("hidden", false);
 				$(".tenant").prop("hidden", true);
 				initUserlist()
-				refreshall()
+				//refreshall()
 				$("#UserListth1").css('width','15%');
 				$("#UserListth2").css('width','15%');
 				$("#UserListth3").css('width','10%');
@@ -426,7 +426,7 @@ function tenantsrefresh(){
 				$(".nontenant").prop("hidden", true);
 				$(".tenant").prop("hidden", false);
 				initUserlist()
-				refreshall()
+				//refreshall()
 				$("#TenantListth1").css('width','20%');
 				$("#TenantListth4").css('width','60%');
 				$("#TenantListth5").css('width','10%');
@@ -502,11 +502,11 @@ function userlistrefresh() {
 					grpsval = "";
 				}
 				if (grpsval !== $(this).val().toString()) {
-					console.log('checking1',grpsval,$(this).val().toString())
+					//console.log('checking1',grpsval,$(this).val().toString())
 					$("#btn" + $(this).attr("id")).show();
 					$(this).data("change", $(this).val().toString());
 				} else {
-					console.log('checking2',grpsval,$(this).val().toString())
+					//console.log('checking2',grpsval,$(this).val().toString())
 					$(this).data("change", "");
 					$("#btn" + $(this).attr("id")).hide();
 				}
@@ -744,7 +744,7 @@ $("#UnixAddUser").click(function (e) {
 			Myname: "mezo",
 		};
 	}
-	postdata(apiurl, apidata);
+	postdata2(apiurl, apidata);
 
 	e.preventDefault();
 });
@@ -814,7 +814,20 @@ function refreshall() {
 		},
 	});
 }
-setInterval(refreshall, 2000);
+//setInterval(refreshall, 2000);
+async function startRefreshLoop() {
+    while (true) {
+	console.log('running new refresh')
+        await refreshall(); // Wait for refreshall to complete
+        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 2 seconds before the next refresh
+    }
+}
+
+// Start the refresh loop
+startRefreshLoop();
+
+
+
 firstRequestsInterval = setInterval(() => {
 	if (firstRequests == 0) {
 		$("#Loading").addClass("show_or_hide_other");
