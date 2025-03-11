@@ -778,8 +778,19 @@ function refreshall(first = 0) {
 propchange();
 refreshall(1);
 
-setInterval(refreshall, 10000);
+//setInterval(refreshall, 10000);
 //setInterval(function(){allvolumes='refresh';}, 5000);
+async function startRefreshLoop() {
+    while (true) {
+	console.log('running new refresh')
+        await refreshall(0); // Wait for refreshall to complete
+        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 2 seconds before the next refresh
+    }
+}
+
+// Start the refresh loop
+startRefreshLoop();
+
 
 let ShowDompassToggle = document.querySelector("#dompass");
 
