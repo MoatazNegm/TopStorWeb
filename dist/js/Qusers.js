@@ -379,92 +379,151 @@ $('#upload-file-btn').click(function() {
 });
 
 function groupsrefresh() {
-	$(".select2.multiple").select2({
-		width: '100%',
-		ajax: {
-			url: "api/v1/users/grouplist",
-			data: { 'token': hypetoken, 'tenant':$("#Tenant :selected").text() },
-			dataType: "json",
-			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
-			type: "GET",
-			async: false,
-		},
-	});
+    // Get the selected tenant value
+    const selectedTenant = $("#Tenant :selected").text();
+
+    // Prefetch data using jQuery AJAX
+    $.ajax({
+        url: "api/v1/users/grouplist",
+        method: "GET",
+        data: { 
+            token: hypetoken, // Include the token
+            tenant: selectedTenant // Include the selected tenant
+        },
+        dataType: "json",
+        success: function (data) {
+            console.log(data); // Log the data to inspect its structure
+
+            // Format the data for Select2
+            const formattedData = data['results'].map(item => ({
+                id: item.id, // Replace 'id' with the actual property name for the ID
+                text: item.text // Replace 'name' with the actual property name for the display text
+            }));
+
+            // Initialize Select2 with the preloaded data
+            $(".select2.multiple").select2({
+                width: '100%',
+                data: formattedData, // Use the formatted data
+                placeholder: "Select groups",
+                allowClear: false // Disable the clear button (small 'x')
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching group data:", error);
+        }
+    });
 }
+
 
 $(".nontenant").prop("hidden", false);
 $(".tenant").prop("hidden", true);
-function tenantsrefresh(){
-		$(".select2.tenant")
-		.select2({
-			ajax: {
-				url: "api/v1/tenants/tenantinfo",
-				data: { 'token': hypetoken },
-				dataType: "json",
-				// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
-				type: "GET",
-				async: false,
-			},
-		})
-		.on("change", function () {
-			var selectedValue = $('#Tenant :selected').text()
-			if ((selectedValue == "Cluster") & (selectedValue == "Cluster")) {
-				$(".nontenant").prop("hidden", false);
-				$(".tenant").prop("hidden", true);
-				initUserlist()
-				//refreshall()
-				$("#UserListth1").css('width','15%');
-				$("#UserListth2").css('width','15%');
-				$("#UserListth3").css('width','10%');
-				$("#UserListth4").css('width','40%');
-				$("#UserListth5").css('width','10%');
-				$("#UserListth6").css('width','5%');
-				$("#UserListth7").css('width','5%');
-				userlistrefresh();
-				
-			} else {
-				$(".nontenant").prop("hidden", true);
-				$(".tenant").prop("hidden", false);
-				initUserlist()
-				//refreshall()
-				$("#TenantListth1").css('width','20%');
-				$("#TenantListth4").css('width','60%');
-				$("#TenantListth5").css('width','10%');
-				$("#TenantListth7").css('width','20%');
-				userlistrefresh();
-			}
-		});
-	groupsrefresh()
-	$("span.select2").addClass('col-sm-3')
-	$("span.select2").css('margin-left','-0.5rem')
 
+function tenantsrefresh() {
+    // Prefetch data using jQuery AJAX
+    $.ajax({
+        url: "api/v1/tenants/tenantinfo",
+        method: "GET",
+        data: { token: hypetoken }, // Include the token as a query parameter
+        dataType: "json",
+        success: function (data) {
+            // Ensure the data is in the correct format for Select2
+            const formattedData = data['results'].map(item => ({
+                id: item.id, // Replace 'id' with the actual property name for the ID
+                text: item.text, // Replace 'name' with the actual property name for the display text
+            }));
+	    const filteredData = formattedData.filter(item => item.text !== "Cluster");
+
+            // Initialize Select2 with the preloaded data
+            $(".select2.tenant")
+                .select2({
+                    data: filteredData, // Use the formatted data
+                    placeholder: "Select a tenant",
+                    allowClear: false // Disable the clear button (small 'x')
+                })
+                .on("change", function () {
+                    var selectedValue = $('#Tenant :selected').text();
+                    if (selectedValue == "Cluster") {
+                        $(".nontenant").prop("hidden", false);
+                        $(".tenant").prop("hidden", true);
+                        initUserlist();
+                        $("#UserListth1").css('width', '15%');
+                        $("#UserListth2").css('width', '15%');
+                        $("#UserListth3").css('width', '10%');
+                        $("#UserListth4").css('width', '40%');
+                        $("#UserListth5").css('width', '10%');
+                        $("#UserListth6").css('width', '5%');
+                        $("#UserListth7").css('width', '5%');
+                        userlistrefresh();
+                    } else {
+                        $(".nontenant").prop("hidden", true);
+                        $(".tenant").prop("hidden", false);
+                        initUserlist();
+                        $("#TenantListth1").css('width', '20%');
+                        $("#TenantListth4").css('width', '60%');
+                        $("#TenantListth5").css('width', '10%');
+                        $("#TenantListth7").css('width', '20%');
+                        userlistrefresh();
+                    }
+                });
+
+            groupsrefresh();
+            $("span.select2").addClass('col-sm-3');
+            $("span.select2").css('margin-left', '-0.5rem');
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching tenant data:", error);
+        }
+    });
 }
+
 $("span.select2").addClass('col-sm-3')
+
 function poolsrefresh() {
-	$(".select2.pool")
-		.select2({
-			ajax: {
-				url: "api/v1/pools/poolsinfo",
-				data: { 'token': hypetoken },
-				dataType: "json",
-				// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
-				type: "GET",
-				async: false,
-			},
-		})
-		.on("change", function () {
-			var selectedValue = $('#UserVol option[value="' + this.value + '"]')[0].innerHTML;
-			if ((selectedValue != "-----") & (selectedValue != "-------")) {
-				$("#volsize").prop("disabled", false);
-				$("#HomeAddress").prop("disabled", false);
-				$("#HomeSubnet").prop("disabled", false);
-			} else {
-				$("#volsize").prop("disabled", true);
-				$("#HomeAddress").prop("disabled", true);
-				$("#HomeSubnet").prop("disabled", true);
-			}
-		});
+    // Prefetch data using jQuery AJAX
+    $.ajax({
+        url: "api/v1/pools/poolsinfo",
+        method: "GET",
+        data: { token: hypetoken }, // Include the token as a query parameter
+        dataType: "json",
+        success: function (data) {
+            console.log(data); // Log the data to inspect its structure
+
+            // Remove the object where name = 'Cluster' (if needed)
+            const filteredData = data['results'].filter(item => !item.text.includes("-----"));
+
+            // Format the data for Select2
+            const formattedData = filteredData.map(item => ({
+                id: item.id, // Replace 'id' with the actual property name for the ID
+                text: item.text // Replace 'name' with the actual property name for the display text
+            }));
+
+            // Initialize Select2 with the preloaded data
+            $(".select2.pool")
+                .select2({
+                    data: formattedData, // Use the formatted data
+                    placeholder: "Select a pool",
+                    allowClear: false // Disable the clear button (small 'x')
+                })
+                .on("change", function () {
+                    var selectedValue = $('#UserVol option[value="' + this.value + '"]')[0].innerHTML;
+                    if ((selectedValue != "-----") & (selectedValue != "-------")) {
+                        $("#volsize").prop("disabled", false);
+                        $("#HomeAddress").prop("disabled", false);
+                        $("#HomeSubnet").prop("disabled", false);
+                    } else {
+                        $("#volsize").prop("disabled", true);
+                        $("#HomeAddress").prop("disabled", true);
+                        $("#HomeSubnet").prop("disabled", true);
+                    }
+                });
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching pool data:", error);
+        }
+    });
 }
+
+
 function userlistrefresh() {
 	var tenant = $("#Tenant :selected").text();
 	userlisttable.ajax.reload(function () {
@@ -496,7 +555,6 @@ function userlistrefresh() {
 					userofpass = $(this).data("username");
 				});
 		});
-		groupsrefresh();
 		$(".select2.usergroups").on("change", function (e) {
 				grpsval = $(this).data("grps").toString();
 				if (grpsval == "NoGroup") {
@@ -512,6 +570,7 @@ function userlistrefresh() {
 					$("#btn" + $(this).attr("id")).hide();
 				}
 		});
+		groupsrefresh();
 		$(".select2.usergroups."+tenant).trigger("change");
 	});
 }
