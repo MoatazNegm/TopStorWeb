@@ -344,5 +344,17 @@ function refreshall() {
 		},
 	});
 }
-setInterval(refreshall, 2000);
+//setInterval(refreshall, 2000);
+async function startRefreshLoop() {
+    while (true) {
+	console.log('running new refresh')
+        await refreshall(); // Wait for refreshall to complete
+        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 2 seconds before the next refresh
+    }
+}
+
+// Start the refresh loop
+startRefreshLoop();
+
+
 grouplistrefresh()

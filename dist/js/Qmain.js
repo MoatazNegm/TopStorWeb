@@ -192,7 +192,7 @@ function postdata2(url, data) {
 function postdata(url, pata) {
     // Add the token to the data
     const data = { ...pata, token: hypetoken }; // Merge pata and token
-    console.log('api submit', data);
+    if(!url.includes('renewtoken')){console.log('api submit', data);}
 
     // Convert data to query parameters
     const queryParams = new URLSearchParams(data).toString();
@@ -212,7 +212,7 @@ function postdata(url, pata) {
         return response.json(); // Parse the JSON response
     })
     .then(data => {
-        console.log('api response', data);
+        if(!url.includes('renewtoken')){console.log('api response', data);}
         if (data["response"].includes("baduser")) {
             location.replace("login.html"); // Redirect if "baduser" is found
         }

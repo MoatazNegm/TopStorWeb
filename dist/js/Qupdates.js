@@ -54,7 +54,18 @@ function getversions(){
  
 
  updatetasks();
- getversions();
- setInterval(function(){getversions();},2000);
+function refreshall() {  getversions();}
+// setInterval(function(){getversions();},2000);
+async function startRefreshLoop() {
+    while (true) {
+	console.log('running new refresh')
+        await refreshall(); // Wait for refreshall to complete
+        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 2 seconds before the next refresh
+    }
+}
+
+// Start the refresh loop
+startRefreshLoop();
+
 
   

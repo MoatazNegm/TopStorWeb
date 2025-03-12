@@ -49,6 +49,7 @@ var firstRequests = 3;
 var newallgroups = "new0";
 var newallpools = "new0";
 var newallusers = "new0";
+var groupListData = [];
 $("#volsize").prop("disabled", true);
 $("#HomeAddress").prop("disabled", true);
 $("#HomeSubnet").prop("disabled", true);
@@ -378,7 +379,32 @@ $('#upload-file-btn').click(function() {
 	});
 });
 
-function groupsrefresh() {
+function grouprefresh() {
+    $(".select2.multiple").select2({
+        width: '100%',
+        data: groupListData, // Use the variable here
+        ajax: null // Disable AJAX since we are using static data
+    });
+}
+
+function fetchgrouprefresh() {
+    $.ajax({
+        url: "api/v1/users/grouplist",
+        data: { 'token': hypetoken, 'tenant': $("#Tenant :selected").text() },
+        dataType: "json",
+        type: "GET",
+        async: false,
+        success: function(data) {
+            groupListData = data; // Update the variable with the fetched data
+        },
+        error: function(xhr, status, error) {
+            console.error("Error fetching group list:", error);
+        }
+    });
+}
+
+
+function groupsrefreshold() {
 	$(".select2.multiple").select2({
 		width: '100%',
 		ajax: {
@@ -420,8 +446,7 @@ function tenantsrefresh(){
 				$("#UserListth5").css('width','10%');
 				$("#UserListth6").css('width','5%');
 				$("#UserListth7").css('width','5%');
-				userlistrefresh();
-				
+								
 			} else {
 				$(".nontenant").prop("hidden", true);
 				$(".tenant").prop("hidden", false);
@@ -431,14 +456,17 @@ function tenantsrefresh(){
 				$("#TenantListth4").css('width','60%');
 				$("#TenantListth5").css('width','10%');
 				$("#TenantListth7").css('width','20%');
-				userlistrefresh();
 			}
+			userlistrefresh();
+			fetchgrouprefresh();
+		//	grouprefresh();
+
 		});
-	groupsrefresh()
 	$("span.select2").addClass('col-sm-3')
 	$("span.select2").css('margin-left','-0.5rem')
 
 }
+grouprefresh();
 $("span.select2").addClass('col-sm-3')
 function poolsrefresh() {
 	$(".select2.pool")
@@ -496,7 +524,7 @@ function userlistrefresh() {
 					userofpass = $(this).data("username");
 				});
 		});
-		groupsrefresh();
+		//grouprefresh();
 		$(".select2.usergroups").on("change", function (e) {
 				grpsval = $(this).data("grps").toString();
 				if (grpsval == "NoGroup") {
@@ -745,7 +773,7 @@ $("#UnixAddUser").click(function (e) {
 			Myname: "mezo",
 		};
 	}
-	postdata(apiurl, apidata);
+	postdata2(apiurl, apidata);
 
 	e.preventDefault();
 });
@@ -773,7 +801,7 @@ function refreshall() {
 			if (JSON.stringify(allgroups) != JSON.stringify(newallgroups)) {
 				allgroups = newallgroups;
 				console.log("allgroupchange", allgroups, newallgroups);
-				groupsrefresh();
+				fetchgrouprefresh()
 			}
 			if (firstRequests > 0) firstRequests = firstRequests - 1;
 		},
