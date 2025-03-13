@@ -279,7 +279,7 @@ var bg = {
 	error: { class: "bg-danger", loc: "topRight", delay: 10000 },
 	info: { class: "bg-info", loc: "bottomRight", delay: 4000 },
 };
-setInterval(function () {
+function refreshmain() {
 	var notif;
 	onedaylogfn();
 	$(".modal-backdrop").css("z-index", "0");
@@ -334,7 +334,7 @@ setInterval(function () {
 		},
 	});
 	gettheversion();
-}, 5000);
+}
 function gettheversion(){
 	$.ajax({
 		url: "api/v1/info/cversion",
@@ -348,6 +348,21 @@ function gettheversion(){
 }
 gettheversion();
 			
+async function mainRefreshLoop() {
+    while (true) {
+        await refreshmain(); // Wait for refreshall to complete
+        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 2 seconds before the next refresh
+    }
+}
+
+// Start the refresh loop
+mainRefreshLoop();
+
+
+
+
+
+
 $("body").click(function (e) {
 	var apiurl = "api/v1/login/renewtoken";
 	var apidata = { token: hypetoken };
