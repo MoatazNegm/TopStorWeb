@@ -398,8 +398,8 @@ $("#readysubmit").click(function (ev) {
 	}
 });
 
-function refreshall() {
-	//updatetasks();
+setInterval(function () {
+	updatetasks();
 	$("#runninghosts > form > div:nth-child(5) > span > span.selection > span").css(
 		"margin-top",
 		"0.1rem"
@@ -411,19 +411,7 @@ function refreshall() {
 	).css("margin-top", "0.2rem");
 
 	refreshhosts();
-}
-async function startRefreshLoop() {
-    while (true) {
-	console.log('running new refresh')
-        await refreshall(); // Wait for refreshall to complete
-        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 2 seconds before the next refresh
-    }
-}
-
-// Start the refresh loop
-startRefreshLoop();
-
-
+}, 5000);
 
 var example1_filter = $("#example1_filter");
 $("#example1")

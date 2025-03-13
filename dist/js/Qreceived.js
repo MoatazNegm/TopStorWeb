@@ -432,19 +432,7 @@ function refreshall() {
 	snapsreferesh();
 }
 $("table").css("width", "100%");
-//setInterval(refreshall, 2000);
-async function startRefreshLoop() {
-    while (true) {
-	console.log('running new refresh')
-        await refreshall(); // Wait for refreshall to complete
-        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 2 seconds before the next refresh
-    }
-}
-
-// Start the refresh loop
-startRefreshLoop();
-
-
+setInterval(refreshall, 2000);
 firstRequestsInterval = setInterval(() => {
 	if (firstRequests == 0) {
 		$("#Loading").addClass("show_or_hide_other");

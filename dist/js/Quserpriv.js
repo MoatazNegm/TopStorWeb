@@ -113,19 +113,7 @@ $("#UserList").change(function (e) {
 	updateauths("manual");
 	currentuser = $("#UserList").val();
 });
-function refreshall() {
+setInterval(function () {
 	updatetasks();
 	userschange();
-}
-async function startRefreshLoop() {
-    while (true) {
-	console.log('running new refresh')
-        await refreshall(); // Wait for refreshall to complete
-        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 2 seconds before the next refresh
-    }
-}
-
-// Start the refresh loop
-startRefreshLoop();
-
-
+}, 2000);

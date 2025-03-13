@@ -50,11 +50,11 @@ var modaltill = idletill - 120000;
 var volumelisttable;
 var dirtylog = 1;
 var grpsets = {};
-var firstRequests = 2;
+var firstRequests = 7;
 //if (window.location.pathname.endsWith("Qnfs.html")) firstRequests = 2;
 //if (prot == 'NFS') firstRequests = 7;
 
-function old_poolsrefresh(first = 0) {
+function poolsrefresh(first = 0) {
 	$(".select2.pool").select2({
 		placeholder: "Select a pool",
 		ajax: {
@@ -103,48 +103,6 @@ function usersnohomerefresh(first = 0) {
 	}
 }
 
-function poolsrefresh(first = 0) {
-    // Prefetch data using jQuery AJAX
-    $.ajax({
-        url: "/api/v1/volumes/poolsinfo",
-        method: "GET",
-        data: { token: hypetoken }, // Include the token as a query parameter
-        dataType: "json",
-        timeout: 3000,
-        success: function (data) {
-
-            // Store the data in a global variable (if needed)
-            allpools = data;
-
-            // Format the data for Select2
-            const formattedData = data['results'].map(item => ({
-                id: item.id, // Replace 'id' with the actual property name for the ID
-                text: item.text // Replace 'name' with the actual property name for the display text
-            }));
-
-            // Initialize Select2 with the preloaded data
-            $(".select2.pool").select2({
-                placeholder: "Select a pool",
-                data: formattedData, // Use the formatted data
-                allowClear: false // Disable the clear button (small 'x')
-            });
-
-            // Handle the 'first' parameter and decrement 'firstRequests'
-            if (first > 0) {
-                firstRequests = firstRequests - 1;
-            }
-
-            // Additional logic for 'firstRequests'
-            if (firstRequests > 0) {
-                firstRequests = firstRequests - 1;
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error("Error fetching pool data:", error);
-        }
-    });
-}
-
 function groupsrefresh(first = 0) {
 	$(".select2.multiple").select2({
 		closeOnSelect: true,
@@ -166,8 +124,10 @@ function groupsrefresh(first = 0) {
 	});
 }
 
+poolsrefresh(1);
+usersnohomerefresh(1);
 firstRequestsInterval = setInterval(() => {
-	if (firstRequests <= 1) {
+	if (firstRequests == 0) {
 		$("#Loading").addClass("show_or_hide_other");
 		setTimeout(() => {
 			console.log("FirstRequests Done");
@@ -267,7 +227,7 @@ function volumelistrefresh() {
 		var option;
 		$(".usergroups").each(function () {
 			refreshrows();
-			//groupsrefresh();
+			groupsrefresh();
 		});
 	});
 	$(".runtime").each(function(){
@@ -708,7 +668,7 @@ function groupsfn(first = 0) {
 			newallgroups = data;
 			if (JSON.stringify(allgroups) != JSON.stringify(newallgroups)) {
 				allgroups = JSON.parse(JSON.stringify(newallgroups));
-				//groupsrefresh();
+				groupsrefresh();
 			}
 			if (first > 0) {
 				firstRequests = firstRequests - 1;
@@ -731,12 +691,9 @@ $("#volname").focusout(function () {
 	$("#workname").val("cifs-" + $("#volname").val());
 });
 
-async function refreshall(first = 0) {
+function refreshall(first = 0) {
 	groupsfn(first);
 	updatetasks();
-	poolsrefresh(first);
-	usersnohomerefresh(first);
-
 	var newallpools = "new0";
 	$(".changeprop").each(function(e){   updatebtn($(this));  });
 	//$("button[id^='btn']").each(function(e) { 
@@ -750,14 +707,14 @@ async function refreshall(first = 0) {
 		data: { 'token': hypetoken },
 		type: "GET",
 		//timeout: 3000,
-		async: false,
+		async: true,
 		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
 
 		success: function (data) {
 			newallpools = data;
 			if (JSON.stringify(allpools) != JSON.stringify(newallpools)) {
 				allpools = JSON.parse(JSON.stringify(newallpools));
-				poolsrefresh(first);
+				poolsrefresh();
 			}
 			if (first > 0) {
 				firstRequests = firstRequests - 1;
@@ -771,7 +728,7 @@ async function refreshall(first = 0) {
 		data: { 'token': hypetoken },
 		type: "GET",
 		//timeout: 3000,
-		async: false,
+		async: true,
 		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
 
 		success: function (data) {
@@ -792,7 +749,7 @@ async function refreshall(first = 0) {
 		type: "GET",
 		data: { 'token': hypetoken },
 		//timeout: 3000,
-		async: false,
+		async: true,
 		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
 
 		success: function (data) {
@@ -818,27 +775,11 @@ async function refreshall(first = 0) {
 		},
 	});
 }
+propchange();
+refreshall(1);
 
-//setInterval(refreshall, 10000);
+setInterval(refreshall, 10000);
 //setInterval(function(){allvolumes='refresh';}, 5000);
-async function startRefreshLoop() {
-    propchange();
-    await refreshall(1);
-  
-    while (true) {
-	console.log('running new refresh')
-        await refreshall(firstRequests); // Wait for refreshall to complete
-	console.log('sleeping refresh')
-        await new Promise(resolve => setTimeout(resolve, 60000)); // Wait for 2 seconds before the next refresh
-	if (firstRequests > 0) {
-                firstRequests = firstRequests - 1;
-	};
-
-    }
-}
-
-// Start the refresh loop
-startRefreshLoop();
 
 let ShowDompassToggle = document.querySelector("#dompass");
 

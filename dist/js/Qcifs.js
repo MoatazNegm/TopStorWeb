@@ -50,50 +50,30 @@ var modaltill = idletill - 120000;
 var volumelisttable;
 var dirtylog = 1;
 var grpsets = {};
-var firstRequests = 2;
+var firstRequests = 7;
 //if (window.location.pathname.endsWith("Qnfs.html")) firstRequests = 2;
 //if (prot == 'NFS') firstRequests = 7;
 
 function poolsrefresh(first = 0) {
-    // Prefetch data using jQuery AJAX
-    $.ajax({
-        url: "/api/v1/volumes/poolsinfo",
-        method: "GET",
-        data: { token: hypetoken }, // Include the token as a query parameter
-        dataType: "json",
-        timeout: 3000,
-	async: true,
-        success: function (data) {
-
-            // Store the data in a global variable (if needed)
-            //allpools = data;
-
-            // Format the data for Select2
-            const formattedData = data['results'].map(item => ({
-                id: item.id, // Replace 'id' with the actual property name for the ID
-                text: item.text // Replace 'name' with the actual property name for the display text
-            }));
-
-            // Initialize Select2 with the preloaded data
-            $(".select2.pool").select2({
-                placeholder: "Select a pool",
-                data: formattedData, // Use the formatted data
-                allowClear: false // Disable the clear button (small 'x')
-            });
-
-            // Handle the 'first' parameter
-            if (first > 0) {
-                firstRequests = firstRequests - 1;
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error("Error fetching pool data:", error);
-        }
-    });
+	$(".select2.pool").select2({
+		placeholder: "Select a pool",
+		ajax: {
+			url: "/api/v1/volumes/poolsinfo",
+			dataType: "json",
+			timeout: 3000,
+			data: { 'token': hypetoken },
+			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+			type: "GET",
+			async: false,
+			success: function (data) {
+				allpools = data;
+				if (first > 0) {
+					firstRequests = firstRequests - 1;
+				}
+			},
+		},
+	});
 }
-
-
-
 
 function usersnohomerefresh(first = 0) {
 	// the volume name will get only the username as it is home here
@@ -109,71 +89,45 @@ function usersnohomerefresh(first = 0) {
 		DataSrc: "usersnohome",
 		success: function (data) {
 			newallusersnohome = data["usersnohome"];
-			if (JSON.stringify(allusersnohome) != JSON.stringify(newallusersnohome)) {
-				allusersnohome = JSON.parse(JSON.stringify(newallusersnohome));
-				$(".select2.home").select2({
-						placeholder: "Select a user",
-						data: allusersnohome,
-				});
-			}
 			if (first > 0) {
 				firstRequests = firstRequests - 1;
 			}
+		},
+	});
+	if (JSON.stringify(allusersnohome) != JSON.stringify(newallusersnohome)) {
+		allusersnohome = JSON.parse(JSON.stringify(newallusersnohome));
+		$(".select2.home").select2({
+			placeholder: "Select a user",
+			data: allusersnohome,
+		});
+	}
+}
 
+function groupsrefresh(first = 0) {
+	$(".select2.multiple").select2({
+		closeOnSelect: true,
+		ajax: {
+			url: "api/v1/volumes/grouplist",
+			dataType: "json",
+			timeout: 3000,
+			data: { 'token': hypetoken },
+			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+			type: "GET",
+			async: false,
+			success: function (data) {
+				allgroups = data;
+				if (first > 0) {
+					firstRequests = firstRequests - 1;
+				}
+			},
 		},
 	});
 }
 
-function groupsrefresh(first = 0) {
-    // Construct the URL with the token as a query parameter
-    const url = `api/v1/volumes/grouplist?token=${encodeURIComponent(hypetoken)}`;
-
-    // Fetch data using fetch()
-    fetch(url, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log(data); // Log the data to inspect its structure
-
-        // Store the data in a global variable (if needed)
-        allgroups = data;
-
-        // Format the data for Select2
-        const formattedData = data['results'].map(item => ({
-            id: item.id, // Replace 'id' with the actual property name for the ID
-            text: item.text // Replace 'name' with the actual property name for the display text
-        }));
-
-        // Initialize Select2 with the preloaded data
-        $(".select2.multiple").empty();
-        $(".select2.multiple").select2({
-            closeOnSelect: true,
-            data: formattedData, // Use the formatted data
-            placeholder: "Select groups",
-            allowClear: false // Disable the clear button (small 'x')
-        });
-	refreshrows();
-        // Handle the 'first' parameter
-        if (first > 0) {
-            firstRequests = firstRequests - 1;
-        }
-    })
-    .catch(error => {
-        console.error("Error fetching group data:", error);
-    });
-}
-
-var firstRequestsInterval = setInterval(() => {
-	if (firstRequests <= 0) {
+poolsrefresh(1);
+usersnohomerefresh(1);
+firstRequestsInterval = setInterval(() => {
+	if (firstRequests == 0) {
 		$("#Loading").addClass("show_or_hide_other");
 		setTimeout(() => {
 			console.log("FirstRequests Done");
@@ -268,6 +222,8 @@ $("#createvol").click(function (e) {
 			groups: groups,
 			active: active,
 			Subnet: $("#Subnet").val(),
+			rootid: $("#rootid").val(),
+			rootname: $("#rootname").val(),
 			Myname: "mezo",
 			size: $("#volsize").val() + "G",
 			owner: owner,
@@ -306,8 +262,8 @@ function volumelistrefresh() {
 	volumelisttable.ajax.reload(function () {
 		var option;
 		$(".usergroups").each(function () {
-			groupsrefresh();
 			refreshrows();
+			groupsrefresh();
 		});
 	});
 	$(".runtime").each(function(){
@@ -334,6 +290,7 @@ function updatebtn(ths) {
 	if (oldpropvalue !== newpropvalue) {
 		changedprop[ths.data("name")][changedkey] = newpropvalue;
 		$("#btn" + ths.data("name")).show();
+        	console.log('button '+newpropvalue+' '+oldpropvalue+' '+changedkey)
 	} else {
 		delete changedprop[ths.data("name")][changedkey];
 		if ($.isEmptyObject(changedprop[ths.data("name")])) {
@@ -386,7 +343,7 @@ volumelisttable = $("#VolumeList").DataTable({
 			url: "api/v1/volumes/" + prot + "/volumesinfo",
 			data: {'token': hypetoken },
 			timeout: 3000,
-			async: true,
+			async: false,
 			type: "GET",
 
 			dataSrc: "allvolumes",
@@ -764,7 +721,7 @@ function groupsfn(first = 0) {
 		url: "api/v1/volumes/grouplist",
 		data: {'token': hypetoken },
 		type: "GET",
-		timeout: 3000,
+		//timeout: 3000,
 		async: false,
 		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
 
@@ -772,8 +729,7 @@ function groupsfn(first = 0) {
 			newallgroups = data;
 			if (JSON.stringify(allgroups) != JSON.stringify(newallgroups)) {
 				allgroups = JSON.parse(JSON.stringify(newallgroups));
-				groupsrefresh(first);
-				refreshrows();
+				groupsrefresh();
 			}
 			if (first > 0) {
 				firstRequests = firstRequests - 1;
@@ -796,9 +752,8 @@ $("#volname").focusout(function () {
 	$("#workname").val("cifs-" + $("#volname").val());
 });
 
-async function refreshall(first = 0) {
+function refreshall(first = 0) {
 	groupsfn(first);
-	usersnohomerefresh(first);
 	updatetasks();
 	var newallpools = "new0";
 	$(".changeprop").each(function(e){   updatebtn($(this));  });
@@ -813,14 +768,14 @@ async function refreshall(first = 0) {
 		data: { 'token': hypetoken },
 		type: "GET",
 		//timeout: 3000,
-		async: false,
+		async: true,
 		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
 
 		success: function (data) {
 			newallpools = data;
 			if (JSON.stringify(allpools) != JSON.stringify(newallpools)) {
 				allpools = JSON.parse(JSON.stringify(newallpools));
-				poolsrefresh(first);
+				poolsrefresh();
 			}
 			if (first > 0) {
 				firstRequests = firstRequests - 1;
@@ -834,7 +789,7 @@ async function refreshall(first = 0) {
 		data: { 'token': hypetoken },
 		type: "GET",
 		//timeout: 3000,
-		async: false,
+		async: true,
 		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
 
 		success: function (data) {
@@ -855,7 +810,7 @@ async function refreshall(first = 0) {
 		type: "GET",
 		data: { 'token': hypetoken },
 		//timeout: 3000,
-		async: false,
+		async: true,
 		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
 
 		success: function (data) {
@@ -881,28 +836,10 @@ async function refreshall(first = 0) {
 		},
 	});
 }
+propchange();
+refreshall(1);
 
-//setInterval(refreshall, 10000);
-async function startRefreshLoop() {
-    propchange();
-    await refreshall(1);
-  
-    while (true) {
-	console.log('running new refresh')
-        await refreshall(firstRequests); // Wait for refreshall to complete
-	console.log('sleeping refresh')
-        await new Promise(resolve => setTimeout(resolve, 60000)); // Wait for 2 seconds before the next refresh
-	if (firstRequests > 0) {
-                firstRequests = firstRequests - 1;
-	};
-
-    }
-}
-
-// Start the refresh loop
-startRefreshLoop();
-
-
+setInterval(refreshall, 10000);
 //setInterval(function(){allvolumes='refresh';}, 5000);
 
 let ShowDompassToggle = document.querySelector("#dompass");

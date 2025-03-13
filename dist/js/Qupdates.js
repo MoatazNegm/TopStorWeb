@@ -45,8 +45,8 @@ function getversions(){
  
  $("#ApplyAvailableSW").click(function(e){
 
-  var apiurl = 'api/v1/software/apply';
-  var apidata = {'version': $('#softs').val().split(',')[0] , 'token': hypetoken }
+  apiurl = 'api/v1/software/apply';
+  apidata = {'version': $('#softs').val().split(',')[0] }
   console.log('apiapi',apidata)
   postdata(apiurl,apidata)
      
@@ -54,18 +54,7 @@ function getversions(){
  
 
  updatetasks();
-function refreshall() {  getversions();}
-// setInterval(function(){getversions();},2000);
-async function startRefreshLoop() {
-    while (true) {
-	console.log('running new refresh')
-        await refreshall(); // Wait for refreshall to complete
-        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 2 seconds before the next refresh
-    }
-}
-
-// Start the refresh loop
-startRefreshLoop();
-
+ getversions();
+ //setInterval(function(){ updatetasks(); getversions();},10000);
 
   

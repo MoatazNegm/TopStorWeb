@@ -174,52 +174,18 @@ function updatetasks() {
 }
 
 dirtylog = 1;
-function postdata2(url, data) {
+function postdata(url, data) {
 	data["token"] = hypetoken;
 	$.ajax({
 		url: url,
 		dataType: "json",
 		data: data,
 		success: function (data) {
-			console.log('api response',data);
 			if (data["response"].includes("baduser") > 0) {
 				location.replace("login.html");
 			}
 		},
 	});
-}
-
-function postdata(url, pata) {
-    // Add the token to the data
-    const data = { ...pata, token: hypetoken }; // Merge pata and token
-    if(!url.includes('renewtoken')){console.log('api submit', data);}
-
-    // Convert data to query parameters
-    const queryParams = new URLSearchParams(data).toString();
-    const fullUrl = `${url}?${queryParams}`; // Append query params to the URL
-
-    // Use fetch to make the GET request
-    fetch(fullUrl, {
-        method: 'GET', // Specify the method
-        headers: {
-            'Content-Type': 'application/json', // Optional for GET requests
-        },
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json(); // Parse the JSON response
-    })
-    .then(data => {
-        if(!url.includes('renewtoken')){console.log('api response', data);}
-        if (data["response"].includes("baduser")) {
-            location.replace("login.html"); // Redirect if "baduser" is found
-        }
-    })
-    .catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-    });
 }
 
 $(".main-sidebar").css("background", "#0D0D7F");
@@ -279,7 +245,7 @@ var bg = {
 	error: { class: "bg-danger", loc: "topRight", delay: 10000 },
 	info: { class: "bg-info", loc: "bottomRight", delay: 4000 },
 };
-function refreshmain() {
+setInterval(function () {
 	var notif;
 	onedaylogfn();
 	$(".modal-backdrop").css("z-index", "0");
@@ -334,7 +300,7 @@ function refreshmain() {
 		},
 	});
 	gettheversion();
-}
+}, 5000);
 function gettheversion(){
 	$.ajax({
 		url: "api/v1/info/cversion",
@@ -348,21 +314,6 @@ function gettheversion(){
 }
 gettheversion();
 			
-async function mainRefreshLoop() {
-    while (true) {
-        await refreshmain(); // Wait for refreshall to complete
-        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 2 seconds before the next refresh
-    }
-}
-
-// Start the refresh loop
-mainRefreshLoop();
-
-
-
-
-
-
 $("body").click(function (e) {
 	var apiurl = "api/v1/login/renewtoken";
 	var apidata = { token: hypetoken };

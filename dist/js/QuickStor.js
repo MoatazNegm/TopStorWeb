@@ -338,18 +338,7 @@ firstRequestsInterval = setInterval(() => {
 	}
 }, 100);
 
-//setInterval(refreshdash, 100000);
-async function startRefreshLoop() {
-    while (true) {
-	console.log('running new refresh')
-        await refreshadash(0); // Wait for refreshall to complete
-        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 2 seconds before the next refresh
-    }
-}
-
-// Start the refresh loop
-startRefreshLoop();
-
+setInterval(refreshdash, 100000);
 
 /* jQueryKnob */
 
