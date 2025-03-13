@@ -54,24 +54,6 @@ var firstRequests = 4;
 //if (window.location.pathname.endsWith("Qnfs.html")) firstRequests = 2;
 //if (prot == 'NFS') firstRequests = 7;
 
-function poolsrefresh() {
-	$(".select2.pool").select2({
-		placeholder: "Select a pool",
-		ajax: {
-			url: "/api/v1/volumes/poolsinfo",
-			dataType: "json",
-			timeout: 3000,
-			data: { 'token': hypetoken },
-			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
-			type: "GET",
-			async: false,
-			success: function (data) {
-				allpools = data;
-			},
-		},
-	});
-}
-
 function usersnohomerefresh() {
 	// the volume name will get only the username as it is home here
 	var newallusersnohome;
@@ -98,24 +80,16 @@ function usersnohomerefresh() {
 }
 
 function groupsrefresh() {
-	$(".select2.multiple").select2({
-		closeOnSelect: true,
-		ajax: {
-			url: "api/v1/volumes/grouplist",
-			dataType: "json",
-			timeout: 3000,
-			data: { 'token': hypetoken },
-			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
-			type: "GET",
-			async: false,
-			success: function (data) {
-				allgroups = data;
-			},
-		},
-	});
+    // Assuming allgroups is an array of objects like:
+    // allgroups = [{ id: 1, text: "Group 1" }, { id: 2, text: "Group 2" }, ...];
+
+    $(".select2.multiple").select2({
+        closeOnSelect: true,
+        data: allgroups['results'], // Use the existing allgroups variable as static data
+        allowClear: false, // Optional: Allow clearing the selection
+    });
 }
 
-poolsrefresh();
 usersnohomerefresh();
 firstRequestsInterval = setInterval(() => {
 	if (firstRequests <= 1) {
@@ -134,6 +108,8 @@ function refreshrows() {
 		var assignedgrps = thisvolume.data("grps");
 		var option;
 		thisvolume.addClass("select2");
+		thisvolume.empty();
+		//thisvolume.select2("destroy");
 		thisvolume.val(null).trigger("change");
 		if (typeof assignedgrps == "number") {
 			grps = [assignedgrps];
@@ -304,7 +280,9 @@ function propchange() {
 		updatebtn($(this));
 		if(cyclechangeprop) return;
 		cyclechangeprop = 1
+				
                         	var el = $(this);
+				el.addClass("select2");
                         	var selected = el.select2('data');
                        		var uniqueIds = new Set();
                         	var uniqueSelected = selected.filter(function(item) {
@@ -717,6 +695,7 @@ function groupsfn(first = 0) {
 			newallgroups = data;
 			if (JSON.stringify(allgroups) != JSON.stringify(newallgroups)) {
 				allgroups = JSON.parse(JSON.stringify(newallgroups));
+				console.log("allgroups",allgroups);
 				groupsrefresh();
 			}
 			if (first > 0) {
@@ -767,8 +746,12 @@ async function refreshall(first = 0) {
                     const newallpools = data;
                     if (JSON.stringify(allpools) !== JSON.stringify(newallpools)) {
                         allpools = JSON.parse(JSON.stringify(newallpools));
-			console.log('newallpools',newallpools);
-                        poolsrefresh();
+			$(".select2.pool").select2({
+				    placeholder: "Select a pool",
+				    data: allpools['results'], // Use the existing newallgroups variable as static data
+				    allowClear: false, // Optional: Allow clearing the selection
+			});
+
                     }
                     if (first > 0) {
                         firstRequests = firstRequests - 1;
@@ -793,6 +776,7 @@ async function refreshall(first = 0) {
                     const newallvolumes = data;
                     if (JSON.stringify(allvolumes) !== JSON.stringify(newallvolumes)) {
                         allvolumes = JSON.parse(JSON.stringify(newallvolumes));
+			//console.log('allvolumes',allvolumes);
                         volumelistrefresh();
                     }
                     if (first > 0) {
@@ -855,95 +839,6 @@ async function refreshall(first = 0) {
     });
 }
 
-
-
-
-
-async function old_refreshall(first = 0) {
-	groupsfn(first);
-	updatetasks();
-	var newallpools = "new0";
-	//$("button[id^='btn']").each(function(e) { 
-	// 	if($(this).is(":visible") && $(this).data('value') == undefined) { 
-	//				$(this).hide();
-	//	} 
-        //});
-	$(".odd").css("background-color", "rgba(41,57,198,.1)");
-	$.ajax({
-		url: "api/v1/volumes/poolsinfo",
-		data: { 'token': hypetoken },
-		type: "GET",
-		//timeout: 3000,
-		async: true,
-		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
-
-		success: function (data) {
-			newallpools = data;
-			if (JSON.stringify(allpools) != JSON.stringify(newallpools)) {
-				allpools = JSON.parse(JSON.stringify(newallpools));
-				poolsrefresh();
-			}
-			if (first > 0) {
-				firstRequests = firstRequests - 1;
-			}
-		},	
-	});
-
-	var newallvolumes = "new0";
-	$.ajax({
-		url: "api/v1/volumes/" + prot + "/volumesinfo",
-		data: { 'token': hypetoken },
-		type: "GET",
-		//timeout: 3000,
-		async: true,
-		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
-
-		success: function (data) {
-			newallvolumes = data;
-			if (JSON.stringify(allvolumes) != JSON.stringify(newallvolumes)) {
-				allvolumes = JSON.parse(JSON.stringify(newallvolumes));
-				volumelistrefresh();
-			}
-			if (first > 0) {
-				firstRequests = firstRequests - 1;
-			}
-		},
-	});
-
-	var newstats = "new0";
-	$.ajax({
-		url: "api/v1/volumes/stats",
-		type: "GET",
-		data: { 'token': hypetoken },
-		//timeout: 3000,
-		async: true,
-		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
-
-		success: function (data) {
-			newstats = data;
-			if (JSON.stringify(volstats) != JSON.stringify(newstats)) {
-				volstats = JSON.parse(JSON.stringify(newstats));
-				if (chartsflag == 0) {
-					initcharts();
-					chartsflag = 1;
-				} else {
-					try {
-						$.each(chartcards, function (e, t) {
-							charts[t].data.datasets[0]["data"] = volstats[t]["stats"];
-							charts[t].data.labels = volstats[t]["labels"];
-							charts[t].update();
-						});
-					} catch {}
-				}
-			}
-			if (first > 0) {
-				firstRequests = firstRequests - 1;
-			}
-		},
-	});
-
-	$(".changeprop").each(function(e){   updatebtn($(this));  });
-}
 propchange();
 
 //setInterval(refreshall, 10000);
@@ -953,7 +848,7 @@ async function iterRefresh(){
 	while(true){
 		await refreshall(firstRequests);
 		waiting=5000;
-		//if(firstRequests >= 0){ waiting=10; }
+		if(firstRequests >= 0){ waiting=10; }
 		await new Promise(resolve => setTimeout(resolve, waiting));
 	}
 }

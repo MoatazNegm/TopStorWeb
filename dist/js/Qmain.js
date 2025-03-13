@@ -245,7 +245,7 @@ var bg = {
 	error: { class: "bg-danger", loc: "topRight", delay: 10000 },
 	info: { class: "bg-info", loc: "bottomRight", delay: 4000 },
 };
-setInterval(function () {
+function refreshmain() {
 	var notif;
 	onedaylogfn();
 	$(".modal-backdrop").css("z-index", "0");
@@ -300,7 +300,19 @@ setInterval(function () {
 		},
 	});
 	gettheversion();
-}, 5000);
+}
+
+async function iterRefresh(){
+	var waiting=5000;
+	while(true){
+		await refreshmain();
+		await new Promise(resolve => setTimeout(resolve, waiting));
+	}
+}
+iterRefresh()
+
+
+
 function gettheversion(){
 	$.ajax({
 		url: "api/v1/info/cversion",
