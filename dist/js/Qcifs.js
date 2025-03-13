@@ -50,11 +50,11 @@ var modaltill = idletill - 120000;
 var volumelisttable;
 var dirtylog = 1;
 var grpsets = {};
-var firstRequests = 3;
+var firstRequests = 4;
 //if (window.location.pathname.endsWith("Qnfs.html")) firstRequests = 2;
 //if (prot == 'NFS') firstRequests = 7;
 
-function poolsrefresh(first = 0) {
+function poolsrefresh() {
 	$(".select2.pool").select2({
 		placeholder: "Select a pool",
 		ajax: {
@@ -67,15 +67,12 @@ function poolsrefresh(first = 0) {
 			async: false,
 			success: function (data) {
 				allpools = data;
-				if (first > 0) {
-					firstRequests = firstRequests - 1;
-				}
 			},
 		},
 	});
 }
 
-function usersnohomerefresh(first = 0) {
+function usersnohomerefresh() {
 	// the volume name will get only the username as it is home here
 	var newallusersnohome;
 	$.ajax({
@@ -89,9 +86,6 @@ function usersnohomerefresh(first = 0) {
 		DataSrc: "usersnohome",
 		success: function (data) {
 			newallusersnohome = data["usersnohome"];
-			if (first > 0) {
-				firstRequests = firstRequests - 1;
-			}
 		},
 	});
 	if (JSON.stringify(allusersnohome) != JSON.stringify(newallusersnohome)) {
@@ -103,7 +97,7 @@ function usersnohomerefresh(first = 0) {
 	}
 }
 
-function groupsrefresh(first = 0) {
+function groupsrefresh() {
 	$(".select2.multiple").select2({
 		closeOnSelect: true,
 		ajax: {
@@ -116,16 +110,13 @@ function groupsrefresh(first = 0) {
 			async: false,
 			success: function (data) {
 				allgroups = data;
-				if (first > 0) {
-					firstRequests = firstRequests - 1;
-				}
 			},
 		},
 	});
 }
 
-poolsrefresh(1);
-usersnohomerefresh(1);
+poolsrefresh();
+usersnohomerefresh();
 firstRequestsInterval = setInterval(() => {
 	if (firstRequests <= 1) {
 		$("#Loading").addClass("show_or_hide_other");
@@ -543,9 +534,6 @@ volumelisttable = $("#VolumeList").DataTable({
 			},
 		],
 	});
-	if (first > 0) {
-		firstRequests = firstRequests - 1;
-	}
 	volumelisttable.buttons().container().appendTo("#VolumeList_wrapper .col-6:eq(0)");
 	//volumelistrefresh();
 	volumelisttable.errMode = function (settings, helpPage, message) {};
@@ -555,7 +543,7 @@ volumelisttable = $("#VolumeList").DataTable({
 	//groupsrefresh();
 }
 
-initVolumelist(1);
+initVolumelist();
 
 function selbtnclickeduser(ths) {
 	//$.post("./pump.php", { req:"UnixChangeUser", name:x.id.replace('btnsel',''), passwd:'groups'+$("#"+x.id.replace('btn','')).val()+" "+myname });
@@ -583,7 +571,7 @@ function selbtnclickeduser(ths) {
 	apidata["type"] = prot;
 	console.log('apidata is',apidata)
 	postdata(apiurl, apidata);
-	volumelistrefresh();
+	//volumelistrefresh();
 }
 
 function activethis(volname, statusmount, runtime) {
@@ -752,11 +740,129 @@ $("#volname").focusout(function () {
 	$("#workname").val("cifs-" + $("#volname").val());
 });
 
-function refreshall(first = 0) {
+var  ajaxPromises = [];
+async function refreshall(first = 0) {
+    // Run synchronous functions
+    ajaxPromises = [];
+    //ajaxPromises.push(
+    //		new Promise((resolve, reject) => {
+			groupsfn(first);
+    //		}
+    //	));
+    console.log('ajaxy 1',ajaxPromises);
+    updatetasks();
+    $(".odd").css("background-color", "rgba(41,57,198,.1)");
+
+    // Create an array to hold all AJAX Promises
+
+    // Wrap each $.ajax call in a Promise and add it to the array
+    ajaxPromises.push(
+        new Promise((resolve, reject) => {
+            $.ajax({
+                url: "api/v1/volumes/poolsinfo",
+                data: { token: hypetoken },
+                type: "GET",
+                async: true,
+                success: function (data) {
+                    const newallpools = data;
+                    if (JSON.stringify(allpools) !== JSON.stringify(newallpools)) {
+                        allpools = JSON.parse(JSON.stringify(newallpools));
+			console.log('newallpools',newallpools);
+                        poolsrefresh();
+                    }
+                    if (first > 0) {
+                        firstRequests = firstRequests - 1;
+                    }
+                    resolve(); // Resolve the Promise
+                },
+                error: function (err) {
+                    reject(err); // Reject the Promise on error
+                },
+            });
+        })
+    );
+
+    ajaxPromises.push(
+        new Promise((resolve, reject) => {
+            $.ajax({
+                url: `api/v1/volumes/${prot}/volumesinfo`,
+                data: { token: hypetoken },
+                type: "GET",
+                async: true,
+                success: function (data) {
+                    const newallvolumes = data;
+                    if (JSON.stringify(allvolumes) !== JSON.stringify(newallvolumes)) {
+                        allvolumes = JSON.parse(JSON.stringify(newallvolumes));
+                        volumelistrefresh();
+                    }
+                    if (first > 0) {
+                        firstRequests = firstRequests - 1;
+                    }
+                    resolve(); // Resolve the Promise
+                },
+                error: function (err) {
+                    reject(err); // Reject the Promise on error
+                },
+            });
+        })
+    );
+
+    ajaxPromises.push(
+        new Promise((resolve, reject) => {
+            $.ajax({
+                url: "api/v1/volumes/stats",
+                type: "GET",
+                data: { token: hypetoken },
+                async: true,
+                success: function (data) {
+                    const newstats = data;
+                    if (JSON.stringify(volstats) !== JSON.stringify(newstats)) {
+                        volstats = JSON.parse(JSON.stringify(newstats));
+                        if (chartsflag === 0) {
+                            initcharts();
+                            chartsflag = 1;
+                        } else {
+                            try {
+                                $.each(chartcards, function (e, t) {
+                                    charts[t].data.datasets[0].data = volstats[t].stats;
+                                    charts[t].data.labels = volstats[t].labels;
+                                    charts[t].update();
+                                });
+                            } catch (err) {
+                                console.error("Error updating charts:", err);
+                            }
+                        }
+                    }
+                    if (first > 0) {
+                        firstRequests = firstRequests - 1;
+                    }
+                    resolve(); // Resolve the Promise
+                },
+                error: function (err) {
+                    reject(err); // Reject the Promise on error
+                },
+            });
+        })
+    );
+
+    // Wait for all AJAX Promises to complete
+    await Promise.all(ajaxPromises);
+    console.log('ajaxes',ajaxPromises);
+
+    // Run additional synchronous tasks
+    $(".changeprop").each(function (e) {
+        updatebtn($(this));
+    });
+}
+
+
+
+
+
+async function old_refreshall(first = 0) {
 	groupsfn(first);
 	updatetasks();
 	var newallpools = "new0";
-	$(".changeprop").each(function(e){   updatebtn($(this));  });
 	//$("button[id^='btn']").each(function(e) { 
 	// 	if($(this).is(":visible") && $(this).data('value') == undefined) { 
 	//				$(this).hide();
@@ -780,7 +886,7 @@ function refreshall(first = 0) {
 			if (first > 0) {
 				firstRequests = firstRequests - 1;
 			}
-		},
+		},	
 	});
 
 	var newallvolumes = "new0";
@@ -835,14 +941,21 @@ function refreshall(first = 0) {
 			}
 		},
 	});
+
+	$(".changeprop").each(function(e){   updatebtn($(this));  });
 }
 propchange();
-refreshall(1);
 
 //setInterval(refreshall, 10000);
 //setInterval(function(){allvolumes='refresh';}, 5000);
-function iterRefresh(){
-	setTimeout(refreshall, 10000);
+async function iterRefresh(){
+	var waiting;
+	while(true){
+		await refreshall(firstRequests);
+		waiting=5000;
+		//if(firstRequests >= 0){ waiting=10; }
+		await new Promise(resolve => setTimeout(resolve, waiting));
+	}
 }
 iterRefresh()
 
