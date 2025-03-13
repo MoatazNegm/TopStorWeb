@@ -50,7 +50,7 @@ var modaltill = idletill - 120000;
 var volumelisttable;
 var dirtylog = 1;
 var grpsets = {};
-var firstRequests = 7;
+var firstRequests = 3;
 //if (window.location.pathname.endsWith("Qnfs.html")) firstRequests = 2;
 //if (prot == 'NFS') firstRequests = 7;
 
@@ -127,7 +127,7 @@ function groupsrefresh(first = 0) {
 poolsrefresh(1);
 usersnohomerefresh(1);
 firstRequestsInterval = setInterval(() => {
-	if (firstRequests == 0) {
+	if (firstRequests <= 1) {
 		$("#Loading").addClass("show_or_hide_other");
 		setTimeout(() => {
 			console.log("FirstRequests Done");
@@ -839,8 +839,13 @@ function refreshall(first = 0) {
 propchange();
 refreshall(1);
 
-setInterval(refreshall, 10000);
+//setInterval(refreshall, 10000);
 //setInterval(function(){allvolumes='refresh';}, 5000);
+function iterRefresh(){
+	setTimeout(refreshall, 10000);
+}
+iterRefresh()
+
 
 let ShowDompassToggle = document.querySelector("#dompass");
 
