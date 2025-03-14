@@ -47,36 +47,22 @@ function updateauths(event) {
 
 function userschange() {
 	var newallusers;
-	$.ajax({
-		url: "/api/v1/users/userlist",
-	 	data: { 'token': hypetoken },	
-		dataType: "json",
-		timeout: 3000,
-		// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
-		type: "GET",
-		async: false,
-		DataSrc: "usersnohome",
-		success: function (data) {
-			newallusers = data["allusers"];
-			if (firstRequests == 1) firstRequests = 0;
-		},
-	});
-	var diff = 0;
-	if (allusers.length == newallusers.length) {
-		$.each(allusers, function (c, v) {
-			if (
-				allusers[c]["name"] != newallusers[c]["name"] ||
-				allusers[c]["priv"] != newallusers[c]["priv"]
-			) {
-				diff = 1;
-				return false;
-			}
-		});
-	} else {
-		diff = 1;
-	}
+	var diff = 1;
+//	if (allusers.length == newallusers.length) {
+//		$.each(allusers, function (c, v) {
+//			if (
+//				allusers[c]["name"] != newallusers[c]["name"] ||
+//				allusers[c]["priv"] != newallusers[c]["priv"]
+//			) {
+//				diff = 1;
+//				return false;
+//			}
+//		});
+//	} else {
+//		diff = 1;
+//	}
 	if (diff) {
-		allusers = JSON.parse(JSON.stringify(newallusers));
+		//allusers = JSON.parse(JSON.stringify(newallusers));
 
 		$.each(allusers, function (e, v) {
 			allusers[e]["text"] = allusers[e]["name"];
@@ -90,9 +76,9 @@ function userschange() {
 		updateauths("changeevent");
 	}
 }
-userschange();
+//userschange();
 firstRequestsInterval = setInterval(() => {
-	if (firstRequests == 0) {
+	if (firstRequests <= 0) {
 		$("#Loading").addClass("show_or_hide_other");
 		setTimeout(() => {
 			console.log("FirstRequests Done");
@@ -113,7 +99,53 @@ $("#UserList").change(function (e) {
 	updateauths("manual");
 	currentuser = $("#UserList").val();
 });
-setInterval(function () {
+
+
+var  ajaxPromises = [];
+async function refreshall() {
+
+	ajaxPromises = [];
+	ajaxPromises.push(
+        	new Promise((resolve, reject) => {
+
+			$.ajax({
+				url: "/api/v1/users/userlist",
+				data: { 'token': hypetoken },	
+				dataType: "json",
+				timeout: 3000,
+				// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+				type: "GET",
+				async: false,
+				DataSrc: "usersnohome",
+				success: function (data) {
+					if (JSON.stringify(allusers) != JSON.stringify(data["allusers"])) {
+						allusers = data["allusers"]	
+						userschange();
+
+					}
+					if (firstRequests == 1) firstRequests = 0;
+					resolve(); // Resolve the Promise
+                		},
+				error: function (err) {
+			    		reject(err); // Reject the Promise on error
+				},
+			});
+		})
+	)
 	updatetasks();
-	userschange();
-}, 2000);
+    	await Promise.all(ajaxPromises);
+    	console.log('ajaxes',ajaxPromises);
+}
+
+async function iterRefresh(){
+	var waiting;
+	while(true){
+		await refreshall(firstRequests);
+		waiting=5000;
+		if(firstRequests > 0){ waiting=10; }
+		await new Promise(resolve => setTimeout(resolve, waiting));
+	}
+}
+iterRefresh()
+
+

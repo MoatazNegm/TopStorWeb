@@ -423,6 +423,9 @@ async function refreshall() {
 		})
 	)
 	snapsreferesh();
+
+    	await Promise.all(ajaxPromises);
+    	console.log('ajaxes',ajaxPromises);
 }
 $("table").css("width", "100%");
 //setInterval(refreshall, 2000);

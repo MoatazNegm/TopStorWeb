@@ -467,7 +467,7 @@ function initdgs() {
 	});
 }
 firstRequestsInterval = setInterval(() => {
-	if (firstRequests == 0) {
+	if (firstRequests <= 0) {
 		$("#Loading").addClass("show_or_hide_other");
 		setTimeout(() => {
 			console.log("FirstRequests Done");
@@ -574,19 +574,54 @@ function dgrefresh(newdgs) {
 	}
 }
 var dirty = 1
-function refreshall() {
+var  ajaxPromises = [];
+async function refreshall() {
 	updatetasks();
-	if (firstRequests == 0 && dirty == 1){
+	if (dirty == 1){
 		initdgs();
-		getdgs();
 		initaddgs();
 		dirty = 0
 	}
-	getdgs();
+    	ajaxPromises = [];
+    	ajaxPromises.push(
+        	new Promise((resolve, reject) => {
+			$.ajax({
+				url: "api/v1/pools/dgsinfo",
+				//timeout: 3000,
+				async: false,
+				type: "GET",
+				data: {'token': hypetoken },
+				success: function (data) {
+					dgrefresh(data);
+					if (firstRequests == 1) firstRequests = 0;
+					resolve(); // Resolve the Promise
+				},
+				error: function (err) {
+			    		reject(err); // Reject the Promise on error
+				},
+			});
+		})
+	)
+    	await Promise.all(ajaxPromises);
+    	console.log('ajaxes',ajaxPromises);
 }
 
-setInterval(refreshall, 2000);
+//setInterval(refreshall, 2000);
+async function iterRefresh(){
+	var waiting;
+	while(true){
+		console.log('start refresh');
+		await refreshall();
+		console.log('finish refresh');
+		waiting=5000;
+		if(firstRequests > 0){ waiting=10; }
+		await new Promise(resolve => setTimeout(resolve, waiting));
+	}
+}
+iterRefresh()
+
+
 initdgs();
-getdgs();
+//getdgs();
 initaddgs();
 
