@@ -80,8 +80,6 @@ function usersnohomerefresh() {
 }
 
 function groupsrefresh() {
-    // Assuming allgroups is an array of objects like:
-    // allgroups = [{ id: 1, text: "Group 1" }, { id: 2, text: "Group 2" }, ...];
 
     $(".select2.multiple").select2({
         closeOnSelect: true,
@@ -695,7 +693,6 @@ function groupsfn(first = 0) {
 			newallgroups = data;
 			if (JSON.stringify(allgroups) != JSON.stringify(newallgroups)) {
 				allgroups = JSON.parse(JSON.stringify(newallgroups));
-				console.log("allgroups",allgroups);
 				groupsrefresh();
 			}
 			if (first > 0) {
@@ -723,18 +720,10 @@ var  ajaxPromises = [];
 async function refreshall(first = 0) {
     // Run synchronous functions
     ajaxPromises = [];
-    //ajaxPromises.push(
-    //		new Promise((resolve, reject) => {
-			groupsfn(first);
-    //		}
-    //	));
+    groupsfn(first);
     console.log('ajaxy 1',ajaxPromises);
     updatetasks();
     $(".odd").css("background-color", "rgba(41,57,198,.1)");
-
-    // Create an array to hold all AJAX Promises
-
-    // Wrap each $.ajax call in a Promise and add it to the array
     ajaxPromises.push(
         new Promise((resolve, reject) => {
             $.ajax({

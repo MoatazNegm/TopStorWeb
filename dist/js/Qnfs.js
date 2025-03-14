@@ -50,30 +50,19 @@ var modaltill = idletill - 120000;
 var volumelisttable;
 var dirtylog = 1;
 var grpsets = {};
-var firstRequests = 7;
+var firstRequests = 3;
 //if (window.location.pathname.endsWith("Qnfs.html")) firstRequests = 2;
 //if (prot == 'NFS') firstRequests = 7;
 
 function poolsrefresh(first = 0) {
-	$(".select2.pool").select2({
-		placeholder: "Select a pool",
-		ajax: {
-			url: "/api/v1/volumes/poolsinfo",
-			dataType: "json",
-			timeout: 3000,
-			data: { 'token': hypetoken },
-			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
-			type: "GET",
-			async: false,
-			success: function (data) {
-				allpools = data;
-				if (first > 0) {
-					firstRequests = firstRequests - 1;
-				}
-			},
-		},
-	});
+    $(".select2.pool").select2({
+	placeholder: "Select a pool",
+        closeOnSelect: true,
+        data: allpools['results'], // Use the existing allgroups variable as static data
+        allowClear: false, // Optional: Allow clearing the selection
+    });
 }
+
 
 function usersnohomerefresh(first = 0) {
 	// the volume name will get only the username as it is home here
@@ -127,7 +116,7 @@ function groupsrefresh(first = 0) {
 poolsrefresh(1);
 usersnohomerefresh(1);
 firstRequestsInterval = setInterval(() => {
-	if (firstRequests == 0) {
+	if (firstRequests <= 1) {
 		$("#Loading").addClass("show_or_hide_other");
 		setTimeout(() => {
 			console.log("FirstRequests Done");
@@ -691,95 +680,134 @@ $("#volname").focusout(function () {
 	$("#workname").val("cifs-" + $("#volname").val());
 });
 
-function refreshall(first = 0) {
+var ajaxPromises = []
+async function refreshall(first = 0) {
+	ajaxPromises = []
 	groupsfn(first);
 	updatetasks();
 	var newallpools = "new0";
 	$(".changeprop").each(function(e){   updatebtn($(this));  });
-	//$("button[id^='btn']").each(function(e) { 
-	// 	if($(this).is(":visible") && $(this).data('value') == undefined) { 
-	//				$(this).hide();
-	//	} 
-        //});
 	$(".odd").css("background-color", "rgba(41,57,198,.1)");
-	$.ajax({
-		url: "api/v1/volumes/poolsinfo",
-		data: { 'token': hypetoken },
-		type: "GET",
-		//timeout: 3000,
-		async: true,
-		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
 
-		success: function (data) {
-			newallpools = data;
-			if (JSON.stringify(allpools) != JSON.stringify(newallpools)) {
-				allpools = JSON.parse(JSON.stringify(newallpools));
-				poolsrefresh();
-			}
-			if (first > 0) {
-				firstRequests = firstRequests - 1;
-			}
-		},
-	});
+    	ajaxPromises.push(
+		new Promise((resolve, reject) => {
+			$.ajax({
+				url: "api/v1/volumes/poolsinfo",
+				data: { 'token': hypetoken },
+				type: "GET",
+				//timeout: 3000,
+				async: true,
+				//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
+
+				success: function (data) {
+					newallpools = data;
+					if (JSON.stringify(allpools) != JSON.stringify(newallpools)) {
+						allpools = JSON.parse(JSON.stringify(newallpools));
+						poolsrefresh();
+					}
+					if (first > 0) {
+						firstRequests = firstRequests - 1;
+					}
+					resolve(); // Resolve the Promise
+				},
+				error: function (err) {
+				    reject(err); // Reject the Promise on error
+				},
+			});
+		})
+	)
 
 	var newallvolumes = "new0";
-	$.ajax({
-		url: "api/v1/volumes/" + prot + "/volumesinfo",
-		data: { 'token': hypetoken },
-		type: "GET",
-		//timeout: 3000,
-		async: true,
-		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
 
-		success: function (data) {
-			newallvolumes = data;
-			if (JSON.stringify(allvolumes) != JSON.stringify(newallvolumes)) {
-				allvolumes = JSON.parse(JSON.stringify(newallvolumes));
-				volumelistrefresh();
-			}
-			if (first > 0) {
-				firstRequests = firstRequests - 1;
-			}
-		},
-	});
+    	ajaxPromises.push(
+		new Promise((resolve, reject) => {
+			$.ajax({
+				url: "api/v1/volumes/" + prot + "/volumesinfo",
+				data: { 'token': hypetoken },
+				type: "GET",
+				//timeout: 3000,
+				async: true,
+				//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
+
+				success: function (data) {
+					newallvolumes = data;
+					if (JSON.stringify(allvolumes) != JSON.stringify(newallvolumes)) {
+						allvolumes = JSON.parse(JSON.stringify(newallvolumes));
+						volumelistrefresh();
+					}
+					if (first > 0) {
+						firstRequests = firstRequests - 1;
+					}
+					resolve(); // Resolve the Promise
+				},
+				error: function (err) {
+				    reject(err); // Reject the Promise on error
+				},
+			});
+		})
+	)
 
 	var newstats = "new0";
-	$.ajax({
-		url: "api/v1/volumes/stats",
-		type: "GET",
-		data: { 'token': hypetoken },
-		//timeout: 3000,
-		async: true,
-		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
 
-		success: function (data) {
-			newstats = data;
-			if (JSON.stringify(volstats) != JSON.stringify(newstats)) {
-				volstats = JSON.parse(JSON.stringify(newstats));
-				if (chartsflag == 0) {
-					initcharts();
-					chartsflag = 1;
-				} else {
-					try {
-						$.each(chartcards, function (e, t) {
-							charts[t].data.datasets[0]["data"] = volstats[t]["stats"];
-							charts[t].data.labels = volstats[t]["labels"];
-							charts[t].update();
-						});
-					} catch {}
-				}
-			}
-			if (first > 0) {
-				firstRequests = firstRequests - 1;
-			}
-		},
-	});
+    	ajaxPromises.push(
+		new Promise((resolve, reject) => {
+			$.ajax({
+				url: "api/v1/volumes/stats",
+				type: "GET",
+				data: { 'token': hypetoken },
+				//timeout: 3000,
+				async: true,
+				//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
+
+				success: function (data) {
+					newstats = data;
+					if (JSON.stringify(volstats) != JSON.stringify(newstats)) {
+						volstats = JSON.parse(JSON.stringify(newstats));
+						if (chartsflag == 0) {
+							initcharts();
+							chartsflag = 1;
+						} else {
+							try {
+								$.each(chartcards, function (e, t) {
+									charts[t].data.datasets[0]["data"] = volstats[t]["stats"];
+									charts[t].data.labels = volstats[t]["labels"];
+									charts[t].update();
+								});
+							} catch {}
+						}
+					}
+					if (first > 0) {
+						firstRequests = firstRequests - 1;
+					}
+					resolve(); // Resolve the Promise
+				},
+				error: function (err) {
+				    reject(err); // Reject the Promise on error
+				},
+			});
+		})
+	)
+
+	await Promise.all(ajaxPromises);
+    	console.log('ajaxes',ajaxPromises);
 }
-propchange();
-refreshall(1);
 
-setInterval(refreshall, 10000);
+//setInterval(refreshall, 10000);
 //setInterval(function(){allvolumes='refresh';}, 5000);
+
+async function iterRefresh(){
+	propchange();
+	var waiting;
+	while(true){
+		await refreshall(firstRequests);
+		waiting=5000;
+		if(firstRequests >= 0){ waiting=10; }
+		await new Promise(resolve => setTimeout(resolve, waiting));
+	}
+}
+iterRefresh()
+
+
 
 let ShowDompassToggle = document.querySelector("#dompass");
 

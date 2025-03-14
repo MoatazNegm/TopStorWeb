@@ -48,24 +48,15 @@ var changedprop = {};
 var modaltill = idletill - 120000;
 var volumelisttable;
 var dirtylog = 1;
-var firstRequests = 4;
+var firstRequests = 2;
 
 function poolsrefresh() {
-	$(".select2.pool").select2({
-		placeholder: "Select a state",
-		ajax: {
-			url: "/api/v1/volumes/poolsinfo",
-			data: { 'token': hypetoken },
-			dataType: "json",
-			async: true,
-			//timeout: 3000,
-			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
-			type: "GET",
-			success: function (data) {
-				allpools = data;
-			},
-		},
-	});
+    $(".select2.pool").select2({
+	placeholder: "Select a pool",
+	closeOnSelect: true,
+	data: allpools['results'], // Use the existing allgroups variable as static data
+	allowClear: false, // Optional: Allow clearing the selection
+    });
 }
 
 poolsrefresh();
@@ -467,7 +458,7 @@ function refreshpools(first) {
 				allpools = JSON.parse(JSON.stringify(newallpools));
 				poolsrefresh();
 			}
-			if (first == 1) firstRequests = firstRequests - 1;
+			if (first > 0) firstRequests = firstRequests - 1;
 		},
 	});
 }
@@ -489,7 +480,7 @@ function refreshvolumes(first) {
 				console.log(prot, allvolumes);
 				volumelistrefresh();
 			}
-			if (first == 1) firstRequests = firstRequests - 1;
+			if (first >  0) firstRequests = firstRequests - 1;
 		},
 	});
 
@@ -524,15 +515,14 @@ function refreshvolumes(first) {
 	});
 }
 
-function refreshall(first) {
+async function refreshall(first) {
 	$(".odd").css("background-color", "rgba(41,57,198,.1)");
 	updatetasks();
 	refreshvolumes(first);
 	refreshpools(first);
 }
-refreshall(1);
 firstRequestsInterval = setInterval(() => {
-	if (firstRequests == 0) {
+	if (firstRequests <= 1) {
 		$("#Loading").addClass("show_or_hide_other");
 		setTimeout(() => {
 			console.log("FirstRequests Done");
@@ -540,5 +530,17 @@ firstRequestsInterval = setInterval(() => {
 		}, 10);
 	}
 }, 100);
-setInterval(refreshall, 2000);
+//setInterval(refreshall, 2000);
+async function iterRefresh(){
+	var waiting;
+	while(true){
+		await refreshall(firstRequests);
+		waiting=5000;
+		if(firstRequests >= 0){ waiting=10; }
+		await new Promise(resolve => setTimeout(resolve, waiting));
+	}
+}
+iterRefresh()
+
+
 //setInterval(function(){allvolumes='refresh';}, 5000);
