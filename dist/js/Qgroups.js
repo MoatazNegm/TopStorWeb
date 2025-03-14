@@ -18,6 +18,7 @@ var redflag = "";
 var mydate;
 var tempvar;
 var allgroups = "init";
+var allgroups = { allgroups: [{ id: "0", name: "NoGroup", users:['0'] }] };
 var allusers = { results: [{ id: "0", text: "NoUser" }] };
 var allpools = "init";
 var selvalues = {};
@@ -57,30 +58,23 @@ $("#Group").change(function (e) {
 });
 function usersrefresh() {
 	$(".select2.multiple").select2({
-		ajax: {
-			url: "api/v1/groups/userlist",
-			data: { 'token': hypetoken },
-			dataType: "json",
-			type: "GET",
-			async: false,
-		},
+		placeholder: "Select a user",
+		data: allusers['results'], // Use the existing newallgroups variable as static data
+		allowClear: false, // Optional: Allow clearing the selection
 	});
 }
 function poolsrefresh() {
 	$(".select2.pool").select2({
-		ajax: {
-			url: "api/v1/pools/poolsinfo",
-			data: { 'token': hypetoken },
-			dataType: "json",
-			type: "GET",
-			async: false,
-		},
+				    placeholder: "Select a pool",
+				    data: allpools['results'], // Use the existing newallgroups variable as static data
+				    allowClear: false, // Optional: Allow clearing the selection
 	});
 }
 groupnotready = 0;
 function grouplistrefresh() {
 	grouplisttable.ajax.reload(function () {
 		var option;
+		usersrefresh();
 
 		$(".groupusers").each(function () {
 			var thisgroup = $(this);
@@ -117,7 +111,6 @@ function grouplistrefresh() {
 				});
 			}
 		});
-		usersrefresh();
 		$(".select2.groupusers").on("change", function (e) {
 			usrsval = $(this).data("usrs").toString();
 			if (usrsval == "NoUser") {
@@ -138,6 +131,7 @@ function grouplistrefresh() {
 function initgrouplist() {
 	grouplisttable = $("#groupList").DataTable({
 		//"responsive": true, "lengthChange": true, "autoWidth": true, "info":true,
+		//data: allgroups['allgroups'],
 		order: [[1, "desc"]],
 		//"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
 		ajax: {
@@ -235,7 +229,7 @@ function initgrouplist() {
 }
 initgrouplist();
 firstRequestsInterval = setInterval(() => {
-	if (firstRequests == 0) {
+	if (firstRequests <= 0) {
 		$("#Loading").addClass("show_or_hide_other");
 		setTimeout(() => {
 			console.log("FirstRequests Done");
@@ -278,7 +272,75 @@ function agroupdel() {
 	postdata(apiurl, apidata);
 }
 
-function refreshall() {
+var  ajaxPromises = [];
+async function refreshall() {
+    	ajaxPromises = [];
+    	ajaxPromises.push(
+        	new Promise((resolve, reject) => {
+			$.ajax({
+				url: "api/v1/groups/userlist",
+				data: { 'token': hypetoken },
+				type: "GET",
+				async: false,
+				//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
+
+				success: function (data) {
+					console.log('get allusers',allusers)
+					if (JSON.stringify(allusers) != JSON.stringify(data)) {
+						allusers = data;
+						usersrefresh();
+					}
+					resolve(); // Resolve the Promise
+                		},
+				error: function (err) {
+				    reject(err); // Reject the Promise on error
+				},
+			});
+		})
+	)
+    	ajaxPromises.push(
+        	new Promise((resolve, reject) => {
+			$.ajax({
+				url: "api/v1/pools/poolsinfo",
+				data: { 'token': hypetoken },
+				type: "GET",
+				async: false,
+				success: function (data) {
+					if (JSON.stringify(allpools) != JSON.stringify(data)) {
+						allpools = data;
+						poolsrefresh();
+					}
+        				resolve(); // Resolve the Promise
+                		},
+				error: function (err) {
+				    reject(err); // Reject the Promise on error
+				},
+			});
+		})
+	)
+
+
+    	ajaxPromises.push(
+        	new Promise((resolve, reject) => {
+			$.ajax({
+				url: "api/v1/groups/grouplist",
+				data: { 'token': hypetoken },
+				async: false,
+				type: "GET",
+				dataSrc: "allgroups",
+				success: function (data) {
+					if (JSON.stringify(allgroups) != JSON.stringify(data)) {
+						allgroups = data; 
+						grouplistrefresh();
+					}
+	        			resolve(); // Resolve the Promise
+                		},
+				error: function (err) {
+				    reject(err); // Reject the Promise on error
+				},
+			});
+		})
+	)
 	if($("#btnselEveryone").is(":visible")){
 		btnvisible += 1;
 	} else {
@@ -292,57 +354,26 @@ function refreshall() {
 		grouplistrefresh();
 	}
 
-	var newallusers = "new0";
 	$(".odd").css("background-color", "rgba(41,57,198,.1)");
 	updatetasks();
-	$.ajax({
-		url: "api/v1/groups/userlist",
-		data: { 'token': hypetoken },
-		type: "GET",
-		async: true,
-		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
 
-		success: function (data) {
-			newallusers = data;
-			if (JSON.stringify(allusers) != JSON.stringify(newallusers)) {
-				allusers = newallusers;
-				usersrefresh();
-			}
-		},
-	});
 
-	var newallpools = "new0";
-	$.ajax({
-		url: "api/v1/pools/poolsinfo",
-		data: { 'token': hypetoken },
-		type: "GET",
-		async: true,
-		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
-
-		success: function (data) {
-			newallpools = data;
-			if (JSON.stringify(allpools) != JSON.stringify(newallpools)) {
-				allpools = newallpools;
-				poolsrefresh();
-			}
-		},
-	});
-
-	var newallgroups = "new0";
-	$.ajax({
-		url: "api/v1/groups/grouplist",
-		data: { 'token': hypetoken },
-		async: true,
-		type: "GET",
-		dataSrc: "allgroups",
-		success: function (data) {
-			newallgroups = data;
-			if (JSON.stringify(allgroups) != JSON.stringify(newallgroups)) {
-				allgroups = newallgroups;
-				grouplistrefresh();
-			}
-		},
-	});
+   	await Promise.all(ajaxPromises);
+    	console.log('ajaxes',ajaxPromises);
 }
-setInterval(refreshall, 2000);
+//setInterval(refreshall, 2000);
+async function iterRefresh(){
+	var waiting;
+	while(true){
+		console.log('start refresh');
+		await refreshall(firstRequests);
+		console.log('finish refresh');
+		waiting=5000;
+		if(firstRequests > 0){ waiting=10; }
+		await new Promise(resolve => setTimeout(resolve, waiting));
+	}
+}
+iterRefresh()
+
+
 grouplistrefresh()
