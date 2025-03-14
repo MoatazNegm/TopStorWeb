@@ -116,7 +116,7 @@ function groupsrefresh(first = 0) {
 poolsrefresh(1);
 usersnohomerefresh(1);
 firstRequestsInterval = setInterval(() => {
-	if (firstRequests <= 1) {
+	if (firstRequests <= 0) {
 		$("#Loading").addClass("show_or_hide_other");
 		setTimeout(() => {
 			console.log("FirstRequests Done");

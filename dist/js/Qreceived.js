@@ -9,20 +9,6 @@ var cpool = "init";
 var firstRequests = 3;
 var filteredsnaps = {};
 function poolsrefresh() {
-	$.ajax({
-		url: "/api/v1/volumes/poolsinfo",
-		dataType: "json",
-		data: { 'token': hypetoken },
-		// timeout: 3000,
-		// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
-		type: "GET",
-		async: false,
-		success: function (data) {
-			allpools = data;
-			allpools["results"].unshift({ id: -1, owner: "Any", text: "Any" });
-			firstRequests = firstRequests - 1;
-		},
-	});
 	var newallpartners = [];
 	$.each(allpools["results"], function (e, t) {
 		newallpartners.push(t);
@@ -32,25 +18,7 @@ function poolsrefresh() {
 		placeholder: "Select a pool",
 		data: newallpartners,
 	});
-
-	// $(".select2.pool").select2({
-	// 	placeholder: "Select a pool",
-	// 	ajax: {
-	// 		url: "/api/v1/volumes/poolsinfo",
-	// 		dataType: "json",
-	// 		// timeout: 3000,
-	// 		// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
-	// 		type: "GET",
-	// 		async: false,
-	// 		success: function (data) {
-	// 			allpools = data;
-	// 			allpools["results"].unshift({ id: -1, owner: "Any", text: "Any" });
-	// 			firstRequests = firstRequests - 1;
-	// 		},
-	// 	},
-	// });
 }
-poolsrefresh();
 
 function volumesrefresh() {
 	var newallvolumes = "";
@@ -426,15 +394,54 @@ function initalltables() {
 }
 initalltables();
 
-function refreshall() {
+var  ajaxPromises = [];
+async function refreshall() {
 	updatetasks();
 	$(".odd").css("background-color", "rgba(41,57,198,.1)");
+    	ajaxPromises = [];
+    	ajaxPromises.push(
+        	new Promise((resolve, reject) => {
+			$.ajax({
+				url: "/api/v1/volumes/poolsinfo",
+				dataType: "json",
+				data: { 'token': hypetoken },
+				type: "GET",
+				async: false,
+				success: function (data) {
+					if (JSON.stringify(allpools) != JSON.stringify(data)) {
+						allpools = data;
+						allpools["results"].unshift({ id: -1, owner: "Any", text: "Any" });
+						poolsrefresh();
+					}
+					if(firstRequests > 0 ){	firstRequests = firstRequests - 1; }
+				        resolve(); // Resolve the Promise
+                		},
+				error: function (err) {
+				    reject(err); // Reject the Promise on error
+				},
+			});
+		})
+	)
 	snapsreferesh();
 }
 $("table").css("width", "100%");
-setInterval(refreshall, 2000);
+//setInterval(refreshall, 2000);
+
+async function iterRefresh(){
+	var waiting;
+	while(true){
+		await refreshall(firstRequests);
+		waiting=5000;
+		if(firstRequests > 0){ waiting=10; }
+		await new Promise(resolve => setTimeout(resolve, waiting));
+	}
+}
+iterRefresh()
+
+
+
 firstRequestsInterval = setInterval(() => {
-	if (firstRequests == 0) {
+	if (firstRequests <= 0) {
 		$("#Loading").addClass("show_or_hide_other");
 		setTimeout(() => {
 			console.log("FirstRequests Done");

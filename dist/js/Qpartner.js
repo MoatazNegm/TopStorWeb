@@ -183,4 +183,4 @@ function refreshall() {
 		},
 	});
 }
-setInterval(refreshall, 2000);
+setInterval(refreshall, 5000);

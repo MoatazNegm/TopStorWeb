@@ -76,7 +76,6 @@ function poolsrefresh() {
 		},
 	});
 }
-poolsrefresh();
 
 function volumesrefresh() {
 	var newallvolumes = "";
@@ -594,7 +593,7 @@ function initalltables() {
 initalltables();
 
 function snapsreferesh() {
-	getsnaps();
+	//getsnaps();
 	if (JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
 		allsnaps = JSON.parse(JSON.stringify(newsnaps));
 		onceinittable.clear();
@@ -639,15 +638,79 @@ function snapsreferesh() {
 		} catch {}
 	}
 }
-function refreshall() {
+
+var  ajaxPromises = [];
+async function refreshall() {
+    	ajaxPromises = [];
 	updatetasks();
 	$(".odd").css("background-color", "rgba(41,57,198,.1)");
-	snapsreferesh();
+	ajaxPromises.push(
+        	new Promise((resolve, reject) => {
+			$.ajax({
+				url: "/api/v1/volumes/poolsinfo",
+				dataType: "json",
+				data: { 'token': hypetoken },
+				timeout: 3000,
+				// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+				type: "GET",
+				async: false,
+				success: function (data) {
+					if (JSON.stringify(allpools) != JSON.stringify(data)) {
+						allpools = data;
+						poolsrefresh();
+					}
+					resolve(); // Resolve the Promise
+				},
+				error: function (err) {
+						reject(err); // Reject the Promise on error
+				
+				},
+			});
+		})
+	)
+	ajaxPromises.push(
+        	new Promise((resolve, reject) => {
+			$.ajax({
+				url: "api/v1/volumes/snapshots/snapshotsinfo",
+				//timeout: 3000,
+				data: { 'token': hypetoken },
+				async: true,
+				type: "GET",
+				success: function (data) {
+					newsnaps = data;
+					snapsreferesh();
+					if (firstRequests >= 1) firstRequests = firstRequests - 1;
+					resolve(); // Resolve the Promise
+				},
+				error: function (err) {
+					reject(err); // Reject the Promise on error
+				},
+
+			});
+		})
+	)
+
+    	await Promise.all(ajaxPromises);
+    	console.log('ajaxes',ajaxPromises);
 }
 $("table").css("width", "100%");
-setInterval(refreshall, 2000);
+//setInterval(refreshall, 2000);
+
+async function iterRefresh(){
+	var waiting;
+	while(true){
+		await refreshall(firstRequests);
+		waiting=5000;
+		if(firstRequests > 0){ waiting=10; }
+		await new Promise(resolve => setTimeout(resolve, waiting));
+	}
+}
+iterRefresh()
+
+
+
 firstRequestsInterval = setInterval(() => {
-	if (firstRequests == 0) {
+	if (firstRequests <= 0) {
 		$("#Loading").addClass("show_or_hide_other");
 		setTimeout(() => {
 			console.log("FirstRequests Done");

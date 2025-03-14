@@ -522,7 +522,7 @@ async function refreshall(first) {
 	refreshpools(first);
 }
 firstRequestsInterval = setInterval(() => {
-	if (firstRequests <= 1) {
+	if (firstRequests <= 0) {
 		$("#Loading").addClass("show_or_hide_other");
 		setTimeout(() => {
 			console.log("FirstRequests Done");

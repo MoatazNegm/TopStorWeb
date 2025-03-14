@@ -587,6 +587,7 @@ async function refreshall() {
 				type: "GET",
 				success: function (data) {
 					newsnaps = data;
+					snapsreferesh();
 					if (firstRequests >= 1) firstRequests = firstRequests - 1;
 					resolve(); // Resolve the Promise
 				},
@@ -596,7 +597,6 @@ async function refreshall() {
 			});
 		})
 	)
-	snapsreferesh();
     	await Promise.all(ajaxPromises);
     	console.log('ajaxes',ajaxPromises);
 }
@@ -617,7 +617,7 @@ iterRefresh()
 
 
 firstRequestsInterval = setInterval(() => {
-	if (firstRequests == 0) {
+	if (firstRequests <= 0) {
 		$("#Loading").addClass("show_or_hide_other");
 		setTimeout(() => {
 			console.log("FirstRequests Done");

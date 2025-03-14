@@ -50,7 +50,7 @@ var modaltill = idletill - 120000;
 var volumelisttable;
 var dirtylog = 1;
 var grpsets = {};
-var firstRequests = 4;
+var firstRequests = 3;
 //if (window.location.pathname.endsWith("Qnfs.html")) firstRequests = 2;
 //if (prot == 'NFS') firstRequests = 7;
 
@@ -90,7 +90,7 @@ function groupsrefresh() {
 
 usersnohomerefresh();
 firstRequestsInterval = setInterval(() => {
-	if (firstRequests <= 1) {
+	if (firstRequests <= 0) {
 		$("#Loading").addClass("show_or_hide_other");
 		setTimeout(() => {
 			console.log("FirstRequests Done");
