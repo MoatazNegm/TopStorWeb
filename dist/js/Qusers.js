@@ -478,7 +478,6 @@ function tenantsrefresh(){
 
 			allgroups = { results: [{ id: "0", text: "NoGroup" }] };
 			allusers = "ldkjfd"
-			refreshall();
 			//allusers = []
 			//userlistrefresh();
 		});
@@ -488,18 +487,11 @@ function tenantsrefresh(){
 }
 $("span.select2").addClass('col-sm-3')
 function poolsrefresh() {
-	$(".select2.pool")
-		.select2({
-			ajax: {
-				url: "api/v1/pools/poolsinfo",
-				data: { 'token': hypetoken },
-				dataType: "json",
-				// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
-				type: "GET",
-				async: false,
-			},
-		})
-		.on("change", function () {
+	$(".select2.pool").select2({
+				    placeholder: "Select a pool",
+				    data: allpools['results'], // Use the existing newallgroups variable as static data
+				    allowClear: false, // Optional: Allow clearing the selection
+		}).on("change", function () {
 			var selectedValue = $('#UserVol option[value="' + this.value + '"]')[0].innerHTML;
 			if ((selectedValue != "-----") & (selectedValue != "-------")) {
 				$("#volsize").prop("disabled", false);
@@ -803,74 +795,108 @@ function auserdel() {
 	postdata(apiurl, apidata);
 }
 
-function refreshall() {
+
+var  ajaxPromises = [];
+async function refreshall() {
 	//var newallgroups = "new0";
 	$(".odd").css("background-color", "rgba(41,57,198,.1)");
 	updatetasks();
-	$.ajax({
-		url: "api/v1/users/grouplist",
-		type: "GET",
-		//data: { 'token': hypetoken },
-		data: { 'token': hypetoken, 'tenant':$("#Tenant :selected").text() },
-		async: false,
-		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
-
-		success: function (data) {
-			newallgroups = data;
-			if (JSON.stringify(allgroups) != JSON.stringify(newallgroups)) {
-				allgroups = newallgroups;
-				console.log("allgroupchange", allgroups, newallgroups);
-				groupsrefresh();
-			}
-			if (firstRequests > 0) firstRequests = firstRequests - 1;
-		},
-	});
+    	ajaxPromises = [];
+    	ajaxPromises.push(
+        	new Promise((resolve, reject) => {
+			$.ajax({
+				url: "api/v1/users/grouplist",
+				type: "GET",
+				//data: { 'token': hypetoken },
+				data: { 'token': hypetoken, 'tenant':$("#Tenant :selected").text() },
+				async: false,
+				//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
+				success: function (data) {
+					newallgroups = data;
+					if (JSON.stringify(allgroups) != JSON.stringify(newallgroups)) {
+						allgroups = newallgroups;
+						console.log("allgroupchange", allgroups, newallgroups);
+						groupsrefresh();
+					}
+					if (firstRequests > 0) firstRequests = firstRequests - 1;
+                			resolve(); // Resolve the Promise
+                		},
+				error: function (err) {
+				    reject(err); // Reject the Promise on error
+				},
+			});
+		})
+	)
 	//var newallpools = "new0";
-	$.ajax({
-		url: "api/v1/pools/poolsinfo",
-		data: { 'token': hypetoken },
-		type: "GET",
-		async: false,
-		//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
+	ajaxPromises.push(
+        	new Promise((resolve, reject) => {
+			$.ajax({
+				url: "api/v1/pools/poolsinfo",
+				data: { 'token': hypetoken },
+				type: "GET",
+				async: false,
+				//beforeSend: function(xhr){xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://10.11.11.241:8080');},
 
-		success: function (data) {
-			newallpools = data;
-			if (JSON.stringify(allpools) != JSON.stringify(newallpools)) {
-				allpools = newallpools;
-				poolsrefresh();
-				tenantsrefresh();
-			}
-			if (firstRequests > 0) firstRequests = firstRequests - 1;
-		},
-	});
+				success: function (data) {
+					newallpools = data;
+					if (JSON.stringify(allpools) != JSON.stringify(newallpools)) {
+						allpools = newallpools;
+						poolsrefresh();
+						tenantsrefresh();
+					}
+					if (firstRequests > 0) firstRequests = firstRequests - 1;
+					resolve(); // Resolve the Promise
+                		},
+				error: function (err) {
+				    reject(err); // Reject the Promise on error
+				},
+			});
+		})
+	)
 	//var newallusers = "new0";
-	$.ajax({
-		url: "api/v1/users/userlist",
-		data: { 'token': hypetoken, 'tenant':$("#Tenant :selected").text() },
-		async: true,
-		type: "GET",
-		dataSrc: "allusers",
-		success: function (data) {
-			newallusers = data;
-			if (JSON.stringify(allusers) != JSON.stringify(newallusers)) {
-				allusers = newallusers;
-				userlistrefresh();
-			}
-			if (firstRequests > 0) {
-				firstRequests = firstRequests - 1;
-			}
-		},
-	});
+	ajaxPromises.push(
+        	new Promise((resolve, reject) => {
+			$.ajax({
+				url: "api/v1/users/userlist",
+				data: { 'token': hypetoken, 'tenant':$("#Tenant :selected").text() },
+				async: true,
+				type: "GET",
+				dataSrc: "allusers",
+				success: function (data) {
+					newallusers = data;
+					if (JSON.stringify(allusers) != JSON.stringify(newallusers)) {
+						allusers = newallusers;
+						userlistrefresh();
+					}
+					if (firstRequests > 0) {
+						firstRequests = firstRequests - 1;
+					}
+					resolve(); // Resolve the Promise
+                		},
+				error: function (err) {
+				    reject(err); // Reject the Promise on error
+				},
+			});
+		})
+	)
+   	await Promise.all(ajaxPromises);
+    	console.log('ajaxes',ajaxPromises);
 }
 //setInterval(refreshall, 30000);
 
-function iterRefresh(){
-	setTimeout(refreshall, 10000);
+async function iterRefresh(){
+	var waiting;
+	while(true){
+		await refreshall(firstRequests);
+		waiting=5000;
+		if(firstRequests > 0){ waiting=10; }
+		await new Promise(resolve => setTimeout(resolve, waiting));
+	}
 }
 iterRefresh()
 
 firstRequestsInterval = setInterval(() => {
-	if (firstRequests == 0) {
+	if (firstRequests <= 0) {
 		$("#Loading").addClass("show_or_hide_other");
 		setTimeout(() => {
 			console.log("FirstRequests Done");
