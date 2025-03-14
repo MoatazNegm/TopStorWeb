@@ -63,22 +63,11 @@ $("#timepicker").datetimepicker({
 });
 function poolsrefresh() {
 	$(".select2.pool").select2({
-		placeholder: "Select a pool",
-		ajax: {
-			url: "/api/v1/volumes/poolsinfo",
-			data: { 'token': hypetoken },
-			dataType: "json",
-			timeout: 3000,
-			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
-			type: "GET",
-			async: false,
-			success: function (data) {
-				allpools = data;
-			},
-		},
+				    placeholder: "Select a pool",
+				    data: allpools['results'], // Use the existing newallgroups variable as static data
+				    allowClear: false, // Optional: Allow clearing the selection
 	});
 }
-poolsrefresh();
 
 function volumesrefresh() {
 	var newallvolumes = "";
@@ -90,10 +79,9 @@ function volumesrefresh() {
 			url: "/api/v1/volumes/volumelist",
 			data: { 'token': hypetoken },
 			dataType: "json",
-			timeout: 3000,
 			// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
 			type: "GET",
-			async: false,
+			async: false, 
 			success: function (data) {
 				newallvolumes = data;
 			},
@@ -127,7 +115,7 @@ function getsnaps() {
 		type: "GET",
 		success: function (data) {
 			newsnaps = data;
-			if (firstRequests == 1) firstRequests = 0;
+			if (firstRequests >= 1) firstRequests = firstRequests - 1;
 		},
 	});
 }
@@ -525,7 +513,7 @@ function initalltables() {
 initalltables();
 
 function snapsreferesh() {
-	getsnaps();
+	//getsnaps();
 	if (JSON.stringify(allsnaps) != JSON.stringify(newsnaps)) {
 		allsnaps = JSON.parse(JSON.stringify(newsnaps));
 		alls = [];
@@ -560,13 +548,73 @@ function snapsreferesh() {
 		} catch {}
 	}
 }
-function refreshall() {
+
+var  ajaxPromises = [];
+async function refreshall() {
 	updatetasks();
+    	ajaxPromises = [];
 	$(".odd").css("background-color", "rgba(41,57,198,.1)");
+
+    	ajaxPromises.push(
+        	new Promise((resolve, reject) => {
+			$.ajax({
+				url: "/api/v1/volumes/poolsinfo",
+				data: { 'token': hypetoken },
+				dataType: "json",
+				// Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+				type: "GET",
+				async: true,
+				success: function (data) {
+					allpools = data;
+					poolsrefresh();
+					resolve(); // Resolve the Promise
+				},
+				error: function (err) {
+				    reject(err); // Reject the Promise on error
+				},
+
+			});
+		})
+	)
+
+    	ajaxPromises.push(
+        	new Promise((resolve, reject) => {
+			$.ajax({
+				url: "api/v1/volumes/snapshots/snapshotsinfo",
+				data: { 'token': hypetoken },
+				//timeout: 3000,
+				async: true,
+				type: "GET",
+				success: function (data) {
+					newsnaps = data;
+					if (firstRequests >= 1) firstRequests = firstRequests - 1;
+					resolve(); // Resolve the Promise
+				},
+				error: function (err) {
+				    reject(err); // Reject the Promise on error
+				},
+			});
+		})
+	)
 	snapsreferesh();
+    	await Promise.all(ajaxPromises);
+    	console.log('ajaxes',ajaxPromises);
 }
 $("table").css("width", "100%");
-setInterval(refreshall, 2000);
+//setInterval(refreshall, 2000);
+
+async function iterRefresh(){
+	var waiting;
+	while(true){
+		await refreshall(firstRequests);
+		waiting=5000;
+		if(firstRequests > 0){ waiting=10; }
+		await new Promise(resolve => setTimeout(resolve, waiting));
+	}
+}
+iterRefresh()
+
+
 
 firstRequestsInterval = setInterval(() => {
 	if (firstRequests == 0) {

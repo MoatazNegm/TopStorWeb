@@ -801,7 +801,7 @@ async function iterRefresh(){
 	while(true){
 		await refreshall(firstRequests);
 		waiting=5000;
-		if(firstRequests >= 0){ waiting=10; }
+		if(firstRequests > 0){ waiting=10; }
 		await new Promise(resolve => setTimeout(resolve, waiting));
 	}
 }
