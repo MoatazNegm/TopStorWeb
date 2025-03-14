@@ -766,6 +766,7 @@ $("#UnixAddUser").click(function (e) {
 			token: hypetoken,
 			groups: $("#Usergroups").val().toString(),
 		}
+		console.log('it is tenant');
 	} else {
 		var apiurl = "api/v1/users/UnixAddUser";
 		var ipaddr = $("#HomeAddress").val();
@@ -784,6 +785,8 @@ $("#UnixAddUser").click(function (e) {
 			Myname: "mezo",
 		};
 	}
+
+	console.log('it is cluster',apidata);
 	postdata(apiurl, apidata);
 
 	e.preventDefault();
@@ -859,7 +862,7 @@ async function refreshall() {
 			$.ajax({
 				url: "api/v1/users/userlist",
 				data: { 'token': hypetoken, 'tenant':$("#Tenant :selected").text() },
-				async: true,
+				async: false,
 				type: "GET",
 				dataSrc: "allusers",
 				success: function (data) {
@@ -887,7 +890,9 @@ async function refreshall() {
 async function iterRefresh(){
 	var waiting;
 	while(true){
+		console.log('start refresh');
 		await refreshall(firstRequests);
+		console.log('finish refresh');
 		waiting=5000;
 		if(firstRequests > 0){ waiting=10; }
 		await new Promise(resolve => setTimeout(resolve, waiting));
