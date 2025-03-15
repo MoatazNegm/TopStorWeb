@@ -245,65 +245,79 @@ var bg = {
 	error: { class: "bg-danger", loc: "topRight", delay: 10000 },
 	info: { class: "bg-info", loc: "bottomRight", delay: 4000 },
 };
-function refreshmain() {
+
+
+var  ajaxPromisesmain = [];
+async function refreshmain() {
 	var notif;
 	onedaylogfn();
 	$(".modal-backdrop").css("z-index", "0");
-	$.ajax({
-		url: "api/v1/info/notification",
-		async: true,
-		type: "GET",
-		data: { token: hypetoken },
-		success: function (data) {
-			notif = data;
-			if(data['isinsync'] == 'yes'){
-				// Update the content to "Cluster" and "In Sync"
-				$('#syncStatus').html('Cluster <br> <span> in Sync </span>')
-				.removeClass('not-in-sync')
-				.addClass('in-sync');
-			} else {
-				// Update the content to "Nodes" and "Not In Sync" with a blinking effect
-				$('#syncStatus').html('Nodes <br> <span>Not in Sync </span>')
-				.removeClass('in-sync')
-				.addClass('not-in-sync');
-			}
-			requests = data["requests"];
-			if (notif["response"].includes("baduser") > 0) {
-				location.replace("login.html");
-			}
-			// for fixing the time zone presentation
-			if (
-				notif["msgcode"].includes("_") &&
-				notif["msgcode"].includes("%") &&
-				notif["msgcode"].includes("!")
-			) {
-				notif["msgcode"] = notif["msgocde"].split("%")[2];
-			}
-			if (globalnotif["time"] != notif["time"] || globalnotif["msgcode"] != notif["msgcode"]) {
-				globalnotif = notif;
-				dirtylog = 1;
-				//console.log('notif',notif['type'], bg[notif['type']]['class'],bg[notif['type']]['loc'], bg[notif['type']]['delay'] );
-				notifbody = notif["msgbody"];
-				$(document).Toasts("create", {
-					title: notif["host"],
-					subtitle: notif["user"],
-					close: false,
-					class: bg[notif["type"]]["class"] + " infoalert",
-					autohide: true,
-					position: bg[notif["type"]]["loc"],
-					delay: bg[notif["type"]]["delay"],
-					body: notifbody,
-				});
-			} else {
-				dirtylog = 0;
-			}
-		},
-	});
+    	ajaxPromisesmain = [];
+    	ajaxPromisesmain.push(
+        	new Promise((resolve, reject) => {
+			$.ajax({
+				url: "api/v1/info/notification",
+				async: true,
+				type: "GET",
+				data: { token: hypetoken },
+				success: function (data) {
+					notif = data;
+					if(data['isinsync'] == 'yes'){
+						// Update the content to "Cluster" and "In Sync"
+						$('#syncStatus').html('Cluster <br> <span> in Sync </span>')
+						.removeClass('not-in-sync')
+						.addClass('in-sync');
+					} else {
+						// Update the content to "Nodes" and "Not In Sync" with a blinking effect
+						$('#syncStatus').html('Nodes <br> <span>Not in Sync </span>')
+						.removeClass('in-sync')
+						.addClass('not-in-sync');
+					}
+					requests = data["requests"];
+					if (notif["response"].includes("baduser") > 0) {
+						location.replace("login.html");
+					}
+					// for fixing the time zone presentation
+					if (
+						notif["msgcode"].includes("_") &&
+						notif["msgcode"].includes("%") &&
+						notif["msgcode"].includes("!")
+					) {
+						notif["msgcode"] = notif["msgocde"].split("%")[2];
+					}
+					if (globalnotif["time"] != notif["time"] || globalnotif["msgcode"] != notif["msgcode"]) {
+						globalnotif = notif;
+						dirtylog = 1;
+						//console.log('notif',notif['type'], bg[notif['type']]['class'],bg[notif['type']]['loc'], bg[notif['type']]['delay'] );
+						notifbody = notif["msgbody"];
+						$(document).Toasts("create", {
+							title: notif["host"],
+							subtitle: notif["user"],
+							close: false,
+							class: bg[notif["type"]]["class"] + " infoalert",
+							autohide: true,
+							position: bg[notif["type"]]["loc"],
+							delay: bg[notif["type"]]["delay"],
+							body: notifbody,
+						});
+					} else {
+						dirtylog = 0;
+					}
+					resolve(); // Resolve the Promise
+                		},
+                		error: function (err) {
+                    			reject(err); // Reject the Promise on error
+                		},
+			});
+		})
+	)
 	gettheversion();
+    	await Promise.all(ajaxPromisesmain);
+	console.log('main promise',ajaxPromisesmain)
 }
 
 async function iterRefresh(){
-	var waiting=5000;
+	var waiting=7000;
 	while(true){
 		await refreshmain();
 		await new Promise(resolve => setTimeout(resolve, waiting));

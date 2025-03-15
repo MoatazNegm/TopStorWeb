@@ -10,20 +10,6 @@ $.each(hoststata, function (e, t) {
 var hostsinfo = "init";
 var firstRequests = 1;
 $("#BoxName").inputmask("Regex", { regex: "(.*[a-z]){3}", clearIncomplete: true });
-function refreshhosts() {
-	var hypetoken = localStorage.getItem("token");
-	var apidata = {"token": hypetoken};
-	$.ajax({
-		url: "api/v1/hosts/allinfo",
-                data: apidata,error: function(req, err){ console.log('my message' + err); },
-		async: true,
-		type: "GET",
-		success: function (data) {
-			newhostref(data);
-			if (firstRequests == 1) firstRequests = firstRequests - 1;
-		},
-	});
-}
 function newhostref(newhosts) {
 	if (JSON.stringify(hostsinfo) != JSON.stringify(newhosts["all"])) {
 		hostsinfo = JSON.parse(JSON.stringify(newhosts["all"]));
@@ -83,9 +69,8 @@ function newhostref(newhosts) {
 	var newhosts = "init";
 }
 
-refreshhosts();
 firstRequestsInterval = setInterval(() => {
-	if (firstRequests == 0) {
+	if (firstRequests <= 0) {
 		$("#Loading").addClass("show_or_hide_other");
 		setTimeout(() => {
 			console.log("FirstRequests Done");
@@ -225,6 +210,7 @@ $("#getConfig").click(function (ev) {
 	var apiurl = "api/v1/hosts/getConfig";
 	var hypetoken = localStorage.getItem("token");
 	var apidata = {"token": hypetoken, "nodeName": hostname};
+	console.log('getconfig',apidata);
 	$.ajax({
                 url: apiurl,
                 data: apidata,error: function(req, err){ console.log('my message' + err); },
@@ -248,9 +234,12 @@ $("#getAllConfig").click(function (e) {
         var apiurl = "api/v1/hosts/getAllConfig";
         var hypetoken = localStorage.getItem("token");
 	var apidata = {"token": hypetoken};
+	console.log('getting all configs')
 	$.ajax({
                 url: apiurl,
 		data: apidata,
+		timeout: 240000,
+		async: true,
                 xhrFields:{
                         responseType: 'blob'
                 },
@@ -273,10 +262,10 @@ $("#getAllConfig").click(function (e) {
 	ajaxTimeout = setTimeout(function() {
     		if (!responseReceived) {
         	// Handle the case when the response doesn't arrive within 100 seconds
-        		console.log("Request timed out after 100 seconds.");
+        		console.log("Request timed out after 500 seconds.");
         	// You can take additional actions, such as showing an error message or retrying the request.
     		}
-	}, 100000); // 100,000 milliseconds (100 seconds)
+	}, 500000); // 500,000 milliseconds (500 seconds)
 });
 
 $("#readysubmit").click(function (ev) {
@@ -398,7 +387,28 @@ $("#readysubmit").click(function (ev) {
 	}
 });
 
-setInterval(function () {
+var  ajaxPromises = [];
+async function refreshall() {
+    	ajaxPromises = [];
+    	ajaxPromises.push(
+        	new Promise((resolve, reject) => {
+			$.ajax({
+				url: "api/v1/hosts/allinfo",
+				data:  {"token": hypetoken},
+				async: true,
+				type: "GET",
+				success: function (data) {
+					newhostref(data);
+					if (firstRequests > 0) firstRequests = firstRequests - 1;
+					resolve(); // Resolve the Promise
+                		},
+				error: function (err) {
+				    reject(err); // Reject the Promise on error
+				},
+			});
+		})
+	)
+
 	updatetasks();
 	$("#runninghosts > form > div:nth-child(5) > span > span.selection > span").css(
 		"margin-top",
@@ -409,9 +419,22 @@ setInterval(function () {
 	$(
 		"#runninghosts > form > div:nth-child(5) > span > span.selection > span > span.select2-selection__arrow"
 	).css("margin-top", "0.2rem");
+   	await Promise.all(ajaxPromises);
+    	console.log('ajaxes',ajaxPromises);
+}
 
-	refreshhosts();
-}, 5000);
+async function iterRefresh(){
+	var waiting;
+	while(true){
+		console.log('start refresh');
+		await refreshall();
+		console.log('finish refresh');
+		waiting=5000;
+		if(firstRequests > 0){ waiting=10; }
+		await new Promise(resolve => setTimeout(resolve, waiting));
+	}
+}
+iterRefresh()
 
 var example1_filter = $("#example1_filter");
 $("#example1")
