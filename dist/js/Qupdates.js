@@ -51,7 +51,55 @@ function getversions(){
   postdata(apiurl,apidata)
      
  })
+
+ $("#DownloadHTTPs").click(function(e){
+  e.preventDefault();
+  var apiurl = "/api/v1/software/update";
+  var apidata = {
+    "source-type": "https", 
+    "source":  $("#sourceHttps").val()
+  }
+
+  postdata(apiurl, apidata);
+});
  
+$("#DownloadNFS").click(function(e){
+  e.preventDefault();
+  var apiurl = "/api/v1/software/update";
+  var apidata = {
+    "source-type": "nfs", 
+    "source":  $("#sourceNFS").val(), 
+    "version": $("#versionNFS").val()
+  }
+
+  postdata(apiurl, apidata);
+});
+
+$("#DownloadCIFS").click(function(e){
+  e.preventDefault();
+  var apiurl = "/api/v1/software/update";
+  var apidata = {
+    "source-type": "cifs", 
+    "source":  $("#sourceCIFS").val(), 
+    "version": $("#versionCIFS").val(),  
+    "username":  $("#usernameCIFS").val(), 
+    "password": $("#passwordCIFS").val()
+  }
+
+  postdata(apiurl, apidata);
+});
+
+$("#DownloadLocal").click(function(e){
+  e.preventDefault();
+  var apiurl = "/api/v1/software/update";
+  var apidata = {
+    "source-type": "local", 
+    "source":  $("#localDirectory").val(), 
+    "version": $("#localVersion").val()
+   }
+
+  postdata(apiurl, apidata);
+});
 
  updatetasks();
  getversions();
