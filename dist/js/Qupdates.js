@@ -91,16 +91,23 @@ $("#DownloadCIFS").click(function(e){
   postdata(apiurl, apidata);
 });
 
-$("#DownloadLocal").click(function(e){
+$("#DownloadLocal").click(function(e) {
   e.preventDefault();
-  var apiurl = "/api/v1/software/update";
-  var apidata = {
-    "source-type": "local", 
-    "source":  $("#localDirectory").val(), 
-    "version": $("#localVersion").val()
-   }
 
-  postdata(apiurl, apidata);
+  let token = localStorage.getItem('token')
+  var form_data = new FormData($('#upload-file')[0]);
+
+	$.ajax({
+		type: 'POST',
+		url: `api/v1/software/localFileUpdate?token=${token}`,
+		data: form_data,
+		contentType: false,
+		cache: false,
+		processData: false,
+		success: function(data) {
+			$('#localFile').val('');
+		},
+	});
 });
 
  updatetasks();

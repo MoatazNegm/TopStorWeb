@@ -474,23 +474,22 @@
 
                 <!-- Local -->
                 <div class="tab-pane fade" id="nav-local" role="tabpanel" aria-labelledby="nav-local-tab">
-                  <div class="row">
-                    <div class="form-group row card-body col-4">
-                      <label for="localDirectory" class="col-3 my-auto">Directory:</label> 
-                      <input id="localDirectory" class="col-9 form-control" placeholder="Documents/">            
-                    </div>
-                    <div class="form-group row card-body col-4">
-                      <label for="localVersion" class="col-3 my-auto">Version:</label> 
-                      <input id="localVersion" class="col-6 form-control" placeholder="QSDx.xx">            
-                    </div>
+                  <form  id="upload-file" method="post" enctype="multipart/form-data">
+                      <div class="row">
+                        <div class="form-group row card-body col-4">
+                          <label for="localFile" class="col-3 my-auto">ZIP File:</label>
+                          <input id="localFile" accept=".zip.enc" onclick="this.value=null;" type="file" name="file" class="btn btn-add mx-2" style="opacity: 1;">
+
+                        </div>
+                      </div>
+                      
+                      <div class="card-footer">
+                        <div class="form-group row">
+                          <button type="submit" id="DownloadLocal" class="btn btn-add col-3" style="opacity:1;">Download Software</button>
+                        </div>
+                      </div> 
+                    </form>
                   </div>
-                  
-                  <div class="card-footer">
-                    <div class="form-group row">
-                        <button type="submit" id="DownloadLocal" class="btn btn-add col-3" style="opacity:1;">Download Software</button>
-                    </div>
-                  </div> 
-                </div>
 
               </div>
             </div>
