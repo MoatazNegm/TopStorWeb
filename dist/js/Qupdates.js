@@ -52,16 +52,16 @@ function getversions(){
      
  })
 
- $("#DownloadHTTPs").click(function(e){
-  e.preventDefault();
-  var apiurl = "/api/v1/software/update";
-  var apidata = {
-    "source-type": "https", 
-    "source":  $("#sourceHttps").val()
-  }
+//  $("#DownloadHTTPs").click(function(e){
+//   e.preventDefault();
+//   var apiurl = "/api/v1/software/update";
+//   var apidata = {
+//     "source-type": "https", 
+//     "source":  $("#sourceHttps").val()
+//   }
 
-  postdata(apiurl, apidata);
-});
+//   postdata(apiurl, apidata);
+// });
  
 $("#DownloadNFS").click(function(e){
   e.preventDefault();
@@ -109,6 +109,69 @@ $("#DownloadLocal").click(function(e) {
 		},
 	});
 });
+
+$("#DownloadHTTPs").click(async function (e) {
+  e.preventDefault();
+  let token = localStorage.getItem('token')
+
+  const url = $('#downloadUrl').val();
+  const fileInput = $('#remoteFile')[0];
+  const file = fileInput.files[0];
+  const form_data = new FormData($('#download-file')[0]);
+
+  if (url) {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Failed to download file from URL");
+      console.log(response.ok)
+
+      const blob = await response.blob();
+
+      // Try to infer filename from headers or URL
+      let filename = "downloaded_file.zip";
+      const disposition = response.headers.get('content-disposition');
+      if (disposition && disposition.indexOf('filename=') !== -1) {
+        filename = disposition.split('filename=')[1].replace(/["']/g, "");
+      } else {
+        const urlParts = url.split('/');
+        filename = urlParts[urlParts.length - 1] || filename;
+      }
+      console.log(filename)
+
+      // Append downloaded file as if user uploaded it
+      const downloadedFile = new File([blob], filename, { type: blob.type });
+      form_data.append("file", downloadedFile);
+      form_data.append("source-type", "local"); // mimic file upload source-type
+      console.log(form_data)
+    } catch (err) {
+      alert("Failed to download file from URL: " + err.message);
+      return;
+    }
+  }else {
+    alert("Please provide either a file or a URL.");
+    return;
+  }
+  console.log(form_data.file)
+  
+  $.ajax({
+    type: 'POST',
+    url: `api/v1/software/localFileUpdate?token=${token}`,
+    data: form_data,
+    contentType: false,
+    cache: false,
+    processData: false,
+    success: function (data) {
+      $('#localFile').val('');
+      $('#downloadUrl').val('');
+      alert("File uploaded successfully");
+    },
+    error: function (err) {
+      alert("Upload failed");
+      console.error(err);
+    }
+  });
+});
+
 
  updatetasks();
  getversions();

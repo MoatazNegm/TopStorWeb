@@ -397,18 +397,24 @@
 
                 <!-- HTTPs -->
                 <div class="tab-pane fade show active" id="nav-https" role="tabpanel" aria-labelledby="nav-https-tab">
-                  <div class="row">
-                    <div class="form-group row card-body col-4">
-                      <label for="sourceHttps" class="col-3 my-auto">Source:</label> 
-                      <input id="sourceHttps" class="col-9 form-control" placeholder="http:\\xxx.xxx.xxx">            
-                    </div>
-                  </div>
+                  <form id="download-file" method="post" enctype="multipart/form-data">
+                    
+                    <div class="row">
+                      <!-- Existing fields -->
+                      <div class="form-group row card-body col-6">
+                        <label for="downloadUrl" class="col-3 my-auto">Download URL:</label>
+                        <input id="downloadUrl" name="downloadUrl" type="text" class="form-control col-9" placeholder="Paste a direct link" />
+                        <input id="remoteFile" accept=".zip.enc" onclick="this.value=null;" type="file" name="file" class="btn btn-add mx-2" style="display: none;">
 
-                  <div class="card-footer">
-                    <div class="form-group row">
-                        <button type="submit" id="DownloadHTTPs" class="btn btn-add col-3" style="opacity:1;">Download Software</button>
+                      </div>
                     </div>
-                  </div> 
+                  
+                    <div class="card-footer">
+                      <div class="form-group row">
+                          <button type="submit" id="DownloadHTTPs" class="btn btn-add col-3" style="opacity:1;">Download Software</button>
+                      </div>
+                    </div> 
+                  </form>
                 </div>
 
                 <!-- NFS -->
