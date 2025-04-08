@@ -69,6 +69,7 @@ $("#DownloadNFS").click(function(e){
   var apidata = {
     "source-type": "nfs", 
     "source":  $("#sourceNFS").val(), 
+    "location": ("#locationNFS").val(), 
     "version": $("#versionNFS").val()
   }
 
@@ -81,6 +82,7 @@ $("#DownloadCIFS").click(function(e){
   var apidata = {
     "source-type": "cifs", 
     "source":  $("#sourceCIFS").val(), 
+    "location": ("#locationCIFS").val(), 
     "version": $("#versionCIFS").val(),  
     "username":  $("#usernameCIFS").val(), 
     "password": $("#passwordCIFS").val()
