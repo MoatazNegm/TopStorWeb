@@ -24,13 +24,6 @@
   <link rel="stylesheet" href="plugins/gfont/QuickStor.css">
   <link rel="stylesheet" href="dist/css/pumping.css">
   <link rel="stylesheet" href="dist/css/syncStatus.css">
-  <style>
-    .nav-tabs .nav-link.active {
-      border-color: #0d6efd !important; /* Bootstrap's primary blue */
-      color: #0d6efd;
-      border-bottom: 0;
-    }
-  </style>
 
 </head>
 <!--
@@ -383,14 +376,22 @@
 
             <div class="card card-primary">
               <!-- Tabs -->
-              <nav>
-                <div class="nav nav-tabs nav-fill w-full" id="nav-tab" role="tablist">
-                  <button class="nav-link flex-fill active" id="nav-https-tab" data-toggle="tab" data-target="#nav-https" type="button" role="tab" aria-controls="nav-https" aria-selected="false">HTTPs</button>
-                  <button class="nav-link flex-fill" id="nav-nfs-tab" data-toggle="tab" data-target="#nav-nfs" type="button" role="tab" aria-controls="nav-nfs" aria-selected="true">NFS</button>
-                  <button class="nav-link flex-fill" id="nav-cifs-tab" data-toggle="tab" data-target="#nav-cifs" type="button" role="tab" aria-controls="nav-cifs" aria-selected="false">CIFS</button>
-                  <button class="nav-link flex-fill" id="nav-local-tab" data-toggle="tab" data-target="#nav-local" type="button" role="tab" aria-controls="nav-local" aria-selected="false">Local</button>
-                </div>
-              </nav>
+              <div class="card-body">
+                <ul class="nav nav-tabs row" id="custom-tabs-four-tab" role="tablist">
+                <li class="nav-item col-3">
+                  <a class="nav-link  active" id="nav-https-tab" data-toggle="pill" href="#nav-https" role="tab" aria-controls="nav-https" aria-selected="true">HTTPs</a>
+                </li>
+                <li class="nav-item  col-3">
+                  <a class="nav-link " id="nav-nfs-tab" data-toggle="pill" href="#nav-nfs" role="tab" aria-controls="nav-nfs" aria-selected="false">NFS</a>
+                </li>
+                <li class="nav-item  col-3">
+                  <a class="nav-link" id="nav-cifs-tab" data-toggle="pill" href="#nav-cifs" role="tab" aria-controls="nav-cifs" aria-selected="false">CIFS</a>
+                </li>
+                <li class="nav-item  col-3">
+                  <a class="nav-link" id="nav-local-tab" data-toggle="pill" href="#nav-local" role="tab" aria-controls="nav-local" aria-selected="false">Local</a>
+                </li>
+              </ul>
+              </div>
 
               <!-- Tabs Content -->
               <div class="tab-content" id="nav-tabContent">
@@ -404,8 +405,6 @@
                       <div class="form-group row card-body col-6">
                         <label for="downloadUrl" class="col-3 my-auto">Download URL:</label>
                         <input id="downloadUrl" name="downloadUrl" type="text" class="form-control col-9" placeholder="Paste a direct link" />
-                        <input id="remoteFile" accept=".zip.enc" onclick="this.value=null;" type="file" name="file" class="btn btn-add mx-2" style="display: none;">
-
                       </div>
                     </div>
                   
