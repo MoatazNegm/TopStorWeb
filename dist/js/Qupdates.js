@@ -52,17 +52,25 @@ function getversions(){
      
  })
 
- $("#DownloadHTTPs").click(function(e){
+
+$("#DownloadHTTPs").click(async function (e) {
+  e.preventDefault();
+  let token = localStorage.getItem('token')
+
+  const url = $('#downloadUrl').val();
   e.preventDefault();
   var apiurl = "/api/v1/software/update";
   var apidata = {
-    "source-type": "https", 
-    "source":  $("#sourceHttps").val()
+    "source-type": "http",
+    "source": $("#downloadUrl").val(),
   }
 
   postdata(apiurl, apidata);
+
+  $('#downloadUrl').val(''); 
+
 });
- 
+
 $("#DownloadNFS").click(function(e){
   e.preventDefault();
   var apiurl = "/api/v1/software/update";
@@ -74,6 +82,8 @@ $("#DownloadNFS").click(function(e){
   }
 
   postdata(apiurl, apidata);
+
+  $("#sourceNFS, #locationNFS, #versionNFS").val('');
 });
 
 $("#DownloadCIFS").click(function(e){
@@ -89,6 +99,8 @@ $("#DownloadCIFS").click(function(e){
   }
 
   postdata(apiurl, apidata);
+
+  $("#sourceCIFS, #locationCIFS, #versionCIFS, #usernameCIFS, #passwordCIFS").val('');
 });
 
 $("#DownloadLocal").click(function(e) {
@@ -106,9 +118,11 @@ $("#DownloadLocal").click(function(e) {
 		processData: false,
 		success: function(data) {
 			$('#localFile').val('');
+      $('#upload-file')[0].reset();
 		},
 	});
 });
+
 
  updatetasks();
  getversions();
