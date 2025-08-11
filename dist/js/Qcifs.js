@@ -579,8 +579,8 @@ function checksubmit() {
 			$("#Address").val().length > 5 &&
 			$("#Subnet").val() > 1 &&
 			$("#volsize").val() > 0 &&
-			$("#domain").val().length > 2 &&
-			($("#domsrv").val().length > 2 || $("#domip").val().length > 5) &&
+			($("#domain").val().length > 2 || $("#domip").val().length > 5 || $("domsrv").val().length > 2) &&
+			//($("#domsrv").val().length > 2 || $("#domip").val().length > 5) &&
 			$("#domadmin").val().length > 2 &&
 			$("#dompass").val().length > 2
 		) {
@@ -604,7 +604,89 @@ function checksubmit() {
 	}
 }
 
+// Mutual exclusion for Domain and xDC IP fields with dynamic toggling
+function setupDomainFieldExclusion() {
+    const domainField = $('#domain');
+    const domipField = $('#domip');
+    
+    // Function to disable a field
+    const disableField = (field) => {
+        field.prop({
+	    'disabled': true,
+	    'required': false
+	});
+        field.css({
+            'background-color': '#f0f0f0',
+            'cursor': 'not-allowed'
+        });
+        field.attr('placeholder', 'in dev');
+    };
+    
+    // Function to enable a field
+    const enableField = (field) => {
+        field.prop({
+	    'disabled': false,
+	    'required': true
+	});
+        field.css({
+            'background-color': '',
+            'cursor': ''
+        });
+        field.attr('placeholder', field.data('original-placeholder'));
+    };
+    
+    // Store original placeholders
+    domainField.data('original-placeholder', domainField.attr('placeholder'));
+    domipField.data('original-placeholder', domipField.attr('placeholder'));
+    
+    // Check field content and toggle accordingly
+    const checkFields = () => {
+        const domainHasValue = domainField.val().trim().length > 0;
+        const domipHasValue = domipField.val().trim().length > 0;
+        
+        if (domainHasValue) {
+            disableField(domipField);
+        } else if (domipHasValue) {
+            disableField(domainField);
+        } else {
+            // Both fields are empty - enable both
+            enableField(domainField);
+            enableField(domipField);
+        }
+    };
+    
+    // Event handlers for both fields
+    domainField.on('input propertychange', function() {
+        if ($(this).val().trim().length > 0) {
+            disableField(domipField);
+        } else {
+            enableField(domipField);
+        }
+    });
+    
+    domipField.on('input propertychange', function() {
+        if ($(this).val().trim().length > 0) {
+            disableField(domainField);
+        } else {
+            enableField(domainField);
+        }
+    });
+    
+    // Also check on focus in case of programmatic changes
+    domainField.add(domipField).on('focus', checkFields);
+    
+    // Initialize
+    checkFields();
+}
+
+// Call the setup function after DOM is ready
+$(document).ready(function() {
+    setupDomainFieldExclusion();
+});
+
 checksubmit();
+
+setupDomainFieldExclusion();
 
 function initcharts() {
 	var pos = "top";
