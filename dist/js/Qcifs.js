@@ -579,8 +579,8 @@ function checksubmit() {
 			$("#Address").val().length > 5 &&
 			$("#Subnet").val() > 1 &&
 			$("#volsize").val() > 0 &&
-			($("#domain").val().length > 2 || $("#domip").val().length > 5 || $("domsrv").val().length > 2) &&
-			//($("#domsrv").val().length > 2 || $("#domip").val().length > 5) &&
+			$("#domain").val().length &&
+			($("#domsrv").val().length > 2 || $("#domip").val().length > 5) &&
 			$("#domadmin").val().length > 2 &&
 			$("#dompass").val().length > 2
 		) {
@@ -606,7 +606,7 @@ function checksubmit() {
 
 // Mutual exclusion for Domain and xDC IP fields with dynamic toggling
 function setupDomainFieldExclusion() {
-    const domainField = $('#domain');
+    const domainField = $('#domsrv');
     const domipField = $('#domip');
     
     // Function to disable a field
@@ -619,7 +619,8 @@ function setupDomainFieldExclusion() {
             'background-color': '#f0f0f0',
             'cursor': 'not-allowed'
         });
-        field.attr('placeholder', 'in dev');
+        field.attr('placeholder', 'Disabled');
+	field.val('');
     };
     
     // Function to enable a field
