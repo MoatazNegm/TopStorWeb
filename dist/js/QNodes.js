@@ -60,6 +60,7 @@ function newhostref(newhosts) {
 				);
 			});
 			updaterunninghosts(status);
+			updatediscoverednodes(status);
 			if (selectedhost[status] != "-1") {
 				memberclick($(".runninghost" + selectedhost[status]));
 			}
@@ -82,6 +83,32 @@ firstRequestsInterval = setInterval(() => {
 function Comparator(a, b) {
 	if (a[1] < b[1]) return -1;
 	if (a[1] >= b[1]) return 1;
+}
+
+function updatediscoverednodes(status) {
+    if (status == "possible") {
+        if (selectedhost[status] == "-1") {
+            $(".discoverednodes").attr("disabled", "disabled");
+            $("#possiblesubmit").attr("disabled", true);
+            $("#updatenode").attr("disabled", true);
+            $("#DiscoveredNodePorts option").remove();
+            var nodePort = new Option("Port", "Port");
+            $("#DiscoveredNodePorts").append(nodePort).css("color", "#939ba2");
+        } else {
+            var hostdata = allhosts[status][selectedhost[status]];
+            $(".discoverednodes").attr("disabled", false);
+            $("#possiblesubmit").attr("disabled", false);
+            $("#updatenode").attr("disabled", false);
+
+            $("#DiscoveredBoxName").val(hostdata["alias"]);
+            $("#DiscoveredIPAddress").val(hostdata["ipaddr"]);
+            $("#Discoveredipaddrsubnet").val(hostdata["ipaddrsubnet"]);
+
+            $("#DiscoveredNodePorts option").remove();
+            $("#DiscoveredNodePorts").css("color", "");
+            $("#updatenode").data("selected", selectedhost[status]);
+        }
+    }
 }
 
 function updaterunninghosts(status) {
@@ -154,31 +181,41 @@ function updaterunninghosts(status) {
 }
 
 function memberclick(thisclck, status) {
-	hname = $(thisclck).attr("data-htname");
-	selectedhost[status] = hname;
+    hname = $(thisclck).attr("data-htname");
+    selectedhost[status] = hname;
 
-	if ($(thisclck).children("img").hasClass("SelectedFreered") > 0) {
-		$(thisclck).children("img").removeClass("SelectedFreered");
-		$(thisclck).children("img").addClass("SelectedFreewhite");
-		selectedhost[status] = "-1";
-		$(".collapse").collapse("hide");
-		updaterunninghosts(status);
-		$("#" + status + "submit").attr("disabled", true);
-	} else {
-		$("img.server").removeClass("SelectedFreered");
-		$("img.server").addClass("SelectedFreewhite");
-		$(thisclck).children("img").removeClass("SelectedFreewhite");
-		$(thisclck).children("img").addClass("SelectedFreered");
-		updaterunninghosts(status);
-		$("#" + status + "submit").attr("disabled", false);
-		if (allhosts.ready.length - allhosts.possible.length < 2) {
-			$("#activesubmit").attr("disabled", true);
-		}
-		if ($(thisclck).children("img").prop("src").includes("Off") > 0) {
-			$("#activesubmit").attr("disabled", false);
-		}
-	}
-	//thisclck.preventDefault();
+    if ($(thisclck).children("img").hasClass("SelectedFreered") > 0) {
+        $(thisclck).children("img").removeClass("SelectedFreered");
+        $(thisclck).children("img").addClass("SelectedFreewhite");
+        selectedhost[status] = "-1";
+        $(".collapse").collapse("hide");
+        if (status === 'ready') {
+            updaterunninghosts(status);
+        } else if (status === 'possible') {
+            updatediscoverednodes(status);
+        }
+        $("#" + status + "submit").attr("disabled", true);
+        console.log("memberclick status:", status, "hname:", hname);
+    } else {
+        $("img.server").removeClass("SelectedFreered");
+        $("img.server").addClass("SelectedFreewhite");
+        $(thisclck).children("img").removeClass("SelectedFreewhite");
+        $(thisclck).children("img").addClass("SelectedFreered");
+        if (status === 'ready') {
+            updaterunninghosts(status);
+        } else if (status === 'possible') {
+            updatediscoverednodes(status);
+        }
+        $("#" + status + "submit").attr("disabled", false);
+
+        if (allhosts.ready.length - allhosts.possible.length < 2) {
+            $("#activesubmit").attr("disabled", true);
+        }
+        if ($(thisclck).children("img").prop("src").includes("Off")) {
+            $("#activesubmit").attr("disabled", false);
+        }
+    }
+    //thisclck.preventDefault();
 }
 
 function evacuate() {
@@ -188,6 +225,50 @@ function evacuate() {
 	apidata['token'] = hypetoken;
 	postdata(apiurl, apidata);
 }
+
+$("#updatenode").click(function (e) {
+    e.preventDefault();
+    var tochange = 0;
+    var selstatus = $("#updatenode").data("selected");
+    var hostdata = allhosts["possible"][selstatus];
+    console.log("selstatus:", selstatus, "hostdata:", hostdata, "hostsinfo:", hostsinfo);
+    var hostconfig = JSON.parse(JSON.stringify(hostdata));
+
+    var hostsubmit = {};
+
+    if ($("#DiscoveredBoxName").val().length > 3 &&
+        $("#DiscoveredBoxName").val() != hostconfig["alias"]) {
+        hostsubmit["alias"] = $("#DiscoveredBoxName").val();
+        tochange = 1;
+    }
+
+    if ($("#DiscoveredIPAddress").val().length > 3 &&
+        $("#DiscoveredIPAddress").val().includes("__") < 1) {
+        let newip = $("#DiscoveredIPAddress").val();
+        let newsub = $("#Discoveredipaddrsubnet").val();
+        let oldip = hostconfig["ipaddr"];
+        let oldsub = hostconfig["ipaddrsubnet"];
+
+        if (newip != oldip || newsub != oldsub) {
+            hostsubmit["ipaddr"] = newip;
+            hostsubmit["ipaddrsubnet"] = newsub;
+            tochange = 1;
+        }
+    }
+
+    if (tochange > 0) {
+        hostsubmit["id"] = selstatus;
+        hostsubmit["user"] = "mezo";
+        hostsubmit["name"] = allhosts["possible"][selstatus]["name"];
+        hostsubmit["token"] = hypetoken;
+        hostsubmit["discovered"] = true
+
+	var apiurl = "api/v1/hosts/config";
+        var apidata = hostsubmit;
+        console.log("discovered node update", apidata);
+        postdata(apiurl, apidata);
+    }
+});
 
 $("#possiblesubmit").click(function (e) {
 	var host = selectedhost["possible"];

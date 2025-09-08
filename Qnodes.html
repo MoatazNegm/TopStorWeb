@@ -663,20 +663,42 @@
 
               <div class="card-body">
                 <!-- form start -->
-                <form>
-                 <div class="form-group" >
-                   <div class="row">
-                    <div class=" col-4">
-                      <button type="button" id="possiblesubmit" disabled class="btn btn-block bg-gradient-info btn-lg">Allow to join the cluster</button>
-                    </div>
-		    <div class=" offset-4 col-4">
-                      <button type="button" id="refresh" class="refresh btn btn-block bg-gradient-info btn-lg">discovery</button>
-                    </div>
-
-                   </div>
-                 </div>
-               </form>
+                <form class='hostform'>
+                            <div class="form-group row">
+                                <label for="DiscoveredBoxName" class=' col-2'>Node Name</label>
+                                <input type="text" class="form-control discoverednodes col-2" id="DiscoveredBoxName" placeholder="Node Name">
+                            </div>
+                            <div class="form-group row">
+                                <label for="DiscoveredIPAddress" class='col-2'>Node Address</label>
+                                <div class="d-flex col-6 p-0">
+                                    <div class="d-flex col-8 p-0">
+                                        <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control col-6 discoverednodes ipaddress" name="DiscoveredIPAddress" id="DiscoveredIPAddress" data-inputmask="'alias': 'ip'">
+                                        <select name="DiscoveredNodePorts" class="ml-2 col-4 form-control discoverednodes" id="DiscoveredNodePorts">
+                                            <option>Port</option>
+                                        </select>
+                                    </div>
+                                    <div class='d-flex col-4 ml-auto justify-content-end'>
+                                        <label for="Discoveredipaddrsubnet" class=''>Subnet</label>
+                                        <input type="number" min="8" max="32" step="8" value="24" class="col-6 ml-3 form-control discoverednodes" id="Discoveredipaddrsubnet">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row mt-4">
+                                <div class=" col-4">
+                                        <button type="button" id="updatenode" disabled class="btn btn-block bg-gradient-info btn-lg">Update node</button>
+                                </div>
+                            </div>
+                            <div class="form-group row mt-4">
+                                <div class=" col-4">
+                                        <button type="button" id="possiblesubmit" disabled class="btn btn-block bg-gradient-info btn-lg">Allow to join the cluster</button>
+                                </div>
+                                <div class=" offset-4 col-4">
+                                        <button type="button" id="refresh" class="refresh btn btn-block bg-gradient-info btn-lg">discovery</button>
+                                </div>
+                            </div>
+                        </form>
               </div><!-- /.card body -->
+
             </div> <!-- /.card -->
           </div>
         </div>
