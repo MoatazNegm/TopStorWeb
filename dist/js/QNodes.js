@@ -121,45 +121,48 @@ function updaterunninghosts(status) {
 			$("#cNTP").css("font-size", "0.8rem").text("select a node...");
 			$("#cGW").css("font-size", "0.8rem").text("select a node...");
 			$("#cDNS").css("font-size", "0.8rem").text("select a node...");
+                        $("#dataPorts").css("font-size", "0.8rem").text("select a node...");
 			$("#customSwitch1").prop("checked", false);
 			$(".runningnodes").attr("disabled", "disabled");
-			$("#NodePorts option").remove();
-			$("#ClusterPorts option").remove();
-			var nodePort = new Option("Port","Port");
-			var clusterPort = new Option("Port","Port");
-                        $("#NodePorts").append(nodePort).css("color","#939ba2");
-                        $("#ClusterPorts").append(clusterPort).css("color","#939ba2");
-
+			$("#nmports").empty().trigger('change');
+                        $("#cmports").empty().trigger('change');
+                        $("#dports").empty().trigger('change');
 			
 		} else {
 			var hostdata = hostsinfo[allhosts[status][selectedhost[status]]["name"]];
+			console.log("hostdata object format:", hostdata);
+			console.log("Ports data from host:", hostdata["ports"]); 
 			$(".runningnodes").attr("disabled", false);
 			$("#cBoxName").text(hostdata["alias"]);
 			$("#cIPAddress").text(hostdata["ipaddr"] + "/" + hostdata["ipaddrsubnet"]);
 			$("#cMgmt").text(hostdata["cluster"]);
-			
-			$("#NodePorts option").remove();
-			let sortedNodePorts = hostdata["ports"].sort(Comparator);
-			$.each(sortedNodePorts, function (_, portInfo) {
-                        	var o = new Option(portInfo[1], portInfo[1]);
-                       		$("#NodePorts").append(o);
-                        });
-
-			let clusterPorts = []
-			for (const node in hostsinfo) {
-				if (hostsinfo[node]['isLeader'])
-					clusterPorts = hostsinfo[node]['ports'];
+		        
+			let availablePorts = [];
+			if (hostdata && hostdata.ports && hostdata.ports.length >= 1 && Array.isArray(hostdata.ports[0]) && typeof hostdata.ports[0][1] === 'string') {
+			    availablePorts = hostdata.ports[0][1].split('/'); 
 			}
-			$("#ClusterPorts option").remove();
-			let sortedClusterPorts = clusterPorts.sort(Comparator);
-			$.each(sortedClusterPorts, function (_, portInfo) {
-                        	var o = new Option(portInfo[1], portInfo[1]);
-                       		$("#ClusterPorts").append(o);
-                        });
-                        
-			$("#NodePorts").css("color","");
-                        $("#ClusterPorts").css("color","");
-		
+
+			let select2PortOptions = $.map(availablePorts, function (portName) {
+			    return { id: portName.trim(), text: portName.trim() };
+			});
+
+			$('#nmports').empty().select2({ data: select2PortOptions, placeholder: "Select ports" });
+			$('#cmports').empty().select2({ data: select2PortOptions, placeholder: "Select ports" });
+			$('#dports').empty().select2({ data: select2PortOptions, placeholder: "Select ports" });
+
+			var nmPorts = hostdata.nmports ? hostdata.nmports.split(',') : [];
+			var cmPorts = hostdata.cmports ? hostdata.cmports.split(',') : [];
+			var dPorts = hostdata.dports || hostdata.dataport || []; 
+			if (typeof dPorts === 'string') {
+			    dPorts = dPorts.split(',');
+			}
+
+			$('#nmports').val(nmPorts).trigger('change');
+			$('#cmports').val(cmPorts).trigger('change');
+			$('#dports').val(dPorts).trigger('change');
+
+			$("#dataPorts").text(dPorts.length > 0 ? dPorts.join(", ") : "not set");
+
 			try {
 				$("#cTZ").text(
 					hostdata["tz"].split("%")[1].replace("!", ":").replace(/\^/g, ",").replace(/_/g, " ")
@@ -378,6 +381,14 @@ $("#readysubmit").click(function (ev) {
 			tochange = 1;
 		}
 	}
+        var nmPortsVal = $("#nmports").val();
+        if (nmPortsVal && nmPortsVal.length > 0) {
+            var originalNmPorts = hostconfig.nmports ? hostconfig.nmports.split(',').sort() : [];
+            if (JSON.stringify(originalNmPorts) !== JSON.stringify([...nmPortsVal].sort())) {
+                hostsubmit["nmports"] = nmPortsVal.join(',');
+                tochange = 1;
+            }
+        }
 	if (
 		$("#Mgmt").val().length > 3 &&
 		$("#Mgmt").val().includes("__") < 1 &&
@@ -386,7 +397,22 @@ $("#readysubmit").click(function (ev) {
 		hostsubmit["cluster"] = $("#Mgmt").val() + "/" + $("#MgmtSub").val();
 		tochange = 1;
 	}
-
+        var cmPortsVal = $("#cmports").val();
+        if (cmPortsVal && cmPortsVal.length > 0) {
+            var originalCmPorts = hostconfig.cmports ? hostconfig.cmports.split(',').sort() : [];
+             if (JSON.stringify(originalCmPorts) !== JSON.stringify([...cmPortsVal].sort())) {
+                hostsubmit["cmports"] = cmPortsVal.join(',');
+                tochange = 1;
+            }
+        }
+        var dPortsVal = $("#dports").val();
+        if (dPortsVal && dPortsVal.length > 0) {
+            var originalDPorts = hostconfig.dports ? hostconfig.dports.split(',').sort() : [];
+            if (JSON.stringify(originalDPorts) !== JSON.stringify([...dPortsVal].sort())) {
+                hostsubmit["dports"] = dPortsVal.join(',');
+                tochange = 1;
+            }
+        }
 	if ($("#TZ").val() != "-100") {
 		var tzflag = 0;
 		try {

@@ -11,8 +11,6 @@
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
 
   <!-- Select2 -->
   <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
@@ -21,6 +19,10 @@
   <link rel="stylesheet" href="plugins/gfont/QuickStor.css">
   <link rel="stylesheet" href="dist/css/pumping.css">
   <link rel="stylesheet" href="dist/css/syncStatus.css">
+
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="plugins/gfont/QuickStor.css">
 
 </head>
 <!--
@@ -391,13 +393,15 @@
 				<input type="text" placeholder="xxx.xxx.xxx.xxx" 
                          		class="form-control col-6 runningnodes ipaddress" name="IPAddress" \
                           		id="IPAddress"  data-inputmask="'alias': 'ip'"> 
-                    		<select name="NodePorts" class="ml-2 col-4 form-control runningnodes" id="NodePorts">
-		    			<option>Port</option>
-		    		</select>
+                                <input type="number"  min="8" max="32" step="8" value=24 class="col-4 ml-2 form-control runningnodes"  id="ipaddrsubnet">
 			</div>
-		    	<div class='d-flex col-4 ml-auto justify-content-end'>
-		    		<label for="ipaddrsubnet" class=''>Subnet</label>
-                    		<input type="number"  min="8" max="32" step="8" value=24 class="col-6 ml-3 form-control runningnodes"  id="ipaddrsubnet">
+		    	<div class='d-flex col-4 p-0'>
+                            <select class="runningnodes select2 multiple form-control w-100" multiple="multiple"id="nmports" data-placeholder="Select ports">
+                                <option>eth1</option>
+                                <option>eth2</option>
+                                <option>eth3</option>
+                                <option>eth4</option>
+                            </select>
                     	</div>
 		    </div>
 		    <div class="form-control bg-secondary col-2 color-palette ml-auto">
@@ -408,18 +412,32 @@
                     <label  for="Mgmt" class=' col-2'>Cluster Address</label>
                     <div class="d-flex col-6 p-0">
                         <div class="d-flex col-8 p-0">
-                    		<input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes col-6 ipaddress" 
-                         		name="IPAddress" id="Mgmt"  data-inputmask="'alias': 'ip'">
-                    		<select name="ClusterPorts" class="ml-2 col-4 form-control runningnodes" id="ClusterPorts">
-                    			<option>Port</option>
-                    		</select> 
-		   	</div>
-		   	<div class='d-flex col-4 ml-auto justify-content-end'>
-		   		<label  for="MgmtSub" class=''>Subnet</label>
-                   		<input type="number"  min="8" max="32" step="8" value=24 class="col-6 ml-3 form-control runningnodes col-1"  id="MgmtSub">
-                   	</div> 
+                    		<input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control runningnodes ipaddress col-6" 
+                         		name="IPAddress" id="Mgmt"  data-inpiutmask="'alias': 'ip'">
+                                <input type="number"  min="8" max="32" step="8" value=24 class="col-4 ml-2 form-control runningnodes col-1"  id="MgmtSub">
+                        </div>
+                        <div class='d-flex col-4 p-0'>
+                            <select class="runningnodes select2 multiple form-control w-100" multiple="multiple"id="cmports" data-placeholder="Select ports">
+                                <option>eth1</option>
+                                <option>eth2</option>
+                                <option>eth3</option>
+                                <option>eth4</option>
+                            </select>
+                         </div>
 		    </div> 
 		    <div  class="form-control bg-secondary col-2 color-palette ml-auto"><span id="cMgmt">10.11.11.139/24</span>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label  for="mports" class="col-2 col-form-label">Data Ports</label>
+                    <select  class="runningnodes select2 multiple form-control col-5" multiple="multiple"id="dports" data-placeholder="Select ports">
+                        <option>eth1</option>
+                        <option>eth2</option>
+                        <option>eth3</option>
+                        <option>eth4</option>
+                    </select>
+                    <div class="form-control bg-secondary col-2 color-palette ml-auto">
+                        <span id="dataPorts">eth1, eth2</span>
                     </div>
                   </div>
                   <div class="form-group row" >
