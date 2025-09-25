@@ -102,7 +102,7 @@ function updatediscoverednodes(status) {
 
             $("#DiscoveredBoxName").val(hostdata["alias"]);
             $("#DiscoveredIPAddress").val(hostdata["ipaddr"]);
-            $("#Discoveredipaddrsubnet").val(hostdata["ipaddrsubnet"]);
+            //$("#Discoveredipaddrsubnet").val(hostdata["ipaddrsubnet"]);
 
             $("#DiscoveredNodePorts option").remove();
             $("#DiscoveredNodePorts").css("color", "");
