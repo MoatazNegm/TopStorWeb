@@ -105,7 +105,7 @@ function updatediscoverednodes(status) {
 
             $("#DiscoveredNodePorts option").remove();
             $("#DiscoveredNodePorts").css("color", "");
-            $("#updatenode").data("selected", selectedhost[status]);
+            $("#updateAndJoinBtn").data("selected", selectedhost[status]);
         }
     }
 }
@@ -226,17 +226,13 @@ function evacuate() {
 }
 
 function updateDiscoveredNode() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         let tochange = 0;
-        const selstatus = $("#updateAndJoinBtn").data("selected");
-
-        if (selstatus === undefined) {
-            return reject("No node selected for update.");
-        }
-
-        const hostdata = allhosts["possible"][selstatus];
-        const hostconfig = JSON.parse(JSON.stringify(hostdata));
-        const hostsubmit = {};
+        var selstatus = $("#updateAndJoinBtn").data("selected");
+        var hostdata = allhosts["possible"][selstatus];
+        console.log("selstatus: ", selstatus, "hostdata: ", hostdata, "hostsinfo: ", hostsinfo);
+        var hostconfig = JSON.parse(JSON.stringify(hostdata));
+        var hostsubmit = {};
 
         if ($("#DiscoveredBoxName").val().length > 3 && $("#DiscoveredBoxName").val() !== hostconfig["alias"]) {
             hostsubmit["alias"] = $("#DiscoveredBoxName").val();
@@ -244,12 +240,18 @@ function updateDiscoveredNode() {
         }
 
         if ($("#DiscoveredIPAddress").val().length > 3 && !$("#DiscoveredIPAddress").val().includes("__")) {
-            const newip = $("#DiscoveredIPAddress").val();
-            const newsub = $("#Discoveredipaddrsubnet").val();
+            let newip = $("#DiscoveredIPAddress").val();
+            let newsub = $("#Discoveredipaddrsubnet").val();
             if (newip !== hostconfig["ipaddr"] || newsub !== hostconfig["ipaddrsubnet"]) {
                 hostsubmit["ipaddr"] = newip;
                 hostsubmit["ipaddrsubnet"] = newsub;
-                tochange = 1;
+                let oldip = hostconfig["ipaddr"];
+                let oldsub = hostconfig["ipaddrsubnet"];
+                if (newip != oldip || newsub != oldsub) {
+                    hostsubmit["ipaddr"] = newip;
+                    hostsubmit["ipaddrsubnet"] = newsub;
+                    tochange = 1;
+                }
             }
         }
 
@@ -260,19 +262,12 @@ function updateDiscoveredNode() {
             hostsubmit["token"] = hypetoken;
             hostsubmit["discovered"] = true;
 
-            $.ajax({
-                url: "api/v1/hosts/config",
-                type: 'POST',
-                data: hostsubmit,
-                success: function(response) {
-                    console.log("Node update successful.", response);
-                    resolve(response);
-                },
-                error: function(xhr, status, error) {
-                    console.error("Node update failed.", error);
-                    reject(error);
-                }
-            });
+            var apiurl = "api/v1/hosts/config";
+            var apidata = hostsubmit;
+            console.log("Sending discovered node update (fire-and-forget):", apidata);
+
+            postdata(apiurl, apidata);
+            resolve("Update request sent.");
         } else {
             console.log("No changes detected, skipping update.");
             resolve("No update needed."); // Resolve immediately if no data changed
@@ -318,12 +313,12 @@ $("#updateAndJoinBtn").on('click', async function(e) {
         try {
             console.log("Starting node update...");
             await updateDiscoveredNode();
-            console.log("Update complete. Waiting 5 seconds before joining cluster...");
-            
-            setTimeout(() => {
-                joinNodeToCluster();
-                $(this).attr("disabled", false); // Re-enable button
-            }, 5000);
+
+            console.log("Waiting 5 seconds before joining cluster...");
+            await new Promise(resolve => setTimeout(resolve, 5000));
+
+            console.log("Joining node to cluster...");
+            joinNodeToCluster();
 
         } catch (error) {
             console.error("An error occurred during the update. Aborting join process.", error);
