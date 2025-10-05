@@ -396,7 +396,7 @@
                                 <input type="number"  min="8" max="32" step="8" value=24 class="col-4 ml-2 form-control runningnodes"  id="ipaddrsubnet">
 			</div>
 		    	<div class='d-flex col-4 p-0'>
-                            <select class="runningnodes select2 multiple form-control w-100" multiple="multiple"id="ndports" data-placeholder="Select ports">
+                            <select class="runningnodes select2 multiple form-control w-100" multiple="multiple"id="nmports" data-placeholder="Select ports">
                                 <option>eth1</option>
                                 <option>eth2</option>
                                 <option>eth3</option>
@@ -417,7 +417,7 @@
                                 <input type="number"  min="8" max="32" step="8" value=24 class="col-4 ml-2 form-control runningnodes col-1"  id="MgmtSub">
                         </div>
                         <div class='d-flex col-4 p-0'>
-                            <select class="runningnodes select2 multiple form-control w-100" multiple="multiple"id="cdports" data-placeholder="Select ports">
+                            <select class="runningnodes select2 multiple form-control w-100" multiple="multiple"id="cmports" data-placeholder="Select ports">
                                 <option>eth1</option>
                                 <option>eth2</option>
                                 <option>eth3</option>
@@ -429,15 +429,15 @@
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label  for="mports" class="col-2 col-form-label">Management Ports</label>
-                    <select  class="runningnodes select2 multiple form-control col-5" multiple="multiple"id="mports" data-placeholder="Select ports">
+                    <label  for="mports" class="col-2 col-form-label">Data Ports</label>
+                    <select  class="runningnodes select2 multiple form-control col-5" multiple="multiple"id="dports" data-placeholder="Select ports">
                         <option>eth1</option>
                         <option>eth2</option>
                         <option>eth3</option>
                         <option>eth4</option>
                     </select>
                     <div class="form-control bg-secondary col-2 color-palette ml-auto">
-                        <span id="cMgmtPorts">eth1, eth2</span>
+                        <span id="dataPorts">eth1, eth2</span>
                     </div>
                   </div>
                   <div class="form-group row" >
