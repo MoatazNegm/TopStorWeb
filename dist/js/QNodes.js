@@ -121,6 +121,8 @@ function updaterunninghosts(status) {
 			$("#cNTP").css("font-size", "0.8rem").text("select a node...");
 			$("#cGW").css("font-size", "0.8rem").text("select a node...");
 			$("#cDNS").css("font-size", "0.8rem").text("select a node...");
+                        $("#cDataPorts").css("font-size", "0.8rem").text("select a node...");
+                        $("#cMgmtPorts").css("font-size", "0.8rem").text("select a node...");
 			$("#customSwitch1").prop("checked", false);
 			$(".runningnodes").attr("disabled", "disabled");
 			$("#NodePorts option").remove();
@@ -137,13 +139,23 @@ function updaterunninghosts(status) {
 			$("#cBoxName").text(hostdata["alias"]);
 			$("#cIPAddress").text(hostdata["ipaddr"] + "/" + hostdata["ipaddrsubnet"]);
 			$("#cMgmt").text(hostdata["cluster"]);
-			
+		        
+                        //$("#cDataPorts").text(hostdata["dataports"] ? hostdata["dataport"].join(", ") : "not set");
+                        //$("#cMgmtPorts").text(hostdata["mgmtports"] ? hostdata["dataport"].join(", ") : "not set");
+	
 			$("#NodePorts option").remove();
+                        //$('#dports, #mports').empty();
+
 			let sortedNodePorts = hostdata["ports"].sort(Comparator);
 			$.each(sortedNodePorts, function (_, portInfo) {
                         	var o = new Option(portInfo[1], portInfo[1]);
                        		$("#NodePorts").append(o);
+                                //$('#dports').append(o.clone());
+                                //$('#mports').append(o.clone());
                         });
+
+                        //$('#dports').val(hostdata["dataport"]).trigger('change');
+                        //$('#mports').val(hostdata["mgmtport"]).trigger('change');
 
 			let clusterPorts = []
 			for (const node in hostsinfo) {
