@@ -142,13 +142,46 @@ function updaterunninghosts(status) {
 			    availablePorts = hostdata.ports[0][1].split('/'); 
 			}
 
-			let select2PortOptions = $.map(availablePorts, function (portName) {
-			    return { id: portName.trim(), text: portName.trim() };
+			let basePortOptions = $.map(availablePorts, function (portName) {
+   			    return { id: portName.trim(), text: portName.trim() };
 			});
 
-			$('#nmports').empty().select2({ data: select2PortOptions, placeholder: "Select ports" });
-			$('#cmports').empty().select2({ data: select2PortOptions, placeholder: "Select ports" });
-			$('#dports').empty().select2({ data: select2PortOptions, placeholder: "Select ports" });
+			const updateSelectOptions = (selector, currentValue, disabledPorts) => {
+			    const newOptions = basePortOptions.map(opt => {
+			        const portName = opt.id;
+			        const isSelectedByMe = currentValue.includes(portName);
+			        const isDisabled = disabledPorts.includes(portName) && !isSelectedByMe;
+			        return { id: portName, text: portName, disabled: isDisabled };
+			    });
+			    $(selector).empty().select2({ 
+			        data: newOptions, 
+			        placeholder: "Select ports" 
+			    }).val(currentValue).trigger('change.select2'); // Use 'change.select2' to avoid event loop
+			};
+
+			const updatePortExclusivity = () => {
+			    const nmVal = $('#nmports').val() || [];
+			    const cmVal = $('#cmports').val() || [];
+			    const dVal = $('#dports').val() || [];
+
+			    const portsForNm = [...cmVal, ...dVal]; // Ports used by cm and d
+			    const portsForCm = [...nmVal, ...dVal]; // Ports used by nm and d
+			    const portsForD = [...nmVal, ...cmVal]; // Ports used by nm and cm
+
+			    updateSelectOptions('#nmports', nmVal, portsForNm);
+			    updateSelectOptions('#cmports', cmVal, portsForCm);
+			    updateSelectOptions('#dports', dVal, portsForD);
+			};
+
+//			let select2PortOptions = $.map(availablePorts, function (portName) {
+//			    return { id: portName.trim(), text: portName.trim() };
+//			});
+
+			$('#nmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
+			$('#cmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
+			$('#dports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
+
+			$('#nmports, #cmports, #dports').on('change', updatePortExclusivity);
 
 			var nmPorts = hostdata.nmports ? hostdata.nmports.split(',') : [];
 			var cmPorts = hostdata.cmports ? hostdata.cmports.split(',') : [];
