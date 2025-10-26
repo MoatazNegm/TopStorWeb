@@ -173,15 +173,13 @@ function updaterunninghosts(status) {
 			    updateSelectOptions('#dports', dVal, portsForD);
 			};
 
-//			let select2PortOptions = $.map(availablePorts, function (portName) {
-//			    return { id: portName.trim(), text: portName.trim() };
-//			});
+			$('#nmports, #cmports, #dports').off('change');
 
 			$('#nmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
 			$('#cmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
 			$('#dports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
 
-			$('#nmports, #cmports, #dports').on('change', updatePortExclusivity);
+//			$('#nmports, #cmports, #dports').on('change', updatePortExclusivity);
 
 			var nmPorts = hostdata.nmports ? hostdata.nmports.split(',') : [];
 			var cmPorts = hostdata.cmports ? hostdata.cmports.split(',') : [];
@@ -190,9 +188,16 @@ function updaterunninghosts(status) {
 			    dPorts = dPorts.split(',');
 			}
 
-			$('#nmports').val(nmPorts).trigger('change');
-			$('#cmports').val(cmPorts).trigger('change');
-			$('#dports').val(dPorts).trigger('change');
+//			$('#nmports').val(nmPorts).trigger('change');
+//			$('#cmports').val(cmPorts).trigger('change');
+//			$('#dports').val(dPorts).trigger('change');
+
+			$('#nmports').val(nmPorts);
+                        $('#cmports').val(cmPorts);
+                        $('#dports').val(dPorts);
+
+			updatePortExclusivity();
+			$('#nmports, #cmports, #dports').on('change', updatePortExclusivity);
 
 			$("#dataPorts").text(dPorts.length > 0 ? dPorts.join(", ") : "not set");
 
