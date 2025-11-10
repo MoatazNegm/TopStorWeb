@@ -411,8 +411,7 @@ function initdgs() {
 					status +
 					" " +
 					changeop +
-					'" style="position: relative;">' + // Added position: relative for the label
-					// Added a hidden cache label
+					'" style="position: relative;">' +
 					'<p class="cache-label" style="display: none; position: absolute; top: 0; left: 5px; background-color: rgba(255,0,0,0.7); color: white; font-weight: bold; padding: 2px 5px; z-index: 10; border-radius: 3px;">CACHE</p>' +
 					"  <a href=\"javascript:memberclick('#" +
 					disk +
@@ -434,22 +433,17 @@ function initdgs() {
 			
 			$(".freedisks").append(diskHtml);
 
-			// Add the context menu (right-click) handler to toggle cache selection
 			$("#" + disk).on('contextmenu', function(e) {
-				e.preventDefault(); // Prevent the default browser right-click menu
+				e.preventDefault();
 				var $img = $(this).find('img');
 				var $label = $(this).find('.cache-label');
 
 				if ($img.hasClass('SelectedCache')) {
-					// Toggle off: Remove cache selection
 					$img.removeClass('SelectedCache SelectedFreered');
 					$img.addClass('SelectedFreewhite');
 					$label.hide();
 				} else {
-					// Toggle on: Mark as cache
-					// First, remove data disk selection (if any)
 					$img.removeClass('SelectedFreewhite SelectedFreered');
-					// Add cache selection (SelectedFreered provides the border)
 					$img.addClass('SelectedCache SelectedFreered'); 
 					$label.show();
 				}
@@ -515,37 +509,32 @@ $("#createpool").click(function (e) {
 	var dataDisks = [];
 	var cacheDisks = [];
 
-	// Find all selected disks in the 'freedisks' area
 	$(".freedisks img.SelectedFreered").each(function () {
 		var $img = $(this);
-		// Get the disk name from the parent div's data-disk attribute
 		var diskId = $img.closest('[data-disk]').data('disk');
 
 		if ($img.hasClass('SelectedCache')) {
-			// It's a cache disk
 			cacheDisks.push(diskId);
 		} else {
-			// It's a data disk
 			dataDisks.push(diskId);
 		}
 	});
 
 	// --- Validation ---
-	if (dataDisks.length === 0) {
-		alert("Please select at least one data disk to create the pool.");
-		return;
-	}
+	//if (dataDisks.length === 0) {
+	//	alert("Please select at least one data disk to create the pool.");
+	//	return;
+	//}
 
 	var apiurl = "api/v1/pools/newpool";
 	var redundancy = $(this).data("redundancy");
 	var useable = $("#select" + redundancy).val();
 
-	// Create the new apidata object with disk and cache lists
 	var apidata = {
 		redundancy: redundancy,
 		useable: useable,
-		disks: dataDisks,   // Array of data disk names
-		cache: cacheDisks,  // Array of cache disk names
+		disks: dataDisks,
+		cache: cacheDisks,
 		'token': hypetoken,
 		user: "mezo"
 	};
@@ -569,29 +558,25 @@ $("body").on("click", ".addtopool", function (e) {
 
 function memberclick(thisclck) {
 	var $img = $(thisclck + " img");
-	var $label = $(thisclck).find('.cache-label'); // Find the label
+	var $label = $(thisclck).find('.cache-label');
 
-	// If it's already a cache disk, a left-click should do nothing
-	// (Right-click is used to toggle cache)
 	if ($img.hasClass('SelectedCache')) {
 		console.log("This is a cache disk. Right-click to change.");
 		return;
 	}
 
-	// Standard toggle logic for data disks
-	if ($img.hasClass("SelectedFreered")) { // It's a selected data disk
+	if ($img.hasClass("SelectedFreered")) {
 		$img.removeClass("SelectedFreered");
 		$img.addClass("SelectedFreewhite");
 		selhosts = "";
 		$("#RhostForget").attr("disabled", true);
-	} else { // It's not a selected data disk
-		// This part deselects other 'server' images (as per original code)
+	} else {
 		$("img.server").removeClass("SelectedFreered");
 		$("img.server").addClass("SelectedFreewhite");
 
 		$img.removeClass("SelectedFreewhite");
-		$img.addClass("SelectedFreered"); // Mark as data disk
-		selhosts = $(thisclck).data('disk'); // Use the data-disk attribute
+		$img.addClass("SelectedFreered");
+		selhosts = $(thisclck).data('disk');
 		$("#RhostForget").attr("disabled", false);
 	}
 }
