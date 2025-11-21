@@ -574,6 +574,8 @@ $("#readysubmit").click(function (ev) {
 		hostsubmit["configured"] = "no";
 		tochange = 1;
 	}
+	console.log('hostsubmit',hostsubmit);
+	
 	if (tochange > 0) {
 		hostsubmit["id"] = $("#readysubmit").data("selected");
 		hostsubmit["user"] = "mezo";
