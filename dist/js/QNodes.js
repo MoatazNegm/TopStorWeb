@@ -137,68 +137,32 @@ function updaterunninghosts(status) {
 			$("#cMgmt").text(hostdata["cluster"]);
 		        
 			let availablePorts = [];
-			if (hostdata && hostdata.ports && hostdata.ports.length >= 1 && Array.isArray(hostdata.ports[0]) && typeof hostdata.ports[0][1] === 'string') {
-			    availablePorts = hostdata.ports[0][1].split('/'); 
-			}
+                        if (hostdata && hostdata.ports && hostdata.ports.length >= 1 && Array.isArray(hostdata.ports[0]) && typeof hostdata.ports[0][1] === 'string') {
+                            availablePorts = hostdata.ports[0][1].split('/');
+                        }
 
-			let basePortOptions = $.map(availablePorts, function (portName) {
-   			    return { id: portName.trim(), text: portName.trim() };
-			});
+                        let basePortOptions = $.map(availablePorts, function (portName) {
+                            return { id: portName.trim(), text: portName.trim() };
+                        });
 
-			const updateSelectOptions = (selector, currentValue, disabledPorts) => {
-			    const newOptions = basePortOptions.map(opt => {
-			        const portName = opt.id;
-			        const isSelectedByMe = currentValue.includes(portName);
-			        const isDisabled = disabledPorts.includes(portName) && !isSelectedByMe;
-			        return { id: portName, text: portName, disabled: isDisabled };
-			    });
-			    $(selector).empty().select2({ 
-			        data: newOptions, 
-			        placeholder: "Select ports" 
-			    }).val(currentValue).trigger('change.select2'); // Use 'change.select2' to avoid event loop
-			};
+                        $('#nmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
+                        $('#cmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
+                        $('#dports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
 
-			const updatePortExclusivity = () => {
-			    const nmVal = $('#nmports').val() || [];
-			    const cmVal = $('#cmports').val() || [];
-			    const dVal = $('#dports').val() || [];
+                        var nmPorts = hostdata.nmports ? hostdata.nmports.split(',') : [];
+                        var cmPorts = hostdata.cmports ? hostdata.cmports.split(',') : [];
+                        var dPorts = hostdata.dports || hostdata.dataport || [];
+                        if (typeof dPorts === 'string') {
+                            dPorts = dPorts.split(',');
+                        }
 
-			    const portsForNm = [...cmVal, ...dVal]; // Ports used by cm and d
-			    const portsForCm = [...nmVal, ...dVal]; // Ports used by nm and d
-			    const portsForD = [...nmVal, ...cmVal]; // Ports used by nm and cm
+                        $('#nmports').val(nmPorts).trigger('change');
+                        $('#cmports').val(cmPorts).trigger('change');
+                        $('#dports').val(dPorts).trigger('change');
 
-			    updateSelectOptions('#nmports', nmVal, portsForNm);
-			    updateSelectOptions('#cmports', cmVal, portsForCm);
-			    updateSelectOptions('#dports', dVal, portsForD);
-			};
+                        updatePortExclusivity();
 
-			$('#nmports, #cmports, #dports').off('change');
-
-			$('#nmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
-			$('#cmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
-			$('#dports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
-
-//			$('#nmports, #cmports, #dports').on('change', updatePortExclusivity);
-
-			var nmPorts = hostdata.nmports ? hostdata.nmports.split(',') : [];
-			var cmPorts = hostdata.cmports ? hostdata.cmports.split(',') : [];
-			var dPorts = hostdata.dports || hostdata.dataport || []; 
-			if (typeof dPorts === 'string') {
-			    dPorts = dPorts.split(',');
-			}
-
-//			$('#nmports').val(nmPorts).trigger('change');
-//			$('#cmports').val(cmPorts).trigger('change');
-//			$('#dports').val(dPorts).trigger('change');
-
-			$('#nmports').val(nmPorts);
-                        $('#cmports').val(cmPorts);
-                        $('#dports').val(dPorts);
-
-			updatePortExclusivity();
-			$('#nmports, #cmports, #dports').on('change', updatePortExclusivity);
-
-			$("#dataPorts").text(dPorts.length > 0 ? dPorts.join(", ") : "not set");
+                        $("#dataPorts").text(dPorts.length > 0 ? dPorts.join(", ") : "not set");
 
 			try {
 				$("#cTZ").text(
@@ -338,6 +302,52 @@ function updateButtonState() {
     } else {
         $("#updateAndJoinBtn").text("Add to Cluster");
     }
+}
+
+function updatePortExclusivity() {
+    $('#nmports, #cmports, #dports').off('select2:select select2:unselect');
+
+    var portBoxes = ['nmports', 'cmports', 'dports'];
+
+    portBoxes.forEach(function(currentId) {
+        $('#' + currentId).on('select2:select', function (e) {
+            var addedPort = e.params.data.id;
+            var currentVals = $('#' + currentId).val() || [];
+
+            portBoxes.forEach(function(otherId) {
+                if (currentId === otherId) return;
+
+                var otherVals = $('#' + otherId).val() || [];
+
+                if (otherVals.includes(addedPort)) {
+                    var union = [...new Set([...currentVals, ...otherVals])];
+
+                    $('#' + otherId).val(union).trigger('change');
+
+                    if (union.length !== currentVals.length) {
+                        $('#' + currentId).val(union).trigger('change');
+                    }
+                }
+            });
+        });
+    });
+
+    portBoxes.forEach(function(currentId) {
+        $('#' + currentId).on('select2:unselect', function (e) {
+            var removedPort = e.params.data.id;
+
+            portBoxes.forEach(function(otherId) {
+                if (currentId === otherId) return;
+
+                var otherVals = $('#' + otherId).val() || [];
+
+                if (otherVals.includes(removedPort)) {
+                    var newOtherVals = otherVals.filter(function(p) { return p !== removedPort; });
+                    $('#' + otherId).val(newOtherVals).trigger('change');
+                }
+            });
+        });
+    });
 }
 
 $("#DiscoveredBoxName, #DiscoveredIPAddress, #Discoveredipaddrsubnet").on('keyup input', updateButtonState);
