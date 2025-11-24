@@ -311,17 +311,20 @@ function updatePortExclusivity() {
 
     portBoxes.forEach(function(currentId) {
         $('#' + currentId).on('select2:select', function (e) {
-            var addedPort = e.params.data.id;
             var currentVals = $('#' + currentId).val() || [];
 
             portBoxes.forEach(function(otherId) {
-                if (currentId === otherId) return;
+                if (currentId === otherId) return; 
 
                 var otherVals = $('#' + otherId).val() || [];
 
-                if (otherVals.includes(addedPort)) {
-                    var union = [...new Set([...currentVals, ...otherVals])];
+                var hasOverlap = currentVals.some(function(p) {
+                    return otherVals.includes(p);
+                });
 
+                if (hasOverlap) {
+                    var union = [...new Set([...currentVals, ...otherVals])];
+                    
                     $('#' + otherId).val(union).trigger('change');
 
                     if (union.length !== currentVals.length) {
