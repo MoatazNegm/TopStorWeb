@@ -145,6 +145,22 @@ function updaterunninghosts(status) {
                             return { id: portName.trim(), text: portName.trim() };
                         });
 
+			if (hostdata.phy_ports && Array.isArray(hostdata.phy_ports)) {
+                            basePortOptions = $.map(hostdata.phy_ports, function (portName) {
+                                if(portName.trim() !== "") {
+                                    return { id: portName.trim(), text: portName.trim() };
+                                }
+                            });
+                        } 
+                        else if (hostdata.ports && typeof hostdata.ports === 'string') {
+                             let parts = hostdata.ports.split('/');
+                             basePortOptions = $.map(parts, function (portName) {
+                                if(portName.trim() !== "") {
+                                    return { id: portName.trim(), text: portName.trim() };
+                                }
+                            });
+                        }
+
                         $('#nmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
                         $('#cmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
                         $('#dports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
