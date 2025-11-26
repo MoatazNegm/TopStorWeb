@@ -178,6 +178,11 @@ function updaterunninghosts(status) {
 
                         updatePortExclusivity();
 
+                        updateBondInfo();
+                        $('#nmports, #cmports, #dports').on('change', function() {
+                            updateBondInfo();
+                        });
+
                         $("#dataPorts").text(dPorts.length > 0 ? dPorts.join(", ") : "not set");
 
                         try {
@@ -317,6 +322,28 @@ function updateButtonState() {
         $("#updateAndJoinBtn").text("Update and Add to Cluster");
     } else {
         $("#updateAndJoinBtn").text("Add to Cluster");
+    }
+}
+
+function updateBondInfo() {
+    $("#bNode").text("bond 1");
+
+    var nmVal = ($("#nmports").val() || []).sort().join(',');
+    var cmVal = ($("#cmports").val() || []).sort().join(',');
+    var dVal = ($("#dports").val() || []).sort().join(',');
+
+    if (cmVal === nmVal && cmVal !== "") {
+        $("#bCluster").text("bond 1");
+    } else {
+        $("#bCluster").text("bond 2");
+    }
+
+    if (dVal === nmVal && dVal !== "") {
+        $("#bData").text("bond 1");
+    } else if (dVal === cmVal && dVal !== "") {
+        $("#bData").text("bond 2");
+    } else {
+        $("#bData").text("bond 3");
     }
 }
 
