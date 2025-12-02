@@ -356,7 +356,7 @@ $("#updateAndJoinBtn").on('click', async function(e) {
             await updateDiscoveredNode();
 
             console.log("Waiting 5 seconds before joining cluster...");
-            await new Promise(resolve => setTimeout(resolve, 5000));
+            await new Promise(resolve => setTimeout(resolve, 10000));
 
             console.log("Joining node to cluster...");
             joinNodeToCluster();
