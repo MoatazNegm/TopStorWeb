@@ -141,7 +141,6 @@ function updaterunninghosts(status) {
                             availablePorts = hostdata.ports[0][1].split('/');
                         }
 
-<<<<<<< HEAD
 			if (hostdata.phy_ports && Array.isArray(hostdata.phy_ports)) {
                             basePortOptions = $.map(hostdata.phy_ports, function (portName) {
                                 if(portName.trim() !== "") {
@@ -161,11 +160,6 @@ function updaterunninghosts(status) {
                         $('#nmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
                         $('#cmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
                         $('#dports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
-=======
-                        let basePortOptions = $.map(availablePorts, function (portName) {
-                            return { id: portName.trim(), text: portName.trim() };
-                        });
->>>>>>> QSD4.124
 
                         if (hostdata.phy_ports && Array.isArray(hostdata.phy_ports)) {
                             basePortOptions = $.map(hostdata.phy_ports, function (portName) {
@@ -183,7 +177,6 @@ function updaterunninghosts(status) {
                             });
                         }
 
-<<<<<<< HEAD
                         $('#nmports').val(nmPorts).trigger('change');
                         $('#cmports').val(cmPorts).trigger('change');
                         $('#dports').val(dPorts).trigger('change');
@@ -196,22 +189,6 @@ function updaterunninghosts(status) {
                         });
 
                         $("#dataPorts").text(dPorts.length > 0 ? dPorts.join(", ") : "not set");
-=======
-                        $('#nmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
-                        $('#cmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
-                        $('#dports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
-
-                        var nmPorts = hostdata.nmports ? hostdata.nmports.split(',') : [];
-                        var cmPorts = hostdata.cmports ? hostdata.cmports.split(',') : [];
-                        var dPorts = hostdata.dports || hostdata.dataport || [];
-                        if (typeof dPorts === 'string') {
-                            dPorts = dPorts.split(',');
-                        }
-
-                        $('#nmports').val(nmPorts).trigger('change');
-                        $('#cmports').val(cmPorts).trigger('change');
-                        $('#dports').val(dPorts).trigger('change');
->>>>>>> QSD4.124
 
                         updatePortExclusivity();
 
@@ -363,11 +340,7 @@ function updateButtonState() {
 }
 
 function updateBondInfo() {
-<<<<<<< HEAD
     $("#bNode").text("bond 1"); // Node always bond 1
-=======
-    $("#bNode").text("bond 1");
->>>>>>> QSD4.124
 
     var nmVal = ($("#nmports").val() || []).sort().join(',');
     var cmVal = ($("#cmports").val() || []).sort().join(',');
@@ -602,7 +575,6 @@ $("#readysubmit").click(function (ev) {
                 tochange = 1;
             }
         }
-<<<<<<< HEAD
         if ($("#TZ").val() != "-100") {
                 var tzflag = 0;
                 try {
@@ -682,89 +654,6 @@ $("#readysubmit").click(function (ev) {
                 console.log('tochange',apidata)
                 postdata(apiurl, apidata);
         }
-=======
-	if ($("#TZ").val() != "-100") {
-		var tzflag = 0;
-		try {
-			if (
-				$("#TZ option:selected").text() !=
-				hostconfig["tz"].split("%")[1].replace("!", ":").replace(/\^/g, ",").replace(/_/g, " ")
-			) {
-				tzflag = 1;
-			}
-		} catch {
-			tzflag = 1;
-		}
-		if (tzflag > 0) {
-			hostsubmit["tz"] =
-				$("#TZ option:selected").attr("city") +
-				"%" +
-				$("#TZ option:selected")
-					.text()
-					.split(" ")
-					.join("_")
-					.split(",")
-					.join("^")
-					.split(":")
-					.join("!");
-			tochange = 1;
-		}
-	}
-	if (
-		$("#NTP").val().length > 3 &&
-		$("#NTP").val().includes("__") < 1 &&
-		$("#NTP").val() != hostconfig["ntp"]
-	) {
-		hostsubmit["ntp"] = $("#NTP").val();
-		tochange = 1;
-	}
-	if ($("#NTPname").val().length > 3 && $("#NTPname").val() != hostconfig["ntp"]) {
-		hostsubmit["ntp"] = $("#NTPname").val();
-		tochange = 1;
-	}
-	if (
-		$("#GW").val().length > 3 &&
-		$("#GW").val().includes("__") < 1 &&
-		$("#GW").val() != hostconfig["gw"]
-	) {
-		hostsubmit["gw"] = $("#GW").val();
-		tochange = 1;
-	}
-	if (
-		$("#DNSname").val().length > 3 &&
-		$("#DNSname").val().includes("__") < 1 &&
-		$("#DNSname").val() != hostconfig["dnsname"]
-	) {
-		hostsubmit["dnsname"] = $("#DNSname").val();
-		hostsubmit["dnssearch"] = $("#DNSsearch").val();
-		tochange = 1;
-	}
-	if ($("#DNSsearch").val().length > 3 && $("#DNSsearch").val() != hostconfig["dnssearch"]) {
-		hostsubmit["dnssearch"] = $("#DNSsearch").val();
-		hostsubmit["dnsname"] = $("#DNSname").val();
-		tochange = 1;
-	}
-	if ($("#customSwitch1").prop("checked") == false && hostconfig["configured"] == "no") {
-		hostsubmit["configured"] = "yes";
-		tochange = 1;
-	}
-	if ($("#customSwitch1").prop("checked") == true && hostconfig["configured"] != "no") {
-		hostsubmit["configured"] = "no";
-		tochange = 1;
-	}
-	console.log('hostsubmit',hostsubmit);
-	
-	if (tochange > 0) {
-		hostsubmit["id"] = $("#readysubmit").data("selected");
-		hostsubmit["user"] = "mezo";
-		hostsubmit["name"] = allhosts["ready"][selstatus]["name"];
-		hostsubmit['token'] = hypetoken
-		var apiurl = "api/v1/hosts/config";
-		var apidata = hostsubmit;
-		console.log('tochange',apidata)
-		postdata(apiurl, apidata);
-	}
->>>>>>> QSD4.122
 });
 
 var  ajaxPromises = [];
