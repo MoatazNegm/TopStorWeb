@@ -89,15 +89,14 @@ function updatediscoverednodes(status) {
     if (status == "possible") {
         if (selectedhost[status] == "-1") {
             $(".discoverednodes").attr("disabled", "disabled");
-            $("#possiblesubmit").attr("disabled", true);
-            $("#updatenode").attr("disabled", true);
+            $("#updateAndJoinBtn").attr("disabled", true).text("Add to Cluster");
             $("#DiscoveredNodePorts option").remove();
             var nodePort = new Option("Port", "Port");
             $("#DiscoveredNodePorts").append(nodePort).css("color", "#939ba2");
         } else {
             var hostdata = allhosts[status][selectedhost[status]];
             $(".discoverednodes").attr("disabled", false);
-            $("#possiblesubmit").attr("disabled", false);
+            $("#updateAndJoinBtn").attr("disabled", false).text("Add to Cluster");
             $("#updatenode").attr("disabled", false);
 
             $("#DiscoveredBoxName").val(hostdata["alias"]);
@@ -106,7 +105,7 @@ function updatediscoverednodes(status) {
 
             $("#DiscoveredNodePorts option").remove();
             $("#DiscoveredNodePorts").css("color", "");
-            $("#updatenode").data("selected", selectedhost[status]);
+            $("#updateAndJoinBtn").data("selected", selectedhost[status]);
         }
     }
 }
@@ -142,13 +141,44 @@ function updaterunninghosts(status) {
 			    availablePorts = hostdata.ports[0][1].split('/'); 
 			}
 
-			let select2PortOptions = $.map(availablePorts, function (portName) {
-			    return { id: portName.trim(), text: portName.trim() };
+			let basePortOptions = $.map(availablePorts, function (portName) {
+   			    return { id: portName.trim(), text: portName.trim() };
 			});
 
-			$('#nmports').empty().select2({ data: select2PortOptions, placeholder: "Select ports" });
-			$('#cmports').empty().select2({ data: select2PortOptions, placeholder: "Select ports" });
-			$('#dports').empty().select2({ data: select2PortOptions, placeholder: "Select ports" });
+			const updateSelectOptions = (selector, currentValue, disabledPorts) => {
+			    const newOptions = basePortOptions.map(opt => {
+			        const portName = opt.id;
+			        const isSelectedByMe = currentValue.includes(portName);
+			        const isDisabled = disabledPorts.includes(portName) && !isSelectedByMe;
+			        return { id: portName, text: portName, disabled: isDisabled };
+			    });
+			    $(selector).empty().select2({ 
+			        data: newOptions, 
+			        placeholder: "Select ports" 
+			    }).val(currentValue).trigger('change.select2'); // Use 'change.select2' to avoid event loop
+			};
+
+			const updatePortExclusivity = () => {
+			    const nmVal = $('#nmports').val() || [];
+			    const cmVal = $('#cmports').val() || [];
+			    const dVal = $('#dports').val() || [];
+
+			    const portsForNm = [...cmVal, ...dVal]; // Ports used by cm and d
+			    const portsForCm = [...nmVal, ...dVal]; // Ports used by nm and d
+			    const portsForD = [...nmVal, ...cmVal]; // Ports used by nm and cm
+
+			    updateSelectOptions('#nmports', nmVal, portsForNm);
+			    updateSelectOptions('#cmports', cmVal, portsForCm);
+			    updateSelectOptions('#dports', dVal, portsForD);
+			};
+
+			$('#nmports, #cmports, #dports').off('change');
+
+			$('#nmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
+			$('#cmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
+			$('#dports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
+
+//			$('#nmports, #cmports, #dports').on('change', updatePortExclusivity);
 
 			var nmPorts = hostdata.nmports ? hostdata.nmports.split(',') : [];
 			var cmPorts = hostdata.cmports ? hostdata.cmports.split(',') : [];
@@ -157,9 +187,16 @@ function updaterunninghosts(status) {
 			    dPorts = dPorts.split(',');
 			}
 
-			$('#nmports').val(nmPorts).trigger('change');
-			$('#cmports').val(cmPorts).trigger('change');
-			$('#dports').val(dPorts).trigger('change');
+//			$('#nmports').val(nmPorts).trigger('change');
+//			$('#cmports').val(cmPorts).trigger('change');
+//			$('#dports').val(dPorts).trigger('change');
+
+			$('#nmports').val(nmPorts);
+                        $('#cmports').val(cmPorts);
+                        $('#dports').val(dPorts);
+
+			updatePortExclusivity();
+			$('#nmports, #cmports, #dports').on('change', updatePortExclusivity);
 
 			$("#dataPorts").text(dPorts.length > 0 ? dPorts.join(", ") : "not set");
 
@@ -229,55 +266,110 @@ function evacuate() {
 	postdata(apiurl, apidata);
 }
 
-$("#updatenode").click(function (e) {
-    e.preventDefault();
-    var tochange = 0;
-    var selstatus = $("#updatenode").data("selected");
-    var hostdata = allhosts["possible"][selstatus];
-    console.log("selstatus:", selstatus, "hostdata:", hostdata, "hostsinfo:", hostsinfo);
-    var hostconfig = JSON.parse(JSON.stringify(hostdata));
+function updateDiscoveredNode() {
+    return new Promise((resolve) => {
+        let tochange = 0;
+        var selstatus = $("#updateAndJoinBtn").data("selected");
+        var hostdata = allhosts["possible"][selstatus];
+        console.log("selstatus: ", selstatus, "hostdata: ", hostdata, "hostsinfo: ", hostsinfo);
+        var hostconfig = JSON.parse(JSON.stringify(hostdata));
+        var hostsubmit = {};
 
-    var hostsubmit = {};
-
-    if ($("#DiscoveredBoxName").val().length > 3 &&
-        $("#DiscoveredBoxName").val() != hostconfig["alias"]) {
-        hostsubmit["alias"] = $("#DiscoveredBoxName").val();
-        tochange = 1;
-    }
-
-    if ($("#DiscoveredIPAddress").val().length > 3 &&
-        $("#DiscoveredIPAddress").val().includes("__") < 1) {
-        let newip = $("#DiscoveredIPAddress").val();
-        let newsub = $("#Discoveredipaddrsubnet").val();
-        let oldip = hostconfig["ipaddr"];
-        let oldsub = hostconfig["ipaddrsubnet"];
-
-        if (newip != oldip || newsub != oldsub) {
-            hostsubmit["ipaddr"] = newip;
-            hostsubmit["ipaddrsubnet"] = newsub;
+        if ($("#DiscoveredBoxName").val().length > 3 && $("#DiscoveredBoxName").val() !== hostconfig["alias"]) {
+            hostsubmit["alias"] = $("#DiscoveredBoxName").val();
             tochange = 1;
         }
+
+        if ($("#DiscoveredIPAddress").val().length > 3 && !$("#DiscoveredIPAddress").val().includes("__")) {
+            let newip = $("#DiscoveredIPAddress").val();
+            let newsub = $("#Discoveredipaddrsubnet").val();
+            if (newip !== hostconfig["ipaddr"] || newsub !== hostconfig["ipaddrsubnet"]) {
+                hostsubmit["ipaddr"] = newip;
+                hostsubmit["ipaddrsubnet"] = newsub;
+                let oldip = hostconfig["ipaddr"];
+                let oldsub = hostconfig["ipaddrsubnet"];
+                if (newip != oldip || newsub != oldsub) {
+                    hostsubmit["ipaddr"] = newip;
+                    hostsubmit["ipaddrsubnet"] = newsub;
+                    tochange = 1;
+                }
+            }
+        }
+
+        if (tochange > 0) {
+            hostsubmit["id"] = selstatus;
+            hostsubmit["user"] = "mezo";
+            hostsubmit["name"] = allhosts["possible"][selstatus]["name"];
+            hostsubmit["token"] = hypetoken;
+            hostsubmit["discovered"] = true;
+
+            var apiurl = "api/v1/hosts/config";
+            var apidata = hostsubmit;
+            console.log("Sending discovered node update (fire-and-forget):", apidata);
+
+            postdata(apiurl, apidata);
+            resolve("Update request sent.");
+        } else {
+            console.log("No changes detected, skipping update.");
+            resolve("No update needed."); // Resolve immediately if no data changed
+        }
+    });
+}
+
+function joinNodeToCluster() {
+    const hostIndex = selectedhost["possible"];
+    if (hostIndex === "-1" || !allhosts["possible"][hostIndex]) {
+        console.error("No valid node selected to join cluster.");
+        return;
     }
+    const apiurl = "api/v1/hosts/joincluster";
+    const apidata = { name: allhosts["possible"][hostIndex]["name"], 'token': hypetoken };
+    console.log("Joining node to cluster:", apidata);
+    postdata(apiurl, apidata);
+}
 
-    if (tochange > 0) {
-        hostsubmit["id"] = selstatus;
-        hostsubmit["user"] = "mezo";
-        hostsubmit["name"] = allhosts["possible"][selstatus]["name"];
-        hostsubmit["token"] = hypetoken;
-        hostsubmit["discovered"] = true
+function updateButtonState() {
+    const nameVal = $("#DiscoveredBoxName").val() || "";
+    const ipVal = $("#DiscoveredIPAddress").val() || "";
+    const hasData = nameVal.trim().length > 0 || (ipVal.trim().length > 0 && !ipVal.includes('_'));
 
-	var apiurl = "api/v1/hosts/config";
-        var apidata = hostsubmit;
-        console.log("discovered node update", apidata);
-        postdata(apiurl, apidata);
+    if (hasData) {
+        $("#updateAndJoinBtn").text("Update and Add to Cluster");
+    } else {
+        $("#updateAndJoinBtn").text("Add to Cluster");
     }
-});
+}
 
-$("#possiblesubmit").click(function (e) {
-	var host = selectedhost["possible"];
-	var apiurl = "api/v1/hosts/joincluster";
-	var apidata = { name: allhosts["possible"][host]["name"],'token':hypetoken };
-	postdata(apiurl, apidata);
+$("#DiscoveredBoxName, #DiscoveredIPAddress, #Discoveredipaddrsubnet").on('keyup input', updateButtonState);
+
+$("#updateAndJoinBtn").on('click', async function(e) {
+    e.preventDefault();
+    $(this).attr("disabled", true); // Disable button to prevent double-clicks
+
+    const nameVal = $("#DiscoveredBoxName").val() || "";
+    const ipVal = $("#DiscoveredIPAddress").val() || "";
+    const hasData = nameVal.trim().length > 0 || (ipVal.trim().length > 0 && !ipVal.includes('_'));
+
+    if (hasData) {
+        try {
+            console.log("Starting node update...");
+            await updateDiscoveredNode();
+
+            console.log("Waiting 5 seconds before joining cluster...");
+            await new Promise(resolve => setTimeout(resolve, 5000));
+
+            console.log("Joining node to cluster...");
+            joinNodeToCluster();
+
+        } catch (error) {
+            console.error("An error occurred during the update. Aborting join process.", error);
+            $(this).attr("disabled", false); // Re-enable button on failure
+        }
+    } else {
+        console.log("No data in fields. Joining cluster directly.");
+        joinNodeToCluster();
+        $(this).attr("disabled", false); // Re-enable button
+    }
 });
 
 $(".refresh").click(function (e) {
@@ -482,6 +574,8 @@ $("#readysubmit").click(function (ev) {
 		hostsubmit["configured"] = "no";
 		tochange = 1;
 	}
+	console.log('hostsubmit',hostsubmit);
+	
 	if (tochange > 0) {
 		hostsubmit["id"] = $("#readysubmit").data("selected");
 		hostsubmit["user"] = "mezo";
