@@ -623,15 +623,21 @@
                   </div>
                 </div>
                 <div class='row'>
-                  <div class='col-12'>
-                    <button id="createpool" type="submit" class="btn btn-primary form-control" disabled>Create Pool</button>
-                  </div>
+                    <div class='col-6'>
+                        <div class="form-check" style="margin-bottom: 10px; text-align: left;">
+                            <input class="form-check-input" type="checkbox" id="includeCache">
+                            <label class="form-check-label" for="includeCache" style="font-weight: bold;">
+                Include Cache Disk
+                            </label>
+                        </div>
+                        <button id="createpool" type="submit" class="btn btn-primary form-control" disabled>Create Pool</button>
+                    </div>
+                    <div class='col-6'>
+                        <div style="margin-top: 34px;"> 
+                            <button id="saveCacheSpares" class="btn btn-warning form-control" disabled>Create Spare Cache List</button>
+                        </div>
+                    </div>
                 </div>
-               
-                
-                   
-          
-
 
                     <div id='divsingle' class='col-3 newraid' style="margin-bottom: 1rem; display:none;">
                       <label for="poolcreatesingle" class=" control-label"><h6 style="margin-bottom:0px;">Usable size:
@@ -705,6 +711,35 @@
             </div> <!-- /.card -->
           </div>
         </div>
+	<div id="cachepools" class="row">
+	   <div class="col-md-12">
+      	<div class="card card-outline card-primary datacard">
+	         <div class="card-header" style="cursor: cell;">
+	            <div class="card-tools" >
+	               <button type="button" class="btn btn-tool "  data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+	            </div>
+	            <div class="row" data-card-widget="collapse">
+	               <div class='col-5'>
+	                  <h3 class="card-title text-lg cardshead" >Spare Cache Disks</h3>
+	               </div>
+	            </div>
+	         </div>
+	         <div class="card-header">
+	            <div id="cachedisksfree" class="row cachedisks">
+	            </div>
+	         </div>
+	         <div class="card-body" >
+	            <div class='row'>
+	               <div class='col-12'>
+	                  <button id="removeCacheSpares" type="button" class="btn btn-danger form-control" disabled>Remove Selected Cache Spares</button>
+	               </div>
+	            </div>
+	         </div>
+	      </div>
+	   </div>
+	</div>
+
+
         
       </div> <!-- /.container-fluid -->
     </div> <!-- /.content -->

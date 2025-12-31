@@ -561,6 +561,7 @@ $("#readysubmit").click(function (ev) {
                 tochange = 1;
             }
         }
+<<<<<<< HEAD
         if ($("#TZ").val() != "-100") {
                 var tzflag = 0;
                 try {
@@ -640,6 +641,89 @@ $("#readysubmit").click(function (ev) {
                 console.log('tochange',apidata)
                 postdata(apiurl, apidata);
         }
+=======
+	if ($("#TZ").val() != "-100") {
+		var tzflag = 0;
+		try {
+			if (
+				$("#TZ option:selected").text() !=
+				hostconfig["tz"].split("%")[1].replace("!", ":").replace(/\^/g, ",").replace(/_/g, " ")
+			) {
+				tzflag = 1;
+			}
+		} catch {
+			tzflag = 1;
+		}
+		if (tzflag > 0) {
+			hostsubmit["tz"] =
+				$("#TZ option:selected").attr("city") +
+				"%" +
+				$("#TZ option:selected")
+					.text()
+					.split(" ")
+					.join("_")
+					.split(",")
+					.join("^")
+					.split(":")
+					.join("!");
+			tochange = 1;
+		}
+	}
+	if (
+		$("#NTP").val().length > 3 &&
+		$("#NTP").val().includes("__") < 1 &&
+		$("#NTP").val() != hostconfig["ntp"]
+	) {
+		hostsubmit["ntp"] = $("#NTP").val();
+		tochange = 1;
+	}
+	if ($("#NTPname").val().length > 3 && $("#NTPname").val() != hostconfig["ntp"]) {
+		hostsubmit["ntp"] = $("#NTPname").val();
+		tochange = 1;
+	}
+	if (
+		$("#GW").val().length > 3 &&
+		$("#GW").val().includes("__") < 1 &&
+		$("#GW").val() != hostconfig["gw"]
+	) {
+		hostsubmit["gw"] = $("#GW").val();
+		tochange = 1;
+	}
+	if (
+		$("#DNSname").val().length > 3 &&
+		$("#DNSname").val().includes("__") < 1 &&
+		$("#DNSname").val() != hostconfig["dnsname"]
+	) {
+		hostsubmit["dnsname"] = $("#DNSname").val();
+		hostsubmit["dnssearch"] = $("#DNSsearch").val();
+		tochange = 1;
+	}
+	if ($("#DNSsearch").val().length > 3 && $("#DNSsearch").val() != hostconfig["dnssearch"]) {
+		hostsubmit["dnssearch"] = $("#DNSsearch").val();
+		hostsubmit["dnsname"] = $("#DNSname").val();
+		tochange = 1;
+	}
+	if ($("#customSwitch1").prop("checked") == false && hostconfig["configured"] == "no") {
+		hostsubmit["configured"] = "yes";
+		tochange = 1;
+	}
+	if ($("#customSwitch1").prop("checked") == true && hostconfig["configured"] != "no") {
+		hostsubmit["configured"] = "no";
+		tochange = 1;
+	}
+	console.log('hostsubmit',hostsubmit);
+	
+	if (tochange > 0) {
+		hostsubmit["id"] = $("#readysubmit").data("selected");
+		hostsubmit["user"] = "mezo";
+		hostsubmit["name"] = allhosts["ready"][selstatus]["name"];
+		hostsubmit['token'] = hypetoken
+		var apiurl = "api/v1/hosts/config";
+		var apidata = hostsubmit;
+		console.log('tochange',apidata)
+		postdata(apiurl, apidata);
+	}
+>>>>>>> QSD4.122
 });
 
 var  ajaxPromises = [];

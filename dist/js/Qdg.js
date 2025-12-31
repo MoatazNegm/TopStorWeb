@@ -36,7 +36,46 @@ function getdgs() {
 $(".newraid input").click(function (e) {
 	$("#createpool").attr("disabled", false);
 	$("#createpool").data("redundancy", $(this).prop("id"));
+	updatePoolButtonStates();	
 });
+
+
+function updatePoolButtonStates() {
+        var $selectedDisks = $(".freedisks img.SelectedFreered");
+        var $cacheDisks = $selectedDisks.filter('.SelectedCache');
+        var totalSelected = $selectedDisks.length;
+        var totalCache = $cacheDisks.length;
+        var totalData = totalSelected - totalCache;
+
+        // --- Logic for #saveCacheSpares ---
+        if (totalSelected > 0 && totalData === 0) {
+                $("#saveCacheSpares").attr("disabled", false);
+        } else {
+                $("#saveCacheSpares").attr("disabled", true);
+        }
+
+        // --- Logic for #createpool ---
+        //var redundancySelected = $("#createpool").data("redundancy");
+
+        //if (totalSelected > totalCache || totalSelected == 0) {
+        //        $("#createpool").attr("disabled", false);
+        //} else {
+        //        $("#createpool").attr("disabled", true);
+        //}
+}
+
+
+function updateCacheButtonsState() {
+        var $selectedCacheDisks = $("#cachedisksfree img.SelectedFreered");
+        var totalSelected = $selectedCacheDisks.length;
+
+        if (totalSelected > 0) {
+                $("#removeCacheSpares").attr("disabled", false);
+        } else {
+                $("#removeCacheSpares").attr("disabled", true);
+        }
+}
+
 
 //$(".addraid").click(function(){ console.log(this); $(this).find('input').prop('checked','checked'); });
 function setdeletesequence(pool) {
@@ -389,61 +428,137 @@ function initdgs() {
 	$(".newraid").hide();
 	$(".newraid option").remove();
 	if ("free" in alldgs["raids"]) {
-		$.each(alldgs["raids"]["free"]["disks"], function (e, disk) {
-			shortdisk = disk.slice(-5);
-			status = alldgs["disks"][disk]["status"];
-			host = alldgs["disks"][disk]["host"];
-			changeop = alldgs["disks"][disk]["changeop"];
-			size = parseFloat(alldgs["disks"][disk]["size"]).toFixed(2);
-			if (status.includes("free")) {
-				imgf = "disk-image.png";
-			} else {
-				imgf = "invaliddisk.png";
-			}
-			$(".freedisks").append(
-				'<div id="' +
-					disk +
-					'" data-disk="' +
-					disk +
-					'" class=" col-' +
-					col +
-					" " +
-					status +
-					" " +
-					changeop +
-					'">' +
-					"  <a href=\"javascript:memberclick('#" +
-					disk +
-					'\')" class="img-clck" >' +
-					'     <img class="img412 imgstyle ' +
-					diskimg +
-					" " +
-					disk +
-					'" src="img/' +
-					imgf +
-					'" />' +
-					'  <p class="psize">' +
-					size +
-					'</p></a><p class="pimage">' +
-					shortdisk +
-					"</p>" +
-					//+' <p class="pimage">'+changeop+'</p><p class="pimage">'+e+'</p>'
-					"  </a>" +
-					"</div>"
-			);
-		});
-		$.each(alldgs["newraid"], function (e, t) {
-			if (e == "single") {
-				if (Object.keys(t).length > 0) {
-					$.each(t, function (psize, value) {
-						var size = psize.slice(0, 5);
-						var o = new Option((size * 0.9).toString().slice(0, 5), size);
-						$("#selectsingle").append(o);
-					});
-				}
-				$(".divsingle").show();
-			} else {
-				if (Object.keys(t).length > 0 ) {
+                $.each(alldgs["raids"]["free"]["disks"], function (e, disk) {
+                        shortdisk = disk.slice(-5);
+                        status = alldgs["disks"][disk]["status"];
+                        host = alldgs["disks"][disk]["host"];
+                        changeop = alldgs["disks"][disk]["changeop"];
+                        size = parseFloat(alldgs["disks"][disk]["size"]).toFixed(2);
+                        if (status.includes("free")) {
+                                imgf = "disk-image.png";
+                        } else {
+                                imgf = "invaliddisk.png";
+                        }
+                        var diskHtml = 
+                                '<div id="' +
+                                        disk +
+                                        '" data-disk="' +
+                                        disk +
+                                        '" class=" col-' +
+                                        col +
+                                        " " +
+                                        status +
+                                        " " +
+                                        changeop +
+                                        '" style="position: relative;">' +
+                                        '<p class="cache-label" style="display: none; position: absolute; top: 0; left: 5px; background-color: rgba(255,0,0,0.7); color: white; font-weight: bold; padding: 2px 5px; z-index: 10; border-radius: 3px;">CACHE</p>' +
+                                        "  <a href=\"javascript:memberclick('#" +
+                                        disk +
+                                        '\')" class="img-clck" >' +
+                                        '     <img class="img412 imgstyle ' +
+                                        diskimg +
+                                        " " +
+                                        disk +
+                                        '" src="img/' +
+                                        imgf +
+                                        '" />' +
+                                        '  <p class="psize">' +
+                                        size +
+                                        '</p></a><p class="pimage">' +
+                                        shortdisk +
+                                        "</p>" +
+                                        "  </a>" +
+                                        "</div>";
+
+                        $(".freedisks").append(diskHtml);
+
+                        $("#" + disk).on('contextmenu', function(e) {
+                                e.preventDefault();
+                                var $img = $(this).find('img');
+                                var $label = $(this).find('.cache-label');
+
+                                if ($img.hasClass('SelectedCache')) {
+                                        $img.removeClass('SelectedCache SelectedFreered');
+                                        $img.addClass('SelectedFreewhite');
+                                        $label.hide();
+                                } else {
+                                        $img.removeClass('SelectedFreewhite SelectedFreered');
+                                        $img.addClass('SelectedCache SelectedFreered'); 
+                                        $label.show();
+                                }
+                                updatePoolButtonStates();
+                        });
+                });
+        }
+        // --- END OF FREE DISK POPULATION ---
+
+        // --- START OF CACHE DISK POPULATION ---
+	$("#cachedisksfree").children().remove();
+
+        if ("cache_pree" in alldgs["raids"]) {
+                $.each(alldgs["raids"]["cache_pree"]["disks"], function (e, disk) {
+                        shortdisk = disk.slice(-5);
+                        status = alldgs["disks"][disk]["status"];
+                        host = alldgs["disks"][disk]["host"];
+                        changeop = alldgs["disks"][disk]["changeop"];
+                        size = parseFloat(alldgs["disks"][disk]["size"]).toFixed(2);
+                        
+                        // Use the same image logic as free disks
+                        if (status.includes("cache")) {
+                                imgf = "disk-image.png";
+                        } else {
+                                imgf = "invaliddisk.png";
+                        }
+
+                        // Create the HTML structure for the cache disk
+                        var cacheDiskHtml = 
+                                '<div id="' +
+                                        disk + '_cache" ' + 
+                                        'data-disk="' +
+                                        disk +
+                                        '" class=" col-' +
+                                        col + // Use the same column class for layout
+                                        " " +
+                                        status +
+                                        " " +
+                                        changeop +
+					'" style="position: relative;">' +
+					"  <a href=\"javascript:memberclickCache('#" + 
+        	                        disk + "_cache')\" class=\"img-clck\" >" + 
+	                                '     <img class="img412 imgstyle ' +
+                                        diskimg +
+                                        " " +
+                                        disk +
+                                        ' SelectedFreewhite" src="img/' +
+                                        imgf +
+                                        '" />' +
+                                        '  <p class="psize">' +
+                                        size +
+                                        '</p></a><p class="pimage">' +
+                                        shortdisk +
+                                        "</p>" +
+                                        "  </a>" +
+                                        "</div>";
+
+                        $("#cachedisksfree").append(cacheDiskHtml);
+			updateCacheButtonsState();
+                });
+        }
+        // --- END OF CACHE DISK POPULATION ---
+
+
+        $.each(alldgs["newraid"], function (e, t) {
+                        if (e == "single") {
+                                if (Object.keys(t).length > 0) {
+                                        $.each(t, function (psize, value) {
+                                                var size = psize.slice(0, 5);
+                                                var o = new Option((size * 0.9).toString().slice(0, 5), size);
+                                                $("#selectsingle").append(o);
+                                        });
+                                }
+                                $(".divsingle").show();
+                        } else {
+                                if (Object.keys(t).length > 0 ) {
                                         $.each(t, function (psize, raid) {
                                                 var diskcount = raid["diskcount"];
                                                 var size = psize.slice(0, 5);
@@ -459,12 +574,12 @@ function initdgs() {
                                 {
                                         $(".div" + e).show();
                                 }
-			}
-		});
-	}
-	$("tr:visible").each(function (index) {
-		$(this).css("background-color", !!(index & 1) ? "rgba(0,0,0,.05)" : "rgba(0,0,0,0)");
-	});
+                        }
+                });
+        
+        $("tr:visible").each(function (index) {
+                $(this).css("background-color", !!(index & 1) ? "rgba(0,0,0,.05)" : "rgba(0,0,0,0)");
+        });
 }
 firstRequestsInterval = setInterval(() => {
 	if (firstRequests <= 0) {
@@ -488,12 +603,98 @@ function adelpool(pool) {
 
 $("#createpool").click(function (e) {
 	e.preventDefault();
+
+	var dataDisks = [];
+	var cacheDisks = [];
+
+	$(".freedisks img.SelectedFreered").each(function () {
+		var $img = $(this);
+		var diskId = $img.closest('[data-disk]').data('disk');
+
+		if ($img.hasClass('SelectedCache')) {
+			cacheDisks.push(diskId);
+		} else {
+			dataDisks.push(diskId);
+		}
+	});
+
+	// --- Validation ---
+	//if (dataDisks.length === 0) {
+	//	alert("Please select at least one data disk to create the pool.");
+	//	return;
+	//}
+	
+	var includeCache = $("#includeCache").is(":checked");
+
 	var apiurl = "api/v1/pools/newpool";
 	var redundancy = $(this).data("redundancy");
 	var useable = $("#select" + redundancy).val();
-	var apidata = { redundancy: $(this).data("redundancy"), useable: useable, 'token': hypetoken, user: "mezo" };
+
+	var apidata = {
+		redundancy: redundancy,
+		useable: useable,
+		disks: dataDisks,
+		cache: cacheDisks,
+		cache_bool: includeCache,
+		'token': hypetoken,
+		user: "mezo"
+	};
+
+	console.log("Creating pool with:", apidata);
 	postdata(apiurl, apidata);
 });
+
+$("#saveCacheSpares").click(function(e) {
+	e.preventDefault();
+
+	var apiurl = "api/v1/pools/cachespares";
+	var cacheDisks = [];
+
+	$(".freedisks img.SelectedFreered.SelectedCache").each(function () {
+		var diskId = $(this).closest('[data-disk]').data('disk');
+		if (diskId) {
+			cacheDisks.push(diskId);
+		}
+	});
+
+	var apidata = {
+		cache_disks: cacheDisks,
+		token: hypetoken,
+		user: "mezo"
+	};
+
+	console.log("Saving cache spares list with:", apidata);
+	postdata(apiurl, apidata);
+});
+
+$("#removeCacheSpares").click(function(e) {
+        e.preventDefault();
+
+        var apiurl = "api/v1/pools/delcachespares"; 
+        var cacheDisksToRemove = [];
+
+        $("#cachedisksfree img.SelectedFreered").each(function () {
+                var diskId = $(this).closest('[data-disk]').data('disk');
+                if (diskId) {
+                        cacheDisksToRemove.push(diskId);
+                }
+        });
+
+        if (cacheDisksToRemove.length === 0) {
+                console.log("No cache disks selected for removal.");
+                return;
+        }
+
+        var apidata = {
+                cache_disks: cacheDisksToRemove,
+                token: hypetoken,
+                user: "mezo"
+        };
+
+        console.log("Removing cache spares:", apidata);
+        postdata(apiurl, apidata);
+});
+
 //$('.addtopool').click(function(e){
 $("body").on("click", ".addtopool", function (e) {
 	e.preventDefault();
@@ -507,24 +708,46 @@ $("body").on("click", ".addtopool", function (e) {
 });
 
 
-
 function memberclick(thisclck) {
-	//hname=$(thisclck).attr('data-disk');
-	var hname = thisclck;
-	if ($(thisclck + " img").hasClass("SelectedFreered") > 0) {
-		$(thisclck + " img").removeClass("SelectedFreered");
-		$(thisclck + " img").addClass("SelectedFreewhite");
+	var $img = $(thisclck + " img");
+	var $label = $(thisclck).find('.cache-label');
+
+	if ($img.hasClass('SelectedCache')) {
+		console.log("This is a cache disk. Right-click to change.");
+		return;
+	}
+
+	if ($img.hasClass("SelectedFreered")) {
+		$img.removeClass("SelectedFreered");
+		$img.addClass("SelectedFreewhite");
 		selhosts = "";
 		$("#RhostForget").attr("disabled", true);
 	} else {
 		$("img.server").removeClass("SelectedFreered");
 		$("img.server").addClass("SelectedFreewhite");
-		$(thisclck + " img").removeClass("SelectedFreewhite");
-		$(thisclck + " img").addClass("SelectedFreered");
-		selhosts = hname;
+
+		$img.removeClass("SelectedFreewhite");
+		$img.addClass("SelectedFreered");
+		selhosts = $(thisclck).data('disk');
 		$("#RhostForget").attr("disabled", false);
 	}
+	updatePoolButtonStates();
 }
+
+
+function memberclickCache(thisclck) {
+        var $img = $(thisclck + " img");
+        
+        if ($img.hasClass("SelectedFreered")) {
+                $img.removeClass("SelectedFreered");
+                $img.addClass("SelectedFreewhite");
+        } else {
+                $img.removeClass("SelectedFreewhite");
+                $img.addClass("SelectedFreered");
+        }
+        updateCacheButtonsState();
+}
+
 
 function getChanges(prev, now) {
 	var changes = {};
