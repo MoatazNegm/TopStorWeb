@@ -141,6 +141,10 @@ function updaterunninghosts(status) {
                             availablePorts = hostdata.ports[0][1].split('/');
                         }
 
+			let basePortOptions = $.map(availablePorts, function (portName) {
+                            return { id: portName.trim(), text: portName.trim() };
+                        });
+
 			if (hostdata.phy_ports && Array.isArray(hostdata.phy_ports)) {
                             basePortOptions = $.map(hostdata.phy_ports, function (portName) {
                                 if(portName.trim() !== "") {
@@ -161,21 +165,12 @@ function updaterunninghosts(status) {
                         $('#cmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
                         $('#dports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
 
-                        if (hostdata.phy_ports && Array.isArray(hostdata.phy_ports)) {
-                            basePortOptions = $.map(hostdata.phy_ports, function (portName) {
-                                if(portName.trim() !== "") {
-                                    return { id: portName.trim(), text: portName.trim() };
-                                }
-                            });
-                        } 
-                        else if (hostdata.ports && typeof hostdata.ports === 'string') {
-                             let parts = hostdata.ports.split('/');
-                             basePortOptions = $.map(parts, function (portName) {
-                                if(portName.trim() !== "") {
-                                    return { id: portName.trim(), text: portName.trim() };
-                                }
-                            });
-                        }
+			var nmPorts = hostdata.nmports ? hostdata.nmports.split(',') : [];
+                        var cmPorts = hostdata.cmports ? hostdata.cmports.split(',') : [];
+                        var dPorts = hostdata.dports || hostdata.dataport || [];
+                        if (typeof dPorts === 'string') {
+                            dPorts = dPorts.split(',');
+                        }
 
                         $('#nmports').val(nmPorts).trigger('change');
                         $('#cmports').val(cmPorts).trigger('change');
@@ -279,7 +274,7 @@ function updateDiscoveredNode() {
             tochange = 1;
         }
 
-        if ($("#DiscoveredIPAddress").val().length > 3 && !$("#DiscoveredIPAddress").val().includes("")) {
+        if ($("#DiscoveredIPAddress").val().length > 3 && !$("#DiscoveredIPAddress").val().includes("__")) {
             let newip = $("#DiscoveredIPAddress").val();
             let newsub = $("#Discoveredipaddrsubnet").val();
             if (newip !== hostconfig["ipaddr"] || newsub !== hostconfig["ipaddrsubnet"]) {
@@ -529,7 +524,7 @@ $("#readysubmit").click(function (ev) {
         }
         if (
                 $("#IPAddress").val().length > 3 &&
-                $("#IPAddress").val().includes("") < 1 &&
+                $("#IPAddress").val().includes("__") < 1 &&
                 $("#IPAddress").val() != hostconfig["ipaddr"]
         ) {
                 hostsubmit["ipaddr"] = $("#IPAddress").val();
@@ -537,7 +532,7 @@ $("#readysubmit").click(function (ev) {
                 tochange = 1;
         }
         if ($("#ipaddrsubnet").val() != hostconfig["ipaddrsubnet"]) {
-                if ($("#IPAddress").val().length > 3 && $("#IPAddress").val().includes("") < 1) {
+                if ($("#IPAddress").val().length > 3 && $("#IPAddress").val().includes("__") < 1) {
                         hostsubmit["ipaddr"] = $("#IPAddress").val();
                         hostsubmit["ipaddrsubnet"] = $("#ipaddrsubnet").val();
                         tochange = 1;
@@ -553,7 +548,7 @@ $("#readysubmit").click(function (ev) {
         }
         if (
                 $("#Mgmt").val().length > 3 &&
-                $("#Mgmt").val().includes("") < 1 &&
+                $("#Mgmt").val().includes("__") < 1 &&
                 $("#Mgmt").val() + "/" + $("#MgmtSub").val() != hostconfig["cluster"]
         ) {
                 hostsubmit["cluster"] = $("#Mgmt").val() + "/" + $("#MgmtSub").val();
@@ -604,7 +599,7 @@ $("#readysubmit").click(function (ev) {
         }
         if (
                 $("#NTP").val().length > 3 &&
-                $("#NTP").val().includes("") < 1 &&
+                $("#NTP").val().includes("__") < 1 &&
                 $("#NTP").val() != hostconfig["ntp"]
         ) {
                 hostsubmit["ntp"] = $("#NTP").val();
@@ -616,7 +611,7 @@ $("#readysubmit").click(function (ev) {
         }
         if (
                 $("#GW").val().length > 3 &&
-                $("#GW").val().includes("") < 1 &&
+                $("#GW").val().includes("__") < 1 &&
                 $("#GW").val() != hostconfig["gw"]
         ) {
                 hostsubmit["gw"] = $("#GW").val();
@@ -624,7 +619,7 @@ $("#readysubmit").click(function (ev) {
         }
         if (
                 $("#DNSname").val().length > 3 &&
-                $("#DNSname").val().includes("") < 1 &&
+                $("#DNSname").val().includes("__") < 1 &&
                 $("#DNSname").val() != hostconfig["dnsname"]
         ) {
                 hostsubmit["dnsname"] = $("#DNSname").val();
