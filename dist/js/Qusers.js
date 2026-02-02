@@ -743,7 +743,8 @@ function selbtnclickeduser(ths) {
 	var apiurl = "api/v1/users/userchange";
 	nam = $(ths).data("name");
 	if ($("#sel" + nam).val().toString().length > 0 ){
-		groups=allgroups['results'][$("#sel" + nam).val()[0]]['text'];
+		//groups=allgroups['results'][$("#sel" + nam).val()[0]]['text'];
+		groups = $("#sel" + nam).val().map(i => allgroups['results'][i]['text']).join(',');
 	} else {
 		groups='';
 	}
