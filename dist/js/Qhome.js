@@ -180,6 +180,7 @@ $("#createvol").click(function (e) {
 		Myname: "mezo",
 		size: $("#volsize").val() + "G",
 		owner: owner,
+		active: "Yes"
 	};
 
 	postdata(apiurl, apidata);
