@@ -31,32 +31,32 @@ function newhostref(newhosts) {
 
                                 $("#hosts" + status).append(
                                         '<div id="' +
-                                                host.name +
-                                                '" class="hosts' +
-                                                status +
-                                                " col-2 " +
-                                                host.name +
-                                                '"> ' +
-                                                "  <div onclick=\"memberclick(this,'" +
-                                                status +
-                                                '\')" class="img-clck ' +
-                                                e +
-                                                '" data-htname="' +
-                                                e +
-                                                '"> ' +
-                                                '   <img class="img-responsive server ' +
-                                                status +
-                                                'SelectedFreewhite" style="object-fit:cover; max-width:80%;" ' +
-                                                '   class="server" src="dist/img/Server1-' +
-                                                imgstatus +
-                                                '.png" /> ' +
-                                                '   <p class="psize1" style="font-size: 0.7rem; color:green;">' +
-                                                host.name +
-                                                ":" +
-                                                host.ip +
-                                                "</p>" +
-                                                "  </div>" +
-                                                "</div>"
+                                        host.name +
+                                        '" class="hosts' +
+                                        status +
+                                        " col-2 " +
+                                        host.name +
+                                        '"> ' +
+                                        "  <div onclick=\"memberclick(this,'" +
+                                        status +
+                                        '\')" class="img-clck ' +
+                                        e +
+                                        '" data-htname="' +
+                                        e +
+                                        '"> ' +
+                                        '   <img class="img-responsive server ' +
+                                        status +
+                                        'SelectedFreewhite" style="object-fit:cover; max-width:80%;" ' +
+                                        '   class="server" src="dist/img/Server1-' +
+                                        imgstatus +
+                                        '.png" /> ' +
+                                        '   <p class="psize1" style="font-size: 0.7rem; color:green;">' +
+                                        host.name +
+                                        ":" +
+                                        host.ip +
+                                        "</p>" +
+                                        "  </div>" +
+                                        "</div>"
                                 );
                         });
                         updaterunninghosts(status);
@@ -86,28 +86,28 @@ function Comparator(a, b) {
 }
 
 function updatediscoverednodes(status) {
-    if (status == "possible") {
-        if (selectedhost[status] == "-1") {
-            $(".discoverednodes").attr("disabled", "disabled");
-            $("#updateAndJoinBtn").attr("disabled", true).text("Add to Cluster");
-            $("#DiscoveredNodePorts option").remove();
-            var nodePort = new Option("Port", "Port");
-            $("#DiscoveredNodePorts").append(nodePort).css("color", "#939ba2");
-        } else {
-            var hostdata = allhosts[status][selectedhost[status]];
-            $(".discoverednodes").attr("disabled", false);
-            $("#updateAndJoinBtn").attr("disabled", false).text("Add to Cluster");
-            $("#updatenode").attr("disabled", false);
+        if (status == "possible") {
+                if (selectedhost[status] == "-1") {
+                        $(".discoverednodes").attr("disabled", "disabled");
+                        $("#updateAndJoinBtn").attr("disabled", true).text("Add to Cluster");
+                        $("#DiscoveredNodePorts option").remove();
+                        var nodePort = new Option("Port", "Port");
+                        $("#DiscoveredNodePorts").append(nodePort).css("color", "#939ba2");
+                } else {
+                        var hostdata = allhosts[status][selectedhost[status]];
+                        $(".discoverednodes").attr("disabled", false);
+                        $("#updateAndJoinBtn").attr("disabled", false).text("Add to Cluster");
+                        $("#updatenode").attr("disabled", false);
 
-            $("#DiscoveredBoxName").val(hostdata["alias"]);
-            $("#DiscoveredIPAddress").val(hostdata["ipaddr"]);
-            //$("#Discoveredipaddrsubnet").val(hostdata["ipaddrsubnet"]);
+                        $("#DiscoveredBoxName").val(hostdata["alias"]);
+                        $("#DiscoveredIPAddress").val(hostdata["ipaddr"]);
+                        //$("#Discoveredipaddrsubnet").val(hostdata["ipaddrsubnet"]);
 
-            $("#DiscoveredNodePorts option").remove();
-            $("#DiscoveredNodePorts").css("color", "");
-            $("#updateAndJoinBtn").data("selected", selectedhost[status]);
+                        $("#DiscoveredNodePorts option").remove();
+                        $("#DiscoveredNodePorts").css("color", "");
+                        $("#updateAndJoinBtn").data("selected", selectedhost[status]);
+                }
         }
-    }
 }
 
 function updaterunninghosts(status) {
@@ -121,78 +121,85 @@ function updaterunninghosts(status) {
                         $("#cGW").css("font-size", "0.8rem").text("select a node...");
                         $("#cDNS").css("font-size", "0.8rem").text("select a node...");
                         $("#dataPorts").css("font-size", "0.8rem").text("select a node...");
+                        $("#internetPorts").css("font-size", "0.8rem").text("select a node...");
                         $("#customSwitch1").prop("checked", false);
                         $(".runningnodes").attr("disabled", "disabled");
                         $("#nmports").empty().trigger('change');
                         $("#cmports").empty().trigger('change');
                         $("#dports").empty().trigger('change');
+                        $("#iports").empty().trigger('change');
 
                 } else {
                         var hostdata = hostsinfo[allhosts[status][selectedhost[status]]["name"]];
                         console.log("hostdata object format:", hostdata);
-                        console.log("Ports data from host:", hostdata["ports"]); 
+                        console.log("Ports data from host:", hostdata["ports"]);
                         $(".runningnodes").attr("disabled", false);
                         $("#cBoxName").text(hostdata["alias"]);
                         $("#cIPAddress").text(hostdata["ipaddr"] + "/" + hostdata["ipaddrsubnet"]);
                         $("#cMgmt").text(hostdata["cluster"]);
-                        
+
                         let availablePorts = [];
                         if (hostdata && hostdata.ports && hostdata.ports.length >= 1 && Array.isArray(hostdata.ports[0]) && typeof hostdata.ports[0][1] === 'string') {
-                            availablePorts = hostdata.ports[0][1].split('/');
+                                availablePorts = hostdata.ports[0][1].split('/');
                         }
 
-			let basePortOptions = $.map(availablePorts, function (portName) {
-                            return { id: portName.trim(), text: portName.trim() };
-                        });
-
-			if (hostdata.phy_ports && Array.isArray(hostdata.phy_ports)) {
-                            basePortOptions = $.map(hostdata.phy_ports, function (portName) {
-                                if(portName.trim() !== "") {
-                                    return { id: portName.trim(), text: portName.trim() };
-                                }
-                            });
-                        } 
-                        else if (hostdata.ports && typeof hostdata.ports === 'string') {
-                             let parts = hostdata.ports.split('/');
-                             basePortOptions = $.map(parts, function (portName) {
-                                if(portName.trim() !== "") {
-                                    return { id: portName.trim(), text: portName.trim() };
-                                }
-                            });
-                        }
-
-                        $('#nmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
-                        $('#cmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
-                        $('#dports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
-
-			var nmPorts = hostdata.nmports ? hostdata.nmports.split(',') : [];
-                        var cmPorts = hostdata.cmports ? hostdata.cmports.split(',') : [];
-                        var dPorts = hostdata.dports || hostdata.dataport || [];
-                        if (typeof dPorts === 'string') {
-                            dPorts = dPorts.split(',');
-                        }
-
-                        $('#nmports').val(nmPorts).trigger('change');
-                        $('#cmports').val(cmPorts).trigger('change');
-                        $('#dports').val(dPorts).trigger('change');
-			
-			updateBondInfo();
-                        updatePortExclusivity();
-
-			$('#nmports, #cmports, #dports').on('change', function() {
-                            updateBondInfo();
+                        let basePortOptions = $.map(availablePorts, function (portName) {
+                                return { id: portName.trim(), text: portName.trim() };
                         });
 
-                        $("#dataPorts").text(dPorts.length > 0 ? dPorts.join(", ") : "not set");
+                        if (hostdata.phy_ports && Array.isArray(hostdata.phy_ports)) {
+                                basePortOptions = $.map(hostdata.phy_ports, function (portName) {
+                                        if (portName.trim() !== "") {
+                                                return { id: portName.trim(), text: portName.trim() };
+                                        }
+                                });
+                        }
+                        else if (hostdata.ports && typeof hostdata.ports === 'string') {
+                                let parts = hostdata.ports.split('/');
+                                basePortOptions = $.map(parts, function (portName) {
+                                        if (portName.trim() !== "") {
+                                                return { id: portName.trim(), text: portName.trim() };
+                                        }
+                                });
+                        }
+
+                        $('#nmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
+                        $('#cmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
+                        $('#dports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
+                        $('#iports').empty().select2({ data: basePortOptions, placeholder: "Select ports" });
+
+                        var nmPorts = hostdata.nmports ? hostdata.nmports.split(',') : [];
+                        var cmPorts = hostdata.cmports ? hostdata.cmports.split(',') : [];
+                        var dPorts = hostdata.dports || hostdata.dataport || [];
+                        if (typeof dPorts === 'string') {
+                                dPorts = dPorts.split(',');
+                        }
+                        var iPorts = hostdata.iports ? hostdata.iports.split(',') : [];
+
+                        $('#nmports').val(nmPorts).trigger('change');
+                        $('#cmports').val(cmPorts).trigger('change');
+                        $('#dports').val(dPorts).trigger('change');
+                        $('#iports').val(iPorts).trigger('change');
+
+                        updateBondInfo();
+                        updatePortExclusivity();
+
+                        $('#nmports, #cmports, #dports, #iports').on('change', function () {
+                                updateBondInfo();
+                        });
+
+                        $("#dataPorts").text(dPorts.length > 0 ? dPorts.join(", ") : "not set");
+                        $("#internetPorts").text(iPorts.length > 0 ? iPorts.join(", ") : "not set");
 
                         updatePortExclusivity();
 
                         updateBondInfo();
-                        $('#nmports, #cmports, #dports').on('change', function() {
-                            updateBondInfo();
+                        $('#nmports, #cmports, #dports, #iports').on('change', function () {
+                                updateBondInfo();
                         });
 
                         $("#dataPorts").text(dPorts.length > 0 ? dPorts.join(", ") : "not set");
+                        $("#internetPorts").text(iPorts.length > 0 ? iPorts.join(", ") : "not set");
 
                         try {
                                 $("#cTZ").text(
@@ -215,41 +222,41 @@ function updaterunninghosts(status) {
 }
 
 function memberclick(thisclck, status) {
-    hname = $(thisclck).attr("data-htname");
-    selectedhost[status] = hname;
+        hname = $(thisclck).attr("data-htname");
+        selectedhost[status] = hname;
 
-    if ($(thisclck).children("img").hasClass("SelectedFreered") > 0) {
-        $(thisclck).children("img").removeClass("SelectedFreered");
-        $(thisclck).children("img").addClass("SelectedFreewhite");
-        selectedhost[status] = "-1";
-        $(".collapse").collapse("hide");
-        if (status === 'ready') {
-            updaterunninghosts(status);
-        } else if (status === 'possible') {
-            updatediscoverednodes(status);
-        }
-        $("#" + status + "submit").attr("disabled", true);
-        console.log("memberclick status:", status, "hname:", hname);
-    } else {
-        $("img.server").removeClass("SelectedFreered");
-        $("img.server").addClass("SelectedFreewhite");
-        $(thisclck).children("img").removeClass("SelectedFreewhite");
-        $(thisclck).children("img").addClass("SelectedFreered");
-        if (status === 'ready') {
-            updaterunninghosts(status);
-        } else if (status === 'possible') {
-            updatediscoverednodes(status);
-        }
-        $("#" + status + "submit").attr("disabled", false);
+        if ($(thisclck).children("img").hasClass("SelectedFreered") > 0) {
+                $(thisclck).children("img").removeClass("SelectedFreered");
+                $(thisclck).children("img").addClass("SelectedFreewhite");
+                selectedhost[status] = "-1";
+                $(".collapse").collapse("hide");
+                if (status === 'ready') {
+                        updaterunninghosts(status);
+                } else if (status === 'possible') {
+                        updatediscoverednodes(status);
+                }
+                $("#" + status + "submit").attr("disabled", true);
+                console.log("memberclick status:", status, "hname:", hname);
+        } else {
+                $("img.server").removeClass("SelectedFreered");
+                $("img.server").addClass("SelectedFreewhite");
+                $(thisclck).children("img").removeClass("SelectedFreewhite");
+                $(thisclck).children("img").addClass("SelectedFreered");
+                if (status === 'ready') {
+                        updaterunninghosts(status);
+                } else if (status === 'possible') {
+                        updatediscoverednodes(status);
+                }
+                $("#" + status + "submit").attr("disabled", false);
 
-        if (allhosts.ready.length - allhosts.possible.length < 2) {
-            $("#activesubmit").attr("disabled", true);
+                if (allhosts.ready.length - allhosts.possible.length < 2) {
+                        $("#activesubmit").attr("disabled", true);
+                }
+                if ($(thisclck).children("img").prop("src").includes("Off")) {
+                        $("#activesubmit").attr("disabled", false);
+                }
         }
-        if ($(thisclck).children("img").prop("src").includes("Off")) {
-            $("#activesubmit").attr("disabled", false);
-        }
-    }
-    //thisclck.preventDefault();
+        //thisclck.preventDefault();
 }
 
 function evacuate() {
@@ -261,186 +268,197 @@ function evacuate() {
 }
 
 function updateDiscoveredNode() {
-    return new Promise((resolve) => {
-        let tochange = 0;
-        var selstatus = $("#updateAndJoinBtn").data("selected");
-        var hostdata = allhosts["possible"][selstatus];
-        console.log("selstatus: ", selstatus, "hostdata: ", hostdata, "hostsinfo: ", hostsinfo);
-        var hostconfig = JSON.parse(JSON.stringify(hostdata));
-        var hostsubmit = {};
+        return new Promise((resolve) => {
+                let tochange = 0;
+                var selstatus = $("#updateAndJoinBtn").data("selected");
+                var hostdata = allhosts["possible"][selstatus];
+                console.log("selstatus: ", selstatus, "hostdata: ", hostdata, "hostsinfo: ", hostsinfo);
+                var hostconfig = JSON.parse(JSON.stringify(hostdata));
+                var hostsubmit = {};
 
-        if ($("#DiscoveredBoxName").val().length > 3 && $("#DiscoveredBoxName").val() !== hostconfig["alias"]) {
-            hostsubmit["alias"] = $("#DiscoveredBoxName").val();
-            tochange = 1;
-        }
-
-        if ($("#DiscoveredIPAddress").val().length > 3 && !$("#DiscoveredIPAddress").val().includes("__")) {
-            let newip = $("#DiscoveredIPAddress").val();
-            let newsub = $("#Discoveredipaddrsubnet").val();
-            if (newip !== hostconfig["ipaddr"] || newsub !== hostconfig["ipaddrsubnet"]) {
-                hostsubmit["ipaddr"] = newip;
-                hostsubmit["ipaddrsubnet"] = newsub;
-                let oldip = hostconfig["ipaddr"];
-                let oldsub = hostconfig["ipaddrsubnet"];
-                if (newip != oldip || newsub != oldsub) {
-                    hostsubmit["ipaddr"] = newip;
-                    hostsubmit["ipaddrsubnet"] = newsub;
-                    tochange = 1;
+                if ($("#DiscoveredBoxName").val().length > 3 && $("#DiscoveredBoxName").val() !== hostconfig["alias"]) {
+                        hostsubmit["alias"] = $("#DiscoveredBoxName").val();
+                        tochange = 1;
                 }
-            }
-        }
 
-        if (tochange > 0) {
-            hostsubmit["id"] = selstatus;
-            hostsubmit["user"] = "mezo";
-            hostsubmit["name"] = allhosts["possible"][selstatus]["name"];
-            hostsubmit["token"] = hypetoken;
-            hostsubmit["discovered"] = true;
+                if ($("#DiscoveredIPAddress").val().length > 3 && !$("#DiscoveredIPAddress").val().includes("__")) {
+                        let newip = $("#DiscoveredIPAddress").val();
+                        let newsub = $("#Discoveredipaddrsubnet").val();
+                        if (newip !== hostconfig["ipaddr"] || newsub !== hostconfig["ipaddrsubnet"]) {
+                                hostsubmit["ipaddr"] = newip;
+                                hostsubmit["ipaddrsubnet"] = newsub;
+                                let oldip = hostconfig["ipaddr"];
+                                let oldsub = hostconfig["ipaddrsubnet"];
+                                if (newip != oldip || newsub != oldsub) {
+                                        hostsubmit["ipaddr"] = newip;
+                                        hostsubmit["ipaddrsubnet"] = newsub;
+                                        tochange = 1;
+                                }
+                        }
+                }
 
-            var apiurl = "api/v1/hosts/config";
-            var apidata = hostsubmit;
-            console.log("Sending discovered node update (fire-and-forget):", apidata);
+                if (tochange > 0) {
+                        hostsubmit["id"] = selstatus;
+                        hostsubmit["user"] = "mezo";
+                        hostsubmit["name"] = allhosts["possible"][selstatus]["name"];
+                        hostsubmit["token"] = hypetoken;
+                        hostsubmit["discovered"] = true;
 
-            postdata(apiurl, apidata);
-            resolve("Update request sent.");
-        } else {
-            console.log("No changes detected, skipping update.");
-            resolve("No update needed."); // Resolve immediately if no data changed
-        }
-    });
+                        var apiurl = "api/v1/hosts/config";
+                        var apidata = hostsubmit;
+                        console.log("Sending discovered node update (fire-and-forget):", apidata);
+
+                        postdata(apiurl, apidata);
+                        resolve("Update request sent.");
+                } else {
+                        console.log("No changes detected, skipping update.");
+                        resolve("No update needed."); // Resolve immediately if no data changed
+                }
+        });
 }
 
 function joinNodeToCluster() {
-    const hostIndex = selectedhost["possible"];
-    if (hostIndex === "-1" || !allhosts["possible"][hostIndex]) {
-        console.error("No valid node selected to join cluster.");
-        return;
-    }
-    const apiurl = "api/v1/hosts/joincluster";
-    const apidata = { name: allhosts["possible"][hostIndex]["name"], 'token': hypetoken };
-    console.log("Joining node to cluster:", apidata);
-    postdata(apiurl, apidata);
+        const hostIndex = selectedhost["possible"];
+        if (hostIndex === "-1" || !allhosts["possible"][hostIndex]) {
+                console.error("No valid node selected to join cluster.");
+                return;
+        }
+        const apiurl = "api/v1/hosts/joincluster";
+        const apidata = { name: allhosts["possible"][hostIndex]["name"], 'token': hypetoken };
+        console.log("Joining node to cluster:", apidata);
+        postdata(apiurl, apidata);
 }
 
 function updateButtonState() {
-    const nameVal = $("#DiscoveredBoxName").val() || "";
-    const ipVal = $("#DiscoveredIPAddress").val() || "";
-    const hasData = nameVal.trim().length > 0 || (ipVal.trim().length > 0 && !ipVal.includes('_'));
+        const nameVal = $("#DiscoveredBoxName").val() || "";
+        const ipVal = $("#DiscoveredIPAddress").val() || "";
+        const hasData = nameVal.trim().length > 0 || (ipVal.trim().length > 0 && !ipVal.includes('_'));
 
-    if (hasData) {
-        $("#updateAndJoinBtn").text("Update and Add to Cluster");
-    } else {
-        $("#updateAndJoinBtn").text("Add to Cluster");
-    }
+        if (hasData) {
+                $("#updateAndJoinBtn").text("Update and Add to Cluster");
+        } else {
+                $("#updateAndJoinBtn").text("Add to Cluster");
+        }
 }
 
 function updateBondInfo() {
-    $("#bNode").text("bond 1"); // Node always bond 1
+        $("#bNode").text("bond 1"); // Node always bond 1
 
-    var nmVal = ($("#nmports").val() || []).sort().join(',');
-    var cmVal = ($("#cmports").val() || []).sort().join(',');
-    var dVal = ($("#dports").val() || []).sort().join(',');
+        var nmVal = ($("#nmports").val() || []).sort().join(',');
+        var cmVal = ($("#cmports").val() || []).sort().join(',');
+        var dVal = ($("#dports").val() || []).sort().join(',');
+        var iVal = ($("#iports").val() || []).sort().join(',');
 
-    if (cmVal === nmVal && cmVal !== "") {
-        $("#bCluster").text("bond 1");
-    } else {
-        $("#bCluster").text("bond 2");
-    }
+        if (cmVal === nmVal && cmVal !== "") {
+                $("#bCluster").text("bond 1");
+        } else {
+                $("#bCluster").text("bond 2");
+        }
 
-    if (dVal === nmVal && dVal !== "") {
-        $("#bData").text("bond 1");
-    } else if (dVal === cmVal && dVal !== "") {
-        $("#bData").text("bond 2");
-    } else {
-        $("#bData").text("bond 3");
-    }
+        if (dVal === nmVal && dVal !== "") {
+                $("#bData").text("bond 1");
+        } else if (dVal === cmVal && dVal !== "") {
+                $("#bData").text("bond 2");
+        } else {
+                $("#bData").text("bond 3");
+        }
+
+        if (iVal === nmVal && iVal !== "") {
+                $("#bInternet").text("bond 1");
+        } else if (iVal === cmVal && iVal !== "") {
+                $("#bInternet").text("bond 2");
+        } else if (iVal === dVal && iVal !== "") {
+                $("#bInternet").text("bond 3");
+	} else {
+                $("#bInternet").text("bond 4");
+	}
 }
 
 function updatePortExclusivity() {
-    $('#nmports, #cmports, #dports').off('select2:select select2:unselect');
+        $('#nmports, #cmports, #dports, #iports').off('select2:select select2:unselect');
 
-    var portBoxes = ['nmports', 'cmports', 'dports'];
+        var portBoxes = ['nmports', 'cmports', 'dports', 'iports'];
 
-    portBoxes.forEach(function(currentId) {
-        $('#' + currentId).on('select2:select', function (e) {
-            var currentVals = $('#' + currentId).val() || [];
+        portBoxes.forEach(function (currentId) {
+                $('#' + currentId).on('select2:select', function (e) {
+                        var currentVals = $('#' + currentId).val() || [];
 
-            portBoxes.forEach(function(otherId) {
-                if (currentId === otherId) return; 
+                        portBoxes.forEach(function (otherId) {
+                                if (currentId === otherId) return;
 
-                var otherVals = $('#' + otherId).val() || [];
+                                var otherVals = $('#' + otherId).val() || [];
 
-                var hasOverlap = currentVals.some(function(p) {
-                    return otherVals.includes(p);
+                                var hasOverlap = currentVals.some(function (p) {
+                                        return otherVals.includes(p);
+                                });
+
+                                if (hasOverlap) {
+                                        var union = [...new Set([...currentVals, ...otherVals])];
+
+                                        $('#' + otherId).val(union).trigger('change');
+
+                                        if (union.length !== currentVals.length) {
+                                                $('#' + currentId).val(union).trigger('change');
+                                        }
+                                }
+                        });
                 });
-
-                if (hasOverlap) {
-                    var union = [...new Set([...currentVals, ...otherVals])];
-                    
-                    $('#' + otherId).val(union).trigger('change');
-
-                    if (union.length !== currentVals.length) {
-                        $('#' + currentId).val(union).trigger('change');
-                    }
-                }
-            });
         });
-    });
 
-    portBoxes.forEach(function(currentId) {
-        $('#' + currentId).on('select2:unselect', function (e) {
-            var removedPort = e.params.data.id;
+        portBoxes.forEach(function (currentId) {
+                $('#' + currentId).on('select2:unselect', function (e) {
+                        var removedPort = e.params.data.id;
 
-            portBoxes.forEach(function(otherId) {
-                if (currentId === otherId) return;
+                        portBoxes.forEach(function (otherId) {
+                                if (currentId === otherId) return;
 
-                var otherVals = $('#' + otherId).val() || [];
+                                var otherVals = $('#' + otherId).val() || [];
 
-                if (otherVals.includes(removedPort)) {
-                    var newOtherVals = otherVals.filter(function(p) { return p !== removedPort; });
-                    $('#' + otherId).val(newOtherVals).trigger('change');
-                }
-            });
+                                if (otherVals.includes(removedPort)) {
+                                        var newOtherVals = otherVals.filter(function (p) { return p !== removedPort; });
+                                        $('#' + otherId).val(newOtherVals).trigger('change');
+                                }
+                        });
+                });
         });
-    });
 }
 
 $("#DiscoveredBoxName, #DiscoveredIPAddress, #Discoveredipaddrsubnet").on('keyup input', updateButtonState);
 
-$("#updateAndJoinBtn").on('click', async function(e) {
-    e.preventDefault();
-    $(this).attr("disabled", true); // Disable button to prevent double-clicks
+$("#updateAndJoinBtn").on('click', async function (e) {
+        e.preventDefault();
+        $(this).attr("disabled", true); // Disable button to prevent double-clicks
 
-    const nameVal = $("#DiscoveredBoxName").val() || "";
-    const ipVal = $("#DiscoveredIPAddress").val() || "";
-    const hasData = nameVal.trim().length > 0 || (ipVal.trim().length > 0 && !ipVal.includes('_'));
+        const nameVal = $("#DiscoveredBoxName").val() || "";
+        const ipVal = $("#DiscoveredIPAddress").val() || "";
+        const hasData = nameVal.trim().length > 0 || (ipVal.trim().length > 0 && !ipVal.includes('_'));
 
-    if (hasData) {
-        try {
-            console.log("Starting node update...");
-            await updateDiscoveredNode();
+        if (hasData) {
+                try {
+                        console.log("Starting node update...");
+                        await updateDiscoveredNode();
 
-            console.log("Waiting 5 seconds before joining cluster...");
-            await new Promise(resolve => setTimeout(resolve, 10000));
+                        console.log("Waiting 5 seconds before joining cluster...");
+                        await new Promise(resolve => setTimeout(resolve, 10000));
 
-            console.log("Joining node to cluster...");
-            joinNodeToCluster();
+                        console.log("Joining node to cluster...");
+                        joinNodeToCluster();
 
-        } catch (error) {
-            console.error("An error occurred during the update. Aborting join process.", error);
-            $(this).attr("disabled", false); // Re-enable button on failure
+                } catch (error) {
+                        console.error("An error occurred during the update. Aborting join process.", error);
+                        $(this).attr("disabled", false); // Re-enable button on failure
+                }
+        } else {
+                console.log("No data in fields. Joining cluster directly.");
+                joinNodeToCluster();
+                $(this).attr("disabled", false); // Re-enable button
         }
-    } else {
-        console.log("No data in fields. Joining cluster directly.");
-        joinNodeToCluster();
-        $(this).attr("disabled", false); // Re-enable button
-    }
 });
 
 $(".refresh").click(function (e) {
         var apiurl = "api/v1/hosts/discover";
-        var apidata = { name: 'nothing', token: hypetoken};
-        console.log('token',hypetoken)
+        var apidata = { name: 'nothing', token: hypetoken };
+        console.log('token', hypetoken)
         postdata(apiurl, apidata);
 });
 
@@ -450,14 +468,14 @@ $("#getConfig").click(function (ev) {
         hostname = allhosts["ready"][selstatus]["name"];
         var apiurl = "api/v1/hosts/getConfig";
         var hypetoken = localStorage.getItem("token");
-        var apidata = {"token": hypetoken, "nodeName": hostname};
-        console.log('getconfig',apidata);
+        var apidata = { "token": hypetoken, "nodeName": hostname };
+        console.log('getconfig', apidata);
         $.ajax({
                 url: apiurl,
-                data: apidata,error: function(req, err){ console.log('my message' + err); },
-                success: function(data) {
+                data: apidata, error: function (req, err) { console.log('my message' + err); },
+                success: function (data) {
                         var blob = new Blob([data], { type: "text/plain" });
-                        var fileName = hostname +"_config.txt";
+                        var fileName = hostname + "_config.txt";
                         var url = window.URL || window.webkitURL;
                         link = url.createObjectURL(blob);
                         var a = $("<a />");
@@ -465,8 +483,9 @@ $("#getConfig").click(function (ev) {
                         a.attr("href", link);
                         $("body").append(a);
                         a[0].click();
-                        $("body").remove(a);       
-        }});
+                        $("body").remove(a);
+                }
+        });
 })
 
 $("#getAllConfig").click(function (e) {
@@ -474,17 +493,17 @@ $("#getAllConfig").click(function (e) {
         e.preventDefault();
         var apiurl = "api/v1/hosts/getAllConfig";
         var hypetoken = localStorage.getItem("token");
-        var apidata = {"token": hypetoken};
+        var apidata = { "token": hypetoken };
         console.log('getting all configs')
         $.ajax({
                 url: apiurl,
                 data: apidata,
                 timeout: 240000,
                 async: true,
-                xhrFields:{
+                xhrFields: {
                         responseType: 'blob'
                 },
-                success: function(data) {
+                success: function (data) {
                         var blob = new Blob([data], { type: "application/zip" });
                         responseReceived = true;
                         clearTimeout(ajaxTimeout); // Clear the timer
@@ -500,11 +519,11 @@ $("#getAllConfig").click(function (e) {
                         $("body").remove(a);
                 }
         });
-        ajaxTimeout = setTimeout(function() {
+        ajaxTimeout = setTimeout(function () {
                 if (!responseReceived) {
-                // Handle the case when the response doesn't arrive within 100 seconds
+                        // Handle the case when the response doesn't arrive within 100 seconds
                         console.log("Request timed out after 500 seconds.");
-                // You can take additional actions, such as showing an error message or retrying the request.
+                        // You can take additional actions, such as showing an error message or retrying the request.
                 }
         }, 500000); // 500,000 milliseconds (500 seconds)
 });
@@ -540,11 +559,11 @@ $("#readysubmit").click(function (ev) {
         }
         var nmPortsVal = $("#nmports").val();
         if (nmPortsVal && nmPortsVal.length > 0) {
-            var originalNmPorts = hostconfig.nmports ? hostconfig.nmports.split(',').sort() : [];
-            if (JSON.stringify(originalNmPorts) !== JSON.stringify([...nmPortsVal].sort())) {
-                hostsubmit["nmports"] = nmPortsVal.join(',');
-                tochange = 1;
-            }
+                var originalNmPorts = hostconfig.nmports ? hostconfig.nmports.split(',').sort() : [];
+                if (JSON.stringify(originalNmPorts) !== JSON.stringify([...nmPortsVal].sort())) {
+                        hostsubmit["nmports"] = nmPortsVal.join(',');
+                        tochange = 1;
+                }
         }
         if (
                 $("#Mgmt").val().length > 3 &&
@@ -556,19 +575,27 @@ $("#readysubmit").click(function (ev) {
         }
         var cmPortsVal = $("#cmports").val();
         if (cmPortsVal && cmPortsVal.length > 0) {
-            var originalCmPorts = hostconfig.cmports ? hostconfig.cmports.split(',').sort() : [];
-             if (JSON.stringify(originalCmPorts) !== JSON.stringify([...cmPortsVal].sort())) {
-                hostsubmit["cmports"] = cmPortsVal.join(',');
-                tochange = 1;
-            }
+                var originalCmPorts = hostconfig.cmports ? hostconfig.cmports.split(',').sort() : [];
+                if (JSON.stringify(originalCmPorts) !== JSON.stringify([...cmPortsVal].sort())) {
+                        hostsubmit["cmports"] = cmPortsVal.join(',');
+                        tochange = 1;
+                }
         }
         var dPortsVal = $("#dports").val();
         if (dPortsVal && dPortsVal.length > 0) {
-            var originalDPorts = hostconfig.dports ? hostconfig.dports.split(',').sort() : [];
-            if (JSON.stringify(originalDPorts) !== JSON.stringify([...dPortsVal].sort())) {
-                hostsubmit["dports"] = dPortsVal.join(',');
-                tochange = 1;
-            }
+                var originalDPorts = hostconfig.dports ? hostconfig.dports.split(',').sort() : [];
+                if (JSON.stringify(originalDPorts) !== JSON.stringify([...dPortsVal].sort())) {
+                        hostsubmit["dports"] = dPortsVal.join(',');
+                        tochange = 1;
+                }
+        }
+        var iPortsVal = $("#iports").val();
+        if (iPortsVal && iPortsVal.length > 0) {
+                var originalIPorts = hostconfig.iports ? hostconfig.iports.split(',').sort() : [];
+                if (JSON.stringify(originalIPorts) !== JSON.stringify([...iPortsVal].sort())) {
+                        hostsubmit["iports"] = iPortsVal.join(',');
+                        tochange = 1;
+                }
         }
         if ($("#TZ").val() != "-100") {
                 var tzflag = 0;
@@ -646,19 +673,19 @@ $("#readysubmit").click(function (ev) {
                 hostsubmit['token'] = hypetoken
                 var apiurl = "api/v1/hosts/config";
                 var apidata = hostsubmit;
-                console.log('tochange',apidata)
+                console.log('tochange', apidata)
                 postdata(apiurl, apidata);
         }
 });
 
-var  ajaxPromises = [];
+var ajaxPromises = [];
 async function refreshall() {
         ajaxPromises = [];
         ajaxPromises.push(
                 new Promise((resolve, reject) => {
                         $.ajax({
                                 url: "api/v1/hosts/allinfo",
-                                data:  {"token": hypetoken},
+                                data: { "token": hypetoken },
                                 async: true,
                                 type: "GET",
                                 success: function (data) {
@@ -667,7 +694,7 @@ async function refreshall() {
                                         resolve(); // Resolve the Promise
                                 },
                                 error: function (err) {
-                                    reject(err); // Reject the Promise on error
+                                        reject(err); // Reject the Promise on error
                                 },
                         });
                 })
@@ -684,17 +711,17 @@ async function refreshall() {
                 "#runninghosts > form > div:nth-child(5) > span > span.selection > span > span.select2-selection__arrow"
         ).css("margin-top", "0.2rem");
         await Promise.all(ajaxPromises);
-        console.log('ajaxes',ajaxPromises);
+        console.log('ajaxes', ajaxPromises);
 }
 
-async function iterRefresh(){
+async function iterRefresh() {
         var waiting;
-        while(true){
+        while (true) {
                 console.log('start refresh');
                 await refreshall();
                 console.log('finish refresh');
-                waiting=5000;
-                if(firstRequests > 0){ waiting=10; }
+                waiting = 5000;
+                if (firstRequests > 0) { waiting = 10; }
                 await new Promise(resolve => setTimeout(resolve, waiting));
         }
 }
@@ -715,3 +742,4 @@ $("#example1")
         .appendTo("#example1_wrapper .col-6:eq(0)");
 $("#example1_filter").css("margin-left", "10rem");
 //$("#example1_filter").css("margin-left","10rem");
+
