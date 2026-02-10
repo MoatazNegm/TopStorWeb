@@ -377,13 +377,14 @@ function updateBondInfo() {
 function updatePortExclusivity() {
         $('#nmports, #cmports, #dports, #iports').off('select2:select select2:unselect');
 
-        var portBoxes = ['nmports', 'cmports', 'dports', 'iports'];
+        // --- Group 1: nm/cm/d bonds sync with each other ---
+        var dataBondBoxes = ['nmports', 'cmports', 'dports'];
 
-        portBoxes.forEach(function (currentId) {
+        dataBondBoxes.forEach(function (currentId) {
                 $('#' + currentId).on('select2:select', function (e) {
                         var currentVals = $('#' + currentId).val() || [];
 
-                        portBoxes.forEach(function (otherId) {
+                        dataBondBoxes.forEach(function (otherId) {
                                 if (currentId === otherId) return;
 
                                 var otherVals = $('#' + otherId).val() || [];
@@ -402,14 +403,15 @@ function updatePortExclusivity() {
                                         }
                                 }
                         });
+                        refreshIportsAvailability();
                 });
         });
 
-        portBoxes.forEach(function (currentId) {
+        dataBondBoxes.forEach(function (currentId) {
                 $('#' + currentId).on('select2:unselect', function (e) {
                         var removedPort = e.params.data.id;
 
-                        portBoxes.forEach(function (otherId) {
+                        dataBondBoxes.forEach(function (otherId) {
                                 if (currentId === otherId) return;
 
                                 var otherVals = $('#' + otherId).val() || [];
@@ -419,6 +421,48 @@ function updatePortExclusivity() {
                                         $('#' + otherId).val(newOtherVals).trigger('change');
                                 }
                         });
+                        refreshIportsAvailability();
+                });
+        });
+
+        // --- Group 2: iports is mutually exclusive with nm/cm/d ---
+        $('#iports').on('select2:select select2:unselect', function () {
+                refreshIportsAvailability();
+        });
+
+        // Initial refresh
+        refreshIportsAvailability();
+}
+
+function refreshIportsAvailability() {
+        // Collect all ports used by nm/cm/d bonds
+        var dataPorts = new Set();
+        ['nmports', 'cmports', 'dports'].forEach(function (id) {
+                ($(('#' + id)).val() || []).forEach(function (p) { dataPorts.add(p); });
+        });
+
+        // Collect all ports used by iports
+        var iPorts = new Set(($('#iports').val() || []));
+
+        // Disable data-bond ports in iports dropdown
+        $('#iports option').each(function () {
+                var port = $(this).val();
+                if (dataPorts.has(port)) {
+                        $(this).prop('disabled', true);
+                } else {
+                        $(this).prop('disabled', false);
+                }
+        });
+
+        // Disable iports in nm/cm/d dropdowns
+        ['nmports', 'cmports', 'dports'].forEach(function (id) {
+                $('#' + id + ' option').each(function () {
+                        var port = $(this).val();
+                        if (iPorts.has(port)) {
+                                $(this).prop('disabled', true);
+                        } else {
+                                $(this).prop('disabled', false);
+                        }
                 });
         });
 }
