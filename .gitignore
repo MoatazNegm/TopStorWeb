@@ -1,0 +1,5 @@
+node_modules/
+dist/
+build_react/
+.env
+.DS_Store
