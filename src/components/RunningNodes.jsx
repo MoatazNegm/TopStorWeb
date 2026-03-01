@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { configHost, getHostConfig, getAllHostConfigs } from '../api/nodes';
 import ServerNode from './Common/ServerNode';
+import Button from './Common/Button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }) => {
@@ -460,19 +461,14 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
 
                             {/* Actions */}
                             <div className="pt-6 flex flex-col sm:flex-row gap-4 justify-between items-center border-t border-gray-100 mt-6">
-                                <button
+                                <Button
                                     type="submit"
                                     disabled={!selectedHost}
-                                    className={`
-                                        w-full sm:w-auto px-8 py-2.5 rounded-lg font-medium shadow-sm transition-all duration-200
-                                        ${!selectedHost
-                                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                            : 'bg-emerald-600 hover:bg-emerald-700 text-white hover:shadow-md active:transform active:scale-95'
-                                        }
-                                    `}
+                                    bgColor="bg-emerald-600"
+                                    onClick={handleSubmit}
                                 >
                                     Update Node Config
-                                </button>
+                                </Button>
 
                                 <button
                                     type="button"

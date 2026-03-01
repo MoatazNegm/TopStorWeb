@@ -1,5 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { ChevronDown } from 'lucide-react';
+import React, { useState } from 'react';
+import { ChevronDown, User, Key, HardDrive, Hash, Shield } from 'lucide-react';
+import Button from './Common/Button';
+import Input from './Common/Input';
+import Dropdown from './Common/Dropdown';
 
 const AddUserForm = ({ pools, groups, onAdd }) => {
     const [isExpanded, setIsExpanded] = useState(true);
@@ -14,28 +17,7 @@ const AddUserForm = ({ pools, groups, onAdd }) => {
         Usergroups: []
     });
 
-    const selectRef = useRef(null);
-
-    useEffect(() => {
-        if (isExpanded && selectRef.current && window.$) {
-            const $select = window.$(selectRef.current);
-            $select.select2({
-                placeholder: "Select group assignments",
-                theme: 'bootstrap4',
-                width: '100%'
-            });
-            $select.on('change', (e) => {
-                const values = window.$(e.target).val() || [];
-                setFormData(prev => ({ ...prev, Usergroups: values }));
-            });
-            return () => {
-                if ($select.data('select2')) $select.select2('destroy');
-            };
-        }
-    }, [isExpanded]);
-
-    const handleChange = (e) => {
-        const { id, value } = e.target;
+    const handleChange = (id, value) => {
         setFormData(prev => ({ ...prev, [id]: value }));
     };
 
@@ -57,9 +39,9 @@ const AddUserForm = ({ pools, groups, onAdd }) => {
     const canSubmit = formData.User.length > 2 && formData.UserPass.length > 2;
 
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 relative group hover:shadow-md">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 relative group hover:shadow-md">
             {/* Theme Accent Line - Indigo for Users */}
-            <div className="absolute top-0 bottom-0 left-0 w-1.5 bg-indigo-500 shadow-[2px_0_10px_rgba(99,102,241,0.2)]"></div>
+            <div className="absolute top-0 bottom-0 left-0 w-1.5 bg-indigo-500 rounded-l-2xl shadow-[2px_0_10px_rgba(99,102,241,0.2)]"></div>
 
             <div
                 className="px-6 py-5 border-b border-gray-50 flex justify-between items-center cursor-pointer hover:bg-gray-50/50 transition-colors"
@@ -90,88 +72,61 @@ const AddUserForm = ({ pools, groups, onAdd }) => {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            <div className="space-y-2">
-                                <label className="text-xs font-bold text-gray-500 uppercase tracking-wider px-1">User Name</label>
-                                <div className="relative group">
-                                    <input
-                                        type="text"
-                                        className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-gray-700 focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 transition-all outline-none"
-                                        placeholder="e.g. john_doe"
-                                        id="User"
-                                        value={formData.User}
-                                        onChange={handleChange}
-                                    />
-                                    <i className="fas fa-id-badge absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-indigo-400 transition-colors"></i>
-                                </div>
-                            </div>
+                            <Input
+                                label="User Name"
+                                placeholder="e.g. john_doe"
+                                id="User"
+                                value={formData.User}
+                                onChange={(e) => handleChange('User', e.target.value)}
+                                icon={<User size={16} />}
+                            />
 
-                            <div className="space-y-2">
-                                <label className="text-xs font-bold text-gray-500 uppercase tracking-wider px-1">Password</label>
-                                <div className="relative group">
-                                    <input
-                                        type="password"
-                                        className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-gray-700 focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 transition-all outline-none"
-                                        placeholder="••••••••"
-                                        id="UserPass"
-                                        value={formData.UserPass}
-                                        onChange={handleChange}
-                                    />
-                                    <i className="fas fa-key absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-indigo-400 transition-colors"></i>
-                                </div>
-                            </div>
+                            <Input
+                                label="Password"
+                                type="password"
+                                placeholder="••••••••"
+                                id="UserPass"
+                                value={formData.UserPass}
+                                onChange={(e) => handleChange('UserPass', e.target.value)}
+                                icon={<Key size={16} />}
+                            />
 
-                            <div className="space-y-2">
-                                <label className="text-xs font-bold text-gray-500 uppercase tracking-wider px-1">Home Pool</label>
-                                <select
-                                    className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-gray-700 focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 transition-all outline-none appearance-none cursor-pointer"
-                                    id="UserVol"
-                                    value={formData.UserVol}
-                                    onChange={handleChange}
-                                >
-                                    <option value="NoHome">Select storage pool</option>
-                                    {pools.map(pool => (
-                                        <option key={pool.id || pool.text} value={pool.id || pool.text}>{pool.text}</option>
-                                    ))}
-                                </select>
-                            </div>
+                            <Dropdown
+                                label="Home Pool"
+                                options={[
+                                    { value: 'NoHome', label: 'Select storage pool' },
+                                    ...pools.map(pool => ({ value: pool.id || pool.text, label: pool.text }))
+                                ]}
+                                value={formData.UserVol}
+                                onChange={(val) => handleChange('UserVol', val)}
+                            />
 
-                            <div className="space-y-2">
-                                <label className="text-xs font-bold text-gray-500 uppercase tracking-wider px-1">Quota (GB)</label>
-                                <input
-                                    type="number"
-                                    className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-gray-700 focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 transition-all outline-none"
-                                    placeholder="e.g. 50"
-                                    id="volsize"
-                                    value={formData.volsize}
-                                    onChange={handleChange}
-                                />
-                            </div>
+                            <Input
+                                label="Quota (GB)"
+                                type="number"
+                                placeholder="e.g. 50"
+                                id="volsize"
+                                value={formData.volsize}
+                                onChange={(e) => handleChange('volsize', e.target.value)}
+                                icon={<HardDrive size={16} />}
+                            />
 
-                            <div className="space-y-2">
-                                <label className="text-xs font-bold text-gray-500 uppercase tracking-wider px-1">IP Address Restriction</label>
-                                <input
-                                    id="HomeAddress"
-                                    type="text"
-                                    className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-gray-700 focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 transition-all outline-none"
-                                    placeholder="e.g. 192.168.1.100"
-                                    value={formData.HomeAddress}
-                                    onChange={handleChange}
-                                />
-                            </div>
+                            <Input
+                                label="IP Address Restriction"
+                                id="HomeAddress"
+                                placeholder="e.g. 192.168.1.100"
+                                value={formData.HomeAddress}
+                                onChange={(e) => handleChange('HomeAddress', e.target.value)}
+                                icon={<Hash size={16} />}
+                            />
 
-                            <div className="space-y-2">
-                                <label className="text-xs font-bold text-gray-500 uppercase tracking-wider px-1">Allowed Groups</label>
-                                <select
-                                    ref={selectRef}
-                                    className="select2 w-full"
-                                    multiple
-                                    defaultValue={[]}
-                                >
-                                    {groups.map(group => (
-                                        <option key={group.id} value={group.id}>{group.text}</option>
-                                    ))}
-                                </select>
-                            </div>
+                            <Dropdown
+                                label="Allowed Groups"
+                                isMulti
+                                options={groups.map(group => ({ value: group.text, label: group.text }))}
+                                value={formData.Usergroups}
+                                onChange={(val) => handleChange('Usergroups', val)}
+                            />
                         </div>
 
                         {/* Footer Actions */}
@@ -185,14 +140,16 @@ const AddUserForm = ({ pools, groups, onAdd }) => {
                                 </a>
                             </div>
 
-                            <button
+                            <Button
                                 type="submit"
-                                className={`w-full sm:w-auto px-10 py-3 rounded-xl font-bold shadow-lg transition-all flex items-center justify-center gap-3 ${canSubmit ? 'bg-indigo-600 text-white shadow-indigo-200 hover:bg-indigo-700 hover:shadow-indigo-300 hover:-translate-y-0.5 active:translate-y-0' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}
+                                className="w-full sm:w-auto"
+                                bgColor="bg-indigo-600"
                                 disabled={!canSubmit}
+                                icon={<i className="fas fa-plus-circle"></i>}
+                                onClick={handleSubmit}
                             >
-                                <i className="fas fa-plus-circle"></i>
                                 Add System User
-                            </button>
+                            </Button>
                         </div>
                     </form>
                 </div>

@@ -1,14 +1,15 @@
 import React from 'react';
 import { Bell, Maximize2, User, LogOut, Key } from 'lucide-react';
 
-const Navbar = () => {
+const Navbar = ({ sectionTitle }) => {
     return (
         <nav className="main-header navbar navbar-expand navbar-white navbar-light" style={{ background: 'linear-gradient(90deg, var(--sidebar-bg-start) 0%, var(--sidebar-bg-end) 100%)', backdropFilter: 'blur(30px) saturate(200%)', border: '0px' }}>
             {/* Left navbar links */}
             <ul className="navbar-nav">
-                {/* Burger icon removed - moved to Sidebar */}
                 <li className="nav-item d-none d-sm-inline-block">
-                    <a href="./QuickStor.html" className="boldit nav-link" style={{ color: 'black' }}  >Cluster Management</a>
+                    <div className="!text-3xl font-black tracking-tight !text-black flex items-center h-full px-0 select-none cursor-default">
+                        {sectionTitle}
+                    </div>
                 </li>
             </ul>
 

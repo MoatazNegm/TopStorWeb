@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { evacuateHost } from '../api/nodes';
 import ServerNode from './Common/ServerNode';
+import Button from './Common/Button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 const ActiveNodes = ({ hosts, allHosts, lostHosts, selectedHostName, onSelect }) => {
@@ -65,21 +66,15 @@ const ActiveNodes = ({ hosts, allHosts, lostHosts, selectedHostName, onSelect })
 
                     {/* Actions */}
                     <div className="p-6">
-                        <button
+                        <Button
                             type="button"
                             id="activesubmit"
                             onClick={handleEvacuate}
                             disabled={!selectedHostName}
-                            className={`
-                                w-full sm:w-auto px-8 py-2.5 rounded-lg font-medium shadow-sm transition-all duration-200
-                                ${!selectedHostName
-                                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                    : 'bg-rose-500 hover:bg-rose-600 text-white hover:shadow-md active:transform active:scale-95'
-                                }
-                            `}
+                            bgColor="bg-rose-500"
                         >
                             Evacuate Node
-                        </button>
+                        </Button>
                         <p className="mt-2 text-xs text-gray-400">
                             * Evacuating a node will migrate its data to other healthy nodes in the cluster.
                         </p>

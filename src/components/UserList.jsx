@@ -1,10 +1,11 @@
 import React from 'react';
+import Dropdown from './Common/Dropdown';
 
 const UserList = ({ users, groups, onUpdateGroups, onChangePassword, onDelete }) => {
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative group hover:shadow-md transition-all duration-300 mt-8">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 relative group hover:shadow-md transition-all duration-300 mt-8">
             {/* Theme Accent Line */}
-            <div className="absolute top-0 bottom-0 left-0 w-1.5 bg-indigo-500 shadow-[2px_0_10px_rgba(99,102,241,0.2)]"></div>
+            <div className="absolute top-0 bottom-0 left-0 w-1.5 bg-indigo-500 rounded-l-2xl shadow-[2px_0_10px_rgba(99,102,241,0.2)]"></div>
 
             <div className="px-6 py-5 border-b border-gray-50 bg-gray-50/30 flex justify-between items-center">
                 <div className="flex items-center gap-4">
@@ -79,14 +80,7 @@ const UserRow = ({ user, allGroups, onUpdateGroups, onChangePassword, onDelete }
     );
     const [hasChanges, setHasChanges] = React.useState(false);
 
-    const handleGroupChange = (e) => {
-        const options = e.target.options;
-        const values = [];
-        for (let i = 0; i < options.length; i++) {
-            if (options[i].selected) {
-                values.push(options[i].value);
-            }
-        }
+    const handleGroupChange = (values) => {
         setSelectedGroups(values);
         setHasChanges(values.join(',') !== user.groups);
     };
@@ -120,16 +114,13 @@ const UserRow = ({ user, allGroups, onUpdateGroups, onChangePassword, onDelete }
             <td className="px-6 py-5 min-w-[300px]">
                 <div className="flex items-center gap-3">
                     <div className="flex-1">
-                        <select
-                            multiple
-                            className="form-control bg-gray-50 border border-gray-100 rounded-xl text-gray-700 text-xs py-1 h-12 w-full focus:bg-white transition-all scrollbar-hide"
+                        <Dropdown
+                            isMulti
+                            options={allGroups.map(group => ({ value: group.id || group.text, label: group.text || group.name }))}
                             value={selectedGroups}
                             onChange={handleGroupChange}
-                        >
-                            {allGroups.map(group => (
-                                <option key={group.id || group.text} value={group.id || group.text}>{group.text || group.name}</option>
-                            ))}
-                        </select>
+                            placeholder="Select Groups..."
+                        />
                     </div>
                     {hasChanges && (
                         <button

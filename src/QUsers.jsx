@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { fetchUserList, fetchGroupList, addUser, deleteUser, updateUserGroups, changePassword } from './api/users';
 import { fetchPoolsInfo } from './api/pools';
+import Button from './components/Common/Button';
 import AddUserForm from './components/AddUserForm';
 import UserList from './components/UserList';
 
@@ -97,9 +98,15 @@ const QUsers = () => {
                                 <p className="text-gray-500 mt-2 font-medium">Manage system accounts, permissions, and storage quotas</p>
                             </div>
                             <div className="flex gap-3">
-                                <button onClick={loadData} className="px-5 py-2.5 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-blue-600 rounded-xl font-medium shadow-sm transition-all flex items-center">
-                                    <i className="fas fa-sync-alt mr-2 opacity-70"></i> Sync Now
-                                </button>
+                                <Button
+                                    onClick={loadData}
+                                    bgColor="bg-white"
+                                    textColor="text-gray-700"
+                                    className="border border-gray-200 hover:bg-gray-50 hover:text-blue-600 rounded-xl"
+                                    icon={<i className="fas fa-sync-alt opacity-70"></i>}
+                                >
+                                    Sync Now
+                                </Button>
                             </div>
                         </div>
                     </div>

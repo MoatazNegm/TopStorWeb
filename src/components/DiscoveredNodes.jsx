@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { joinCluster, configHost } from '../api/nodes';
 import ServerNode from './Common/ServerNode';
+import Button from './Common/Button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscover, onRefresh }) => {
@@ -167,21 +168,15 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
 
                             {/* Actions */}
                             <div className="pt-4 flex flex-col sm:flex-row gap-4 justify-between items-center border-t border-gray-100 mt-6">
-                                <button
+                                <Button
                                     type="button"
                                     id="updateAndJoinBtn"
                                     onClick={handleJoin}
                                     disabled={!selectedHost}
-                                    className={`
-                                        w-full sm:w-auto px-8 py-2.5 rounded-lg font-medium shadow-sm transition-all duration-200
-                                        ${!selectedHost
-                                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                            : 'bg-blue-600 hover:bg-blue-700 text-white hover:shadow-md active:transform active:scale-95'
-                                        }
-                                    `}
+                                    bgColor="bg-blue-600"
                                 >
                                     Add to Cluster
-                                </button>
+                                </Button>
 
                                 <button
                                     type="button"

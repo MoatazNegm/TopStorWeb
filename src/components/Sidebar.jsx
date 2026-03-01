@@ -32,43 +32,43 @@ const Sidebar = () => {
             label: 'System Status',
             icon: 'fas fa-crosshairs',
             subItems: [
-                { label: 'Logs', icon: 'fas fa-clipboard-list', href: './QLogs.html' },
-                { label: 'Service Performance', icon: 'far fa-chart-bar', href: './Qserviceperformance.html' },
+                { label: 'Logs', icon: 'fas fa-clipboard-list', href: '#/logs' },
+                { label: 'Service Performance', icon: 'far fa-chart-bar', href: '#/performance' },
             ]
         },
         {
             label: 'Volumes',
             icon: 'fas fa-hdd',
             subItems: [
-                { label: 'CIFS', icon: 'fab fa-windows', href: './Qcifs.html' },
-                { label: 'NFS', icon: 'fab fa-linux', href: './Qnfs.html' },
-                { label: 'Home Folders', icon: 'fas fa-house-user', href: './Qhome.html' },
-                { label: 'ISCSI LUNs', icon: 'fas fa-database', href: './Qiscsi.html' },
-                { label: 'Snapshots', icon: 'fas fa-camera', href: './Qsnapshots.html' },
+                { label: 'CIFS', icon: 'fab fa-windows', href: '#/volumes/cifs' },
+                { label: 'NFS', icon: 'fab fa-linux', href: '#/volumes/nfs' },
+                { label: 'Home Folders', icon: 'fas fa-house-user', href: '#/volumes/home' },
+                { label: 'ISCSI LUNs', icon: 'fas fa-database', href: '#/volumes/iscsi' },
+                { label: 'Snapshots', icon: 'fas fa-camera', href: '#/volumes/snapshots' },
             ]
         },
         {
             label: 'Replication',
             icon: 'far fa-clone',
             subItems: [
-                { label: 'Partner', icon: 'fas fa-hands-helping', href: './Qpartner.html' },
-                { label: 'Sender Schedule', icon: 'fab fa-perbyte', href: './Qsender.html' },
-                { label: 'Received Snapshots', icon: 'fas fa-paper-plane', href: './Qreceived.html' },
+                { label: 'Partner', icon: 'fas fa-hands-helping', href: '#/replication/partners' },
+                { label: 'Sender Schedule', icon: 'fab fa-perbyte', href: '#/replication/sender' },
+                { label: 'Received Snapshots', icon: 'fas fa-paper-plane', href: '#/replication/received' },
             ]
         },
         {
             label: 'Pools',
             icon: 'fas fa-stream',
             subItems: [
-                { label: 'Disk Groups', icon: 'fas fa-database', href: './Qdg.html' },
+                { label: 'Disk Groups', icon: 'fas fa-database', href: '#/pools/diskgroups' },
             ]
         },
         {
             label: 'Settings',
             icon: 'fas fa-cog',
             subItems: [
-                { label: 'User Privelideges', icon: 'fas fa-unlock-alt', href: './Quserpriv.html' },
-                { label: 'Updates', icon: 'fas fa-pen-fancy', href: './Qupdates.html' },
+                { label: 'User Privileges', icon: 'fas fa-unlock-alt', href: '#/settings/privileges' },
+                { label: 'Updates', icon: 'fas fa-pen-fancy', href: '#/settings/updates' },
             ]
         }
     ];

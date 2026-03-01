@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { fetchGroupList, fetchUserOptions, addGroup, deleteGroup, updateGroupUsers } from './api/groups';
+import Button from './components/Common/Button';
 import AddGroupForm from './components/AddGroupForm';
 import GroupList from './components/GroupList';
 
@@ -68,13 +69,18 @@ const QGroups = () => {
                     <div className="container-fluid">
                         <div className="flex justify-between items-center mb-10">
                             <div>
-                                <h1 className="text-3xl font-bold text-gray-800 tracking-tight">Groups Management</h1>
-                                <p className="text-gray-500 mt-2 font-medium">Manage system groups, permissions, and directory memberships</p>
+                                <p className="text-lg text-gray-500 font-medium tracking-tight">Manage system groups, permissions, and directory memberships</p>
                             </div>
                             <div className="flex gap-3">
-                                <button onClick={loadData} className="px-5 py-2.5 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-blue-600 rounded-xl font-medium shadow-sm transition-all flex items-center">
-                                    <i className="fas fa-sync-alt mr-2 opacity-70"></i> Sync Now
-                                </button>
+                                <Button
+                                    onClick={loadData}
+                                    bgColor="bg-white"
+                                    textColor="text-gray-700"
+                                    className="border border-gray-200 hover:bg-gray-50 hover:text-blue-600 rounded-xl"
+                                    icon={<i className="fas fa-sync-alt opacity-70"></i>}
+                                >
+                                    Sync Now
+                                </Button>
                             </div>
                         </div>
                     </div>

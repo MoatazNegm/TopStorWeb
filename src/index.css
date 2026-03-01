@@ -36,7 +36,7 @@
     width: 100% !important;
 }
 
-.sidebar .nav-sidebar .nav-link:hover {
+.sidebar .nav-sidebar .nav-link:not(.active):hover {
     background-color: var(--submenu-bg) !important;
     color: var(--brand-blue) !important;
 }
@@ -97,7 +97,7 @@
     width: auto !important;
 }
 
-.sidebar .nav-treeview .nav-link:hover {
+.sidebar .nav-treeview .nav-link:not(.active):hover {
     background-color: rgba(69, 88, 252, 0.05) !important;
     color: var(--brand-blue) !important;
 }

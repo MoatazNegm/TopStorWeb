@@ -49,3 +49,7 @@ export const changePassword = (username, password) => {
 export const fetchUserAuths = (username) => {
     return api.get('api/v1/users/userauths', { params: { username } });
 };
+export const updateUserPrivileges = (username, auths) => {
+    // auths is a comma-separated string of "id-checked" values
+    return api.post('api/v1/users/usersauth', { tochange: username, auths });
+};
