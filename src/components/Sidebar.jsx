@@ -133,7 +133,7 @@ const Sidebar = () => {
 
             {/* Brand Logo */}
             <div className="brand-link">
-                <a href="./QuickStor.html" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <a href="#" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <img src="img/logo.png" width="180" style={{ filter: 'brightness(0.2)' }} alt="QuickStor" />
                 </a>
             </div>

@@ -15,11 +15,13 @@ import QDisks from './QDisks';
 import QPartners from './QPartners';
 import QSender from './QSender';
 import QReceived from './QReceived';
+import QLogin from './QLogin';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 
 function App() {
     const [view, setView] = React.useState('nodes');
+    const [isAuthenticated, setIsAuthenticated] = React.useState(!!localStorage.getItem('token') && localStorage.getItem('token') !== '0');
 
     React.useEffect(() => {
         const handleHashChange = () => {
@@ -43,7 +45,18 @@ function App() {
         };
         window.addEventListener('hashchange', handleHashChange);
         handleHashChange(); // initial check
-        return () => window.removeEventListener('hashchange', handleHashChange);
+
+        // Check auth status periodically or on focus
+        const checkAuth = () => {
+            const token = localStorage.getItem('token');
+            setIsAuthenticated(!!token && token !== '0');
+        };
+        window.addEventListener('storage', checkAuth);
+
+        return () => {
+            window.removeEventListener('hashchange', handleHashChange);
+            window.removeEventListener('storage', checkAuth);
+        };
     }, []);
 
     const getSectionTitle = (view) => {
@@ -74,6 +87,10 @@ function App() {
                 return 'System configuration';
         }
     };
+
+    if (!isAuthenticated) {
+        return <QLogin onLoginSuccess={() => setIsAuthenticated(true)} />;
+    }
 
     return (
         <div className="wrapper wrapper-index">

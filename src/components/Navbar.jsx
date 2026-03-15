@@ -78,10 +78,17 @@ const Navbar = ({ sectionTitle }) => {
                         <span id="username" className="font-bold text-sm hidden sm:block text-blue-700 whitespace-nowrap">Admin</span>
                     </a>
                     <div className="dropdown-menu dropdown-menu-sm dropdown-menu-right border-0 shadow-2xl rounded-2xl overflow-hidden mt-3 p-1.5 min-w-[200px] bg-white">
-                        <a href="./login.html" className="dropdown-item !flex !flex-row !items-center !gap-3 px-4 py-3 rounded-xl hover:bg-red-50 text-gray-700 hover:text-red-700 transition-all group/item">
+                        <button 
+                            onClick={() => {
+                                localStorage.removeItem('token');
+                                localStorage.setItem('token', '0'); // Signal logout to App.jsx
+                                window.dispatchEvent(new Event('storage')); // Trigger auth check in App.jsx
+                            }}
+                            className="dropdown-item !flex !flex-row !items-center !gap-3 px-4 py-3 rounded-xl hover:bg-red-50 text-gray-700 hover:text-red-700 transition-all group/item w-full text-left"
+                        >
                             <LogOut size={18} strokeWidth={2} className="text-gray-400 group-hover/item:text-red-500 transition-colors shrink-0" />
                             <span className="font-semibold text-sm whitespace-nowrap">Logout</span>
-                        </a>
+                        </button>
                         <div className="dropdown-divider my-1 border-gray-100"></div>
                         <a href="#modal-sm" id="chgpasswd" data-toggle="modal" data-target="#modal-sm" className="dropdown-item chgpasswd !flex !flex-row !items-center !gap-3 px-4 py-3 rounded-xl hover:bg-yellow-50 text-gray-700 hover:text-yellow-700 transition-all group/item">
                             <Key size={18} strokeWidth={2} className="text-gray-400 group-hover/item:text-yellow-500 transition-colors shrink-0" />
