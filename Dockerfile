@@ -1,0 +1,19 @@
+FROM node:20-alpine
+WORKDIR /app
+
+# 1. ONLY copy the dependency files first
+COPY package*.json ./
+
+# 2. Clean install and aggressively nuke the NPM cache
+RUN npm ci && npm cache clean --force
+
+# 3. SELECTIVELY copy only the modern React files/folders
+COPY src/ ./src/
+COPY public/ ./public/
+COPY index.html vite.config.js ./
+
+# (Add any other specific config files your React app needs, like tailwind.config.js or postcss.config.js)
+COPY tailwind.config.js postcss.config.js ./ 
+
+EXPOSE 5173
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
