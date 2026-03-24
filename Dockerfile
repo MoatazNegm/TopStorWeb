@@ -1,6 +1,8 @@
 FROM node:20-alpine
 WORKDIR /app
 
+ENV CI=true
+
 # 1. ONLY copy the dependency files first
 COPY package*.json ./
 
@@ -11,9 +13,7 @@ RUN npm ci && npm cache clean --force
 COPY src/ ./src/
 COPY public/ ./public/
 COPY index.html vite.config.js ./
-
-# (Add any other specific config files your React app needs, like tailwind.config.js or postcss.config.js)
 COPY tailwind.config.js postcss.config.js ./ 
 
 EXPOSE 5173
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+CMD sh -c "npm run dev -- --host 0.0.0.0"
