@@ -4,7 +4,7 @@ import ServerNode from './Common/ServerNode';
 import Button from './Common/Button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
-const ActiveNodes = ({ hosts, allHosts, lostHosts, selectedHostName, onSelect }) => {
+const ActiveNodes = ({ hosts, allHosts, lostHosts, selectedHostName, onSelect, readyHostsCount, possibleHostsCount }) => {
     const [isExpanded, setIsExpanded] = useState(true);
     const selectedHost = allHosts ? allHosts[selectedHostName] : null;
 
@@ -12,12 +12,20 @@ const ActiveNodes = ({ hosts, allHosts, lostHosts, selectedHostName, onSelect })
         if (!selectedHostName) return;
         try {
             await evacuateHost(selectedHostName);
-            alert("Evacuation started");
         } catch (e) {
-            console.error(e);
-            alert("Evacuation failed");
+            console.error("Evacuation failed", e);
         }
     };
+
+    // Old logic: evacuate disabled by default
+    // Enabled only if selected host is "lost/Off" AND (readyCount - possibleCount) >= 2
+    const isSelectedHostLost = selectedHostName && lostHosts && (
+        Array.isArray(lostHosts)
+            ? lostHosts.includes(selectedHostName) || lostHosts.some(h => (typeof h === 'object' ? h.name : h) === selectedHostName)
+            : JSON.stringify(lostHosts).includes(selectedHostName)
+    );
+
+    const canEvacuate = isSelectedHostLost && (readyHostsCount - possibleHostsCount) >= 2;
 
     return (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 relative">
@@ -41,26 +49,26 @@ const ActiveNodes = ({ hosts, allHosts, lostHosts, selectedHostName, onSelect })
                     <div className="p-6 bg-gray-50/50 border-b border-gray-100">
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="hostsactive">
                             {hosts.map(host => {
-                                const isLost = lostHosts.includes(host.name);
-                                const fullHost = (allHosts && allHosts[host.name]) ? allHosts[host.name] : host;
-                                const displayIp = fullHost.ip || fullHost.ipaddr || host.ip || host.ipaddr;
+                                const hostName = typeof host === 'object' ? host.name : host;
+                                const isLost = lostHosts && (
+                                    Array.isArray(lostHosts)
+                                        ? lostHosts.includes(hostName) || lostHosts.some(h => (typeof h === 'object' ? h.name : h) === hostName)
+                                        : JSON.stringify(lostHosts).includes(hostName)
+                                );
+                                const fullHost = (allHosts && allHosts[hostName]) ? allHosts[hostName] : host;
+                                const displayIp = fullHost.ip || fullHost.ipaddr || (typeof host === 'object' ? (host.ip || host.ipaddr) : '');
                                 return (
-                                    <div key={host.name}>
+                                    <div key={hostName}>
                                         <ServerNode
-                                            name={host.name}
+                                            name={hostName}
                                             ip={displayIp}
                                             state={isLost ? 'down' : 'up'}
-                                            onClick={() => onSelect(host.name)}
-                                            selected={selectedHostName === host.name}
+                                            onClick={() => onSelect(hostName)}
+                                            selected={selectedHostName === hostName}
                                         />
                                     </div>
                                 );
                             })}
-                            {hosts.length === 0 && (
-                                <div className="col-span-full text-center py-8 text-gray-400 text-sm">
-                                    No active nodes found.
-                                </div>
-                            )}
                         </div>
                     </div>
 
@@ -70,14 +78,11 @@ const ActiveNodes = ({ hosts, allHosts, lostHosts, selectedHostName, onSelect })
                             type="button"
                             id="activesubmit"
                             onClick={handleEvacuate}
-                            disabled={!selectedHostName}
+                            disabled={!canEvacuate}
                             bgColor="bg-rose-500"
                         >
                             Evacuate Node
                         </Button>
-                        <p className="mt-2 text-xs text-gray-400">
-                            * Evacuating a node will migrate its data to other healthy nodes in the cluster.
-                        </p>
                     </div>
                 </div>
             )}

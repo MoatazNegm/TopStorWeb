@@ -4,6 +4,89 @@ import ServerNode from './Common/ServerNode';
 import Button from './Common/Button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
+const TIMEZONE_OPTIONS = [
+    { city: '0', timeZoneId: '-1', value: '-100', label: '-----------' },
+    { city: 'International', timeZoneId: '1', value: '-12', label: '(GMT-12:00) International Date Line West' },
+    { city: 'Midway', timeZoneId: '2', value: '-11', label: '(GMT-11:00) Midway Island, Samoa' },
+    { city: 'Hawaii', timeZoneId: '3', value: '-10', label: '(GMT-10:00) Hawaii' },
+    { city: 'Alaska', timeZoneId: '4', value: '-9', label: '(GMT-09:00) Alaska' },
+    { city: 'Pacific', timeZoneId: '5', value: '-8', label: '(GMT-08:00) Pacific Time (US & Canada)' },
+    { city: 'Tijuana', timeZoneId: '6', value: '-8', label: '(GMT-08:00) Tijuana, Baja California' },
+    { city: 'Arizona', timeZoneId: '7', value: '-7', label: '(GMT-07:00) Arizona' },
+    { city: 'Chihuahua', timeZoneId: '8', value: '-7', label: '(GMT-07:00) Chihuahua, La Paz, Mazatlan' },
+    { city: 'Mountain', timeZoneId: '9', value: '-7', label: '(GMT-07:00) Mountain Time (US & Canada)' },
+    { city: 'Canada', timeZoneId: '10', value: '-6', label: '(GMT-06:00) Central America' },
+    { city: 'Canada', timeZoneId: '11', value: '-6', label: '(GMT-06:00) Central Time (US & Canada)' },
+    { city: 'Guadalajara', timeZoneId: '12', value: '-6', label: '(GMT-06:00) Guadalajara, Mexico City, Monterrey' },
+    { city: 'Saskatchewan', timeZoneId: '13', value: '-6', label: '(GMT-06:00) Saskatchewan' },
+    { city: 'Lima', timeZoneId: '14', value: '-5', label: '(GMT-05:00) Bogota, Lima, Quito, Rio Branco' },
+    { city: 'Lima', timeZoneId: '15', value: '-5', label: '(GMT-05:00) Eastern Time (US & Canada)' },
+    { city: 'Indiana', timeZoneId: '16', value: '-5', label: '(GMT-05:00) Indiana (East)' },
+    { city: 'Atlantic', timeZoneId: '17', value: '-4', label: '(GMT-04:00) Atlantic Time (Canada)' },
+    { city: 'Caracas', timeZoneId: '18', value: '-4', label: '(GMT-04:00) Caracas, La Paz' },
+    { city: 'Manaus', timeZoneId: '19', value: '-4', label: '(GMT-04:00) Manaus' },
+    { city: 'Santiago', timeZoneId: '20', value: '-4', label: '(GMT-04:00) Santiago' },
+    { city: 'Brasilia', timeZoneId: '22', value: '-3', label: '(GMT-03:00) Brasilia' },
+    { city: 'Buenos', timeZoneId: '23', value: '-3', label: '(GMT-03:00) Buenos Aires, Georgetown' },
+    { city: 'Greenland', timeZoneId: '24', value: '-3', label: '(GMT-03:00) Greenland' },
+    { city: 'Montevideo', timeZoneId: '25', value: '-3', label: '(GMT-03:00) Montevideo' },
+    { city: 'Verde', timeZoneId: '27', value: '-1', label: '(GMT-01:00) Cape Verde Is.' },
+    { city: 'Azores', timeZoneId: '28', value: '-1', label: '(GMT-01:00) Azores' },
+    { city: 'Casablanca', timeZoneId: '29', value: '0', label: '(GMT+00:00) Casablanca, Monrovia, Reykjavik' },
+    { city: 'Greenwich', timeZoneId: '30', value: '0', label: '(GMT+00:00) Greenwich Mean Time : Dublin, Edinburgh, Lisbon, London' },
+    { city: 'Amsterdam', timeZoneId: '31', value: '1', label: '(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna' },
+    { city: 'Belgrade', timeZoneId: '32', value: '1', label: '(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague' },
+    { city: 'Brussels', timeZoneId: '33', value: '1', label: '(GMT+01:00) Brussels, Copenhagen, Madrid, Paris' },
+    { city: 'Sarajevo', timeZoneId: '34', value: '1', label: '(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb' },
+    { city: 'GMT+1', timeZoneId: '35', value: '1', label: '(GMT+01:00) West Central Africa' },
+    { city: 'Amman', timeZoneId: '36', value: '2', label: '(GMT+02:00) Amman' },
+    { city: 'Athens', timeZoneId: '37', value: '2', label: '(GMT+02:00) Athens, Bucharest, Istanbul' },
+    { city: 'Beirut', timeZoneId: '38', value: '2', label: '(GMT+02:00) Beirut' },
+    { city: 'Cairo', timeZoneId: '39', value: '2', label: '(GMT+02:00) Cairo' },
+    { city: 'Harare', timeZoneId: '40', value: '2', label: '(GMT+02:00) Harare, Pretoria' },
+    { city: 'Helsinki', timeZoneId: '41', value: '2', label: '(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius' },
+    { city: 'Jerusalem', timeZoneId: '42', value: '2', label: '(GMT+02:00) Jerusalem' },
+    { city: 'Minsk', timeZoneId: '43', value: '2', label: '(GMT+02:00) Minsk' },
+    { city: 'Windhoek', timeZoneId: '44', value: '2', label: '(GMT+02:00) Windhoek' },
+    { city: 'Kuwait', timeZoneId: '45', value: '3', label: '(GMT+03:00) Kuwait, Riyadh, Baghdad' },
+    { city: 'Moscow', timeZoneId: '46', value: '3', label: '(GMT+03:00) Moscow, St. Petersburg, Volgograd' },
+    { city: 'Nairobi', timeZoneId: '47', value: '3', label: '(GMT+03:00) Nairobi' },
+    { city: 'Tbilisi', timeZoneId: '48', value: '3', label: '(GMT+03:00) Tbilisi' },
+    { city: 'Tehran', timeZoneId: '49', value: '3.5', label: '(GMT+03:30) Tehran' },
+    { city: 'Dhabi', timeZoneId: '50', value: '4', label: '(GMT+04:00) Abu Dhabi, Muscat' },
+    { city: 'Baku', timeZoneId: '51', value: '4', label: '(GMT+04:00) Baku' },
+    { city: 'Yerevan', timeZoneId: '52', value: '4', label: '(GMT+04:00) Yerevan' },
+    { city: 'Kabul', timeZoneId: '53', value: '4.5', label: '(GMT+04:30) Kabul' },
+    { city: 'Yekaterinburg', timeZoneId: '54', value: '5', label: '(GMT+05:00) Yekaterinburg' },
+    { city: 'Islamabad', timeZoneId: '55', value: '5', label: '(GMT+05:00) Islamabad, Karachi, Tashkent' },
+    { city: 'Jayawardenapura', timeZoneId: '56', value: '5.5', label: '(GMT+05:30) Sri Jayawardenapura' },
+    { city: 'Chennai', timeZoneId: '57', value: '5.5', label: '(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi' },
+    { city: 'Kath', timeZoneId: '58', value: '5.75', label: '(GMT+05:45) Kathmandu' },
+    { city: 'Almaty', timeZoneId: '59', value: '6', label: '(GMT+06:00) Almaty, Novosibirsk' },
+    { city: 'Astana', timeZoneId: '60', value: '6', label: '(GMT+06:00) Astana, Dhaka' },
+    { city: 'Yangon', timeZoneId: '61', value: '6.5', label: '(GMT+06:30) Yangon (Rangoon)' },
+    { city: 'Jakarta', timeZoneId: '62', value: '7', label: '(GMT+07:00) Bangkok, Hanoi, Jakarta' },
+    { city: 'Krasnoyarsk', timeZoneId: '63', value: '7', label: '(GMT+07:00) Krasnoyarsk' },
+    { city: 'Hong', timeZoneId: '64', value: '8', label: '(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi' },
+    { city: 'Lumpur', timeZoneId: '65', value: '8', label: '(GMT+08:00) Kuala Lumpur, Singapore' },
+    { city: 'Irkutsk', timeZoneId: '66', value: '8', label: '(GMT+08:00) Irkutsk, Ulaan Bataar' },
+    { city: 'Perth', timeZoneId: '67', value: '8', label: '(GMT+08:00) Perth' },
+    { city: 'Taipei', timeZoneId: '68', value: '8', label: '(GMT+08:00) Taipei' },
+    { city: 'Osaka', timeZoneId: '69', value: '9', label: '(GMT+09:00) Osaka, Sapporo, Tokyo' },
+    { city: 'Seoul', timeZoneId: '70', value: '9', label: '(GMT+09:00) Seoul' },
+    { city: 'Yakutsk', timeZoneId: '71', value: '9', label: '(GMT+09:00) Yakutsk' },
+    { city: 'Adelaide', timeZoneId: '72', value: '9.5', label: '(GMT+09:30) Adelaide' },
+    { city: 'Darwin', timeZoneId: '73', value: '9.5', label: '(GMT+09:30) Darwin' },
+    { city: 'Brisbane', timeZoneId: '74', value: '10', label: '(GMT+10:00) Brisbane' },
+    { city: 'Canberra', timeZoneId: '75', value: '10', label: '(GMT+10:00) Canberra, Melbourne, Sydney' },
+    { city: 'Hobart', timeZoneId: '76', value: '10', label: '(GMT+10:00) Hobart' },
+    { city: 'Guam', timeZoneId: '77', value: '10', label: '(GMT+10:00) Guam, Port Moresby' },
+    { city: 'Vladivostok', timeZoneId: '78', value: '10', label: '(GMT+10:00) Vladivostok' },
+    { city: 'Magadan', timeZoneId: '79', value: '11', label: '(GMT+11:00) Magadan, Solomon Is., New Caledonia' },
+    { city: 'Auckland', timeZoneId: '80', value: '12', label: '(GMT+12:00) Auckland, Wellington' },
+    { city: 'Fiji', timeZoneId: '81', value: '12', label: '(GMT+12:00) Fiji, Kamchatka, Marshall Is.' },
+];
+
 const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }) => {
     const [formData, setFormData] = useState({
         alias: '',
@@ -12,46 +95,70 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         nmports: [],
         cmports: [],
         dports: [],
+        iports: [],
         cluster: '',
         mgmtSub: 24,
         tz: '-100',
+        tzCity: '',
+        tzLabel: '',
         ntp: '',
         ntpName: '',
         gw: '',
         dnsname: '',
         dnssearch: '',
-        configured: false
+        configured: false // false = NOT "ready to join". Old code: checked = "ready to join" = configured:'no'
     });
     const [isExpanded, setIsExpanded] = useState(true);
+    const [availablePorts, setAvailablePorts] = useState([]);
 
     const nmportsRef = useRef(null);
     const cmportsRef = useRef(null);
     const dportsRef = useRef(null);
+    const iportsRef = useRef(null);
     const tzRef = useRef(null);
 
     // Derived state for the "selected" host object
     const selectedHost = allHosts ? allHosts[selectedHostName] : null;
 
+    // Snapshot of original host data for change-detection on submit
+    const [hostConfig, setHostConfig] = useState(null);
+
     useEffect(() => {
         if (selectedHost) {
-            // Populate form
-            setFormData({
+            // Parse ports - dynamic from hostdata
+            const ports = selectedHost.ports || [];
+            setAvailablePorts(ports);
+
+            const parsePortVal = (val) => {
+                if (typeof val === 'string') return val.split(',').map(s => s.trim());
+                if (Array.isArray(val)) return val;
+                return [];
+            };
+
+            const newFormData = {
                 alias: selectedHost.alias || '',
                 ipaddr: selectedHost.ipaddr || selectedHost.ip || '',
                 ipaddrsubnet: selectedHost.ipaddrsubnet || 24,
-                nmports: selectedHost.nmports ? (typeof selectedHost.nmports === 'string' ? selectedHost.nmports.split(',') : selectedHost.nmports) : [],
-                cmports: selectedHost.cmports ? (typeof selectedHost.cmports === 'string' ? selectedHost.cmports.split(',') : selectedHost.cmports) : [],
-                dports: selectedHost.dports ? (typeof selectedHost.dports === 'string' ? selectedHost.dports.split(',') : selectedHost.dports) : [],
-                cluster: selectedHost.cluster ? selectedHost.cluster.split('/')[0] : (selectedHost.ipaddr || selectedHost.ip || '').split('.').slice(0, 3).join('.') + '.0',
+                nmports: parsePortVal(selectedHost.nmports),
+                cmports: parsePortVal(selectedHost.cmports),
+                dports: parsePortVal(selectedHost.dports),
+                iports: parsePortVal(selectedHost.iports),
+                cluster: selectedHost.cluster ? selectedHost.cluster.split('/')[0] : '',
                 mgmtSub: selectedHost.cluster ? selectedHost.cluster.split('/')[1] || 24 : 24,
                 tz: selectedHost.tz || '-100',
+                tzCity: '',
+                tzLabel: '',
                 ntp: selectedHost.ntp || '',
-                ntpName: selectedHost.ntpName || selectedHost.ntp || '',
+                ntpName: selectedHost.ntpName || '',
                 gw: selectedHost.gw || '',
                 dnsname: selectedHost.dnsname || '',
                 dnssearch: selectedHost.dnssearch || '',
-                configured: selectedHost.configured !== 'no'
-            });
+                // Old code: configured == 'no' → checkbox checked (ready to join)
+                configured: selectedHost.configured === 'no'
+            };
+            setFormData(newFormData);
+            // Store original for change-detection
+            setHostConfig(JSON.parse(JSON.stringify(selectedHost)));
         } else {
             // Reset form
             setFormData({
@@ -61,9 +168,12 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                 nmports: [],
                 cmports: [],
                 dports: [],
+                iports: [],
                 cluster: '',
                 mgmtSub: 24,
                 tz: '-100',
+                tzCity: '',
+                tzLabel: '',
                 ntp: '',
                 ntpName: '',
                 gw: '',
@@ -71,6 +181,8 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                 dnssearch: '',
                 configured: false
             });
+            setAvailablePorts([]);
+            setHostConfig(null);
         }
     }, [selectedHost]);
 
@@ -85,15 +197,19 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         if ($.fn.select2) {
             $(nmportsRef.current).select2(select2Options).on('change', (e) => {
                 const values = $(e.target).val();
-                setFormData(prev => ({ ...prev, nmports: values }));
+                setFormData(prev => ({ ...prev, nmports: values || [] }));
             });
             $(cmportsRef.current).select2(select2Options).on('change', (e) => {
                 const values = $(e.target).val();
-                setFormData(prev => ({ ...prev, cmports: values }));
+                setFormData(prev => ({ ...prev, cmports: values || [] }));
             });
             $(dportsRef.current).select2(select2Options).on('change', (e) => {
                 const values = $(e.target).val();
-                setFormData(prev => ({ ...prev, dports: values }));
+                setFormData(prev => ({ ...prev, dports: values || [] }));
+            });
+            $(iportsRef.current).select2(select2Options).on('change', (e) => {
+                const values = $(e.target).val();
+                setFormData(prev => ({ ...prev, iports: values || [] }));
             });
             $(tzRef.current).select2(select2Options).on('change', (e) => {
                 const value = $(e.target).val();
@@ -108,10 +224,13 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
 
         return () => {
             if ($.fn.select2) {
-                $(nmportsRef.current).select2('destroy');
-                $(cmportsRef.current).select2('destroy');
-                $(dportsRef.current).select2('destroy');
-                $(tzRef.current).select2('destroy');
+                try {
+                    $(nmportsRef.current).select2('destroy');
+                    $(cmportsRef.current).select2('destroy');
+                    $(dportsRef.current).select2('destroy');
+                    $(iportsRef.current).select2('destroy');
+                    $(tzRef.current).select2('destroy');
+                } catch (e) { /* ignore cleanup errors */ }
             }
         };
     }, []);
@@ -124,8 +243,9 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         $(nmportsRef.current).val(formData.nmports).trigger('change.select2');
         $(cmportsRef.current).val(formData.cmports).trigger('change.select2');
         $(dportsRef.current).val(formData.dports).trigger('change.select2');
+        $(iportsRef.current).val(formData.iports).trigger('change.select2');
         $(tzRef.current).val(formData.tz).trigger('change.select2');
-    }, [formData.nmports, formData.cmports, formData.dports, formData.tz]);
+    }, [formData.nmports, formData.cmports, formData.dports, formData.iports, formData.tz]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -136,35 +256,134 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         }
     };
 
+    // Change-detection submit – only sends fields that changed, matching old QNodes.js logic
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!selectedHost) return;
+        if (!selectedHost || !hostConfig) return;
 
-        const payload = {
-            id: selectedHostName,
-            name: selectedHostName,
-            user: 'mezo',
-            alias: formData.alias,
-            ipaddr: formData.ipaddr,
-            ipaddrsubnet: formData.ipaddrsubnet,
-            nmports: formData.nmports.join(','),
-            cmports: formData.cmports.join(','),
-            dports: formData.dports.join(','),
-            cluster: formData.cluster + '/' + formData.mgmtSub,
-            tz: formData.tz,
-            ntp: formData.ntp || formData.ntpName,
-            gw: formData.gw,
-            dnsname: formData.dnsname,
-            dnssearch: formData.dnssearch,
-            configured: formData.configured ? 'yes' : 'no'
-        };
+        let tochange = 0;
+        const hostsubmit = {};
 
-        try {
-            await configHost(payload);
-            onRefresh();
-        } catch (err) {
-            console.error(err);
-            alert("Failed to update node");
+        // Alias (BoxName)
+        if (formData.alias.length > 3 && formData.alias !== hostConfig.alias) {
+            hostsubmit.alias = formData.alias;
+            tochange = 1;
+        }
+
+        // IP Address
+        if (formData.ipaddr.length > 3 && !formData.ipaddr.includes('__') && formData.ipaddr !== hostConfig.ipaddr) {
+            hostsubmit.ipaddr = formData.ipaddr;
+            hostsubmit.ipaddrsubnet = formData.ipaddrsubnet;
+            tochange = 1;
+        }
+
+        // IP Subnet changed alone
+        if (String(formData.ipaddrsubnet) !== String(hostConfig.ipaddrsubnet)) {
+            if (formData.ipaddr.length > 3 && !formData.ipaddr.includes('__')) {
+                hostsubmit.ipaddr = formData.ipaddr;
+                hostsubmit.ipaddrsubnet = formData.ipaddrsubnet;
+                tochange = 1;
+            }
+        }
+
+        // Cluster / Mgmt
+        const currentCluster = formData.cluster + '/' + formData.mgmtSub;
+        if (formData.cluster.length > 3 && !formData.cluster.includes('__') && currentCluster !== hostConfig.cluster) {
+            hostsubmit.cluster = currentCluster;
+            tochange = 1;
+        }
+
+        // Time Zone – old logic: encode as city%text_with_replacements
+        if (formData.tz !== '-100') {
+            let tzflag = 0;
+            const selectedTzOption = TIMEZONE_OPTIONS.find(opt => opt.value === formData.tz && opt.timeZoneId !== '-1');
+            if (selectedTzOption) {
+                try {
+                    const currentTzText = hostConfig.tz ? hostConfig.tz.split('%')[1].replace('!', ':').replace(/\^/g, ',').replace(/_/g, ' ') : '';
+                    if (selectedTzOption.label !== currentTzText) {
+                        tzflag = 1;
+                    }
+                } catch {
+                    tzflag = 1;
+                }
+                if (tzflag > 0) {
+                    // Encode: city + '%' + text with spaces→_, commas→^, colons→!
+                    const encodedText = selectedTzOption.label
+                        .split(' ').join('_')
+                        .split(',').join('^')
+                        .split(':').join('!');
+                    hostsubmit.tz = selectedTzOption.city + '%' + encodedText;
+                    tochange = 1;
+                }
+            }
+        }
+
+        // NTP (IP)
+        if (formData.ntp.length > 3 && !formData.ntp.includes('__') && formData.ntp !== hostConfig.ntp) {
+            hostsubmit.ntp = formData.ntp;
+            tochange = 1;
+        }
+
+        // NTP (Name) – old code: if NTPname has value > 3 chars and differs from ntp
+        if (formData.ntpName.length > 3 && formData.ntpName !== hostConfig.ntp) {
+            hostsubmit.ntp = formData.ntpName;
+            tochange = 1;
+        }
+
+        // Gateway
+        if (formData.gw.length > 3 && !formData.gw.includes('__') && formData.gw !== hostConfig.gw) {
+            hostsubmit.gw = formData.gw;
+            tochange = 1;
+        }
+
+        // Ports – check nmports, cmports, dports
+        ['nmports', 'cmports', 'dports'].forEach(key => {
+            const currentVal = formData[key] || [];
+            let configVal = hostConfig[key];
+            if (typeof configVal === 'string') {
+                configVal = configVal.split(',').map(s => s.trim());
+            } else if (!Array.isArray(configVal)) {
+                configVal = [];
+            }
+            if (JSON.stringify([...currentVal].sort()) !== JSON.stringify([...configVal].sort())) {
+                hostsubmit[key] = currentVal;
+                tochange = 1;
+            }
+        });
+
+        // DNS
+        if (formData.dnsname !== (hostConfig.dnsname || '')) {
+            hostsubmit.dnsname = formData.dnsname;
+            tochange = 1;
+        }
+        if (formData.dnssearch !== (hostConfig.dnssearch || '')) {
+            hostsubmit.dnssearch = formData.dnssearch;
+            tochange = 1;
+        }
+
+        // Configured – old logic:
+        // if unchecked (formData.configured == false) AND hostConfig.configured == 'no' → send 'yes'
+        // if checked (formData.configured == true) AND hostConfig.configured != 'no' → send 'no'
+        if (formData.configured === false && hostConfig.configured === 'no') {
+            hostsubmit.configured = 'yes';
+            tochange = 1;
+        }
+        if (formData.configured === true && hostConfig.configured !== 'no') {
+            hostsubmit.configured = 'no';
+            tochange = 1;
+        }
+
+        if (tochange > 0) {
+            hostsubmit.id = selectedHostName;
+            hostsubmit.user = 'mezo';
+            hostsubmit.name = selectedHostName;
+
+            try {
+                await configHost(hostsubmit);
+                onRefresh();
+            } catch (err) {
+                console.error("Failed to update node", err);
+            }
         }
     };
 
@@ -175,6 +394,13 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         } catch {
             return tzStr;
         }
+    };
+
+    // Render dynamic port options
+    const renderPortOptions = () => {
+        return availablePorts.map(port => (
+            <option key={port} value={port}>{port}</option>
+        ));
     };
 
     return (
@@ -216,17 +442,12 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                     />
                                 </div>
                             ))}
-                            {hosts.length === 0 && (
-                                <div className="col-span-full text-center py-8 text-gray-400 text-sm">
-                                    No running nodes found.
-                                </div>
-                            )}
                         </div>
                     </div>
 
                     {/* Config Form */}
-                    <div className="p-6">
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="p-6" id="runninghosts">
+                        <form onSubmit={handleSubmit} className="space-y-6 hostform">
 
                             {/* Join Cluster Switch */}
                             <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
@@ -234,7 +455,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                 <div className="flex items-center">
                                     <input
                                         type="checkbox"
-                                        className="w-5 h-5 text-emerald-600 rounded focus:ring-emerald-500 border-gray-300 transition"
+                                        className="w-5 h-5 text-emerald-600 rounded focus:ring-emerald-500 border-gray-300 transition runningnodes"
                                         id="customSwitch1"
                                         name="configured"
                                         checked={formData.configured}
@@ -250,15 +471,17 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                 <div className="lg:col-span-4">
                                     <input
                                         type="text"
-                                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400"
+                                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
+                                        id="BoxName"
                                         name="alias"
                                         value={formData.alias}
                                         onChange={handleChange}
                                         disabled={!selectedHost}
+                                        placeholder="Node Name"
                                     />
                                 </div>
                                 <div className="lg:col-span-5 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono text-center lg:text-left truncate">
-                                    {selectedHost ? formData.alias : 'select a node...'}
+                                    <span id="cBoxName">{selectedHost ? formData.alias : 'select a node...'}</span>
                                 </div>
                             </div>
 
@@ -271,7 +494,8 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                             <input
                                                 type="text"
                                                 placeholder="xxx.xxx.xxx.xxx"
-                                                className="flex-1 min-w-0 px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 ipaddress"
+                                                className="flex-1 min-w-0 px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 ipaddress runningnodes"
+                                                id="IPAddress"
                                                 name="ipaddr"
                                                 value={formData.ipaddr}
                                                 onChange={handleChange}
@@ -280,7 +504,8 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                             <input
                                                 type="number"
                                                 min="8" max="32" step="8"
-                                                className="w-20 px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400"
+                                                className="w-20 px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
+                                                id="ipaddrsubnet"
                                                 name="ipaddrsubnet"
                                                 value={formData.ipaddrsubnet}
                                                 onChange={handleChange}
@@ -289,15 +514,15 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                         </div>
                                         <div className="flex gap-4 items-center">
                                             <div className="flex-1">
-                                                <select ref={nmportsRef} className="select2 multiple w-full" multiple="multiple" name="nmports" disabled={!selectedHost}>
-                                                    <option>eth1</option>
-                                                    <option>eth2</option>
-                                                    <option>eth3</option>
-                                                    <option>eth4</option>
+                                                <select ref={nmportsRef} className="select2 multiple w-full runningnodes" multiple="multiple" id="nmports" name="nmports" data-placeholder="Select ports" disabled={!selectedHost}>
+                                                    {renderPortOptions()}
                                                 </select>
                                             </div>
+                                            <div className="px-3 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                                <span id="bNode">{selectedHost ? (selectedHost.bNode || 'bond 1') : ''}</span>
+                                            </div>
                                             <div className="flex-1 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
-                                                {selectedHost ? `${formData.ipaddr}/${formData.ipaddrsubnet}` : 'select a node...'}
+                                                <span id="cIPAddress">{selectedHost ? `${formData.ipaddr}/${formData.ipaddrsubnet}` : 'select a node...'}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -313,7 +538,8 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                             <input
                                                 type="text"
                                                 placeholder="xxx.xxx.xxx.xxx"
-                                                className="flex-1 min-w-0 px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 ipaddress"
+                                                className="flex-1 min-w-0 px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 ipaddress runningnodes"
+                                                id="Mgmt"
                                                 name="cluster"
                                                 value={formData.cluster}
                                                 onChange={handleChange}
@@ -322,7 +548,8 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                             <input
                                                 type="number"
                                                 min="8" max="32" step="8"
-                                                className="w-20 px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400"
+                                                className="w-20 px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
+                                                id="MgmtSub"
                                                 name="mgmtSub"
                                                 value={formData.mgmtSub}
                                                 onChange={handleChange}
@@ -331,15 +558,15 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                         </div>
                                         <div className="flex gap-4 items-center">
                                             <div className="flex-1">
-                                                <select ref={cmportsRef} className="select2 multiple w-full" multiple="multiple" name="cmports" disabled={!selectedHost}>
-                                                    <option>eth1</option>
-                                                    <option>eth2</option>
-                                                    <option>eth3</option>
-                                                    <option>eth4</option>
+                                                <select ref={cmportsRef} className="select2 multiple w-full runningnodes" multiple="multiple" id="cmports" name="cmports" data-placeholder="Select ports" disabled={!selectedHost}>
+                                                    {renderPortOptions()}
                                                 </select>
                                             </div>
+                                            <div className="px-3 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                                <span id="bCluster">{selectedHost ? (selectedHost.bCluster || 'bond 2') : ''}</span>
+                                            </div>
                                             <div className="flex-1 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
-                                                {selectedHost ? `${formData.cluster}/${formData.mgmtSub}` : 'select a node...'}
+                                                <span id="cMgmt">{selectedHost ? `${formData.cluster}/${formData.mgmtSub}` : 'select a node...'}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -350,15 +577,31 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                                 <label className="lg:col-span-3 text-sm font-semibold text-gray-700">Data Ports</label>
                                 <div className="lg:col-span-4">
-                                    <select ref={dportsRef} className="select2 multiple w-full" multiple="multiple" name="dports" disabled={!selectedHost}>
-                                        <option>eth1</option>
-                                        <option>eth2</option>
-                                        <option>eth3</option>
-                                        <option>eth4</option>
+                                    <select ref={dportsRef} className="select2 multiple w-full runningnodes" multiple="multiple" id="dports" name="dports" data-placeholder="Select ports" disabled={!selectedHost}>
+                                        {renderPortOptions()}
                                     </select>
                                 </div>
-                                <div className="lg:col-span-5 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
-                                    {selectedHost ? formData.dports.join(', ') : 'select a node...'}
+                                <div className="px-3 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                    <span id="bData">{selectedHost ? (selectedHost.bData || 'bond 3') : ''}</span>
+                                </div>
+                                <div className="lg:col-span-4 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                    <span id="dataPorts">{selectedHost ? formData.dports.join(', ') : 'select a node...'}</span>
+                                </div>
+                            </div>
+
+                            {/* Internet Ports */}
+                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                                <label className="lg:col-span-3 text-sm font-semibold text-gray-700">Internet Ports</label>
+                                <div className="lg:col-span-4">
+                                    <select ref={iportsRef} className="select2 multiple w-full runningnodes" multiple="multiple" id="iports" name="iports" data-placeholder="Select ports" disabled={!selectedHost}>
+                                        {renderPortOptions()}
+                                    </select>
+                                </div>
+                                <div className="px-3 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                    <span id="bInternet">{selectedHost ? (selectedHost.bInternet || 'bond 4') : ''}</span>
+                                </div>
+                                <div className="lg:col-span-4 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                    <span id="internetPorts">{selectedHost ? formData.iports.join(', ') : 'select a node...'}</span>
                                 </div>
                             </div>
 
@@ -366,40 +609,46 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                                 <label className="lg:col-span-3 text-sm font-semibold text-gray-700">Time Zone</label>
                                 <div className="lg:col-span-4">
-                                    <select ref={tzRef} className="select2 w-full" name="tz" disabled={!selectedHost}>
-                                        <option value="-100">-----------</option>
-                                        <option value="-12">(GMT-12:00) International Date Line West</option>
-                                        <option value="-11">(GMT-11:00) Midway Island, Samoa</option>
-                                        <option value="-10">(GMT-10:00) Hawaii</option>
-                                        {/* ... Add other options from Qnodes.html if needed ... */}
-                                        <option value="2">(GMT+02:00) Cairo</option>
+                                    <select ref={tzRef} className="select2 w-full runningnodes" id="TZ" name="tz" disabled={!selectedHost}>
+                                        {TIMEZONE_OPTIONS.map(opt => (
+                                            <option
+                                                key={opt.timeZoneId}
+                                                value={opt.value}
+                                                data-city={opt.city}
+                                                data-timezoneid={opt.timeZoneId}
+                                            >
+                                                {opt.label}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div className="lg:col-span-5 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
-                                    {selectedHost ? displayTZ(formData.tz) : 'select a node...'}
+                                    <span id="cTZ">{selectedHost ? displayTZ(selectedHost.tz) : 'select a node...'}</span>
                                 </div>
                             </div>
 
                             {/* NTP Server */}
                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                                 <label className="lg:col-span-3 text-sm font-semibold text-gray-700">NTP Server</label>
-                                <div className="lg:col-span-9">
+                                <div className="lg:col-span-6">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <input
                                             type="text"
                                             placeholder="xxx.xxx.xxx.xxx"
-                                            className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 ipaddress"
+                                            className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 ipaddress runningnodes"
+                                            id="NTP"
                                             name="ntp"
                                             value={formData.ntp}
                                             onChange={handleChange}
                                             disabled={!selectedHost}
                                         />
                                         <div className="flex items-center gap-2">
-                                            <label className="text-sm text-gray-500 whitespace-nowrap">Name:</label>
+                                            <label className="text-sm text-gray-500 whitespace-nowrap">Name</label>
                                             <input
                                                 type="text"
                                                 placeholder="NTP Name"
-                                                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400"
+                                                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
+                                                id="NTPname"
                                                 name="ntpName"
                                                 value={formData.ntpName}
                                                 onChange={handleChange}
@@ -408,28 +657,33 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                         </div>
                                     </div>
                                 </div>
+                                <div className="lg:col-span-3 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                    <span id="cNTP">{selectedHost ? (formData.ntp || formData.ntpName || 'select a node...') : 'select a node...'}</span>
+                                </div>
                             </div>
 
                             {/* DNS Server */}
                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                                 <label className="lg:col-span-3 text-sm font-semibold text-gray-700">DNS Server</label>
-                                <div className="lg:col-span-9">
+                                <div className="lg:col-span-6">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <input
                                             type="text"
                                             placeholder="xxx.xxx.xxx.xxx"
-                                            className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 ipaddress"
+                                            className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 ipaddress runningnodes"
+                                            id="DNSname"
                                             name="dnsname"
                                             value={formData.dnsname}
                                             onChange={handleChange}
                                             disabled={!selectedHost}
                                         />
                                         <div className="flex items-center gap-2">
-                                            <label className="text-sm text-gray-500 whitespace-nowrap">Search:</label>
+                                            <label className="text-sm text-gray-500 whitespace-nowrap">Search</label>
                                             <input
                                                 type="text"
                                                 placeholder="Domain Name"
-                                                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400"
+                                                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
+                                                id="DNSsearch"
                                                 name="dnssearch"
                                                 value={formData.dnssearch}
                                                 onChange={handleChange}
@@ -438,16 +692,20 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                         </div>
                                     </div>
                                 </div>
+                                <div className="lg:col-span-3 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                    <span id="cDNS">{selectedHost ? `${formData.dnsname || ''} ${formData.dnssearch || ''}`.trim() || 'select a node...' : 'select a node...'}</span>
+                                </div>
                             </div>
 
                             {/* Gateway */}
                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-                                <label className="lg:col-span-3 text-sm font-semibold text-gray-700">Gateway</label>
+                                <label className="lg:col-span-3 text-sm font-semibold text-gray-700">Gateway/router</label>
                                 <div className="lg:col-span-4">
                                     <input
                                         type="text"
                                         placeholder="xxx.xxx.xxx.xxx"
-                                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 ipaddress"
+                                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 ipaddress runningnodes"
+                                        id="GW"
                                         name="gw"
                                         value={formData.gw}
                                         onChange={handleChange}
@@ -455,7 +713,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                     />
                                 </div>
                                 <div className="lg:col-span-5 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
-                                    {selectedHost ? formData.gw : 'select a node...'}
+                                    <span id="cGW">{selectedHost ? formData.gw : 'select a node...'}</span>
                                 </div>
                             </div>
 
@@ -463,15 +721,17 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                             <div className="pt-6 flex flex-col sm:flex-row gap-4 justify-between items-center border-t border-gray-100 mt-6">
                                 <Button
                                     type="submit"
+                                    id="readysubmit"
                                     disabled={!selectedHost}
                                     bgColor="bg-emerald-600"
                                     onClick={handleSubmit}
                                 >
-                                    Update Node Config
+                                    Update Node
                                 </Button>
 
                                 <button
                                     type="button"
+                                    id="getConfig"
                                     onClick={(e) => { e.stopPropagation(); getHostConfig(selectedHostName); }}
                                     disabled={!selectedHost}
                                     className={`

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { joinCluster, configHost } from '../api/nodes';
+import { joinCluster } from '../api/nodes';
 import ServerNode from './Common/ServerNode';
 import Button from './Common/Button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
@@ -31,22 +31,15 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    // Old code: #possiblesubmit only calls joincluster with { name }
+    // No configHost pre-call
     const handleJoin = async () => {
         if (!selectedHostName) return;
         try {
-            await configHost({
-                name: selectedHostName,
-                alias: formData.alias,
-                ipaddr: formData.ipaddr,
-                ipaddrsubnet: formData.ipaddrsubnet,
-                user: 'mezo',
-                configured: 'no' // still joining
-            });
             await joinCluster(selectedHostName);
             onRefresh();
         } catch (e) {
-            console.error(e);
-            alert("Failed to join cluster");
+            console.error("Join cluster failed", e);
         }
     };
 
@@ -68,8 +61,9 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                 <button
                     onClick={(e) => { e.stopPropagation(); onDiscover(); }}
                     className="bg-white border border-gray-200 text-gray-700 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 font-medium text-sm px-4 py-2 rounded-lg shadow-sm transition-all"
+                    id="refresh2"
                 >
-                    Discovery
+                    discovery
                 </button>
             </div>
 
@@ -89,29 +83,25 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                                     />
                                 </div>
                             ))}
-                            {hosts.length === 0 && (
-                                <div className="col-span-full text-center py-8 text-gray-400 text-sm">
-                                    No nodes discovered yet. Click "Discovery" to scan.
-                                </div>
-                            )}
                         </div>
                     </div>
 
                     {/* Config Form */}
                     <div className="p-6 animate-in fade-in slide-in-from-top-4 duration-500">
-                        <form className='space-y-6'>
+                        <form className='space-y-6 hostform'>
                             {/* Node Name */}
                             <div className="grid grid-cols-12 gap-6 items-center">
                                 <label className="col-span-12 sm:col-span-3 text-sm font-semibold text-gray-700">Node Name</label>
                                 <div className="col-span-12 sm:col-span-9 md:col-span-5">
                                     <input
                                         type="text"
-                                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400"
+                                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 discoverednodes"
+                                        id="DiscoveredBoxName"
                                         name="alias"
                                         value={formData.alias}
                                         onChange={handleChange}
                                         disabled={!selectedHost}
-                                        placeholder="e.g. storage-node-01"
+                                        placeholder="Node Name"
                                     />
                                 </div>
                             </div>
@@ -126,7 +116,8 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                                             <input
                                                 type="text"
                                                 placeholder="xxx.xxx.xxx.xxx"
-                                                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 ipaddress"
+                                                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 ipaddress discoverednodes"
+                                                id="DiscoveredIPAddress"
                                                 name="ipaddr"
                                                 value={formData.ipaddr}
                                                 onChange={handleChange}
@@ -137,14 +128,13 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                                         <div className="sm:w-32">
                                             <select
                                                 name="port"
-                                                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 appearance-none bg-white"
+                                                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 appearance-none bg-white discoverednodes"
+                                                id="DiscoveredNodePorts"
                                                 value={formData.port}
                                                 onChange={handleChange}
                                                 disabled={!selectedHost}
                                             >
                                                 <option>Port</option>
-                                                <option>eth1</option>
-                                                <option>eth2</option>
                                             </select>
                                         </div>
                                         {/* Subnet */}
@@ -155,7 +145,8 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                                                 min="8"
                                                 max="32"
                                                 step="8"
-                                                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400"
+                                                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 discoverednodes"
+                                                id="Discoveredipaddrsubnet"
                                                 name="ipaddrsubnet"
                                                 value={formData.ipaddrsubnet}
                                                 onChange={handleChange}
@@ -182,9 +173,9 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                                     type="button"
                                     id="refresh"
                                     onClick={onDiscover}
-                                    className="hidden sm:block text-gray-500 hover:text-blue-600 font-medium text-sm transition-colors py-2 px-4 rounded-lg hover:bg-blue-50"
+                                    className="btn btn-block bg-gradient-info btn-lg hidden sm:block text-gray-500 hover:text-blue-600 font-medium text-sm transition-colors py-2 px-4 rounded-lg hover:bg-blue-50"
                                 >
-                                    Refresh List
+                                    discovery
                                 </button>
                             </div>
                         </form>

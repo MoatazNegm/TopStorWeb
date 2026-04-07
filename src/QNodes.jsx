@@ -93,11 +93,13 @@ const QNodes = () => {
                         {/* Active Nodes / Evacuate Card */}
                         <div className="mb-8">
                             <ActiveNodes
-                                hosts={[...(hostsInfo.active || []), { name: 'node-3', ip: '192.168.1.13', ipaddr: '192.168.1.13' }]}
+                                hosts={hostsInfo.active || []}
                                 allHosts={hostsInfo.all?.active || {}}
-                                lostHosts={[...(hostsInfo.lost || []), 'node-3']}
+                                lostHosts={hostsInfo.lost || []}
                                 selectedHostName={selectedHost.active}
                                 onSelect={(name) => handleHostSelect('active', name)}
+                                readyHostsCount={(hostsInfo.ready || []).length}
+                                possibleHostsCount={(hostsInfo.possible || []).length}
                             />
                         </div>
 
