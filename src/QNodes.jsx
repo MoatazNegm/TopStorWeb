@@ -83,7 +83,7 @@ const QNodes = () => {
                         <div className="mb-8">
                             <RunningNodes
                                 hosts={hostsInfo.ready || []}
-                                allHosts={hostsInfo.all?.ready || {}}
+                                allHosts={hostsInfo.all || {}}
                                 selectedHostName={selectedHost.ready}
                                 onSelect={(name) => handleHostSelect('ready', name)}
                                 onRefresh={refreshData}
@@ -94,7 +94,7 @@ const QNodes = () => {
                         <div className="mb-8">
                             <ActiveNodes
                                 hosts={hostsInfo.active || []}
-                                allHosts={hostsInfo.all?.active || {}}
+                                allHosts={hostsInfo.all || {}}
                                 lostHosts={hostsInfo.lost || []}
                                 selectedHostName={selectedHost.active}
                                 onSelect={(name) => handleHostSelect('active', name)}
@@ -107,7 +107,7 @@ const QNodes = () => {
                         <div className="mb-8">
                             <DiscoveredNodes
                                 hosts={hostsInfo.possible || []}
-                                allHosts={hostsInfo.all?.possible || {}}
+                                allHosts={hostsInfo.all || {}}
                                 selectedHostName={selectedHost.possible}
                                 onSelect={(name) => handleHostSelect('possible', name)}
                                 onDiscover={handleDiscover}
