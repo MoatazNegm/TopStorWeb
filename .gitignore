@@ -1,0 +1,11 @@
+node_modules/
+build_react/
+.env
+.DS_Store
+.agent/
+.git
+.gitignore
+*.tar
+*.tar.gz
+build_react
+dist

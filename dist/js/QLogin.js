@@ -69,7 +69,7 @@ $("#signInButton").click(function (e) {
 
 $('#user').keydown(function (e) {
 	var key = e.which;
-	if(key == 13 || key == 9)  // the enter key code
+	if (key == 13 || key == 9)  // the enter key code
 	{
 		$('#pass').focus();
 		return false;
@@ -78,13 +78,13 @@ $('#user').keydown(function (e) {
 
 $('#pass').keydown(function (e) {
 	var key = e.which;
-	if(key == 13)  // the enter key code
+	if (key == 13)  // the enter key code
 	{
 		$('#signInButton').click();
 		return false;
 	}
-	if(key == 9)  // the enter key code
-        {
+	if (key == 9)  // the enter key code
+	{
 		$('#signInButton').focus();
 		return false;
 	}

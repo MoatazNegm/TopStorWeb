@@ -1,27 +1,56 @@
-<div class="row Upload">
-	<div class="col-sm-offset-1 col-sm-10" > 
-		<div class="box " id="Popup">
-			<div class="row">
-				<h2 class="configTitle" id="SubTitle">Upload update</h2>
-			</div>									
-			<div class="row">
-				
-				<div class="col-sm-offset-2">
-					<div class="upload-drop-zone clickthis" id="drop-zone">
-						
+<!DOCTYPE html>
+<?php session_start(); 
+ if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/Login.php');}
+ 
+?>
+<?php
 
-						<div class="row col-sm-12" id="previews">
-					
-							<div class="dz-message">Pls. add or drag file here</div>
-						</div>
-					
-					</div>
-					
-				</div>
-			</div>
-			<div class="form-group row ">
-							<button type="button" class="btn btn-default col-sm-offset-2 col-sm-8 finish" data-toggle="tooltip" data-placement="top"  title="submit values">Finish</button>
-					</div>
-		</div>
-	</div>
-</div> <!-- /container -->
+if( $_FILES['file']['name'] != "" )
+{
+
+    move_uploaded_file( $_FILES['file']['tmp_name'], "Data/".$_FILES['file']['name']); 
+					switch ($_FILES['file']['error']) {
+						case UPLOAD_ERR_OK:
+								$message = "File uplodaded successfully";
+								break;
+            case UPLOAD_ERR_INI_SIZE:
+                $message = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
+                break;
+            case UPLOAD_ERR_FORM_SIZE:
+                $message = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form";
+                break;
+            case UPLOAD_ERR_PARTIAL:
+                $message = "The uploaded file was only partially uploaded";
+                break;
+            case UPLOAD_ERR_NO_FILE:
+                $message = "No file was uploaded";
+                break;
+            case UPLOAD_ERR_NO_TMP_DIR:
+                $message = "Missing a temporary folder";
+                break;
+            case UPLOAD_ERR_CANT_WRITE:
+                $message = "Failed to write file to disk";
+                break;
+            case UPLOAD_ERR_EXTENSION:
+                $message = "File upload stopped by extension";
+                break;
+
+            default:
+                $message = "Unknown upload error";
+                break;
+				
+        }   
+       
+        
+
+}
+else
+{
+    
+    $message = "No file specified !";
+    
+}
+$myfile = fopen("Data/fileupload.txt", "w");
+fwrite($myfile, $_FILES['file']['tmp_name']);
+fclose($myfile);
+?>
