@@ -26,18 +26,7 @@ api.interceptors.request.use((config) => {
         }
     }
 
-    // Fix #2: Convert POST data to form-encoded (matching jQuery $.ajax default)
-    // Only for non-GET requests that aren't already FormData or string
-    if (config.method !== 'get' && config.data && typeof config.data === 'object' && !(config.data instanceof FormData)) {
-        const params = new URLSearchParams();
-        Object.entries(config.data).forEach(([key, value]) => {
-            if (value !== undefined && value !== null) {
-                params.append(key, typeof value === 'object' ? JSON.stringify(value) : String(value));
-            }
-        });
-        config.data = params.toString();
-        config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-    }
+
 
     return config;
 }, (error) => {
