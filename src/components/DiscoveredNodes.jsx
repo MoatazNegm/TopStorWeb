@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { joinCluster } from '../api/nodes';
+import { joinCluster, updateDiscoveredNode } from '../api/nodes';
 import ServerNode from './Common/ServerNode';
 import Button from './Common/Button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
@@ -11,37 +11,89 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
         ipaddrsubnet: 24,
         port: 'Port'
     });
+    const [originalData, setOriginalData] = useState({ alias: '', ipaddr: '', ipaddrsubnet: 24 });
     const [isExpanded, setIsExpanded] = useState(true);
+    const [isJoining, setIsJoining] = useState(false);
 
-    const selectedHost = allHosts ? allHosts[selectedHostName] : null;
+    // Fix #16: Get the selected host object directly from the array. The old code used `allhosts['possible'][index]`.
+    // The name may not perfectly match the alias initially depending on the UI state, but `hosts` array contains the source of truth for possible hosts.
+    const selectedHostIndex = selectedHostName ? hosts.findIndex(h => (h.name === selectedHostName || h.alias === selectedHostName)) : -1;
+    const selectedHostListItem = selectedHostIndex !== -1 ? hosts[selectedHostIndex] : null;
 
     useEffect(() => {
-        if (selectedHost) {
-            setFormData({
-                alias: selectedHost.alias || selectedHost.name || '',
-                ipaddr: selectedHost.ipaddr || selectedHost.ip || '',
-                ipaddrsubnet: selectedHost.ipaddrsubnet || 24,
-                port: selectedHost.port || 'Port'
+        if (selectedHostListItem) {
+            const initialFormState = {
+                alias: selectedHostListItem.alias || selectedHostListItem.name || '',
+                ipaddr: selectedHostListItem.ipaddr || selectedHostListItem.ip || '',
+                ipaddrsubnet: selectedHostListItem.ipaddrsubnet || 24,
+                port: selectedHostListItem.port || 'Port'
+            };
+            setFormData(initialFormState);
+            setOriginalData({
+                alias: initialFormState.alias,
+                ipaddr: initialFormState.ipaddr,
+                ipaddrsubnet: initialFormState.ipaddrsubnet
             });
+        } else {
+            setFormData({
+                alias: '',
+                ipaddr: '',
+                ipaddrsubnet: 24,
+                port: 'Port'
+            });
+            setOriginalData({ alias: '', ipaddr: '', ipaddrsubnet: 24 });
         }
-    }, [selectedHost]);
+    }, [selectedHostListItem]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    // Old code: #possiblesubmit only calls joincluster with { name }
-    // No configHost pre-call
+    // Calculate if we need the two-step flow based on form edits
+    const nameVal = formData.alias || "";
+    const ipVal = formData.ipaddr || "";
+    
+    // Check if the user typed anything or edited the original values (similar to updateButtonState in old code)
+    const hasDataToUpdate = (nameVal.trim().length > 3 && nameVal !== originalData.alias) ||
+                            (ipVal.trim().length > 3 && !ipVal.includes('_') && 
+                            (ipVal !== originalData.ipaddr || String(formData.ipaddrsubnet) !== String(originalData.ipaddrsubnet)));
+
+    // Fix #8: Two-step "Update and Add to Cluster" flow
     const handleJoin = async () => {
-        if (!selectedHostName) return;
+        if (!selectedHostName || !selectedHostListItem) return;
+        setIsJoining(true);
         try {
-            await joinCluster(selectedHostName);
-            onRefresh();
+            if (hasDataToUpdate) {
+                // Step 1: Update the discovered node configuration
+                const updatePayload = {
+                    id: String(selectedHostIndex), // Old backend relies on the array index for `id`
+                    user: 'mezo',
+                    name: selectedHostListItem.name,
+                    alias: formData.alias,
+                    ipaddr: formData.ipaddr,
+                    ipaddrsubnet: formData.ipaddrsubnet,
+                    discovered: true
+                };
+
+                await updateDiscoveredNode(updatePayload);
+
+                // Step 2: Wait before joining cluster (matching old code's 10-second delay)
+                await new Promise(resolve => setTimeout(resolve, 10000));
+            }
+
+            // Step 3: Join the cluster
+            await joinCluster(selectedHostListItem.name);
+            if (onRefresh) onRefresh();
         } catch (e) {
             console.error("Join cluster failed", e);
+        } finally {
+            setIsJoining(false);
         }
     };
+
+    // Replace the button text if there are changes to update
+    const btnText = isJoining ? 'Joining...' : (hasDataToUpdate ? 'Update and Add to Cluster' : 'Add to Cluster');
 
     return (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 relative">
@@ -59,7 +111,7 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                     <h3 className="text-lg font-semibold text-gray-800">Discovered Nodes</h3>
                 </div>
                 <button
-                    onClick={(e) => { e.stopPropagation(); onDiscover(); }}
+                    onClick={(e) => { e.stopPropagation(); if (onDiscover) onDiscover(); }}
                     className="bg-white border border-gray-200 text-gray-700 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 font-medium text-sm px-4 py-2 rounded-lg shadow-sm transition-all"
                     id="refresh2"
                 >
@@ -72,17 +124,20 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                     {/* Nodes Grid */}
                     <div className="p-6 bg-gray-50/50 border-b border-gray-100 animate-in fade-in slide-in-from-top-2 duration-300">
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="hostspossible">
-                            {hosts.map(host => (
-                                <div key={host.name}>
-                                    <ServerNode
-                                        name={host.name}
-                                        ip={host.ip || host.ipaddr}
-                                        state="discovered"
-                                        onClick={() => onSelect(host.name)}
-                                        selected={selectedHostName === host.name}
-                                    />
-                                </div>
-                            ))}
+                            {hosts.map(host => {
+                                const hostName = host.name || host.alias;
+                                return (
+                                    <div key={hostName}>
+                                        <ServerNode
+                                            name={hostName}
+                                            ip={host.ip || host.ipaddr}
+                                            state="discovered"
+                                            onClick={() => onSelect(hostName)}
+                                            selected={selectedHostName === hostName}
+                                        />
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
 
@@ -100,7 +155,7 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                                         name="alias"
                                         value={formData.alias}
                                         onChange={handleChange}
-                                        disabled={!selectedHost}
+                                        disabled={!selectedHostListItem || isJoining}
                                         placeholder="Node Name"
                                     />
                                 </div>
@@ -121,7 +176,7 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                                                 name="ipaddr"
                                                 value={formData.ipaddr}
                                                 onChange={handleChange}
-                                                disabled={!selectedHost}
+                                                disabled={!selectedHostListItem || isJoining}
                                             />
                                         </div>
                                         {/* Port Select */}
@@ -132,7 +187,7 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                                                 id="DiscoveredNodePorts"
                                                 value={formData.port}
                                                 onChange={handleChange}
-                                                disabled={!selectedHost}
+                                                disabled={!selectedHostListItem || isJoining}
                                             >
                                                 <option>Port</option>
                                             </select>
@@ -150,7 +205,7 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                                                 name="ipaddrsubnet"
                                                 value={formData.ipaddrsubnet}
                                                 onChange={handleChange}
-                                                disabled={!selectedHost}
+                                                disabled={!selectedHostListItem || isJoining}
                                             />
                                         </div>
                                     </div>
@@ -163,16 +218,16 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                                     type="button"
                                     id="updateAndJoinBtn"
                                     onClick={handleJoin}
-                                    disabled={!selectedHost}
+                                    disabled={!selectedHostListItem || isJoining}
                                     bgColor="bg-blue-600"
                                 >
-                                    Add to Cluster
+                                    {btnText}
                                 </Button>
 
                                 <button
                                     type="button"
                                     id="refresh"
-                                    onClick={onDiscover}
+                                    onClick={(e) => { if (onDiscover) onDiscover(); }}
                                     className="btn btn-block bg-gradient-info btn-lg hidden sm:block text-gray-500 hover:text-blue-600 font-medium text-sm transition-colors py-2 px-4 rounded-lg hover:bg-blue-50"
                                 >
                                     discovery

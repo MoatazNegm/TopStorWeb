@@ -1,25 +1,44 @@
 import axios from 'axios';
 
-// Helper to get token
+// Helper to get token — matches old code: localStorage.getItem('token')
 const getToken = () => localStorage.getItem('token');
 
 const api = axios.create({
-    baseURL: '/', // Vite proxy will handle routing to localhost/api or localhost:8080/api depending on config
+    baseURL: '/',
 });
 
-// Add token to every request
+// Matches old jQuery $.ajax behavior:
+// - GET: token as query param
+// - POST: token merged into form-encoded body
 api.interceptors.request.use((config) => {
     const token = getToken();
     if (token) {
-        // Legacy backend expects token in body or query often, but let's see how QNodes.js did it.
-        // QNodes.js sends it in 'data' for POST, and 'data' for GET (jquery adds it to query string).
-        // Axios methods handle data differently.
         if (config.method === 'get') {
             config.params = { ...config.params, token };
         } else {
-            config.data = { ...config.data, token };
+            // For POST, merge token into data object.
+            // The transformRequest below will form-encode it.
+            if (typeof config.data === 'object' && config.data !== null) {
+                config.data = { ...config.data, token };
+            } else {
+                config.data = { token };
+            }
         }
     }
+
+    // Fix #2: Convert POST data to form-encoded (matching jQuery $.ajax default)
+    // Only for non-GET requests that aren't already FormData or string
+    if (config.method !== 'get' && config.data && typeof config.data === 'object' && !(config.data instanceof FormData)) {
+        const params = new URLSearchParams();
+        Object.entries(config.data).forEach(([key, value]) => {
+            if (value !== undefined && value !== null) {
+                params.append(key, typeof value === 'object' ? JSON.stringify(value) : String(value));
+            }
+        });
+        config.data = params.toString();
+        config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    }
+
     return config;
 }, (error) => {
     return Promise.reject(error);
@@ -27,36 +46,7 @@ api.interceptors.request.use((config) => {
 
 
 export const fetchAllHostsInfo = () => {
-    // Mock data for local testing if API fails or for dev
-    // In a real scenario, we might use a flag or check process.env.NODE_ENV
-    // For this migration verification, we return a promise that resolves with mock data
-    // if the real API call fails (or we can just force it for now).
-
-    return api.get('api/v1/hosts/allinfo').catch(err => {
-        console.warn("API failed, returning mock data for testing", err);
-        return {
-            data: {
-                all: {
-                    ready: {
-                        "node1": { name: "node1", ipaddr: "192.168.1.101", ipaddrsubnet: "24", alias: "Primary Node", configured: "yes", ports: ["eth0"], nmports: "eth0", cmports: "eth0", dports: "eth0", tz: "Region%City", ntp: "pool.ntp.org", gw: "192.168.1.1", dnsname: "node1", dnssearch: "local", cluster: "cluster1/24" },
-                        "node2": { name: "node2", ipaddr: "192.168.1.102", ipaddrsubnet: "24", alias: "Secondary Node", configured: "yes", ports: ["eth0"], nmports: "eth0", cmports: "eth0", dports: "eth0", tz: "Region%City", ntp: "pool.ntp.org", gw: "192.168.1.1", dnsname: "node2", dnssearch: "local", cluster: "cluster1/24" }
-                    },
-                    active: {
-                        "node1": { name: "node1", ip: "192.168.1.101" },
-                        "node2": { name: "node2", ip: "192.168.1.102" }
-                    },
-                    possible: {
-                        "node3": { name: "node3", ipaddr: "192.168.1.103", ipaddrsubnet: "24", alias: "New Node", configured: "no" }
-                    },
-                    lost: []
-                },
-                ready: [{ name: "node1", ip: "192.168.1.101" }, { name: "node2", ip: "192.168.1.102" }],
-                active: [{ name: "node1" }, { name: "node2" }],
-                possible: [{ name: "node3", ip: "192.168.1.103" }],
-                lost: []
-            }
-        };
-    });
+    return api.get('api/v1/hosts/allinfo');
 };
 
 export const evacuateHost = (name) => {
@@ -64,8 +54,7 @@ export const evacuateHost = (name) => {
 };
 
 export const configHost = (data) => {
-    // data should include: id, user, name, alias, ipaddr, ipaddrsubnet, nmports, cmports, dports, tz, ntp, gw, dnsname, dnssearch, configured, discovered
-    // QNodes.js constructs this elaborately. We will pass the constructed object.
+    // data should include: id, user, name, alias, ipaddr, ipaddrsubnet, nmports, cmports, dports, iports, tz, ntp, gw, dnsname, dnssearch, configured, discovered
     return api.post('api/v1/hosts/config', data);
 };
 
@@ -77,16 +66,41 @@ export const discoverHosts = () => {
     return api.post('api/v1/hosts/discover', { name: 'nothing' });
 };
 
-export const getHostConfig = (nodeName) => {
-    return api.get('api/v1/hosts/getConfig', { params: { nodeName }, responseType: 'blob' });
+// Fix #17: Download config — creates blob and triggers file download (matches old code)
+export const getHostConfig = async (nodeName) => {
+    const response = await api.get('api/v1/hosts/getConfig', { params: { nodeName } });
+    // Old code: creates Blob as text/plain, triggers <a download> click
+    const blob = new Blob([response.data], { type: 'text/plain' });
+    const fileName = nodeName + '_config.txt';
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
 };
 
-export const getAllHostConfigs = () => {
-    return api.get('api/v1/hosts/getAllConfig', { responseType: 'blob', timeout: 240000 });
+export const getAllHostConfigs = async () => {
+    const response = await api.get('api/v1/hosts/getAllConfig', {
+        responseType: 'blob',
+        timeout: 240000,
+    });
+    // Old code: creates Blob as application/zip, triggers <a download> click
+    const blob = new Blob([response.data], { type: 'application/zip' });
+    const fileName = 'All_Config.zip';
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
 };
 
 export const updateDiscoveredNode = (data) => {
-    // Logic from QNodes.js updateDiscoveredNode
-    // It calls 'api/v1/hosts/config' with specific flags
+    // Old code calls 'api/v1/hosts/config' with discovered: true flag
     return api.post('api/v1/hosts/config', data);
 };

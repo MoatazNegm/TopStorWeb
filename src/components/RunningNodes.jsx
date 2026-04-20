@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { configHost, getHostConfig, getAllHostConfigs } from '../api/nodes';
 import ServerNode from './Common/ServerNode';
 import Button from './Common/Button';
@@ -106,10 +106,12 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         gw: '',
         dnsname: '',
         dnssearch: '',
-        configured: false // false = NOT "ready to join". Old code: checked = "ready to join" = configured:'no'
+        configured: false
     });
     const [isExpanded, setIsExpanded] = useState(true);
     const [availablePorts, setAvailablePorts] = useState([]);
+    // Fix #7: Bond info auto-calculated from port selections
+    const [bondInfo, setBondInfo] = useState({ bNode: 'bond 1', bCluster: 'bond 2', bData: 'bond 3', bInternet: 'bond 4' });
 
     const nmportsRef = useRef(null);
     const cmportsRef = useRef(null);
@@ -117,135 +119,282 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
     const iportsRef = useRef(null);
     const tzRef = useRef(null);
 
-    // Derived state for the "selected" host object
+    // Derived state for the "selected" host object — always current server data
     const selectedHost = allHosts ? allHosts[selectedHostName] : null;
+
+    // Fix #4: Find array index of selected host (old code uses index as hostsubmit.id)
+    const selectedHostIndex = selectedHostName ? hosts.findIndex(h => h.name === selectedHostName) : -1;
 
     // Snapshot of original host data for change-detection on submit
     const [hostConfig, setHostConfig] = useState(null);
 
+    // Fix #7: Bond info calculation — matches old QNodes.js updateBondInfo()
+    const computeBondInfo = useCallback(() => {
+        const $ = window.$;
+        if (!$ || !$.fn.select2) return;
+
+        const nmVal = ($('#nmports').val() || []).sort().join(',');
+        const cmVal = ($('#cmports').val() || []).sort().join(',');
+        const dVal = ($('#dports').val() || []).sort().join(',');
+        const iVal = ($('#iports').val() || []).sort().join(',');
+
+        let bNode = 'bond 1';
+        let bCluster = (cmVal === nmVal && cmVal !== '') ? 'bond 1' : 'bond 2';
+        let bData;
+        if (dVal === nmVal && dVal !== '') bData = 'bond 1';
+        else if (dVal === cmVal && dVal !== '') bData = 'bond 2';
+        else bData = 'bond 3';
+
+        let bInternet;
+        if (iVal === nmVal && iVal !== '') bInternet = 'bond 1';
+        else if (iVal === cmVal && iVal !== '') bInternet = 'bond 2';
+        else if (iVal === dVal && iVal !== '') bInternet = 'bond 3';
+        else bInternet = 'bond 4';
+
+        setBondInfo({ bNode, bCluster, bData, bInternet });
+    }, []);
+
+    // Fix #6: Port exclusivity — matches old QNodes.js updatePortExclusivity() + refreshIportsAvailability()
+    const setupPortExclusivity = useCallback(() => {
+        const $ = window.$;
+        if (!$ || !$.fn.select2) return;
+
+        // Remove old handlers to avoid duplication
+        $('#nmports, #cmports, #dports, #iports').off('select2:select select2:unselect');
+
+        const dataBondBoxes = ['nmports', 'cmports', 'dports'];
+
+        // Group 1: nm/cm/d bonds sync with each other
+        dataBondBoxes.forEach(function (currentId) {
+            $('#' + currentId).on('select2:select', function () {
+                const currentVals = $('#' + currentId).val() || [];
+
+                dataBondBoxes.forEach(function (otherId) {
+                    if (currentId === otherId) return;
+                    const otherVals = $('#' + otherId).val() || [];
+                    const hasOverlap = currentVals.some(p => otherVals.includes(p));
+
+                    if (hasOverlap) {
+                        const union = [...new Set([...currentVals, ...otherVals])];
+                        $('#' + otherId).val(union).trigger('change');
+                        if (union.length !== currentVals.length) {
+                            $('#' + currentId).val(union).trigger('change');
+                        }
+                    }
+                });
+                refreshIportsAvailability();
+                computeBondInfo();
+                syncPortsToReactState();
+            });
+        });
+
+        dataBondBoxes.forEach(function (currentId) {
+            $('#' + currentId).on('select2:unselect', function (e) {
+                const removedPort = e.params.data.id;
+
+                dataBondBoxes.forEach(function (otherId) {
+                    if (currentId === otherId) return;
+                    const otherVals = $('#' + otherId).val() || [];
+                    if (otherVals.includes(removedPort)) {
+                        const newOtherVals = otherVals.filter(p => p !== removedPort);
+                        $('#' + otherId).val(newOtherVals).trigger('change');
+                    }
+                });
+                refreshIportsAvailability();
+                computeBondInfo();
+                syncPortsToReactState();
+            });
+        });
+
+        // Group 2: iports mutually exclusive with nm/cm/d
+        $('#iports').on('select2:select select2:unselect', function () {
+            refreshIportsAvailability();
+            computeBondInfo();
+            syncPortsToReactState();
+        });
+
+        refreshIportsAvailability();
+    }, [computeBondInfo]);
+
+    // Fix #6: Refresh iports availability — matches old QNodes.js refreshIportsAvailability()
+    const refreshIportsAvailability = () => {
+        const $ = window.$;
+        if (!$) return;
+
+        const dataPorts = new Set();
+        ['nmports', 'cmports', 'dports'].forEach(id => {
+            ($('#' + id).val() || []).forEach(p => dataPorts.add(p));
+        });
+
+        const iPorts = new Set($('#iports').val() || []);
+
+        // Disable data-bond ports in iports dropdown
+        $('#iports option').each(function () {
+            const port = $(this).val();
+            $(this).prop('disabled', dataPorts.has(port));
+        });
+
+        // Disable iports in nm/cm/d dropdowns
+        ['nmports', 'cmports', 'dports'].forEach(id => {
+            $('#' + id + ' option').each(function () {
+                const port = $(this).val();
+                $(this).prop('disabled', iPorts.has(port));
+            });
+        });
+    };
+
+    // Sync Select2 port values back to React state
+    const syncPortsToReactState = () => {
+        const $ = window.$;
+        if (!$) return;
+        setFormData(prev => ({
+            ...prev,
+            nmports: $('#nmports').val() || [],
+            cmports: $('#cmports').val() || [],
+            dports: $('#dports').val() || [],
+            iports: $('#iports').val() || [],
+        }));
+    };
+
+    // Fix #1b: Only populate form when selectedHostName changes, NOT on every data refresh.
+    // Matches old code: inputs are populated in memberclick → updaterunninghosts, not on polling.
     useEffect(() => {
-        if (selectedHost) {
-            // Parse ports - dynamic from hostdata
-            const ports = selectedHost.ports || [];
-            setAvailablePorts(ports);
-
-            const parsePortVal = (val) => {
-                if (typeof val === 'string') return val.split(',').map(s => s.trim());
-                if (Array.isArray(val)) return val;
-                return [];
-            };
-
-            const newFormData = {
-                alias: selectedHost.alias || '',
-                ipaddr: selectedHost.ipaddr || selectedHost.ip || '',
-                ipaddrsubnet: selectedHost.ipaddrsubnet || 24,
-                nmports: parsePortVal(selectedHost.nmports),
-                cmports: parsePortVal(selectedHost.cmports),
-                dports: parsePortVal(selectedHost.dports),
-                iports: parsePortVal(selectedHost.iports),
-                cluster: selectedHost.cluster ? selectedHost.cluster.split('/')[0] : '',
-                mgmtSub: selectedHost.cluster ? selectedHost.cluster.split('/')[1] || 24 : 24,
-                tz: selectedHost.tz || '-100',
-                tzCity: '',
-                tzLabel: '',
-                ntp: selectedHost.ntp || '',
-                ntpName: selectedHost.ntpName || '',
-                gw: selectedHost.gw || '',
-                dnsname: selectedHost.dnsname || '',
-                dnssearch: selectedHost.dnssearch || '',
-                // Old code: configured == 'no' → checkbox checked (ready to join)
-                configured: selectedHost.configured === 'no'
-            };
-            setFormData(newFormData);
-            // Store original for change-detection
-            setHostConfig(JSON.parse(JSON.stringify(selectedHost)));
-        } else {
+        if (!selectedHostName || !allHosts) {
             // Reset form
             setFormData({
-                alias: '',
-                ipaddr: '',
-                ipaddrsubnet: 24,
-                nmports: [],
-                cmports: [],
-                dports: [],
-                iports: [],
-                cluster: '',
-                mgmtSub: 24,
-                tz: '-100',
-                tzCity: '',
-                tzLabel: '',
-                ntp: '',
-                ntpName: '',
-                gw: '',
-                dnsname: '',
-                dnssearch: '',
+                alias: '', ipaddr: '', ipaddrsubnet: 24,
+                nmports: [], cmports: [], dports: [], iports: [],
+                cluster: '', mgmtSub: 24, tz: '-100', tzCity: '', tzLabel: '',
+                ntp: '', ntpName: '', gw: '', dnsname: '', dnssearch: '',
                 configured: false
             });
             setAvailablePorts([]);
             setHostConfig(null);
+            return;
         }
-    }, [selectedHost]);
 
-    // Integrate Select2 and Inputmask
+        const host = allHosts[selectedHostName];
+        if (!host) return;
+
+        // Fix #5: Port parsing — matches old QNodes.js L141-164 (3 formats)
+        let parsedPorts = [];
+        if (host.phy_ports && Array.isArray(host.phy_ports)) {
+            // Format 1: phy_ports array (preferred)
+            parsedPorts = host.phy_ports.filter(p => p.trim() !== '').map(p => p.trim());
+        } else if (host.ports && host.ports.length >= 1 && Array.isArray(host.ports[0])
+            && typeof host.ports[0][1] === 'string') {
+            // Format 2: array-of-arrays [[something, "eth0/eth1/eth2"]]
+            parsedPorts = host.ports[0][1].split('/').map(p => p.trim());
+        } else if (host.ports && typeof host.ports === 'string') {
+            // Format 3: slash-separated string "eth0/eth1/eth2"
+            parsedPorts = host.ports.split('/').map(p => p.trim()).filter(p => p !== '');
+        } else if (Array.isArray(host.ports)) {
+            // Format 4: simple array (fallback)
+            parsedPorts = host.ports;
+        }
+
+        // Parse port values from host data — matches old code L171-177
+        const parsePortVal = (val) => {
+            if (typeof val === 'string') return val.split(',').map(s => s.trim());
+            if (Array.isArray(val)) return val;
+            return [];
+        };
+
+        const newFormData = {
+            alias: host.alias || '',
+            ipaddr: host.ipaddr || host.ip || '',
+            ipaddrsubnet: host.ipaddrsubnet || 24,
+            nmports: parsePortVal(host.nmports),
+            cmports: parsePortVal(host.cmports),
+            dports: parsePortVal(host.dports || host.dataport),
+            iports: parsePortVal(host.iports),
+            cluster: host.cluster ? host.cluster.split('/')[0] : '',
+            mgmtSub: host.cluster ? host.cluster.split('/')[1] || 24 : 24,
+            tz: host.tz || '-100',
+            tzCity: '',
+            tzLabel: '',
+            ntp: host.ntp || '',
+            ntpName: host.ntpName || '',
+            gw: host.gw || '',
+            dnsname: host.dnsname || '',
+            dnssearch: host.dnssearch || '',
+            configured: host.configured === 'no'
+        };
+        setFormData(newFormData);
+        setAvailablePorts(parsedPorts);
+        // Store original for change-detection
+        setHostConfig(JSON.parse(JSON.stringify(host)));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedHostName]);
+
+    // Fix #12: Initialize Inputmask for BoxName and IP fields + TZ Select2
     useEffect(() => {
-        // @ts-ignore
         const $ = window.$;
         if (!$) return;
 
-        // Initialize Select2
+        // Fix #12: BoxName input mask — matches old QNodes.js L12
+        if ($.fn.inputmask) {
+            $('#BoxName').inputmask('Regex', { regex: '(.*[a-z]){3}', clearIncomplete: true });
+            $(".ipaddress").inputmask({ alias: "ip", placeholder: "xxx.xxx.xxx.xxx", showMaskOnHover: false, showMaskOnFocus: true });
+        }
+
+        // Initialize TZ Select2
         const select2Options = { theme: 'bootstrap4', width: '100%' };
         if ($.fn.select2) {
-            $(nmportsRef.current).select2(select2Options).on('change', (e) => {
-                const values = $(e.target).val();
-                setFormData(prev => ({ ...prev, nmports: values || [] }));
-            });
-            $(cmportsRef.current).select2(select2Options).on('change', (e) => {
-                const values = $(e.target).val();
-                setFormData(prev => ({ ...prev, cmports: values || [] }));
-            });
-            $(dportsRef.current).select2(select2Options).on('change', (e) => {
-                const values = $(e.target).val();
-                setFormData(prev => ({ ...prev, dports: values || [] }));
-            });
-            $(iportsRef.current).select2(select2Options).on('change', (e) => {
-                const values = $(e.target).val();
-                setFormData(prev => ({ ...prev, iports: values || [] }));
-            });
             $(tzRef.current).select2(select2Options).on('change', (e) => {
                 const value = $(e.target).val();
                 setFormData(prev => ({ ...prev, tz: value }));
             });
         }
 
-        // Initialize Inputmask
-        if ($.fn.inputmask) {
-            $(".ipaddress").inputmask({ alias: "ip", placeholder: "xxx.xxx.xxx.xxx", showMaskOnHover: false, showMaskOnFocus: true });
-        }
-
         return () => {
             if ($.fn.select2) {
-                try {
-                    $(nmportsRef.current).select2('destroy');
-                    $(cmportsRef.current).select2('destroy');
-                    $(dportsRef.current).select2('destroy');
-                    $(iportsRef.current).select2('destroy');
-                    $(tzRef.current).select2('destroy');
-                } catch (e) { /* ignore cleanup errors */ }
+                try { $(tzRef.current).select2('destroy'); } catch (e) { /* ignore */ }
             }
         };
     }, []);
 
-    // Sync Select2 values when formData changes (e.g. on host selection)
+    // Fix #19: Re-init Select2 port dropdowns when availablePorts changes
+    // Matches old code: $('#nmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" })
     useEffect(() => {
-        // @ts-ignore
         const $ = window.$;
         if (!$ || !$.fn.select2) return;
-        $(nmportsRef.current).val(formData.nmports).trigger('change.select2');
-        $(cmportsRef.current).val(formData.cmports).trigger('change.select2');
-        $(dportsRef.current).val(formData.dports).trigger('change.select2');
-        $(iportsRef.current).val(formData.iports).trigger('change.select2');
+
+        // Build port data in Select2 format {id, text}
+        const portData = availablePorts.map(p => ({ id: p, text: p }));
+
+        // Re-init all port Select2 instances with new data
+        const portIds = ['nmports', 'cmports', 'dports', 'iports'];
+        portIds.forEach(id => {
+            const $el = $('#' + id);
+            try { $el.select2('destroy'); } catch (e) { /* ignore */ }
+            $el.empty();
+            $el.select2({ data: portData, placeholder: 'Select ports', width: '100%', theme: 'bootstrap4' });
+        });
+
+        // Now set selected values from formData
+        $('#nmports').val(formData.nmports).trigger('change.select2');
+        $('#cmports').val(formData.cmports).trigger('change.select2');
+        $('#dports').val(formData.dports).trigger('change.select2');
+        $('#iports').val(formData.iports).trigger('change.select2');
+
+        // Fix #6: Setup port exclusivity handlers
+        setupPortExclusivity();
+
+        // Fix #7: Compute initial bond info
+        computeBondInfo();
+
+        // Sync TZ
         $(tzRef.current).val(formData.tz).trigger('change.select2');
-    }, [formData.nmports, formData.cmports, formData.dports, formData.iports, formData.tz]);
+
+        return () => {
+            // Cleanup Select2 on port elements
+            portIds.forEach(id => {
+                try { $('#' + id).select2('destroy'); } catch (e) { /* ignore */ }
+            });
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [availablePorts]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -256,10 +405,17 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         }
     };
 
-    // Change-detection submit – only sends fields that changed, matching old QNodes.js logic
+    // Change-detection submit — matches old dist/js/QNodes.js L575-722
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!selectedHost || !hostConfig) return;
+
+        // Sync latest port values from Select2 before submit
+        const $ = window.$;
+        const currentNmports = $ ? ($('#nmports').val() || []) : formData.nmports;
+        const currentCmports = $ ? ($('#cmports').val() || []) : formData.cmports;
+        const currentDports = $ ? ($('#dports').val() || []) : formData.dports;
+        const currentIports = $ ? ($('#iports').val() || []) : formData.iports;
 
         let tochange = 0;
         const hostsubmit = {};
@@ -286,6 +442,30 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
             }
         }
 
+        // Fix #9/#10: Port change detection — includes iports, sends as comma string
+        // Matches old dist/js/QNodes.js L604-643
+        const portChecks = [
+            { key: 'nmports', current: currentNmports },
+            { key: 'cmports', current: currentCmports },
+            { key: 'dports', current: currentDports },
+            { key: 'iports', current: currentIports },
+        ];
+        portChecks.forEach(({ key, current }) => {
+            const currentVal = current || [];
+            let configVal = hostConfig[key];
+            if (key === 'dports' && !configVal) configVal = hostConfig.dataport;
+            if (typeof configVal === 'string') {
+                configVal = configVal.split(',').map(s => s.trim());
+            } else if (!Array.isArray(configVal)) {
+                configVal = [];
+            }
+            if (currentVal.length > 0 && JSON.stringify([...currentVal].sort()) !== JSON.stringify([...configVal].sort())) {
+                // Fix #9: Send as comma-separated string (matching old code)
+                hostsubmit[key] = currentVal.join(',');
+                tochange = 1;
+            }
+        });
+
         // Cluster / Mgmt
         const currentCluster = formData.cluster + '/' + formData.mgmtSub;
         if (formData.cluster.length > 3 && !formData.cluster.includes('__') && currentCluster !== hostConfig.cluster) {
@@ -293,7 +473,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
             tochange = 1;
         }
 
-        // Time Zone – old logic: encode as city%text_with_replacements
+        // Time Zone
         if (formData.tz !== '-100') {
             let tzflag = 0;
             const selectedTzOption = TIMEZONE_OPTIONS.find(opt => opt.value === formData.tz && opt.timeZoneId !== '-1');
@@ -307,7 +487,6 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                     tzflag = 1;
                 }
                 if (tzflag > 0) {
-                    // Encode: city + '%' + text with spaces→_, commas→^, colons→!
                     const encodedText = selectedTzOption.label
                         .split(' ').join('_')
                         .split(',').join('^')
@@ -324,7 +503,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
             tochange = 1;
         }
 
-        // NTP (Name) – old code: if NTPname has value > 3 chars and differs from ntp
+        // NTP (Name)
         if (formData.ntpName.length > 3 && formData.ntpName !== hostConfig.ntp) {
             hostsubmit.ntp = formData.ntpName;
             tochange = 1;
@@ -336,34 +515,20 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
             tochange = 1;
         }
 
-        // Ports – check nmports, cmports, dports
-        ['nmports', 'cmports', 'dports'].forEach(key => {
-            const currentVal = formData[key] || [];
-            let configVal = hostConfig[key];
-            if (typeof configVal === 'string') {
-                configVal = configVal.split(',').map(s => s.trim());
-            } else if (!Array.isArray(configVal)) {
-                configVal = [];
-            }
-            if (JSON.stringify([...currentVal].sort()) !== JSON.stringify([...configVal].sort())) {
-                hostsubmit[key] = currentVal;
-                tochange = 1;
-            }
-        });
-
-        // DNS
-        if (formData.dnsname !== (hostConfig.dnsname || '')) {
+        // Fix #11: DNS — matches old dist/js/QNodes.js L691-703
+        // Both dnsname and dnssearch are sent together when either changes
+        if (formData.dnsname.length > 3 && !formData.dnsname.includes('__') && formData.dnsname !== (hostConfig.dnsname || '')) {
             hostsubmit.dnsname = formData.dnsname;
-            tochange = 1;
-        }
-        if (formData.dnssearch !== (hostConfig.dnssearch || '')) {
             hostsubmit.dnssearch = formData.dnssearch;
             tochange = 1;
         }
+        if (formData.dnssearch.length > 3 && formData.dnssearch !== (hostConfig.dnssearch || '')) {
+            hostsubmit.dnssearch = formData.dnssearch;
+            hostsubmit.dnsname = formData.dnsname;
+            tochange = 1;
+        }
 
-        // Configured – old logic:
-        // if unchecked (formData.configured == false) AND hostConfig.configured == 'no' → send 'yes'
-        // if checked (formData.configured == true) AND hostConfig.configured != 'no' → send 'no'
+        // Configured
         if (formData.configured === false && hostConfig.configured === 'no') {
             hostsubmit.configured = 'yes';
             tochange = 1;
@@ -374,7 +539,8 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         }
 
         if (tochange > 0) {
-            hostsubmit.id = selectedHostName;
+            // Fix #4: id is array index (matching old code: $("#readysubmit").data('selected'))
+            hostsubmit.id = selectedHostIndex;
             hostsubmit.user = 'mezo';
             hostsubmit.name = selectedHostName;
 
@@ -394,13 +560,6 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         } catch {
             return tzStr;
         }
-    };
-
-    // Render dynamic port options
-    const renderPortOptions = () => {
-        return availablePorts.map(port => (
-            <option key={port} value={port}>{port}</option>
-        ));
     };
 
     return (
@@ -481,7 +640,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                     />
                                 </div>
                                 <div className="lg:col-span-5 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono text-center lg:text-left truncate">
-                                    <span id="cBoxName">{selectedHost ? formData.alias : 'select a node...'}</span>
+                                    <span id="cBoxName">{selectedHost ? (selectedHost.alias || '') : 'select a node...'}</span>
                                 </div>
                             </div>
 
@@ -515,14 +674,13 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                         <div className="flex gap-4 items-center">
                                             <div className="flex-1">
                                                 <select ref={nmportsRef} className="select2 multiple w-full runningnodes" multiple="multiple" id="nmports" name="nmports" data-placeholder="Select ports" disabled={!selectedHost}>
-                                                    {renderPortOptions()}
                                                 </select>
                                             </div>
                                             <div className="px-3 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
-                                                <span id="bNode">{selectedHost ? (selectedHost.bNode || 'bond 1') : ''}</span>
+                                                <span id="bNode">{bondInfo.bNode}</span>
                                             </div>
                                             <div className="flex-1 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
-                                                <span id="cIPAddress">{selectedHost ? `${formData.ipaddr}/${formData.ipaddrsubnet}` : 'select a node...'}</span>
+                                                <span id="cIPAddress">{selectedHost ? `${selectedHost.ipaddr || ''}/${selectedHost.ipaddrsubnet || '24'}` : 'select a node...'}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -559,14 +717,13 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                         <div className="flex gap-4 items-center">
                                             <div className="flex-1">
                                                 <select ref={cmportsRef} className="select2 multiple w-full runningnodes" multiple="multiple" id="cmports" name="cmports" data-placeholder="Select ports" disabled={!selectedHost}>
-                                                    {renderPortOptions()}
                                                 </select>
                                             </div>
                                             <div className="px-3 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
-                                                <span id="bCluster">{selectedHost ? (selectedHost.bCluster || 'bond 2') : ''}</span>
+                                                <span id="bCluster">{bondInfo.bCluster}</span>
                                             </div>
                                             <div className="flex-1 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
-                                                <span id="cMgmt">{selectedHost ? `${formData.cluster}/${formData.mgmtSub}` : 'select a node...'}</span>
+                                                <span id="cMgmt">{selectedHost ? (selectedHost.cluster || '') : 'select a node...'}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -578,14 +735,13 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                 <label className="lg:col-span-3 text-sm font-semibold text-gray-700">Data Ports</label>
                                 <div className="lg:col-span-4">
                                     <select ref={dportsRef} className="select2 multiple w-full runningnodes" multiple="multiple" id="dports" name="dports" data-placeholder="Select ports" disabled={!selectedHost}>
-                                        {renderPortOptions()}
                                     </select>
                                 </div>
                                 <div className="px-3 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
-                                    <span id="bData">{selectedHost ? (selectedHost.bData || 'bond 3') : ''}</span>
+                                    <span id="bData">{bondInfo.bData}</span>
                                 </div>
                                 <div className="lg:col-span-4 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
-                                    <span id="dataPorts">{selectedHost ? formData.dports.join(', ') : 'select a node...'}</span>
+                                    <span id="dataPorts">{selectedHost ? (parsePortDisplay(selectedHost.dports || selectedHost.dataport) || 'not set') : 'select a node...'}</span>
                                 </div>
                             </div>
 
@@ -594,14 +750,13 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                 <label className="lg:col-span-3 text-sm font-semibold text-gray-700">Internet Ports</label>
                                 <div className="lg:col-span-4">
                                     <select ref={iportsRef} className="select2 multiple w-full runningnodes" multiple="multiple" id="iports" name="iports" data-placeholder="Select ports" disabled={!selectedHost}>
-                                        {renderPortOptions()}
                                     </select>
                                 </div>
                                 <div className="px-3 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
-                                    <span id="bInternet">{selectedHost ? (selectedHost.bInternet || 'bond 4') : ''}</span>
+                                    <span id="bInternet">{bondInfo.bInternet}</span>
                                 </div>
                                 <div className="lg:col-span-4 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
-                                    <span id="internetPorts">{selectedHost ? formData.iports.join(', ') : 'select a node...'}</span>
+                                    <span id="internetPorts">{selectedHost ? (parsePortDisplay(selectedHost.iports) || 'not set') : 'select a node...'}</span>
                                 </div>
                             </div>
 
@@ -658,7 +813,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                     </div>
                                 </div>
                                 <div className="lg:col-span-3 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
-                                    <span id="cNTP">{selectedHost ? (formData.ntp || formData.ntpName || 'select a node...') : 'select a node...'}</span>
+                                    <span id="cNTP">{selectedHost ? (selectedHost.ntp || 'select a node...') : 'select a node...'}</span>
                                 </div>
                             </div>
 
@@ -692,8 +847,9 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                         </div>
                                     </div>
                                 </div>
+                                {/* Fix #23: DNS display with slash separator (matching old code) */}
                                 <div className="lg:col-span-3 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
-                                    <span id="cDNS">{selectedHost ? `${formData.dnsname || ''} ${formData.dnssearch || ''}`.trim() || 'select a node...' : 'select a node...'}</span>
+                                    <span id="cDNS">{selectedHost ? `${selectedHost.dnsname || ''}/${selectedHost.dnssearch || ''}` : 'select a node...'}</span>
                                 </div>
                             </div>
 
@@ -713,7 +869,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                     />
                                 </div>
                                 <div className="lg:col-span-5 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
-                                    <span id="cGW">{selectedHost ? formData.gw : 'select a node...'}</span>
+                                    <span id="cGW">{selectedHost ? (selectedHost.gw || '') : 'select a node...'}</span>
                                 </div>
                             </div>
 
@@ -752,5 +908,13 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         </div>
     );
 };
+
+// Helper: display port values from server data (handles string or array)
+function parsePortDisplay(val) {
+    if (!val) return '';
+    if (typeof val === 'string') return val.split(',').map(s => s.trim()).join(', ');
+    if (Array.isArray(val)) return val.join(', ');
+    return String(val);
+}
 
 export default RunningNodes;

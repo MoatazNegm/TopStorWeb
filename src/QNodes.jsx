@@ -15,15 +15,14 @@ const QNodes = () => {
     const loadData = useCallback(async () => {
         try {
             const response = await fetchAllHostsInfo();
-            // QNodes.js expects response in a specific format. 
-            // Assuming response.data is the "newhosts" object from QNodes.js logic
-            // newhosts has "all" and specific state keys? No, QNodes.js says:
-            // newhosts["all"] is compared. 
-            // response.data likely contains { all: {...}, ready: [...], active: [...], ... }
             if (response.data) {
                 setHostsInfo(prev => {
-                    // Basic diffing or just replace. React handles diffing DOM.
-                    // We just update state.
+                    // Fix #1a: Deep equality check — only update state if data actually changed.
+                    // Matches old code: JSON.stringify(hostsinfo) != JSON.stringify(newhosts['all'])
+                    // Returning the same reference prevents re-renders in child components.
+                    if (JSON.stringify(prev) === JSON.stringify(response.data)) {
+                        return prev;
+                    }
                     return response.data;
                 });
             }
@@ -100,6 +99,7 @@ const QNodes = () => {
                                 onSelect={(name) => handleHostSelect('active', name)}
                                 readyHostsCount={(hostsInfo.ready || []).length}
                                 possibleHostsCount={(hostsInfo.possible || []).length}
+                                onRefresh={refreshData}
                             />
                         </div>
 

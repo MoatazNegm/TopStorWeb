@@ -4,14 +4,16 @@ import ServerNode from './Common/ServerNode';
 import Button from './Common/Button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
-const ActiveNodes = ({ hosts, allHosts, lostHosts, selectedHostName, onSelect, readyHostsCount, possibleHostsCount }) => {
+const ActiveNodes = ({ hosts, allHosts, lostHosts, selectedHostName, onSelect, readyHostsCount, possibleHostsCount, onRefresh }) => {
     const [isExpanded, setIsExpanded] = useState(true);
     const selectedHost = allHosts ? allHosts[selectedHostName] : null;
 
+    // Fix #14: Call onRefresh after evacuate
     const handleEvacuate = async () => {
         if (!selectedHostName) return;
         try {
             await evacuateHost(selectedHostName);
+            if (onRefresh) onRefresh();
         } catch (e) {
             console.error("Evacuation failed", e);
         }
@@ -25,7 +27,14 @@ const ActiveNodes = ({ hosts, allHosts, lostHosts, selectedHostName, onSelect, r
             : JSON.stringify(lostHosts).includes(selectedHostName)
     );
 
-    const canEvacuate = isSelectedHostLost && (readyHostsCount - possibleHostsCount) >= 2;
+    // Fix #13: Match old code's two-step logic:
+    // Step 1: disable if ready - possible < 2
+    // Step 2: override enable if host is Off/lost (old code re-enables regardless of count)
+    let canEvac = (readyHostsCount - possibleHostsCount) >= 2;
+    if (isSelectedHostLost) {
+        canEvac = true; // "Off" status overrides the count check
+    }
+    const canEvacuate = selectedHostName && canEvac;
 
     return (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 relative">
