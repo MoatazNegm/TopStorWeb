@@ -12,19 +12,21 @@ const api = axios.create({
 // - POST: token merged into form-encoded body
 api.interceptors.request.use((config) => {
     const token = getToken();
-    if (token) {
-        if (config.method === 'get') {
-            config.params = { ...config.params, token };
-        } else {
-            // For POST, merge token into data object.
-            // The transformRequest below will form-encode it.
-            if (typeof config.data === 'object' && config.data !== null) {
-                config.data = { ...config.data, token };
-            } else {
-                config.data = { token };
-            }
-        }
+
+    // The legacy backend reads from request.args.to_dict() universally for all API data.
+    // The old frontend 'postdata' function unknowingly defaulted to GET method in jQuery.
+    // Therefore, all payload objects MUST be sent as URL parameters regardless of POST/GET.
+    // FormData represents file uploads which should uniquely remain in the body.
+    if (config.data && typeof config.data === 'object' && !(config.data instanceof FormData)) {
+        config.params = { ...config.params, ...config.data };
+        delete config.data; // Send empty body for non-files
     }
+
+    if (token) {
+        config.params = { ...config.params, token };
+    }
+
+    return config;
 
 
 
