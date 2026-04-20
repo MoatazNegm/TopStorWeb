@@ -26,6 +26,10 @@ api.interceptors.request.use((config) => {
         config.params = { ...config.params, token };
     }
 
+    // Append cache-buster to prevent identical GET requests from being swallowed by browser cache
+    // This perfectly matches legacy jQuery behavior which added &_=timestamp
+    config.params = { ...config.params, _: Date.now() };
+
     return config;
 
 
