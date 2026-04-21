@@ -9,9 +9,8 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
 
-    // Using the IP from your screenshots so HMR connects properly
+    // Using dynamic host for HMR to work through proxies correctly
     hmr: {
-      host: '10.11.11.40',
       port: 5173,
     },
 
@@ -22,19 +21,19 @@ export default defineConfig({
     proxy: {
       // 1. Proxy static AdminLTE assets to the main Apache server
       '/dist': {
-        target: 'https://10.11.11.250', // Target HTTPS directly to bypass Apache redirects
+        target: 'http://shttpd', // Using internal container name
         changeOrigin: true,
-        secure: false, // Bypass self-signed VM certs
+        secure: false,
       },
       '/plugins': {
-        target: 'https://10.11.11.250',
+        target: 'http://shttpd',
         changeOrigin: true,
         secure: false,
       },
 
       // 2. Proxy API calls to the Flask backend
       '/api': {
-        target: 'http://10.11.11.250:5001',
+        target: 'http://apisrv:5001', // Using internal container name
         changeOrigin: true,
         secure: false
       }
