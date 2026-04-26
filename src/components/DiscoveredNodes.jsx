@@ -64,57 +64,29 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
         if (!selectedHostName || !selectedHostListItem) return;
         setIsJoining(true);
         try {
-            // Mirror legacy QNodes.js `updateDiscoveredNode` (lines 296-330):
-            // build the payload by checking each field against `originalData`,
-            // and OMIT keys that did not change. Backend Hostconfig.py is
-            // key-presence driven — sending unchanged `ipaddr` will delete and
-            // re-create the ActivePartners record.
-            const updatePayload = {
-                id: String(selectedHostIndex),
-                user: 'mezo',
-                name: selectedHostListItem.name,
-                discovered: true,
-            };
-            let tochange = 0;
-     
-            const aliasVal = (formData.alias || '').trim();
-            // Legacy guard: length > 3, value differs from current alias, and
-            // does not contain the inputmask placeholder character `_`.
-            if (
-                aliasVal.length > 3 &&
-                !aliasVal.includes('_') &&
-                aliasVal !== (originalData.alias || '')
-            ) {
-                updatePayload.alias = aliasVal;
-                tochange = 1;
-            }
-     
-            const ipVal = (formData.ipaddr || '').trim();
-            const subVal = String(formData.ipaddrsubnet || '');
-            // Legacy guard: length > 3, no `_` placeholder, AND ip-or-subnet differs.
-            if (
-                ipVal.length > 3 &&
-                !ipVal.includes('_') &&
-                (
-                    ipVal !== (originalData.ipaddr || '') ||
-                    subVal !== String(originalData.ipaddrsubnet || '')
-                )
-            ) {
-                updatePayload.ipaddr = ipVal;
-                updatePayload.ipaddrsubnet = subVal;
-                tochange = 1;
-            }
-     
-            if (tochange > 0) {
+            if (hasDataToUpdate) {
+                // Step 1: Update the discovered node configuration
+                const updatePayload = {
+                    id: String(selectedHostIndex), // Old backend relies on the array index for `id`
+                    user: 'mezo',
+                    name: selectedHostListItem.name,
+                    alias: formData.alias,
+                    ipaddr: formData.ipaddr,
+                    ipaddrsubnet: formData.ipaddrsubnet,
+                    discovered: true
+                };
+
                 await updateDiscoveredNode(updatePayload);
-                // Match legacy 10s settle delay before joining cluster.
-                await new Promise((resolve) => setTimeout(resolve, 10000));
+
+                // Step 2: Wait before joining cluster (matching old code's 10-second delay)
+                await new Promise(resolve => setTimeout(resolve, 10000));
             }
-     
+
+            // Step 3: Join the cluster
             await joinCluster(selectedHostListItem.name);
             if (onRefresh) onRefresh();
         } catch (e) {
-            console.error('Join cluster failed', e);
+            console.error("Join cluster failed", e);
         } finally {
             setIsJoining(false);
         }
