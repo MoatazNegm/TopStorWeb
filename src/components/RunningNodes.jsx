@@ -110,7 +110,6 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
     });
     const [isExpanded, setIsExpanded] = useState(true);
     const [availablePorts, setAvailablePorts] = useState([]);
-    // Fix #7: Bond info auto-calculated from port selections
     const [bondInfo, setBondInfo] = useState({ bNode: 'bond 1', bCluster: 'bond 2', bData: 'bond 3', bInternet: 'bond 4' });
 
     const nmportsRef = useRef(null);
@@ -122,13 +121,11 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
     // Derived state for the "selected" host object — always current server data
     const selectedHost = allHosts ? allHosts[selectedHostName] : null;
 
-    // Fix #4: Find array index of selected host (old code uses index as hostsubmit.id)
     const selectedHostIndex = selectedHostName ? hosts.findIndex(h => h.name === selectedHostName) : -1;
 
     // Snapshot of original host data for change-detection on submit
     const [hostConfig, setHostConfig] = useState(null);
 
-    // Fix #7: Bond info calculation — matches old QNodes.js updateBondInfo()
     const computeBondInfo = useCallback(() => {
         const $ = window.$;
         if (!$ || !$.fn.select2) return;
@@ -154,17 +151,14 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         setBondInfo({ bNode, bCluster, bData, bInternet });
     }, []);
 
-    // Fix #6: Port exclusivity — matches old QNodes.js updatePortExclusivity() + refreshIportsAvailability()
     const setupPortExclusivity = useCallback(() => {
         const $ = window.$;
         if (!$ || !$.fn.select2) return;
 
-        // Remove old handlers to avoid duplication
         $('#nmports, #cmports, #dports, #iports').off('select2:select select2:unselect');
 
         const dataBondBoxes = ['nmports', 'cmports', 'dports'];
 
-        // Group 1: nm/cm/d bonds sync with each other
         dataBondBoxes.forEach(function (currentId) {
             $('#' + currentId).on('select2:select', function () {
                 const currentVals = $('#' + currentId).val() || [];
@@ -206,7 +200,6 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
             });
         });
 
-        // Group 2: iports mutually exclusive with nm/cm/d
         $('#iports').on('select2:select select2:unselect', function () {
             refreshIportsAvailability();
             computeBondInfo();
@@ -216,7 +209,6 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         refreshIportsAvailability();
     }, [computeBondInfo]);
 
-    // Fix #6: Refresh iports availability — matches old QNodes.js refreshIportsAvailability()
     const refreshIportsAvailability = () => {
         const $ = window.$;
         if (!$) return;
@@ -228,13 +220,11 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
 
         const iPorts = new Set($('#iports').val() || []);
 
-        // Disable data-bond ports in iports dropdown
         $('#iports option').each(function () {
             const port = $(this).val();
             $(this).prop('disabled', dataPorts.has(port));
         });
 
-        // Disable iports in nm/cm/d dropdowns
         ['nmports', 'cmports', 'dports'].forEach(id => {
             $('#' + id + ' option').each(function () {
                 const port = $(this).val();
@@ -243,7 +233,6 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         });
     };
 
-    // Sync Select2 port values back to React state
     const syncPortsToReactState = () => {
         const $ = window.$;
         if (!$) return;
@@ -256,11 +245,9 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         }));
     };
 
-    // Fix #1b: Only populate form when selectedHostName changes, NOT on every data refresh.
-    // Matches old code: inputs are populated in memberclick → updaterunninghosts, not on polling.
+    // Ensure form is blanked for new config entries when a host is selected
     useEffect(() => {
         if (!selectedHostName || !allHosts) {
-            // Reset form
             setFormData({
                 alias: '', ipaddr: '', ipaddrsubnet: 24,
                 nmports: [], cmports: [], dports: [], iports: [],
@@ -276,68 +263,56 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         const host = allHosts[selectedHostName];
         if (!host) return;
 
-        // Fix #5: Port parsing — matches old QNodes.js L141-164 (3 formats)
         let parsedPorts = [];
         if (host.phy_ports && Array.isArray(host.phy_ports)) {
-            // Format 1: phy_ports array (preferred)
             parsedPorts = host.phy_ports.filter(p => p.trim() !== '').map(p => p.trim());
         } else if (host.ports && host.ports.length >= 1 && Array.isArray(host.ports[0])
             && typeof host.ports[0][1] === 'string') {
-            // Format 2: array-of-arrays [[something, "eth0/eth1/eth2"]]
             parsedPorts = host.ports[0][1].split('/').map(p => p.trim());
         } else if (host.ports && typeof host.ports === 'string') {
-            // Format 3: slash-separated string "eth0/eth1/eth2"
             parsedPorts = host.ports.split('/').map(p => p.trim()).filter(p => p !== '');
         } else if (Array.isArray(host.ports)) {
-            // Format 4: simple array (fallback)
             parsedPorts = host.ports;
         }
 
-        // Parse port values from host data — matches old code L171-177
-        const parsePortVal = (val) => {
-            if (typeof val === 'string') return val.split(',').map(s => s.trim());
-            if (Array.isArray(val)) return val;
-            return [];
-        };
-
+        // Initialize form with empty/default values for NEW configurations
+        // The right-hand gray boxes will still show the existing host config via `selectedHost`
         const newFormData = {
-            alias: host.alias || '',
-            ipaddr: host.ipaddr || host.ip || '',
-            ipaddrsubnet: host.ipaddrsubnet || 24,
-            nmports: parsePortVal(host.nmports),
-            cmports: parsePortVal(host.cmports),
-            dports: parsePortVal(host.dports || host.dataport),
-            iports: parsePortVal(host.iports),
-            cluster: host.cluster ? host.cluster.split('/')[0] : '',
-            mgmtSub: host.cluster ? host.cluster.split('/')[1] || 24 : 24,
-            tz: host.tz || '-100',
+            alias: '',
+            ipaddr: '',
+            ipaddrsubnet: 24,
+            nmports: [],
+            cmports: [],
+            dports: [],
+            iports: [],
+            cluster: '',
+            mgmtSub: 24,
+            tz: '-100',
             tzCity: '',
             tzLabel: '',
-            ntp: host.ntp || '',
-            ntpName: host.ntpName || '',
-            gw: host.gw || '',
-            dnsname: host.dnsname || '',
-            dnssearch: host.dnssearch || '',
+            ntp: '',
+            ntpName: '',
+            gw: '',
+            dnsname: '',
+            dnssearch: '',
+            // Keep the initial checkbox synced to avoid accidental status flips on submit
             configured: host.configured === 'no'
         };
+        
         setFormData(newFormData);
         setAvailablePorts(parsedPorts);
-        // Store original for change-detection
         setHostConfig(JSON.parse(JSON.stringify(host)));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedHostName]);
 
-    // Fix #12: Initialize Inputmask for BoxName and IP fields + TZ Select2
     useEffect(() => {
         const $ = window.$;
         if (!$) return;
 
-        // Fix: Use object syntax for inputmask instead of string alias which newer versions misinterpret as a default value
         if ($.fn.inputmask) {
             $(".ipaddress").inputmask({ alias: "ip", placeholder: "xxx.xxx.xxx.xxx", showMaskOnHover: false, showMaskOnFocus: true });
         }
 
-        // Initialize TZ Select2
         const select2Options = { theme: 'bootstrap4', width: '100%' };
         if ($.fn.select2) {
             $(tzRef.current).select2(select2Options).on('change', (e) => {
@@ -357,16 +332,12 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         };
     }, []);
 
-    // Fix #19: Re-init Select2 port dropdowns when availablePorts changes
-    // Matches old code: $('#nmports').empty().select2({ data: basePortOptions, placeholder: "Select ports" })
     useEffect(() => {
         const $ = window.$;
         if (!$ || !$.fn.select2) return;
 
-        // Build port data in Select2 format {id, text}
         const portData = availablePorts.map(p => ({ id: p, text: p }));
 
-        // Re-init all port Select2 instances with new data
         const portIds = ['nmports', 'cmports', 'dports', 'iports'];
         portIds.forEach(id => {
             const $el = $('#' + id);
@@ -379,23 +350,16 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
             $el.select2({ data: portData, placeholder: 'Select ports', width: '100%', theme: 'bootstrap4' });
         });
 
-        // Now set selected values from formData
         $('#nmports').val(formData.nmports).trigger('change.select2');
         $('#cmports').val(formData.cmports).trigger('change.select2');
         $('#dports').val(formData.dports).trigger('change.select2');
         $('#iports').val(formData.iports).trigger('change.select2');
 
-        // Fix #6: Setup port exclusivity handlers
         setupPortExclusivity();
-
-        // Fix #7: Compute initial bond info
         computeBondInfo();
-
-        // Sync TZ
         $(tzRef.current).val(formData.tz).trigger('change.select2');
 
         return () => {
-            // Cleanup Select2 on port elements
             portIds.forEach(id => {
                 try { 
                     const $el = $('#' + id);
@@ -417,7 +381,6 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         }
     };
 
-    // Change-detection submit — matches old dist/js/QNodes.js L575-722
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!selectedHost || !hostConfig) {
@@ -427,7 +390,6 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
 
         const $ = window.$;
 
-        // Reject any leaked inputmask placeholder string (e.g. "_1______").
         const looksLikeMaskPlaceholder = (s) => {
             if (s == null) return true;
             const v = String(s);
@@ -878,7 +840,6 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                         </div>
                                     </div>
                                 </div>
-                                {/* Fix #23: DNS display with slash separator (matching old code) */}
                                 <div className="lg:col-span-3 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
                                     <span id="cDNS">{selectedHost ? `${selectedHost.dnsname || ''}/${selectedHost.dnssearch || ''}` : 'select a node...'}</span>
                                 </div>
