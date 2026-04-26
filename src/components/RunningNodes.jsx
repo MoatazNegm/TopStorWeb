@@ -334,7 +334,6 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
 
         // Fix: Use object syntax for inputmask instead of string alias which newer versions misinterpret as a default value
         if ($.fn.inputmask) {
-            $('#BoxName').inputmask({ regex: '(.*[a-z]){3}', clearIncomplete: true });
             $(".ipaddress").inputmask({ alias: "ip", placeholder: "xxx.xxx.xxx.xxx", showMaskOnHover: false, showMaskOnFocus: true });
         }
 
@@ -421,63 +420,73 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
     // Change-detection submit — matches old dist/js/QNodes.js L575-722
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Handle submit initiated.");
         if (!selectedHost || !hostConfig) {
             console.warn("Submit aborted: No host or host config.", { selectedHost, hostConfig });
             return;
         }
 
-        // Sync latest port values from Select2 before submit
         const $ = window.$;
+
+        // Reject any leaked inputmask placeholder string (e.g. "_1______").
+        const looksLikeMaskPlaceholder = (s) => {
+            if (s == null) return true;
+            const v = String(s);
+            if (v.trim() === '') return true;
+            if (v.includes('_')) return true;
+            return false;
+        };
+
+        const readField = (selector, fallback) => {
+            const dom = $ ? ($(selector).val() ?? '') : '';
+            const val = (dom !== '' ? dom : (fallback ?? ''));
+            return String(val);
+        };
+
+        const actAlias        = readField('#BoxName',      formData.alias);
+        const actIpaddr       = readField('#IPAddress',    formData.ipaddr);
+        const actIpaddrsubnet = readField('#ipaddrsubnet', formData.ipaddrsubnet);
+        const actCluster      = readField('#Mgmt',         formData.cluster);
+        const actMgmtSub      = readField('#MgmtSub',      formData.mgmtSub);
+        const actNtp          = readField('#NTP',          formData.ntp);
+        const actNtpName      = readField('#NTPname',      formData.ntpName);
+        const actGw           = readField('#GW',           formData.gw);
+        const actDnsname      = readField('#DNSname',      formData.dnsname);
+        const actDnssearch    = readField('#DNSsearch',    formData.dnssearch);
+
         const currentNmports = $ ? ($('#nmports').val() || []) : formData.nmports;
         const currentCmports = $ ? ($('#cmports').val() || []) : formData.cmports;
-        const currentDports = $ ? ($('#dports').val() || []) : formData.dports;
-        const currentIports = $ ? ($('#iports').val() || []) : formData.iports;
-
-        // Sync inputmask fields specifically directly from DOM to avoid React state missing masked inputs
-        const actAlias = $ ? ($('#BoxName').val() || formData.alias) : formData.alias;
-        const actIpaddr = $ ? ($('#IPAddress').val() || formData.ipaddr) : formData.ipaddr;
-        const actIpaddrsubnet = $ ? ($('#ipaddrsubnet').val() || formData.ipaddrsubnet) : formData.ipaddrsubnet;
-        const actCluster = $ ? ($('#Mgmt').val() || formData.cluster) : formData.cluster;
-        const actMgmtSub = $ ? ($('#MgmtSub').val() || formData.mgmtSub) : formData.mgmtSub;
-        const actNtp = $ ? ($('#NTP').val() || formData.ntp) : formData.ntp;
-        const actNtpName = $ ? ($('#NTPname').val() || formData.ntpName) : formData.ntpName;
-        const actGw = $ ? ($('#GW').val() || formData.gw) : formData.gw;
-        const actDnsname = $ ? ($('#DNSname').val() || formData.dnsname) : formData.dnsname;
-        const actDnssearch = $ ? ($('#DNSsearch').val() || formData.dnssearch) : formData.dnssearch;
+        const currentDports  = $ ? ($('#dports').val()  || []) : formData.dports;
+        const currentIports  = $ ? ($('#iports').val()  || []) : formData.iports;
 
         let tochange = 0;
         const hostsubmit = {};
 
-        // Alias (BoxName)
-        if (actAlias.length > 3 && actAlias !== hostConfig.alias) {
+        // alias
+        if (actAlias.length > 3 && !looksLikeMaskPlaceholder(actAlias) && actAlias !== hostConfig.alias) {
             hostsubmit.alias = actAlias;
             tochange = 1;
         }
 
-        // IP Address
-        if (actIpaddr.length > 3 && !actIpaddr.includes('__') && actIpaddr !== hostConfig.ipaddr) {
+        // ipaddr / subnet
+        if (actIpaddr.length > 3 && !actIpaddr.includes('_') && actIpaddr !== hostConfig.ipaddr) {
             hostsubmit.ipaddr = actIpaddr;
             hostsubmit.ipaddrsubnet = actIpaddrsubnet;
             tochange = 1;
         }
-
-        // IP Subnet changed alone
         if (String(actIpaddrsubnet) !== String(hostConfig.ipaddrsubnet)) {
-            if (actIpaddr.length > 3 && !actIpaddr.includes('__')) {
+            if (actIpaddr.length > 3 && !actIpaddr.includes('_')) {
                 hostsubmit.ipaddr = actIpaddr;
                 hostsubmit.ipaddrsubnet = actIpaddrsubnet;
                 tochange = 1;
             }
         }
 
-        // Fix #9/#10: Port change detection — includes iports, sends as comma string
-        // Matches old dist/js/QNodes.js L604-643
+        // ports
         const portChecks = [
             { key: 'nmports', current: currentNmports },
             { key: 'cmports', current: currentCmports },
-            { key: 'dports', current: currentDports },
-            { key: 'iports', current: currentIports },
+            { key: 'dports',  current: currentDports  },
+            { key: 'iports',  current: currentIports  },
         ];
         portChecks.forEach(({ key, current }) => {
             const currentVal = current || [];
@@ -489,32 +498,27 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                 configVal = [];
             }
             if (currentVal.length > 0 && JSON.stringify([...currentVal].sort()) !== JSON.stringify([...configVal].sort())) {
-                // Fix #9: Send as comma-separated string (matching old code)
                 hostsubmit[key] = currentVal.join(',');
                 tochange = 1;
             }
         });
 
-        // Cluster / Mgmt
+        // cluster
         const currentCluster = actCluster + '/' + actMgmtSub;
-        if (actCluster.length > 3 && !actCluster.includes('__') && currentCluster !== hostConfig.cluster) {
+        if (actCluster.length > 3 && !actCluster.includes('_') && currentCluster !== hostConfig.cluster) {
             hostsubmit.cluster = currentCluster;
             tochange = 1;
         }
 
-        // Time Zone
+        // timezone
         if (formData.tz !== '-100') {
             let tzflag = 0;
             const selectedTzOption = TIMEZONE_OPTIONS.find(opt => opt.value === formData.tz && opt.timeZoneId !== '-1');
             if (selectedTzOption) {
                 try {
                     const currentTzText = hostConfig.tz ? hostConfig.tz.split('%')[1].replace('!', ':').replace(/\^/g, ',').replace(/_/g, ' ') : '';
-                    if (selectedTzOption.label !== currentTzText) {
-                        tzflag = 1;
-                    }
-                } catch {
-                    tzflag = 1;
-                }
+                    if (selectedTzOption.label !== currentTzText) tzflag = 1;
+                } catch { tzflag = 1; }
                 if (tzflag > 0) {
                     const encodedText = selectedTzOption.label
                         .split(' ').join('_')
@@ -526,38 +530,36 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
             }
         }
 
-        // NTP (IP)
-        if (actNtp.length > 3 && !actNtp.includes('__') && actNtp !== hostConfig.ntp) {
+        // ntp (IP)
+        if (actNtp.length > 3 && !actNtp.includes('_') && actNtp !== hostConfig.ntp) {
             hostsubmit.ntp = actNtp;
             tochange = 1;
         }
-
-        // NTP (Name)
-        if (actNtpName.length > 3 && actNtpName !== hostConfig.ntp) {
+        // ntp (name)
+        if (actNtpName.length > 3 && !looksLikeMaskPlaceholder(actNtpName) && actNtpName !== hostConfig.ntp) {
             hostsubmit.ntp = actNtpName;
             tochange = 1;
         }
 
-        // Gateway
-        if (actGw.length > 3 && !actGw.includes('__') && actGw !== hostConfig.gw) {
+        // gateway
+        if (actGw.length > 3 && !actGw.includes('_') && actGw !== hostConfig.gw) {
             hostsubmit.gw = actGw;
             tochange = 1;
         }
 
-        // Fix #11: DNS — matches old dist/js/QNodes.js L691-703
-        // Both dnsname and dnssearch are sent together when either changes
-        if (actDnsname.length > 3 && !actDnsname.includes('__') && actDnsname !== (hostConfig.dnsname || '')) {
+        // DNS
+        if (actDnsname.length > 3 && !actDnsname.includes('_') && actDnsname !== (hostConfig.dnsname || '')) {
             hostsubmit.dnsname = actDnsname;
             hostsubmit.dnssearch = actDnssearch;
             tochange = 1;
         }
-        if (actDnssearch.length > 3 && actDnssearch !== (hostConfig.dnssearch || '')) {
+        if (actDnssearch.length > 3 && !looksLikeMaskPlaceholder(actDnssearch) && actDnssearch !== (hostConfig.dnssearch || '')) {
             hostsubmit.dnssearch = actDnssearch;
             hostsubmit.dnsname = actDnsname;
             tochange = 1;
         }
 
-        // Configured
+        // configured
         if (formData.configured === false && hostConfig.configured === 'no') {
             hostsubmit.configured = 'yes';
             tochange = 1;
@@ -568,21 +570,17 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         }
 
         if (tochange > 0) {
-            console.log("Changes detected, submitting data:", hostsubmit);
-            // Fix #4: id is array index (matching old code: $("#readysubmit").data('selected'))
             hostsubmit.id = selectedHostIndex;
             hostsubmit.user = 'mezo';
             hostsubmit.name = selectedHostName;
-
             try {
                 await configHost(hostsubmit);
-                console.log("Update Node configHost request successful");
                 onRefresh();
             } catch (err) {
                 console.error("Failed to update node", err);
             }
         } else {
-            console.log("No changes detected in form data; 'tochange' is 0. Aborting submit. Original config:", hostConfig);
+            console.log("No changes detected; nothing sent.");
         }
     };
 
