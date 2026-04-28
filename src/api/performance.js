@@ -8,7 +8,8 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
     const token = getToken();
-    if (token) {
+    // Only append the token to our custom Flask API, not Prometheus
+    if (token && !config.url.startsWith('prometheus/')) {
         if (config.method === 'get') {
             config.params = { ...config.params, token };
         } else {
@@ -21,16 +22,20 @@ api.interceptors.request.use((config) => {
 });
 
 export const fetchSystemMetrics = () => {
-    // This will likely call a proxy that runs Getstats.sh or queries Prometheus
     return api.get('api/v1/info/performance');
 };
 
-export const fetchPrometheusMetrics = (query) => {
-    // Direct or proxied Prometheus Query API
-    return api.get('api/v1/prometheus/query', { params: { query } });
+export const fetchPrometheusQuery = (query) => {
+    // Hits the Apache proxy which forwards directly to port 9090
+    return api.get('prometheus/query', { params: { query } });
+};
+
+export const pingHeartbeat = () => {
+    // Hits the Flask endpoint to keep the 0.25s "Boost Mode" alive
+    return api.post('api/v1/telemetry/heartbeat').catch(() => {});
 };
 
 export const fetchServiceSummary = () => {
-    // Consolidated summary from existing endpoints
+    // Fetches live etcd inventory counts
     return api.get('api/v1/info/summary');
 };

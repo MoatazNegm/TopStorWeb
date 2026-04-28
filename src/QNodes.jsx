@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { fetchAllHostsInfo, discoverHosts } from './api/nodes';
 import RunningNodes from './components/RunningNodes';
 import DiscoveredNodes from './components/DiscoveredNodes';
@@ -12,32 +12,51 @@ const QNodes = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Track whether the component is actively mounted
+    const isMounted = useRef(true);
+
     const loadData = useCallback(async () => {
+        // Stop the loop immediately if the user navigated away
+        if (!isMounted.current) return;
+
         try {
             const response = await fetchAllHostsInfo();
-            if (response.data) {
+            if (response.data && isMounted.current) {
                 setHostsInfo(prev => {
-                    // Fix #1a: Deep equality check — only update state if data actually changed.
-                    // Matches old code: JSON.stringify(hostsinfo) != JSON.stringify(newhosts['all'])
-                    // Returning the same reference prevents re-renders in child components.
+                    // Deep equality check — only update state if data actually changed.
                     if (JSON.stringify(prev) === JSON.stringify(response.data)) {
                         return prev;
                     }
                     return response.data;
                 });
+                setError(null); // Clear previous errors on a successful fetch
             }
         } catch (err) {
-            console.error("Failed to load hosts", err);
-            setError(err);
+            if (isMounted.current) {
+                // Prevent spamming the console with aborted/canceled requests
+                if (err.code !== 'ERR_CANCELED' && err.message !== 'Request aborted') {
+                    console.error("Failed to load hosts", err);
+                }
+                setError(err);
+            }
         } finally {
-            setLoading(false);
+            // Schedule the next poll ONLY after this one completely finishes
+            if (isMounted.current) {
+                setLoading(false);
+                setTimeout(loadData, 5000); 
+            }
         }
     }, []);
 
     useEffect(() => {
-        loadData();
-        const interval = setInterval(loadData, 5000); // Polling every 5s
-        return () => clearInterval(interval);
+        isMounted.current = true; // Mark component as active
+        
+        loadData(); // Kick off the self-sustaining telemetry loop
+
+        // Cleanup function: runs when navigating away to instantly kill the loop
+        return () => {
+            isMounted.current = false; 
+        };
     }, [loadData]);
 
     const handleHostSelect = (state, hostName) => {
@@ -54,6 +73,7 @@ const QNodes = () => {
     };
 
     const handleDiscover = async () => {
+        if (!isMounted.current) return;
         setLoading(true);
         try {
             await discoverHosts();
@@ -61,7 +81,9 @@ const QNodes = () => {
         } catch (e) {
             console.error("Discovery failed", e);
         } finally {
-            setLoading(false);
+            if (isMounted.current) {
+                setLoading(false);
+            }
         }
     };
 
@@ -71,10 +93,12 @@ const QNodes = () => {
 
 
     return (
-        <div className="content-wrapper">
+        <div className="content-wrapper p-4 bg-gray-100 min-h-screen">
             <div className="floating-canvas">
                 <div className="content-header">
-                    <div className="container-fluid"></div>
+                    <div className="container-fluid">
+                        <h2 className="text-2xl font-bold mb-4">حالة العقد</h2>
+                    </div>
                 </div>
                 <div className="content">
                     <div className="container-fluid">
