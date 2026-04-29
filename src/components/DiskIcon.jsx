@@ -12,7 +12,7 @@ const DiskIcon = ({
 }) => {
     const { status, size, name, changeop } = data;
     const shortDisk = diskId.slice(-5);
-    const isOnline = status.includes('ONLINE') || (status.includes('NA') && data.raid?.includes('stripe'));
+    const isOnline = status.includes('ONLINE') || status.includes('free') || status.includes('cache') || (status.includes('NA') && data.raid?.includes('stripe'));
     const silvering = data.silvering !== 'no';
 
     const getDiskImage = () => {

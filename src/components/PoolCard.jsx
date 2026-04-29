@@ -20,7 +20,7 @@ const PoolCard = ({
     const { available, used, dedup, raids = [], volumes = [] } = data;
     const totalSize = (parseFloat(available) + parseFloat(used)).toFixed(2);
 
-    // Determine redundancy type and color
+    // Determine redundancy type and color — mirrors legacy Qdg.js initdgs() health logic
     let redundancyText = "Highly Available";
     let redundancyColor = "text-blue-500";
 
@@ -29,6 +29,22 @@ const PoolCard = ({
     if (raids.some(r => r.includes('strip'))) {
         redundancyText = "No Redundancy";
         redundancyColor = "text-rose-500";
+    } else {
+        let balanced = ", balanced";
+        for (const raidId of raids) {
+            const raidData = allRaids[raidId];
+            if (raidData?.missingdisks?.[0] != 0) {
+                redundancyColor = "text-rose-500";
+                balanced = ", missing disks";
+                break;
+            }
+            if (raidData?.raidrank?.[0] < 0) {
+                redundancyColor = "text-amber-500";
+                balanced = ", not balanced";
+                break;
+            }
+        }
+        redundancyText = redundancyText + balanced;
     }
 
     const handleAdd = () => {
@@ -75,27 +91,47 @@ const PoolCard = ({
 
             {/* Raid Groups Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
-                {raids.map(raidId => (
-                    <div key={raidId} className="bg-gray-50/30 rounded-3xl p-6 border border-gray-50/50 relative">
-                        <div className="flex items-center justify-between mb-4">
-                            <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">{raidId.split('_')[0]}</span>
-                            <div className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]"></div>
+                {raids.map(raidId => {
+                    const raidDisks = allRaids[raidId]?.disks || [];
+                    // Filter out dm-* virtual placeholder devices — they are not real disks to render
+                    const realDisks = raidDisks.filter(diskId => !allDisks[diskId]?.name?.includes('dm-'));
+                    // Count missing slots: dm- disks = placeholder slots, minus non-ONLINE non-dm disks (clamped to 0)
+                    const missingCount = Math.max(0, raidDisks.reduce((count, diskId) => {
+                        if (allDisks[diskId]?.name?.includes('dm-')) return count + 1;
+                        if (!allDisks[diskId]?.changeop?.includes('ONLINE')) return count - 1;
+                        return count;
+                    }, 0));
+                    const raidHasMissing = missingCount > 0;
+
+                    return (
+                        <div key={raidId} className={`bg-gray-50/30 rounded-3xl p-6 border relative ${raidHasMissing ? 'border-red-300' : 'border-gray-50/50'}`}>
+                            <div className="flex items-center justify-between mb-4">
+                                <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${raidHasMissing ? 'text-red-500' : 'text-gray-400'}`}>{raidId.split('_')[0]}</span>
+                                <div className={`w-2 h-2 rounded-full ${raidHasMissing ? 'bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.5)]' : 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]'}`}></div>
+                            </div>
+                            <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
+                                {realDisks.map(diskId => (
+                                    <DiskIcon
+                                        key={diskId}
+                                        diskId={diskId}
+                                        data={allDisks[diskId]}
+                                        isSelected={selectedDiskId === diskId}
+                                        onClick={() => setSelectedDiskId(prev => prev === diskId ? null : diskId)}
+                                        showActions={true}
+                                        onAction={(action) => onDiskAction(diskId, action)}
+                                    />
+                                ))}
+                                {Array.from({ length: missingCount }).map((_, i) => (
+                                    <div key={`missing-${i}`} className="flex flex-col items-center p-2 rounded-xl border border-red-200 bg-red-50/30">
+                                        <img src="img/invaliddisk.png" alt="missing disk" className="w-10 h-10 object-contain opacity-50" />
+                                        <span className="text-[9px] font-bold text-red-400 mt-1 uppercase tracking-tight">missing</span>
+                                        <span className="text-[10px] font-black text-red-300 leading-none">-</span>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                        <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
-                            {allRaids[raidId]?.disks.map(diskId => (
-                                <DiskIcon
-                                    key={diskId}
-                                    diskId={diskId}
-                                    data={allDisks[diskId]}
-                                    isSelected={selectedDiskId === diskId}
-                                    onClick={() => setSelectedDiskId(prev => prev === diskId ? null : diskId)}
-                                    showActions={true}
-                                    onAction={(action) => onDiskAction(diskId, action)}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
 
             {/* Capacity Management Section */}

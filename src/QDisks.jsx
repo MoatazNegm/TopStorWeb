@@ -18,15 +18,10 @@ const QDisks = () => {
     const [creatingRedundancy, setCreatingRedundancy] = useState(null);
     const [creatingSize, setCreatingSize] = useState(null);
     const [includeCache, setIncludeCache] = useState(false);
+    const [selectedCacheSpares, setSelectedCacheSpares] = useState([]);
 
-    const useMock = false; // Toggle this if API is not ready
-    
     const loadData = useCallback(async () => {
         try {
-            if (useMock) {
-                // Mock data removed for production parity
-                return;
-            }
             const res = await fetchDgsInfo();
             setDgsData(res.data);
             setError(null);
@@ -36,7 +31,7 @@ const QDisks = () => {
         } finally {
             setLoading(false);
         }
-    }, [useMock]);
+    }, []);
 
     useEffect(() => {
         loadData();
@@ -77,7 +72,7 @@ const QDisks = () => {
                 useable: creatingSize,
                 disks: dataDisks,
                 cache: cacheDisks,
-                cache_bool: cacheDisks.length > 0,
+                cache_bool: includeCache,
                 user: 'mezo'
             });
             setSelectedDisks([]);
@@ -133,6 +128,23 @@ const QDisks = () => {
         } catch (err) {
             setError("Failed to save cache spares");
         }
+    };
+
+    const handleRemoveCacheSpares = async () => {
+        if (selectedCacheSpares.length === 0) return;
+        try {
+            await deleteCacheSpares({ cache_disks: selectedCacheSpares, user: 'mezo' });
+            setSelectedCacheSpares([]);
+            loadData();
+        } catch (err) {
+            setError("Failed to remove cache spares");
+        }
+    };
+
+    const handleCacheSpareClick = (diskId) => {
+        setSelectedCacheSpares(prev =>
+            prev.includes(diskId) ? prev.filter(id => id !== diskId) : [...prev, diskId]
+        );
     };
 
     return (
@@ -331,8 +343,8 @@ const QDisks = () => {
                                     </div>
                                 </div>
 
-                                {/* Existing Pools */}
-                                {Object.entries(dgsData.pools).map(([poolName, pool]) => (
+                                {/* Existing Pools — "pree" is the internal cache-spare pool, hidden like legacy */}
+                                {Object.entries(dgsData.pools).filter(([name]) => !name.includes('pree')).map(([poolName, pool]) => (
                                     <PoolCard
                                         key={poolName}
                                         poolName={poolName}
@@ -346,6 +358,37 @@ const QDisks = () => {
                                     />
                                 ))}
                             </div>
+
+                            {/* Spare Cache Disks — mirrors legacy #cachepools section */}
+                            {dgsData.raids.cache_pree?.disks?.length > 0 && (
+                                <div className="bg-white rounded-[2.5rem] p-10 shadow-sm border border-gray-100">
+                                    <div className="flex items-center gap-3 mb-6">
+                                        <div className="w-10 h-10 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center">
+                                            <i className="fas fa-memory text-xs"></i>
+                                        </div>
+                                        <h3 className="text-xl font-black text-gray-800 tracking-tight">Spare Cache Disks</h3>
+                                    </div>
+                                    <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-4 mb-8">
+                                        {dgsData.raids.cache_pree.disks.map(diskId => (
+                                            <DiskIcon
+                                                key={diskId}
+                                                diskId={diskId}
+                                                data={dgsData.disks[diskId]}
+                                                isSelected={selectedCacheSpares.includes(diskId)}
+                                                onClick={handleCacheSpareClick}
+                                            />
+                                        ))}
+                                    </div>
+                                    <Button
+                                        onClick={handleRemoveCacheSpares}
+                                        disabled={selectedCacheSpares.length === 0}
+                                        bgColor="bg-rose-500"
+                                        className="px-8 py-2.5 font-black text-[10px] uppercase tracking-widest shadow-lg shadow-rose-100 transition-all hover:-translate-y-0.5"
+                                    >
+                                        Remove Selected Cache Spares
+                                    </Button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
