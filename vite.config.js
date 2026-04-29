@@ -9,9 +9,11 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
 
-    // Using dynamic host for HMR to work through proxies correctly
+    // HMR must go through Apache's HTTPS port (443), not directly to Vite's plain HTTP port (5173).
+    // Apache's WebSocket proxy rule (Upgrade: websocket → ws://MYCLUSTER:5173) handles the forwarding.
     hmr: {
-      port: 5173,
+      protocol: 'wss',
+      clientPort: 443,
     },
 
     watch: {
