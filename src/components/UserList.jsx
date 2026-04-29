@@ -75,18 +75,28 @@ const UserList = ({ users, groups, onUpdateGroups, onChangePassword, onDelete })
 };
 
 const UserRow = ({ user, allGroups, onUpdateGroups, onChangePassword, onDelete }) => {
-    const [selectedGroups, setSelectedGroups] = React.useState(
-        user.groups ? user.groups.split(',').filter(g => g !== 'NoGroup') : []
-    );
+    // user.groups from API is always an array: ['1','3'] or ['NoGroup']
+    const originalGroups = React.useMemo(() => {
+        const grps = Array.isArray(user.groups) ? user.groups : (user.groups ? user.groups.split(',') : []);
+        return grps.filter(g => g !== 'NoGroup');
+    }, [user.groups]);
+
+    const [selectedGroups, setSelectedGroups] = React.useState(originalGroups);
     const [hasChanges, setHasChanges] = React.useState(false);
 
     const handleGroupChange = (values) => {
         setSelectedGroups(values);
-        setHasChanges(values.join(',') !== user.groups);
+        const sorted = (arr) => [...arr].sort().join(',');
+        setHasChanges(sorted(values) !== sorted(originalGroups));
     };
 
     const handleUpdate = () => {
-        onUpdateGroups(user.name, selectedGroups.join(','));
+        // Map selected group IDs to text names — backend userchange accepts both but text is canonical
+        const groupNames = selectedGroups.map(id => {
+            const grp = allGroups.find(g => String(g.id) === String(id));
+            return grp ? grp.text : id;
+        });
+        onUpdateGroups(user.name, groupNames.join(','));
         setHasChanges(false);
     };
 
@@ -116,7 +126,7 @@ const UserRow = ({ user, allGroups, onUpdateGroups, onChangePassword, onDelete }
                     <div className="flex-1">
                         <Dropdown
                             isMulti
-                            options={allGroups.map(group => ({ value: group.id || group.text, label: group.text || group.name }))}
+                            options={allGroups.map(group => ({ value: String(group.id), label: group.text }))}
                             value={selectedGroups}
                             onChange={handleGroupChange}
                             placeholder="Select Groups..."

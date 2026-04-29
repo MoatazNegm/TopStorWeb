@@ -1,11 +1,11 @@
 import api from './client';
 
 export const fetchUserList = () => {
-    return api.get('api/v1/users/userlist');
+    return api.get('api/v1/users/userlist', { params: { tenant: 'Cluster' } });
 };
 
 export const fetchGroupList = () => {
-    return api.get('api/v1/users/grouplist');
+    return api.get('api/v1/users/grouplist', { params: { tenant: 'Cluster' } });
 };
 
 export const addUser = (userData) => {
@@ -14,12 +14,12 @@ export const addUser = (userData) => {
 };
 
 export const deleteUser = (name) => {
-    return api.post('api/v1/users/userdel', { name, Myname: 'mezo' });
+    return api.post('api/v1/users/userdel', { name, tenant: 'Cluster' });
 };
 
 export const updateUserGroups = (name, groups) => {
-    // groups is a comma-separated string
-    return api.post('api/v1/users/userchange', { name, groups });
+    // groups is a comma-separated string of group text names
+    return api.post('api/v1/users/userchange', { name, groups, tenant: 'Cluster' });
 };
 
 export const changePassword = (username, password) => {

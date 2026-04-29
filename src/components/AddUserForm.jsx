@@ -95,7 +95,7 @@ const AddUserForm = ({ pools, groups, onAdd }) => {
                                 label="Home Pool"
                                 options={[
                                     { value: 'NoHome', label: 'Select storage pool' },
-                                    ...pools.map(pool => ({ value: pool.id || pool.text, label: pool.text }))
+                                    ...pools.map(pool => ({ value: pool.text, label: pool.text }))
                                 ]}
                                 value={formData.UserVol}
                                 onChange={(val) => handleChange('UserVol', val)}
@@ -109,6 +109,7 @@ const AddUserForm = ({ pools, groups, onAdd }) => {
                                 value={formData.volsize}
                                 onChange={(e) => handleChange('volsize', e.target.value)}
                                 icon={<HardDrive size={16} />}
+                                disabled={formData.UserVol === 'NoHome'}
                             />
 
                             <Input
@@ -118,12 +119,13 @@ const AddUserForm = ({ pools, groups, onAdd }) => {
                                 value={formData.HomeAddress}
                                 onChange={(e) => handleChange('HomeAddress', e.target.value)}
                                 icon={<Hash size={16} />}
+                                disabled={formData.UserVol === 'NoHome'}
                             />
 
                             <Dropdown
                                 label="Allowed Groups"
                                 isMulti
-                                options={groups.map(group => ({ value: group.text, label: group.text }))}
+                                options={groups.map(group => ({ value: String(group.id), label: group.text }))}
                                 value={formData.Usergroups}
                                 onChange={(val) => handleChange('Usergroups', val)}
                             />
