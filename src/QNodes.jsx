@@ -97,7 +97,7 @@ const QNodes = () => {
             <div className="floating-canvas">
                 <div className="content-header">
                     <div className="container-fluid">
-                        <h2 className="text-2xl font-bold mb-4">حالة العقد</h2>
+                        <h2 className="text-2xl font-bold mb-4">Node Status</h2>
                     </div>
                 </div>
                 <div className="content">

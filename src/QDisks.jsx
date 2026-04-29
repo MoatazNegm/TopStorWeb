@@ -16,56 +16,15 @@ const QDisks = () => {
     const [selectedDisks, setSelectedDisks] = useState([]);
     const [cacheDisks, setCacheDisks] = useState([]);
     const [creatingRedundancy, setCreatingRedundancy] = useState(null);
+    const [creatingSize, setCreatingSize] = useState(null);
+    const [includeCache, setIncludeCache] = useState(false);
 
-    // Mock Data for initial design review
-    const useMock = true; // Toggle this if API is not ready
-    const mockData = {
-        disks: {
-            "sda": { status: "ONLINE", size: "100.0", name: "sda", changeop: "ONLINE", raid: "pool1_raid1", silvering: "no" },
-            "sdb": { status: "ONLINE", size: "100.0", name: "sdb", changeop: "ONLINE", raid: "pool1_raid1", silvering: "no" },
-            "sdc": { status: "free", size: "250.0", name: "sdc", changeop: "NONE", raid: "free", silvering: "no" },
-            "sdd": { status: "free", size: "250.0", name: "sdd", changeop: "NONE", raid: "free", silvering: "no" },
-            "sde": { status: "free", size: "250.0", name: "sde", changeop: "NONE", raid: "free", silvering: "no" },
-            "sdf": { status: "free", size: "250.0", name: "sdf", changeop: "NONE", raid: "free", silvering: "no" },
-            "sdg": { status: "free", size: "250.0", name: "sdg", changeop: "NONE", raid: "free", silvering: "no" },
-            "sdh": { status: "free", size: "250.0", name: "sdh", changeop: "NONE", raid: "free", silvering: "no" },
-            "sdi": { status: "free", size: "250.0", name: "sdi", changeop: "NONE", raid: "free", silvering: "no" },
-            "sdj": { status: "free", size: "250.0", name: "sdj", changeop: "NONE", raid: "free", silvering: "no" },
-            "sdk": { status: "free", size: "250.0", name: "sdk", changeop: "NONE", raid: "free", silvering: "no" },
-            "sdl": { status: "free", size: "250.0", name: "sdl", changeop: "NONE", raid: "free", silvering: "no" },
-        },
-        pools: {
-            "Production": { available: "80.5", used: "15.0", dedup: "1.2x", raids: ["raid1"], volumes: ["SharedData", "Backups"] }
-        },
-        raids: {
-            "raid1": { disks: ["sda", "sdb"], missingdisks: [0] },
-            "free": { disks: ["sdc", "sdd", "sde", "sdf", "sdg", "sdh", "sdi", "sdj", "sdk", "sdl"], missingdisks: [0] }
-        },
-        newraid: {
-            mirror: { "235GB": { diskcount: 2 } },
-            raid5: { "470GB": { diskcount: 3 }, "705GB": { diskcount: 4 }, "940GB": { diskcount: 5 } },
-            raid6: { "470GB": { diskcount: 4 }, "705GB": { diskcount: 5 }, "940GB": { diskcount: 6 } },
-            single: {
-                "235GB": { diskcount: 1 },
-                "470GB": { diskcount: 2 },
-                "705GB": { diskcount: 3 },
-                "940GB": { diskcount: 4 },
-                "1.1TB": { diskcount: 5 }
-            },
-            stripe: {
-                "470GB": { diskcount: 2 },
-                "705GB": { diskcount: 3 },
-                "940GB": { diskcount: 4 },
-                "1.1TB": { diskcount: 5 }
-            }
-        }
-    };
-
+    const useMock = false; // Toggle this if API is not ready
+    
     const loadData = useCallback(async () => {
         try {
             if (useMock) {
-                setDgsData(mockData);
-                setLoading(false);
+                // Mock data removed for production parity
                 return;
             }
             const res = await fetchDgsInfo();
@@ -74,8 +33,6 @@ const QDisks = () => {
         } catch (err) {
             console.error("Failed to load Disk Groups", err);
             setError("Failed to synchronize with disk management service");
-            // Fallback to mock on error during dev
-            // setDgsData(mockData);
         } finally {
             setLoading(false);
         }
@@ -94,6 +51,8 @@ const QDisks = () => {
         } else {
             setSelectedDisks([...selectedDisks, diskId]);
         }
+        setCreatingRedundancy(null);
+        setCreatingSize(null);
     };
 
     const handleDiskRightClick = (diskId) => {
@@ -105,16 +64,17 @@ const QDisks = () => {
             }
             setCacheDisks([...cacheDisks, diskId]);
         }
+        setCreatingRedundancy(null);
+        setCreatingSize(null);
     };
 
     const handleCreatePool = async () => {
-        if (!creatingRedundancy) return;
+        if (!creatingRedundancy || !creatingSize) return;
         try {
-            const usable = Object.keys(dgsData.newraid[creatingRedundancy])[0];
             const dataDisks = selectedDisks.filter(id => !cacheDisks.includes(id));
             await createPool({
                 redundancy: creatingRedundancy,
-                useable: usable,
+                useable: creatingSize,
                 disks: dataDisks,
                 cache: cacheDisks,
                 cache_bool: cacheDisks.length > 0,
@@ -123,10 +83,16 @@ const QDisks = () => {
             setSelectedDisks([]);
             setCacheDisks([]);
             setCreatingRedundancy(null);
+            setCreatingSize(null);
             loadData();
         } catch (err) {
             setError("Failed to create pool");
         }
+    };
+
+    const handleRedundancySelect = (type, firstSize) => {
+        setCreatingRedundancy(type);
+        setCreatingSize(firstSize);
     };
 
     const handleAddDisks = async (pool, redundancy, usableSize) => {
@@ -243,15 +209,27 @@ const QDisks = () => {
                                                         <p className="text-sm font-black text-amber-500">{cacheDisks.length}</p>
                                                     </div>
                                                 </div>
-                                                <Button
-                                                    onClick={handleSaveCache}
-                                                    disabled={cacheDisks.length === 0 || selectedDisks.length !== cacheDisks.length}
-                                                    bgColor="bg-transparent hover:bg-amber-50"
-                                                    textColor="text-amber-500"
-                                                    className="text-[10px] font-black uppercase tracking-widest px-4 py-2"
-                                                >
-                                                    Save as Spare
-                                                </Button>
+                                                <div className="flex flex-col items-end gap-2">
+                                                    <div className="flex items-center gap-2">
+                                                        <input 
+                                                            type="checkbox" 
+                                                            id="includeCache" 
+                                                            checked={includeCache} 
+                                                            onChange={(e) => setIncludeCache(e.target.checked)}
+                                                            className="w-3 h-3 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500"
+                                                        />
+                                                        <label htmlFor="includeCache" className="text-[9px] font-black uppercase text-gray-500 tracking-tighter cursor-pointer">Include Cache</label>
+                                                    </div>
+                                                    <Button
+                                                        onClick={handleSaveCache}
+                                                        disabled={cacheDisks.length === 0 || selectedDisks.length !== cacheDisks.length}
+                                                        bgColor="bg-transparent hover:bg-amber-50"
+                                                        textColor="text-amber-500"
+                                                        className="text-[10px] font-black uppercase tracking-widest px-4 py-2"
+                                                    >
+                                                        Save as Spare
+                                                    </Button>
+                                                </div>
                                             </div>
                                         </div>
                                         <p className="mt-4 text-[10px] font-medium text-gray-400 text-center italic">
@@ -283,44 +261,57 @@ const QDisks = () => {
                                                                 if (filteredOptions.length === 0) return null;
 
                                                                 return (
-                                                                    <tr
-                                                                        key={type}
-                                                                        onClick={() => setCreatingRedundancy(prev => prev === type ? null : type)}
-                                                                        className={`transition-colors cursor-pointer group ${creatingRedundancy === type ? 'bg-indigo-50/50' : 'hover:bg-indigo-50/30'}`}
-                                                                    >
-                                                                        <td className="px-6 py-4">
-                                                                            <input
-                                                                                type="radio"
-                                                                                name="newraid"
-                                                                                checked={creatingRedundancy === type}
-                                                                                readOnly
-                                                                                className="w-4 h-4 text-indigo-600 focus:ring-0 border-gray-300 transition-all cursor-pointer pointer-events-none"
-                                                                            />
-                                                                        </td>
-                                                                        <td className="px-6 py-4">
-                                                                            <div className="flex flex-col">
-                                                                                <span className="text-sm font-bold text-gray-700">{type.toUpperCase()}</span>
-                                                                                <span className="text-[10px] text-gray-500 font-medium">
-                                                                                    {type === 'single' && 'No redundancy. Data is stored on a single disk.'}
-                                                                                    {type === 'mirror' && 'High availability. Data is duplicated across disks.'}
-                                                                                    {type === 'raid5' && 'Single parity. Performance and safety balance.'}
-                                                                                    {type === 'raid6' && 'Dual parity. Protection against two failures.'}
-                                                                                    {type === 'stripe' && 'Performance only. Multi-disk striping, zero parity.'}
-                                                                                </span>
-                                                                                {(type === 'stripe' || type === 'single') && (
-                                                                                    <span className="text-[9px] text-amber-600 font-black uppercase tracking-tighter mt-0.5">
-                                                                                        ⚠️ No Redundancy
-                                                                                    </span>
-                                                                                )}
-                                                                            </div>
-                                                                        </td>
-                                                                        <td className="px-6 py-4">
-                                                                            <span className={`text-[10px] font-black px-3 py-1 rounded-lg transition-colors ${creatingRedundancy === type ? 'bg-white text-indigo-600' : 'bg-indigo-50 text-indigo-600'}`}>
-                                                                                {filteredOptions[0][0]}
-                                                                            </span>
-                                                                        </td>
-                                                                    </tr>
-                                                                );
+                                                                     <tr
+                                                                         key={type}
+                                                                         onClick={() => handleRedundancySelect(type, filteredOptions[0][0])}
+                                                                         className={`transition-colors cursor-pointer group ${creatingRedundancy === type ? 'bg-indigo-50/50' : 'hover:bg-indigo-50/30'}`}
+                                                                     >
+                                                                         <td className="px-6 py-4">
+                                                                             <input
+                                                                                 type="radio"
+                                                                                 name="newraid"
+                                                                                 checked={creatingRedundancy === type}
+                                                                                 readOnly
+                                                                                 className="w-4 h-4 text-indigo-600 focus:ring-0 border-gray-300 transition-all cursor-pointer pointer-events-none"
+                                                                             />
+                                                                         </td>
+                                                                         <td className="px-6 py-4">
+                                                                             <div className="flex flex-col">
+                                                                                 <span className="text-sm font-bold text-gray-700">{type.toUpperCase()}</span>
+                                                                                 <span className="text-[10px] text-gray-500 font-medium">
+                                                                                     {type === 'single' && 'No redundancy. Data is stored on a single disk.'}
+                                                                                     {type === 'mirror' && 'High availability. Data is duplicated across disks.'}
+                                                                                     {type === 'raid5' && 'Single parity. Performance and safety balance.'}
+                                                                                     {type === 'raid6' && 'Dual parity. Protection against two failures.'}
+                                                                                     {type === 'stripe' && 'Performance only. Multi-disk striping, zero parity.'}
+                                                                                 </span>
+                                                                                 {(type === 'stripe' || type === 'single') && (
+                                                                                     <span className="text-[9px] text-amber-600 font-black uppercase tracking-tighter mt-0.5">
+                                                                                         ⚠️ No Redundancy
+                                                                                     </span>
+                                                                                 )}
+                                                                             </div>
+                                                                         </td>
+                                                                         <td className="px-6 py-4">
+                                                                             {filteredOptions.length > 1 && creatingRedundancy === type ? (
+                                                                                 <select
+                                                                                     value={creatingSize}
+                                                                                     onChange={(e) => setCreatingSize(e.target.value)}
+                                                                                     onClick={(e) => e.stopPropagation()}
+                                                                                     className="text-[10px] font-black px-3 py-1 rounded-lg bg-white border-none text-indigo-600 focus:ring-1 focus:ring-indigo-200 outline-none"
+                                                                                 >
+                                                                                     {filteredOptions.map(([size]) => (
+                                                                                         <option key={size} value={size}>{size}</option>
+                                                                                     ))}
+                                                                                 </select>
+                                                                             ) : (
+                                                                                 <span className={`text-[10px] font-black px-3 py-1 rounded-lg transition-colors ${creatingRedundancy === type ? 'bg-white text-indigo-600' : 'bg-indigo-50 text-indigo-600'}`}>
+                                                                                     {filteredOptions[0][0]}
+                                                                                 </span>
+                                                                             )}
+                                                                         </td>
+                                                                     </tr>
+                                                                 );
                                                             });
                                                         })()}
                                                     </tbody>

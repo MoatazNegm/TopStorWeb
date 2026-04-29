@@ -14,14 +14,17 @@ const PoolCard = ({
 }) => {
     const [deleteStep, setDeleteStep] = useState(0); // 0: Idle, 1: Delete?, 2: Really?, 3: Confirm
     const [selectedRedundancy, setSelectedRedundancy] = useState(null);
+    const [selectedSize, setSelectedSize] = useState(null);
     const [selectedDiskId, setSelectedDiskId] = useState(null);
 
-    const { available, used, dedup, raids, volumes = [] } = data;
+    const { available, used, dedup, raids = [], volumes = [] } = data;
     const totalSize = (parseFloat(available) + parseFloat(used)).toFixed(2);
 
     // Determine redundancy type and color
     let redundancyText = "Highly Available";
     let redundancyColor = "text-blue-500";
+
+    const isRaid = raids.some(r => r.includes('raidz') || r.includes('mirror'));
 
     if (raids.some(r => r.includes('strip'))) {
         redundancyText = "No Redundancy";
@@ -29,10 +32,15 @@ const PoolCard = ({
     }
 
     const handleAdd = () => {
-        if (!selectedRedundancy) return;
-        const usableSize = newRaidOptions[selectedRedundancy][Object.keys(newRaidOptions[selectedRedundancy])[0]];
-        onAddDisks(poolName, selectedRedundancy, usableSize);
+        if (!selectedRedundancy || !selectedSize) return;
+        onAddDisks(poolName, selectedRedundancy, selectedSize);
         setSelectedRedundancy(null);
+        setSelectedSize(null);
+    };
+
+    const handleRedundancySelect = (type, firstSize) => {
+        setSelectedRedundancy(type);
+        setSelectedSize(firstSize);
     };
 
     return (
@@ -105,16 +113,24 @@ const PoolCard = ({
                             <tr className="text-left border-b border-gray-100/50">
                                 <th className="pb-3 text-[10px] font-black text-gray-400 uppercase tracking-widest px-4">Select</th>
                                 <th className="pb-3 text-[10px] font-black text-gray-400 uppercase tracking-widest px-4">Configuration</th>
-                                <th className="pb-3 text-[10px] font-black text-gray-400 uppercase tracking-widest px-4">Usable Add-on</th>
+                                <th className="pb-3 text-[10px] font-black text-gray-400 uppercase tracking-widest px-4">New Total Size</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100/50">
                             {Object.entries(newRaidOptions).map(([type, options]) => {
                                 if (Object.keys(options).length === 0) return null;
+                                
+                                // Legacy Visibility Logic:
+                                // If it's a RAID pool, hide 'volset' (stripe).
+                                // If it's NOT a RAID pool (e.g. stripe), hide RAID options.
+                                if (isRaid && type === 'volset') return null;
+                                if (!isRaid && type !== 'volset') return null;
+
+                                const sizes = Object.keys(options);
                                 return (
                                     <tr
                                         key={type}
-                                        onClick={() => setSelectedRedundancy(prev => prev === type ? null : type)}
+                                        onClick={() => handleRedundancySelect(type, sizes[0])}
                                         className={`group/row transition-colors cursor-pointer ${selectedRedundancy === type ? 'bg-indigo-50/50' : 'hover:bg-white'}`}
                                     >
                                         <td className="py-4 px-4">
@@ -135,9 +151,24 @@ const PoolCard = ({
                                             </span>
                                         </td>
                                         <td className="py-4 px-4">
-                                            <span className={`text-[10px] font-black px-3 py-1 rounded-lg transition-colors ${selectedRedundancy === type ? 'bg-white text-indigo-600' : 'bg-gray-100 text-gray-400 group-hover/row:bg-indigo-50 group-hover/row:text-indigo-600'}`}>
-                                                {Object.keys(options)[0]} Added
-                                            </span>
+                                            {sizes.length > 1 && selectedRedundancy === type ? (
+                                                <select 
+                                                    value={selectedSize}
+                                                    onChange={(e) => setSelectedSize(e.target.value)}
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    className="text-[10px] font-black px-3 py-1 rounded-lg bg-white border-none text-indigo-600 focus:ring-1 focus:ring-indigo-200 outline-none"
+                                                >
+                                                    {sizes.map(s => (
+                                                        <option key={s} value={s}>
+                                                            {(parseFloat(s.replace(/[^0-9.]/g, '')) + parseFloat(available)).toFixed(2)}GB
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            ) : (
+                                                <span className={`text-[10px] font-black px-3 py-1 rounded-lg transition-colors ${selectedRedundancy === type ? 'bg-white text-indigo-600' : 'bg-gray-100 text-gray-400 group-hover/row:bg-indigo-50 group-hover/row:text-indigo-600'}`}>
+                                                    {(parseFloat(sizes[0].replace(/[^0-9.]/g, '')) + parseFloat(available)).toFixed(2)}GB
+                                                </span>
+                                            )}
                                         </td>
                                     </tr>
                                 );
@@ -149,7 +180,7 @@ const PoolCard = ({
                 <div className="flex justify-end mt-8">
                     <Button
                         onClick={handleAdd}
-                        disabled={!selectedRedundancy}
+                        disabled={!selectedRedundancy || !selectedSize}
                         bgColor="bg-indigo-600"
                         className="px-8 py-2.5 font-black text-[10px] uppercase tracking-widest shadow-lg shadow-indigo-100 transition-all hover:-translate-y-0.5"
                     >
