@@ -10,31 +10,39 @@ const api = axios.create({
 // Matches old jQuery $.ajax behavior:
 // - GET: token as query param
 // - POST: token merged into form-encoded body
+// - Global Header: X-Requested-With for backend security checks
 api.interceptors.request.use((config) => {
     const token = getToken();
+
+    // Standardize headers to match jQuery $.ajax defaults
+    config.headers['X-Requested-With'] = 'XMLHttpRequest';
 
     // The legacy backend reads from request.args.to_dict() universally for all API data.
     // The old frontend 'postdata' function unknowingly defaulted to GET method in jQuery.
     // Therefore, all payload objects MUST be sent as URL parameters regardless of POST/GET.
-    // FormData represents file uploads which should uniquely remain in the body.
     if (config.data && typeof config.data === 'object' && !(config.data instanceof FormData)) {
         config.params = { ...config.params, ...config.data };
-        delete config.data; // Send empty body for non-files
+        delete config.data; 
     }
 
     if (token) {
         config.params = { ...config.params, token };
     }
 
-    // Append cache-buster to prevent identical GET requests from being swallowed by browser cache
-    // This perfectly matches legacy jQuery behavior which added &_=timestamp
+    // Append cache-buster (perfectly matches legacy behavior)
     config.params = { ...config.params, _: Date.now() };
 
     return config;
+}, (error) => {
+    return Promise.reject(error);
+});
 
-
-
-    return config;
+// Response Interceptor: Matches legacy Qmain.js:183-187
+api.interceptors.response.use((response) => {
+    if (response.data && response.data.response && response.data.response.includes('baduser')) {
+        window.location.replace('login.html');
+    }
+    return response;
 }, (error) => {
     return Promise.reject(error);
 });

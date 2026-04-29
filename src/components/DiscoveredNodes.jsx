@@ -50,39 +50,54 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    // Calculate if we need the two-step flow based on form edits
+    // Check if we need the two-step flow based on form edits (Matching Legacy updateButtonState L332-342)
     const nameVal = formData.alias || "";
     const ipVal = formData.ipaddr || "";
-    
-    // Check if the user typed anything or edited the original values (similar to updateButtonState in old code)
-    const hasDataToUpdate = (nameVal.trim().length > 3 && nameVal !== originalData.alias) ||
-                            (ipVal.trim().length > 3 && !ipVal.includes('_') && 
-                            (ipVal !== originalData.ipaddr || String(formData.ipaddrsubnet) !== String(originalData.ipaddrsubnet)));
+    // Legacy updateButtonState L335: uses single underscore for UI text logic
+    const hasDataForButton = nameVal.trim().length > 0 || (ipVal.trim().length > 0 && !ipVal.includes('_'));
 
     // Fix #8: Two-step "Update and Add to Cluster" flow
     const handleJoin = async () => {
         if (!selectedHostName || !selectedHostListItem) return;
         setIsJoining(true);
         try {
-            if (hasDataToUpdate) {
+            let tochange = 0;
+            const hostsubmit = {};
+
+            // Match Legacy updateDiscoveredNode L279-282
+            if (formData.alias.length > 3 && formData.alias !== originalData.alias) {
+                hostsubmit.alias = formData.alias;
+                tochange = 1;
+            }
+
+            // Match Legacy updateDiscoveredNode L284-298
+            // Note: Legacy uses double-underscore "__" for the submission guard
+            if (formData.ipaddr.length > 3 && !formData.ipaddr.includes('__')) {
+                if (formData.ipaddr !== originalData.ipaddr || String(formData.ipaddrsubnet) !== String(originalData.ipaddrsubnet)) {
+                    hostsubmit.ipaddr = formData.ipaddr;
+                    hostsubmit.ipaddrsubnet = formData.ipaddrsubnet;
+                    tochange = 1;
+                }
+            }
+
+            if (tochange > 0) {
                 // Step 1: Update the discovered node configuration
+                // Match Legacy payload exactly (L301-305)
                 const updatePayload = {
-                    id: String(selectedHostIndex), // Old backend relies on the array index for `id`
+                    ...hostsubmit,
+                    id: selectedHostIndex, // Keep as Number (index)
                     user: 'mezo',
                     name: selectedHostListItem.name,
-                    alias: formData.alias,
-                    ipaddr: formData.ipaddr,
-                    ipaddrsubnet: formData.ipaddrsubnet,
                     discovered: true
                 };
 
                 await updateDiscoveredNode(updatePayload);
 
-                // Step 2: Wait before joining cluster (matching old code's 10-second delay)
+                // Step 2: Wait before joining cluster (matching old code's 10-second delay L486)
                 await new Promise(resolve => setTimeout(resolve, 10000));
             }
 
-            // Step 3: Join the cluster
+            // Step 3: Join the cluster (Match Legacy joinNodeToCluster L320-330)
             await joinCluster(selectedHostListItem.name);
             if (onRefresh) onRefresh();
         } catch (e) {
@@ -92,8 +107,8 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
         }
     };
 
-    // Replace the button text if there are changes to update
-    const btnText = isJoining ? 'Joining...' : (hasDataToUpdate ? 'Update and Add to Cluster' : 'Add to Cluster');
+    // Replace the button text if there is data in the fields (Matching Legacy updateButtonState)
+    const btnText = isJoining ? 'Joining...' : (hasDataForButton ? 'Update and Add to Cluster' : 'Add to Cluster');
 
     return (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 relative">
