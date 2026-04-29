@@ -1,42 +1,4 @@
-import axios from 'axios';
-
-const getToken = () => localStorage.getItem('token');
-
-const api = axios.create({
-    baseURL: '/',
-});
-
-// Backend login_required reads request.args.to_dict() for ALL methods — never the JSON body.
-// Move all payload data to URL params so the backend can see it, same fix as nodes.js.
-api.interceptors.request.use((config) => {
-    const token = getToken();
-
-    config.headers['X-Requested-With'] = 'XMLHttpRequest';
-
-    if (config.data && typeof config.data === 'object' && !(config.data instanceof FormData)) {
-        config.params = { ...config.params, ...config.data };
-        delete config.data;
-    }
-
-    if (token) {
-        config.params = { ...config.params, token };
-    }
-
-    config.params = { ...config.params, _: Date.now() };
-
-    return config;
-}, (error) => {
-    return Promise.reject(error);
-});
-
-api.interceptors.response.use((response) => {
-    if (response.data && response.data.response && response.data.response.includes('baduser')) {
-        window.location.replace('login.html');
-    }
-    return response;
-}, (error) => {
-    return Promise.reject(error);
-});
+import api from './client';
 
 export const fetchPoolsInfo = () => {
     return api.get('api/v1/pools/poolsinfo');

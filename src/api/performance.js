@@ -1,25 +1,4 @@
-import axios from 'axios';
-
-const getToken = () => localStorage.getItem('token');
-
-const api = axios.create({
-    baseURL: '/',
-});
-
-api.interceptors.request.use((config) => {
-    const token = getToken();
-    // Only append the token to our custom Flask API, not Prometheus
-    if (token && !config.url.startsWith('prometheus/')) {
-        if (config.method === 'get') {
-            config.params = { ...config.params, token };
-        } else {
-            config.data = { ...config.data, token };
-        }
-    }
-    return config;
-}, (error) => {
-    return Promise.reject(error);
-});
+import api from './client';
 
 export const fetchSystemMetrics = () => {
     return api.get('api/v1/info/performance');

@@ -1,8 +1,4 @@
-import axios from 'axios';
-
-const api = axios.create({
-    baseURL: '/',
-});
+import api from './client';
 
 export const login = (user, pass) => {
     // Legacy API uses GET for login with user/pass as params

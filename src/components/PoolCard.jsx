@@ -225,41 +225,47 @@ const PoolCard = ({
                 </div>
             </div>
 
-            {/* Deletion Safety Flow */}
+            {/* Deletion Safety Flow — matches legacy: block deletion when pool has volumes */}
             <div className="mt-8 pt-8 border-t border-gray-50 flex justify-between items-center">
                 <div className="text-xs font-medium text-gray-400">
                     Volumes in pool: <span className="text-indigo-500 font-bold">{volumes.length > 0 ? volumes.join(', ') : 'None'}</span>
                 </div>
 
                 <div className="flex gap-3">
-                    {deleteStep === 0 && (
-                        <Button
-                            onClick={() => setDeleteStep(1)}
-                            bgColor="bg-transparent hover:bg-rose-50"
-                            textColor="text-gray-400 hover:text-rose-500"
-                            className="text-[10px] font-black uppercase tracking-widest transition-colors px-4 py-2"
-                        >
-                            Decommission Pool
-                        </Button>
-                    )}
-                    {deleteStep === 1 && (
+                    {volumes.length > 0 ? (
+                        <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Remove volumes first to decommission</span>
+                    ) : (
                         <>
-                            <span className="text-[10px] font-black text-rose-500 uppercase tracking-widest animate-pulse flex items-center">Really delete?</span>
-                            <button onClick={() => setDeleteStep(0)} className="px-4 py-2 bg-gray-100 text-gray-600 rounded-xl font-bold text-[10px] uppercase tracking-widest">Cancel</button>
-                            <button onClick={() => setDeleteStep(2)} className="px-4 py-2 bg-rose-500 text-white rounded-xl font-bold text-[10px] uppercase tracking-widest shadow-lg shadow-rose-100">Delete</button>
-                        </>
-                    )}
-                    {deleteStep === 2 && (
-                        <>
-                            <span className="text-[10px] font-black text-rose-600 uppercase tracking-widest animate-pulse flex items-center">Final confirmation needed!</span>
-                            <button onClick={() => setDeleteStep(0)} className="px-4 py-2 bg-gray-100 text-gray-600 rounded-xl font-bold text-[10px] uppercase tracking-widest">Cancel</button>
-                            <Button
-                                onClick={() => onDeletePool(poolName)}
-                                bgColor="bg-rose-600"
-                                className="px-6 py-2 rounded-xl font-bold text-[10px] uppercase tracking-widest shadow-xl shadow-rose-200"
-                            >
-                                Confirm Destruction
-                            </Button>
+                            {deleteStep === 0 && (
+                                <Button
+                                    onClick={() => setDeleteStep(1)}
+                                    bgColor="bg-transparent hover:bg-rose-50"
+                                    textColor="text-gray-400 hover:text-rose-500"
+                                    className="text-[10px] font-black uppercase tracking-widest transition-colors px-4 py-2"
+                                >
+                                    Decommission Pool
+                                </Button>
+                            )}
+                            {deleteStep === 1 && (
+                                <>
+                                    <span className="text-[10px] font-black text-rose-500 uppercase tracking-widest animate-pulse flex items-center">Really delete?</span>
+                                    <button onClick={() => setDeleteStep(0)} className="px-4 py-2 bg-gray-100 text-gray-600 rounded-xl font-bold text-[10px] uppercase tracking-widest">Cancel</button>
+                                    <button onClick={() => setDeleteStep(2)} className="px-4 py-2 bg-rose-500 text-white rounded-xl font-bold text-[10px] uppercase tracking-widest shadow-lg shadow-rose-100">Delete</button>
+                                </>
+                            )}
+                            {deleteStep === 2 && (
+                                <>
+                                    <span className="text-[10px] font-black text-rose-600 uppercase tracking-widest animate-pulse flex items-center">Final confirmation needed!</span>
+                                    <button onClick={() => setDeleteStep(0)} className="px-4 py-2 bg-gray-100 text-gray-600 rounded-xl font-bold text-[10px] uppercase tracking-widest">Cancel</button>
+                                    <Button
+                                        onClick={() => onDeletePool(poolName)}
+                                        bgColor="bg-rose-600"
+                                        className="px-6 py-2 rounded-xl font-bold text-[10px] uppercase tracking-widest shadow-xl shadow-rose-200"
+                                    >
+                                        Confirm Destruction
+                                    </Button>
+                                </>
+                            )}
                         </>
                     )}
                 </div>
