@@ -20,7 +20,7 @@ api.interceptors.request.use((config) => {
     // Therefore, we must move all payload data to URL parameters regardless of HTTP method.
     if (config.data && typeof config.data === 'object' && !(config.data instanceof FormData)) {
         config.params = { ...config.params, ...config.data };
-        delete config.data; 
+        delete config.data;
     }
 
     // Attach token to query params if available (Exclude Prometheus)
@@ -28,8 +28,8 @@ api.interceptors.request.use((config) => {
         config.params = { ...config.params, token };
     }
 
-    // Append cache-buster (perfectly matches legacy jQuery behavior)
-    config.params = { ...config.params, _: Date.now() };
+    // // Append cache-buster (perfectly matches legacy jQuery behavior)
+    // config.params = { ...config.params, _: Date.now() };
 
     return config;
 }, (error) => {
@@ -43,7 +43,7 @@ api.interceptors.response.use((response) => {
         // FIX: Redirect to the NEW React login page instead of old login.html
         // By setting token to '0' and reloading, App.jsx will catch the change and show QLogin
         localStorage.setItem('token', '0');
-        window.location.reload(); 
+        window.location.reload();
     }
     return response;
 }, (error) => {
