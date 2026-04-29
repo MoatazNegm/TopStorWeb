@@ -66,11 +66,11 @@ const GroupList = ({ groups, users, onUpdateMembers, onDelete }) => {
 };
 
 const GroupRow = ({ group, allUsers, onUpdateMembers, onDelete }) => {
-    // group.users is likely a comma separated string of IDs or special format
+    // API always returns group.users as an integer array: [1,3] or ["NoUser"]
     const initialMembers = React.useMemo(() => {
         if (!group.users) return [];
-        if (typeof group.users === 'number') return [group.users.toString()];
-        return group.users.split(',').filter(u => u !== '' && u !== 'NoUser');
+        const arr = Array.isArray(group.users) ? group.users : [group.users];
+        return arr.map(String).filter(u => u !== '' && u !== 'NoUser');
     }, [group.users]);
 
     const [selectedUsers, setSelectedUsers] = React.useState(initialMembers);
@@ -78,7 +78,8 @@ const GroupRow = ({ group, allUsers, onUpdateMembers, onDelete }) => {
 
     const handleUserChange = (values) => {
         setSelectedUsers(values);
-        setHasChanges(values.join(',') !== initialMembers.join(','));
+        const sorted = (arr) => [...arr].map(String).sort().join(',');
+        setHasChanges(sorted(values) !== sorted(initialMembers));
     };
 
     const handleUpdate = () => {
@@ -103,7 +104,7 @@ const GroupRow = ({ group, allUsers, onUpdateMembers, onDelete }) => {
                     <div className="flex-1">
                         <Dropdown
                             isMulti
-                            options={allUsers.map(user => ({ value: user.id, label: user.text }))}
+                            options={allUsers.map(user => ({ value: String(user.id), label: user.text }))}
                             value={selectedUsers}
                             onChange={handleUserChange}
                             disabled={isEveryoneGroup}

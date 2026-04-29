@@ -68,7 +68,7 @@ const AddGroupForm = ({ users, onAdd }) => {
                             <Dropdown
                                 label="Initial Members"
                                 isMulti
-                                options={users.map(user => ({ value: user.text, label: user.text }))}
+                                options={users.map(user => ({ value: String(user.id), label: user.text }))}
                                 value={formData.GroupUsers}
                                 onChange={(val) => handleChange('GroupUsers', val)}
                             />

@@ -28,8 +28,8 @@ api.interceptors.request.use((config) => {
         config.params = { ...config.params, token };
     }
 
-    // // Append cache-buster (perfectly matches legacy jQuery behavior)
-    // config.params = { ...config.params, _: Date.now() };
+    // Append cache-buster (perfectly matches legacy jQuery behavior)
+    config.params = { ...config.params, _: Date.now() };
 
     return config;
 }, (error) => {
