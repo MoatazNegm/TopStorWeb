@@ -50,11 +50,10 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    // Check if we need the two-step flow based on form edits (Matching Legacy updateButtonState L332-342)
-    const nameVal = formData.alias || "";
-    const ipVal = formData.ipaddr || "";
-    // Legacy updateButtonState L335: uses single underscore for UI text logic
-    const hasDataForButton = nameVal.trim().length > 0 || (ipVal.trim().length > 0 && !ipVal.includes('_'));
+    // True only when user has changed something vs the auto-populated original values
+    const hasDataForButton = formData.alias !== originalData.alias ||
+        formData.ipaddr !== originalData.ipaddr ||
+        String(formData.ipaddrsubnet) !== String(originalData.ipaddrsubnet);
 
     // Fix #8: Two-step "Update and Add to Cluster" flow
     const handleJoin = async () => {
@@ -85,7 +84,7 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                 // Match Legacy payload exactly (L301-305)
                 const updatePayload = {
                     ...hostsubmit,
-                    id: selectedHostIndex, // Keep as Number (index)
+                    id: selectedHostListItem.id,
                     user: 'mezo',
                     name: selectedHostListItem.name,
                     discovered: true
@@ -139,7 +138,11 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                     {/* Nodes Grid */}
                     <div className="p-6 bg-gray-50/50 border-b border-gray-100 animate-in fade-in slide-in-from-top-2 duration-300">
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="hostspossible">
-                            {hosts.map(host => {
+                            {hosts.length === 0 ? (
+                                <div className="col-span-full text-center text-sm text-gray-400 py-6">
+                                    No discovered nodes. Click <strong>discovery</strong> to scan.
+                                </div>
+                            ) : hosts.map(host => {
                                 const hostName = host.name || host.alias;
                                 return (
                                     <div key={hostName}>
