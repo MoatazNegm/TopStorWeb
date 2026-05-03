@@ -102,6 +102,13 @@ const QDisks = () => {
     const handleDeletePool = async (pool) => {
         try {
             await deletePool({ pool, user: 'mezo' });
+            // Optimistic: remove immediately — backend deletion is async via RabbitMQ,
+            // so loadData() right after would return stale data (1s cache still warm).
+            setDgsData(prev => {
+                const pools = { ...prev.pools };
+                delete pools[pool];
+                return { ...prev, pools };
+            });
             loadData();
         } catch (err) {
             setError("Failed to decommission pool");
@@ -313,12 +320,12 @@ const QDisks = () => {
                                                                                      className="text-[10px] font-black px-3 py-1 rounded-lg bg-white border-none text-indigo-600 focus:ring-1 focus:ring-indigo-200 outline-none"
                                                                                  >
                                                                                      {filteredOptions.map(([size]) => (
-                                                                                         <option key={size} value={size}>{size}</option>
+                                                                                         <option key={size} value={size}>{parseFloat(size).toFixed(2)} GB</option>
                                                                                      ))}
                                                                                  </select>
                                                                              ) : (
                                                                                  <span className={`text-[10px] font-black px-3 py-1 rounded-lg transition-colors ${creatingRedundancy === type ? 'bg-white text-indigo-600' : 'bg-indigo-50 text-indigo-600'}`}>
-                                                                                     {filteredOptions[0][0]}
+                                                                                     {parseFloat(filteredOptions[0][0]).toFixed(2)} GB
                                                                                  </span>
                                                                              )}
                                                                          </td>

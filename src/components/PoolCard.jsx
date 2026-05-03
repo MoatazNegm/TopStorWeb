@@ -228,7 +228,7 @@ const PoolCard = ({
             {/* Deletion Safety Flow — matches legacy: block deletion when pool has volumes */}
             <div className="mt-8 pt-8 border-t border-gray-50 flex justify-between items-center">
                 <div className="text-xs font-medium text-gray-400">
-                    Volumes in pool: <span className="text-indigo-500 font-bold">{volumes.length > 0 ? volumes.join(', ') : 'None'}</span>
+                    Volumes in pool: <span className="text-indigo-500 font-bold">{volumes.length > 0 ? volumes.map(v => v.split('_')[0]).join(', ') : 'None'}</span>
                 </div>
 
                 <div className="flex gap-3">
@@ -258,7 +258,7 @@ const PoolCard = ({
                                     <span className="text-[10px] font-black text-rose-600 uppercase tracking-widest animate-pulse flex items-center">Final confirmation needed!</span>
                                     <button onClick={() => setDeleteStep(0)} className="px-4 py-2 bg-gray-100 text-gray-600 rounded-xl font-bold text-[10px] uppercase tracking-widest">Cancel</button>
                                     <Button
-                                        onClick={() => onDeletePool(poolName)}
+                                        onClick={() => { setDeleteStep(0); onDeletePool(poolName); }}
                                         bgColor="bg-rose-600"
                                         className="px-6 py-2 rounded-xl font-bold text-[10px] uppercase tracking-widest shadow-xl shadow-rose-200"
                                     >
