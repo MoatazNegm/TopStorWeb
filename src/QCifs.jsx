@@ -76,28 +76,27 @@ const QCifs = () => {
         e.preventDefault();
         try {
             const poolObj = pools[formData.pool];
+            const isDomain = formData.serving === 'domain';
             const payload = {
-                type: 'CIFS',
                 pool: poolObj.text,
                 name: formData.name,
                 ipaddress: formData.ipaddress,
                 Subnet: formData.Subnet,
-                groups: formData.groups.join(','),
                 Myname: 'mezo',
                 size: `${formData.size}G`,
                 owner: poolObj.owner,
-                // New fields based on serving type
-                serving: formData.serving,
-                ...(formData.serving === 'domain' ? {
-                    domain: formData.domain,
+                ...(isDomain ? {
+                    type: 'CIFSdom',
+                    active: formData.domactive ? 'active' : 'false',
+                    domname: formData.domain,
                     domip: formData.domip,
                     domsrv: formData.domsrv,
                     domadmin: formData.domadmin,
                     dompass: formData.dompass,
-                    domactive: formData.domactive ? 'on' : 'off'
                 } : {
-                    workname: formData.workname,
-                    wrkactive: formData.wrkactive ? 'on' : 'off'
+                    type: 'CIFS',
+                    active: formData.wrkactive ? 'active' : 'false',
+                    groups: formData.groups.join(',') || 'NoGroup',
                 })
             };
 

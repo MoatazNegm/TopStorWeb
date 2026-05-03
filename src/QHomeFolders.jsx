@@ -59,13 +59,14 @@ const QHomeFolders = () => {
             const payload = {
                 type: 'HOME',
                 pool: poolObj.text,
-                name: userObj.text, // For HOME, name is the username
+                name: userObj.text,
                 ipaddress: formData.ipaddress,
                 Subnet: formData.Subnet,
-                groups: userObj.text, // For HOME, groups defaults to username
+                groups: userObj.text,
                 Myname: 'mezo',
                 size: `${formData.size}G`,
-                owner: poolObj.owner
+                owner: poolObj.owner,
+                active: 'Yes',
             };
 
             await createVolume(payload);

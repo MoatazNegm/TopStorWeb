@@ -75,7 +75,7 @@ const QNfs = () => {
                 rootid: formData.rootid,
                 groupname: formData.groupname,
                 groupid: formData.groupid,
-                active: formData.active ? 'on' : 'off'
+                active: formData.active ? 'active' : 'false'
             };
 
             await createVolume(payload);

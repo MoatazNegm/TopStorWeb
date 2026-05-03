@@ -22,7 +22,8 @@ const QIscsi = () => {
         Subnet: 24,
         size: 1,
         portalport: 3260,
-        initiators: ''
+        initiators: '',
+        active: true,
     });
 
     const loadData = useCallback(async () => {
@@ -54,6 +55,7 @@ const QIscsi = () => {
         e.preventDefault();
         try {
             const poolObj = pools[formData.poolIndex];
+            const initiatorStr = formData.initiators.trim().replaceAll('\n', ',').replaceAll(' ', ',').replaceAll(/,{2,}/g, ',');
             const payload = {
                 type: 'ISCSI',
                 pool: poolObj.text,
@@ -61,8 +63,9 @@ const QIscsi = () => {
                 ipaddress: formData.ipaddress,
                 portalport: formData.portalport,
                 Subnet: formData.Subnet,
-                initiators: formData.initiators.replaceAll('\n', ',').replaceAll(' ', ',').replaceAll(/,{2,}/g, ','),
-                size: `${formData.size}G`
+                initiators: initiatorStr || 'This_lun_is_not_mapped',
+                size: `${formData.size}G`,
+                active: formData.active ? 'active' : 'false',
             };
 
             await createVolume(payload);
@@ -73,7 +76,8 @@ const QIscsi = () => {
                 Subnet: 24,
                 size: 1,
                 portalport: 3260,
-                initiators: ''
+                initiators: '',
+                active: true,
             });
             loadData();
         } catch (err) {
@@ -191,14 +195,26 @@ const QIscsi = () => {
                                     </div>
 
                                     <div className="grid grid-cols-4 gap-6">
-                                        <Input
-                                            label="Size (GB)"
-                                            type="number"
-                                            min="1"
-                                            required
-                                            value={formData.size}
-                                            onChange={(e) => setFormData({ ...formData, size: e.target.value })}
-                                        />
+                                        <div className="flex flex-col gap-3">
+                                            <Input
+                                                label="Size (GB)"
+                                                type="number"
+                                                min="1"
+                                                required
+                                                value={formData.size}
+                                                onChange={(e) => setFormData({ ...formData, size: e.target.value })}
+                                            />
+                                            <div className="flex items-center gap-2 pt-1">
+                                                <input
+                                                    type="checkbox"
+                                                    id="iscsiActive"
+                                                    className="w-4 h-4 rounded border-gray-200 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                                                    checked={formData.active}
+                                                    onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
+                                                />
+                                                <label htmlFor="iscsiActive" className="text-xs font-semibold text-gray-600 cursor-pointer">Active</label>
+                                            </div>
+                                        </div>
                                         <div className="col-span-3 text-indigo-900">
                                             <Input
                                                 label="Initiators IQN"
