@@ -84,6 +84,16 @@ const UserRow = ({ user, allGroups, onUpdateGroups, onChangePassword, onDelete }
     const [selectedGroups, setSelectedGroups] = React.useState(originalGroups);
     const [hasChanges, setHasChanges] = React.useState(false);
 
+    // Stable key derived from server data — changes only when server groups actually change,
+    // not on every poll cycle that creates new array references with same content.
+    const groupsKey = React.useMemo(() => [...originalGroups].sort().join(','), [originalGroups]);
+
+    React.useEffect(() => {
+        setSelectedGroups(originalGroups);
+        setHasChanges(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [groupsKey]);
+
     const handleGroupChange = (values) => {
         setSelectedGroups(values);
         const sorted = (arr) => [...arr].sort().join(',');

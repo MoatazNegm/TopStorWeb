@@ -4,6 +4,9 @@ import Button from './Common/Button';
 import Input from './Common/Input';
 import Dropdown from './Common/Dropdown';
 
+const isValidIP = (ip) =>
+    /^(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)$/.test(ip);
+
 const AddUserForm = ({ pools, groups, onAdd }) => {
     const [isExpanded, setIsExpanded] = useState(true);
     const [formData, setFormData] = useState({
@@ -112,15 +115,22 @@ const AddUserForm = ({ pools, groups, onAdd }) => {
                                 disabled={formData.UserVol === 'NoHome'}
                             />
 
-                            <Input
-                                label="IP Address Restriction"
-                                id="HomeAddress"
-                                placeholder="e.g. 192.168.1.100"
-                                value={formData.HomeAddress}
-                                onChange={(e) => handleChange('HomeAddress', e.target.value)}
-                                icon={<Hash size={16} />}
-                                disabled={formData.UserVol === 'NoHome'}
-                            />
+                            <div>
+                                <Input
+                                    label="IP Address Restriction"
+                                    id="HomeAddress"
+                                    placeholder="e.g. 192.168.1.100"
+                                    value={formData.HomeAddress}
+                                    onChange={(e) => handleChange('HomeAddress', e.target.value)}
+                                    icon={<Hash size={16} />}
+                                    disabled={formData.UserVol === 'NoHome'}
+                                />
+                                {formData.HomeAddress && !isValidIP(formData.HomeAddress) && (
+                                    <p className="text-rose-500 text-xs mt-1 font-semibold flex items-center gap-1">
+                                        <i className="fas fa-exclamation-circle"></i> Invalid IP — backend will reject
+                                    </p>
+                                )}
+                            </div>
 
                             <Dropdown
                                 label="Allowed Groups"
