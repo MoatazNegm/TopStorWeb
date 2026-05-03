@@ -18,6 +18,7 @@ import QReceived from './QReceived';
 import QLogin from './QLogin';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
+import NotificationPoller from './components/NotificationPoller';
 
 function App() {
     const [view, setView] = React.useState('nodes');
@@ -94,6 +95,7 @@ function App() {
 
     return (
         <div className="wrapper wrapper-index">
+            <NotificationPoller />
             <Navbar sectionTitle={getSectionTitle(view)} />
             <Sidebar />
             {view === 'users' && <QUsers />}
