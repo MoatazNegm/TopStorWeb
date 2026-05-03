@@ -9,7 +9,7 @@ const IscsiList = ({ volumes, onUpdate, onDelete }) => {
         setEditValues({
             ipaddress: vol.ipaddress,
             portalport: vol.portalport,
-            initiators: vol.initiators.replaceAll(',', '\n')
+            initiators: (vol.initiators || '').replaceAll(',', '\n')
         });
     };
 
@@ -104,7 +104,7 @@ const IscsiList = ({ volumes, onUpdate, onDelete }) => {
                                         />
                                     ) : (
                                         <div className="flex flex-wrap gap-1">
-                                            {vol.initiators.split(',').map((iqn, idx) => (
+                                            {(vol.initiators || '').split(',').filter(Boolean).map((iqn, idx) => (
                                                 <span key={idx} className="px-2 py-0.5 bg-gray-100 text-gray-400 rounded text-[9px] font-bold border border-gray-50 truncate" title={iqn}>
                                                     {iqn}
                                                 </span>
