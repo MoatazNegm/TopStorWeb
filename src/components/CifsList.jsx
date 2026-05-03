@@ -6,10 +6,11 @@ const CifsList = ({ volumes, groups, onUpdate, onDelete }) => {
 
     const handleEdit = (vol) => {
         setEditingId(vol.name);
+        const grps = Array.isArray(vol.groups) ? vol.groups.join(',') : (vol.groups || '');
         setEditValues({
             ipaddress: vol.ipaddress,
             Subnet: vol.Subnet,
-            groups: vol.groups
+            groups: grps,
         });
     };
 
@@ -97,7 +98,7 @@ const CifsList = ({ volumes, groups, onUpdate, onDelete }) => {
                                     {editingId === vol.name ? (
                                         <select
                                             multiple
-                                            value={editValues.groups.split(',')}
+                                            value={(editValues.groups || '').split(',').filter(Boolean)}
                                             onChange={(e) => handleChange('groups', Array.from(e.target.selectedOptions, option => option.value).join(','))}
                                             className="w-40 px-2 py-1 text-sm border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none min-h-[40px]"
                                         >
@@ -107,7 +108,7 @@ const CifsList = ({ volumes, groups, onUpdate, onDelete }) => {
                                         </select>
                                     ) : (
                                         <div className="flex flex-wrap gap-1">
-                                            {vol.groups.split(',').map((g, idx) => (
+                                            {(Array.isArray(vol.groups) ? vol.groups : (vol.groups || '').split(',')).filter(Boolean).map((g, idx) => (
                                                 <span key={idx} className="px-2 py-0.5 bg-gray-100 text-gray-500 rounded text-[10px] font-bold">
                                                     {g}
                                                 </span>
