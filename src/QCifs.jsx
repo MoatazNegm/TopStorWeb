@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { fetchVolumesInfo, fetchGroupList, createVolume, updateVolume, deleteVolume, fetchVolumeStats, fetchAdConfig } from './api/volumes';
+import { fetchVolumesInfo, fetchGroupList, createVolume, updateVolume, deleteVolume, fetchVolumeStats } from './api/volumes';
 import { fetchPoolsInfo } from './api/pools';
 import Button from './components/Common/Button';
 import Input from './components/Common/Input';
@@ -31,33 +31,24 @@ const QCifs = () => {
         domadmin: '',
         dompass: '',
         domactive: true,
-        // Workgroup specific
+        // Workgroup specific — workname auto-derives from name on input
         workname: '',
         wrkactive: true
     });
 
     const loadData = useCallback(async () => {
         try {
-            const [volsRes, poolsRes, groupsRes, statsRes, adConfig] = await Promise.all([
+            const [volsRes, poolsRes, groupsRes, statsRes] = await Promise.all([
                 fetchVolumesInfo('CIFS'),
                 fetchPoolsInfo(),
                 fetchGroupList(),
-                fetchVolumeStats().catch(() => ({ data: {} })),
-                fetchAdConfig()
+                fetchVolumeStats().catch(() => ({ data: {} }))
             ]);
 
             setVolumes(volsRes.data.allvolumes || []);
             setPools(poolsRes.data.results || []);
             setGroups(groupsRes.data.results || []);
             setStats(statsRes.data);
-
-            // Auto-populate Workgroup name and potentially set serving type if not already interacted with
-            setFormData(prev => ({
-                ...prev,
-                workname: adConfig.domainName,
-                domain: prev.domain || (adConfig.domainType === 'Domain' ? adConfig.domainName : ''),
-                domip: prev.domip || adConfig.dcServer
-            }));
         } catch (err) {
             console.error("Failed to load CIFS data", err);
             setError("Failed to synchronize with volumes API");
@@ -204,7 +195,7 @@ const QCifs = () => {
                                                 required
                                                 placeholder="Share name..."
                                                 value={formData.name}
-                                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                                onChange={(e) => setFormData({ ...formData, name: e.target.value, workname: 'cifs-' + e.target.value })}
                                             />
                                         </div>
                                     </div>
