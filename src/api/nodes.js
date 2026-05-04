@@ -5,20 +5,19 @@ export const fetchAllHostsInfo = () => {
 };
 
 export const evacuateHost = (name) => {
-    return api.get('api/v1/hosts/evacuate', { params: { name } });
+    return api.post('api/v1/hosts/evacuate', { name });
 };
 
 export const configHost = (data) => {
-    // data should include: id, user, name, alias, ipaddr, ipaddrsubnet, nmports, cmports, dports, iports, tz, ntp, gw, dnsname, dnssearch, configured, discovered
-    return api.get('api/v1/hosts/config', { params: data });
+    return api.post('api/v1/hosts/config', data);
 };
 
 export const joinCluster = (name) => {
-    return api.get('api/v1/hosts/joincluster', { params: { name } });
+    return api.post('api/v1/hosts/joincluster', { name });
 };
 
 export const discoverHosts = () => {
-    return api.get('api/v1/hosts/discover', { params: { name: 'nothing' } });
+    return api.post('api/v1/hosts/discover', { name: 'nothing' });
 };
 
 // Fix #17: Download config — creates blob and triggers file download (matches old code)
@@ -56,6 +55,5 @@ export const getAllHostConfigs = async () => {
 };
 
 export const updateDiscoveredNode = (data) => {
-    // Old code calls 'api/v1/hosts/config' with discovered: true flag
-    return api.get('api/v1/hosts/config', { params: data });
+    return api.post('api/v1/hosts/config', data);
 };
