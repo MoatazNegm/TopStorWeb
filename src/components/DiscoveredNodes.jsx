@@ -50,10 +50,9 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    // True only when user has changed something vs the auto-populated original values
-    const hasDataForButton = formData.alias !== originalData.alias ||
-        formData.ipaddr !== originalData.ipaddr ||
-        String(formData.ipaddrsubnet) !== String(originalData.ipaddrsubnet);
+    // Match legacy updateButtonState: show "Update and Add to Cluster" whenever fields have content
+    const hasDataForButton = (formData.alias && formData.alias.trim().length > 0) ||
+        (formData.ipaddr && formData.ipaddr.trim().length > 0 && !formData.ipaddr.includes('__'));
 
     // Fix #8: Two-step "Update and Add to Cluster" flow
     const handleJoin = async () => {
@@ -106,7 +105,6 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
         }
     };
 
-    // Replace the button text if there is data in the fields (Matching Legacy updateButtonState)
     const btnText = isJoining ? 'Joining...' : (hasDataForButton ? 'Update and Add to Cluster' : 'Add to Cluster');
 
     return (
