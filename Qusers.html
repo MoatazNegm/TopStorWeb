@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,213 +37,240 @@
   * sidebar-collapse
   * sidebar-mini
 -->
+
 <body class="hold-transition sidebar-mini layout-fixed layout-footer-fixed-removed no_scroll_overlay">
   <div id="Loading" class="card card-primary">
     <div id="overlay-container" class="overlay box">
-      <img id="pumping" src="dist/img/Quickstor icon.png"/>
+      <img id="pumping" src="dist/img/Quickstor icon.png" />
     </div>
   </div>
-<div class="wrapper wrapper-index">
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light" style="background-color: #F1F2FE; border:0px;">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      <li class="nav-item" >
-        <a class="boldit nav-link" style="color: black;" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars "></i></a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="./QuickStor.html" class="boldit nav-link" style="color: black;"  >User account management</a>
-      </li>
-    </ul>
+  <div class="wrapper wrapper-index">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light"
+      style="background-color: #F1F2FE; border:0px;">
+      <!-- Left navbar links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="boldit nav-link" style="color: black;" data-widget="pushmenu" href="#" role="button"><i
+              class="fas fa-bars "></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="./QuickStor.html" class="boldit nav-link" style="color: black;">User account management</a>
+        </li>
+      </ul>
 
-    <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto headtitle"  >
-      <!-- Notifications Dropdown Menu -->
-       
-	    <li class="nav-item">
-        <a class="nav-link" href="#" style="color: black;">
-          <div id="syncStatus">
-            Getting <br><span>Status...</span>
+      <!-- Right navbar links -->
+      <ul class="navbar-nav ml-auto headtitle">
+        <!-- Notifications Dropdown Menu -->
+
+        <li class="nav-item">
+          <a class="nav-link" href="#" style="color: black;">
+            <div id="syncStatus">
+              Getting <br><span>Status...</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link" data-toggle="dropdown" href="#" style="color: black;">
+            <i class="far fa-bell"></i>
+            <span class="badge badge-warning navbar-badge" id="tot">00</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <span class="dropdown-item dropdown-header">Notifications through last 7 days</span>
+            <div class="dropdown-divider"></div>
+            <a href="./QLogs.html" class="dropdown-item bg-warning">
+              <i class="fas fa-exclamation-triangle mr-2 "></i><span class='' id="warns"></span> warnings
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="./QLogs.html" class="dropdown-item bg-danger">
+              <i class="fas fa-microchip mr-2"></i><span class='' id="errs"></span> system related errors
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="./QLogs.html" class="dropdown-item bg-info">
+              <i class="fas fa-users  mr-2 "></i><span class="" id="logonfails"></span> failed logons/session outs
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="./QLogs.html" class="dropdown-item dropdown-footer">See All Notifications</a>
           </div>
-        </a>
-      </li>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-widget="fullscreen" href="#" role="button" style="color: black;">
+            <i class="fas fa-expand-arrows-alt"></i>
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link" data-toggle="dropdown" href="#" style="color: rgb(3, 3, 49);">
+            <i class="fas fa-user mr-1 "></i><span id="username"></span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+            <a href="./login.html" class="dropdown-item">
+              <i class="fas fa-sign-out-alt mr-2 "></i><span class=''></span> logout
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#modal-sm" id="chgpasswd" data-toggle="modal" data-target="#modal-sm"
+              class="dropdown-item chgpasswd">
+              <i class="fas fa-key mr-2 "></i><span class=''></span> change password
+            </a>
+          </div>
+        </li>
 
-      <li class="nav-item dropdown" >
-        <a class="nav-link" data-toggle="dropdown" href="#" style="color: black;" >
-          <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge" id="tot">00</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">Notifications through last 7 days</span>
-          <div class="dropdown-divider"></div>
-          <a href="./QLogs.html" class="dropdown-item bg-warning" >
-            <i class="fas fa-exclamation-triangle mr-2 "></i><span class='' id="warns"></span> warnings
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="./QLogs.html" class="dropdown-item bg-danger">
-            <i class="fas fa-microchip mr-2"></i><span class='' id="errs"></span> system related errors
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="./QLogs.html" class="dropdown-item bg-info">
-            <i class="fas fa-users  mr-2 "></i><span class="" id="logonfails"></span> failed logons/session outs
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="./QLogs.html" class="dropdown-item dropdown-footer">See All Notifications</a>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="fullscreen" href="#" role="button" style="color: black;">
-          <i class="fas fa-expand-arrows-alt"></i>
-        </a>
-      </li>
-      <li class="nav-item dropdown" >
-        <a class="nav-link" data-toggle="dropdown" href="#" style="color: rgb(3, 3, 49);" >
-          <i class="fas fa-user mr-1 "></i><span id="username"></span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-          <a href="./login.html" class="dropdown-item" >
-            <i class="fas fa-sign-out-alt mr-2 "></i><span class='' ></span> logout
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#modal-sm" id="chgpasswd" data-toggle="modal" data-target="#modal-sm" class="dropdown-item chgpasswd" >
-            <i class="fas fa-key mr-2 "></i><span class='' ></span> change password
-          </a>
-        </div>
-      </li>
-      
-    </ul>
-  </nav>
-  <!-- /.navbar -->
+      </ul>
+    </nav>
+    <!-- /.navbar -->
 
-  <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background: rgb(19, 16, 16);">
-    <!-- Brand Logo -->
-    <a href="./QuickStor.html" class="brand-link navbar-brand " style="padding:0px; margin:0px;" style="padding:0px; margin:0px;">
-      <img src="img/logo.png" widht="250" height="90" widht="250" height="75" widht="250" height="75" alt="nothing" class="" style="opacity: .8">
- <p class="float-right" style="margin-bottom: -1rem; margin-top: -2rem; margin-right: 0.4rem;"><sub id='thever'></sub></p>
-    </a>
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background: rgb(19, 16, 16);">
+      <!-- Brand Logo -->
+      <a href="./QuickStor.html" class="brand-link navbar-brand " style="padding:0px; margin:0px;"
+        style="padding:0px; margin:0px;">
+        <img src="img/logo.png" widht="250" height="90" widht="250" height="75" widht="250" height="75" alt="nothing"
+          class="" style="opacity: .8">
+        <p class="float-right" style="margin-bottom: -1rem; margin-top: -2rem; margin-right: 0.4rem;"><sub
+            id='thever'></sub></p>
+      </a>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
+      <!-- Sidebar -->
+      <div class="sidebar">
 
-      <!-- SidebarSearch Form -->
-      <div class="form-inline" >
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" style="color:black; background-color: white;" type="search" placeholder="Search" aria-label="Search">
-          <div class="input-group-append">
-            <button style="background: #0D0D7F;" class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
+        <!-- SidebarSearch Form -->
+        <div class="form-inline">
+          <div class="input-group" data-widget="sidebar-search">
+            <input class="form-control form-control-sidebar" style="color:black; background-color: white;" type="search"
+              placeholder="Search" aria-label="Search">
+            <div class="input-group-append">
+              <button style="background: #0D0D7F;" class="btn btn-sidebar">
+                <i class="fas fa-search fa-fw"></i>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-   
-        <ul class="nav nav-pills nav-sidebar flex-column "  data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+
+          <ul class="nav nav-pills nav-sidebar flex-column " data-widget="treeview" role="menu" data-accordion="false">
+            <!-- Add icons to the links using the .nav-icon class
               with font-awesome or any other icon font library -->
 
-          <li class="nav-item  system  selpages auths Box_Users Active_Directory Error menu-open " style=' margin:0px; border-radius: 0px;'>
-            <a href="#" class="nav-link active" style="font-size:1rem; margin:0px; border-radius: 0px;" style="background-color: #4558FC;font-size:1rem; margin:0px; border-radius: 0px;" >
-              <i class="nav-icon fa fa-cogs "></i>
-              <p>
-                System configuration
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-           <ul class="nav nav-treeview">
-               <li class="nav-item auths Box_Users " style="box-shadow:none;font-size: small; margin:0px; border-radius: 0px;">
-              <a href="./Qusers.html" class="nav-link " style='margin:0px; border-radius: 0px;color: white; background-color: #8a8abe;'>
-                <i class="fas fa-user-plus nav-icon" ></i>
-                <p>Users</p>
+            <li class="nav-item  system  selpages auths Box_Users Active_Directory Error menu-open "
+              style=' margin:0px; border-radius: 0px;'>
+              <a href="#" class="nav-link active" style="font-size:1rem; margin:0px; border-radius: 0px;"
+                style="background-color: #4558FC;font-size:1rem; margin:0px; border-radius: 0px;">
+                <i class="nav-icon fa fa-cogs "></i>
+                <p>
+                  System configuration
+                  <i class="right fas fa-angle-left"></i>
+                </p>
               </a>
-              </li>
-              <li class="nav-item auths Box_Users " style="box-shadow:none;font-size: small; margin:0px; border-radius: 0px;">
-              <a href="./Qgroups.html" class="nav-link auths Box_Users" style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
-                <i class="fas fa-users nav-icon" ></i>
-                <p> Groups</p>
-              </a>
-              </li>
-              <li class="nav-item auths Error " style="box-shadow:none;font-size: small; margin:0px; border-radius: 0px;">
-              <a href="./Qnodes.html" class="nav-link auths " style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
-                <i class="fas fa-server nav-icon" ></i>
-                <p>Nodes</p>
-              </a>
-          
-             </li>
-             
-           </ul>
-         </li>
+              <ul class="nav nav-treeview">
+                <li class="nav-item auths Box_Users "
+                  style="box-shadow:none;font-size: small; margin:0px; border-radius: 0px;">
+                  <a href="./Qusers.html" class="nav-link "
+                    style='margin:0px; border-radius: 0px;color: white; background-color: #8a8abe;'>
+                    <i class="fas fa-user-plus nav-icon"></i>
+                    <p>Users</p>
+                  </a>
+                </li>
+                <li class="nav-item auths Box_Users "
+                  style="box-shadow:none;font-size: small; margin:0px; border-radius: 0px;">
+                  <a href="./Qgroups.html" class="nav-link auths Box_Users"
+                    style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                    <i class="fas fa-users nav-icon"></i>
+                    <p> Groups</p>
+                  </a>
+                </li>
+                <li class="nav-item auths Error "
+                  style="box-shadow:none;font-size: small; margin:0px; border-radius: 0px;">
+                  <a href="./Qnodes.html" class="nav-link auths "
+                    style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                    <i class="fas fa-server nav-icon"></i>
+                    <p>Nodes</p>
+                  </a>
 
-         <li class="nav-item  status auths Service_Charts Logs  " style=' margin:0px; border-radius: 0px;'>
-            <a href="#" class="nav-link " style="box-shadow:none;background-color: #0D0D7F; font-size:1rem; margin:0px; border-radius: 0px;"   >
-              <i class="nav-icon fas fa-crosshairs "></i>
-              <p>
-                System Status
-                <i class="right  fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item auths Logs  " style="font-size: small; margin:0px; border-radius: 0px;">
-                <a href="./QLogs.html" class="nav-link " class="nav-link auths " style='margin:0px; border-radius: 0px; background-color: #0E2996;'  >
-                  <i class="fas fa-clipboard-list nav-icon" ></i>
-                  <p>Logs</p>
-                </a>
+                </li>
+
+              </ul>
+            </li>
+
+            <li class="nav-item  status auths Service_Charts Logs  " style=' margin:0px; border-radius: 0px;'>
+              <a href="#" class="nav-link "
+                style="box-shadow:none;background-color: #0D0D7F; font-size:1rem; margin:0px; border-radius: 0px;">
+                <i class="nav-icon fas fa-crosshairs "></i>
+                <p>
+                  System Status
+                  <i class="right  fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item auths Logs  " style="font-size: small; margin:0px; border-radius: 0px;">
+                  <a href="./QLogs.html" class="nav-link " class="nav-link auths "
+                    style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                    <i class="fas fa-clipboard-list nav-icon"></i>
+                    <p>Logs</p>
+                  </a>
                 </li>
                 <li class="nav-item auths Service_Charts " style="font-size: small; margin:0px; border-radius: 0px;">
-                <a href="./Qserviceperformance.html" class="nav-link auths " style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
-                  <i class="far fa-chart-bar nav-icon" ></i>
-                  <p>Service Performance</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item Volumes auths SnapShots CIFS NFS HOME ISCSI " style=' margin:0px; border-radius: 0px;'> 
-             <a href="#" class="nav-link" style="box-shadow:none;font-size:1rem;background-color: #0D0D7F; margin:0px; border-radius: 0px;">
-               <i class="nav-icon fas fa-hdd "></i>
-               <p>
-                 Volumes
-                 <i class="right  fas fa-angle-left"></i>
-               </p>
-             </a>
-             <ul class="nav nav-treeview">
-               <li class="nav-item auths CIFS " style="font-size: small; margin:0px; border-radius: 0px;">
-                 <a href="./Qcifs.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
-                   <i class="fab fa-windows nav-icon" ></i>
-                   <p>CIFS</p>
-                 </a>
-                 </li>
-                 <li class="nav-item auths NFS " style="font-size: small; margin:0px; border-radius: 0px;">
-                 <a href="./Qnfs.html" class="nav-link "  style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
-                   <i class="fab fa-linux nav-icon" ></i>
-                   <p> NFS</p>
-                 </a>
-                 </li>
-                 <li class="nav-item  auths HOME " style="font-size: small; margin:0px; border-radius: 0px;">
-                  <a href="./Qhome.html" class="nav-link" style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
-                   <i class="fas fa-house-user nav-icon" ></i>
-                   <p> Home Folders</p>
-                 </a>
+                  <a href="./Qserviceperformance.html" class="nav-link auths "
+                    style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                    <i class="far fa-chart-bar nav-icon"></i>
+                    <p>Service Performance</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item Volumes auths SnapShots CIFS NFS HOME ISCSI " style=' margin:0px; border-radius: 0px;'>
+              <a href="#" class="nav-link"
+                style="box-shadow:none;font-size:1rem;background-color: #0D0D7F; margin:0px; border-radius: 0px;">
+                <i class="nav-icon fas fa-hdd "></i>
+                <p>
+                  Volumes
+                  <i class="right  fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item auths CIFS " style="font-size: small; margin:0px; border-radius: 0px;">
+                  <a href="./Qcifs.html" class="nav-link "
+                    style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                    <i class="fab fa-windows nav-icon"></i>
+                    <p>CIFS</p>
+                  </a>
+                </li>
+                <li class="nav-item auths NFS " style="font-size: small; margin:0px; border-radius: 0px;">
+                  <a href="./Qnfs.html" class="nav-link "
+                    style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                    <i class="fab fa-linux nav-icon"></i>
+                    <p> NFS</p>
+                  </a>
+                </li>
+                <li class="nav-item  auths HOME " style="font-size: small; margin:0px; border-radius: 0px;">
+                  <a href="./Qhome.html" class="nav-link"
+                    style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                    <i class="fas fa-house-user nav-icon"></i>
+                    <p> Home Folders</p>
+                  </a>
                 </li>
                 <li class="nav-item auths ISCSI " style="font-size: small; margin:0px; border-radius: 0px;">
-                <a href="./Qiscsi.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
-                  <i class="fas fa-database nav-icon" ></i>
-                  <p> ISCSI LUNs</p>
-                </a>
-              </li>
-              <li class="nav-item auths SnapShots " style="font-size: small; margin:0px; border-radius: 0px;">
-                <a href="./Qsnapshots.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
-                   <i class="fas fa-camera nav-icon" ></i>
-                   <p>Snapshots</p>
-                 </a>
-               </li>
+                  <a href="./Qiscsi.html" class="nav-link "
+                    style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                    <i class="fas fa-database nav-icon"></i>
+                    <p> ISCSI LUNs</p>
+                  </a>
+                </li>
+                <li class="nav-item auths SnapShots " style="font-size: small; margin:0px; border-radius: 0px;">
+                  <a href="./Qsnapshots.html" class="nav-link "
+                    style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                    <i class="fas fa-camera nav-icon"></i>
+                    <p>Snapshots</p>
+                  </a>
+                </li>
 
-             </ul>
-          </li>
-          <li class="nav-item  replication  auths Replication Partners Senders " style=' margin:0px; border-radius: 0px;'>
-              <a href="#" class="nav-link " style="box-shadow:none;font-size:1rem; margin:0px;background-color: #0D0D7F; border-radius: 0px;" >
+              </ul>
+            </li>
+            <li class="nav-item  replication  auths Replication Partners Senders "
+              style=' margin:0px; border-radius: 0px;'>
+              <a href="#" class="nav-link "
+                style="box-shadow:none;font-size:1rem; margin:0px;background-color: #0D0D7F; border-radius: 0px;">
                 <i class="nav-icon far fa-clone "></i>
                 <p>
                   Replication
@@ -250,46 +278,52 @@
                 </p>
               </a>
               <ul class="nav nav-treeview" style="font-size: small; margin:0px; border-radius: 0px;">
-                <li class="nav-item  auths Partners"  style="font-size: small; margin:0px; border-radius: 0px;">
-                  <a href="./Qpartner.html" class="nav-link"style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
-                    <i class="fas fa-hands-helping nav-icon" ></i>
+                <li class="nav-item  auths Partners" style="font-size: small; margin:0px; border-radius: 0px;">
+                  <a href="./Qpartner.html" class="nav-link"
+                    style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                    <i class="fas fa-hands-helping nav-icon"></i>
                     <p>Partner</p>
                   </a>
-                  </li>
-                  <li class="nav-item auths Senders"  style="font-size: small; margin:0px; border-radius: 0px;"> 
-                <a href="./Qsender.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;'  >
-                    <i class="fab fa-perbyte nav-icon" ></i>
+                </li>
+                <li class="nav-item auths Senders" style="font-size: small; margin:0px; border-radius: 0px;">
+                  <a href="./Qsender.html" class="nav-link "
+                    style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                    <i class="fab fa-perbyte nav-icon"></i>
                     <p>Sender Schedule</p>
                   </a>
-                  </li>
-                  <li class="nav-item  auths Replication"  style="font-size: small; margin:0px; border-radius: 0px;"> 
-               <a href="./Qreceived.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
-                    <i class="fas fa-paper-plane nav-icon" ></i>
+                </li>
+                <li class="nav-item  auths Replication" style="font-size: small; margin:0px; border-radius: 0px;">
+                  <a href="./Qreceived.html" class="nav-link "
+                    style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                    <i class="fas fa-paper-plane nav-icon"></i>
                     <p>Received Snapshots</p>
                   </a>
                 </li>
 
               </ul>
-          </li>
-          <li class="nav-item Pools auths DiskGroups " style=' margin:0px; border-radius: 0px;'>
-             <a href="#" class="nav-link  " style="box-shadow:none;font-size:1rem;background-color: #0D0D7F; margin:0px; border-radius: 0px;" >
-               <i class="nav-icon fas fa-stream "></i>
-               <p>
-                 Pools
-                 <i class="right  fas fa-angle-left"></i>
-               </p>
-             </a>
-             <ul class="nav nav-treeview">
-               <li class="nav-item auths DiskGroups" style="font-size: small; margin:0px; border-radius: 0px;">
-                 <a href="./Qdg.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
-                   <i class="fas fa-database   nav-icon" ></i>
-                   <p>Disk Groups</p>
-                 </a>
-               </li>
-             </ul>
-           </li>
-           <li class="nav-item Settings  auths Uploadch UserPrivilegesch " style=' margin:0px; border-radius: 0px;'>
-              <a href="#" class="nav-link  " style="box-shadow:none; font-size:1rem; margin:0px;background-color: #0D0D7F; border-radius: 0px;" >
+            </li>
+            <li class="nav-item Pools auths DiskGroups " style=' margin:0px; border-radius: 0px;'>
+              <a href="#" class="nav-link  "
+                style="box-shadow:none;font-size:1rem;background-color: #0D0D7F; margin:0px; border-radius: 0px;">
+                <i class="nav-icon fas fa-stream "></i>
+                <p>
+                  Pools
+                  <i class="right  fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item auths DiskGroups" style="font-size: small; margin:0px; border-radius: 0px;">
+                  <a href="./Qdg.html" class="nav-link "
+                    style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                    <i class="fas fa-database   nav-icon"></i>
+                    <p>Disk Groups</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item Settings  auths Uploadch UserPrivilegesch " style=' margin:0px; border-radius: 0px;'>
+              <a href="#" class="nav-link  "
+                style="box-shadow:none; font-size:1rem; margin:0px;background-color: #0D0D7F; border-radius: 0px;">
                 <i class="nav-icon fas fa-cog "></i>
                 <p>
                   Settings
@@ -298,180 +332,186 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item auths UserPrivilegesch" style="font-size: small; margin:0px; border-radius: 0px;">
-                  <a href="./Quserpriv.html" class="nav-link "style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
-                    <i class="fas fa-unlock-alt nav-icon" ></i>
+                  <a href="./Quserpriv.html" class="nav-link "
+                    style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                    <i class="fas fa-unlock-alt nav-icon"></i>
                     <p>User Privelideges</p>
                   </a>
-                  </li>
-                  <li class="nav-item auths Uploadch" style="font-size: small; margin:0px; border-radius: 0px;">
-                <a href="./Qupdates.html" class="nav-link " style='margin:0px; border-radius: 0px; background-color: #0E2996;' >
-                    <i class="fas fa-pen-fancy nav-icon" ></i>
+                </li>
+                <li class="nav-item auths Uploadch" style="font-size: small; margin:0px; border-radius: 0px;">
+                  <a href="./Qupdates.html" class="nav-link "
+                    style='margin:0px; border-radius: 0px; background-color: #0E2996;'>
+                    <i class="fas fa-pen-fancy nav-icon"></i>
                     <p>Updates</p>
                   </a>
                 </li>
 
               </ul>
             </li>
-      </ul>
-    </nav>
-      <!-- /.sidebar-menu -->
-    </div>
-    <!-- /.sidebar -->
-  </aside>
+          </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+      </div>
+      <!-- /.sidebar -->
+    </aside>
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <div class="content-header">
+        <div class="container-fluid">
 
-    <!-- Main content -->
-    <div class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="offset-1 col-md-10">
-            <div class="card">
-              <!-- form start -->
-              <form  id="upload-file" method="post" enctype="multipart/form-data">
-                <div class="card-body">
-                  <div class="form-group row">
-                    <label for="Tenant" class="col-2 col-form-label">Tenant</label>
-		    <select  class="select2 tenant form-control " id="Tenant">
-                      <option value="Cluster">Cluster</option>
-                    </select>
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+
+      <!-- Main content -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="offset-1 col-md-10">
+              <div class="card">
+                <!-- form start -->
+                <form id="upload-file" method="post" enctype="multipart/form-data">
+                  <div class="card-body">
+                    <div class="form-group row">
+                      <label for="Tenant" class="col-2 col-form-label">Tenant</label>
+                      <select class="select2 tenant form-control " id="Tenant">
+                        <option value="Cluster">Cluster</option>
+                      </select>
+                    </div>
+                    <div class="form-group row">
+                      <label for="User" class="col-2 col-form-label">User Name</label>
+                      <input type="text" class="form-control col-3" id="User" placeholder="User Name">
+                      <label for="userid" class="tenant offset-2 col-2 col-form-label" hidden>User ID</label>
+                      <input type="text" class="tenant form-control col-3" id="userid" placeholder="User ID" hidden>
+                      <label for="UserPass" class="nontenant offset-2 col-2 col-form-label">Password</label>
+                      <input type="password" class="nontenant form-control col-3" id="UserPass" placeholder="Password">
+                    </div>
+                    <div class="nontenant form-group row">
+                      <label for="UserVol" class="col-2 col-form-label">Home Pool</label>
+                      <select class="select2 pool form-control col-3" id="UserVol">
+                        <option value="NoHome">-----</option>
+                      </select>
+                      <label for="volsize" class="offset-2 col-2 col-form-label">Size(GB)</label>
+                      <input type="number" class="form-control col-2" id="volsize" min="1" value="1">
+                    </div>
+                    <div class="nontenant form-group row">
+                      <label for="HomeAddress" class=" col-2 col-form-label">Home Address</label>
+                      <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control col-2 ipaddress"
+                        name="HomeAddress" id="HomeAddress" data-inputmask="'alias': 'ip'">
+                      <label for="HomeSubnet" class="offset-3 col-2 col-form-label">Subnet</label>
+                      <input type="number" min="8" max="32" step="8" value=8 class="form-control col-2" id="HomeSubnet">
+
+                    </div>
+                    <div class="form-group row">
+                      <label for="Usergroups" class="col-2 col-form-label">Allowed Groups</label>
+                      <select class="select2 multiple form-control col-5" multiple="multiple" id="Usergroups"
+                        value="NoGroup">
+
+                      </select>
+                    </div>
                   </div>
-                  <div class="form-group row">
-                    <label for="User" class="col-2 col-form-label">User Name</label>
-                    <input type="text" class="form-control col-3" id="User" placeholder="User Name">
-                    <label for="userid" class="tenant offset-2 col-2 col-form-label" hidden>User ID</label>
-                    <input type="text" class="tenant form-control col-3" id="userid" placeholder="User ID" hidden>
-                    <label for="UserPass" class="nontenant offset-2 col-2 col-form-label" >Password</label>
-                    <input type="password" class="nontenant form-control col-3" id="UserPass" placeholder="Password">
+                  <div id="BadUserList" class="card-body" style="display:none;">
+                    <h3>Bad Users List</h3>
+                    <h5>These Users will not be added!</h5>
+                    <table id="BadUserListDataTable" class="table table-sm table-hover table-striped card-body">
+                      <thead style="background-color:#2939C6; color: white;">
+                        <tr>
+                          <th style="width:5%;">index</th>
+                          <th style="width:20%;">name</th>
+                          <th style="width:15%;">Password</th>
+                          <th style="width:15%;">Volpool</th>
+                          <th style="width:10%;">Volsize</th>
+                          <th style="width:20%;">HomeAddress</th>
+                          <th style="width:5%;">Subnet</th>
+                          <th style="width:15%;">groups</th>
+                        </tr>
+                      </thead>
+                      <tbody style="color:#2939C6; ">
+
+                      </tbody>
+                      <tfoot>
+
+
+                      </tfoot>
+                    </table>
                   </div>
-                  <div class="nontenant form-group row">
-                    <label  for="UserVol" class="col-2 col-form-label">Home Pool</label>
-                    <select  class="select2 pool form-control col-3" id="UserVol">
-                      <option value="NoHome">-----</option>
-                    </select>
-                    <label  for="volsize" class="offset-2 col-2 col-form-label">Size(GB)</label>
-                    <input type="number"  class="form-control col-2" id="volsize" min="1" value="1" >
+                  <div id="BadUserList" class="card-body" style="display:none;">
+                    <h3>Bad Users List</h3>
+                    <h5>These Users will not be added!</h5>
+                    <table class="table table-sm table-hover  table-striped">
+                      <thead style="background-color:#2939C6; color: white;">
+                        <tr>
+                          <th style="width:5%;">index</th>
+                          <th style="width:20%;">name</th>
+                          <th style="width:15%;">Password</th>
+                          <th style="width:15%;">Volpool</th>
+                          <th style="width:10%;">Volsize</th>
+                          <th style="width:20%;">HomeAddress</th>
+                          <th style="width:5%;">Subnet</th>
+                          <th style="width:15%;">groups</th>
+                        </tr>
+                      </thead>
+                      <tbody id='badUsersBody' style="color:#2939C6; ">
+
+                      </tbody>
+                    </table>
                   </div>
-                  <div class="nontenant form-group row">
-                    <label  for="HomeAddress" class=" col-2 col-form-label">Home Address</label>
-                    <input type="text" placeholder="xxx.xxx.xxx.xxx" class="form-control col-2 ipaddress" name="HomeAddress" id="HomeAddress"  data-inputmask="'alias': 'ip'">
-                    <label  for="HomeSubnet" class="offset-3 col-2 col-form-label">Subnet</label>
-                    <input type="number"   min="8" max="32" step="8" value=8 class="form-control col-2"  id="HomeSubnet">
-                         
+                  <!-- /.card-body -->
+                  <div class="card-footer d-flex" style="background-color: white">
+                    <button id="UnixAddUser" class="btn btn-add" style="opacity: 1;">Add User</button>
+                    <input id="uploaderInput"
+                      accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                      onclick="this.value=null;" type="file" name="file" class="btn btn-add mx-2" style="opacity: 1;">
+                    <button id="upload-file-btn" class="btn btn-add" type="button" style="display:none;">Upload</button>
+                    <a class="btn btn-add ml-auto" href="dist/Template.xlsx" download>Download Template </a>
                   </div>
-                  <div class="form-group row">
-                    <label  for="Usergroups" class="col-2 col-form-label">Allowed Groups</label>
-                    <select  class="select2 multiple form-control col-5" multiple="multiple"id="Usergroups" value="NoGroup">
-                      
-                    </select>
-                  </div>
-                </div>
-                <div id="BadUserList" class="card-body" style="display:none;">
-                  <h3>Bad Users List</h3>
-                  <h5>These Users will not be added!</h5>
-                  <table id="BadUserListDataTable" class="table table-sm table-hover table-striped card-body">
-                    <thead style="background-color:#2939C6; color: white;">
-                      <tr>
-                        <th style="width:5%;">index</th>
-                        <th style="width:20%;">name</th>
-                        <th style="width:15%;">Password</th>
-                        <th style="width:15%;">Volpool</th>
-                        <th style="width:10%;">Volsize</th>
-                        <th style="width:20%;">HomeAddress</th>
-                        <th style="width:5%;">Subnet</th>
-                        <th style="width:15%;">groups</th>
-                      </tr>
-                    </thead>
-                    <tbody style="color:#2939C6; ">
-                        
-                    </tbody>
-                    <tfoot>
-                    
-                    
-                    </tfoot>
-                  </table>
-                </div>
-                <div id="BadUserList" class="card-body" style="display:none;">
-                  <h3>Bad Users List</h3>
-                  <h5>These Users will not be added!</h5>
-                <table class="table table-sm table-hover  table-striped">
-                  <thead style="background-color:#2939C6; color: white;">
-                    <tr>
-                      <th style="width:5%;">index</th>
-                      <th style="width:20%;">name</th>
-                      <th style="width:15%;">Password</th>
-                      <th style="width:15%;">Volpool</th>
-                      <th style="width:10%;">Volsize</th>
-                      <th style="width:20%;">HomeAddress</th>
-                      <th style="width:5%;">Subnet</th>
-                      <th style="width:15%;">groups</th>
-                    </tr>
-                  </thead>
-                  <tbody id='badUsersBody' style="color:#2939C6; ">
-                    
-                  </tbody>
-                </table>
-              </div>
-                <!-- /.card-body -->
-                <div class="card-footer d-flex" style="background-color: white">
-                  <button id="UnixAddUser" class="btn btn-add" style="opacity: 1;">Add User</button>
-                  <input id="uploaderInput" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onclick="this.value=null;" type="file" name="file" class="btn btn-add mx-2" style="opacity: 1;">
-                  <button id="upload-file-btn" class="btn btn-add" type="button" style="display:none;">Upload</button>
-                  <a class="btn btn-add ml-auto" href="dist/Template.xlsx" download>Download Template </a>
-                </div>
-              </form>
-            </div> <!-- /.card -->
+                </form>
+              </div> <!-- /.card -->
+            </div>
           </div>
-        </div>
-        <div class="row tenant">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title cardshead">User List</h3>
-              </div>
-	      <div class="card-body ">
+          <div class="row tenant">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title cardshead">User List</h3>
+                </div>
+                <div class="card-body ">
                   <table id="TenantList" class="table table-sm table-hover  table-striped">
                     <thead style="background-color:#2939C6; color: white;">
-                    </tr >
+                      </tr>
                       <th id="TenantListth1" style="width:20%;">User name</th>
                       <th id="TenantListth4" style="width:60%;">Groups</th>
                       <th id="TenantListth5" style="width:10%;">Need update</th>
                       <th id="TenantListth7" style="width:10%;">Remove</th>
-                    </tr>
+                      </tr>
                     </thead>
                     <tbody id="Tenantbody" style="color:#2939C6; ">
-                        
+
                     </tbody>
                     <tfoot>
-                     
-                    
+
+
                     </tfoot>
                   </table>
                 </div>
-              <!-- /.card-body -->
-            </div>
+                <!-- /.card-body -->
+              </div>
 
             </div>
-        </div> <!-- /.row -->
-        <div class="row nontenant">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title cardshead">User List</h3>
-              </div>
-     <!-- /.card-header -->
+          </div> <!-- /.row -->
+          <div class="row nontenant">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title cardshead">User List</h3>
+                </div>
+                <!-- /.card-header -->
                 <div class="card-body nontenant ">
                   <table id="UserList" class="table table-sm table-hover  table-striped">
                     <thead style="background-color:#2939C6; color: white;">
-                    </tr >
+                      </tr>
                       <th id="UserListth1" style="width:15%;">User name</th>
                       <th id="UserListth2" style="width:15%;">Home pool</th>
                       <th id="UserListth3" style="width:6%;">Quota</th>
@@ -479,149 +519,151 @@
                       <th id="UserListth5" style="width:10%;">Need update</th>
                       <th id="UserListth6" style="width:5%;">Password</th>
                       <th id="UserListth7" style="width:4%;">Remove</th>
-                    </tr>
+                      </tr>
                     </thead>
                     <tbody id="UserListbody" style="color:#2939C6; ">
-                        
+
                     </tbody>
                     <tfoot>
-                     
-                    
+
+
                     </tfoot>
                   </table>
                 </div>
-              <!-- /.card-body -->
-            </div>
-	  </div>
-	</div>
-
-        
-      </div> <!-- /.container-fluid -->
-      
-    </div> <!-- /.content -->
-    
-  </div> <!-- /.content-wrapper -->
-
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-
-  <!-- Main Footer -->
-  <footer class="main-footer">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-body p-0">
-            <table class="table table-sm">
-              <thead>
-                <tr>
-                  <th> Task</th>
-                  <th> Node</th>
-                  <th>Progress</th>
-                  <th style="width: 40px">Label</th>
-                </tr>
-              </thead>
-              <tbody id="tasktable">
-               
-              </tbody>
-            </table>
-          </div>
-          <!-- /.card-body -->
-        </div>
-
-
-
-      </div>
-    </div>
-  </footer>
-  <div class="modal fade" id="modal-sm">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Change Password</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form>
-          <div class="input-group mb-3">
-            <input type="password" id='pass' class="form-control chpass" placeholder="Password">
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-lock"></span>
+                <!-- /.card-body -->
               </div>
             </div>
           </div>
-          <div class="input-group mb-3">
-            <input type="password" id='newpass' class="form-control chpass" placeholder="re-type password">
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-lock"></span>
-              </div>
+
+
+        </div> <!-- /.container-fluid -->
+
+      </div> <!-- /.content -->
+
+    </div> <!-- /.content-wrapper -->
+
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+
+    <!-- Main Footer -->
+    <footer class="main-footer">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body p-0">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th> Task</th>
+                    <th> Node</th>
+                    <th>Progress</th>
+                    <th style="width: 40px">Label</th>
+                  </tr>
+                </thead>
+                <tbody id="tasktable">
+
+                </tbody>
+              </table>
             </div>
+            <!-- /.card-body -->
           </div>
-          <p  id="passerr" style='font-size:small; margin-left: 1.4rem; color: white; margin-top: 0.5rem;'>retype the same passowrd in both fields</p>
-          </form>
-        </div>
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" id="passwrd" class="btn btn-primary" disabled>Save</button>
+
+
+
         </div>
       </div>
-      <!-- /.modal-content -->
+    </footer>
+    <div class="modal fade" id="modal-sm">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Change Password</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="input-group mb-3">
+                <input type="password" id='pass' class="form-control chpass" placeholder="Password">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="input-group mb-3">
+                <input type="password" id='newpass' class="form-control chpass" placeholder="re-type password">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                  </div>
+                </div>
+              </div>
+              <p id="passerr" style='font-size:small; margin-left: 1.4rem; color: white; margin-top: 0.5rem;'>retype the
+                same passowrd in both fields</p>
+            </form>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" id="passwrd" class="btn btn-primary" disabled>Save</button>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal-dialog -->
   </div>
-</div>
-<!-- ./wrapper -->
+  <!-- ./wrapper -->
 
-<!-- REQUIRED SCRIPTS -->
+  <!-- REQUIRED SCRIPTS -->
 
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE -->
-<script src="dist/js/adminlte.js"></script>
-<!-- DataTables  & Plugins -->
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<!-- Select2 -->
-<script src="plugins/select2/js/select2.full.min.js"></script>
+  <!-- jQuery -->
+  <script src="plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE -->
+  <script src="dist/js/adminlte.js"></script>
+  <!-- DataTables  & Plugins -->
+  <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+  <!-- Select2 -->
+  <script src="plugins/select2/js/select2.full.min.js"></script>
 
-<script src="plugins/jszip/jszip.min.js"></script>
-<script src="plugins/pdfmake/pdfmake.min.js"></script>
-<script src="plugins/pdfmake/vfs_fonts.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+  <script src="plugins/jszip/jszip.min.js"></script>
+  <script src="plugins/pdfmake/pdfmake.min.js"></script>
+  <script src="plugins/pdfmake/vfs_fonts.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+  <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 
-<!-- OPTIONAL SCRIPTS -->
-<script src="dist/js/Qjquery.inputmask.bundle.js"></script>
-<script src="dist/js/Qmain.js"></script>
-<script src="dist/js/Qusers.js" ></script>
-<script src="plugins/chart.js/Chart.min.js"></script>
-<script src="dist/js/demo.js"></script>
+  <!-- OPTIONAL SCRIPTS -->
+  <script src="dist/js/Qjquery.inputmask.bundle.js"></script>
+  <script src="dist/js/Qmain.js"></script>
+  <script src="dist/js/Qusers.js"></script>
+  <script src="plugins/chart.js/Chart.min.js"></script>
+  <script src="dist/js/demo.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
 </body>
 <script>
 
-    //Initialize Select2 Elements
-   
+  //Initialize Select2 Elements
 
-   
-    
+
+
+
 
 </script>
+
 </html>

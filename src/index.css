@@ -1,0 +1,230 @@
+@import "tailwindcss";
+
+:root {
+    --brand-blue: #495BE2;
+    --brand-blue-dark: #3746CC;
+    --sidebar-bg-start: rgba(248, 249, 252, 0.9);
+    --sidebar-bg-end: rgba(235, 240, 255, 0.85);
+    --sidebar-item-active-bg: #495BE2;
+    --sidebar-text: #4A4A68;
+    --sidebar-text-active: #FFFFFF;
+    --submenu-bg: rgba(175, 175, 213, 0.09);
+}
+
+.main-sidebar.sidebar-glass {
+    background: linear-gradient(180deg, var(--sidebar-bg-start) 0%, var(--sidebar-bg-end) 100%) !important;
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
+    border-right: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.04);
+}
+
+.sidebar {
+    padding: 2px 12px 0 12px !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box;
+}
+
+.sidebar .nav-sidebar .nav-link {
+    color: var(--sidebar-text) !important;
+    border-radius: 14px !important;
+    margin-bottom: 8px !important;
+    transition: all 0.2s ease-in-out;
+    padding: 12px 18px !important;
+    border: 1px solid transparent;
+    font-weight: 500;
+    width: 100% !important;
+}
+
+.sidebar .nav-sidebar .nav-link:not(.active):hover {
+    background-color: var(--submenu-bg) !important;
+    color: var(--brand-blue) !important;
+}
+
+/* Active Heading (Parent) - Now subtle, matching sub-menu bg */
+.sidebar .nav-sidebar>.nav-item.menu-open>.nav-link.active {
+    background-color: var(--submenu-bg) !important;
+    color: var(--brand-blue) !important;
+    box-shadow: none !important;
+    margin-bottom: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.sidebar .nav-sidebar>.nav-item.menu-open>.nav-link.active i {
+    color: var(--brand-blue) !important;
+}
+
+/* Sub-menu block */
+.sidebar .nav-treeview {
+    background-color: var(--submenu-bg) !important;
+    margin: 0 0 12px 0 !important;
+    padding: 8px 0 !important;
+    border-radius: 0 0 14px 14px !important;
+    border: 1px solid rgba(0, 0, 0, 0.03) !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.02);
+}
+
+/* Generic active style fallback (mostly for top-level if no children) */
+.sidebar .nav-sidebar .nav-item>.nav-link.active {
+    color: var(--brand-blue) !important;
+}
+
+/* ACTIVE Sub-menu Item - Now the only one using brand blue bg */
+.sidebar .nav-treeview .nav-link.active {
+    background-color: var(--brand-blue) !important;
+    color: #fff !important;
+    font-weight: 700;
+    box-shadow: 0 8px 16px rgba(73, 91, 226, 0.25);
+    border-radius: 10px !important;
+}
+
+.sidebar .nav-treeview .nav-link.active i,
+.sidebar .nav-treeview .nav-link.active p {
+    color: #fff !important;
+    opacity: 1;
+}
+
+/* Nested Sub-menu items (inactive) */
+.sidebar .nav-treeview .nav-link {
+    color: var(--sidebar-text) !important;
+    border-radius: 10px !important;
+    font-size: 0.85rem !important;
+    padding-left: 2.5rem !important;
+    margin: 2px 15px !important;
+    background-color: transparent !important;
+    width: auto !important;
+}
+
+.sidebar .nav-treeview .nav-link:not(.active):hover {
+    background-color: rgba(69, 88, 252, 0.05) !important;
+    color: var(--brand-blue) !important;
+}
+
+.sidebar .nav-treeview .nav-link i {
+    color: var(--sidebar-text) !important;
+    opacity: 0.7;
+}
+
+.brand-link {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+    margin-bottom: 0.5rem !important;
+    padding: 12px 25px !important;
+}
+
+.nav-sidebar .nav-header {
+    color: #8E8EA8 !important;
+    font-size: 0.7rem !important;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    padding: 0.8rem 1.4rem 0.4rem !important;
+    font-weight: 800;
+}
+
+.sidebar .form-inline {
+    width: 100% !important;
+}
+
+.sidebar .form-inline .input-group {
+    width: 100% !important;
+}
+
+.sidebar .form-inline .input-group input {
+    width: 100% !important;
+}
+
+/* Floating Canvas Layout */
+body,
+.wrapper,
+.content-wrapper {
+    background-color: #F8FAFC !important;
+}
+
+.floating-canvas {
+    background-color: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+    margin: 1.5rem;
+    /* Gap from sidebar and edges */
+    padding: 2rem;
+    /* Internal spacing */
+    min-height: calc(100vh - 3rem - 60px);
+    /* Adjust based on navbar/footer */
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+/* Ensure content header doesn't have weird padding inside the canvas */
+.floating-canvas .content-header {
+    padding: 0 0 1rem 0 !important;
+}
+
+/* Remove default background from content-wrapper if any */
+.content-wrapper {
+    background: transparent !important;
+}
+
+/* Sidebar Toggle Animation & Visibility */
+.sidebar-toggle-btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+    pointer-events: auto;
+    position: fixed !important;
+    /* Fixed to viewport */
+    top: 15px;
+    left: 285px;
+    /* Default open position (Sidebar is 280px) */
+    z-index: 1045;
+    /* Higher than navbar (1040) */
+}
+
+/* When sidebar is collapsed menu (mobile or desktop collapsed) */
+body.sidebar-collapse .sidebar-toggle-btn {
+    left: 15px !important;
+    /* Move to left edge */
+    right: auto !important;
+    transform: rotate(180deg);
+}
+
+/* Hide toggle on large screens (Sidebar is permanent) */
+@media (min-width: 992px) {
+    .sidebar-toggle-btn {
+        display: none !important;
+    }
+}
+
+/* Ensure sidebar keeps width for toggle positioning context */
+.main-sidebar {
+    overflow: visible !important;
+    /* Allow button to hang out */
+    width: 280px !important;
+}
+
+/* Fix desktop content margin to match custom 280px sidebar width */
+@media (min-width: 992px) {
+
+    .content-wrapper,
+    .main-header {
+        margin-left: 280px !important;
+    }
+}
+
+/* Mobile specific: Add margin to content header or title if needed to prevent overlap */
+@media (max-width: 991.98px) {
+
+    /* Push the first navbar item (Cluster Management) right when sidebar collapsed */
+    body.sidebar-collapse .main-header .navbar-nav:first-child {
+        margin-left: 50px !important;
+        transition: margin-left 0.3s;
+    }
+
+    /* When sidebar open, push even further or keep standard */
+    body:not(.sidebar-collapse) .main-header .navbar-nav:first-child {
+        margin-left: 0 !important;
+        /* Sidebar pushes content right naturally? No, overlay. */
+        /* If overlay on mobile, text is visible behind? */
+        /* Actually on mobile sidebar is usually overlay. */
+        /* So text is visible. */
+    }
+}
