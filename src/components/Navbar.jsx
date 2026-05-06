@@ -1,8 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Bell, Maximize2, User, LogOut, Key } from 'lucide-react';
+import { changePassword } from '../api/users';
 
 const Navbar = ({ sectionTitle }) => {
+    const [modalOpen, setModalOpen] = useState(false);
+    const [pass, setPass] = useState('');
+    const [newpass, setNewpass] = useState('');
+    const [passErr, setPassErr] = useState('retype the same password in both fields');
+    const [passErrColor, setPassErrColor] = useState('text-gray-400');
+    const [saveDisabled, setSaveDisabled] = useState(true);
+    const [saving, setSaving] = useState(false);
+
+    const validatePasswords = (p, np) => {
+        if (p === np && np.length >= 3) {
+            setPassErr('');
+            setPassErrColor('text-gray-400');
+            setSaveDisabled(false);
+        } else {
+            if (p === np) {
+                setPassErr('password length is too small');
+            } else {
+                setPassErr('retype the same password in both fields');
+            }
+            setPassErrColor('text-red-500');
+            setSaveDisabled(true);
+        }
+    };
+
+    const handleOpenModal = () => {
+        setPass('');
+        setNewpass('');
+        setPassErr('retype the same password in both fields');
+        setPassErrColor('text-gray-400');
+        setSaveDisabled(true);
+        setModalOpen(true);
+    };
+
+    const handleSave = async () => {
+        const username = localStorage.getItem('user');
+        setSaving(true);
+        try {
+            await changePassword(username, pass);
+            setModalOpen(false);
+        } catch (e) {
+            setPassErr('Failed to change password');
+            setPassErrColor('text-red-500');
+        } finally {
+            setSaving(false);
+        }
+    };
+
     return (
+        <>
         <nav className="main-header navbar navbar-expand navbar-white navbar-light" style={{ background: 'linear-gradient(90deg, var(--sidebar-bg-start) 0%, var(--sidebar-bg-end) 100%)', backdropFilter: 'blur(30px) saturate(200%)', border: '0px' }}>
             {/* Left navbar links */}
             <ul className="navbar-nav">
@@ -90,15 +139,72 @@ const Navbar = ({ sectionTitle }) => {
                             <span className="font-semibold text-sm whitespace-nowrap">Logout</span>
                         </button>
                         <div className="dropdown-divider my-1 border-gray-100"></div>
-                        <a href="#modal-sm" id="chgpasswd" data-toggle="modal" data-target="#modal-sm" className="dropdown-item chgpasswd !flex !flex-row !items-center !gap-3 px-4 py-3 rounded-xl hover:bg-yellow-50 text-gray-700 hover:text-yellow-700 transition-all group/item">
+                        <button
+                            id="chgpasswd"
+                            onClick={handleOpenModal}
+                            className="dropdown-item chgpasswd !flex !flex-row !items-center !gap-3 px-4 py-3 rounded-xl hover:bg-yellow-50 text-gray-700 hover:text-yellow-700 transition-all group/item w-full text-left"
+                        >
                             <Key size={18} strokeWidth={2} className="text-gray-400 group-hover/item:text-yellow-500 transition-colors shrink-0" />
                             <span className="font-semibold text-sm whitespace-nowrap">Change Password</span>
-                        </a>
+                        </button>
                     </div>
                 </li>
 
             </ul>
         </nav>
+
+        {modalOpen && (
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+                <div className="absolute inset-0 bg-black/40" onClick={() => setModalOpen(false)} />
+                <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-4 p-6">
+                    <div className="flex justify-between items-center mb-5">
+                        <h4 className="text-lg font-bold text-gray-800">Change Password</h4>
+                        <button onClick={() => setModalOpen(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
+                            <i className="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div className="space-y-4">
+                        <div className="relative">
+                            <input
+                                type="password"
+                                id="pass"
+                                placeholder="Password"
+                                value={pass}
+                                onChange={(e) => { setPass(e.target.value); validatePasswords(e.target.value, newpass); }}
+                                className="w-full px-4 py-2 pr-10 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-gray-700"
+                            />
+                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-lock text-xs"></i></span>
+                        </div>
+                        <div className="relative">
+                            <input
+                                type="password"
+                                id="newpass"
+                                placeholder="Re-type password"
+                                value={newpass}
+                                onChange={(e) => { setNewpass(e.target.value); validatePasswords(pass, e.target.value); }}
+                                className="w-full px-4 py-2 pr-10 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-gray-700"
+                            />
+                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-lock text-xs"></i></span>
+                        </div>
+                        {passErr && <p id="passerr" className={`text-xs font-medium ${passErrColor}`}>{passErr}</p>}
+                    </div>
+                    <div className="flex justify-between items-center mt-6">
+                        <button onClick={() => setModalOpen(false)} className="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-800 transition-colors">
+                            Cancel
+                        </button>
+                        <button
+                            id="passwrd"
+                            onClick={handleSave}
+                            disabled={saveDisabled || saving}
+                            className="px-5 py-2 text-sm font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                        >
+                            {saving ? 'Saving...' : 'Save'}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
+        </>
     );
 };
 

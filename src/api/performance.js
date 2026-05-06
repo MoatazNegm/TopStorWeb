@@ -1,12 +1,32 @@
-import api from './client';
+import axios from 'axios';
+
+const getToken = () => localStorage.getItem('token');
+
+const api = axios.create({
+    baseURL: '/',
+});
+
+api.interceptors.request.use((config) => {
+    const token = getToken();
+    // Only append the token to our custom Flask API, not Prometheus
+    if (token && !config.url.startsWith('prometheus/')) {
+        if (config.method === 'get') {
+            config.params = { ...config.params, token };
+        } else {
+            config.data = { ...config.data, token };
+        }
+    }
+    return config;
+}, (error) => {
+    return Promise.reject(error);
+});
 
 export const fetchSystemMetrics = () => {
     return api.get('api/v1/info/performance');
 };
 
 export const fetchPrometheusQuery = (query) => {
-    // Hits the Apache proxy which forwards directly to port 9090
-    return api.get('prometheus/query', { params: { query } });
+    return api.get('prometheus/api/v1/query', { params: { query } });
 };
 
 export const pingHeartbeat = () => {
