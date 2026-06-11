@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { configHost, getHostConfig, getAllHostConfigs } from '../api/nodes';
 import ServerNode from './Common/ServerNode';
 import Button from './Common/Button';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 const TIMEZONE_OPTIONS = [
     { city: '0', timeZoneId: '-1', value: '-100', label: '-----------' },
@@ -118,10 +118,21 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
     const iportsRef = useRef(null);
     const tzRef = useRef(null);
 
-    // Derived state for the "selected" host object — always current server data
-    const selectedHost = allHosts ? allHosts[selectedHostName] : null;
+    const selectedHostListItem = selectedHostName
+        ? hosts.find(h => (h.name === selectedHostName || h.alias === selectedHostName))
+        : null;
 
-    const selectedHostIndex = selectedHostName ? hosts.findIndex(h => h.name === selectedHostName) : -1;
+    // Resolve selected host safely whether allHosts is keyed by name, alias, or ids.
+    const selectedHostFromAll = selectedHostName && allHosts
+        ? (allHosts[selectedHostName] || Object.values(allHosts).find(h => h && (h.name === selectedHostName || h.alias === selectedHostName)))
+        : null;
+
+    // Derived state for the "selected" host object — always current server data
+    const selectedHost = selectedHostFromAll || selectedHostListItem || null;
+
+    const selectedHostIndex = selectedHostName
+        ? hosts.findIndex(h => (h.name === selectedHostName || h.alias === selectedHostName))
+        : -1;
 
     // Snapshot of original host data for change-detection on submit
     const [hostConfig, setHostConfig] = useState(null);
@@ -247,7 +258,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
 
     // Ensure form is blanked for new config entries when a host is selected
     useEffect(() => {
-        if (!selectedHostName || !allHosts) {
+        if (!selectedHostName) {
             setFormData({
                 alias: '', ipaddr: '', ipaddrsubnet: 24,
                 nmports: [], cmports: [], dports: [], iports: [],
@@ -260,7 +271,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
             return;
         }
 
-        const host = allHosts[selectedHostName];
+        const host = selectedHost;
         if (!host) return;
 
         let parsedPorts = [];
@@ -298,12 +309,12 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
             // Keep the initial checkbox synced to avoid accidental status flips on submit
             configured: host.configured === 'no'
         };
-        
+
         setFormData(newFormData);
         setAvailablePorts(parsedPorts);
         setHostConfig(JSON.parse(JSON.stringify(host)));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedHostName]);
+    }, [selectedHostName, selectedHost]);
 
     useEffect(() => {
         const $ = window.$;
@@ -323,9 +334,9 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
 
         return () => {
             if ($.fn.select2) {
-                try { 
+                try {
                     if ($(tzRef.current).hasClass("select2-hidden-accessible")) {
-                        $(tzRef.current).select2('destroy'); 
+                        $(tzRef.current).select2('destroy');
                     }
                 } catch (e) { /* ignore */ }
             }
@@ -341,9 +352,9 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         const portIds = ['nmports', 'cmports', 'dports', 'iports'];
         portIds.forEach(id => {
             const $el = $('#' + id);
-            try { 
+            try {
                 if ($el.hasClass("select2-hidden-accessible")) {
-                    $el.select2('destroy'); 
+                    $el.select2('destroy');
                 }
             } catch (e) { /* ignore */ }
             $el.empty();
@@ -361,10 +372,10 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
 
         return () => {
             portIds.forEach(id => {
-                try { 
+                try {
                     const $el = $('#' + id);
                     if ($el.hasClass("select2-hidden-accessible")) {
-                        $el.select2('destroy'); 
+                        $el.select2('destroy');
                     }
                 } catch (e) { /* ignore */ }
             });
@@ -404,21 +415,21 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
             return String(val);
         };
 
-        const actAlias        = readField('#BoxName',      formData.alias);
-        const actIpaddr       = readField('#IPAddress',    formData.ipaddr);
+        const actAlias = readField('#BoxName', formData.alias);
+        const actIpaddr = readField('#IPAddress', formData.ipaddr);
         const actIpaddrsubnet = readField('#ipaddrsubnet', formData.ipaddrsubnet);
-        const actCluster      = readField('#Mgmt',         formData.cluster);
-        const actMgmtSub      = readField('#MgmtSub',      formData.mgmtSub);
-        const actNtp          = readField('#NTP',          formData.ntp);
-        const actNtpName      = readField('#NTPname',      formData.ntpName);
-        const actGw           = readField('#GW',           formData.gw);
-        const actDnsname      = readField('#DNSname',      formData.dnsname);
-        const actDnssearch    = readField('#DNSsearch',    formData.dnssearch);
+        const actCluster = readField('#Mgmt', formData.cluster);
+        const actMgmtSub = readField('#MgmtSub', formData.mgmtSub);
+        const actNtp = readField('#NTP', formData.ntp);
+        const actNtpName = readField('#NTPname', formData.ntpName);
+        const actGw = readField('#GW', formData.gw);
+        const actDnsname = readField('#DNSname', formData.dnsname);
+        const actDnssearch = readField('#DNSsearch', formData.dnssearch);
 
         const currentNmports = $ ? ($('#nmports').val() || []) : formData.nmports;
         const currentCmports = $ ? ($('#cmports').val() || []) : formData.cmports;
-        const currentDports  = $ ? ($('#dports').val()  || []) : formData.dports;
-        const currentIports  = $ ? ($('#iports').val()  || []) : formData.iports;
+        const currentDports = $ ? ($('#dports').val() || []) : formData.dports;
+        const currentIports = $ ? ($('#iports').val() || []) : formData.iports;
 
         let tochange = 0;
         const hostsubmit = {};
@@ -447,8 +458,8 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         const portChecks = [
             { key: 'nmports', current: currentNmports },
             { key: 'cmports', current: currentCmports },
-            { key: 'dports',  current: currentDports  },
-            { key: 'iports',  current: currentIports  },
+            { key: 'dports', current: currentDports },
+            { key: 'iports', current: currentIports },
         ];
         portChecks.forEach(({ key, current }) => {
             const currentVal = current || [];
@@ -567,7 +578,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                     <button className={`text-gray-400 hover:text-emerald-600 transition-all duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
                         <ChevronDown size={20} />
                     </button>
-                    <h3 className="text-lg font-semibold text-gray-800">Running Nodes</h3>
+                    <h3 className="text-lg font-semibold text-gray-800">Run Nodes</h3>
                 </div>
                 <button
                     type="button"
@@ -583,17 +594,20 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                     {/* Nodes Grid */}
                     <div className="p-6 bg-gray-50/50 border-b border-gray-100">
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="hostsready">
-                            {hosts.map(host => (
-                                <div key={host.name}>
-                                    <ServerNode
-                                        name={host.name}
-                                        ip={host.ip || host.ipaddr}
-                                        state="up"
-                                        onClick={() => onSelect(host.name)}
-                                        selected={selectedHostName === host.name}
-                                    />
-                                </div>
-                            ))}
+                            {hosts.map(host => {
+                                const hostName = host.name || host.alias;
+                                return (
+                                    <div key={hostName}>
+                                        <ServerNode
+                                            name={hostName}
+                                            ip={host.ip || host.ipaddr}
+                                            state="up"
+                                            onClick={() => onSelect(hostName)}
+                                            selected={selectedHostName === hostName}
+                                        />
+                                    </div>
+                                )
+                            })}
                         </div>
                     </div>
 
