@@ -578,7 +578,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                     <button className={`text-gray-400 hover:text-emerald-600 transition-all duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
                         <ChevronDown size={20} />
                     </button>
-                    <h3 className="text-lg font-semibold text-gray-800">Run Nodes</h3>
+                    <h3 className="text-lg font-semibold text-gray-800">Running Nodes</h3>
                 </div>
                 <button
                     type="button"
