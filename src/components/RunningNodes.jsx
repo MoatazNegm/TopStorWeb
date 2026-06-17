@@ -383,7 +383,22 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [availablePorts]);
 
-    const handleChange = (e) => {
+        // Sync Select2 disabled state with React's disabled prop whenever selection changes.
+    // Select2 copies the disabled state at initialization and does not notice later changes
+    // to the underlying <select> element, so we must push it explicitly.
+    useEffect(() => {
+        const $ = window.$;
+        if (!$ || !$.fn.select2) return;
+        const disabled = !selectedHost;
+        ['nmports', 'cmports', 'dports', 'iports', 'TZ'].forEach((id) => {
+            const $el = $('#' + id);
+            if ($el.hasClass('select2-hidden-accessible')) {
+                $el.prop('disabled', disabled).trigger('change.select2');
+            }
+        });
+    }, [selectedHost]);
+
+const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         if (type === 'checkbox') {
             setFormData(prev => ({ ...prev, [name]: checked }));
