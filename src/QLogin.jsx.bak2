@@ -81,7 +81,7 @@ const QLogin = ({ onLoginSuccess }) => {
             {loading && (
                 <div className="fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm">
                     <img
-                        src="dist/img/logo.png"
+                        src="dist/img/Quickstor icon.png"
                         alt="Loading"
                         className="w-16 h-16 mb-4 animate-pulse"
                     />
@@ -92,7 +92,7 @@ const QLogin = ({ onLoginSuccess }) => {
             <div className="w-full flex flex-col items-center px-4">
                 <div className="mb-8 text-center">
                     <div className="flex items-center justify-center gap-3 mb-2">
-                        <img src="dist/img/logo.png" alt="Logo" className="w-8 h-8" />
+                        <img src="dist/img/Quickstor icon.png" alt="Logo" className="w-8 h-8" />
                         <h1 className="text-2xl font-bold text-[#1E293B] tracking-tight">QuickStor</h1>
                     </div>
                 </div>
