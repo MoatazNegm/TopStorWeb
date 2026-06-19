@@ -82,20 +82,25 @@ export default function QLogin({ onLoginSuccess }) {
     >
       {/* Loading overlay */}
       {loading && (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm">
-          <div
-            className="w-12 h-12 border-4 rounded-full animate-spin mb-3"
+        <div
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center px-6"
+          style={{ backgroundColor: KineticSecurityTheme.colors.surface }}
+        >
+          <style>{`
+            @keyframes loginPump {
+              0%, 50%, 100% { transform: scale(1, 1); }
+              30%, 80% { transform: scale(0.92, 0.95); }
+            }
+          `}</style>
+          <img
+            src="/assets/images/Q.png"
+            alt="QuickStor"
+            className="max-w-full h-auto object-contain"
             style={{
-              borderColor: `${KineticSecurityTheme.colors.outline}33`,
-              borderTopColor: KineticSecurityTheme.colors.primary,
+              maxHeight: '12rem',
+              animation: 'loginPump 1.5s ease-in-out infinite',
             }}
           />
-          <span
-            className="text-xs font-medium tracking-wide"
-            style={{ color: KineticSecurityTheme.colors.onSurfaceVariant }}
-          >
-            Authenticating...
-          </span>
         </div>
       )}
 
