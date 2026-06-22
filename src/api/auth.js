@@ -12,3 +12,9 @@ export const logout = (token) => {
         params: { token }
     });
 };
+
+export const validateToken = (token) => {
+    return api.get('api/v1/login/test', {
+        params: { token }
+    });
+};

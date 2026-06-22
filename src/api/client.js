@@ -40,6 +40,10 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use((response) => {
     // Legacy backend returns 200 OK with { response: 'baduser' } for expired/invalid tokens
     if (response.data && response.data.response && String(response.data.response).includes('baduser')) {
+        // Don't auto-reload for token validation calls — let the caller handle it
+        if (response.config.url && response.config.url.includes('login/test')) {
+            return response;
+        }
         // FIX: Redirect to the NEW React login page instead of old login.html
         // By setting token to '0' and reloading, App.jsx will catch the change and show QLogin
         localStorage.setItem('token', '0');

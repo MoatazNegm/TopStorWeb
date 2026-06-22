@@ -19,10 +19,44 @@ import QLogin from './QLogin';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import NotificationPoller from './components/NotificationPoller';
+import { validateToken } from './api/auth';
 
 function App() {
     const [view, setView] = React.useState('nodes');
-    const [isAuthenticated, setIsAuthenticated] = React.useState(!!localStorage.getItem('token') && localStorage.getItem('token') !== '0');
+    const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+    const [authChecking, setAuthChecking] = React.useState(true);
+
+    // On mount, validate the stored token against the backend before trusting it.
+    // This prevents the broken state caused by stale tokens after a server restart
+    // (the backend's in-memory loggedusers dict is cleared on restart).
+    React.useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token || token === '0') {
+            setIsAuthenticated(false);
+            setAuthChecking(false);
+            return;
+        }
+
+        validateToken(token)
+            .then((res) => {
+                const response = res.data?.response;
+                if (response && response !== 'baduser' && !String(response).includes('baduser')) {
+                    setIsAuthenticated(true);
+                } else {
+                    // Token is stale/invalid — clear it and show login
+                    localStorage.setItem('token', '0');
+                    setIsAuthenticated(false);
+                }
+            })
+            .catch(() => {
+                // Network error or server unreachable — clear token to be safe
+                localStorage.setItem('token', '0');
+                setIsAuthenticated(false);
+            })
+            .finally(() => {
+                setAuthChecking(false);
+            });
+    }, []);
 
     React.useEffect(() => {
         const handleHashChange = () => {
@@ -88,6 +122,20 @@ function App() {
                 return 'System configuration';
         }
     };
+
+    // Show a loading state while the token is being validated
+    if (authChecking) {
+        return (
+            <div className="fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm">
+                <img
+                    src="dist/img/Quickstor icon.png"
+                    alt="Loading"
+                    className="w-16 h-16 mb-4 animate-pulse"
+                />
+                <span className="text-gray-500 font-medium text-sm tracking-wide">Verifying session...</span>
+            </div>
+        );
+    }
 
     if (!isAuthenticated) {
         return <QLogin onLoginSuccess={() => setIsAuthenticated(true)} />;
