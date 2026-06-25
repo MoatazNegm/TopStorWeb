@@ -9,13 +9,40 @@ body {
 	padding: 0;
 } */
 
-#Loading {
-	display: flex;
+#overlay-container {
+	display: none;
+	position: fixed;
+	z-index: 9999;
+	top: 0;
+	left: 0;
 	height: 100vh;
 	width: 100vw;
+	background-color: #faf8ff;
+}
+
+#Loading {
+	display: flex;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
 	align-items: center;
 	justify-content: center;
-	animation: 1.5s ease 0s infinite pulse;
+	margin-bottom: 0;
+}
+
+#pumping {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	object-fit: contain;
+	animation: globalPump 1.5s ease-in-out infinite;
+}
+
+@keyframes globalPump {
+	0%, 50%, 100% { transform: scale(1, 1); }
+	30%, 80% { transform: scale(0.92, 0.95); }
 }
 
 .wrapper-index {
@@ -26,84 +53,34 @@ body {
 	overflow: hidden;
 }
 
-#pumping {
-	height: 100%;
-	animation: 1.5s ease 0s infinite beat;
-}
-
 /*MEDIA QUERIES*/
 @media (min-width: 1200px) {
 	#pumping {
 		max-width: 50rem;
 		max-height: 15rem;
-		width: auto;
-		height: auto;
 	}
 }
 
-@media (min-width: 992px) {
+@media (min-width: 992px) and (max-width: 1199px) {
 	#pumping {
 		max-width: 45rem;
 		max-height: 12rem;
-		width: auto;
-		height: auto;
 	}
 }
 
-@media (min-width: 768px) {
+@media (min-width: 768px) and (max-width: 991px) {
 	#pumping {
 		max-width: 40rem;
 		max-height: 9rem;
-		width: auto;
-		height: auto;
 	}
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 	#pumping {
 		max-width: 35rem;
 		max-height: 7rem;
-		width: auto;
-		height: auto;
+		padding: 0 1.5rem;
 	}
-}
-
-@keyframes beat {
-	0%,
-	50%,
-	100% {
-		transform: scale(1, 1);
-	}
-	30%,
-	80% {
-		transform: scale(0.92, 0.95);
-	}
-}
-
-/* @keyframes pulse {
-	0%,
-	50%,
-	100% {
-		background: #fff;
-	}
-	30%,
-	80% {
-		background: #fff;
-	}
-} */
-
-#Loading {
-	margin-bottom: 0;
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-}
-
-#overlay-container {
-	height: 100vh;
-	width: 100vw;
 }
 
 #Minutelytable th {

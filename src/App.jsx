@@ -60,6 +60,12 @@ function App() {
 
     React.useEffect(() => {
         const handleHashChange = () => {
+            // Show overlay when transitioning between pages
+            const overlay = document.getElementById('overlay-container');
+            if (overlay) {
+                overlay.style.display = 'flex';
+            }
+
             const hash = window.location.hash;
             if (hash === '#/users') setView('users');
             else if (hash === '#/groups') setView('groups');
@@ -77,6 +83,13 @@ function App() {
             else if (hash === '#/replication/sender') setView('sender');
             else if (hash === '#/replication/received') setView('received');
             else setView('nodes');
+
+            // Hide overlay after transition completes
+            setTimeout(() => {
+                if (overlay) {
+                    overlay.style.display = 'none';
+                }
+            }, 400);
         };
         window.addEventListener('hashchange', handleHashChange);
         handleHashChange(); // initial check

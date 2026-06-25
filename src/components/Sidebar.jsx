@@ -120,7 +120,7 @@ const Sidebar = () => {
                     top: '15px',
                     right: '-45px', // Floating just outside the sidebar
                     zIndex: 9999,
-                    color: '#495BE2',
+                    color: '#0047FF',
                     fontSize: '1.4rem',
                     transition: 'all 0.3s ease',
                     background: 'transparent',
@@ -131,10 +131,10 @@ const Sidebar = () => {
                 <i className={`fas ${isSidebarOpen ? 'fa-times' : 'fa-bars'}`} style={{ transition: 'transform 0.3s' }}></i>
             </button>
 
-            {/* Brand Logo */}
+            {/* Brand Logo - Updated to use Quickstor_logo.png */}
             <div className="brand-link">
                 <a href="#" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <img src="img/logo.png" width="180" style={{ filter: 'brightness(0.2)' }} alt="QuickStor" />
+                    <img src="/img/Quickstor_logo.png" width="180" alt="QuickStor" />
                 </a>
             </div>
 
@@ -143,20 +143,20 @@ const Sidebar = () => {
                 {/* Search Bar Refined - Width handled by CSS */}
                 <div className="form-inline mt-0 mb-1">
                     <div className="input-group" style={{
-                        backgroundColor: 'rgba(0,0,0,0.03)',
+                        backgroundColor: 'rgba(0,71,255,0.03)',
                         borderRadius: '12px',
                         padding: '2px 8px',
-                        border: '1px solid rgba(0,0,0,0.05)',
+                        border: '1px solid rgba(0,71,255,0.1)',
                         boxSizing: 'border-box'
                     }}>
                         <div className="input-group-prepend">
                             <span className="input-group-text border-0 bg-transparent">
-                                <i className="fas fa-search text-muted" style={{ fontSize: '0.9rem' }}></i>
+                                <i className="fas fa-search" style={{ fontSize: '0.9rem', color: '#0047FF' }}></i>
                             </span>
                         </div>
                         <input
                             className="form-control border-0 bg-transparent"
-                            style={{ fontSize: '0.9rem', color: '#4A4A68', boxShadow: 'none' }}
+                            style={{ fontSize: '0.9rem', color: '#0047FF', boxShadow: 'none' }}
                             type="search"
                             placeholder="Search menu..."
                             aria-label="Search"
@@ -181,15 +181,16 @@ const Sidebar = () => {
                                         href="#"
                                         className={`nav-link ${isActive ? 'active' : ''}`}
                                         onClick={(e) => handleToggle(e, menu.label)}
-                                        style={{ display: 'flex', alignItems: 'center' }}
+                                        style={{ display: 'flex', alignItems: 'center', color: '#0047FF' }}
                                     >
-                                        <i className={`nav-icon ${menu.icon}`} style={{ fontSize: '1.1rem', width: '24px' }}></i>
-                                        <p style={{ marginLeft: '12px', flex: 1, fontWeight: '500' }}>
+                                        <i className={`nav-icon ${menu.icon}`} style={{ fontSize: '1.1rem', width: '24px', color: '#0047FF' }}></i>
+                                        <p style={{ marginLeft: '12px', flex: 1, fontWeight: '500', color: '#0047FF' }}>
                                             {menu.label}
                                             <i className={`right fas fa-angle-left`} style={{
                                                 transition: 'transform 0.3s',
                                                 transform: expanded ? 'rotate(-90deg)' : 'rotate(0deg)',
-                                                fontSize: '0.8rem'
+                                                fontSize: '0.8rem',
+                                                color: '#0047FF'
                                             }}></i>
                                         </p>
                                     </a>
@@ -205,14 +206,14 @@ const Sidebar = () => {
                                                 <a
                                                     href={subItem.href}
                                                     className={`nav-link ${isItemActive(subItem.href) ? 'active' : ''}`}
-                                                    style={{ display: 'flex', alignItems: 'center' }}
+                                                    style={{ display: 'flex', alignItems: 'center', color: '#0047FF' }}
                                                     onClick={(e) => {
                                                         e.stopPropagation(); // Stop AdminLTE from seeing this click too
                                                         if (subItem.href === '#') e.preventDefault();
                                                     }}
                                                 >
-                                                    <i className={`${subItem.icon} nav-icon`} style={{ fontSize: '0.8rem' }}></i>
-                                                    <p style={{ marginLeft: '10px' }}>{subItem.label}</p>
+                                                    <i className={`${subItem.icon} nav-icon`} style={{ fontSize: '0.8rem', color: '#0047FF' }}></i>
+                                                    <p style={{ marginLeft: '10px', color: '#0047FF' }}>{subItem.label}</p>
                                                 </a>
                                             </li>
                                         ))}
