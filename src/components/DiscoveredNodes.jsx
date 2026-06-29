@@ -83,7 +83,7 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                 // Match Legacy payload exactly (L301-305)
                 const updatePayload = {
                     ...hostsubmit,
-                    id: selectedHostListItem.id,
+                    id: selectedHostIndex,
                     user: 'mezo',
                     name: selectedHostListItem.name,
                     discovered: true
