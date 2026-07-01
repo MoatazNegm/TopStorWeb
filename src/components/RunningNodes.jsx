@@ -87,6 +87,24 @@ const TIMEZONE_OPTIONS = [
     { city: 'Fiji', timeZoneId: '81', value: '12', label: '(GMT+12:00) Fiji, Kamchatka, Marshall Is.' },
 ];
 
+const decodeTimezoneLabel = (tzStr) => {
+    if (!tzStr || tzStr === '-100') return '';
+    try {
+        return tzStr.split('%')[1].replace('!', ':').replace(/\^/g, ',').replace(/_/g, ' ');
+    } catch {
+        return '';
+    }
+};
+
+const resolveTimezoneValue = (tzStr) => {
+    if (!tzStr || tzStr === '-100') return '-100';
+
+    const tzLabel = decodeTimezoneLabel(tzStr);
+    const matchedOption = TIMEZONE_OPTIONS.find(opt => opt.timeZoneId !== '-1' && opt.label === tzLabel);
+
+    return matchedOption ? matchedOption.value : '-100';
+};
+
 const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }) => {
     const [formData, setFormData] = useState({
         alias: '',
@@ -286,27 +304,38 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
             parsedPorts = host.ports;
         }
 
-        // Initialize form with empty/default values for NEW configurations
-        // The right-hand gray boxes will still show the existing host config via `selectedHost`
+        const hostCluster = host.cluster || host.mgmt || '';
+        const hostClusterParts = typeof hostCluster === 'string' ? hostCluster.split('/') : [];
+        const hostClusterSubnet = hostClusterParts.length > 1 ? hostClusterParts[1] : (host.mgmtSub || 24);
+
+        const normalizePortList = (value) => {
+            if (Array.isArray(value)) return value;
+            if (typeof value === 'string' && value.trim() !== '') {
+                return value.split(',').map(p => p.trim()).filter(p => p !== '');
+            }
+            return [];
+        };
+
+        // Initialize the editable form from the selected host once.
+        // Keep live refreshes from wiping in-progress edits.
         const newFormData = {
-            alias: '',
-            ipaddr: '',
-            ipaddrsubnet: 24,
-            nmports: [],
-            cmports: [],
-            dports: [],
-            iports: [],
-            cluster: '',
-            mgmtSub: 24,
-            tz: '-100',
+            alias: host.alias || host.name || '',
+            ipaddr: host.ipaddr || host.ip || '',
+            ipaddrsubnet: host.ipaddrsubnet || 24,
+            nmports: normalizePortList(host.nmports),
+            cmports: normalizePortList(host.cmports),
+            dports: normalizePortList(host.dports || host.dataport),
+            iports: normalizePortList(host.iports),
+            cluster: hostCluster,
+            mgmtSub: hostClusterSubnet,
+            tz: resolveTimezoneValue(host.tz),
             tzCity: '',
             tzLabel: '',
-            ntp: '',
-            ntpName: '',
-            gw: '',
-            dnsname: '',
-            dnssearch: '',
-            // Keep the initial checkbox synced to avoid accidental status flips on submit
+            ntp: host.ntp || '',
+            ntpName: host.ntpName || '',
+            gw: host.gw || '',
+            dnsname: host.dnsname || '',
+            dnssearch: host.dnssearch || '',
             configured: host.configured === 'no'
         };
 
@@ -314,7 +343,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         setAvailablePorts(parsedPorts);
         setHostConfig(JSON.parse(JSON.stringify(host)));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedHostName, selectedHost]);
+    }, [selectedHostName]);
 
     useEffect(() => {
         const $ = window.$;
@@ -489,7 +518,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
             const selectedTzOption = TIMEZONE_OPTIONS.find(opt => opt.value === formData.tz && opt.timeZoneId !== '-1');
             if (selectedTzOption) {
                 try {
-                    const currentTzText = hostConfig.tz ? hostConfig.tz.split('%')[1].replace('!', ':').replace(/\^/g, ',').replace(/_/g, ' ') : '';
+                    const currentTzText = decodeTimezoneLabel(hostConfig.tz);
                     if (selectedTzOption.label !== currentTzText) tzflag = 1;
                 } catch { tzflag = 1; }
                 if (tzflag > 0) {
@@ -558,12 +587,8 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
     };
 
     const displayTZ = (tzStr) => {
-        if (!tzStr || tzStr === '-100') return 'not set yet';
-        try {
-            return tzStr.split('%')[1].replace('!', ':').replace(/\^/g, ',').replace(/_/g, ' ');
-        } catch {
-            return tzStr;
-        }
+        const decoded = decodeTimezoneLabel(tzStr);
+        return decoded || 'not set yet';
     };
 
     return (
