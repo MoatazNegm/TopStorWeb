@@ -97,12 +97,12 @@ const decodeTimezoneLabel = (tzStr) => {
 };
 
 const resolveTimezoneValue = (tzStr) => {
-    if (!tzStr || tzStr === '-100') return '-100';
+    if (!tzStr || tzStr === '-100') return '-1';
 
     const tzLabel = decodeTimezoneLabel(tzStr);
     const matchedOption = TIMEZONE_OPTIONS.find(opt => opt.timeZoneId !== '-1' && opt.label === tzLabel);
 
-    return matchedOption ? matchedOption.value : '-100';
+    return matchedOption ? matchedOption.timeZoneId : '-1';
 };
 
 const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }) => {
@@ -116,7 +116,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         iports: [],
         cluster: '',
         mgmtSub: 24,
-        tz: '-100',
+        tz: '-1',
         tzCity: '',
         tzLabel: '',
         ntp: '',
@@ -280,7 +280,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
             setFormData({
                 alias: '', ipaddr: '', ipaddrsubnet: 24,
                 nmports: [], cmports: [], dports: [], iports: [],
-                cluster: '', mgmtSub: 24, tz: '-100', tzCity: '', tzLabel: '',
+                cluster: '', mgmtSub: 24, tz: '-1', tzCity: '', tzLabel: '',
                 ntp: '', ntpName: '', gw: '', dnsname: '', dnssearch: '',
                 configured: false
             });
@@ -326,7 +326,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
             cmports: normalizePortList(host.cmports),
             dports: normalizePortList(host.dports || host.dataport),
             iports: normalizePortList(host.iports),
-            cluster: hostCluster,
+            cluster: hostClusterParts[0] || '',
             mgmtSub: hostClusterSubnet,
             tz: resolveTimezoneValue(host.tz),
             tzCity: '',
@@ -513,9 +513,9 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         }
 
         // timezone
-        if (formData.tz !== '-100') {
+        if (formData.tz !== '-1') {
             let tzflag = 0;
-            const selectedTzOption = TIMEZONE_OPTIONS.find(opt => opt.value === formData.tz && opt.timeZoneId !== '-1');
+            const selectedTzOption = TIMEZONE_OPTIONS.find(opt => opt.timeZoneId === formData.tz && opt.timeZoneId !== '-1');
             if (selectedTzOption) {
                 try {
                     const currentTzText = decodeTimezoneLabel(hostConfig.tz);
@@ -800,9 +800,9 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                         {TIMEZONE_OPTIONS.map(opt => (
                                             <option
                                                 key={opt.timeZoneId}
-                                                value={opt.value}
+                                                value={opt.timeZoneId}
                                                 data-city={opt.city}
-                                                data-timezoneid={opt.timeZoneId}
+                                                data-gmt={opt.value}
                                             >
                                                 {opt.label}
                                             </option>
