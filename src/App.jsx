@@ -6,6 +6,7 @@ import QLogs from './QLogs';
 import QServicePerformance from './QServicePerformance';
 import QCifs from './QCifs';
 import QNfs from './QNfs';
+import QS3Buckets from './QS3Buckets';
 import QHomeFolders from './QHomeFolders';
 import QIscsi from './QIscsi';
 import QSnapshots from './QSnapshots';
@@ -67,6 +68,7 @@ function App() {
             else if (hash === '#/performance') setView('performance');
             else if (hash === '#/volumes/cifs') setView('cifs');
             else if (hash === '#/volumes/nfs') setView('nfs');
+            else if (hash === '#/volumes/s3') setView('s3');
             else if (hash === '#/volumes/home') setView('home');
             else if (hash === '#/volumes/iscsi') setView('iscsi');
             else if (hash === '#/volumes/snapshots') setView('snapshots');
@@ -105,6 +107,7 @@ function App() {
                 return 'System Status';
             case 'cifs':
             case 'nfs':
+            case 's3':
             case 'home':
             case 'iscsi':
             case 'snapshots':
@@ -152,6 +155,7 @@ function App() {
             {view === 'performance' && <QServicePerformance />}
             {view === 'cifs' && <QCifs />}
             {view === 'nfs' && <QNfs />}
+            {view === 's3' && <QS3Buckets />}
             {view === 'home' && <QHomeFolders />}
             {view === 'iscsi' && <QIscsi />}
             {view === 'snapshots' && <QSnapshots />}

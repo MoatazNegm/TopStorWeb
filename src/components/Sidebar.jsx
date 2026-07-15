@@ -42,6 +42,7 @@ const Sidebar = () => {
             subItems: [
                 { label: 'CIFS', icon: 'fab fa-windows', href: '#/volumes/cifs' },
                 { label: 'NFS', icon: 'fab fa-linux', href: '#/volumes/nfs' },
+                { label: 'S3 Buckets', icon: 'fas fa-cloud', href: '#/volumes/s3' },
                 { label: 'Home Folders', icon: 'fas fa-house-user', href: '#/volumes/home' },
                 { label: 'ISCSI LUNs', icon: 'fas fa-database', href: '#/volumes/iscsi' },
                 { label: 'Snapshots', icon: 'fas fa-camera', href: '#/volumes/snapshots' },
