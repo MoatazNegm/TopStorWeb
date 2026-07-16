@@ -12,6 +12,7 @@ const QS3Buckets = () => {
     const [pools, setPools] = useState([]);
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState(null);
 
     const [formData, setFormData] = useState({
@@ -29,6 +30,7 @@ const QS3Buckets = () => {
 
     const loadData = useCallback(async () => {
         try {
+            setError(null);
             const [volsRes, poolsRes, statsRes] = await Promise.all([
                 fetchVolumesInfo('S3'),
                 fetchPoolsInfo(),
@@ -54,17 +56,35 @@ const QS3Buckets = () => {
 
     const handleCreate = async (e) => {
         e.preventDefault();
+
+        const poolObj = pools.find((pool, idx) => String(idx) === String(formData.poolIndex));
+        const bucketName = formData.name.trim();
+        const accessKey = formData.accesskey.trim();
+        const secretKey = formData.secretkey.trim();
+
+        if (!poolObj) {
+            setError('Select a storage pool before provisioning the bucket.');
+            return;
+        }
+
+        if (!bucketName || !formData.ipaddress.trim() || !accessKey || !secretKey) {
+            setError('Complete all required bucket fields before provisioning.');
+            return;
+        }
+
         try {
-            const poolObj = pools[formData.poolIndex];
+            setSubmitting(true);
+            setError(null);
+
             const payload = {
                 type: 'S3',
                 pool: poolObj.text,
-                name: formData.name,
-                ipaddress: formData.ipaddress,
+                name: bucketName,
+                ipaddress: formData.ipaddress.trim(),
                 Subnet: formData.Subnet,
                 size: `${formData.size}G`,
-                accesskey: formData.accesskey,
-                secretkey: formData.secretkey,
+                accesskey: accessKey,
+                secretkey: secretKey,
                 apiPort: formData.apiPort,
                 consolePort: formData.consolePort,
                 active: formData.active ? 'active' : 'false',
@@ -87,6 +107,8 @@ const QS3Buckets = () => {
             loadData();
         } catch (err) {
             setError('Failed to create S3 bucket volume');
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -245,9 +267,9 @@ const QS3Buckets = () => {
                                             type="submit"
                                             bgColor="bg-indigo-600"
                                             className="px-6 py-3 font-black text-xs uppercase tracking-widest shadow-lg shadow-indigo-100 transition-all hover:-translate-y-0.5"
-                                            onClick={handleCreate}
+                                            disabled={submitting}
                                         >
-                                            Provision Bucket
+                                            {submitting ? 'Provisioning...' : 'Provision Bucket'}
                                         </Button>
                                     </div>
                                 </form>
