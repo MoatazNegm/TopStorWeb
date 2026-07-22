@@ -27,6 +27,21 @@ const NotificationPoller = () => {
         setToasts(prev => prev.filter(t => t.id !== id));
     }, []);
 
+    const addToast = useCallback((toast) => {
+        const type = TOAST_CONFIG[toast?.type] ? toast.type : 'info';
+        const defaults = TOAST_CONFIG[type];
+
+        setToasts(prev => [...prev, {
+            id: ++nextId,
+            type,
+            title: toast?.title || 'System',
+            subtitle: toast?.subtitle,
+            body: toast?.body || '',
+            duration: toast?.duration || defaults.duration,
+            position: toast?.position || defaults.position,
+        }]);
+    }, []);
+
     const updateSyncStatus = (isInsync) => {
         const el = document.getElementById('syncStatus');
         if (!el) return;
@@ -78,22 +93,26 @@ const NotificationPoller = () => {
 
             lastNotif.current = { time: notif.time, msgcode: notif.msgcode };
 
-            const type = TOAST_CONFIG[notif.type] ? notif.type : 'info';
-            const { position, duration } = TOAST_CONFIG[type];
-
-            setToasts(prev => [...prev, {
-                id: ++nextId,
-                type,
+            addToast({
+                type: notif.type,
                 title: notif.host || 'System',
                 subtitle: notif.user,
                 body: notif.msgbody,
-                duration,
-                position,
-            }]);
+            });
         } catch {
             // Silent — don't flood UI on transient network errors
         }
-    }, []);
+    }, [addToast]);
+
+    useEffect(() => {
+        const handleLocalToast = (event) => {
+            if (!event?.detail) return;
+            addToast(event.detail);
+        };
+
+        window.addEventListener('app-toast', handleLocalToast);
+        return () => window.removeEventListener('app-toast', handleLocalToast);
+    }, [addToast]);
 
     useEffect(() => {
         poll();
@@ -128,3 +147,4 @@ const NotificationPoller = () => {
 };
 
 export default NotificationPoller;
+

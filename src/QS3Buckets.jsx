@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { fetchVolumesInfo, createVolume, updateVolume, deleteVolume, fetchVolumeStats } from './api/volumes';
+import { fetchVolumesInfo, fetchGroupList, createVolume, updateVolume, deleteVolume, fetchVolumeStats } from './api/volumes';
 import { fetchPoolsInfo } from './api/pools';
 import Button from './components/Common/Button';
 import Input from './components/Common/Input';
@@ -10,6 +10,7 @@ import VolumeInsights from './components/VolumeInsights';
 const QS3Buckets = () => {
     const [volumes, setVolumes] = useState([]);
     const [pools, setPools] = useState([]);
+    const [groups, setGroups] = useState([]);
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
@@ -18,35 +19,62 @@ const QS3Buckets = () => {
     const [formData, setFormData] = useState({
         poolIndex: '',
         name: '',
-        ipaddress: '',
         Subnet: 24,
         size: 1,
         accesskey: '',
         secretkey: '',
+        groups: [],
         apiPort: 9000,
         consolePort: 9001,
         active: true,
     });
 
+    const showToast = useCallback((detail) => {
+        window.dispatchEvent(new CustomEvent('app-toast', { detail }));
+    }, []);
+
     const loadData = useCallback(async () => {
         try {
             setError(null);
-            const [volsRes, poolsRes, statsRes] = await Promise.all([
+            const [volsRes, poolsRes, groupsRes, statsRes] = await Promise.all([
                 fetchVolumesInfo('S3'),
                 fetchPoolsInfo(),
+                fetchGroupList(),
                 fetchVolumeStats().catch(() => ({ data: {} }))
             ]);
 
-            setVolumes(volsRes.data.allvolumes || []);
+            const loadedVolumes = volsRes.data.allvolumes || [];
+            setVolumes(loadedVolumes);
             setPools(poolsRes.data.results || []);
+            setGroups(groupsRes.data.results || []);
             setStats(statsRes.data);
+
+            return loadedVolumes;
         } catch (err) {
             console.error('Failed to load S3 bucket data', err);
             setError('Failed to synchronize with buckets API');
+            return [];
         } finally {
             setLoading(false);
         }
     }, []);
+
+    const refreshUntilVisible = useCallback(async (bucketName) => {
+        const expected = String(bucketName || '').toLowerCase();
+
+        for (let attempt = 0; attempt < 4; attempt += 1) {
+            const latest = await loadData();
+            const exists = (latest || []).some((vol) => {
+                const candidate = String(vol?.text || vol?.name || vol?.fullname || '').toLowerCase();
+                return candidate.includes(expected);
+            });
+
+            if (exists) return true;
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+        }
+
+        return false;
+    }, [loadData]);
 
     useEffect(() => {
         loadData();
@@ -64,11 +92,21 @@ const QS3Buckets = () => {
 
         if (!poolObj) {
             setError('Select a storage pool before provisioning the bucket.');
+            showToast({
+                type: 'error',
+                title: 'S3 Buckets',
+                body: 'Select a storage pool before provisioning the bucket.',
+            });
             return;
         }
 
-        if (!bucketName || !formData.ipaddress.trim() || !accessKey || !secretKey) {
+        if (!bucketName || !accessKey || !secretKey) {
             setError('Complete all required bucket fields before provisioning.');
+            showToast({
+                type: 'error',
+                title: 'S3 Buckets',
+                body: 'Complete all required bucket fields before provisioning.',
+            });
             return;
         }
 
@@ -80,33 +118,79 @@ const QS3Buckets = () => {
                 type: 'S3',
                 pool: poolObj.text,
                 name: bucketName,
-                ipaddress: formData.ipaddress.trim(),
                 Subnet: formData.Subnet,
                 size: `${formData.size}G`,
                 accesskey: accessKey,
                 secretkey: secretKey,
+                groups: (formData.groups || []).join(',') || 'NoGroup',
                 apiPort: formData.apiPort,
                 consolePort: formData.consolePort,
                 active: formData.active ? 'active' : 'false',
                 owner: poolObj.owner,
             };
 
-            await createVolume(payload);
+            showToast({
+                type: 'info',
+                title: 'S3 Buckets',
+                body: `Provisioning request sent for ${bucketName}.`,
+            });
+
+            const createRes = await createVolume(payload);
+            const apiResponse = String(createRes?.data?.response || '').toLowerCase();
+            const apiError = String(createRes?.data?.error || createRes?.data?.message || '').trim();
+
+            if (apiResponse.includes('baduser') || apiResponse.includes('fail') || apiResponse.includes('error')) {
+                throw new Error(apiError || createRes?.data?.response || 'Failed to create S3 bucket volume');
+            }
+
             setFormData({
                 poolIndex: '',
                 name: '',
-                ipaddress: '',
                 Subnet: 24,
                 size: 1,
                 accesskey: '',
                 secretkey: '',
+                groups: [],
                 apiPort: 9000,
                 consolePort: 9001,
                 active: true,
             });
-            loadData();
+
+            setSubmitting(false);
+
+            refreshUntilVisible(bucketName)
+                .then((appeared) => {
+                    if (appeared) {
+                        showToast({
+                            type: 'info',
+                            title: 'S3 Buckets',
+                            body: `Bucket ${bucketName} was created and is now visible in the list.`,
+                        });
+                    } else {
+                        showToast({
+                            type: 'warning',
+                            title: 'S3 Buckets',
+                            body: `Bucket ${bucketName} is still not visible after waiting. Provisioning may have failed on the owner node.`,
+                        });
+                    }
+                })
+                .catch(() => {
+                    showToast({
+                        type: 'warning',
+                        title: 'S3 Buckets',
+                        body: `Bucket ${bucketName} provisioning is in progress. Refresh to verify final state.`,
+                    });
+                });
+
+            return;
         } catch (err) {
-            setError('Failed to create S3 bucket volume');
+            const message = err?.response?.data?.error || err?.response?.data?.message || err?.message || 'Failed to create S3 bucket volume';
+            setError(message);
+            showToast({
+                type: 'error',
+                title: 'S3 Buckets',
+                body: message,
+            });
         } finally {
             setSubmitting(false);
         }
@@ -190,40 +274,31 @@ const QS3Buckets = () => {
                                         />
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-6">
+                                    <div className="grid grid-cols-3 gap-4">
                                         <Input
-                                            label="Service IP Address"
+                                            label="Subnet"
+                                            type="number"
+                                            min="8" max="32" step="8"
                                             required
-                                            placeholder="10.0.0.120"
-                                            value={formData.ipaddress}
-                                            onChange={(e) => setFormData({ ...formData, ipaddress: e.target.value })}
+                                            value={formData.Subnet}
+                                            onChange={(e) => setFormData({ ...formData, Subnet: e.target.value })}
                                         />
-                                        <div className="grid grid-cols-3 gap-4">
-                                            <Input
-                                                label="Subnet"
-                                                type="number"
-                                                min="8" max="32" step="8"
-                                                required
-                                                value={formData.Subnet}
-                                                onChange={(e) => setFormData({ ...formData, Subnet: e.target.value })}
+                                        <Input
+                                            label="Size (GB)"
+                                            type="number"
+                                            min="1"
+                                            required
+                                            value={formData.size}
+                                            onChange={(e) => setFormData({ ...formData, size: e.target.value })}
+                                        />
+                                        <div className="flex flex-col items-center justify-end pb-3">
+                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 block">Active</label>
+                                            <input
+                                                type="checkbox"
+                                                className="w-6 h-6 rounded-lg border-gray-200 text-indigo-600 focus:ring-indigo-500 transition-all cursor-pointer"
+                                                checked={formData.active}
+                                                onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
                                             />
-                                            <Input
-                                                label="Size (GB)"
-                                                type="number"
-                                                min="1"
-                                                required
-                                                value={formData.size}
-                                                onChange={(e) => setFormData({ ...formData, size: e.target.value })}
-                                            />
-                                            <div className="flex flex-col items-center justify-end pb-3">
-                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 block">Active</label>
-                                                <input
-                                                    type="checkbox"
-                                                    className="w-6 h-6 rounded-lg border-gray-200 text-indigo-600 focus:ring-indigo-500 transition-all cursor-pointer"
-                                                    checked={formData.active}
-                                                    onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
-                                                />
-                                            </div>
                                         </div>
                                     </div>
 
@@ -245,6 +320,17 @@ const QS3Buckets = () => {
                                             />
                                         </div>
 
+                                        <div>
+                                            <Dropdown
+                                                label="Allowed Groups"
+                                                isMulti
+                                                options={groups.map(g => ({ value: g.text, label: g.text }))}
+                                                value={formData.groups}
+                                                placeholder="Select Groups..."
+                                                onChange={(val) => setFormData({ ...formData, groups: val })}
+                                            />
+                                        </div>
+
                                         <div className="grid grid-cols-2 gap-6">
                                             <Input
                                                 label="API Port"
@@ -259,7 +345,7 @@ const QS3Buckets = () => {
                                         </div>
 
                                     <div className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm text-slate-500">
-                                        Creating an S3 bucket volume reserves dataset storage on the node and requests a matching bucket in the object-storage backend.
+                                        Creating an S3 bucket volume reserves dataset storage on the node, and the service IP is auto-assigned from the selected storage owner node.
                                     </div>
 
                                     <div className="flex justify-end">
