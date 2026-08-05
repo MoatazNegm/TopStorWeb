@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { AlertTriangle, RefreshCw } from 'lucide-react';
 import { fetchGroupList, fetchUserOptions, addGroup, deleteGroup, updateGroupUsers } from './api/groups';
 import Button from './components/Common/Button';
 import AddGroupForm from './components/AddGroupForm';
@@ -65,42 +66,44 @@ const QGroups = () => {
     return (
         <div className="content-wrapper">
             <div className="floating-canvas">
-                <div className="content-header px-4">
-                    <div className="container-fluid">
-                        <div className="flex justify-between items-center mb-10">
+                <div className="p-5">
+                    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+                        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                             <div>
-                                <p className="text-lg text-gray-500 font-medium tracking-tight">Manage system groups, permissions, and directory memberships</p>
+                                <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Groups</h1>
+                                <p className="mt-1 text-sm text-gray-500">Manage system groups, permissions, and directory memberships</p>
                             </div>
-                            <div className="flex gap-3">
-                                <Button
-                                    onClick={loadData}
-                                    bgColor="bg-white"
-                                    textColor="text-gray-700"
-                                    className="border border-gray-200 hover:bg-gray-50 hover:text-blue-600 rounded-xl"
-                                    icon={<i className="fas fa-sync-alt opacity-70"></i>}
-                                >
-                                    Sync Now
-                                </Button>
-                            </div>
+                            <Button onClick={loadData} variant="secondary" icon={<RefreshCw size={15} />}>
+                                Sync Now
+                            </Button>
                         </div>
-                    </div>
-                </div>
 
-                <div className="content px-4">
-                    <div className="container-fluid space-y-8">
-                        {/* Add Group Section */}
-                        <AddGroupForm
-                            users={users}
-                            onAdd={handleAddGroup}
-                        />
+                        <div className="mt-6 space-y-6">
+                            {error && (
+                                <div className="flex items-center gap-2 rounded-lg border border-danger-100 bg-danger-50 px-4 py-3 text-sm font-medium text-danger-600">
+                                    <AlertTriangle size={16} />
+                                    <span>{error}</span>
+                                </div>
+                            )}
 
-                        {/* Group List Section */}
-                        <GroupList
-                            groups={groups}
-                            users={users}
-                            onUpdateMembers={handleUpdateMembers}
-                            onDelete={handleDeleteGroup}
-                        />
+                            <AddGroupForm
+                                users={users}
+                                onAdd={handleAddGroup}
+                            />
+
+                            <GroupList
+                                groups={groups}
+                                users={users}
+                                onUpdateMembers={handleUpdateMembers}
+                                onDelete={handleDeleteGroup}
+                            />
+
+                            {loading && (
+                                <div className="rounded-lg border border-border bg-surface-muted px-4 py-3 text-sm text-gray-500">
+                                    Syncing groups...
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

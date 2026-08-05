@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { AlertTriangle, Cloud, FolderPlus, Link as LinkIcon, RefreshCw, Share2 } from 'lucide-react';
 import { fetchVolumesInfo, fetchGroupList, createVolume, updateVolume, deleteVolume, fetchVolumeStats } from './api/volumes';
 import { fetchPoolsInfo } from './api/pools';
 import Button from './components/Common/Button';
@@ -222,47 +223,42 @@ const QS3Buckets = () => {
     return (
         <div className="content-wrapper">
             <div className="floating-canvas">
-                <div className="content-header px-4">
-                    <div className="container-fluid">
-                        <div className="flex justify-between items-center mb-8">
+                <div className="p-5">
+                    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+                        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                             <div>
-                                <h1 className="text-3xl font-black text-gray-800 tracking-tight">S3 Buckets</h1>
-                                <p className="text-gray-500 mt-1 font-medium">MinIO-backed object storage bucket administration</p>
+                                <h1 className="text-2xl font-semibold tracking-tight text-gray-900">S3 Buckets</h1>
+                                <p className="mt-1 text-sm text-gray-500">MinIO-backed object storage bucket administration</p>
                             </div>
-                            <div className="flex gap-3">
-                                <Button
-                                    onClick={loadData}
-                                    bgColor="bg-white"
-                                    textColor="text-gray-400"
-                                    className="border border-gray-100 hover:text-blue-500 rounded-xl"
-                                    icon={<i className={`fas fa-sync-alt ${loading ? 'animate-spin' : ''}`}></i>}
-                                />
-                            </div>
+                            <Button onClick={loadData} variant="secondary" icon={<RefreshCw size={15} className={loading ? 'animate-spin' : ''} />}>
+                                Sync Now
+                            </Button>
                         </div>
 
                         {error && (
-                            <div className="mb-6 p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-center gap-3 text-rose-600 text-sm font-bold">
-                                <i className="fas fa-exclamation-circle"></i>
+                            <div className="mt-6 flex items-center gap-2 rounded-lg border border-danger-100 bg-danger-50 px-4 py-3 text-sm font-medium text-danger-600">
+                                <AlertTriangle size={16} />
                                 {error}
                             </div>
                         )}
 
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                            <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
-                                <div className="flex items-center gap-3 mb-8">
-                                    <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-500 flex items-center justify-center">
-                                        <i className="fas fa-cloud text-xs"></i>
+                        <div className="mt-6 space-y-6">
+                            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                                <div className="rounded-lg border border-border bg-surface p-5 shadow-sm">
+                                    <div className="mb-5 flex items-center gap-3">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-50 text-brand-600">
+                                            <FolderPlus size={16} />
+                                        </div>
+                                        <h3 className="text-base font-semibold text-gray-800">New Bucket Volume</h3>
                                     </div>
-                                    <h3 className="text-lg font-bold text-gray-800 tracking-tight">New Bucket Volume</h3>
-                                </div>
 
-                                <form onSubmit={handleCreate} className="space-y-6">
+                                <form onSubmit={handleCreate} className="space-y-5">
                                     <div className="grid grid-cols-2 gap-6">
                                         <Dropdown
                                             label="Storage Pool"
                                             options={pools.map((p, idx) => ({ value: idx, label: p.text }))}
                                             value={formData.poolIndex}
-                                            placeholder="Select Pool..."
+                                            placeholder="Select pool"
                                             onChange={(val) => setFormData({ ...formData, poolIndex: val })}
                                         />
                                         <Input
@@ -292,10 +288,10 @@ const QS3Buckets = () => {
                                             onChange={(e) => setFormData({ ...formData, size: e.target.value })}
                                         />
                                         <div className="flex flex-col items-center justify-end pb-3">
-                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 block">Active</label>
+                                            <label className="mb-1.5 block text-sm font-medium text-gray-700">Active</label>
                                             <input
                                                 type="checkbox"
-                                                className="w-6 h-6 rounded-lg border-gray-200 text-indigo-600 focus:ring-indigo-500 transition-all cursor-pointer"
+                                                className="h-5 w-5 rounded border-border text-brand-600 focus:ring-brand-100"
                                                 checked={formData.active}
                                                 onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
                                             />
@@ -326,7 +322,7 @@ const QS3Buckets = () => {
                                                 isMulti
                                                 options={groups.map(g => ({ value: g.text, label: g.text }))}
                                                 value={formData.groups}
-                                                placeholder="Select Groups..."
+                                                placeholder="Select groups"
                                                 onChange={(val) => setFormData({ ...formData, groups: val })}
                                             />
                                         </div>
@@ -344,15 +340,14 @@ const QS3Buckets = () => {
                                             />
                                         </div>
 
-                                    <div className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm text-slate-500">
+                                    <div className="rounded-md border border-border bg-surface-muted px-4 py-3 text-sm text-gray-500">
                                         Creating an S3 bucket volume reserves dataset storage on the node, and the service IP is auto-assigned from the selected storage owner node.
                                     </div>
 
                                     <div className="flex justify-end">
                                         <Button
                                             type="submit"
-                                            bgColor="bg-indigo-600"
-                                            className="px-6 py-3 font-black text-xs uppercase tracking-widest shadow-lg shadow-indigo-100 transition-all hover:-translate-y-0.5"
+                                            className="w-full sm:w-auto"
                                             disabled={submitting}
                                         >
                                             {submitting ? 'Provisioning...' : 'Provision Bucket'}
@@ -362,14 +357,15 @@ const QS3Buckets = () => {
                             </div>
 
                             <VolumeInsights volumes={volumes} stats={stats} />
-                        </div>
+                            </div>
 
-                        <div className="w-full">
-                            <S3BucketsList
-                                volumes={volumes}
-                                onUpdate={handleUpdate}
-                                onDelete={handleDelete}
-                            />
+                            <div className="w-full">
+                                <S3BucketsList
+                                    volumes={volumes}
+                                    onUpdate={handleUpdate}
+                                    onDelete={handleDelete}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

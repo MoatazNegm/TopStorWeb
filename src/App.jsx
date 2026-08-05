@@ -145,52 +145,56 @@ function App() {
     }
 
     return (
-        <div className="wrapper wrapper-index">
+        <div className="min-h-screen bg-canvas">
             <NotificationPoller />
-            <Navbar sectionTitle={getSectionTitle(view)} />
-            <Sidebar />
-            {view === 'users' && <QUsers />}
-            {view === 'groups' && <QGroups />}
-            {view === 'logs' && <QLogs />}
-            {view === 'performance' && <QServicePerformance />}
-            {view === 'cifs' && <QCifs />}
-            {view === 'nfs' && <QNfs />}
-            {view === 's3' && <QS3Buckets />}
-            {view === 'home' && <QHomeFolders />}
-            {view === 'iscsi' && <QIscsi />}
-            {view === 'snapshots' && <QSnapshots />}
-            {view === 'privileges' && <QUserPrivileges />}
-            {view === 'updates' && <QUpdates />}
-            {view === 'diskgroups' && <QDisks />}
-            {view === 'partners' && <QPartners />}
-            {view === 'sender' && <QSender />}
-            {view === 'received' && <QReceived />}
-            {view === 'nodes' && <QNodes />}
-            {/* Footer */}
-            <footer className="main-footer">
-                <div className="row">
-                    <div className="col-md-12">
-                        <div className="card">
-                            <div className="card-body p-0">
-                                <table className="table table-sm">
+            <div className="flex min-h-screen">
+                <div
+                    className="sidebar-backdrop lg:hidden"
+                    onClick={() => document.body.classList.remove('sidebar-mobile-open')}
+                ></div>
+
+                <Sidebar />
+
+                <main className="main-content-shell flex-1 lg:ml-[260px]">
+                    <Navbar sectionTitle={getSectionTitle(view)} />
+
+                    {view === 'users' && <QUsers />}
+                    {view === 'groups' && <QGroups />}
+                    {view === 'logs' && <QLogs />}
+                    {view === 'performance' && <QServicePerformance />}
+                    {view === 'cifs' && <QCifs />}
+                    {view === 'nfs' && <QNfs />}
+                    {view === 's3' && <QS3Buckets />}
+                    {view === 'home' && <QHomeFolders />}
+                    {view === 'iscsi' && <QIscsi />}
+                    {view === 'snapshots' && <QSnapshots />}
+                    {view === 'privileges' && <QUserPrivileges />}
+                    {view === 'updates' && <QUpdates />}
+                    {view === 'diskgroups' && <QDisks />}
+                    {view === 'partners' && <QPartners />}
+                    {view === 'sender' && <QSender />}
+                    {view === 'received' && <QReceived />}
+                    {view === 'nodes' && <QNodes />}
+
+                    <footer className="px-4 pb-6 pt-2">
+                        <div className="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
+                            <div className="overflow-x-auto">
+                                <table className="min-w-full text-left text-sm">
                                     <thead>
-                                        <tr>
-                                            <th> Task</th>
-                                            <th> Node</th>
-                                            <th>Progress</th>
-                                            <th style={{ width: '40px' }}>Label</th>
+                                        <tr className="border-b border-border bg-surface-muted text-gray-500">
+                                            <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Task</th>
+                                            <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Node</th>
+                                            <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Progress</th>
+                                            <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide">Label</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tasktable">
-
-                                    </tbody>
+                                    <tbody id="tasktable"></tbody>
                                 </table>
                             </div>
-                            {/* /.card-body */}
                         </div>
-                    </div>
+                    </footer>
+                </main>
                 </div>
-            </footer>
         </div>
     );
 }

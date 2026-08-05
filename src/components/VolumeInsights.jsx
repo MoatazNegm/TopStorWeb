@@ -1,4 +1,5 @@
 import React from 'react';
+import { ChartLine } from 'lucide-react';
 
 const VolumeInsights = ({ volumes }) => {
     const totalVols = volumes.length;
@@ -10,44 +11,44 @@ const VolumeInsights = ({ volumes }) => {
 
     return (
         <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 flex flex-col h-full relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50/30 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-indigo-100/40 transition-colors duration-500"></div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-brand-50/40 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-brand-100/50 transition-colors duration-500"></div>
 
             <div className="flex justify-between items-center mb-10 relative z-10">
                 <div>
-                    <h3 className="text-xl font-bold text-gray-800 tracking-tight">CIFS Insights</h3>
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1">Operational Summary</p>
+                    <h3 className="text-base font-semibold text-gray-800">Home Volume Insights</h3>
+                    <p className="mt-1 text-sm text-gray-500">Operational summary</p>
                 </div>
-                <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-500 flex items-center justify-center">
-                    <i className="fas fa-chart-line text-xs"></i>
+                <div className="w-10 h-10 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center">
+                    <ChartLine size={14} />
                 </div>
             </div>
 
             <div className="flex-1 space-y-8 relative z-10">
                 {/* Status Breakdown */}
                 <div className="flex gap-4">
-                    <div className="flex-1 bg-gray-50/50 rounded-2xl p-4 border border-gray-50 group-hover:border-indigo-100 transition-colors">
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Online</p>
-                        <p className="text-2xl font-black text-emerald-500 tracking-tight">{onlineVols}</p>
+                    <div className="flex-1 bg-gray-50/50 rounded-2xl p-4 border border-gray-50 transition-colors group-hover:border-brand-100">
+                        <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">Online</p>
+                        <p className="text-2xl font-semibold tracking-tight text-success-600">{onlineVols}</p>
                     </div>
                     <div className="flex-1 bg-gray-50/50 rounded-2xl p-4 border border-gray-50">
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Standby</p>
-                        <p className="text-2xl font-black text-gray-300 tracking-tight">0</p>
+                        <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">Standby</p>
+                        <p className="text-2xl font-semibold tracking-tight text-gray-300">0</p>
                     </div>
                 </div>
 
                 {/* Compression Efficiency Bar */}
                 <div className="space-y-3">
                     <div className="flex justify-between items-end">
-                        <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Global Compression</p>
-                        <p className="text-sm font-black text-indigo-600 italic">{(avgCompression).toFixed(2)}x</p>
+                        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Global Compression</p>
+                        <p className="text-sm font-semibold italic text-brand-600">{(avgCompression).toFixed(2)}x</p>
                     </div>
                     <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
                         <div
-                            className="h-full bg-gradient-to-r from-indigo-500 to-blue-500 rounded-full transition-all duration-1000"
+                            className="h-full rounded-full bg-gradient-to-r from-brand-600 to-brand-500 transition-all duration-1000"
                             style={{ width: `${Math.min((avgCompression - 1) * 20, 100)}%` }}
                         ></div>
                     </div>
-                    <p className="text-[9px] text-gray-400 font-medium">Aggregate ZFS efficiency across all CIFS shares</p>
+                    <p className="text-xs font-medium text-gray-500">Aggregate ZFS efficiency across all CIFS shares</p>
                 </div>
 
                 {/* Pulse Indicator */}
@@ -55,13 +56,13 @@ const VolumeInsights = ({ volumes }) => {
                     <div className="flex -space-x-2">
                         {volumes.slice(0, 3).map((v, i) => (
                             <div key={i} className="w-7 h-7 rounded-full bg-white border-2 border-white shadow-sm flex items-center justify-center overflow-hidden">
-                                <div className="w-full h-full bg-indigo-100 flex items-center justify-center">
-                                    <span className="text-[8px] font-black text-indigo-400">{v.name.charAt(0)}</span>
+                                <div className="w-full h-full bg-brand-100 flex items-center justify-center">
+                                    <span className="text-xs font-semibold text-brand-600">{v.name.charAt(0)}</span>
                                 </div>
                             </div>
                         ))}
                     </div>
-                    <p className="text-[10px] font-bold text-gray-400">
+                    <p className="text-xs font-medium text-gray-500">
                         {totalVols > 3 ? `+${totalVols - 3} more volumes active` : 'Volume distribution active'}
                     </p>
                 </div>

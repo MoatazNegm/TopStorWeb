@@ -1,5 +1,5 @@
 import React from 'react';
-import { Activity, AlertCircle, Plus, Server } from 'lucide-react';
+import { Server } from 'lucide-react';
 
 /**
  * @typedef {Object} ServerNodeProps
@@ -11,79 +11,50 @@ import { Activity, AlertCircle, Plus, Server } from 'lucide-react';
  */
 
 const ServerNode = ({ name, ip, state = 'up', selected = false, className = '', onClick }) => {
-    // State configurations
     const config = {
         up: {
-            themeText: 'text-emerald-500',
-            icon: Activity,
-            ledActive: 'bg-emerald-500 animate-pulse',
-            ledPassive: 'bg-emerald-500/50',
-            border: 'border-#a4adf1',
-            text: 'text-black',
-            bg: 'bg-[#edeffc]',
-            ring: 'ring-emerald-500'
+            dot: 'bg-success-500',
+            label: 'Online',
+            labelClass: 'text-success-700',
         },
         down: {
-            themeText: 'text-rose-500',
-            icon: AlertCircle,
-            ledActive: 'bg-rose-900',
-            ledPassive: 'bg-rose-900/50',
-            border: 'border-#a4adf1',
-            text: 'text-black',
-            bg: 'bg-[#edeffc]',
-            ring: 'ring-rose-500'
+            dot: 'bg-danger-500',
+            label: 'Offline',
+            labelClass: 'text-danger-700',
         },
         discovered: {
-            themeText: 'text-blue-500',
-            icon: Server,
-            ledActive: 'bg-blue-500',
-            ledPassive: 'bg-blue-500/50',
-            border: 'border-blue-500/30',
-            text: 'text-black',
-            bg: 'bg-[#edeffc]',
-            ring: 'ring-blue-500'
-        }
+            dot: 'bg-brand-500',
+            label: 'Discovered',
+            labelClass: 'text-brand-700',
+        },
     };
 
     const currentConfig = config[state] || config.up;
-    const Icon = currentConfig.icon;
 
     return (
-        <div
+        <button
             onClick={onClick}
             className={`
-                relative flex items-center justify-between
-                p-3 sm:p-4 rounded
-                border ${currentConfig.border}
-                ${currentConfig.bg}
-                ${selected ? `ring-2 ${currentConfig.ring}` : ''}
-                transition-all duration-200
-                cursor-pointer
-                group
+                group flex min-h-[60px] w-full items-center gap-3 rounded-lg border px-3.5 py-3 text-left
+                ${selected ? 'border-brand-500 bg-brand-50/40 ring-4 ring-brand-100' : 'border-border bg-surface hover:border-border-strong hover:bg-gray-50'}
+                transition-colors
                 ${className}
             `}
         >
-            {/* Left Side: LED Bars */}
-            <div className="flex gap-1 mr-3">
-                <div className={`w-1 h-6 sm:h-8 rounded-full ${currentConfig.ledActive}`}></div>
-                <div className={`w-1 h-6 sm:h-8 rounded-full ${currentConfig.ledPassive}`}></div>
-            </div>
+            <span className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md ${selected ? 'bg-brand-100 text-brand-600' : 'bg-gray-100 text-gray-500'}`}>
+                <Server size={18} />
+            </span>
 
-            {/* Middle: Text Info */}
-            <div className="flex-1 min-w-0 mr-3">
-                <div className="font-mono text-xs sm:text-sm text-black font-medium truncate">
-                    {name}
-                </div>
-                <div className="font-mono text-[10px] sm:text-xs text-gray-500 truncate">
-                    {ip}
-                </div>
-            </div>
+            <span className="min-w-0 flex-1">
+                <span className="block truncate text-sm font-semibold text-gray-800">{name}</span>
+                <span className="block truncate font-mono text-xs text-gray-500">{ip}</span>
+            </span>
 
-            {/* Right Side: Status Icon */}
-            <div className={`${currentConfig.themeText}`}>
-                <Icon size={20} className={state === 'up' ? 'animate-pulse' : ''} />
-            </div>
-        </div>
+            <span className="flex flex-shrink-0 items-center gap-1.5">
+                <span className={`h-2 w-2 rounded-full ${currentConfig.dot}`}></span>
+                <span className={`hidden text-[11px] font-medium sm:inline ${currentConfig.labelClass}`}>{currentConfig.label}</span>
+            </span>
+        </button>
     );
 };
 

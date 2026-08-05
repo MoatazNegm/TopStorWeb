@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Check, Edit3, FolderOpen, HardDrive, Trash2, X } from 'lucide-react';
+import Panel from './Common/Panel';
 
 const CifsList = ({ volumes, groups, onUpdate, onDelete }) => {
     const [editingId, setEditingId] = useState(null);
@@ -28,79 +30,88 @@ const CifsList = ({ volumes, groups, onUpdate, onDelete }) => {
         setEditValues(prev => ({ ...prev, [field]: value }));
     };
 
+    const getPoolLabel = (pool = '') => {
+        const parts = String(pool).split('p');
+        return parts[2] || pool;
+    };
+
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 relative group hover:shadow-md transition-all duration-300 mb-8">
-            <div className="absolute top-0 bottom-0 left-0 w-1.5 bg-indigo-500 rounded-l-2xl shadow-[2px_0_10px_rgba(99,102,241,0.2)]"></div>
-            <div className="p-5 border-b border-gray-50 flex justify-between items-center bg-gray-50/50">
-                <div>
-                    <h3 className="text-gray-800 font-bold tracking-tight">CIFS Volume List</h3>
-                    <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest mt-0.5">Active Network Shares</p>
-                </div>
+        <Panel
+            icon={<HardDrive size={17} />}
+            title="CIFS Volume List"
+            subtitle="Active network shares"
+            bodyClass="p-0"
+        >
+            <div className="border-b border-border bg-surface-muted px-5 py-3">
+                <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-gray-600">
+                    <span className="h-2 w-2 rounded-full bg-brand-500" />
+                    {volumes.length} Shares
+                </span>
             </div>
 
             <div className="overflow-x-auto">
-                <table className="w-full text-left">
-                    <thead>
-                        <tr className="bg-gray-50/50 text-gray-400 text-[10px] font-black uppercase tracking-widest">
-                            <th className="px-6 py-4">Volume</th>
-                            <th className="px-6 py-4">Pool</th>
-                            <th className="px-6 py-4">Size</th>
-                            <th className="px-6 py-4">Snaps</th>
-                            <th className="px-6 py-4">Comp %</th>
-                            <th className="px-6 py-4">IP Address</th>
-                            <th className="px-6 py-4">Subnet</th>
-                            <th className="px-6 py-4">Groups</th>
-                            <th className="px-6 py-4 text-right">Actions</th>
+                <table className="min-w-[1100px] w-full text-left">
+                    <thead className="bg-surface-muted">
+                        <tr className="border-b border-border">
+                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Volume</th>
+                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Pool</th>
+                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Size</th>
+                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Snaps</th>
+                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Comp %</th>
+                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">IP Address</th>
+                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Subnet</th>
+                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Groups</th>
+                            <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Actions</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-50">
+                    <tbody className="divide-y divide-border">
                         {volumes.map((vol) => (
-                            <tr key={vol.name} className="hover:bg-blue-50/30 transition-colors group/row">
-                                <td className="px-6 py-5">
+                            <tr key={vol.name} className="group/row transition-colors hover:bg-gray-50/60">
+                                <td className="px-5 py-4">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center">
-                                            <i className="fab fa-windows text-xs"></i>
+                                        <div className="flex h-8 w-8 items-center justify-center rounded-md bg-brand-50 text-brand-600">
+                                            <HardDrive size={14} />
                                         </div>
-                                        <span className="text-sm font-bold text-gray-700">{vol.name.split('_')[0]}</span>
+                                        <span className="text-sm font-semibold text-gray-800">{vol.name.split('_')[0]}</span>
                                     </div>
                                 </td>
-                                <td className="px-6 py-5">
-                                    <span className="text-xs font-bold text-gray-500">{vol.pool.split('p')[2]}</span>
+                                <td className="px-5 py-4">
+                                    <span className="text-xs font-medium text-gray-600">{getPoolLabel(vol.pool)}</span>
                                 </td>
-                                <td className="px-6 py-5 text-sm font-medium text-gray-600">{vol.quota || 'n/a'}</td>
-                                <td className="px-6 py-5 text-sm font-medium text-gray-600">{vol.usedbysnapshots || 'n/a'}</td>
-                                <td className="px-6 py-5 text-sm font-medium text-gray-600 font-mono italic">{vol.refcompressratio || 'n/a'}</td>
-                                <td className="px-6 py-5">
+                                <td className="px-5 py-4 text-sm text-gray-700">{vol.quota || 'n/a'}</td>
+                                <td className="px-5 py-4 text-sm text-gray-700">{vol.usedbysnapshots || 'n/a'}</td>
+                                <td className="px-5 py-4 font-mono text-sm text-gray-700">{vol.refcompressratio || 'n/a'}</td>
+                                <td className="px-5 py-4">
                                     {editingId === vol.name ? (
                                         <input
                                             type="text"
                                             value={editValues.ipaddress}
                                             onChange={(e) => handleChange('ipaddress', e.target.value)}
-                                            className="w-32 px-2 py-1 text-sm border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            className="w-36 rounded-md border border-border bg-surface px-2.5 py-1.5 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100"
                                         />
                                     ) : (
-                                        <span className="text-sm font-medium text-gray-600">{vol.ipaddress}</span>
+                                        <span className="text-sm text-gray-700">{vol.ipaddress}</span>
                                     )}
                                 </td>
-                                <td className="px-6 py-5">
+                                <td className="px-5 py-4">
                                     {editingId === vol.name ? (
                                         <input
                                             type="number"
                                             value={editValues.Subnet}
                                             onChange={(e) => handleChange('Subnet', e.target.value)}
-                                            className="w-16 px-2 py-1 text-sm border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                                            className="w-16 rounded-md border border-border bg-surface px-2.5 py-1.5 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100"
                                         />
                                     ) : (
-                                        <span className="text-sm font-medium text-gray-600">{vol.Subnet}</span>
+                                        <span className="text-sm text-gray-700">{vol.Subnet}</span>
                                     )}
                                 </td>
-                                <td className="px-6 py-5">
+                                <td className="px-5 py-4">
                                     {editingId === vol.name ? (
                                         <select
                                             multiple
                                             value={(editValues.groups || '').split(',').filter(Boolean)}
                                             onChange={(e) => handleChange('groups', Array.from(e.target.selectedOptions, option => option.value).join(','))}
-                                            className="w-40 px-2 py-1 text-sm border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none min-h-[40px]"
+                                            className="min-h-[40px] w-44 rounded-md border border-border bg-surface px-2 py-1 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100"
                                         >
                                             {groups.map(g => (
                                                 <option key={g.id} value={g.text}>{g.text}</option>
@@ -109,31 +120,31 @@ const CifsList = ({ volumes, groups, onUpdate, onDelete }) => {
                                     ) : (
                                         <div className="flex flex-wrap gap-1">
                                             {(Array.isArray(vol.groups) ? vol.groups : (vol.groups || '').split(',')).filter(Boolean).map((g, idx) => (
-                                                <span key={idx} className="px-2 py-0.5 bg-gray-100 text-gray-500 rounded text-[10px] font-bold">
+                                                <span key={idx} className="rounded-sm bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700">
                                                     {g}
                                                 </span>
                                             ))}
                                         </div>
                                     )}
                                 </td>
-                                <td className="px-6 py-5 text-right">
-                                    <div className="flex justify-end gap-2 opacity-0 group-hover/row:opacity-100 transition-opacity">
+                                <td className="px-5 py-4 text-right">
+                                    <div className="flex justify-end gap-2 opacity-0 transition-opacity group-hover/row:opacity-100">
                                         {editingId === vol.name ? (
                                             <>
-                                                <button onClick={() => handleSave(vol.name)} className="p-2 text-emerald-500 hover:bg-emerald-50 rounded-lg transition-colors" title="Save">
-                                                    <i className="fas fa-check"></i>
+                                                <button onClick={() => handleSave(vol.name)} className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-success-100 bg-success-50 text-success-600 transition-colors hover:bg-success-600 hover:text-white" title="Save">
+                                                    <Check size={14} />
                                                 </button>
-                                                <button onClick={handleCancel} className="p-2 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors" title="Cancel">
-                                                    <i className="fas fa-times"></i>
+                                                <button onClick={handleCancel} className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:bg-gray-100" title="Cancel">
+                                                    <X size={14} />
                                                 </button>
                                             </>
                                         ) : (
                                             <>
-                                                <button onClick={() => handleEdit(vol)} className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors" title="Edit">
-                                                    <i className="fas fa-edit"></i>
+                                                <button onClick={() => handleEdit(vol)} className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-brand-100 hover:bg-brand-50 hover:text-brand-600" title="Edit">
+                                                    <Edit3 size={14} />
                                                 </button>
-                                                <button onClick={() => onDelete(vol.name)} className="p-2 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors" title="Delete">
-                                                    <i className="fas fa-trash"></i>
+                                                <button onClick={() => onDelete(vol.name)} className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600" title="Delete">
+                                                    <Trash2 size={14} />
                                                 </button>
                                             </>
                                         )}
@@ -145,14 +156,14 @@ const CifsList = ({ volumes, groups, onUpdate, onDelete }) => {
                 </table>
                 {volumes.length === 0 && (
                     <div className="py-20 text-center">
-                        <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i className="fas fa-folder-open text-gray-200 text-xl"></i>
+                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-surface-muted text-gray-400">
+                            <FolderOpen size={18} />
                         </div>
-                        <p className="text-gray-400 font-medium tracking-tight">No CIFS volumes found</p>
+                        <p className="text-sm font-medium text-gray-500">No CIFS volumes found</p>
                     </div>
                 )}
             </div>
-        </div>
+        </Panel>
     );
 };
 

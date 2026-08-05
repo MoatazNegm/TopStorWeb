@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Bell, Maximize2, User, LogOut, Key } from 'lucide-react';
+import { Bell, ChevronRight, Key, LogOut, Maximize2, Menu, X } from 'lucide-react';
 import { changePassword } from '../api/users';
 
 const Navbar = ({ sectionTitle }) => {
+    const [notifOpen, setNotifOpen] = useState(false);
+    const [userMenuOpen, setUserMenuOpen] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [pass, setPass] = useState('');
     const [newpass, setNewpass] = useState('');
@@ -38,110 +40,150 @@ const Navbar = ({ sectionTitle }) => {
 
     const handleSave = async () => {
         const username = localStorage.getItem('user');
+        setUserMenuOpen(false);
         setSaving(true);
-        try {
-            await changePassword(username, pass);
-            setModalOpen(false);
-        } catch (e) {
-            setPassErr('Failed to change password');
-            setPassErrColor('text-red-500');
-        } finally {
-            setSaving(false);
+
+    const handleFullscreen = () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen?.();
+        } else {
+            document.exitFullscreen?.();
         }
     };
 
-    return (
-        <>
-        <nav className="main-header navbar navbar-expand navbar-white navbar-light" style={{ background: 'linear-gradient(90deg, var(--sidebar-bg-start) 0%, var(--sidebar-bg-end) 100%)', backdropFilter: 'blur(30px) saturate(200%)', border: '0px' }}>
-            {/* Left navbar links */}
-            <ul className="navbar-nav">
-                <li className="nav-item d-none d-sm-inline-block">
-                    <div className="!text-3xl font-black tracking-tight !text-black flex items-center h-full px-0 select-none cursor-default">
-                        {sectionTitle}
-                    </div>
-                </li>
-            </ul>
+    const currentLabel = (() => {
+        const hash = window.location.hash;
+        if (!hash || hash === '#/nodes') return 'Nodes';
+        const map = {
+            '#/users': 'Users',
+            '#/groups': 'Groups',
+            '#/logs': 'Logs',
+            '#/performance': 'Service Performance',
+            '#/volumes/cifs': 'CIFS',
+            '#/volumes/nfs': 'NFS',
+            '#/volumes/s3': 'S3 Buckets',
+            '#/volumes/home': 'Home Folders',
+            '#/volumes/iscsi': 'ISCSI LUNs',
+            '#/volumes/snapshots': 'Snapshots',
+            '#/settings/privileges': 'User Privileges',
+            '#/settings/updates': 'Updates',
+            '#/pools/diskgroups': 'Disk Groups',
+            '#/replication/partners': 'Partner',
+            '#/replication/sender': 'Sender Schedule',
+            '#/replication/received': 'Received Snapshots',
+        };
+        return map[hash] || 'Nodes';
+    })();
+        try {
+            await changePassword(username, pass);
+            setModalOpen(false);
+            <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b border-border bg-surface px-4 sm:px-6">
+                <div className="flex min-w-0 items-center gap-2">
+                    <button
+                        type="button"
+                        className="-ml-1 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md text-gray-500 hover:bg-gray-100 hover:text-brand-600 lg:hidden"
+                        onClick={() => document.body.classList.toggle('sidebar-mobile-open')}
+                    >
+                        <Menu className="h-5 w-5" />
+                    </button>
+                    <nav className="flex min-w-0 items-center gap-1.5 text-sm">
+                        <span className="truncate text-gray-500">{sectionTitle}</span>
+                        <ChevronRight className="h-[15px] w-[15px] flex-shrink-0 text-gray-300" />
+                        <span className="truncate font-semibold text-gray-900">{currentLabel}</span>
+                    </nav>
+                </div>
 
-            {/* Right navbar links */}
-            <ul className="navbar-nav ml-auto headtitle items-center gap-2">
-                {/* Notifications Dropdown Menu */}
-                <li className="nav-item">
-                    <a className="nav-link" href="#" style={{ color: '#4A4A68' }}>
-                        <div id="syncStatus" className="text-xs font-medium leading-tight text-right">
-                            Getting <br /><span>Status...</span>
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                    <div className="hidden items-center gap-2 rounded-full border border-border bg-surface-muted px-3 py-1.5 sm:flex">
+                        <span className="h-2 w-2 flex-shrink-0 rounded-full bg-success-500"></span>
+                        <div id="syncStatus" className="text-xs font-medium leading-tight text-gray-600">
+                            Getting Status...
                         </div>
-                    </a>
-                </li>
-                <li className="nav-item dropdown">
-                    <a className="nav-link relative flex items-center justify-center w-10 h-10 rounded-full hover:bg-white/50 transition-all text-gray-500 hover:text-blue-600" data-toggle="dropdown" href="#">
-                        <Bell size={20} strokeWidth={2} />
-                        <span className="absolute top-2 right-2 flex h-2.5 w-2.5">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500 text-[8px] text-white flex items-center justify-center" id="tot"></span>
-                        </span>
-                    </a>
-                    <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right border-0 shadow-lg rounded-xl overflow-hidden mt-2">
-                        <span className="dropdown-item dropdown-header bg-gray-50 font-semibold text-gray-700 py-3">Notifications (7 days)</span>
-                        <div className="dropdown-divider my-0"></div>
-                        <a href="./QLogs.html" className="dropdown-item hover:bg-gray-50 px-4 py-3 flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full bg-yellow-50 flex items-center justify-center text-yellow-600">
-                                <i className="fas fa-exclamation-triangle text-xs"></i>
-                            </div>
-                            <div>
-                                <span className="font-semibold text-gray-800" id="warns">0</span>
-                                <span className="text-sm text-gray-500 ml-1">Warnings</span>
-                            </div>
-                        </a>
-                        <div className="dropdown-divider my-0"></div>
-                        <a href="./QLogs.html" className="dropdown-item hover:bg-gray-50 px-4 py-3 flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-red-600">
-                                <i className="fas fa-microchip text-xs"></i>
-                            </div>
-                            <div>
-                                <span className="font-semibold text-gray-800" id="errs">0</span>
-                                <span className="text-sm text-gray-500 ml-1">System Errors</span>
-                            </div>
-                        </a>
-                        <div className="dropdown-divider my-0"></div>
-                        <a href="./QLogs.html" className="dropdown-item hover:bg-gray-50 px-4 py-3 flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
-                                <i className="fas fa-users text-xs"></i>
-                            </div>
-                            <div>
-                                <span className="font-semibold text-gray-800" id="logonfails">0</span>
-                                <span className="text-sm text-gray-500 ml-1">Auth Failures</span>
-                            </div>
-                        </a>
-                        <div className="dropdown-divider my-0"></div>
-                        <a href="./QLogs.html" className="dropdown-item dropdown-footer bg-gray-50 text-blue-600 font-medium py-3 hover:bg-gray-100">See All Notifications</a>
-                    </div>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link flex items-center justify-center w-10 h-10 rounded-full hover:bg-white/50 transition-all text-gray-500 hover:text-blue-600" data-widget="fullscreen" href="#" role="button">
-                        <Maximize2 size={20} strokeWidth={2} />
-                    </a>
-                </li>
-                <li className="nav-item dropdown">
-                    <a className="nav-link !flex !flex-row !items-center !gap-3 px-4 py-2 rounded-full bg-blue-50/80 border border-blue-200 hover:bg-blue-100 hover:border-blue-300 transition-all group" data-toggle="dropdown" href="#">
-                        <User size={18} strokeWidth={2.5} className="text-blue-600 shrink-0" />
-                        <span id="username" className="font-bold text-sm hidden sm:block text-blue-700 whitespace-nowrap">Admin</span>
-                    </a>
-                    <div className="dropdown-menu dropdown-menu-sm dropdown-menu-right border-0 shadow-2xl rounded-2xl overflow-hidden mt-3 p-1.5 min-w-[200px] bg-white">
-                        <button 
-                            onClick={() => {
-                                localStorage.removeItem('token');
-                                localStorage.setItem('token', '0'); // Signal logout to App.jsx
-                                window.dispatchEvent(new Event('storage')); // Trigger auth check in App.jsx
-                            }}
-                            className="dropdown-item !flex !flex-row !items-center !gap-3 px-4 py-3 rounded-xl hover:bg-red-50 text-gray-700 hover:text-red-700 transition-all group/item w-full text-left"
-                        >
-                            <LogOut size={18} strokeWidth={2} className="text-gray-400 group-hover/item:text-red-500 transition-colors shrink-0" />
-                            <span className="font-semibold text-sm whitespace-nowrap">Logout</span>
-                        </button>
-                        <div className="dropdown-divider my-1 border-gray-100"></div>
+    };
+
+                    <div className="relative">
                         <button
-                            id="chgpasswd"
-                            onClick={handleOpenModal}
+                            type="button"
+                            onClick={() => {
+                                setNotifOpen((prev) => !prev);
+                                setUserMenuOpen(false);
+                            }}
+                            className="relative flex h-9 w-9 items-center justify-center rounded-md text-gray-500 hover:bg-gray-100 hover:text-brand-600"
+                        >
+                            <Bell className="h-[18px] w-[18px]" />
+                            <span className="absolute right-1.5 top-1.5 inline-flex h-2.5 w-2.5 rounded-full bg-danger-500 text-[8px] text-white" id="tot"></span>
+                        </button>
+
+                        {notifOpen && (
+                            <div className="absolute right-0 mt-2 w-72 overflow-hidden rounded-xl border border-border bg-surface shadow-lg">
+                                <div className="border-b border-border bg-surface-muted px-4 py-3 text-sm font-semibold text-gray-700">Notifications (7 days)</div>
+                                <a href="#/logs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setNotifOpen(false)}>
+                                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-warning-50 text-warning-600">!</span>
+                                    <span><strong id="warns">0</strong> Warnings</span>
+                                </a>
+                                <a href="#/logs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setNotifOpen(false)}>
+                                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-danger-50 text-danger-600">x</span>
+                                    <span><strong id="errs">0</strong> System Errors</span>
+                                </a>
+                                <a href="#/logs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setNotifOpen(false)}>
+                                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-50 text-brand-600">i</span>
+                                    <span><strong id="logonfails">0</strong> Auth Failures</span>
+                                </a>
+                            </div>
+                        )}
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={handleFullscreen}
+                        className="hidden h-9 w-9 items-center justify-center rounded-md text-gray-500 hover:bg-gray-100 hover:text-brand-600 sm:flex"
+                    >
+                        <Maximize2 className="h-[18px] w-[18px]" />
+                    </button>
+
+                    <span className="hidden h-6 w-px bg-border sm:block"></span>
+
+                    <div className="relative">
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setUserMenuOpen((prev) => !prev);
+                                setNotifOpen(false);
+                            }}
+                            className="flex items-center gap-2.5 rounded-md py-1.5 pl-1.5 pr-2 hover:bg-gray-100"
+                        >
+                            <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600">
+                                <Key className="h-4 w-4" />
+                            </span>
+                            <span id="username" className="hidden text-sm font-semibold text-gray-800 sm:block">Admin</span>
+                        </button>
+
+                        {userMenuOpen && (
+                            <div className="absolute right-0 mt-2 w-52 overflow-hidden rounded-xl border border-border bg-surface p-1.5 shadow-lg">
+                                <button
+                                    onClick={() => {
+                                        localStorage.removeItem('token');
+                                        localStorage.setItem('token', '0');
+                                        window.dispatchEvent(new Event('storage'));
+                                    }}
+                                    className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm text-gray-700 hover:bg-danger-50 hover:text-danger-700"
+                                >
+                                    <LogOut className="h-4 w-4" />
+                                    Logout
+                                </button>
+                                <button
+                                    id="chgpasswd"
+                                    onClick={handleOpenModal}
+                                    className="chgpasswd flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm text-gray-700 hover:bg-warning-50 hover:text-warning-700"
+                                >
+                                    <Key className="h-4 w-4" />
+                                    Change Password
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </header>
                             className="dropdown-item chgpasswd !flex !flex-row !items-center !gap-3 px-4 py-3 rounded-xl hover:bg-yellow-50 text-gray-700 hover:text-yellow-700 transition-all group/item w-full text-left"
                         >
                             <Key size={18} strokeWidth={2} className="text-gray-400 group-hover/item:text-yellow-500 transition-colors shrink-0" />
@@ -154,49 +196,46 @@ const Navbar = ({ sectionTitle }) => {
         </nav>
 
         {modalOpen && (
-            <div className="fixed inset-0 z-[9999] flex items-center justify-center">
-                <div className="absolute inset-0 bg-black/40" onClick={() => setModalOpen(false)} />
-                <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-4 p-6">
-                    <div className="flex justify-between items-center mb-5">
-                        <h4 className="text-lg font-bold text-gray-800">Change Password</h4>
-                        <button onClick={() => setModalOpen(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
-                            <i className="fas fa-times"></i>
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-900/40 p-4 backdrop-blur-sm">
+                <div className="w-full max-w-md overflow-hidden rounded-xl border border-border bg-surface shadow-xl">
+                    <div className="flex items-center justify-between border-b border-border px-5 py-4">
+                        <h4 className="text-base font-semibold text-gray-800">Change Password</h4>
+                        <button onClick={() => setModalOpen(false)} className="flex h-8 w-8 items-center justify-center rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600">
+                            <X className="h-[18px] w-[18px]" />
                         </button>
                     </div>
-                    <div className="space-y-4">
+                    <div className="space-y-5 p-5">
                         <div className="relative">
                             <input
                                 type="password"
                                 id="pass"
-                                placeholder="Password"
+                                placeholder="New password"
                                 value={pass}
                                 onChange={(e) => { setPass(e.target.value); validatePasswords(e.target.value, newpass); }}
-                                className="w-full px-4 py-2 pr-10 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-gray-700"
+                                className="w-full rounded-md border border-border bg-surface px-3 py-2.5 text-sm text-gray-800 outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100"
                             />
-                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-lock text-xs"></i></span>
                         </div>
                         <div className="relative">
                             <input
                                 type="password"
                                 id="newpass"
-                                placeholder="Re-type password"
+                                placeholder="Confirm new password"
                                 value={newpass}
                                 onChange={(e) => { setNewpass(e.target.value); validatePasswords(pass, e.target.value); }}
-                                className="w-full px-4 py-2 pr-10 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-gray-700"
+                                className="w-full rounded-md border border-border bg-surface px-3 py-2.5 text-sm text-gray-800 outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100"
                             />
-                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-lock text-xs"></i></span>
                         </div>
                         {passErr && <p id="passerr" className={`text-xs font-medium ${passErrColor}`}>{passErr}</p>}
                     </div>
-                    <div className="flex justify-between items-center mt-6">
-                        <button onClick={() => setModalOpen(false)} className="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-800 transition-colors">
+                    <div className="flex justify-end gap-3 border-t border-border bg-surface-muted px-5 py-4">
+                        <button onClick={() => setModalOpen(false)} className="inline-flex items-center justify-center rounded-md px-4 py-2.5 text-sm font-semibold text-gray-600 hover:bg-gray-100 hover:text-gray-900">
                             Cancel
                         </button>
                         <button
                             id="passwrd"
                             onClick={handleSave}
                             disabled={saveDisabled || saving}
-                            className="px-5 py-2 text-sm font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                            className="inline-flex items-center justify-center rounded-md bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-50"
                         >
                             {saving ? 'Saving...' : 'Save'}
                         </button>

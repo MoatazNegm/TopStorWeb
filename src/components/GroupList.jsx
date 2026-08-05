@@ -1,38 +1,28 @@
 import React from 'react';
+import { Check, Trash2, Users, UserX } from 'lucide-react';
 import Dropdown from './Common/Dropdown';
+import Button from './Common/Button';
+import Panel from './Common/Panel';
 
 const GroupList = ({ groups, users, onUpdateMembers, onDelete }) => {
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 relative group hover:shadow-md transition-all duration-300 mt-8">
-            {/* Theme Accent Line */}
-            <div className="absolute top-0 bottom-0 left-0 w-1.5 bg-indigo-500 rounded-l-2xl shadow-[2px_0_10px_rgba(99,102,241,0.2)]"></div>
-
-            <div className="px-6 py-5 border-b border-gray-50 bg-gray-50/30 flex justify-between items-center">
-                <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600">
-                        <i className="fas fa-users"></i>
-                    </div>
-                    <div>
-                        <h3 className="text-lg font-bold text-gray-800 tracking-tight">System Groups Directory</h3>
-                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mt-0.5">Permissions & Access Control</p>
-                    </div>
-                </div>
-                <div className="px-4 py-1.5 bg-indigo-50 text-indigo-700 rounded-full text-xs font-bold border border-indigo-100 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
-                    {groups.length} Active Groups
-                </div>
-            </div>
-
+        <Panel
+            icon={<Users size={17} />}
+            title="System Groups Directory"
+            subtitle="Permissions and access control"
+            bodyClass="p-0"
+            footer={<p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Directory Services</p>}
+        >
             <div className="overflow-x-auto">
-                <table className="w-full text-left">
-                    <thead>
-                        <tr className="bg-gray-50/50 border-b border-gray-100">
-                            <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-wider">Group Name</th>
-                            <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-wider">Members</th>
-                            <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-wider text-right">Actions</th>
+                <table className="min-w-[760px] w-full text-left">
+                    <thead className="bg-surface-muted">
+                        <tr className="border-b border-border">
+                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Group Name</th>
+                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Members</th>
+                            <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Actions</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-50">
+                    <tbody className="divide-y divide-border">
                         {groups.map((group) => (
                             <GroupRow
                                 key={group.name}
@@ -44,12 +34,12 @@ const GroupList = ({ groups, users, onUpdateMembers, onDelete }) => {
                         ))}
                         {groups.length === 0 && (
                             <tr>
-                                <td colSpan="3" className="text-center py-20 text-gray-400">
-                                    <div className="flex flex-col items-center gap-4">
-                                        <div className="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center text-3xl">
-                                            <i className="fas fa-users-slash opacity-20"></i>
-                                        </div>
-                                        <p className="font-bold">No groups found in system</p>
+                                <td colSpan="3" className="py-12 text-center text-gray-500">
+                                    <div className="flex flex-col items-center gap-3">
+                                        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-surface-muted text-gray-400">
+                                            <UserX size={20} />
+                                        </span>
+                                        <p className="text-sm font-medium">No groups found in system</p>
                                     </div>
                                 </td>
                             </tr>
@@ -58,26 +48,26 @@ const GroupList = ({ groups, users, onUpdateMembers, onDelete }) => {
                 </table>
             </div>
 
-            <div className="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex justify-between items-center">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Directory Services v2.0</p>
+            <div className="border-t border-border bg-surface-muted px-5 py-3">
+                <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-gray-600">
+                    <span className="h-2 w-2 rounded-full bg-brand-500" />
+                    {groups.length} Active Groups
+                </div>
             </div>
-        </div>
+        </Panel>
     );
 };
 
 const GroupRow = ({ group, allUsers, onUpdateMembers, onDelete }) => {
-    // API always returns group.users as an integer array: [1,3] or ["NoUser"]
     const initialMembers = React.useMemo(() => {
         if (!group.users) return [];
         const arr = Array.isArray(group.users) ? group.users : [group.users];
-        return arr.map(String).filter(u => u !== '' && u !== 'NoUser');
+        return arr.map(String).filter((u) => u !== '' && u !== 'NoUser');
     }, [group.users]);
 
     const [selectedUsers, setSelectedUsers] = React.useState(initialMembers);
     const [hasChanges, setHasChanges] = React.useState(false);
 
-    // Stable key derived from server data — changes only when server membership actually changes,
-    // not on every poll cycle that creates new array references with same content.
     const usersKey = React.useMemo(() => [...initialMembers].sort().join(','), [initialMembers]);
 
     React.useEffect(() => {
@@ -98,18 +88,19 @@ const GroupRow = ({ group, allUsers, onUpdateMembers, onDelete }) => {
     };
 
     const isEveryoneGroup = group.name === 'Everyone';
+    const initial = group.name?.charAt(0)?.toUpperCase() || 'G';
 
     return (
-        <tr className="hover:bg-indigo-50/10 transition-colors group/row">
-            <td className="px-6 py-5">
+        <tr className="transition-colors hover:bg-gray-50/60">
+            <td className="px-5 py-4">
                 <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-indigo-500 font-bold text-sm border-2 border-white shadow-sm">
-                        <i className="fas fa-users text-xs"></i>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-surface-muted text-xs font-semibold text-brand-600">
+                        {initial}
                     </div>
-                    <span className="font-bold text-gray-700">{group.name}</span>
+                    <span className="text-sm font-semibold text-gray-800">{group.name}</span>
                 </div>
             </td>
-            <td className="px-6 py-5 min-w-[300px]">
+            <td className="min-w-[300px] px-5 py-4">
                 <div className="flex items-center gap-3">
                     <div className="flex-1">
                         <Dropdown
@@ -118,27 +109,27 @@ const GroupRow = ({ group, allUsers, onUpdateMembers, onDelete }) => {
                             value={selectedUsers}
                             onChange={handleUserChange}
                             disabled={isEveryoneGroup}
-                            placeholder="Select Users..."
+                            placeholder="Select users"
                         />
                     </div>
                     {hasChanges && (
-                        <button
-                            onClick={handleUpdate}
-                            className="p-2.5 bg-emerald-50 text-emerald-600 rounded-xl hover:bg-emerald-600 hover:text-white transition-all shadow-sm border border-emerald-100 flex-shrink-0 animate-bounce"
-                            title="Apply Changes"
-                        >
-                            <i className="fas fa-check"></i>
-                        </button>
+                        <Button onClick={handleUpdate} size="sm" icon={<Check size={14} />}>
+                            Apply
+                        </Button>
                     )}
                 </div>
             </td>
-            <td className="px-6 py-5 text-right">
+            <td className="px-5 py-4 text-right">
                 <button
                     onClick={() => onDelete(group.name)}
-                    className={`w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center transition-all border border-transparent ${isEveryoneGroup ? 'opacity-20 cursor-not-allowed' : 'text-gray-400 hover:bg-rose-50 hover:text-rose-600 hover:shadow-lg hover:shadow-rose-100 hover:border-rose-100'}`}
+                    className={`inline-flex h-9 w-9 items-center justify-center rounded-md border transition-colors ${
+                        isEveryoneGroup
+                            ? 'cursor-not-allowed border-border bg-gray-100 text-gray-300'
+                            : 'border-border bg-surface text-gray-500 hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600'
+                    }`}
                     disabled={isEveryoneGroup}
                 >
-                    <i className="fas fa-trash-alt"></i>
+                    <Trash2 size={15} />
                 </button>
             </td>
         </tr>

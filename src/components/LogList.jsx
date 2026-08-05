@@ -1,50 +1,63 @@
 import React from 'react';
+import {
+    AlertTriangle,
+    CheckCircle2,
+    ClipboardList,
+    History,
+    Info,
+    Server,
+    UserCircle,
+    XCircle,
+} from 'lucide-react';
+import Panel from './Common/Panel';
 
 const LogList = ({ logs }) => {
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative group hover:shadow-md transition-all duration-300 mt-4">
-            {/* Theme Accent Line */}
-            <div className="absolute top-0 bottom-0 left-0 w-1.5 bg-blue-500 shadow-[2px_0_10px_rgba(59,130,246,0.2)]"></div>
-
-            <div className="px-6 py-3 border-b border-gray-50 bg-gray-50/30 flex justify-between items-center">
-                <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
-                        <i className="fas fa-clipboard-list"></i>
-                    </div>
-                    <div>
-                        <h3 className="text-lg font-bold text-gray-800 tracking-tight">System Event Logs</h3>
-                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mt-0.5">Real-time system monitoring & audit trail</p>
-                    </div>
+        <Panel
+            icon={<ClipboardList size={17} />}
+            title="System Event Logs"
+            subtitle="Real-time system monitoring and audit trail"
+            bodyClass="p-0"
+            footer={
+                <div className="flex items-center justify-between">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Storage Audit System</p>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-success-600">
+                        <CheckCircle2 size={13} />
+                        Monitoring Active
+                    </span>
                 </div>
-                <div className="px-4 py-1.5 bg-blue-50 text-blue-700 rounded-full text-xs font-bold border border-blue-100 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+            }
+        >
+            <div className="border-b border-border bg-surface-muted px-5 py-3">
+                <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-gray-600">
+                    <span className="h-2 w-2 rounded-full bg-brand-500" />
                     {logs.length} Total Events
                 </div>
             </div>
 
             <div className="overflow-x-auto">
-                <table className="w-full text-left">
-                    <thead>
-                        <tr className="bg-gray-50/50 border-b border-gray-100">
-                            <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-wider">Timestamp</th>
-                            <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-wider">Identity</th>
-                            <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-wider">Event Details</th>
-                            <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-wider text-center">Severity</th>
-                            <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-wider text-right">Code</th>
+                <table className="min-w-[880px] w-full text-left">
+                    <thead className="bg-surface-muted">
+                        <tr className="border-b border-border">
+                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Timestamp</th>
+                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Identity</th>
+                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Event Details</th>
+                            <th className="px-5 py-3 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Severity</th>
+                            <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Code</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-50">
+                    <tbody className="divide-y divide-border">
                         {logs.map((log, index) => (
                             <LogRow key={`${log.date}-${log.time}-${index}`} log={log} />
                         ))}
                         {logs.length === 0 && (
                             <tr>
-                                <td colSpan="5" className="text-center py-20 text-gray-400">
-                                    <div className="flex flex-col items-center gap-4">
-                                        <div className="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center text-3xl">
-                                            <i className="fas fa-history opacity-20"></i>
-                                        </div>
-                                        <p className="font-bold">No system logs available</p>
+                                <td colSpan="5" className="py-12 text-center text-gray-500">
+                                    <div className="flex flex-col items-center gap-3">
+                                        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-surface-muted text-gray-400">
+                                            <History size={20} />
+                                        </span>
+                                        <p className="text-sm font-medium">No system logs available</p>
                                     </div>
                                 </td>
                             </tr>
@@ -52,16 +65,7 @@ const LogList = ({ logs }) => {
                     </tbody>
                 </table>
             </div>
-
-            <div className="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex justify-between items-center">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Storage Audit System v2.0</p>
-                <div className="flex gap-4">
-                    <span className="flex items-center gap-1.5 text-[10px] font-black text-gray-300 uppercase italic">
-                        <i className="fas fa-check-circle"></i> Monitoring Active
-                    </span>
-                </div>
-            </div>
-        </div>
+        </Panel>
     );
 };
 
@@ -70,27 +74,27 @@ const LogRow = ({ log }) => {
         switch (type?.toLowerCase()) {
             case 'error':
                 return {
-                    bg: 'bg-rose-50',
-                    text: 'text-rose-600',
-                    border: 'border-rose-100',
-                    icon: 'fa-exclamation-circle',
-                    row: 'bg-rose-50/30 hover:bg-rose-50/50'
+                    bg: 'bg-danger-50',
+                    text: 'text-danger-600',
+                    border: 'border-danger-100',
+                    icon: <XCircle size={12} />,
+                    row: 'bg-danger-50/40 hover:bg-danger-50/60'
                 };
             case 'warning':
                 return {
-                    bg: 'bg-amber-50',
-                    text: 'text-amber-600',
-                    border: 'border-amber-100',
-                    icon: 'fa-exclamation-triangle',
-                    row: 'bg-amber-50/30 hover:bg-amber-50/50'
+                    bg: 'bg-warning-50',
+                    text: 'text-warning-600',
+                    border: 'border-warning-100',
+                    icon: <AlertTriangle size={12} />,
+                    row: 'bg-warning-50/40 hover:bg-warning-50/60'
                 };
             default:
                 return {
-                    bg: 'bg-blue-50',
-                    text: 'text-blue-600',
-                    border: 'border-blue-100',
-                    icon: 'fa-info-circle',
-                    row: 'hover:bg-blue-50/10'
+                    bg: 'bg-info-50',
+                    text: 'text-info-600',
+                    border: 'border-info-100',
+                    icon: <Info size={12} />,
+                    row: 'hover:bg-gray-50/60'
                 };
         }
     };
@@ -98,38 +102,38 @@ const LogRow = ({ log }) => {
     const styles = getSeverityStyles(log.type);
 
     return (
-        <tr className={`${styles.row} transition-colors group/row`}>
-            <td className="px-6 py-4 whitespace-nowrap">
+        <tr className={`${styles.row} transition-colors`}>
+            <td className="whitespace-nowrap px-5 py-4">
                 <div className="flex flex-col">
-                    <span className="font-bold text-gray-700 text-sm">{log.date}</span>
-                    <span className="text-xs text-gray-400 font-medium">{log.time}</span>
+                    <span className="text-sm font-semibold text-gray-800">{log.date}</span>
+                    <span className="text-xs font-medium text-gray-500">{log.time}</span>
                 </div>
             </td>
-            <td className="px-6 py-4 whitespace-nowrap">
+            <td className="whitespace-nowrap px-5 py-4">
                 <div className="flex flex-col">
                     <div className="flex items-center gap-2">
-                        <i className="fas fa-user-circle text-gray-300 text-xs"></i>
-                        <span className="font-bold text-gray-700 text-xs">{log.user}</span>
+                        <UserCircle size={13} className="text-gray-400" />
+                        <span className="text-xs font-semibold text-gray-700">{log.user}</span>
                     </div>
                     <div className="flex items-center gap-2 mt-1">
-                        <i className="fas fa-server text-gray-300 text-[10px]"></i>
-                        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-tight">{log.host}</span>
+                        <Server size={12} className="text-gray-400" />
+                        <span className="text-xs font-medium uppercase tracking-wide text-gray-500">{log.host}</span>
                     </div>
                 </div>
             </td>
-            <td className="px-6 py-4">
-                <p className="text-sm font-medium text-gray-600 leading-relaxed max-w-xl">
+            <td className="px-5 py-4">
+                <p className="max-w-xl text-sm text-gray-700">
                     {log.msgbody}
                 </p>
             </td>
-            <td className="px-6 py-4 text-center">
-                <span className={`inline-flex items-center gap-1.5 px-3 py-1 ${styles.bg} ${styles.text} rounded-lg text-[10px] font-black uppercase tracking-widest border ${styles.border} shadow-sm`}>
-                    <i className={`fas ${styles.icon}`}></i>
+            <td className="px-5 py-4 text-center">
+                <span className={`inline-flex items-center gap-1.5 rounded-sm border px-3 py-1 text-xs font-semibold uppercase tracking-wide ${styles.bg} ${styles.text} ${styles.border}`}>
+                    {styles.icon}
                     {log.type}
                 </span>
             </td>
-            <td className="px-6 py-4 text-right">
-                <span className="text-xs font-mono font-bold text-gray-300 bg-gray-50 px-2 py-1 rounded border border-gray-100">
+            <td className="px-5 py-4 text-right">
+                <span className="rounded-sm border border-border bg-surface-muted px-2 py-1 font-mono text-xs font-semibold text-gray-500">
                     {log.msgcode}
                 </span>
             </td>

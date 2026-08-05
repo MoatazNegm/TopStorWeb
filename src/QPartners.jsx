@@ -3,7 +3,7 @@ import { fetchPartnerList, addPartner, deletePartner } from './api/partners';
 import Button from './components/Common/Button';
 import Input from './components/Common/Input';
 import Dropdown from './components/Common/Dropdown';
-import { Users, Globe, Hash, Key, Trash2, PlusCircle, RefreshCw, HandHelping } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Globe, HandHelping, Hash, Key, PlusCircle, RefreshCw, Trash2, Users } from 'lucide-react';
 
 const QPartners = () => {
     const [partners, setPartners] = useState([]);
@@ -98,8 +98,12 @@ const QPartners = () => {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center min-h-[400px]">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600"></div>
+            <div className="content-wrapper">
+                <div className="floating-canvas">
+                    <div className="flex min-h-[400px] items-center justify-center">
+                        <div className="h-10 w-10 animate-spin rounded-full border-2 border-brand-200 border-t-brand-600" />
+                    </div>
+                </div>
             </div>
         );
     }
@@ -107,43 +111,39 @@ const QPartners = () => {
     return (
         <div className="content-wrapper">
             <div className="floating-canvas">
-                <div className="content-header px-4">
-                    <div className="container-fluid">
-                        <div className="flex justify-between items-center mb-10">
+                <div className="p-5">
+                    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+                        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                             <div>
-                                <h1 className="text-2xl font-black text-gray-800 tracking-tight">Partner Ecosystem</h1>
-                                <p className="text-xs text-gray-400 mt-0.5 font-medium uppercase tracking-wider">Manage replication partners and secure communication channels</p>
+                                <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Partner Ecosystem</h1>
+                                <p className="mt-1 text-sm text-gray-500">Manage replication partners and secure communication channels</p>
                             </div>
                             <Button
                                 onClick={() => loadPartners()}
-                                bgColor="bg-white"
-                                textColor="text-gray-400"
-                                className="border border-gray-100 hover:text-indigo-500 rounded-xl shadow-sm transition-all"
-                                icon={<RefreshCw size={16} className={loading ? 'animate-spin' : ''} />}
-                            />
+                                variant="secondary"
+                                icon={<RefreshCw size={15} className={loading ? 'animate-spin' : ''} />}
+                            >
+                                Sync Now
+                            </Button>
                         </div>
 
                         {message.text && (
-                            <div className={`mb-8 p-4 rounded-2xl flex items-center gap-3 text-sm font-bold animate-in fade-in slide-in-from-top-4 ${message.type === 'success' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-rose-50 text-rose-600 border border-rose-100'}`}>
-                                <i className={`fas ${message.type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}`}></i>
+                            <div className={`mt-6 flex items-center gap-2 rounded-lg border px-4 py-3 text-sm font-medium ${message.type === 'success' ? 'border-success-100 bg-success-50 text-success-600' : 'border-danger-100 bg-danger-50 text-danger-600'}`}>
+                                {message.type === 'success' ? <CheckCircle2 size={15} /> : <AlertTriangle size={15} />}
                                 {message.text}
                             </div>
                         )}
 
-                        <div className="flex flex-col gap-8">
-                            {/* New Partner Form */}
-                            <div>
-                                <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100 relative group">
-                                    <div className="absolute top-0 bottom-0 left-0 w-1.5 bg-indigo-500 rounded-l-xl shadow-[2px_0_10px_rgba(99,102,241,0.2)]"></div>
-
-                                    <div className="flex items-center gap-3 mb-6">
-                                        <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-500 flex items-center justify-center shadow-sm">
-                                            <HandHelping size={20} />
-                                        </div>
-                                        <h3 className="text-lg font-bold text-gray-800 tracking-tight">Provision Partner</h3>
+                        <div className="mt-6 space-y-6">
+                            <div className="rounded-lg border border-border bg-surface p-5 shadow-sm">
+                                <div className="mb-5 flex items-center gap-3">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-50 text-brand-600">
+                                        <HandHelping size={17} />
                                     </div>
+                                    <h3 className="text-base font-semibold text-gray-800">Provision Partner</h3>
+                                </div>
 
-                                    <form onSubmit={handleAddPartner} className="space-y-6">
+                                <form onSubmit={handleAddPartner} className="space-y-5">
                                         <Dropdown
                                             label="Partner Type"
                                             options={[
@@ -195,8 +195,7 @@ const QPartners = () => {
                                         <div className="pt-4 border-t border-gray-50">
                                             <Button
                                                 type="submit"
-                                                className="w-full py-3 text-[10px] font-black uppercase tracking-[0.2em] shadow-md shadow-indigo-100 transition-all hover:-translate-y-0.5"
-                                                bgColor="bg-indigo-600"
+                                                className="w-full sm:w-auto"
                                                 disabled={!canSubmit || actionLoading === 'add'}
                                                 icon={<PlusCircle size={16} />}
                                                 onClick={handleAddPartner}
@@ -205,70 +204,69 @@ const QPartners = () => {
                                             </Button>
                                         </div>
                                     </form>
-                                </div>
                             </div>
 
-                            {/* Partner List */}
-                            <div>
-                                <div className="bg-white rounded-xl shadow-sm border border-gray-100 relative group overflow-visible">
-                                    <div className="absolute top-0 bottom-0 left-0 w-1.5 bg-indigo-500 rounded-l-xl shadow-[2px_0_10px_rgba(99,102,241,0.2)]"></div>
-
-                                    <div className="px-8 py-6 border-b border-gray-50 flex justify-between items-center bg-gray-50/30 rounded-t-xl">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-500 flex items-center justify-center">
-                                                <i className="fas fa-list-ul text-xs"></i>
-                                            </div>
-                                            <h3 className="text-lg font-bold text-gray-800 tracking-tight">Active Relationships</h3>
-                                        </div>
-                                        <span className="px-3 py-1 bg-white border border-gray-100 rounded-full text-[10px] font-black text-gray-400 uppercase tracking-widest shadow-sm">
-                                            {partners.length} Total
+                            <div className="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
+                                <div className="flex items-center justify-between gap-4 border-b border-border px-5 py-4">
+                                    <div className="flex items-center gap-3">
+                                        <span className="flex h-9 w-9 items-center justify-center rounded-md bg-brand-50 text-brand-600">
+                                            <Users size={16} />
                                         </span>
+                                        <div>
+                                            <h3 className="text-base font-semibold text-gray-800">Active Relationships</h3>
+                                            <p className="text-sm text-gray-500">Configured replication partners</p>
+                                        </div>
                                     </div>
+                                    <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-muted px-3 py-1 text-xs font-medium text-gray-600">
+                                        <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
+                                        {partners.length} Total
+                                    </span>
+                                </div>
 
-                                    <div className="p-0 overflow-x-auto">
-                                        <table className="w-full text-left border-collapse">
-                                            <thead>
-                                                <tr className="bg-gray-50/50">
-                                                    <th className="px-8 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100">Alias</th>
-                                                    <th className="px-8 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100">Network Info</th>
-                                                    <th className="px-8 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100 text-center">Type</th>
-                                                    <th className="px-8 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100 text-right">Actions</th>
+                                <div className="overflow-x-auto">
+                                        <table className="min-w-[760px] w-full text-left">
+                                            <thead className="bg-surface-muted">
+                                                <tr className="border-b border-border">
+                                                    <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Alias</th>
+                                                    <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Network Info</th>
+                                                    <th className="px-5 py-3 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Type</th>
+                                                    <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody className="divide-y divide-gray-50">
+                                            <tbody className="divide-y divide-border">
                                                 {partners.map((partner, index) => (
-                                                    <tr key={index} className="hover:bg-gray-50/50 transition-colors group">
-                                                        <td className="px-8 py-4">
+                                                    <tr key={index} className="group transition-colors hover:bg-gray-50/60">
+                                                        <td className="px-5 py-4">
                                                             <div className="flex items-center gap-3">
-                                                                <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-[10px] font-bold shadow-sm">
+                                                                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-50 text-xs font-semibold text-brand-600">
                                                                     {partner.alias.charAt(0).toUpperCase()}
                                                                 </div>
-                                                                <span className="font-bold text-gray-700 text-sm">{partner.alias.split('_')[0]}</span>
+                                                                <span className="text-sm font-semibold text-gray-800">{partner.alias.split('_')[0]}</span>
                                                             </div>
                                                         </td>
-                                                        <td className="px-8 py-4">
+                                                        <td className="px-5 py-4">
                                                             <div className="flex flex-col">
-                                                                <span className="text-sm font-semibold text-gray-600">{partner.ip}</span>
-                                                                <span className="text-[10px] font-medium text-gray-400 uppercase tracking-tighter">Port: {partner.port}</span>
+                                                                <span className="text-sm text-gray-700">{partner.ip}</span>
+                                                                <span className="text-xs font-medium uppercase tracking-wide text-gray-500">Port: {partner.port}</span>
                                                             </div>
                                                         </td>
-                                                        <td className="px-8 py-4 text-center">
-                                                            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${partner.type === 'Dual way' ? 'bg-indigo-50 text-indigo-600 border border-indigo-100' :
-                                                                partner.type === 'Sender' ? 'bg-blue-50 text-blue-600 border border-blue-100' :
-                                                                    'bg-emerald-50 text-emerald-600 border border-emerald-100'
+                                                        <td className="px-5 py-4 text-center">
+                                                            <span className={`inline-flex rounded-sm border px-3 py-1 text-xs font-semibold uppercase tracking-wide ${partner.type === 'Dual way' ? 'border-brand-100 bg-brand-50 text-brand-700' :
+                                                                partner.type === 'Sender' ? 'border-info-100 bg-info-50 text-info-600' :
+                                                                    'border-success-100 bg-success-50 text-success-600'
                                                                 }`}>
                                                                 {partner.type}
                                                             </span>
                                                         </td>
-                                                        <td className="px-8 py-4 text-right">
+                                                        <td className="px-5 py-4 text-right">
                                                             <button
                                                                 onClick={() => handleDeletePartner(partner.alias)}
                                                                 disabled={actionLoading === `delete-${partner.alias}`}
-                                                                className="w-9 h-9 rounded-xl bg-rose-50 text-rose-500 flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all shadow-sm hover:shadow-rose-100"
+                                                                className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600"
                                                                 title="Delete Partner"
                                                             >
                                                                 {actionLoading === `delete-${partner.alias}` ? (
-                                                                    <div className="w-4 h-4 border-2 border-rose-200 border-t-rose-500 rounded-full animate-spin"></div>
+                                                                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-danger-100 border-t-danger-600" />
                                                                 ) : (
                                                                     <Trash2 size={14} />
                                                                 )}
@@ -279,14 +277,14 @@ const QPartners = () => {
                                                 ))}
                                                 {partners.length === 0 && (
                                                     <tr>
-                                                        <td colSpan="4" className="px-8 py-20 text-center">
+                                                        <td colSpan="4" className="px-5 py-14 text-center">
                                                             <div className="flex flex-col items-center gap-4">
-                                                                <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center text-gray-200">
-                                                                    <HandHelping size={32} />
+                                                                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-surface-muted text-gray-400">
+                                                                    <HandHelping size={18} />
                                                                 </div>
                                                                 <div>
-                                                                    <p className="text-sm font-bold text-gray-400 uppercase tracking-[0.2em]">No Partners Found</p>
-                                                                    <p className="text-xs text-gray-300 font-medium mt-1">Add a relationship to start data replication</p>
+                                                                    <p className="text-sm font-semibold text-gray-500">No partners found</p>
+                                                                    <p className="mt-1 text-xs text-gray-400">Add a relationship to start data replication</p>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -294,7 +292,6 @@ const QPartners = () => {
                                                 )}
                                             </tbody>
                                         </table>
-                                    </div>
                                 </div>
                             </div>
                         </div>

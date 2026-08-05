@@ -1,4 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import {
+    AlertTriangle,
+    Check,
+    Download,
+    ExternalLink,
+    Inbox,
+    Link as LinkIcon,
+    Package,
+    Play,
+    RefreshCw,
+    Rocket,
+    Server,
+    Share2,
+} from 'lucide-react';
 import { fetchSoftwareVersions, applySoftwareUpdate, downloadSoftware } from './api/software';
 import Button from './components/Common/Button';
 import Input from './components/Common/Input';
@@ -65,116 +79,95 @@ const QUpdates = () => {
     return (
         <div className="content-wrapper">
             <div className="floating-canvas">
-                <div className="content-header px-4">
-                    <div className="container-fluid">
-                        <div className="flex justify-between items-center mb-8">
+                <div className="p-5">
+                    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+                        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                             <div>
-                                <h1 className="text-3xl font-black text-gray-800 tracking-tight">Software Infrastructure</h1>
-                                <p className="text-gray-500 mt-1 font-medium">Manage system versions and acquire new update packages</p>
+                                <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Software Updates</h1>
+                                <p className="mt-1 text-sm text-gray-500">Manage system versions and acquire new update packages</p>
                             </div>
-                            <div className="flex gap-3">
-                                <Button
-                                    onClick={() => loadVersions()}
-                                    bgColor="bg-white"
-                                    textColor="text-gray-400"
-                                    className="border border-gray-100 hover:text-indigo-500 rounded-xl shadow-sm transition-all"
-                                    icon={<i className={`fas fa-sync-alt ${loading ? 'animate-spin' : ''}`}></i>}
-                                />
-                            </div>
+                            <Button onClick={() => loadVersions()} variant="secondary" icon={<RefreshCw size={15} />}>
+                                Sync Now
+                            </Button>
                         </div>
 
                         {message.text && (
-                            <div className={`mb-8 p-4 rounded-2xl flex items-center gap-3 text-sm font-bold animate-in fade-in slide-in-from-top-4 ${message.type === 'success' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-rose-50 text-rose-600 border border-rose-100'
+                            <div className={`mt-6 flex items-center gap-2 rounded-lg border px-4 py-3 text-sm font-medium ${message.type === 'success' ? 'border-success-100 bg-success-50 text-success-600' : 'border-danger-100 bg-danger-50 text-danger-600'
                                 }`}>
-                                <i className={`fas ${message.type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}`}></i>
+                                {message.type === 'success' ? <Check size={14} /> : <AlertTriangle size={14} />}
                                 {message.text}
                             </div>
                         )}
 
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            {/* Current Version Dashboard */}
+                        <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
                             <div className="lg:col-span-1">
-                                <div className="bg-indigo-600 rounded-[2.5rem] p-8 sm:p-10 text-white shadow-xl shadow-indigo-100 relative overflow-hidden group h-full flex flex-col">
-                                    <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-3xl transition-transform group-hover:scale-110"></div>
-                                    <div className="relative z-10 flex flex-col flex-1">
-                                        <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center mb-8">
-                                            <i className="fas fa-microchip text-xl"></i>
-                                        </div>
-                                        <div className="mt-auto">
-                                            <p className="text-indigo-100 font-black text-[10px] uppercase tracking-[0.2em] mb-2">Active Build</p>
-                                            <h2 className="text-4xl sm:text-5xl border-b border-white/10 pb-6 font-black tracking-tighter mb-6">{currentVersion}</h2>
-                                            <div className="flex items-center gap-2 px-4 py-2.5 bg-white/10 rounded-full w-fit border border-white/10">
-                                                <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-                                                <span className="text-[10px] font-bold uppercase tracking-widest text-white/90">System Optimized</span>
-                                            </div>
+                                <div className="flex h-full flex-col rounded-lg border border-border bg-brand-600 p-6 text-white">
+                                    <div className="mb-8 flex h-10 w-10 items-center justify-center rounded-md bg-white/20">
+                                        <Server size={17} />
+                                    </div>
+                                    <div className="mt-auto">
+                                        <p className="text-xs font-semibold uppercase tracking-wide text-brand-100">Active Build</p>
+                                        <h2 className="mt-2 text-4xl font-semibold tracking-tight">{currentVersion}</h2>
+                                        <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-wide">
+                                            <span className="h-2 w-2 rounded-full bg-success-500" />
+                                            System Optimized
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Update Factory */}
                             <div className="lg:col-span-2">
-                                <div className="bg-white rounded-[2.5rem] p-8 sm:p-10 shadow-sm border border-gray-100 h-full flex flex-col">
-                                    <div className="flex items-center justify-between mb-8">
+                                <div className="flex h-full flex-col rounded-lg border border-border bg-surface p-5">
+                                    <div className="mb-5 flex items-center justify-between">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-500 flex items-center justify-center">
-                                                <i className="fas fa-rocket text-lg"></i>
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-50 text-brand-600">
+                                                <Rocket size={17} />
                                             </div>
-                                            <h3 className="text-xl font-black text-gray-800 tracking-tight">Update Factory</h3>
+                                            <h3 className="text-base font-semibold text-gray-800">Update Factory</h3>
                                         </div>
                                     </div>
 
-                                    <div className="flex-1 flex flex-col">
+                                    <div className="flex flex-1 flex-col">
                                         <div className="flex-1">
-                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1 mb-4 block">Available Packages</label>
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Available Packages</p>
+                                            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                                 {versions.map((v, idx) => (
-                                                    <div
+                                                    <button
+                                                        type="button"
                                                         key={idx}
                                                         onClick={() => setSelectedVersion(v.text)}
-                                                        className={`p-5 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-between group ${selectedVersion === v.text
-                                                            ? 'bg-indigo-50 border-indigo-600 shadow-sm'
-                                                            : 'bg-gray-50 border-transparent hover:bg-white hover:border-indigo-100 hover:shadow-sm'
+                                                        className={`group flex items-center justify-between rounded-md border px-4 py-3 text-left transition-colors ${selectedVersion === v.text
+                                                            ? 'border-brand-500 bg-brand-50'
+                                                            : 'border-border bg-surface-muted hover:border-brand-100 hover:bg-surface'
                                                             }`}
                                                     >
                                                         <div className="flex items-center gap-4">
-                                                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${selectedVersion === v.text ? 'bg-indigo-600 text-white' : 'bg-white text-gray-400 group-hover:text-indigo-500 shadow-sm'}`}>
-                                                                <i className="fas fa-box-open text-sm"></i>
+                                                            <div className={`flex h-8 w-8 items-center justify-center rounded-md ${selectedVersion === v.text ? 'bg-brand-600 text-white' : 'bg-surface text-brand-600'}`}>
+                                                                <Package size={14} />
                                                             </div>
-                                                            <span className={`font-bold text-sm ${selectedVersion === v.text ? 'text-indigo-800' : 'text-gray-700'}`}>{v.text}</span>
+                                                            <span className={`text-sm font-semibold ${selectedVersion === v.text ? 'text-brand-700' : 'text-gray-700'}`}>{v.text}</span>
                                                         </div>
-                                                        {selectedVersion === v.text && <i className="fas fa-check-circle text-indigo-600 text-lg"></i>}
-                                                    </div>
+                                                        {selectedVersion === v.text && <Check size={16} className="text-brand-600" />}
+                                                    </button>
                                                 ))}
                                                 {versions.length === 0 && (
-                                                    <div className="col-span-1 sm:col-span-2 py-10 text-center bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
-                                                        <div className="w-12 h-12 mx-auto bg-white rounded-full flex items-center justify-center shadow-sm mb-3">
-                                                            <i className="fas fa-inbox text-gray-300"></i>
-                                                        </div>
-                                                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">No update packages found</p>
+                                                    <div className="col-span-1 rounded-md border border-dashed border-border bg-surface-muted py-10 text-center sm:col-span-2">
+                                                        <span className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-surface text-gray-400">
+                                                            <Inbox size={16} />
+                                                        </span>
+                                                        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">No update packages found</p>
                                                     </div>
                                                 )}
                                             </div>
                                         </div>
 
-                                        <div className="flex justify-end pt-8 mt-6 border-t border-gray-50">
+                                        <div className="mt-5 flex justify-end border-t border-border pt-4">
                                             <Button
                                                 onClick={handleUpdate}
                                                 disabled={!selectedVersion || actionLoading === 'update'}
-                                                bgColor="bg-indigo-600"
-                                                className="px-8 py-3.5 font-black text-xs uppercase tracking-widest shadow-lg shadow-indigo-100 transition-all hover:-translate-y-0.5 flex items-center gap-3"
+                                                icon={actionLoading === 'update' ? <RefreshCw size={14} className="animate-spin" /> : <Play size={14} />}
                                             >
-                                                {actionLoading === 'update' ? (
-                                                    <>
-                                                        <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                                                        Applying...
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <i className="fas fa-play text-[10px]"></i>
-                                                        Apply Selection
-                                                    </>
-                                                )}
+                                                {actionLoading === 'update' ? 'Applying...' : 'Apply Selection'}
                                             </Button>
                                         </div>
                                     </div>
@@ -182,32 +175,29 @@ const QUpdates = () => {
                             </div>
                         </div>
 
-                        {/* Package Acquisition Section */}
-                        <div className="mt-8 bg-white rounded-[2.5rem] p-8 shadow-sm border border-gray-100">
-                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-8">
+                        <div className="mt-6 rounded-lg border border-border bg-surface p-5">
+                            <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-500 flex items-center justify-center">
-                                        <i className="fas fa-cloud-download-alt text-xs"></i>
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-50 text-brand-600">
+                                        <Download size={16} />
                                     </div>
                                     <div>
-                                        <h3 className="text-lg font-black text-gray-800 tracking-tight">Package Acquisition</h3>
-                                        <p className="text-xs text-gray-400 font-medium">Download updates from remote or local sources</p>
+                                        <h3 className="text-base font-semibold text-gray-800">Package Acquisition</h3>
+                                        <p className="text-sm text-gray-500">Download updates from remote or local sources</p>
                                     </div>
                                 </div>
-                                <div className="flex bg-gray-50 p-1.5 rounded-full gap-2 w-fit border border-gray-100/50">
+                                <div className="inline-flex gap-2 rounded-full border border-border bg-surface-muted p-1">
                                     <button
                                         type="button"
                                         onClick={() => setDownloadMethod('url')}
-                                        style={{ borderRadius: '9999px' }}
-                                        className={`px-8 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${downloadMethod === 'url' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-100' : 'text-gray-400 hover:text-indigo-500 hover:bg-white'}`}
+                                        className={`rounded-full px-5 py-2 text-xs font-semibold uppercase tracking-wide transition-colors ${downloadMethod === 'url' ? 'bg-brand-600 text-white' : 'text-gray-600 hover:bg-surface hover:text-brand-600'}`}
                                     >
                                         Public URL
                                     </button>
                                     <button
                                         type="button"
                                         onClick={() => setDownloadMethod('share')}
-                                        style={{ borderRadius: '9999px' }}
-                                        className={`px-8 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${downloadMethod === 'share' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-100' : 'text-gray-400 hover:text-indigo-500 hover:bg-white'}`}
+                                        className={`rounded-full px-5 py-2 text-xs font-semibold uppercase tracking-wide transition-colors ${downloadMethod === 'share' ? 'bg-brand-600 text-white' : 'text-gray-600 hover:bg-surface hover:text-brand-600'}`}
                                     >
                                         Network Share
                                     </button>
@@ -222,28 +212,18 @@ const QUpdates = () => {
                                         value={downloadPath}
                                         onChange={(e) => setDownloadPath(e.target.value)}
                                         required
-                                        icon={<i className={`fas ${downloadMethod === 'url' ? 'fa-link' : 'fa-network-wired'} text-sm`}></i>}
+                                        icon={downloadMethod === 'url' ? <LinkIcon size={14} /> : <Share2 size={14} />}
                                     />
                                 </div>
                                 <div className="md:col-span-1">
                                     <Button
                                         type="submit"
                                         disabled={!downloadPath || actionLoading === 'download'}
-                                        bgColor="bg-white hover:bg-indigo-50"
-                                        textColor="text-indigo-600"
-                                        className="w-full py-3 border border-gray-100 hover:border-indigo-100 font-black text-xs uppercase tracking-widest transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-3"
+                                        variant="secondary"
+                                        className="w-full"
+                                        icon={actionLoading === 'download' ? <RefreshCw size={14} className="animate-spin" /> : <Download size={14} />}
                                     >
-                                        {actionLoading === 'download' ? (
-                                            <>
-                                                <div className="w-3 h-3 border-2 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
-                                                Fetching...
-                                            </>
-                                        ) : (
-                                            <>
-                                                <i className="fas fa-download text-[10px]"></i>
-                                                Fetch Package
-                                            </>
-                                        )}
+                                        {actionLoading === 'download' ? 'Fetching...' : 'Fetch Package'}
                                     </Button>
                                 </div>
                             </form>

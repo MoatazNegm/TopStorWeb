@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { AlertTriangle, FolderPlus, RefreshCw } from 'lucide-react';
 import { fetchVolumesInfo, fetchGroupList, createVolume, updateVolume, deleteVolume, fetchVolumeStats } from './api/volumes';
 import { fetchPoolsInfo } from './api/pools';
 import Button from './components/Common/Button';
@@ -118,54 +119,48 @@ const QNfs = () => {
     return (
         <div className="content-wrapper">
             <div className="floating-canvas">
-                <div className="content-header px-4">
-                    <div className="container-fluid">
-                        <div className="flex justify-between items-center mb-8">
+                <div className="p-5">
+                    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+                        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                             <div>
-                                <p className="text-lg text-gray-500 font-medium tracking-tight">Unix-compatible network share administration</p>
+                                <h1 className="text-2xl font-semibold tracking-tight text-gray-900">NFS Volumes</h1>
+                                <p className="mt-1 text-sm text-gray-500">Unix-compatible network share administration</p>
                             </div>
-                            <div className="flex gap-3">
-                                <Button
-                                    onClick={loadData}
-                                    bgColor="bg-white"
-                                    textColor="text-gray-400"
-                                    className="border border-gray-100 hover:text-blue-500 rounded-xl"
-                                    icon={<i className={`fas fa-sync-alt ${loading ? 'animate-spin' : ''}`}></i>}
-                                />
-                            </div>
+                            <Button onClick={loadData} variant="secondary" icon={<RefreshCw size={15} className={loading ? 'animate-spin' : ''} />}>
+                                Sync Now
+                            </Button>
                         </div>
 
                         {error && (
-                            <div className="mb-6 p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-center gap-3 text-rose-600 text-sm font-bold">
-                                <i className="fas fa-exclamation-circle"></i>
+                            <div className="mt-6 flex items-center gap-2 rounded-lg border border-danger-100 bg-danger-50 px-4 py-3 text-sm font-medium text-danger-600">
+                                <AlertTriangle size={16} />
                                 {error}
                             </div>
                         )}
 
-                        {/* First Row: Form + Insights */}
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                            {/* Creation Form */}
-                            <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
-                                <div className="flex items-center gap-3 mb-8">
-                                    <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-500 flex items-center justify-center">
-                                        <i className="fas fa-plus text-xs"></i>
+                        <div className="mt-6 space-y-6">
+                            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                                <div className="rounded-lg border border-border bg-surface p-5 shadow-sm">
+                                    <div className="mb-5 flex items-center gap-3">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-50 text-brand-600">
+                                            <FolderPlus size={16} />
+                                        </div>
+                                        <h3 className="text-base font-semibold text-gray-800">New Volume</h3>
                                     </div>
-                                    <h3 className="text-lg font-bold text-gray-800 tracking-tight">New Volume</h3>
-                                </div>
 
-                                <form onSubmit={handleCreate} className="space-y-6">
+                                <form onSubmit={handleCreate} className="space-y-5">
                                     <div className="grid grid-cols-2 gap-6">
                                         <Dropdown
                                             label="Storage Pool"
                                             options={pools.map((p, idx) => ({ value: idx, label: p.text }))}
                                             value={formData.pool}
-                                            placeholder="Select Pool..."
+                                            placeholder="Select pool"
                                             onChange={(val) => setFormData({ ...formData, pool: val })}
                                         />
                                         <Input
                                             label="Volume Name"
                                             required
-                                            placeholder="Share name..."
+                                            placeholder="Share name"
                                             value={formData.name}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                         />
@@ -232,10 +227,10 @@ const QNfs = () => {
                                                 onChange={(e) => setFormData({ ...formData, size: e.target.value })}
                                             />
                                             <div className="flex flex-col items-center justify-end pb-3">
-                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 block">Active</label>
+                                                <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-gray-500">Active</label>
                                                 <input
                                                     type="checkbox"
-                                                    className="w-6 h-6 rounded-lg border-gray-200 text-indigo-600 focus:ring-indigo-500 transition-all cursor-pointer"
+                                                    className="h-5 w-5 rounded border-border text-brand-600 focus:ring-brand-100"
                                                     checked={formData.active}
                                                     onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
                                                 />
@@ -249,7 +244,7 @@ const QNfs = () => {
                                             isMulti
                                             options={groups.map(g => ({ value: g.text, label: g.text }))}
                                             value={formData.groups}
-                                            placeholder="Select Groups..."
+                                            placeholder="Select groups"
                                             onChange={(val) => setFormData({ ...formData, groups: val })}
                                         />
                                     </div>
@@ -257,28 +252,26 @@ const QNfs = () => {
                                     <div className="flex justify-end">
                                         <Button
                                             type="submit"
-                                            bgColor="bg-indigo-600"
-                                            className="px-6 py-3 font-black text-xs uppercase tracking-widest shadow-lg shadow-indigo-100 transition-all hover:-translate-y-0.5"
+                                            className="w-full sm:w-auto"
                                             onClick={handleCreate}
                                         >
                                             Provision Volume
                                         </Button>
                                     </div>
                                 </form>
+                                </div>
+
+                                <VolumeInsights volumes={volumes} />
                             </div>
 
-                            {/* Volume Insights Replacement for Pie Chart */}
-                            <VolumeInsights volumes={volumes} />
-                        </div>
-
-                        {/* Second Row: Volume List */}
-                        <div className="w-full">
-                            <NfsList
-                                volumes={volumes}
-                                groups={groups}
-                                onUpdate={handleUpdate}
-                                onDelete={handleDelete}
-                            />
+                            <div className="w-full">
+                                <NfsList
+                                    volumes={volumes}
+                                    groups={groups}
+                                    onUpdate={handleUpdate}
+                                    onDelete={handleDelete}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

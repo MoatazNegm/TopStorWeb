@@ -15,27 +15,35 @@ const Input = ({
     max,
     step,
     isTextArea = false,
-    rows = 3
+    rows = 3,
+    error,
+    hint,
 }) => {
-    const baseClasses = `w-full ${icon ? 'pl-12' : 'px-4'} bg-gray-50 border-none rounded-2xl text-sm font-bold text-gray-700 placeholder-gray-300 focus:ring-2 focus:ring-indigo-500 outline-none transition-all ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100/80 focus:bg-white'}`;
-    const inputClasses = `${baseClasses} h-[46px]`;
-    const textAreaClasses = `${baseClasses} py-3 resize-none`;
+    const baseClasses = [
+        'w-full rounded-md border bg-surface text-sm text-gray-800 outline-none transition-colors',
+        icon ? 'pl-9 pr-3' : 'px-3',
+        isTextArea ? 'py-2.5' : 'h-10',
+        error
+            ? 'border-danger-500 focus:border-danger-600 focus:ring-4 focus:ring-danger-100'
+            : 'border-border focus:border-brand-500 focus:ring-4 focus:ring-brand-100',
+        disabled ? 'cursor-not-allowed bg-gray-50 text-gray-400' : 'hover:border-border-strong',
+    ].join(' ');
 
     return (
-        <div className={`space-y-2 ${className}`}>
+        <div className={`space-y-1.5 ${className}`}>
             {label && (
-                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1 block">
+                <label className="block text-sm font-medium text-gray-700" htmlFor={id}>
                     {label}
                 </label>
             )}
-            <div className="relative group">
+            <div className="relative">
                 {isTextArea ? (
                     <textarea
                         id={id}
                         required={required}
                         disabled={disabled}
                         placeholder={placeholder}
-                        className={textAreaClasses}
+                        className={`${baseClasses} resize-none`}
                         value={value}
                         onChange={onChange}
                         rows={rows}
@@ -50,17 +58,19 @@ const Input = ({
                         min={min}
                         max={max}
                         step={step}
-                        className={inputClasses}
+                        className={baseClasses}
                         value={value}
                         onChange={onChange}
                     />
                 )}
                 {icon && (
-                    <div className="absolute inset-y-0 left-0 w-12 flex items-center justify-center pointer-events-none text-gray-300 group-focus-within:text-indigo-500 transition-colors">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex w-9 items-center justify-center text-gray-400">
                         {icon}
                     </div>
                 )}
             </div>
+            {error ? <p className="text-xs font-medium text-danger-600">{error}</p> : null}
+            {!error && hint ? <p className="text-xs text-gray-500">{hint}</p> : null}
         </div>
     );
 };

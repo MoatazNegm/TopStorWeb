@@ -1,5 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Button from './Button';
+import { Check, ChevronDown, X } from 'lucide-react';
+
+const normalizeToArray = (value) => {
+    if (Array.isArray(value)) return value;
+    if (value === null || value === undefined || value === '') return [];
+    return [value];
+};
 
 const Dropdown = ({ options, value, onChange, placeholder, disabled, className = "", isMulti = false, label }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -15,14 +21,16 @@ const Dropdown = ({ options, value, onChange, placeholder, disabled, className =
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
+    const selectedMultiValues = normalizeToArray(value);
+
     const getSelectedLabel = () => {
         if (isMulti) {
-            if (!Array.isArray(value) || value.length === 0) return placeholder;
-            if (value.length === 1) {
-                const opt = options.find(o => String(o.value) === String(value[0]));
+            if (selectedMultiValues.length === 0) return placeholder;
+            if (selectedMultiValues.length === 1) {
+                const opt = options.find(o => String(o.value) === String(selectedMultiValues[0]));
                 return opt ? opt.label : placeholder;
             }
-            return `${value.length} selected`;
+            return `${selectedMultiValues.length} selected`;
         } else {
             const selectedOption = options.find(opt => String(opt.value) === String(value));
             return selectedOption ? selectedOption.label : placeholder;
@@ -31,9 +39,10 @@ const Dropdown = ({ options, value, onChange, placeholder, disabled, className =
 
     const handleSelect = (optValue) => {
         if (isMulti) {
-            const newValue = value.includes(optValue)
-                ? value.filter(v => v !== optValue)
-                : [...value, optValue];
+            const current = normalizeToArray(value);
+            const newValue = current.includes(optValue)
+                ? current.filter(v => v !== optValue)
+                : [...current, optValue];
             onChange(newValue);
         } else {
             onChange(optValue);
@@ -43,80 +52,107 @@ const Dropdown = ({ options, value, onChange, placeholder, disabled, className =
 
     const isSelected = (optValue) => {
         if (isMulti) {
-            return Array.isArray(value) && value.includes(optValue);
+            return selectedMultiValues.includes(optValue);
         }
         return String(optValue) === String(value);
     };
 
+    const removeMultiValue = (optValue) => {
+        if (!isMulti) return;
+        onChange(selectedMultiValues.filter((item) => item !== optValue));
+    };
+
     return (
-        <div className={`space-y-2 ${className}`} ref={containerRef}>
+        <div className={`space-y-1.5 ${className}`} ref={containerRef}>
             {label && (
-                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1 block">
+                <label className="block text-sm font-medium text-gray-700">
                     {label}
                 </label>
             )}
             <div className="relative">
                 <div
                     onClick={() => !disabled && setIsOpen(!isOpen)}
-                    className={`w-full px-4 h-[46px] bg-gray-50 border-none rounded-2xl text-sm font-bold text-gray-700 flex items-center justify-between cursor-pointer transition-all ${isOpen ? 'ring-2 ring-indigo-500 bg-white' : 'hover:bg-gray-100/80'
-                        } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    className={`min-h-10 w-full rounded-md border bg-surface px-3 py-2 text-sm text-gray-700 transition-colors ${
+                        isOpen ? 'border-brand-500 ring-4 ring-brand-100' : 'border-border hover:border-border-strong'
+                    } ${disabled ? 'cursor-not-allowed bg-gray-50 text-gray-400' : 'cursor-pointer'}`}
                 >
-                    <span className={(!isMulti && (!value && value !== 0)) || (isMulti && (!value || value.length === 0)) ? 'text-gray-300' : ''}>
-                        {getSelectedLabel()}
-                    </span>
-                    <i className={`fas fa-chevron-down text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} style={{ fontSize: '0.8rem' }}></i>
+                    <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5">
+                        {isMulti && selectedMultiValues.length > 0 ? (
+                            selectedMultiValues.map((selected) => {
+                                const opt = options.find((item) => String(item.value) === String(selected));
+                                const text = opt ? opt.label : String(selected);
+                                return (
+                                    <span
+                                        key={String(selected)}
+                                        className="inline-flex items-center gap-1 rounded-sm bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700"
+                                    >
+                                        {text}
+                                        {!disabled && (
+                                            <button
+                                                type="button"
+                                                className="text-brand-400 hover:text-brand-700"
+                                                onClick={(event) => {
+                                                    event.stopPropagation();
+                                                    removeMultiValue(selected);
+                                                }}
+                                            >
+                                                <X size={12} />
+                                            </button>
+                                        )}
+                                    </span>
+                                );
+                            })
+                        ) : (
+                            <span
+                                className={
+                                    (!isMulti && (!value && value !== 0)) || (isMulti && selectedMultiValues.length === 0)
+                                        ? 'text-gray-400'
+                                        : 'text-gray-700'
+                                }
+                            >
+                                {getSelectedLabel()}
+                            </span>
+                        )}
+                    </div>
+                    <ChevronDown size={16} className={`text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
                 </div>
 
                 {isOpen && (
-                    <div className="absolute top-full left-0 w-full mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 py-2 z-[100] animate-in fade-in slide-in-from-top-2 duration-200 overflow-hidden">
+                    <div className="absolute top-full left-0 z-[100] mt-2 w-full overflow-hidden rounded-md border border-border bg-surface shadow-lg">
                         <div className="max-h-60 overflow-y-auto no-scrollbar">
                             {options.length === 0 ? (
-                                <div className="px-4 py-3 text-sm text-gray-400 font-medium italic text-center">No options available</div>
+                                <div className="px-4 py-3 text-sm text-gray-500">No options available</div>
                             ) : (
                                 options.map((opt) => (
                                     <div
                                         key={opt.value}
                                         onClick={() => handleSelect(opt.value)}
-                                        className={`px-4 py-3 text-sm font-bold transition-all cursor-pointer flex items-center justify-between ${isSelected(opt.value)
-                                            ? isMulti ? 'text-indigo-600 hover:bg-indigo-50' : 'bg-indigo-600 text-white'
-                                            : 'text-gray-600 hover:bg-indigo-50 hover:text-indigo-600'
-                                            }`}
+                                        className={`flex cursor-pointer items-center justify-between px-4 py-2.5 text-sm transition-colors ${
+                                            isSelected(opt.value)
+                                                ? 'bg-brand-50 text-brand-700'
+                                                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
+                                        }`}
                                     >
                                         <div className="flex items-center gap-3">
-                                            {isMulti && (
-                                                <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${isSelected(opt.value) ? 'bg-indigo-600 border-indigo-600' : 'border-gray-200 bg-white'}`}>
-                                                    {isSelected(opt.value) && <i className="fas fa-check text-[8px] text-white"></i>}
-                                                </div>
-                                            )}
                                             <span>{opt.label}</span>
                                         </div>
-                                        {!isMulti && isSelected(opt.value) && <i className="fas fa-check text-[10px]"></i>}
+                                        {isSelected(opt.value) && <Check size={14} />}
                                     </div>
                                 ))
                             )}
                         </div>
-                        {isMulti && (
-                            <div className="p-3 border-t border-gray-50 flex justify-end bg-gray-50/50">
-                                <Button
-                                    onClick={() => setIsOpen(false)}
-                                    bgColor="bg-gray-900"
-                                    textColor="text-white"
-                                    borderRadius="rounded-xl"
-                                    className="!px-6 !py-2 text-[10px] font-black uppercase tracking-widest hover:bg-black transition-all"
-                                >
-                                    Done
-                                </Button>
-                            </div>
-                        )}
                     </div>
                 )}
             </div>
 
-            <style dangerouslySetInnerHTML={{
+                        <style
+                            dangerouslySetInnerHTML={{
                 __html: `
                 .no-scrollbar::-webkit-scrollbar { display: none; }
                 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-            `}} />
+                        `
+                            }}
+                        />
         </div>
     );
 };

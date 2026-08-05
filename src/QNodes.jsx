@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { AlertTriangle, RefreshCw } from 'lucide-react';
 import { fetchAllHostsInfo, discoverHosts } from './api/nodes';
+import Button from './components/Common/Button';
 import RunningNodes from './components/RunningNodes';
 import DiscoveredNodes from './components/DiscoveredNodes';
-import ActiveNodes from './components/ActiveNodes'; // For the "Nodes Status" / Evacuate section
-
-const HOST_STATES = ["ready", "active", "possible", "lost"];
+import ActiveNodes from './components/ActiveNodes';
 
 const QNodes = () => {
     const [hostsInfo, setHostsInfo] = useState({ ready: [], active: [], possible: [], lost: [] });
@@ -12,62 +12,50 @@ const QNodes = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Track whether the component is actively mounted
     const isMounted = useRef(true);
 
     const loadData = useCallback(async () => {
-        // Stop the loop immediately if the user navigated away
         if (!isMounted.current) return;
 
         try {
             const response = await fetchAllHostsInfo();
             if (response.data && isMounted.current) {
-                setHostsInfo(prev => {
-                    // Deep equality check — only update state if data actually changed.
+                setHostsInfo((prev) => {
                     if (JSON.stringify(prev) === JSON.stringify(response.data)) {
                         return prev;
                     }
                     return response.data;
                 });
-                setError(null); // Clear previous errors on a successful fetch
+                setError(null);
             }
         } catch (err) {
             if (isMounted.current) {
-                // Prevent spamming the console with aborted/canceled requests
                 if (err.code !== 'ERR_CANCELED' && err.message !== 'Request aborted') {
-                    console.error("Failed to load hosts", err);
+                    console.error('Failed to load hosts', err);
                 }
                 setError(err);
             }
         } finally {
-            // Schedule the next poll ONLY after this one completely finishes
             if (isMounted.current) {
                 setLoading(false);
-                setTimeout(loadData, 5000); 
+                setTimeout(loadData, 5000);
             }
         }
     }, []);
 
     useEffect(() => {
-        isMounted.current = true; // Mark component as active
-        
-        loadData(); // Kick off the self-sustaining telemetry loop
+        isMounted.current = true;
+        loadData();
 
-        // Cleanup function: runs when navigating away to instantly kill the loop
         return () => {
-            isMounted.current = false; 
+            isMounted.current = false;
         };
     }, [loadData]);
 
     const handleHostSelect = (state, hostName) => {
-        setSelectedHost(prev => {
+        setSelectedHost((prev) => {
             const newState = { ...prev };
-            // Toggle selection
-            if (newState[state] === hostName) {
-                newState[state] = null;
-            } else {
-                newState[state] = hostName;
-            }
+            newState[state] = newState[state] === hostName ? null : hostName;
             return newState;
         });
     };
@@ -77,9 +65,9 @@ const QNodes = () => {
         setLoading(true);
         try {
             await discoverHosts();
-            await loadData(); // Immediate refresh
-        } catch (e) {
-            console.error("Discovery failed", e);
+            await loadData();
+        } catch (discoverError) {
+            console.error('Discovery failed', discoverError);
         } finally {
             if (isMounted.current) {
                 setLoading(false);
@@ -93,17 +81,32 @@ const QNodes = () => {
 
 
     return (
-        <div className="content-wrapper p-4 bg-gray-100 min-h-screen">
+        <div className="content-wrapper">
             <div className="floating-canvas">
-                <div className="content-header">
-                    <div className="container-fluid">
-                        <h2 className="text-2xl font-bold mb-4">Node Status</h2>
-                    </div>
-                </div>
-                <div className="content">
-                    <div className="container-fluid">
-                        {/* Running Nodes Card */}
-                        <div className="mb-8">
+                <div className="p-5">
+                    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+                        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                            <div>
+                                <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Node Status</h1>
+                                <p className="mt-1 text-sm text-gray-500">Monitor cluster nodes, configure networking, and manage membership</p>
+                            </div>
+                            <Button onClick={refreshData} variant="secondary" icon={<RefreshCw size={15} />}>
+                                Sync Now
+                            </Button>
+                        </div>
+
+                        <div className="mt-6 space-y-6">
+                            {error && (
+                                <div className="flex items-center gap-2 rounded-lg border border-danger-100 bg-danger-50 px-4 py-3 text-sm font-medium text-danger-600">
+                                    <AlertTriangle size={16} />
+                                    <span>Failed to sync host status.</span>
+                                </div>
+                            )}
+
+                            {loading && (
+                                <div className="rounded-lg border border-border bg-surface px-4 py-6 text-sm text-gray-500">Loading nodes...</div>
+                            )}
+
                             <RunningNodes
                                 hosts={hostsInfo.ready || []}
                                 allHosts={hostsInfo.all || {}}
@@ -111,10 +114,7 @@ const QNodes = () => {
                                 onSelect={(name) => handleHostSelect('ready', name)}
                                 onRefresh={refreshData}
                             />
-                        </div>
 
-                        {/* Active Nodes / Evacuate Card */}
-                        <div className="mb-8">
                             <ActiveNodes
                                 hosts={hostsInfo.active || []}
                                 allHosts={hostsInfo.all || {}}
@@ -125,10 +125,7 @@ const QNodes = () => {
                                 possibleHostsCount={(hostsInfo.possible || []).length}
                                 onRefresh={refreshData}
                             />
-                        </div>
 
-                        {/* Discovered Nodes Card */}
-                        <div className="mb-8">
                             <DiscoveredNodes
                                 hosts={hostsInfo.possible || []}
                                 allHosts={hostsInfo.all || {}}

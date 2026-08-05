@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { AlertTriangle, RefreshCw } from 'lucide-react';
 import { fetchLogs } from './api/logs';
+import Button from './components/Common/Button';
 import LogList from './components/LogList';
 
 const QLogs = () => {
@@ -30,31 +32,34 @@ const QLogs = () => {
     return (
         <div className="content-wrapper">
             <div className="floating-canvas">
-                <div className="content-header px-4">
-                    <div className="container-fluid">
-                        <div className="flex justify-between items-center mb-2">
+                <div className="p-5">
+                    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+                        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                             <div>
-                                <p className="text-lg text-gray-500 font-medium tracking-tight">System-wide event tracking and audit oversight</p>
+                                <h1 className="text-2xl font-semibold tracking-tight text-gray-900">System Logs</h1>
+                                <p className="mt-1 text-sm text-gray-500">System-wide event tracking and audit oversight</p>
                             </div>
-                            <div className="flex gap-3">
-                                <button onClick={loadData} className="px-5 py-2.5 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-blue-600 rounded-xl font-medium shadow-sm transition-all flex items-center">
-                                    <i className="fas fa-sync-alt mr-2 opacity-70"></i> Refresh
-                                </button>
-                            </div>
+                            <Button onClick={loadData} variant="secondary" icon={<RefreshCw size={15} />}>
+                                Sync Now
+                            </Button>
                         </div>
-                    </div>
-                </div>
 
-                <div className="content px-4 pb-12">
-                    <div className="container-fluid">
+                        <div className="mt-6 space-y-6">
                         {error && (
-                            <div className="bg-rose-50 border border-rose-100 text-rose-600 px-6 py-4 rounded-2xl flex items-center gap-4 mb-4">
-                                <i className="fas fa-exclamation-triangle text-xl"></i>
-                                <span className="font-bold">{error}</span>
+                            <div className="flex items-center gap-2 rounded-lg border border-danger-100 bg-danger-50 px-4 py-3 text-sm font-medium text-danger-600">
+                                <AlertTriangle size={16} />
+                                <span>{error}</span>
+                            </div>
+                        )}
+
+                        {loading && (
+                            <div className="rounded-lg border border-border bg-surface-muted px-4 py-3 text-sm text-gray-500">
+                                Syncing logs...
                             </div>
                         )}
 
                         <LogList logs={logs} />
+                        </div>
                     </div>
                 </div>
             </div>

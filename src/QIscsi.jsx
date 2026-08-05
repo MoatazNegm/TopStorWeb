@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { AlertTriangle, FolderPlus, RefreshCw } from 'lucide-react';
 import { fetchVolumesInfo, createVolume, updateVolume, deleteVolume, fetchVolumeStats } from './api/volumes';
 import { fetchPoolsInfo } from './api/pools';
 import Button from './components/Common/Button';
@@ -111,54 +112,48 @@ const QIscsi = () => {
     return (
         <div className="content-wrapper">
             <div className="floating-canvas">
-                <div className="content-header px-4">
-                    <div className="container-fluid">
-                        <div className="flex justify-between items-center mb-8">
+                <div className="p-5">
+                    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+                        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                             <div>
-                                <p className="text-lg text-gray-500 font-medium tracking-tight">Enterprise block-level storage administration</p>
+                                <h1 className="text-2xl font-semibold tracking-tight text-gray-900">iSCSI LUNs</h1>
+                                <p className="mt-1 text-sm text-gray-500">Enterprise block-level storage administration</p>
                             </div>
-                            <div className="flex gap-3">
-                                <Button
-                                    onClick={loadData}
-                                    bgColor="bg-white"
-                                    textColor="text-gray-400"
-                                    className="border border-gray-100 hover:text-blue-500 rounded-xl"
-                                    icon={<i className={`fas fa-sync-alt ${loading ? 'animate-spin' : ''}`}></i>}
-                                />
-                            </div>
+                            <Button onClick={loadData} variant="secondary" icon={<RefreshCw size={15} className={loading ? 'animate-spin' : ''} />}>
+                                Sync Now
+                            </Button>
                         </div>
 
                         {error && (
-                            <div className="mb-6 p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-center gap-3 text-rose-600 text-sm font-bold">
-                                <i className="fas fa-exclamation-circle"></i>
+                            <div className="mt-6 flex items-center gap-2 rounded-lg border border-danger-100 bg-danger-50 px-4 py-3 text-sm font-medium text-danger-600">
+                                <AlertTriangle size={16} />
                                 {error}
                             </div>
                         )}
 
-                        {/* First Row: Form + Insights */}
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                            {/* Creation Form */}
-                            <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
-                                <div className="flex items-center gap-3 mb-8">
-                                    <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-500 flex items-center justify-center">
-                                        <i className="fas fa-layer-group text-xs"></i>
+                        <div className="mt-6 space-y-6">
+                            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                                <div className="rounded-lg border border-border bg-surface p-5 shadow-sm">
+                                    <div className="mb-5 flex items-center gap-3">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-50 text-brand-600">
+                                            <FolderPlus size={16} />
+                                        </div>
+                                        <h3 className="text-base font-semibold text-gray-800">Provision Block Device</h3>
                                     </div>
-                                    <h3 className="text-lg font-bold text-gray-800 tracking-tight">Provision Block Device</h3>
-                                </div>
 
-                                <form onSubmit={handleCreate} className="space-y-6">
+                                <form onSubmit={handleCreate} className="space-y-5">
                                     <div className="grid grid-cols-2 gap-6">
                                         <Dropdown
                                             label="Storage Pool"
                                             options={pools.map((p, idx) => ({ value: idx, label: p.text }))}
                                             value={formData.poolIndex}
-                                            placeholder="Select Pool..."
+                                            placeholder="Select pool"
                                             onChange={(val) => setFormData({ ...formData, poolIndex: val })}
                                         />
                                         <Input
                                             label="LUN Name"
                                             required
-                                            placeholder="LUN-01..."
+                                            placeholder="LUN-01"
                                             value={formData.name}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                         />
@@ -208,14 +203,14 @@ const QIscsi = () => {
                                                 <input
                                                     type="checkbox"
                                                     id="iscsiActive"
-                                                    className="w-4 h-4 rounded border-gray-200 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                                                    className="h-4 w-4 rounded border-border text-brand-600 focus:ring-brand-100"
                                                     checked={formData.active}
                                                     onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
                                                 />
                                                 <label htmlFor="iscsiActive" className="text-xs font-semibold text-gray-600 cursor-pointer">Active</label>
                                             </div>
                                         </div>
-                                        <div className="col-span-3 text-indigo-900">
+                                        <div className="col-span-3 text-gray-800">
                                             <Input
                                                 label="Initiators IQN"
                                                 isTextArea
@@ -224,33 +219,32 @@ const QIscsi = () => {
                                                 value={formData.initiators}
                                                 onChange={(e) => setFormData({ ...formData, initiators: e.target.value })}
                                             />
-                                            <span className="text-[9px] text-gray-400 ml-1 mt-1 block font-medium">Add IQNs separated by space, comma, or newline.</span>
+                                            <span className="ml-1 mt-1 block text-xs font-medium text-gray-500">Add IQNs separated by space, comma, or newline.</span>
                                         </div>
                                     </div>
 
                                     <div className="flex justify-end pt-2">
                                         <Button
                                             type="submit"
-                                            bgColor="bg-blue-600"
-                                            className="px-6 py-3 font-black text-xs uppercase tracking-widest shadow-lg shadow-blue-100 transition-all hover:-translate-y-0.5"
+                                            className="w-full sm:w-auto"
                                             onClick={handleCreate}
                                         >
                                             Create iSCSI Target
                                         </Button>
                                     </div>
                                 </form>
+                                </div>
+
+                                <VolumeInsights volumes={volumes} />
                             </div>
 
-                            <VolumeInsights volumes={volumes} />
-                        </div>
-
-                        {/* Second Row: List */}
-                        <div className="w-full">
-                            <IscsiList
-                                volumes={volumes}
-                                onUpdate={handleUpdate}
-                                onDelete={handleDelete}
-                            />
+                            <div className="w-full">
+                                <IscsiList
+                                    volumes={volumes}
+                                    onUpdate={handleUpdate}
+                                    onDelete={handleDelete}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

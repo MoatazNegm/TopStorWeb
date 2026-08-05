@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QuickStor — Design System Preview</title>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style type="text/tailwindcss">
+  @theme {
+    --font-sans: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    --font-mono: "SFMono-Regular", "JetBrains Mono", Menlo, Consolas, monospace;
+    --color-brand-50:#EEF1FD; --color-brand-100:#DCE1FB; --color-brand-200:#BAC4F6;
+    --color-brand-300:#97A6F1; --color-brand-400:#6E83EC; --color-brand-500:#495BE2;
+    --color-brand-600:#3746CC; --color-brand-700:#2D39A6; --color-brand-800:#252F85; --color-brand-900:#1F286B;
+    --color-brand:#495BE2;
+    --color-gray-50:#F7F9FB; --color-gray-100:#EFF2F6; --color-gray-200:#E2E7EE;
+    --color-gray-300:#CBD3DE; --color-gray-400:#97A2B2; --color-gray-500:#69748A;
+    --color-gray-600:#4B5567; --color-gray-700:#38414F; --color-gray-800:#232A35; --color-gray-900:#151A22;
+    --color-surface:#FFFFFF; --color-surface-muted:#F7F9FB; --color-surface-sunken:#EFF2F6;
+    --color-border:#E2E7EE; --color-border-strong:#CBD3DE; --color-canvas:#F1F4F8;
+    --color-success-50:#ECF8F2; --color-success-100:#D3EFE1; --color-success-500:#1F9D6B; --color-success-600:#198257; --color-success-700:#146646;
+    --color-warning-50:#FDF6EC; --color-warning-100:#FAE9CC; --color-warning-500:#C77A12; --color-warning-600:#A6640D; --color-warning-700:#84500B;
+    --color-danger-50:#FCEDED; --color-danger-100:#F8D6D6; --color-danger-500:#D64545; --color-danger-600:#B83838; --color-danger-700:#962E2E;
+    --color-info-50:#EEF1FD; --color-info-100:#DCE1FB; --color-info-500:#495BE2; --color-info-600:#3746CC; --color-info-700:#2D39A6;
+    --radius-sm:6px; --radius-md:8px; --radius-lg:12px; --radius-xl:16px; --radius-2xl:16px;
+    --shadow-xs:0 1px 2px rgba(16,24,40,0.04);
+    --shadow-sm:0 1px 2px rgba(16,24,40,0.05);
+    --shadow-md:0 1px 3px rgba(16,24,40,0.06),0 1px 2px rgba(16,24,40,0.04);
+    --shadow-lg:0 8px 24px rgba(16,24,40,0.08);
+    --shadow-xl:0 12px 32px rgba(16,24,40,0.10);
+  }
+</style>
+<style>
+  body { background: var(--color-canvas); }
+  [data-lucide] { display:inline-block; vertical-align:middle; }
+  .app-sidebar { transition: transform .25s ease; }
+  .sidebar-backdrop { position:fixed; inset:0; z-index:40; background:rgba(21,26,34,.45); opacity:0; visibility:hidden; transition:opacity .25s ease, visibility .25s ease; }
+  @media (min-width:1024px){ .sidebar-backdrop{ display:none; } }
+  @media (max-width:1023.98px){
+    .app-sidebar{ transform:translateX(-100%); box-shadow:var(--shadow-lg); }
+    body.sidebar-mobile-open .app-sidebar{ transform:translateX(0); }
+    body.sidebar-mobile-open .sidebar-backdrop{ opacity:1; visibility:visible; }
+  }
+</style>
+</head>
+<body class="font-sans text-gray-800">
+
+<div class="flex min-h-screen">
+
+  <!-- mobile drawer backdrop -->
+  <div id="backdrop" class="sidebar-backdrop lg:hidden"></div>
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="app-sidebar fixed left-0 top-0 z-50 flex h-screen w-[260px] flex-col border-r border-border bg-surface">
+    <div class="flex h-16 flex-shrink-0 items-center justify-between gap-2 border-b border-border px-4">
+      <div class="flex items-center gap-2">
+        <span class="flex h-8 w-8 items-center justify-center rounded-md bg-brand-600 text-white"><i data-lucide="database" class="w-4 h-4"></i></span>
+        <span class="text-[17px] font-semibold tracking-tight text-gray-900">QuickStor</span>
+      </div>
+      <button class="flex h-8 w-8 items-center justify-center rounded-md text-gray-400 hover:bg-gray-100 hover:text-brand-600"><i data-lucide="panel-left-close" class="w-[18px] h-[18px]"></i></button>
+    </div>
+
+    <div class="flex-shrink-0 px-3 pt-3">
+      <div class="relative">
+        <i data-lucide="search" class="w-[15px] h-[15px] pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <input type="search" placeholder="Search menu…" class="w-full rounded-md border border-border bg-surface-muted py-2 pl-9 pr-3 text-sm text-gray-700 placeholder:text-gray-400 outline-none focus:border-brand-500 focus:bg-surface focus:ring-4 focus:ring-brand-100" />
+      </div>
+    </div>
+
+    <nav class="flex-1 overflow-y-auto px-3 py-3">
+      <div class="px-2 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-gray-400">Main menu</div>
+
+      <!-- expanded + active section -->
+      <button class="flex w-full items-center gap-3 rounded-md px-2.5 py-2 text-sm font-medium text-brand-700">
+        <i data-lucide="settings" class="w-[18px] h-[18px] text-brand-600"></i>
+        <span class="flex-1 text-left">System configuration</span>
+        <i data-lucide="chevron-down" class="w-[15px] h-[15px] text-gray-400"></i>
+      </button>
+      <ul class="mb-1 mt-0.5 ml-3.5 flex flex-col gap-0.5 border-l border-border pl-3">
+        <li><a class="flex items-center gap-2.5 rounded-md bg-brand-600 px-2.5 py-2 text-sm font-medium text-white"><i data-lucide="user-plus" class="w-[15px] h-[15px] text-white"></i>Users</a></li>
+        <li><a class="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-brand-600"><i data-lucide="users" class="w-[15px] h-[15px] text-gray-400"></i>Groups</a></li>
+        <li><a class="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-brand-600"><i data-lucide="server" class="w-[15px] h-[15px] text-gray-400"></i>Nodes</a></li>
+      </ul>
+
+      <button class="flex w-full items-center gap-3 rounded-md px-2.5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"><i data-lucide="activity" class="w-[18px] h-[18px] text-gray-400"></i><span class="flex-1 text-left">System Status</span><i data-lucide="chevron-down" class="w-[15px] h-[15px] -rotate-90 text-gray-400"></i></button>
+      <button class="flex w-full items-center gap-3 rounded-md px-2.5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"><i data-lucide="hard-drive" class="w-[18px] h-[18px] text-gray-400"></i><span class="flex-1 text-left">Volumes</span><i data-lucide="chevron-down" class="w-[15px] h-[15px] -rotate-90 text-gray-400"></i></button>
+      <button class="flex w-full items-center gap-3 rounded-md px-2.5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"><i data-lucide="copy" class="w-[18px] h-[18px] text-gray-400"></i><span class="flex-1 text-left">Replication</span><i data-lucide="chevron-down" class="w-[15px] h-[15px] -rotate-90 text-gray-400"></i></button>
+      <button class="flex w-full items-center gap-3 rounded-md px-2.5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"><i data-lucide="layers" class="w-[18px] h-[18px] text-gray-400"></i><span class="flex-1 text-left">Pools</span><i data-lucide="chevron-down" class="w-[15px] h-[15px] -rotate-90 text-gray-400"></i></button>
+      <button class="flex w-full items-center gap-3 rounded-md px-2.5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"><i data-lucide="settings" class="w-[18px] h-[18px] text-gray-400"></i><span class="flex-1 text-left">Settings</span><i data-lucide="chevron-down" class="w-[15px] h-[15px] -rotate-90 text-gray-400"></i></button>
+    </nav>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="flex-1 lg:ml-[260px]">
+    <!-- top bar (redesigned Navbar) -->
+    <header class="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b border-border bg-surface px-4 sm:px-6">
+      <!-- breadcrumb + mobile menu -->
+      <div class="flex min-w-0 items-center gap-2">
+        <button id="hamburger" class="-ml-1 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md text-gray-500 hover:bg-gray-100 hover:text-brand-600 lg:hidden"><i data-lucide="menu" class="w-5 h-5"></i></button>
+        <nav class="flex min-w-0 items-center gap-1.5 text-sm">
+          <span class="truncate text-gray-500">System configuration</span>
+          <i data-lucide="chevron-right" class="w-[15px] h-[15px] flex-shrink-0 text-gray-300"></i>
+          <span id="crumb" class="truncate font-semibold text-gray-900">Users</span>
+        </nav>
+      </div>
+
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <!-- preview-only screen toggle -->
+        <div class="mr-1 hidden items-center rounded-md border border-border bg-surface-muted p-0.5 sm:flex">
+          <button id="tab-users" class="rounded-[5px] px-2.5 py-1 text-xs font-medium">Users</button>
+          <button id="tab-nodes" class="rounded-[5px] px-2.5 py-1 text-xs font-medium">Nodes</button>
+        </div>
+
+        <!-- system status -->
+        <div class="hidden items-center gap-2 rounded-full border border-border bg-surface-muted px-3 py-1.5 sm:flex">
+          <span class="h-2 w-2 flex-shrink-0 rounded-full bg-success-500"></span>
+          <span class="text-xs font-medium leading-tight text-gray-600">All systems normal</span>
+        </div>
+
+        <!-- notifications -->
+        <button class="relative flex h-9 w-9 items-center justify-center rounded-md text-gray-500 hover:bg-gray-100 hover:text-brand-600">
+          <i data-lucide="bell" class="w-[18px] h-[18px]"></i>
+          <span class="absolute right-1.5 top-1.5 flex h-2 w-2 rounded-full bg-danger-500"></span>
+        </button>
+
+        <!-- fullscreen -->
+        <button class="hidden h-9 w-9 items-center justify-center rounded-md text-gray-500 hover:bg-gray-100 hover:text-brand-600 sm:flex">
+          <i data-lucide="maximize-2" class="w-[18px] h-[18px]"></i>
+        </button>
+
+        <span class="hidden h-6 w-px bg-border sm:block"></span>
+
+        <!-- user menu -->
+        <button class="flex items-center gap-2.5 rounded-md py-1.5 pl-1.5 pr-2 hover:bg-gray-100">
+          <span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600"><i data-lucide="user" class="w-4 h-4"></i></span>
+          <span class="hidden text-sm font-semibold text-gray-800 sm:block">Admin</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ===== USERS VIEW ===== -->
+    <div id="view-users" class="p-5">
+      <div class="rounded-xl border border-border bg-surface p-6 shadow-sm">
+        <!-- page header -->
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h1 class="text-2xl font-semibold tracking-tight text-gray-900">User Management</h1>
+            <p class="mt-1 text-sm text-gray-500">Manage system accounts, permissions, and storage quotas</p>
+          </div>
+          <button class="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-xs hover:bg-gray-50 hover:text-brand-600"><i data-lucide="refresh-cw" class="w-[15px] h-[15px]"></i>Sync Now</button>
+        </div>
+
+        <div class="mt-6 space-y-6">
+          <!-- Create user panel -->
+          <section class="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
+            <div class="flex items-center justify-between gap-4 border-b border-border px-5 py-4">
+              <div class="flex items-center gap-3">
+                <i data-lucide="chevron-down" class="w-[18px] h-[18px] text-gray-400"></i>
+                <span class="flex h-9 w-9 items-center justify-center rounded-md bg-brand-50 text-brand-600"><i data-lucide="user-plus" class="w-[18px] h-[18px]"></i></span>
+                <div><h3 class="text-base font-semibold text-gray-800">Create New User</h3><p class="text-sm text-gray-500">Account provisioning</p></div>
+              </div>
+            </div>
+            <div class="p-6">
+              <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+                <div class="flex flex-col"><label class="mb-1.5 text-sm font-medium text-gray-700">User Name</label><div class="relative"><i data-lucide="user" class="w-4 h-4 pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i><input value="alex_chen" class="w-full rounded-md border border-border bg-surface py-2.5 pl-9 pr-3 text-sm text-gray-800 outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100" /></div></div>
+                <div class="flex flex-col"><label class="mb-1.5 text-sm font-medium text-gray-700">Password</label><div class="relative"><i data-lucide="key" class="w-4 h-4 pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i><input type="password" value="123456" class="w-full rounded-md border border-border bg-surface py-2.5 pl-9 pr-3 text-sm text-gray-800 outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100" /></div></div>
+                <div class="flex flex-col"><span class="mb-1.5 text-sm font-medium text-gray-700">Home Pool</span><button class="flex w-full items-center justify-between gap-2 rounded-md border border-border bg-surface px-3 py-2.5 text-left text-sm"><span class="text-gray-800">pool-ssd-01</span><i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i></button></div>
+                <div class="flex flex-col"><label class="mb-1.5 text-sm font-medium text-gray-700">Quota (GB)</label><div class="relative"><i data-lucide="hard-drive" class="w-4 h-4 pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i><input value="50" class="w-full rounded-md border border-border bg-surface py-2.5 pl-9 pr-3 text-sm text-gray-800 outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100" /></div></div>
+                <div class="flex flex-col"><label class="mb-1.5 text-sm font-medium text-gray-700">IP Address Restriction</label><div class="relative"><i data-lucide="hash" class="w-4 h-4 pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i><input value="192.168.1.100" class="w-full rounded-md border border-border bg-surface py-2.5 pl-9 pr-3 text-sm text-gray-800 outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100" /></div></div>
+                <div class="flex flex-col"><span class="mb-1.5 text-sm font-medium text-gray-700">Allowed Groups</span><button class="flex w-full items-center justify-between gap-2 rounded-md border border-border bg-surface px-3 py-2.5 text-left text-sm"><span class="flex flex-wrap gap-1.5"><span class="inline-flex items-center gap-1 rounded-sm bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700">admins<i data-lucide="x" class="w-3 h-3 text-brand-400"></i></span><span class="inline-flex items-center gap-1 rounded-sm bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700">storage<i data-lucide="x" class="w-3 h-3 text-brand-400"></i></span></span><i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i></button></div>
+              </div>
+              <div class="mt-6 flex flex-col items-center justify-between gap-4 border-t border-border pt-5 sm:flex-row">
+                <a class="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-3.5 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-brand-600"><i data-lucide="download" class="w-[15px] h-[15px]"></i>Download Template</a>
+                <button class="inline-flex w-full items-center justify-center gap-2 rounded-md bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-brand-700 sm:w-auto"><i data-lucide="plus-circle" class="w-4 h-4"></i>Add System User</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- User directory table -->
+          <section class="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
+            <div class="flex items-center justify-between gap-4 border-b border-border px-5 py-4">
+              <div class="flex items-center gap-3">
+                <span class="flex h-9 w-9 items-center justify-center rounded-md bg-brand-50 text-brand-600"><i data-lucide="users" class="w-[18px] h-[18px]"></i></span>
+                <div><h3 class="text-base font-semibold text-gray-800">System User Directory</h3><p class="text-sm text-gray-500">Local &amp; directory accounts</p></div>
+              </div>
+              <span class="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-muted px-3 py-1 text-xs font-medium text-gray-600"><span class="h-1.5 w-1.5 rounded-full bg-success-500"></span>3 accounts</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left">
+                <thead><tr class="border-b border-border bg-surface-muted">
+                  <th class="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">User identity</th>
+                  <th class="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Storage target</th>
+                  <th class="px-5 py-3 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Quota</th>
+                  <th class="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Group assignments</th>
+                  <th class="px-5 py-3 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Security</th>
+                  <th class="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Actions</th>
+                </tr></thead>
+                <tbody class="divide-y divide-border">
+                  <!-- row -->
+                  <script type="text/template"></script>
+                  <tr class="hover:bg-gray-50/60">
+                    <td class="px-5 py-4"><div class="flex items-center gap-3"><div class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-50 text-sm font-semibold text-brand-600">A</div><span class="font-medium text-gray-800">alex_chen</span></div></td>
+                    <td class="px-5 py-4"><div class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-gray-300"></span><span class="text-sm text-gray-600">pool-ssd-01</span></div></td>
+                    <td class="px-5 py-4 text-center"><span class="inline-block rounded-sm border border-border bg-surface-muted px-2.5 py-1 text-xs font-medium text-gray-700">50 GB</span></td>
+                    <td class="px-5 py-4"><div class="flex items-center gap-2"><button class="flex w-full items-center justify-between gap-2 rounded-md border border-border bg-surface px-3 py-2.5 text-left text-sm"><span class="flex flex-wrap gap-1.5"><span class="inline-flex items-center gap-1 rounded-sm bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700">admins</span></span><i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i></button></div></td>
+                    <td class="px-5 py-4 text-center"><button class="inline-flex items-center gap-1.5 rounded-md border border-brand-100 bg-brand-50 px-3 py-1.5 text-xs font-medium text-brand-600 hover:bg-brand-600 hover:text-white"><i data-lucide="key-round" class="w-[14px] h-[14px]"></i>Reset</button></td>
+                    <td class="px-5 py-4 text-right"><button class="inline-flex h-9 w-9 items-center justify-center rounded-md bg-gray-50 text-gray-400 hover:border hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td>
+                  </tr>
+                  <tr class="hover:bg-gray-50/60">
+                    <td class="px-5 py-4"><div class="flex items-center gap-3"><div class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-50 text-sm font-semibold text-brand-600">M</div><span class="font-medium text-gray-800">maria_g</span></div></td>
+                    <td class="px-5 py-4"><div class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-gray-300"></span><span class="text-sm text-gray-600">pool-nvme-02</span></div></td>
+                    <td class="px-5 py-4 text-center"><span class="inline-block rounded-sm border border-border bg-surface-muted px-2.5 py-1 text-xs font-medium text-gray-700">200 GB</span></td>
+                    <td class="px-5 py-4"><div class="flex items-center gap-2"><button class="flex w-full items-center justify-between gap-2 rounded-md border border-border bg-surface px-3 py-2.5 text-left text-sm"><span class="flex flex-wrap gap-1.5"><span class="inline-flex items-center gap-1 rounded-sm bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700">storage</span><span class="inline-flex items-center gap-1 rounded-sm bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700">backup</span></span><i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i></button><button class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md border border-success-100 bg-success-50 text-success-600 hover:bg-success-600 hover:text-white"><i data-lucide="check" class="w-4 h-4"></i></button></div></td>
+                    <td class="px-5 py-4 text-center"><button class="inline-flex items-center gap-1.5 rounded-md border border-brand-100 bg-brand-50 px-3 py-1.5 text-xs font-medium text-brand-600 hover:bg-brand-600 hover:text-white"><i data-lucide="key-round" class="w-[14px] h-[14px]"></i>Reset</button></td>
+                    <td class="px-5 py-4 text-right"><button class="inline-flex h-9 w-9 items-center justify-center rounded-md bg-gray-50 text-gray-400 hover:border hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td>
+                  </tr>
+                  <tr class="hover:bg-gray-50/60">
+                    <td class="px-5 py-4"><div class="flex items-center gap-3"><div class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-50 text-sm font-semibold text-brand-600">D</div><span class="font-medium text-gray-800">devops</span></div></td>
+                    <td class="px-5 py-4"><div class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-gray-300"></span><span class="text-sm text-gray-600">N/A</span></div></td>
+                    <td class="px-5 py-4 text-center"><span class="inline-block rounded-sm border border-border bg-surface-muted px-2.5 py-1 text-xs font-medium text-gray-700">0 GB</span></td>
+                    <td class="px-5 py-4"><div class="flex items-center gap-2"><button class="flex w-full items-center justify-between gap-2 rounded-md border border-border bg-surface px-3 py-2.5 text-left text-sm"><span class="text-gray-400">Select groups…</span><i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i></button></div></td>
+                    <td class="px-5 py-4 text-center"><button class="inline-flex items-center gap-1.5 rounded-md border border-brand-100 bg-brand-50 px-3 py-1.5 text-xs font-medium text-brand-600 hover:bg-brand-600 hover:text-white"><i data-lucide="key-round" class="w-[14px] h-[14px]"></i>Reset</button></td>
+                    <td class="px-5 py-4 text-right"><button class="inline-flex h-9 w-9 items-center justify-center rounded-md bg-gray-50 text-gray-400 hover:border hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== NODES VIEW ===== -->
+    <div id="view-nodes" class="hidden p-5">
+      <div class="rounded-xl border border-border bg-surface p-6 shadow-sm">
+        <h1 class="text-2xl font-semibold tracking-tight text-gray-900">Node Status</h1>
+        <p class="mt-1 text-sm text-gray-500">Monitor cluster nodes, configure networking, and manage membership</p>
+
+        <div class="mt-6 space-y-6">
+          <!-- Running nodes -->
+          <section class="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
+            <div class="flex items-center justify-between gap-4 border-b border-border px-5 py-4">
+              <div class="flex items-center gap-3"><i data-lucide="chevron-down" class="w-[18px] h-[18px] text-gray-400"></i><h3 class="text-base font-semibold text-gray-800">Running Nodes</h3></div>
+              <button class="hidden items-center gap-2 rounded-md border border-border bg-surface px-3 py-1.5 text-xs font-semibold text-gray-700 shadow-xs hover:bg-gray-50 hover:text-brand-600 sm:inline-flex">Download all configs</button>
+            </div>
+            <div class="border-b border-border bg-surface-muted/50 p-5">
+              <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" id="ng1"></div>
+            </div>
+            <div class="p-5">
+              <div class="flex items-center gap-3 rounded-md border border-border bg-surface-muted px-4 py-3"><input type="checkbox" class="h-4 w-4 accent-brand-600" /><label class="text-sm font-medium text-gray-700">Ready to join an existing cluster</label></div>
+              <div class="mt-5 grid grid-cols-1 items-center gap-4 lg:grid-cols-12">
+                <label class="text-sm font-medium text-gray-700 lg:col-span-3">Node Name</label>
+                <div class="lg:col-span-4"><input value="node-04" class="w-full rounded-md border border-border bg-surface px-3 py-2.5 text-sm text-gray-800 outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100" /></div>
+                <div class="lg:col-span-5 rounded-md border border-border bg-surface-muted px-3 py-2.5 font-mono text-sm text-gray-600">node-04.cluster.local</div>
+              </div>
+              <div class="mt-5 grid grid-cols-1 items-center gap-4 lg:grid-cols-12">
+                <label class="text-sm font-medium text-gray-700 lg:col-span-3">Node Address</label>
+                <div class="flex gap-2 lg:col-span-4"><input value="10.0.4.21" class="min-w-0 flex-1 rounded-md border border-border bg-surface px-3 py-2.5 font-mono text-sm text-gray-800 outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100" /><input value="24" class="w-20 rounded-md border border-border bg-surface px-3 py-2.5 text-sm text-gray-800 outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100" /></div>
+                <div class="lg:col-span-5 rounded-md border border-border bg-surface-muted px-3 py-2.5 font-mono text-sm text-gray-600">10.0.4.21/24</div>
+              </div>
+              <div class="mt-6 flex flex-col items-center justify-between gap-4 border-t border-border pt-5 sm:flex-row">
+                <button class="inline-flex items-center justify-center rounded-md bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-brand-700">Update Node</button>
+                <button class="inline-flex items-center justify-center rounded-md border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-xs hover:bg-gray-50 hover:text-brand-600">Download Config</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Nodes status (evacuate) -->
+          <section class="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
+            <div class="flex items-center justify-between gap-4 border-b border-border px-5 py-4">
+              <div class="flex items-center gap-3"><i data-lucide="chevron-down" class="w-[18px] h-[18px] text-gray-400"></i><span class="flex h-9 w-9 items-center justify-center rounded-md bg-brand-50 text-brand-600"><i data-lucide="boxes" class="w-[18px] h-[18px]"></i></span><div><h3 class="text-base font-semibold text-gray-800">Nodes Status</h3><p class="text-sm text-gray-500">Active cluster members</p></div></div>
+            </div>
+            <div class="p-6">
+              <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" id="ng2"></div>
+              <div class="mt-6 border-t border-border pt-5"><button class="inline-flex items-center justify-center rounded-md bg-danger-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-danger-700">Evacuate Node</button></div>
+            </div>
+          </section>
+
+          <!-- Discovered nodes -->
+          <section class="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
+            <div class="flex items-center justify-between gap-4 border-b border-border px-5 py-4">
+              <div class="flex items-center gap-3"><i data-lucide="chevron-down" class="w-[18px] h-[18px] text-gray-400"></i><span class="flex h-9 w-9 items-center justify-center rounded-md bg-brand-50 text-brand-600"><i data-lucide="radio-tower" class="w-[18px] h-[18px]"></i></span><div><h3 class="text-base font-semibold text-gray-800">Discovered Nodes</h3><p class="text-sm text-gray-500">Unprovisioned nodes available to join</p></div></div>
+              <button class="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-1.5 text-xs font-semibold text-gray-700 shadow-xs hover:bg-gray-50 hover:text-brand-600">Discovery</button>
+            </div>
+            <div class="p-6">
+              <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" id="ng3"></div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ===== Password modal (overlaid on Users view) ===== -->
+<div id="modal" class="fixed inset-0 z-[1050] flex items-center justify-center bg-gray-900/40 p-4 backdrop-blur-sm">
+  <div class="w-full max-w-md overflow-hidden rounded-xl border border-border bg-surface shadow-xl">
+    <div class="flex items-center justify-between border-b border-border px-5 py-4"><div class="flex items-center gap-3"><span class="flex h-9 w-9 items-center justify-center rounded-md bg-brand-50 text-brand-600"><i data-lucide="shield-check" class="w-[18px] h-[18px]"></i></span><h4 class="text-base font-semibold text-gray-800">Change Password</h4></div><button id="modal-x" class="flex h-8 w-8 items-center justify-center rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600"><i data-lucide="x" class="w-[18px] h-[18px]"></i></button></div>
+    <div class="space-y-5 p-5">
+      <div class="rounded-md border border-brand-100 bg-brand-50 px-3.5 py-2.5 text-sm text-brand-800">Updating password for <span class="font-semibold">maria_g</span></div>
+      <div class="flex flex-col"><label class="mb-1.5 text-sm font-medium text-gray-700">New Password</label><input type="password" value="secret" class="w-full rounded-md border border-border bg-surface px-3 py-2.5 text-sm text-gray-800 outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100" /></div>
+      <div class="flex flex-col"><label class="mb-1.5 text-sm font-medium text-gray-700">Confirm Password</label><input type="password" value="secret" class="w-full rounded-md border border-border bg-surface px-3 py-2.5 text-sm text-gray-800 outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100" /></div>
+    </div>
+    <div class="flex justify-end gap-3 border-t border-border bg-surface-muted px-5 py-4"><button class="inline-flex items-center justify-center rounded-md px-4 py-2.5 text-sm font-semibold text-gray-600 hover:bg-gray-100 hover:text-gray-900">Cancel</button><button class="inline-flex items-center justify-center rounded-md bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-brand-700">Save Password</button></div>
+  </div>
+</div>
+
+<script>
+  // server-node tiles
+  function tile(name, ip, state, selected){
+    const s = {up:['bg-success-500','Online','text-success-700'],down:['bg-danger-500','Offline','text-danger-700'],discovered:['bg-brand-500','Discovered','text-brand-700']}[state];
+    return `<button class="group flex w-full items-center gap-3 rounded-lg border px-3.5 py-3 text-left min-h-[60px] ${selected?'border-brand-500 ring-4 ring-brand-100 bg-brand-50/40':'border-border bg-surface hover:border-border-strong hover:bg-gray-50'}">
+      <span class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md ${selected?'bg-brand-100 text-brand-600':'bg-gray-100 text-gray-500'}"><i data-lucide="server" class="w-[18px] h-[18px]"></i></span>
+      <span class="min-w-0 flex-1"><span class="block truncate text-sm font-semibold text-gray-800">${name}</span><span class="block truncate font-mono text-xs text-gray-500">${ip}</span></span>
+      <span class="flex flex-shrink-0 items-center gap-1.5"><span class="h-2 w-2 rounded-full ${s[0]}"></span><span class="hidden text-[11px] font-medium sm:inline ${s[2]}">${s[1]}</span></span>
+    </button>`;
+  }
+  document.getElementById('ng1').innerHTML = tile('node-01','10.0.4.18','up')+tile('node-02','10.0.4.19','up')+tile('node-03','10.0.4.20','up')+tile('node-04','10.0.4.21','up',true);
+  document.getElementById('ng2').innerHTML = tile('node-01','10.0.4.18','up')+tile('node-02','10.0.4.19','up')+tile('node-05','10.0.4.22','down',true);
+  document.getElementById('ng3').innerHTML = tile('unknown-a','10.0.9.51','discovered',true)+tile('unknown-b','10.0.9.52','discovered');
+
+  const vU=document.getElementById('view-users'),vN=document.getElementById('view-nodes'),modal=document.getElementById('modal');
+  const tU=document.getElementById('tab-users'),tN=document.getElementById('tab-nodes');
+  function setTab(which){
+    const on='bg-surface text-brand-700 shadow-xs', off='text-gray-500';
+    const crumb=document.getElementById('crumb');
+    if(which==='users'){vU.classList.remove('hidden');vN.classList.add('hidden');modal.classList.remove('hidden');tU.className='rounded-[5px] px-2.5 py-1 text-xs font-medium '+on;tN.className='rounded-[5px] px-2.5 py-1 text-xs font-medium '+off;crumb.textContent='Users';}
+    else{vN.classList.remove('hidden');vU.classList.add('hidden');modal.classList.add('hidden');tN.className='rounded-[5px] px-2.5 py-1 text-xs font-medium '+on;tU.className='rounded-[5px] px-2.5 py-1 text-xs font-medium '+off;crumb.textContent='Nodes';}
+    if(window.lucide) lucide.createIcons();
+  }
+  tU.onclick=()=>setTab('users');tN.onclick=()=>setTab('nodes');
+  document.getElementById('modal-x').onclick=()=>modal.classList.add('hidden');
+  // responsive drawer
+  document.getElementById('hamburger').onclick=()=>document.body.classList.toggle('sidebar-mobile-open');
+  document.getElementById('backdrop').onclick=()=>document.body.classList.remove('sidebar-mobile-open');
+  setTab('users');
+  lucide.createIcons();
+</script>
+</body>
+</html>

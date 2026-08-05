@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import { AlertCircle, TriangleAlert, Info, X } from 'lucide-react';
 
 const THEME = {
     info: {
-        border: 'border-l-sky-500',
-        icon: 'fa-info-circle',
-        iconColor: 'text-sky-500',
-        bar: 'bg-sky-400',
+        border: 'border-l-brand-500',
+        icon: Info,
+        iconColor: 'text-brand-600',
+        bar: 'bg-brand-500',
     },
     warning: {
-        border: 'border-l-amber-500',
-        icon: 'fa-exclamation-triangle',
-        iconColor: 'text-amber-500',
-        bar: 'bg-amber-400',
+        border: 'border-l-warning-500',
+        icon: TriangleAlert,
+        iconColor: 'text-warning-600',
+        bar: 'bg-warning-500',
     },
     error: {
-        border: 'border-l-rose-500',
-        icon: 'fa-exclamation-circle',
-        iconColor: 'text-rose-500',
-        bar: 'bg-rose-400',
+        border: 'border-l-danger-500',
+        icon: AlertCircle,
+        iconColor: 'text-danger-600',
+        bar: 'bg-danger-500',
     },
 };
 
@@ -25,6 +26,7 @@ const Toast = ({ id, type, title, subtitle, body, duration, onDismiss }) => {
     const [visible, setVisible] = useState(true);
     const [progressStarted, setProgressStarted] = useState(false);
     const theme = THEME[type] || THEME.info;
+    const Icon = theme.icon;
 
     // Kick off CSS progress bar animation one frame after mount
     useEffect(() => {
@@ -49,30 +51,30 @@ const Toast = ({ id, type, title, subtitle, body, duration, onDismiss }) => {
     return (
         <div
             className={`
-                w-80 bg-white rounded-2xl shadow-lg border border-gray-100 border-l-4 ${theme.border}
+                w-80 rounded-lg border border-border border-l-4 bg-surface shadow-sm ${theme.border}
                 overflow-hidden transition-all duration-300
                 ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'}
             `}
         >
-            <div className="px-4 pt-3 pb-2">
+            <div className="px-4 pt-3 pb-2.5">
                 <div className="flex items-start justify-between gap-3">
                     <div className="flex items-start gap-2.5 min-w-0">
-                        <i className={`fas ${theme.icon} ${theme.iconColor} mt-0.5 text-sm flex-shrink-0`}></i>
+                        <Icon size={14} className={`${theme.iconColor} mt-0.5 flex-shrink-0`} />
                         <div className="min-w-0">
-                            <p className="font-bold text-gray-800 text-sm leading-tight truncate">{title}</p>
+                            <p className="truncate text-sm font-semibold leading-tight text-gray-800">{title}</p>
                             {subtitle && (
-                                <p className="text-[10px] text-gray-400 font-medium mt-0.5 uppercase tracking-wider truncate">{subtitle}</p>
+                                <p className="mt-0.5 truncate text-xs font-medium uppercase tracking-wide text-gray-500">{subtitle}</p>
                             )}
                         </div>
                     </div>
                     <button
                         onClick={dismiss}
-                        className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded-full text-gray-300 hover:text-gray-500 hover:bg-gray-100 transition-colors"
+                        className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-sm text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
                     >
-                        <i className="fas fa-times text-[10px]"></i>
+                        <X size={12} />
                     </button>
                 </div>
-                <p className="mt-2 text-xs text-gray-600 leading-relaxed pl-[22px]">{body}</p>
+                <p className="mt-2 pl-[22px] text-sm leading-relaxed text-gray-600">{body}</p>
             </div>
 
             {/* Progress bar — CSS transition shrinks from 100% → 0% over duration */}

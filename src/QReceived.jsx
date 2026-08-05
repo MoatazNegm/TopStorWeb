@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
+    AlertTriangle,
+    CheckCircle2,
     RefreshCw,
     Trash2,
     RotateCcw,
@@ -142,8 +144,12 @@ const QReceived = () => {
 
     if (loading && allSnapshots.length === 0) {
         return (
-            <div className="flex items-center justify-center min-h-[400px]">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600"></div>
+            <div className="content-wrapper">
+                <div className="floating-canvas">
+                    <div className="flex min-h-[400px] items-center justify-center">
+                        <div className="h-10 w-10 animate-spin rounded-full border-2 border-brand-200 border-t-brand-600" />
+                    </div>
+                </div>
             </div>
         );
     }
@@ -151,39 +157,36 @@ const QReceived = () => {
     return (
         <div className="content-wrapper">
             <div className="floating-canvas">
-                <div className="content-header px-4">
-                    <div className="container-fluid">
-                        <div className="flex justify-between items-center mb-10">
+                <div className="p-5">
+                    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+                        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                             <div>
-                                <h1 className="text-2xl font-black text-gray-800 tracking-tight">Received Snapshots</h1>
-                                <p className="text-xs text-gray-400 mt-0.5 font-medium uppercase tracking-wider">Manage and restore snapshots replicated from remote partners</p>
+                                <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Received Snapshots</h1>
+                                <p className="mt-1 text-sm text-gray-500">Manage and restore snapshots replicated from remote partners</p>
                             </div>
                             <Button
                                 onClick={() => loadSnapshots()}
-                                bgColor="bg-white"
-                                textColor="text-gray-400"
-                                className="border border-gray-100 hover:text-indigo-500 rounded-xl shadow-sm transition-all"
-                                icon={<RefreshCw size={16} className={loading ? 'animate-spin' : ''} />}
-                            />
+                                variant="secondary"
+                                icon={<RefreshCw size={15} className={loading ? 'animate-spin' : ''} />}
+                            >
+                                Sync Now
+                            </Button>
                         </div>
 
                         {message.text && (
-                            <div className={`mb-8 p-4 rounded-2xl flex items-center gap-3 text-sm font-bold animate-in fade-in slide-in-from-top-4 ${message.type === 'success' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-rose-50 text-rose-600 border border-rose-100'}`}>
-                                <i className={`fas ${message.type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}`}></i>
+                            <div className={`mt-6 flex items-center gap-2 rounded-lg border px-4 py-3 text-sm font-medium ${message.type === 'success' ? 'border-success-100 bg-success-50 text-success-600' : 'border-danger-100 bg-danger-50 text-danger-600'}`}>
+                                {message.type === 'success' ? <CheckCircle2 size={15} /> : <AlertTriangle size={15} />}
                                 {message.text}
                             </div>
                         )}
 
-                        <div className="flex flex-col gap-8">
-                            {/* Filter Section Card */}
-                            <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100 relative group">
-                                <div className="absolute top-0 bottom-0 left-0 w-1.5 bg-indigo-500 rounded-l-xl shadow-[2px_0_10px_rgba(99,102,241,0.2)]"></div>
-
-                                <div className="flex items-center gap-3 mb-6">
-                                    <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-500 flex items-center justify-center shadow-sm">
-                                        <Filter size={20} />
+                        <div className="mt-6 space-y-6">
+                            <div className="rounded-lg border border-border bg-surface p-5 shadow-sm">
+                                <div className="mb-5 flex items-center gap-3">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-50 text-brand-600">
+                                        <Filter size={17} />
                                     </div>
-                                    <h3 className="text-lg font-bold text-gray-800 tracking-tight">Source Filters</h3>
+                                    <h3 className="text-base font-semibold text-gray-800">Source Filters</h3>
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -192,89 +195,84 @@ const QReceived = () => {
                                         options={pools}
                                         value={filters.pool}
                                         onChange={(val) => handleFilterChange('pool', val)}
-                                        icon={<Database size={16} />}
                                     />
                                     <Dropdown
                                         label="Volume"
                                         options={volumes.filter(v => filters.pool === 'Any' || v.pool === filters.pool)}
                                         value={filters.volume}
                                         onChange={(val) => handleFilterChange('volume', val)}
-                                        icon={<HardDrive size={16} />}
                                     />
                                     <Dropdown
                                         label="Sender"
                                         options={partners}
                                         value={filters.sender}
                                         onChange={(val) => handleFilterChange('sender', val)}
-                                        icon={<Server size={16} />}
                                     />
                                 </div>
                             </div>
 
-                            {/* Received Snapshots List Card */}
-                            <div className="bg-white rounded-xl shadow-sm border border-gray-100 relative group overflow-visible mb-12">
-                                <div className="absolute top-0 bottom-0 left-0 w-1.5 bg-emerald-500 rounded-l-xl shadow-[2px_0_10px_rgba(16,185,129,0.2)]"></div>
-
-                                <div className="px-8 py-6 border-b border-gray-50 flex justify-between items-center bg-gray-50/30 rounded-t-xl">
+                            <div className="mb-2 overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
+                                <div className="flex items-center justify-between gap-4 border-b border-border px-5 py-4">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center">
-                                            <Zap size={18} />
-                                        </div>
-                                        <h3 className="text-lg font-bold text-gray-800 tracking-tight">Received Snapshots List</h3>
+                                        <span className="flex h-9 w-9 items-center justify-center rounded-md bg-success-50 text-success-600">
+                                            <Zap size={16} />
+                                        </span>
+                                        <h3 className="text-base font-semibold text-gray-800">Received Snapshots List</h3>
                                     </div>
-                                    <span className="px-3 py-1 bg-white border border-gray-100 rounded-full text-[10px] font-black text-gray-400 uppercase tracking-widest shadow-sm">
+                                    <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-muted px-3 py-1 text-xs font-medium text-gray-600">
+                                        <span className="h-1.5 w-1.5 rounded-full bg-success-500" />
                                         {filteredSnapshots.length} Found
                                     </span>
                                 </div>
 
-                                <div className="p-0 overflow-x-auto">
-                                    <table className="w-full text-left border-collapse">
-                                        <thead>
-                                            <tr className="bg-gray-50/50">
-                                                <th className="px-8 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100">Timestamp</th>
-                                                <th className="px-8 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100">Alias</th>
-                                                <th className="px-8 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100">Pool / Volume</th>
-                                                <th className="px-8 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100">Sender</th>
-                                                <th className="px-8 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100">Size / Ratio</th>
-                                                <th className="px-8 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100 text-right">Actions</th>
+                                <div className="overflow-x-auto">
+                                    <table className="min-w-[1100px] w-full text-left">
+                                        <thead className="bg-surface-muted">
+                                            <tr className="border-b border-border">
+                                                <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Timestamp</th>
+                                                <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Alias</th>
+                                                <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Pool / Volume</th>
+                                                <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Sender</th>
+                                                <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Size / Ratio</th>
+                                                <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Actions</th>
                                             </tr>
                                         </thead>
-                                        <tbody className="divide-y divide-gray-50">
+                                        <tbody className="divide-y divide-border">
                                             {filteredSnapshots.map((snap, idx) => (
-                                                <tr key={idx} className="hover:bg-gray-50/50 transition-colors group">
-                                                    <td className="px-8 py-4">
+                                                <tr key={idx} className="group transition-colors hover:bg-gray-50/60">
+                                                    <td className="px-5 py-4">
                                                         <div className="flex flex-col">
-                                                            <span className="text-xs font-bold text-gray-700">{snap.date}</span>
-                                                            <span className="text-[10px] text-gray-400 font-medium tracking-tight">{snap.time}</span>
+                                                            <span className="text-xs font-semibold text-gray-700">{snap.date}</span>
+                                                            <span className="text-xs text-gray-500">{snap.time}</span>
                                                         </div>
                                                     </td>
-                                                    <td className="px-8 py-4">
-                                                        <span className="text-xs font-semibold text-indigo-600 truncate max-w-[150px] inline-block">
+                                                    <td className="px-5 py-4">
+                                                        <span className="inline-block max-w-[150px] truncate text-sm text-brand-600">
                                                             {snap.name.split('.')[0]}
                                                         </span>
                                                     </td>
-                                                    <td className="px-8 py-4">
+                                                    <td className="px-5 py-4">
                                                         <div className="flex flex-col">
-                                                            <span className="text-xs font-bold text-gray-600">{snap.pool}</span>
-                                                            <span className="text-[10px] text-indigo-400 font-bold uppercase tracking-tighter">{snap.volume.split('_')[0]}</span>
+                                                            <span className="text-sm font-medium text-gray-700">{snap.pool}</span>
+                                                            <span className="text-xs font-medium uppercase tracking-wide text-brand-500">{snap.volume.split('_')[0]}</span>
                                                         </div>
                                                     </td>
-                                                    <td className="px-8 py-4">
-                                                        <span className="inline-flex items-center px-2 py-1 rounded-md bg-indigo-50 text-indigo-600 text-[10px] font-black">
+                                                    <td className="px-5 py-4">
+                                                        <span className="inline-flex items-center rounded-sm border border-brand-100 bg-brand-50 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-brand-700">
                                                             {snap.partnerS}
                                                         </span>
                                                     </td>
-                                                    <td className="px-8 py-4">
+                                                    <td className="px-5 py-4">
                                                         <div className="flex flex-col">
-                                                            <span className="text-[10px] font-black text-gray-500 uppercase">{snap.used} MB</span>
-                                                            <span className="text-[9px] text-emerald-500 font-black">{snap.refcompressratio}x Ratio</span>
+                                                            <span className="text-xs font-medium uppercase text-gray-500">{snap.used} MB</span>
+                                                            <span className="text-xs font-medium text-success-600">{snap.refcompressratio}x Ratio</span>
                                                         </div>
                                                     </td>
-                                                    <td className="px-8 py-4 text-right">
+                                                    <td className="px-5 py-4 text-right">
                                                         <div className="flex items-center justify-end gap-2">
                                                             <button
                                                                 onClick={() => handleRollback(snap.name)}
-                                                                className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-500 flex items-center justify-center hover:bg-indigo-500 hover:text-white transition-all shadow-sm hover:shadow-indigo-100"
+                                                                className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-brand-100 hover:bg-brand-50 hover:text-brand-600"
                                                                 title="Rollback volume"
                                                             >
                                                                 <RotateCcw size={14} />
@@ -282,11 +280,11 @@ const QReceived = () => {
                                                             <button
                                                                 onClick={() => handleDelete(snap.name)}
                                                                 disabled={actionLoading === `delete-${snap.name}`}
-                                                                className="w-9 h-9 rounded-xl bg-rose-50 text-rose-500 flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all shadow-sm hover:shadow-rose-100"
+                                                                className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600"
                                                                 title="Delete snapshot"
                                                             >
                                                                 {actionLoading === `delete-${snap.name}` ? (
-                                                                    <div className="w-4 h-4 border-2 border-rose-200 border-t-rose-500 rounded-full animate-spin"></div>
+                                                                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-danger-100 border-t-danger-600" />
                                                                 ) : <Trash2 size={14} />}
                                                             </button>
                                                         </div>
@@ -295,10 +293,10 @@ const QReceived = () => {
                                             ))}
                                             {filteredSnapshots.length === 0 && (
                                                 <tr>
-                                                    <td colSpan="6" className="px-8 py-20 text-center">
-                                                        <div className="flex flex-col items-center gap-4 opacity-30">
-                                                            <Zap size={40} className="text-gray-400" />
-                                                            <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">No Received Snapshots Found</p>
+                                                    <td colSpan="6" className="px-5 py-14 text-center">
+                                                        <div className="flex flex-col items-center gap-3 text-gray-400">
+                                                            <Zap size={20} />
+                                                            <p className="text-sm font-medium">No received snapshots found</p>
                                                         </div>
                                                     </td>
                                                 </tr>

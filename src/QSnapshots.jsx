@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { AlertCircle, RefreshCw } from 'lucide-react';
 import {
     fetchSnapshotsInfo,
     fetchVolumeList,
@@ -155,23 +156,23 @@ const QSnapshots = () => {
                             <div className="flex gap-3">
                                 <Button
                                     onClick={loadData}
-                                    bgColor="bg-white"
-                                    textColor="text-gray-400"
-                                    className="border border-gray-100 hover:text-indigo-500 rounded-xl"
-                                    icon={<i className={`fas fa-sync-alt ${loading ? 'animate-spin' : ''}`}></i>}
+                                    variant="secondary"
+                                    size="icon"
+                                    className="h-10 w-10"
+                                    icon={<RefreshCw size={16} className={loading ? 'animate-spin' : ''} />}
                                 />
                             </div>
                         </div>
 
                         {error && (
-                            <div className="mb-6 p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-center gap-3 text-rose-600 text-sm font-bold">
-                                <i className="fas fa-exclamation-circle"></i>
+                            <div className="mb-6 flex items-center gap-3 rounded-xl border border-danger-100 bg-danger-50 p-4 text-sm font-medium text-danger-700">
+                                <AlertCircle size={16} />
                                 {error}
                             </div>
                         )}
 
                         {/* Top Selection Bar */}
-                        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 mb-8 flex flex-wrap items-center gap-6">
+                        <div className="mb-8 flex flex-wrap items-center gap-6 rounded-lg border border-border bg-surface p-6 shadow-sm">
                             <div className="flex-1 min-w-[200px]">
                                 <Dropdown
                                     label="Source Pool"
@@ -194,16 +195,16 @@ const QSnapshots = () => {
                         </div>
 
                         {/* Main Creation Card */}
-                        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 mb-8 overflow-hidden">
+                        <div className="mb-8 overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
                             {/* Tab Headers */}
                             <div className="flex border-b border-gray-50 bg-gray-50/30">
                                 {tabs.map(tab => (
                                     <button
                                         key={tab}
                                         onClick={() => setActiveTab(tab)}
-                                        className={`flex-1 py-4 text-xs font-black uppercase tracking-widest transition-all ${activeTab === tab
-                                            ? 'bg-white text-indigo-600 border-b-2 border-indigo-600'
-                                            : 'text-gray-400 hover:text-gray-600'
+                                        className={`flex-1 border-b-2 py-3 text-xs font-semibold uppercase tracking-wide transition-colors ${activeTab === tab
+                                            ? 'border-brand-600 bg-surface text-brand-700'
+                                            : 'border-transparent text-gray-500 hover:text-gray-700'
                                             }`}
                                     >
                                         {tab}
@@ -229,15 +230,15 @@ const QSnapshots = () => {
                                             <Button
                                                 type="submit"
                                                 disabled={!selection.volume || forms.Once.name.length < 3}
-                                                bgColor="bg-indigo-600"
-                                                className="px-8 py-3 font-black text-xs uppercase tracking-widest shadow-lg shadow-indigo-100 transition-all hover:-translate-y-0.5 !rounded-2xl"
+                                                variant="primary"
+                                                className="px-6"
                                                 onClick={handleCreate}
                                             >
                                                 Snap Now
                                             </Button>
                                         </div>
                                     )}
-                                    旋
+
                                     {activeTab === 'Minutely' && (
                                         <div className="flex items-end gap-6">
                                             <div className="w-32">
@@ -263,8 +264,8 @@ const QSnapshots = () => {
                                             <Button
                                                 type="submit"
                                                 disabled={!selection.volume}
-                                                bgColor="bg-indigo-600"
-                                                className="px-6 py-2.5 font-black text-xs uppercase tracking-widest shadow-lg shadow-indigo-100 transition-all hover:-translate-y-0.5 !rounded-2xl"
+                                                variant="primary"
+                                                className="px-6"
                                                 onClick={handleCreate}
                                             >
                                                 Create Schedule
@@ -307,8 +308,8 @@ const QSnapshots = () => {
                                             <Button
                                                 type="submit"
                                                 disabled={!selection.volume}
-                                                bgColor="bg-indigo-600"
-                                                className="px-6 py-2.5 font-black text-xs uppercase tracking-widest shadow-lg shadow-indigo-100 transition-all hover:-translate-y-0.5 !rounded-2xl"
+                                                variant="primary"
+                                                className="px-6"
                                                 onClick={handleCreate}
                                             >
                                                 Create Schedule
@@ -319,7 +320,7 @@ const QSnapshots = () => {
                                     {activeTab === 'Weekly' && (
                                         <div className="flex items-end gap-6 flex-wrap">
                                             <div className="w-48">
-                                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1 mb-2 block">At Time</label>
+                                                <label className="mb-1.5 ml-1 block text-sm font-medium text-gray-700">At Time</label>
                                                 <CustomTimePicker
                                                     value={forms.Weekly.stime}
                                                     disabled={!selection.volume}
@@ -348,8 +349,8 @@ const QSnapshots = () => {
                                             <Button
                                                 type="submit"
                                                 disabled={!selection.volume}
-                                                bgColor="bg-indigo-600"
-                                                className="px-6 py-2.5 font-black text-xs uppercase tracking-widest shadow-lg shadow-indigo-100 transition-all hover:-translate-y-0.5 !rounded-2xl"
+                                                variant="primary"
+                                                className="px-6"
                                                 onClick={handleCreate}
                                             >
                                                 Create Schedule

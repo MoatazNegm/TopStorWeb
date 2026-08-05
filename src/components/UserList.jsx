@@ -1,41 +1,44 @@
 import React from 'react';
+import { Check, KeyRound, Shield, Trash2, UserX, Users } from 'lucide-react';
 import Dropdown from './Common/Dropdown';
+import Panel from './Common/Panel';
 
 const UserList = ({ users, groups, onUpdateGroups, onChangePassword, onDelete }) => {
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 relative group hover:shadow-md transition-all duration-300 mt-8">
-            {/* Theme Accent Line */}
-            <div className="absolute top-0 bottom-0 left-0 w-1.5 bg-indigo-500 rounded-l-2xl shadow-[2px_0_10px_rgba(99,102,241,0.2)]"></div>
-
-            <div className="px-6 py-5 border-b border-gray-50 bg-gray-50/30 flex justify-between items-center">
-                <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600">
-                        <i className="fas fa-users-cog"></i>
-                    </div>
-                    <div>
-                        <h3 className="text-lg font-bold text-gray-800 tracking-tight">System User Directory</h3>
-                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mt-0.5">Active Directory & Local Users</p>
-                    </div>
+        <Panel
+            icon={<Users size={18} />}
+            title="System User Directory"
+            subtitle="Local and directory accounts"
+            bodyClass="p-0"
+            actions={
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-muted px-3 py-1 text-xs font-medium text-gray-600">
+                    <span className="h-1.5 w-1.5 rounded-full bg-success-500"></span>
+                    {users.length} accounts
+                </span>
+            }
+            footer={
+                <div className="flex items-center justify-between">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Storage system directory services</p>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-gray-500">
+                        <Shield size={14} />
+                        AES-256 encrypted
+                    </span>
                 </div>
-                <div className="px-4 py-1.5 bg-indigo-50 text-indigo-700 rounded-full text-xs font-bold border border-indigo-100 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
-                    {users.length} Active Accounts
-                </div>
-            </div>
-
+            }
+        >
             <div className="overflow-x-auto">
-                <table className="w-full text-left">
+                <table className="min-w-[720px] w-full text-left">
                     <thead>
-                        <tr className="bg-gray-50/50 border-b border-gray-100">
-                            <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-wider">User Identity</th>
-                            <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-wider">Storage Target</th>
-                            <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-wider text-center">Quota</th>
-                            <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-wider">Group Assignments</th>
-                            <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-wider text-center">Security</th>
-                            <th className="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-wider text-right">Actions</th>
+                        <tr className="border-b border-border bg-surface-muted">
+                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">User Identity</th>
+                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Storage Target</th>
+                            <th className="px-5 py-3 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Quota</th>
+                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Group Assignments</th>
+                            <th className="px-5 py-3 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Security</th>
+                            <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Actions</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-50">
+                    <tbody className="divide-y divide-border">
                         {users.map((user) => (
                             <UserRow
                                 key={user.name}
@@ -48,12 +51,12 @@ const UserList = ({ users, groups, onUpdateGroups, onChangePassword, onDelete })
                         ))}
                         {users.length === 0 && (
                             <tr>
-                                <td colSpan="6" className="text-center py-20 text-gray-400">
-                                    <div className="flex flex-col items-center gap-4">
-                                        <div className="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center text-3xl">
-                                            <i className="fas fa-user-slash opacity-20"></i>
-                                        </div>
-                                        <p className="font-bold">No users found in system</p>
+                                <td colSpan="6" className="py-16 text-center text-gray-500">
+                                    <div className="flex flex-col items-center gap-3">
+                                        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-surface-muted text-gray-400">
+                                            <UserX size={24} />
+                                        </span>
+                                        <p className="text-sm font-medium">No users found in system</p>
                                     </div>
                                 </td>
                             </tr>
@@ -61,112 +64,104 @@ const UserList = ({ users, groups, onUpdateGroups, onChangePassword, onDelete })
                     </tbody>
                 </table>
             </div>
-
-            <div className="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex justify-between items-center">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Storage System Directory Services v2.0</p>
-                <div className="flex gap-4">
-                    <span className="flex items-center gap-1.5 text-[10px] font-black text-gray-300 uppercase italic">
-                        <i className="fas fa-lock"></i> AES-256 Encrypted
-                    </span>
-                </div>
-            </div>
-        </div>
+        </Panel>
     );
 };
 
 const UserRow = ({ user, allGroups, onUpdateGroups, onChangePassword, onDelete }) => {
     // user.groups from API is always an array: ['1','3'] or ['NoGroup']
     const originalGroups = React.useMemo(() => {
-        const grps = Array.isArray(user.groups) ? user.groups : (user.groups ? user.groups.split(',') : []);
-        return grps.filter(g => g !== 'NoGroup');
+        const parsed = Array.isArray(user.groups) ? user.groups : user.groups ? user.groups.split(',') : [];
+        return parsed.filter((group) => group !== 'NoGroup');
     }, [user.groups]);
 
     const [selectedGroups, setSelectedGroups] = React.useState(originalGroups);
     const [hasChanges, setHasChanges] = React.useState(false);
 
-    // Stable key derived from server data — changes only when server groups actually change,
-    // not on every poll cycle that creates new array references with same content.
     const groupsKey = React.useMemo(() => [...originalGroups].sort().join(','), [originalGroups]);
 
     React.useEffect(() => {
         setSelectedGroups(originalGroups);
         setHasChanges(false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [groupsKey]);
 
     const handleGroupChange = (values) => {
-        setSelectedGroups(values);
+        const normalized = Array.isArray(values) ? values : [];
+        setSelectedGroups(normalized);
         const sorted = (arr) => [...arr].sort().join(',');
-        setHasChanges(sorted(values) !== sorted(originalGroups));
+        setHasChanges(sorted(normalized) !== sorted(originalGroups));
     };
 
     const handleUpdate = () => {
-        // Map selected group IDs to text names — backend userchange accepts both but text is canonical
-        const groupNames = selectedGroups.map(id => {
-            const grp = allGroups.find(g => String(g.id) === String(id));
-            return grp ? grp.text : id;
+        const groupNames = selectedGroups.map((id) => {
+            const match = allGroups.find((group) => String(group.id) === String(id));
+            return match ? match.text : id;
         });
         onUpdateGroups(user.name, groupNames.join(','));
         setHasChanges(false);
     };
 
     return (
-        <tr className="hover:bg-indigo-50/10 transition-colors group/row">
-            <td className="px-6 py-5">
+        <tr className="hover:bg-gray-50/60 transition-colors">
+            <td className="px-5 py-4">
                 <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-indigo-500 font-bold text-sm border-2 border-white shadow-sm">
-                        {user.name[0]?.toUpperCase()}
-                    </div>
-                    <span className="font-bold text-gray-700">{user.name}</span>
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-50 text-sm font-semibold text-brand-600">
+                        {user.name?.[0]?.toUpperCase() || 'U'}
+                    </span>
+                    <span className="font-medium text-gray-800">{user.name}</span>
                 </div>
             </td>
-            <td className="px-6 py-5">
-                <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-gray-300"></span>
-                    <span className="text-gray-600 font-medium">{user.Volpool || user.pool || 'N/A'}</span>
+            <td className="px-5 py-4">
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <span className="h-2 w-2 rounded-full bg-gray-300"></span>
+                    <span>{user.Volpool || user.pool || 'N/A'}</span>
                 </div>
             </td>
-            <td className="px-6 py-5 text-center">
-                <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold border border-gray-200">
+            <td className="px-5 py-4 text-center">
+                <span className="inline-flex rounded-sm border border-border bg-surface-muted px-2.5 py-1 text-xs font-medium text-gray-700">
                     {user.Volsize || user.size || '0'} GB
                 </span>
             </td>
-            <td className="px-6 py-5 min-w-[300px]">
-                <div className="flex items-center gap-3">
+            <td className="px-5 py-4 min-w-[300px]">
+                <div className="flex items-center gap-2">
                     <div className="flex-1">
                         <Dropdown
                             isMulti
-                            options={allGroups.map(group => ({ value: String(group.id), label: group.text }))}
+                            options={allGroups.map((group) => ({ value: String(group.id), label: group.text }))}
                             value={selectedGroups}
                             onChange={handleGroupChange}
-                            placeholder="Select Groups..."
+                            placeholder="Select groups..."
                         />
                     </div>
                     {hasChanges && (
                         <button
+                            type="button"
                             onClick={handleUpdate}
-                            className="p-2.5 bg-emerald-50 text-emerald-600 rounded-xl hover:bg-emerald-600 hover:text-white transition-all shadow-sm border border-emerald-100 flex-shrink-0 animate-bounce"
-                            title="Apply Changes"
+                            className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md border border-success-100 bg-success-50 text-success-600 transition-colors hover:bg-success-600 hover:text-white"
+                            title="Apply changes"
                         >
-                            <i className="fas fa-check"></i>
+                            <Check size={16} />
                         </button>
                     )}
                 </div>
             </td>
-            <td className="px-6 py-5 text-center">
+            <td className="px-5 py-4 text-center">
                 <button
+                    type="button"
                     onClick={() => onChangePassword(user.name)}
-                    className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-all text-xs font-bold border border-blue-100"
+                    className="inline-flex items-center gap-1.5 rounded-md border border-brand-100 bg-brand-50 px-3 py-1.5 text-xs font-medium text-brand-600 transition-colors hover:bg-brand-600 hover:text-white"
                 >
-                    <i className="fas fa-shield-alt"></i> Reset
+                    <KeyRound size={14} />
+                    Reset
                 </button>
             </td>
-            <td className="px-6 py-5 text-right">
+            <td className="px-5 py-4 text-right">
                 <button
+                    type="button"
                     onClick={() => onDelete(user.name)}
-                    className="w-10 h-10 rounded-xl bg-gray-50 text-gray-400 hover:bg-rose-50 hover:text-rose-600 transition-all flex items-center justify-center hover:shadow-lg hover:shadow-rose-100 border border-transparent hover:border-rose-100"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-gray-50 text-gray-400 transition-colors hover:border hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600"
                 >
-                    <i className="fas fa-trash-alt"></i>
+                    <Trash2 size={16} />
                 </button>
             </td>
         </tr>

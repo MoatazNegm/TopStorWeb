@@ -2,34 +2,36 @@ import React from 'react';
 
 const PerformanceChart = ({ title, icon, data, color }) => {
     const colorMap = {
-        blue: { stroke: '#3B82F6', fill: 'rgba(59, 130, 246, 0.05)' },
-        emerald: { stroke: '#10B981', fill: 'rgba(16, 185, 129, 0.05)' },
-        amber: { stroke: '#F59E0B', fill: 'rgba(245, 158, 11, 0.05)' },
+        info: { stroke: '#495BE2', fill: 'rgba(73, 91, 226, 0.08)' },
+        success: { stroke: '#1F9D6B', fill: 'rgba(31, 157, 107, 0.08)' },
+        warning: { stroke: '#C77A12', fill: 'rgba(199, 122, 18, 0.08)' },
     };
 
-    const colors = colorMap[color] || colorMap.blue;
+    const colors = colorMap[color] || colorMap.info;
+    const safeData = Array.isArray(data) && data.length > 0 ? data : [0, 0];
 
-    // Standard high-performance SVG path generator for sparklines/simple area charts
-    const points = data.map((val, idx) => `${(idx / (data.length - 1)) * 300},${100 - val}`).join(' ');
+    const points = safeData.map((val, idx) => `${(idx / Math.max(safeData.length - 1, 1)) * 300},${100 - val}`).join(' ');
     const areaPath = `M 0,100 L ${points} L 300,100 Z`;
     const linePath = `M ${points}`;
+    const peak = Math.max(...safeData).toFixed(1);
+    const avg = (safeData.reduce((a, b) => a + b, 0) / safeData.length).toFixed(1);
 
     return (
-        <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 hover:shadow-xl hover:shadow-gray-100/50 transition-all duration-300 relative overflow-hidden flex flex-col h-full">
-            <div className="flex justify-between items-center mb-8">
+        <div className="relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-surface p-5 shadow-sm transition-shadow hover:shadow-md">
+            <div className="mb-5 flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                    <div className={`w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-gray-400`}>
-                        <i className={`fas ${icon}`}></i>
+                    <div className="flex h-9 w-9 items-center justify-center rounded-md bg-surface-muted text-brand-600">
+                        {icon}
                     </div>
-                    <h3 className="text-lg font-bold text-gray-800 tracking-tight">{title}</h3>
+                    <h3 className="text-base font-semibold text-gray-800">{title}</h3>
                 </div>
-                <div className="flex gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Live Feed</span>
+                <div className="inline-flex items-center gap-2 rounded-sm border border-border bg-surface-muted px-2.5 py-1 text-xs font-medium text-gray-500">
+                    <span className="h-2 w-2 rounded-full bg-success-500" />
+                    Live Feed
                 </div>
             </div>
 
-            <div className="flex-1 relative min-h-[160px] flex items-end">
+            <div className="relative flex min-h-[160px] flex-1 items-end">
                 <svg viewBox="0 0 300 100" className="w-full h-full preserve-3d" preserveAspectRatio="none">
                     <defs>
                         <linearGradient id={`grad-${color}`} x1="0%" y1="0%" x2="0%" y2="100%">
@@ -42,21 +44,21 @@ const PerformanceChart = ({ title, icon, data, color }) => {
                 </svg>
             </div>
 
-            <div className="mt-8 flex justify-between items-end border-t border-gray-50 pt-4">
+            <div className="mt-5 flex items-end justify-between border-t border-border pt-4">
                 <div className="flex items-center gap-6">
                     <div>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Peak Load</p>
-                        <p className="text-lg font-black text-gray-800">{Math.max(...data).toFixed(1)} <span className="text-xs text-gray-400 font-bold uppercase italic ml-1">Units</span></p>
+                        <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">Peak Load</p>
+                        <p className="text-lg font-semibold text-gray-800">{peak} <span className="ml-1 text-xs font-medium text-gray-500">Units</span></p>
                     </div>
-                    <div className="w-px h-8 bg-gray-100"></div>
+                    <div className="h-8 w-px bg-border" />
                     <div>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Avg Efficiency</p>
-                        <p className="text-lg font-black text-gray-800">{(data.reduce((a, b) => a + b, 0) / data.length).toFixed(1)} <span className="text-xs text-gray-400 font-bold uppercase italic ml-1">%</span></p>
+                        <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">Average</p>
+                        <p className="text-lg font-semibold text-gray-800">{avg} <span className="ml-1 text-xs font-medium text-gray-500">%</span></p>
                     </div>
                 </div>
                 <div className="flex flex-col items-end">
-                    <span className={`text-xs font-black uppercase tracking-widest px-2 py-0.5 rounded-md border ${color === 'amber' ? 'bg-amber-50 text-amber-600 border-amber-100' : 'bg-blue-50 text-blue-600 border-blue-100'}`}>
-                        {color === 'amber' ? 'Warning Thr.' : 'Stable'}
+                    <span className={`rounded-sm border px-2 py-0.5 text-xs font-semibold uppercase tracking-wide ${color === 'warning' ? 'border-warning-100 bg-warning-50 text-warning-600' : 'border-info-100 bg-info-50 text-info-600'}`}>
+                        {color === 'warning' ? 'Warning Threshold' : 'Stable'}
                     </span>
                 </div>
             </div>

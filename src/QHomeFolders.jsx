@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { AlertCircle, Plus, RefreshCw } from 'lucide-react';
 import { fetchVolumesInfo, fetchUserList, createVolume, updateVolume, deleteVolume, fetchVolumeStats } from './api/volumes';
 import { fetchPoolsInfo } from './api/pools';
 import Button from './components/Common/Button';
@@ -113,23 +114,23 @@ const QHomeFolders = () => {
                     <div className="container-fluid">
                         <div className="flex justify-between items-center mb-8">
                             <div>
-                                <h1 className="text-3xl font-black text-gray-800 tracking-tight">Home Folders Management</h1>
-                                <p className="text-gray-500 mt-1 font-medium">User-specific private network storage</p>
+                                <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Home Folders Management</h1>
+                                <p className="mt-1 text-sm text-gray-500">User-specific private network storage</p>
                             </div>
                             <div className="flex gap-3">
                                 <Button
                                     onClick={loadData}
-                                    bgColor="bg-white"
-                                    textColor="text-gray-400"
-                                    className="border border-gray-100 hover:text-indigo-50 rounded-xl shadow-sm transition-all"
-                                    icon={<i className={`fas fa-sync-alt ${loading ? 'animate-spin' : ''}`}></i>}
+                                    variant="secondary"
+                                    size="icon"
+                                    className="h-10 w-10"
+                                    icon={<RefreshCw size={16} className={loading ? 'animate-spin' : ''} />}
                                 />
                             </div>
                         </div>
 
                         {error && (
-                            <div className="mb-6 p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-center gap-3 text-rose-600 text-sm font-bold">
-                                <i className="fas fa-exclamation-circle"></i>
+                            <div className="mb-6 flex items-center gap-3 rounded-xl border border-danger-100 bg-danger-50 p-4 text-sm font-medium text-danger-700">
+                                <AlertCircle size={16} />
                                 {error}
                             </div>
                         )}
@@ -137,12 +138,12 @@ const QHomeFolders = () => {
                         {/* First Row: Form + Insights */}
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                             {/* Creation Form */}
-                            <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
+                            <div className="rounded-lg border border-border bg-surface p-6 shadow-sm">
                                 <div className="flex items-center gap-3 mb-8">
-                                    <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-500 flex items-center justify-center">
-                                        <i className="fas fa-plus text-xs"></i>
+                                    <div className="flex h-9 w-9 items-center justify-center rounded-md bg-brand-50 text-brand-600">
+                                        <Plus size={14} />
                                     </div>
-                                    <h3 className="text-lg font-bold text-gray-800 tracking-tight">Provision New Home Folder</h3>
+                                    <h3 className="text-base font-semibold text-gray-800">Provision New Home Folder</h3>
                                 </div>
 
                                 <form onSubmit={handleCreate} className="space-y-6">
@@ -196,8 +197,8 @@ const QHomeFolders = () => {
                                     <div className="flex justify-end pt-4">
                                         <Button
                                             type="submit"
-                                            bgColor="bg-indigo-600"
-                                            className="px-6 py-3 font-black text-xs uppercase tracking-widest shadow-lg shadow-indigo-100 transition-all hover:-translate-y-0.5"
+                                            variant="primary"
+                                            className="px-6"
                                             onClick={handleCreate}
                                         >
                                             Create Home Folder

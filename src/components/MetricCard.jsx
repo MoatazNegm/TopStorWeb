@@ -2,44 +2,42 @@ import React from 'react';
 
 const MetricCard = ({ title, value, unit, icon, color, trend, trendValue }) => {
     const colorClasses = {
-        blue: 'bg-blue-50 text-blue-600 border-blue-100',
-        emerald: 'bg-emerald-50 text-emerald-600 border-emerald-100',
-        amber: 'bg-amber-50 text-amber-600 border-amber-100',
-        indigo: 'bg-indigo-50 text-indigo-600 border-indigo-100',
-        rose: 'bg-rose-50 text-rose-600 border-rose-100',
+        brand: 'bg-brand-50 text-brand-600 border-brand-100',
+        success: 'bg-success-50 text-success-600 border-success-100',
+        warning: 'bg-warning-50 text-warning-600 border-warning-100',
+        danger: 'bg-danger-50 text-danger-600 border-danger-100',
+        info: 'bg-info-50 text-info-600 border-info-100',
     };
 
-    const accentColor = colorClasses[color] || colorClasses.blue;
+    const accentColor = colorClasses[color] || colorClasses.brand;
+    const bgToken = accentColor.split(' ')[0];
 
     return (
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:shadow-gray-100/50 transition-all duration-300 group relative overflow-hidden">
-            {/* Background Glow */}
-            <div className={`absolute -right-4 -top-4 w-24 h-24 rounded-full opacity-5 blur-2xl ${accentColor.split(' ')[0]}`}></div>
+        <div className="group relative overflow-hidden rounded-lg border border-border bg-surface p-5 shadow-sm transition-shadow hover:shadow-md">
+            <div className={`absolute -right-5 -top-5 h-24 w-24 rounded-full opacity-10 blur-2xl ${bgToken}`} />
 
-            <div className="flex justify-between items-start mb-4">
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border ${accentColor} shadow-sm group-hover:scale-110 transition-transform duration-300`}>
-                    <i className={`fas ${icon} text-lg`}></i>
+            <div className="mb-4 flex items-start justify-between">
+                <div className={`flex h-11 w-11 items-center justify-center rounded-md border ${accentColor}`}>
+                    {icon}
                 </div>
                 {trend && (
-                    <div className={`px-2.5 py-1 rounded-lg text-[10px] font-black tracking-wider uppercase flex items-center gap-1 ${trend === 'up' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'
+                    <div className={`rounded-sm px-2.5 py-1 text-xs font-semibold uppercase tracking-wide ${trend === 'up' ? 'bg-success-50 text-success-600' : 'bg-danger-50 text-danger-600'
                         }`}>
-                        <i className={`fas fa-chevron-${trend}`}></i>
                         {trendValue}
                     </div>
                 )}
             </div>
 
-            <div className="space-y-1">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest">{title}</h3>
-                <div className="flex items-baseline gap-1.5">
-                    <span className="text-3xl font-black text-gray-800 tracking-tight">{value}</span>
-                    <span className="text-sm font-bold text-gray-400 capitalize">{unit}</span>
+            <div className="space-y-1.5">
+                <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500">{title}</h3>
+                <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-semibold tracking-tight text-gray-900">{value}</span>
+                    <span className="text-sm font-medium text-gray-500">{unit}</span>
                 </div>
             </div>
 
-            {/* Bottom Progress Bar (Visual Polish) */}
-            <div className="mt-6 h-1 w-full bg-gray-50 rounded-full overflow-hidden">
-                <div className={`h-full opacity-60 rounded-full w-2/3 ${accentColor.split(' ')[0]}`}></div>
+            <div className="mt-5 h-1 w-full overflow-hidden rounded-full bg-gray-100">
+                <div className={`h-full w-2/3 rounded-full ${bgToken}`} />
             </div>
         </div>
     );

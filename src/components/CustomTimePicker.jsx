@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Clock3 } from 'lucide-react';
 
 const CustomTimePicker = ({ value, onChange, disabled }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -52,23 +53,23 @@ const CustomTimePicker = ({ value, onChange, disabled }) => {
         <div className="relative" ref={containerRef}>
             <div
                 onClick={() => !disabled && setIsOpen(!isOpen)}
-                className={`w-full px-4 py-3 bg-gray-50 border-none rounded-2xl text-sm font-bold text-gray-700 flex items-center justify-between cursor-pointer transition-all ${isOpen ? 'ring-2 ring-indigo-500' : ''
+                className={`w-full px-4 py-3 bg-gray-50 border-none rounded-2xl text-sm font-bold text-gray-700 flex items-center justify-between cursor-pointer transition-all ${isOpen ? 'ring-2 ring-brand-500' : ''
                     } ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'}`}
             >
                 <span>{value || '11:50 PM'}</span>
-                <i className="far fa-clock text-gray-400"></i>
+                <Clock3 size={16} className="text-gray-400" />
             </div>
 
             {isOpen && (
                 <div className="absolute top-full left-0 mt-3 bg-white rounded-3xl shadow-2xl border border-gray-100 p-4 z-50 flex gap-4 animate-in fade-in zoom-in duration-200 min-w-[280px]">
                     {/* Hours */}
                     <div className="flex-1 max-h-60 overflow-y-auto no-scrollbar py-2">
-                        <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 text-center px-2">Hour</div>
+                        <div className="mb-3 px-2 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Hour</div>
                         {hours.map(h => (
                             <button
                                 key={h}
                                 onClick={() => updateTime({ ...time, hour: h })}
-                                className={`w-full py-2 px-3 rounded-xl text-sm font-bold transition-all mb-1 ${time.hour === h ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-100' : 'text-gray-600 hover:bg-gray-50'
+                                className={`w-full py-2 px-3 rounded-xl text-sm font-bold transition-all mb-1 ${time.hour === h ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50'
                                     }`}
                             >
                                 {h}
@@ -78,12 +79,12 @@ const CustomTimePicker = ({ value, onChange, disabled }) => {
 
                     {/* Minutes */}
                     <div className="flex-1 max-h-60 overflow-y-auto no-scrollbar py-2 border-l border-gray-50 pl-4">
-                        <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 text-center px-2">Min</div>
+                        <div className="mb-3 px-2 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Min</div>
                         {minutes.map(m => (
                             <button
                                 key={m}
                                 onClick={() => updateTime({ ...time, minute: m })}
-                                className={`w-full py-2 px-3 rounded-xl text-sm font-bold transition-all mb-1 ${time.minute === m ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-100' : 'text-gray-600 hover:bg-gray-50'
+                                className={`w-full py-2 px-3 rounded-xl text-sm font-bold transition-all mb-1 ${time.minute === m ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50'
                                     }`}
                             >
                                 {m}
@@ -93,12 +94,12 @@ const CustomTimePicker = ({ value, onChange, disabled }) => {
 
                     {/* Period */}
                     <div className="w-16 py-2 border-l border-gray-50 pl-4">
-                        <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 text-center">Period</div>
+                        <div className="mb-3 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Period</div>
                         {periods.map(p => (
                             <button
                                 key={p}
                                 onClick={() => updateTime({ ...time, period: p })}
-                                className={`w-full py-2 px-3 rounded-xl text-sm font-bold transition-all mb-1 ${time.period === p ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-100' : 'text-gray-600 hover:bg-gray-50'
+                                className={`w-full py-2 px-3 rounded-xl text-sm font-bold transition-all mb-1 ${time.period === p ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50'
                                     }`}
                             >
                                 {p}
@@ -107,7 +108,7 @@ const CustomTimePicker = ({ value, onChange, disabled }) => {
 
                         <button
                             onClick={() => setIsOpen(false)}
-                            className="w-full mt-4 py-3 bg-gray-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-black transition-all"
+                            className="mt-4 w-full rounded-md bg-gray-900 py-2.5 text-xs font-semibold uppercase tracking-wide text-white transition-colors hover:bg-black"
                         >
                             OK
                         </button>

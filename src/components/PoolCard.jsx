@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Database, Plus } from 'lucide-react';
 import DiskIcon from './DiskIcon';
 import Button from './Common/Button';
 
@@ -22,7 +23,7 @@ const PoolCard = ({
 
     // Determine redundancy type and color — mirrors legacy Qdg.js initdgs() health logic
     let redundancyText = "Highly Available";
-    let redundancyColor = "text-blue-500";
+    let redundancyColor = "text-brand-600";
 
     const isRaid = raids.some(r => r.includes('raidz') || r.includes('mirror'));
 
@@ -60,37 +61,37 @@ const PoolCard = ({
     };
 
     return (
-        <div className="bg-white rounded-[2.5rem] p-5 shadow-sm border border-gray-100 mb-4 overflow-hidden group">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-3 pb-2 border-b border-gray-50">
+        <div className="mb-4 overflow-hidden rounded-lg border border-border bg-surface p-5 shadow-sm">
+            <div className="mb-4 flex flex-col items-start justify-between gap-4 border-b border-border pb-4 md:flex-row md:items-center">
                 <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-500 flex items-center justify-center">
-                        <i className="fas fa-database text-lg"></i>
+                    <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-50 text-brand-600">
+                        <Database size={18} />
                     </div>
                     <div>
-                        <h3 className="text-xl font-black text-gray-800 tracking-tight">Pool: <span className="text-indigo-600">{poolName}</span></h3>
+                        <h3 className="text-base font-semibold text-gray-900">Pool: <span className="text-brand-700">{poolName}</span></h3>
                         <div className="flex items-center gap-3 mt-1">
-                            <span className={`text-[10px] font-black uppercase tracking-widest ${redundancyColor}`}>{redundancyText}</span>
+                            <span className={`text-xs font-semibold uppercase tracking-wide ${redundancyColor}`}>{redundancyText}</span>
                             <span className="w-1 h-1 bg-gray-200 rounded-full"></span>
-                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Dedup: {dedup}</span>
+                            <span className="text-xs font-medium uppercase tracking-wide text-gray-500">Dedup: {dedup}</span>
                         </div>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-6 bg-gray-50/50 px-6 py-2 rounded-2xl border border-gray-50">
+                <div className="flex items-center gap-6 rounded-md border border-border bg-surface-muted px-5 py-3">
                     <div className="text-center">
-                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Total Size</p>
-                        <p className="text-lg font-black text-gray-800 tracking-tighter">{totalSize}GB</p>
+                        <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">Total Size</p>
+                        <p className="text-lg font-semibold text-gray-900">{totalSize}GB</p>
                     </div>
                     <div className="w-px h-8 bg-gray-200"></div>
                     <div className="text-center">
-                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Used</p>
-                        <p className="text-lg font-black text-indigo-600 tracking-tighter">{used}GB</p>
+                        <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">Used</p>
+                        <p className="text-lg font-semibold text-brand-600">{used}GB</p>
                     </div>
                 </div>
             </div>
 
             {/* Raid Groups Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
+            <div className="mb-5 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {raids.map(raidId => {
                     const raidDisks = allRaids[raidId]?.disks || [];
                     // Filter out dm-* virtual placeholder devices — they are not real disks to render
@@ -104,10 +105,10 @@ const PoolCard = ({
                     const raidHasMissing = missingCount > 0;
 
                     return (
-                        <div key={raidId} className={`bg-gray-50/30 rounded-3xl p-6 border relative ${raidHasMissing ? 'border-red-300' : 'border-gray-50/50'}`}>
+                        <div key={raidId} className={`relative rounded-lg border bg-surface-muted p-5 ${raidHasMissing ? 'border-danger-200' : 'border-border'}`}>
                             <div className="flex items-center justify-between mb-4">
-                                <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${raidHasMissing ? 'text-red-500' : 'text-gray-400'}`}>{raidId.split('_')[0]}</span>
-                                <div className={`w-2 h-2 rounded-full ${raidHasMissing ? 'bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.5)]' : 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]'}`}></div>
+                                <span className={`text-xs font-semibold uppercase tracking-wide ${raidHasMissing ? 'text-danger-600' : 'text-gray-500'}`}>{raidId.split('_')[0]}</span>
+                                <div className={`h-2.5 w-2.5 rounded-full ${raidHasMissing ? 'bg-danger-500' : 'bg-success-500'}`}></div>
                             </div>
                             <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
                                 {realDisks.map(diskId => (
@@ -122,10 +123,10 @@ const PoolCard = ({
                                     />
                                 ))}
                                 {Array.from({ length: missingCount }).map((_, i) => (
-                                    <div key={`missing-${i}`} className="flex flex-col items-center p-2 rounded-xl border border-red-200 bg-red-50/30">
+                                    <div key={`missing-${i}`} className="flex flex-col items-center rounded-md border border-danger-200 bg-danger-50 p-2">
                                         <img src="img/invaliddisk.png" alt="missing disk" className="w-10 h-10 object-contain opacity-50" />
-                                        <span className="text-[9px] font-bold text-red-400 mt-1 uppercase tracking-tight">missing</span>
-                                        <span className="text-[10px] font-black text-red-300 leading-none">-</span>
+                                        <span className="mt-1 text-xs font-semibold uppercase tracking-wide text-danger-600">missing</span>
+                                        <span className="text-xs font-semibold leading-none text-danger-400">-</span>
                                     </div>
                                 ))}
                             </div>
@@ -135,24 +136,24 @@ const PoolCard = ({
             </div>
 
             {/* Capacity Management Section */}
-            <div className="bg-gray-50/50 rounded-3xl p-6 border border-gray-100">
+            <div className="rounded-lg border border-border bg-surface-muted p-5">
                 <div className="flex items-center gap-3 mb-4">
-                    <div className="w-8 h-8 rounded-xl bg-white border border-gray-100 text-indigo-500 flex items-center justify-center shadow-sm">
-                        <i className="fas fa-plus text-[10px]"></i>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-surface text-brand-600 shadow-xs">
+                        <Plus size={12} />
                     </div>
-                    <h4 className="text-xs font-black text-gray-700 uppercase tracking-widest">Expansion Options</h4>
+                    <h4 className="text-sm font-semibold text-gray-800">Expansion Options</h4>
                 </div>
 
                 <div className="overflow-x-auto">
                     <table className="w-full">
                         <thead>
-                            <tr className="text-left border-b border-gray-100/50">
-                                <th className="pb-3 text-[10px] font-black text-gray-400 uppercase tracking-widest px-4">Select</th>
-                                <th className="pb-3 text-[10px] font-black text-gray-400 uppercase tracking-widest px-4">Configuration</th>
-                                <th className="pb-3 text-[10px] font-black text-gray-400 uppercase tracking-widest px-4">New Total Size</th>
+                            <tr className="border-b border-border text-left">
+                                <th className="px-4 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Select</th>
+                                <th className="px-4 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Configuration</th>
+                                <th className="px-4 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">New Total Size</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-100/50">
+                        <tbody className="divide-y divide-border">
                             {Object.entries(newRaidOptions).map(([type, options]) => {
                                 if (Object.keys(options).length === 0) return null;
                                 
@@ -167,14 +168,14 @@ const PoolCard = ({
                                     <tr
                                         key={type}
                                         onClick={() => handleRedundancySelect(type, sizes[0])}
-                                        className={`group/row transition-colors cursor-pointer ${selectedRedundancy === type ? 'bg-indigo-50/50' : 'hover:bg-white'}`}
+                                        className={`group/row cursor-pointer transition-colors ${selectedRedundancy === type ? 'bg-brand-50/60' : 'hover:bg-white'}`}
                                     >
                                         <td className="py-4 px-4">
                                             <div className="flex items-center">
                                                 <input
                                                     type="radio"
                                                     name={`${poolName}_redundancy`}
-                                                    className="w-4 h-4 text-indigo-600 focus:ring-0 border-gray-300 transition-all cursor-pointer pointer-events-none"
+                                                    className="h-4 w-4 cursor-pointer border-gray-300 text-brand-600 transition-all pointer-events-none focus:ring-0"
                                                     id={`${poolName}_${type}`}
                                                     checked={selectedRedundancy === type}
                                                     readOnly
@@ -182,7 +183,7 @@ const PoolCard = ({
                                             </div>
                                         </td>
                                         <td className="py-4 px-4">
-                                            <span className="text-sm font-bold text-gray-700">
+                                            <span className="text-sm font-medium text-gray-800">
                                                 {type.charAt(0).toUpperCase() + type.slice(1)} Redundancy
                                             </span>
                                         </td>
@@ -192,7 +193,7 @@ const PoolCard = ({
                                                     value={selectedSize}
                                                     onChange={(e) => setSelectedSize(e.target.value)}
                                                     onClick={(e) => e.stopPropagation()}
-                                                    className="text-[10px] font-black px-3 py-1 rounded-lg bg-white border-none text-indigo-600 focus:ring-1 focus:ring-indigo-200 outline-none"
+                                                    className="rounded-md border border-border bg-surface px-3 py-1.5 text-xs font-medium text-brand-700 outline-none focus:ring-4 focus:ring-brand-100"
                                                 >
                                                     {sizes.map(s => (
                                                         <option key={s} value={s}>
@@ -201,7 +202,7 @@ const PoolCard = ({
                                                     ))}
                                                 </select>
                                             ) : (
-                                                <span className={`text-[10px] font-black px-3 py-1 rounded-lg transition-colors ${selectedRedundancy === type ? 'bg-white text-indigo-600' : 'bg-gray-100 text-gray-400 group-hover/row:bg-indigo-50 group-hover/row:text-indigo-600'}`}>
+                                                <span className={`rounded-sm px-2.5 py-1 text-xs font-medium transition-colors ${selectedRedundancy === type ? 'bg-surface text-brand-700' : 'bg-gray-100 text-gray-500 group-hover/row:bg-brand-50 group-hover/row:text-brand-700'}`}>
                                                     {(parseFloat(sizes[0].replace(/[^0-9.]/g, '')) + parseFloat(available)).toFixed(2)}GB
                                                 </span>
                                             )}
@@ -217,8 +218,8 @@ const PoolCard = ({
                     <Button
                         onClick={handleAdd}
                         disabled={!selectedRedundancy || !selectedSize}
-                        bgColor="bg-indigo-600"
-                        className="px-8 py-2.5 font-black text-[10px] uppercase tracking-widest shadow-lg shadow-indigo-100 transition-all hover:-translate-y-0.5"
+                        variant="primary"
+                        className="px-6"
                     >
                         Add to Pool
                     </Button>
@@ -228,39 +229,38 @@ const PoolCard = ({
             {/* Deletion Safety Flow — matches legacy: block deletion when pool has volumes */}
             <div className="mt-8 pt-8 border-t border-gray-50 flex justify-between items-center">
                 <div className="text-xs font-medium text-gray-400">
-                    Volumes in pool: <span className="text-indigo-500 font-bold">{volumes.length > 0 ? volumes.map(v => v.split('_')[0]).join(', ') : 'None'}</span>
+                    Volumes in pool: <span className="text-brand-600 font-bold">{volumes.length > 0 ? volumes.map(v => v.split('_')[0]).join(', ') : 'None'}</span>
                 </div>
 
                 <div className="flex gap-3">
                     {volumes.length > 0 ? (
-                        <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Remove volumes first to decommission</span>
+                        <span className="text-xs font-medium uppercase tracking-wide text-gray-500">Remove volumes first to decommission</span>
                     ) : (
                         <>
                             {deleteStep === 0 && (
                                 <Button
                                     onClick={() => setDeleteStep(1)}
-                                    bgColor="bg-transparent hover:bg-rose-50"
-                                    textColor="text-gray-400 hover:text-rose-500"
-                                    className="text-[10px] font-black uppercase tracking-widest transition-colors px-4 py-2"
+                                    variant="ghost"
+                                    className="px-4 text-danger-600 hover:bg-danger-50 hover:text-danger-700"
                                 >
                                     Decommission Pool
                                 </Button>
                             )}
                             {deleteStep === 1 && (
                                 <>
-                                    <span className="text-[10px] font-black text-rose-500 uppercase tracking-widest animate-pulse flex items-center">Really delete?</span>
-                                    <button onClick={() => setDeleteStep(0)} className="px-4 py-2 bg-gray-100 text-gray-600 rounded-xl font-bold text-[10px] uppercase tracking-widest">Cancel</button>
-                                    <button onClick={() => setDeleteStep(2)} className="px-4 py-2 bg-rose-500 text-white rounded-xl font-bold text-[10px] uppercase tracking-widest shadow-lg shadow-rose-100">Delete</button>
+                                    <span className="flex items-center text-xs font-semibold uppercase tracking-wide text-danger-600">Really delete?</span>
+                                    <Button onClick={() => setDeleteStep(0)} variant="secondary" size="sm">Cancel</Button>
+                                    <Button onClick={() => setDeleteStep(2)} variant="danger" size="sm">Delete</Button>
                                 </>
                             )}
                             {deleteStep === 2 && (
                                 <>
-                                    <span className="text-[10px] font-black text-rose-600 uppercase tracking-widest animate-pulse flex items-center">Final confirmation needed!</span>
-                                    <button onClick={() => setDeleteStep(0)} className="px-4 py-2 bg-gray-100 text-gray-600 rounded-xl font-bold text-[10px] uppercase tracking-widest">Cancel</button>
+                                    <span className="flex items-center text-xs font-semibold uppercase tracking-wide text-danger-700">Final confirmation needed!</span>
+                                    <Button onClick={() => setDeleteStep(0)} variant="secondary" size="sm">Cancel</Button>
                                     <Button
                                         onClick={() => { setDeleteStep(0); onDeletePool(poolName); }}
-                                        bgColor="bg-rose-600"
-                                        className="px-6 py-2 rounded-xl font-bold text-[10px] uppercase tracking-widest shadow-xl shadow-rose-200"
+                                        variant="danger"
+                                        size="sm"
                                     >
                                         Confirm Destruction
                                     </Button>
