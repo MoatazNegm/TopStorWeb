@@ -145,8 +145,6 @@ const QSnapshots = () => {
     const tabs = ['Once', 'Minutely', 'Hourly', 'Weekly'];
 
     return (
-        <div className="content-wrapper">
-            <div className="floating-canvas">
                 <div className="content-header px-4">
                     <div className="container-fluid">
                         <div className="flex justify-between items-center mb-8">
@@ -400,8 +398,6 @@ const QSnapshots = () => {
 
                     </div>
                 </div>
-            </div>
-        </div>
     );
 };
 

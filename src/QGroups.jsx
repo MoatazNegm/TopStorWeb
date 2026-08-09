@@ -64,8 +64,6 @@ const QGroups = () => {
     };
 
     return (
-        <div className="content-wrapper">
-            <div className="floating-canvas">
                 <div className="p-5">
                     <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -106,8 +104,6 @@ const QGroups = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
     );
 };
 

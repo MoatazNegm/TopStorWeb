@@ -251,11 +251,6 @@ body {
     transition: transform .25s ease;
 }
 
-.main-content-shell {
-    min-width: 0;
-    max-width: 100%;
-}
-
 .sidebar-backdrop {
     position: fixed;
     inset: 0;
@@ -267,11 +262,6 @@ body {
 }
 
 @media (min-width: 1024px) {
-    .main-content-shell {
-        flex: 0 0 calc(100% - 260px);
-        max-width: calc(100% - 260px);
-    }
-
     .sidebar-backdrop {
         display: none;
     }
@@ -281,8 +271,6 @@ body {
     }
 
     body.sidebar-collapse .main-content-shell {
-        flex-basis: 100%;
-        max-width: 100%;
         margin-left: 0 !important;
     }
 }

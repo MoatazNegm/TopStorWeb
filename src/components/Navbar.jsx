@@ -42,6 +42,16 @@ const Navbar = ({ sectionTitle }) => {
         const username = localStorage.getItem('user');
         setUserMenuOpen(false);
         setSaving(true);
+        try {
+            await changePassword(username, pass);
+            setModalOpen(false);
+        } catch (e) {
+            setPassErr('failed to change password');
+            setPassErrColor('text-red-500');
+        } finally {
+            setSaving(false);
+        }
+    };
 
     const handleFullscreen = () => {
         if (!document.fullscreenElement) {
@@ -74,10 +84,10 @@ const Navbar = ({ sectionTitle }) => {
         };
         return map[hash] || 'Nodes';
     })();
-        try {
-            await changePassword(username, pass);
-            setModalOpen(false);
-            <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b border-border bg-surface px-4 sm:px-6">
+
+    return (
+        <>
+            <header className="app-navbar sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b border-border bg-surface px-4 sm:px-6">
                 <div className="flex min-w-0 items-center gap-2">
                     <button
                         type="button"
@@ -86,7 +96,7 @@ const Navbar = ({ sectionTitle }) => {
                     >
                         <Menu className="h-5 w-5" />
                     </button>
-                    <nav className="flex min-w-0 items-center gap-1.5 text-sm">
+                    <nav className="app-breadcrumb flex min-w-0 items-center gap-1.5 text-sm">
                         <span className="truncate text-gray-500">{sectionTitle}</span>
                         <ChevronRight className="h-[15px] w-[15px] flex-shrink-0 text-gray-300" />
                         <span className="truncate font-semibold text-gray-900">{currentLabel}</span>
@@ -99,7 +109,7 @@ const Navbar = ({ sectionTitle }) => {
                         <div id="syncStatus" className="text-xs font-medium leading-tight text-gray-600">
                             Getting Status...
                         </div>
-    };
+                    </div>
 
                     <div className="relative">
                         <button
@@ -184,16 +194,6 @@ const Navbar = ({ sectionTitle }) => {
                     </div>
                 </div>
             </header>
-                            className="dropdown-item chgpasswd !flex !flex-row !items-center !gap-3 px-4 py-3 rounded-xl hover:bg-yellow-50 text-gray-700 hover:text-yellow-700 transition-all group/item w-full text-left"
-                        >
-                            <Key size={18} strokeWidth={2} className="text-gray-400 group-hover/item:text-yellow-500 transition-colors shrink-0" />
-                            <span className="font-semibold text-sm whitespace-nowrap">Change Password</span>
-                        </button>
-                    </div>
-                </li>
-
-            </ul>
-        </nav>
 
         {modalOpen && (
             <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-900/40 p-4 backdrop-blur-sm">

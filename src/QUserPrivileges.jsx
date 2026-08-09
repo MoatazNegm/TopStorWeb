@@ -6,10 +6,10 @@ import {
     Check,
     ClipboardList,
     Database,
-    FolderHome,
+    Home,
     HardDrive,
     Layers,
-    Linux,
+    Terminal,
     Network,
     RefreshCw,
     Server,
@@ -34,7 +34,7 @@ const QUserPrivileges = () => {
     const privilegeList = [
         { id: 'Active_Directory', label: 'Active Directory', icon: Network },
         { id: 'Service_Charts', label: 'Performance Charts', icon: BarChart3 },
-        { id: 'NFS', label: 'NFS', icon: Linux },
+        { id: 'NFS', label: 'NFS', icon: Terminal },
         { id: 'SnapShots', label: 'Snapshots', icon: Camera },
         { id: 'Box_Users', label: 'Users & Groups', icon: Users },
         { id: 'Logs', label: 'Logs', icon: ClipboardList },
@@ -47,7 +47,7 @@ const QUserPrivileges = () => {
         { id: 'Senders', label: 'Senders', icon: Upload },
         { id: 'Replication', label: 'Replication', icon: RefreshCw },
         { id: 'Uploadch', label: 'Firmware', icon: Upload },
-        { id: 'HOME', label: 'Home Folders', icon: FolderHome },
+        { id: 'HOME', label: 'Home Folders', icon: Home },
         { id: 'ISCSI', label: 'ISCSI LUNs', icon: HardDrive },
     ];
 
@@ -124,12 +124,8 @@ const QUserPrivileges = () => {
 
     if (loading) {
         return (
-            <div className="content-wrapper">
-                <div className="floating-canvas">
-                    <div className="flex min-h-[400px] items-center justify-center">
-                        <div className="h-10 w-10 animate-spin rounded-full border-2 border-brand-200 border-t-brand-600" />
-                    </div>
-                </div>
+            <div className="flex min-h-[400px] items-center justify-center">
+                <div className="h-10 w-10 animate-spin rounded-full border-2 border-brand-200 border-t-brand-600" />
             </div>
         );
     }
@@ -137,8 +133,6 @@ const QUserPrivileges = () => {
     const dropdownOptions = allUsers.map((u, i) => ({ label: u.name, value: i }));
 
     return (
-        <div className="content-wrapper">
-            <div className="floating-canvas">
                 <div className="p-5">
                     <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -220,8 +214,6 @@ const QUserPrivileges = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
     );
 };
 

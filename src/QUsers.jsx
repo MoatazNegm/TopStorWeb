@@ -93,9 +93,8 @@ const QUsers = () => {
         passwordModal.password !== passwordModal.confirmPassword;
 
     return (
-        <div className="content-wrapper">
-            <div className="floating-canvas">
-                <div className="content-header px-4">
+        <>
+            <div className="content-header px-4">
                     <div className="container-fluid">
                         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                             <div>
@@ -212,8 +211,7 @@ const QUsers = () => {
                         </div>
                     </div>
                 )}
-            </div>
-        </div>
+        </>
     );
 };
 

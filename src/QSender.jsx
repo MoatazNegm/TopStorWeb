@@ -223,19 +223,13 @@ const QSender = () => {
 
     if (loading && snapshotsInfo.allsnaps.length === 0) {
         return (
-            <div className="content-wrapper">
-                <div className="floating-canvas">
-                    <div className="flex min-h-[400px] items-center justify-center">
-                        <div className="h-10 w-10 animate-spin rounded-full border-2 border-brand-200 border-t-brand-600" />
-                    </div>
-                </div>
+            <div className="flex min-h-[400px] items-center justify-center">
+                <div className="h-10 w-10 animate-spin rounded-full border-2 border-brand-200 border-t-brand-600" />
             </div>
         );
     }
 
     return (
-        <div className="content-wrapper">
-            <div className="floating-canvas">
                 <div className="p-5">
                     <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -599,8 +593,6 @@ const QSender = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
     );
 };
 

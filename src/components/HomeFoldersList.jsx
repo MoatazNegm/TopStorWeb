@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Check, Edit3, FolderHome, FolderOpen, Trash2, X } from 'lucide-react';
+import { Check, Edit3, Home, FolderOpen, Trash2, X } from 'lucide-react';
 import Panel from './Common/Panel';
 
 const HomeFoldersList = ({ volumes, onUpdate, onDelete }) => {
@@ -35,7 +35,7 @@ const HomeFoldersList = ({ volumes, onUpdate, onDelete }) => {
 
     return (
         <Panel
-            icon={<FolderHome size={17} />}
+            icon={<Home size={17} />}
             title="Home Folders List"
             subtitle="User home directories"
             bodyClass="p-0"
@@ -67,7 +67,7 @@ const HomeFoldersList = ({ volumes, onUpdate, onDelete }) => {
                                 <td className="px-5 py-4">
                                     <div className="flex items-center gap-3">
                                         <div className="flex h-8 w-8 items-center justify-center rounded-md bg-brand-50 text-brand-600">
-                                            <FolderHome size={14} />
+                                            <Home size={14} />
                                         </div>
                                         <span className="text-sm font-semibold text-gray-800">{vol.name.split('_')[0]}</span>
                                     </div>

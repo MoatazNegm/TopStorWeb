@@ -155,7 +155,7 @@ function App() {
 
                 <Sidebar />
 
-                <main className="main-content-shell min-w-0 flex-1 lg:ml-[260px]">
+                <main className="main-content-shell flex-1 lg:ml-[260px]">
                     <Navbar sectionTitle={getSectionTitle(view)} />
 
                     {view === 'users' && <QUsers />}

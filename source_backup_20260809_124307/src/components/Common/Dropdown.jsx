@@ -63,7 +63,7 @@ const Dropdown = ({ options, value, onChange, placeholder, disabled, className =
     };
 
     return (
-        <div className={`min-w-0 space-y-1.5 ${className}`} ref={containerRef}>
+        <div className={`space-y-1.5 ${className}`} ref={containerRef}>
             {label && (
                 <label className="block text-sm font-medium text-gray-700">
                     {label}
@@ -72,7 +72,7 @@ const Dropdown = ({ options, value, onChange, placeholder, disabled, className =
             <div className="relative">
                 <div
                     onClick={() => !disabled && setIsOpen(!isOpen)}
-                    className={`flex min-h-10 w-full min-w-0 items-center justify-between gap-2 rounded-md border bg-surface px-3 py-2 text-sm text-gray-700 transition-colors ${
+                    className={`min-h-10 w-full rounded-md border bg-surface px-3 py-2 text-sm text-gray-700 transition-colors ${
                         isOpen ? 'border-brand-500 ring-4 ring-brand-100' : 'border-border hover:border-border-strong'
                     } ${disabled ? 'cursor-not-allowed bg-gray-50 text-gray-400' : 'cursor-pointer'}`}
                 >

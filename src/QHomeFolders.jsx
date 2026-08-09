@@ -108,8 +108,6 @@ const QHomeFolders = () => {
     };
 
     return (
-        <div className="content-wrapper">
-            <div className="floating-canvas">
                 <div className="content-header px-4">
                     <div className="container-fluid">
                         <div className="flex justify-between items-center mb-8">
@@ -220,8 +218,6 @@ const QHomeFolders = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
     );
 };
 
