@@ -1,11 +1,16 @@
+# Dependencies
 node_modules/
+
+# Compiled / Rendered React Build Artifacts
 build_react/
+build_react*/
+dist_react/
+.vite/
+
+# Environment and Archives
 .env
 .DS_Store
 .agent/
-.git
-.gitignore
 *.tar
 *.tar.gz
-build_react
-dist
+*.zip
