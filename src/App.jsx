@@ -21,11 +21,13 @@ import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import NotificationPoller from './components/NotificationPoller';
 import { validateToken } from './api/auth';
+import { fetchUserList } from './api/users';
 
 function App() {
     const [view, setView] = React.useState('nodes');
     const [isAuthenticated, setIsAuthenticated] = React.useState(false);
     const [authChecking, setAuthChecking] = React.useState(true);
+    const [userPrivs, setUserPrivs] = React.useState(null);
 
     // On mount, validate the stored token against the backend before trusting it.
     // This prevents the broken state caused by stale tokens after a server restart
@@ -58,6 +60,29 @@ function App() {
                 setAuthChecking(false);
             });
     }, []);
+
+    React.useEffect(() => {
+        if (isAuthenticated) {
+            fetchUserList().then(res => {
+                const currentUser = localStorage.getItem('user');
+                const users = res.data.allusers || [];
+                const me = users.find(u => u.name === currentUser);
+                if (me) setUserPrivs(me.priv || '');
+                else setUserPrivs('');
+            }).catch(() => setUserPrivs(''));
+        }
+    }, [isAuthenticated]);
+
+    const currentUser = localStorage.getItem('user');
+
+    const hasPriv = (privId) => {
+        if (userPrivs === null) return true;
+        if (currentUser === 'admin') return true;
+        const privs = Array.isArray(userPrivs)
+            ? userPrivs
+            : String(userPrivs).split('/');
+        return privs.some(p => p.trim() === `${privId}-true`);
+    };
 
     React.useEffect(() => {
         const handleHashChange = () => {
@@ -153,28 +178,28 @@ function App() {
                     onClick={() => document.body.classList.remove('sidebar-mobile-open')}
                 ></div>
 
-                <Sidebar />
+                <Sidebar hasPriv={hasPriv} />
 
                 <main className="main-content-shell min-w-0 flex-1 lg:ml-[260px]">
                     <Navbar sectionTitle={getSectionTitle(view)} />
 
-                    {view === 'users' && <QUsers />}
-                    {view === 'groups' && <QGroups />}
-                    {view === 'logs' && <QLogs />}
-                    {view === 'performance' && <QServicePerformance />}
-                    {view === 'cifs' && <QCifs />}
-                    {view === 'nfs' && <QNfs />}
+                    {view === 'users' && hasPriv('Box_Users') && <QUsers />}
+                    {view === 'groups' && hasPriv('Box_Users') && <QGroups />}
+                    {view === 'logs' && hasPriv('Logs') && <QLogs />}
+                    {view === 'performance' && hasPriv('Service_Charts') && <QServicePerformance />}
+                    {view === 'cifs' && hasPriv('CIFS') && <QCifs />}
+                    {view === 'nfs' && hasPriv('NFS') && <QNfs />}
                     {view === 's3' && <QS3Buckets />}
-                    {view === 'home' && <QHomeFolders />}
-                    {view === 'iscsi' && <QIscsi />}
-                    {view === 'snapshots' && <QSnapshots />}
-                    {view === 'privileges' && <QUserPrivileges />}
-                    {view === 'updates' && <QUpdates />}
-                    {view === 'diskgroups' && <QDisks />}
-                    {view === 'partners' && <QPartners />}
-                    {view === 'sender' && <QSender />}
-                    {view === 'received' && <QReceived />}
-                    {view === 'nodes' && <QNodes />}
+                    {view === 'home' && hasPriv('HOME') && <QHomeFolders />}
+                    {view === 'iscsi' && hasPriv('ISCSI') && <QIscsi />}
+                    {view === 'snapshots' && hasPriv('SnapShots') && <QSnapshots />}
+                    {view === 'privileges' && hasPriv('UserPrivilegesch') && <QUserPrivileges />}
+                    {view === 'updates' && hasPriv('Uploadch') && <QUpdates />}
+                    {view === 'diskgroups' && hasPriv('DiskGroups') && <QDisks />}
+                    {view === 'partners' && hasPriv('Partners') && <QPartners />}
+                    {view === 'sender' && hasPriv('Senders') && <QSender />}
+                    {view === 'received' && hasPriv('Replication') && <QReceived />}
+                    {view === 'nodes' && hasPriv('Cluster') && <QNodes />}
 
                     <footer className="px-4 pb-6 pt-2">
                         <div className="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
@@ -200,3 +225,4 @@ function App() {
 }
 
 export default App;
+

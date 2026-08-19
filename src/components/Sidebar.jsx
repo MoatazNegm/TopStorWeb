@@ -14,7 +14,7 @@ import {
   Users,
 } from 'lucide-react';
 
-const Sidebar = () => {
+const Sidebar = ({ hasPriv }) => {
   const [pathname, setPathname] = useState(window.location.hash || window.location.pathname);
   const [expanded, setExpanded] = useState(null);
 
@@ -85,10 +85,37 @@ const Sidebar = () => {
     []
   );
 
+  const filteredMenuItems = useMemo(() => {
+    if (!hasPriv) return menuItems;
+    return menuItems.map(menu => ({
+      ...menu,
+      subItems: menu.subItems.filter(subItem => {
+        const label = subItem.label;
+        if (label === 'Users' || label === 'Groups') return hasPriv('Box_Users');
+        if (label === 'Nodes') return hasPriv('Cluster');
+        if (label === 'Logs') return hasPriv('Logs');
+        if (label === 'Service Performance') return hasPriv('Service_Charts');
+        if (label === 'CIFS') return hasPriv('CIFS');
+        if (label === 'NFS') return hasPriv('NFS');
+        if (label === 'S3 Buckets') return true;
+        if (label === 'Home Folders') return hasPriv('HOME');
+        if (label === 'ISCSI LUNs') return hasPriv('ISCSI');
+        if (label === 'Snapshots') return hasPriv('SnapShots');
+        if (label === 'Partner') return hasPriv('Partners');
+        if (label === 'Sender Schedule') return hasPriv('Senders');
+        if (label === 'Received Snapshots') return hasPriv('Replication');
+        if (label === 'Disk Groups') return hasPriv('DiskGroups');
+        if (label === 'User Privileges') return hasPriv('UserPrivilegesch');
+        if (label === 'Updates') return hasPriv('Uploadch');
+        return true;
+      })
+    })).filter(menu => menu.subItems.length > 0);
+  }, [hasPriv, menuItems]);
+
   const isItemActive = (href) => pathname === href;
 
   const activeParent =
-    menuItems.find((menu) => menu.subItems.some((item) => isItemActive(item.href)))?.label || null;
+    filteredMenuItems.find((menu) => menu.subItems.some((item) => isItemActive(item.href)))?.label || null;
 
   const isExpanded = (label) => label === activeParent || label === expanded;
 
@@ -137,7 +164,7 @@ const Sidebar = () => {
       <nav className="flex-1 overflow-y-auto px-3 py-3">
         <div className="px-2 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-gray-400">Main menu</div>
 
-        {menuItems.map((menu) => {
+        {filteredMenuItems.map((menu) => {
           const Icon = menu.icon;
           const expandedSection = isExpanded(menu.label);
           const sectionActive = menu.label === activeParent;
@@ -193,3 +220,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
