@@ -185,7 +185,7 @@ const QSnapshots = () => {
                                     label="Target Volume"
                                     options={filteredVolumes.map(v => ({ value: v.id, label: v.text }))}
                                     value={selection.volume}
-                                    disabled={!selection.pool}
+                                    disabled={!selection.pool && selection.pool !== 0}
                                     placeholder="Select Volume..."
                                     onChange={(val) => setSelection({ ...selection, volume: val })}
                                 />
@@ -402,3 +402,4 @@ const QSnapshots = () => {
 };
 
 export default QSnapshots;
+
