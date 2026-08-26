@@ -80,7 +80,7 @@ const QSnapshots = () => {
 
     const handleCreate = async (e) => {
         e.preventDefault();
-        if (!selection.volume) {
+        if (!selection.volume && selection.volume !== 0) {
             setError("Please select a volume first");
             return;
         }
@@ -100,6 +100,15 @@ const QSnapshots = () => {
             // Format Weekly time for backend if needed (legacy uses AM/PM sometimes but component uses 24h)
             if (activeTab === 'Weekly') {
                 payload.every = forms.Weekly.sday;
+                const timeMatch = forms.Weekly.stime.match(/(\d+):(\d+)\s*(AM|PM)/i);
+                if (timeMatch) {
+                    let h = parseInt(timeMatch[1]);
+                    const m = timeMatch[2];
+                    const p = timeMatch[3].toUpperCase();
+                    if (p === 'PM' && h !== 12) h += 12;
+                    if (p === 'AM' && h === 12) h = 0;
+                    payload.stime = `${String(h).padStart(2, '0')}:${m}`;
+                }
             }
 
             await createSnapshot(payload);
@@ -219,7 +228,7 @@ const QSnapshots = () => {
                                                 <Input
                                                     label="Snapshot Name"
                                                     required
-                                                    disabled={!selection.volume}
+                                                    disabled={!selection.volume && selection.volume !== 0}
                                                     placeholder="Manual-Snap-01..."
                                                     value={forms.Once.name}
                                                     onChange={(e) => setForms({ ...forms, Once: { name: e.target.value } })}
@@ -227,7 +236,7 @@ const QSnapshots = () => {
                                             </div>
                                             <Button
                                                 type="submit"
-                                                disabled={!selection.volume || forms.Once.name.length < 3}
+                                                disabled={(!selection.volume && selection.volume !== 0) || forms.Once.name.length < 3}
                                                 variant="primary"
                                                 className="px-6"
                                                 onClick={handleCreate}
@@ -261,7 +270,7 @@ const QSnapshots = () => {
                                             </div>
                                             <Button
                                                 type="submit"
-                                                disabled={!selection.volume}
+                                                disabled={!selection.volume && selection.volume !== 0}
                                                 variant="primary"
                                                 className="px-6"
                                                 onClick={handleCreate}
@@ -305,7 +314,7 @@ const QSnapshots = () => {
                                             </div>
                                             <Button
                                                 type="submit"
-                                                disabled={!selection.volume}
+                                                disabled={!selection.volume && selection.volume !== 0}
                                                 variant="primary"
                                                 className="px-6"
                                                 onClick={handleCreate}
@@ -321,7 +330,7 @@ const QSnapshots = () => {
                                                 <label className="mb-1.5 ml-1 block text-sm font-medium text-gray-700">At Time</label>
                                                 <CustomTimePicker
                                                     value={forms.Weekly.stime}
-                                                    disabled={!selection.volume}
+                                                    disabled={!selection.volume && selection.volume !== 0}
                                                     onChange={(val) => setForms({ ...forms, Weekly: { ...forms.Weekly, stime: val } })}
                                                 />
                                             </div>
@@ -330,7 +339,7 @@ const QSnapshots = () => {
                                                     label="On Day"
                                                     options={['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map(day => ({ value: day, label: day }))}
                                                     value={forms.Weekly.sday}
-                                                    disabled={!selection.volume}
+                                                    disabled={!selection.volume && selection.volume !== 0}
                                                     onChange={(val) => setForms({ ...forms, Weekly: { ...forms.Weekly, sday: val } })}
                                                 />
                                             </div>
@@ -346,7 +355,7 @@ const QSnapshots = () => {
                                             </div>
                                             <Button
                                                 type="submit"
-                                                disabled={!selection.volume}
+                                                disabled={!selection.volume && selection.volume !== 0}
                                                 variant="primary"
                                                 className="px-6"
                                                 onClick={handleCreate}
@@ -402,4 +411,5 @@ const QSnapshots = () => {
 };
 
 export default QSnapshots;
+
 
