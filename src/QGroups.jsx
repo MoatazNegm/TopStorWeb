@@ -54,6 +54,32 @@ const QGroups = () => {
         }
     };
 
+    // Submit of the groups list: one request per changed group, one after the other (a deleted group is only deleted).
+    const [queueStatus, setQueueStatus] = useState('');
+    const handleSubmitChanges = async (pending) => {
+        const names = Object.keys(pending);
+        if (names.length === 0) return true;
+        const removing = names.filter((name) => pending[name].remove);
+        if (removing.length > 0 && !window.confirm(`Delete ${removing.length} group${removing.length === 1 ? '' : 's'}: ${removing.join(', ')}?`)) return false;
+        let done = 0;
+        const failed = [];
+        for (const name of names) {
+            setQueueStatus(`Submitting: ${done + failed.length + 1} of ${names.length} (${name})`);
+            try {
+                if (pending[name].remove) await deleteGroup(name);
+                else await updateGroupUsers(name, pending[name].members.join(','));
+                done += 1;
+            } catch (e) {
+                console.error(`Group ${name} failed`, e);
+                failed.push(name);
+            }
+        }
+        await loadData();
+        setQueueStatus(`Submitting: ${done} done${failed.length ? `, ${failed.length} failed (${failed.join(', ')})` : ''}`);
+        setTimeout(() => setQueueStatus(''), 8000);
+        return true;
+    };
+
     const handleDeleteGroup = async (name) => {
         if (!window.confirm(`Are you sure you want to delete group ${name}?`)) return;
         try {
@@ -102,8 +128,8 @@ const QGroups = () => {
                             <GroupList
                                 groups={groups}
                                 users={users}
-                                onUpdateMembers={handleUpdateMembers}
-                                onDelete={handleDeleteGroup}
+                                onSubmit={handleSubmitChanges}
+                                queueStatus={queueStatus}
                             />
 
                             {loading && (

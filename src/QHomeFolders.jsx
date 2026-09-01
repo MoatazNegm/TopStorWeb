@@ -4,6 +4,7 @@ import { fetchVolumesInfo, fetchUserList, createVolume, updateVolume, deleteVolu
 import { fetchPoolsInfo } from './api/pools';
 import Button from './components/Common/Button';
 import Input from './components/Common/Input';
+import { ipError } from './components/Common/NetFields';
 import Dropdown from './components/Common/Dropdown';
 import HomeFoldersList from './components/HomeFoldersList';
 import VolumeInsights from './components/VolumeInsights';
@@ -54,6 +55,7 @@ const QHomeFolders = () => {
 
     const handleCreate = async (e) => {
         e.preventDefault();
+        if (ipError(formData.ipaddress)) return;
         try {
             const poolObj = pools[formData.pool];
             const userObj = users[formData.userIndex];
@@ -175,15 +177,14 @@ const QHomeFolders = () => {
                                             <div className="grid grid-cols-2 gap-4">
                                                 <Input
                                                     label="IP Address"
+                                            kind="ip"
                                                     required
-                                                    placeholder="10.0.0.50"
                                                     value={formData.ipaddress}
                                                     onChange={(e) => setFormData({ ...formData, ipaddress: e.target.value })}
                                                 />
                                                 <Input
                                                     label="Subnet"
-                                                    type="number"
-                                                    min="8" max="32" step="8"
+                                                kind="subnet"
                                                     required
                                                     value={formData.Subnet}
                                                     onChange={(e) => setFormData({ ...formData, Subnet: e.target.value })}
@@ -198,6 +199,7 @@ const QHomeFolders = () => {
                                             variant="primary"
                                             className="px-6"
                                             onClick={handleCreate}
+                                            disabled={!!ipError(formData.ipaddress)}
                                         >
                                             Create Home Folder
                                         </Button>

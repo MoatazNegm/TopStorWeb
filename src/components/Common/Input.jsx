@@ -1,4 +1,5 @@
 import React from 'react';
+import { IP_PLACEHOLDER, SUBNET_VALUES, DEFAULT_SUBNET, ipError, snapSubnet } from './NetFields';
 
 const Input = ({
     type = 'text',
@@ -16,11 +17,27 @@ const Input = ({
     step,
     isTextArea = false,
     rows = 3,
-    error,
+    error: errorProp,
     hint,
+    name,
+    kind, // 'ip' | 'hostip' | 'subnet': placeholder, centring, validation and stepping for network fields
 }) => {
+    const isIp = kind === 'ip' || kind === 'hostip';
+    const isSubnet = kind === 'subnet';
+    const error = errorProp || (isIp ? ipError(value, { allowHost: kind === 'hostip' }) : '');
+    if (isIp && placeholder === undefined && kind === 'ip') placeholder = IP_PLACEHOLDER;
+    if (isSubnet) {
+        type = 'number'; min = SUBNET_VALUES[0]; max = SUBNET_VALUES[SUBNET_VALUES.length - 1]; step = 8;
+        if (value === '' || value == null) value = DEFAULT_SUBNET;
+    }
+    const onBlur = isSubnet ? () => {
+        const snapped = snapSubnet(value);
+        if (String(snapped) !== String(value) && onChange) onChange({ target: { name, value: String(snapped), type: 'number' } });
+    } : undefined;
+
     const baseClasses = [
         'w-full rounded-md border bg-surface text-sm text-gray-800 outline-none transition-colors',
+        (isIp && kind === 'ip') || isSubnet ? 'text-center' : '',
         icon ? 'pl-9 pr-3' : 'px-3',
         isTextArea ? 'py-2.5' : 'h-10',
         error
@@ -61,6 +78,8 @@ const Input = ({
                         className={baseClasses}
                         value={value}
                         onChange={onChange}
+                        onBlur={onBlur}
+                        name={name}
                     />
                 )}
                 {icon && (

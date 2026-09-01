@@ -1,1 +1,0 @@
-[{"stamp":"period","father":"pool","t1":"t2","t3":"t4"}]

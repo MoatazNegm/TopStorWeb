@@ -22,8 +22,11 @@ import {
 } from './api/volumes';
 import { fetchPoolsInfo } from './api/pools';
 import { fetchPartnerList } from './api/partners';
+import { ListSearch, filterRows, SortTh, useSort, sortRows, dateKey } from './components/Common/ListSearch';
 
 const QReceived = () => {
+    const { sort: recvSort, toggle: recvToggle } = useSort();
+    const [snapQuery, setSnapQuery] = React.useState('');
     // Data state
     const [pools, setPools] = useState([]);
     const [volumes, setVolumes] = useState([]);
@@ -219,54 +222,55 @@ const QReceived = () => {
                                     </span>
                                 </div>
 
+                                <ListSearch id="searchsnapQuery" value={snapQuery} onChange={setSnapQuery} />
                                 <div className="overflow-x-auto">
                                     <table className="min-w-[1100px] w-full text-left">
                                         <thead className="bg-surface-muted">
                                             <tr className="border-b border-border">
-                                                <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Timestamp</th>
-                                                <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Alias</th>
-                                                <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Pool / Volume</th>
-                                                <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Sender</th>
-                                                <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Size / Ratio</th>
-                                                <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Actions</th>
+                                                <SortTh sortKey="time" sort={recvSort} onToggle={recvToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Timestamp</SortTh>
+                                                <SortTh sortKey="alias" sort={recvSort} onToggle={recvToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Alias</SortTh>
+                                                <SortTh sortKey="pv" sort={recvSort} onToggle={recvToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Pool / Volume</SortTh>
+                                                <SortTh sortKey="sender" sort={recvSort} onToggle={recvToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Sender</SortTh>
+                                                <SortTh sortKey="size" sort={recvSort} onToggle={recvToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Size / Ratio</SortTh>
+                                                <th className="px-2.5 py-1.5 text-right text-[11px] font-semibold uppercase tracking-wide text-gray-500">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-border">
-                                            {filteredSnapshots.map((snap, idx) => (
+                                            {sortRows(filterRows(filteredSnapshots, snapQuery), recvSort, { time: (s) => dateKey(s.date, s.time), alias: (s) => s.name, pv: (s) => `${s.pool} ${s.volume.split('_')[0]}`, sender: (s) => s.partnerS, size: (s) => s.used }).map((snap, idx) => (
                                                 <tr key={idx} className="group transition-colors hover:bg-gray-50/60">
-                                                    <td className="px-5 py-4">
+                                                    <td className="px-2.5 py-1">
                                                         <div className="flex flex-col">
                                                             <span className="text-xs font-semibold text-gray-700">{snap.date}</span>
                                                             <span className="text-xs text-gray-500">{snap.time}</span>
                                                         </div>
                                                     </td>
-                                                    <td className="px-5 py-4">
+                                                    <td className="px-2.5 py-1">
                                                         <span className="inline-block max-w-[150px] truncate text-sm text-brand-600">
                                                             {snap.name.split('.')[0]}
                                                         </span>
                                                     </td>
-                                                    <td className="px-5 py-4">
+                                                    <td className="px-2.5 py-1">
                                                         <div className="flex flex-col">
                                                             <span className="text-sm font-medium text-gray-700">{snap.pool}</span>
                                                             <span className="text-xs font-medium uppercase tracking-wide text-brand-500">{snap.volume.split('_')[0]}</span>
                                                         </div>
                                                     </td>
-                                                    <td className="px-5 py-4">
+                                                    <td className="px-2.5 py-1">
                                                         <span className="inline-flex items-center rounded-sm border border-brand-100 bg-brand-50 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-brand-700">
                                                             {snap.partnerS}
                                                         </span>
                                                     </td>
-                                                    <td className="px-5 py-4">
+                                                    <td className="px-2.5 py-1">
                                                         <div className="flex flex-col">
                                                             <span className="text-xs font-medium uppercase text-gray-500">{snap.used} MB</span>
                                                             <span className="text-xs font-medium text-success-600">{snap.refcompressratio}x Ratio</span>
                                                         </div>
                                                     </td>
-                                                    <td className="px-5 py-4 text-right">
+                                                    <td className="px-2.5 py-1 text-right">
                                                         <div className="flex items-center justify-end gap-2">
                                                             <button
                                                                 onClick={() => handleRollback(snap.name)}
-                                                                className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-brand-100 hover:bg-brand-50 hover:text-brand-600"
+                                                                className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-brand-100 hover:bg-brand-50 hover:text-brand-600"
                                                                 title="Rollback volume"
                                                             >
                                                                 <RotateCcw size={14} />
@@ -274,7 +278,7 @@ const QReceived = () => {
                                                             <button
                                                                 onClick={() => handleDelete(snap.name)}
                                                                 disabled={actionLoading === `delete-${snap.name}`}
-                                                                className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600"
+                                                                className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600"
                                                                 title="Delete snapshot"
                                                             >
                                                                 {actionLoading === `delete-${snap.name}` ? (
@@ -297,6 +301,9 @@ const QReceived = () => {
                                             )}
                                         </tbody>
                                     </table>
+                                {snapQuery.trim() && filteredSnapshots.length > 0 && filterRows(filteredSnapshots, snapQuery).length === 0 && (
+                                    <div className="py-6 text-center text-sm text-gray-500">No rows match the search</div>
+                                )}
                                 </div>
                             </div>
                         </div>

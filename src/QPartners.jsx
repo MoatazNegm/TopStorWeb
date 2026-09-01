@@ -4,8 +4,11 @@ import Button from './components/Common/Button';
 import Input from './components/Common/Input';
 import Dropdown from './components/Common/Dropdown';
 import { AlertTriangle, CheckCircle2, Globe, HandHelping, Hash, Key, PlusCircle, RefreshCw, Trash2, Users } from 'lucide-react';
+import { ListSearch, filterRows, SortTh, useSort, sortRows, dateKey } from './components/Common/ListSearch';
 
 const QPartners = () => {
+    const { sort: partnerSort, toggle: partnerToggle } = useSort();
+    const [partnerQuery, setPartnerQuery] = React.useState('');
     const [partners, setPartners] = useState([]);
     const [loading, setLoading] = useState(true);
     const [actionLoading, setActionLoading] = useState(null); // 'add' | 'delete'
@@ -161,6 +164,7 @@ const QPartners = () => {
                                         <Input
                                             label="Network Address (IP/DNS)"
                                             id="address"
+                                            kind="hostip"
                                             placeholder="xxx.xxx.xxx.xxx"
                                             value={formData.address}
                                             onChange={(e) => handleInputChange('address', e.target.value)}
@@ -217,34 +221,35 @@ const QPartners = () => {
                                     </span>
                                 </div>
 
+                                <ListSearch id="listsearch" value={partnerQuery} onChange={setPartnerQuery} />
                                 <div className="overflow-x-auto">
                                         <table className="min-w-[760px] w-full text-left">
                                             <thead className="bg-surface-muted">
                                                 <tr className="border-b border-border">
-                                                    <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Alias</th>
-                                                    <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Network Info</th>
-                                                    <th className="px-5 py-3 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Type</th>
-                                                    <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Actions</th>
+                                                    <SortTh sortKey="alias" sort={partnerSort} onToggle={partnerToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Alias</SortTh>
+                                                    <SortTh sortKey="net" sort={partnerSort} onToggle={partnerToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Network Info</SortTh>
+                                                    <SortTh sortKey="type" sort={partnerSort} onToggle={partnerToggle} className="px-2.5 py-1.5 text-center text-[11px] font-semibold uppercase tracking-wide text-gray-500">Type</SortTh>
+                                                    <th className="px-2.5 py-1.5 text-right text-[11px] font-semibold uppercase tracking-wide text-gray-500">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-border">
-                                                {partners.map((partner, index) => (
+                                                {sortRows(filterRows(partners, partnerQuery), partnerSort, { alias: (p) => p.alias.split('_')[0], net: (p) => p.ip, type: (p) => p.type }).map((partner, index) => (
                                                     <tr key={index} className="group transition-colors hover:bg-gray-50/60">
-                                                        <td className="px-5 py-4">
+                                                        <td className="px-2.5 py-1">
                                                             <div className="flex items-center gap-3">
-                                                                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-50 text-xs font-semibold text-brand-600">
+                                                                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-50 text-xs font-semibold text-brand-600">
                                                                     {partner.alias.charAt(0).toUpperCase()}
                                                                 </div>
                                                                 <span className="text-sm font-semibold text-gray-800">{partner.alias.split('_')[0]}</span>
                                                             </div>
                                                         </td>
-                                                        <td className="px-5 py-4">
+                                                        <td className="px-2.5 py-1">
                                                             <div className="flex flex-col">
                                                                 <span className="text-sm text-gray-700">{partner.ip}</span>
                                                                 <span className="text-xs font-medium uppercase tracking-wide text-gray-500">Port: {partner.port}</span>
                                                             </div>
                                                         </td>
-                                                        <td className="px-5 py-4 text-center">
+                                                        <td className="px-2.5 py-1 text-center">
                                                             <span className={`inline-flex rounded-sm border px-3 py-1 text-xs font-semibold uppercase tracking-wide ${partner.type === 'Dual way' ? 'border-brand-100 bg-brand-50 text-brand-700' :
                                                                 partner.type === 'Sender' ? 'border-info-100 bg-info-50 text-info-600' :
                                                                     'border-success-100 bg-success-50 text-success-600'
@@ -252,11 +257,11 @@ const QPartners = () => {
                                                                 {partner.type}
                                                             </span>
                                                         </td>
-                                                        <td className="px-5 py-4 text-right">
+                                                        <td className="px-2.5 py-1 text-right">
                                                             <button
                                                                 onClick={() => handleDeletePartner(partner.alias)}
                                                                 disabled={actionLoading === `delete-${partner.alias}`}
-                                                                className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600"
+                                                                className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600"
                                                                 title="Delete Partner"
                                                             >
                                                                 {actionLoading === `delete-${partner.alias}` ? (
@@ -286,6 +291,9 @@ const QPartners = () => {
                                                 )}
                                             </tbody>
                                         </table>
+                                        {partnerQuery.trim() && filterRows(partners, partnerQuery).length === 0 && partners.length > 0 && (
+                                            <div className="py-6 text-center text-sm text-gray-500">No rows match the search</div>
+                                        )}
                                 </div>
                             </div>
                         </div>

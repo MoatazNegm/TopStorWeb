@@ -12,8 +12,8 @@ export const configHost = (data) => {
     return api.post('api/v1/hosts/config', data);
 };
 
-export const joinCluster = (name) => {
-    return api.post('api/v1/hosts/joincluster', { name });
+export const joinCluster = (name, extra = {}) => {
+    return api.post('api/v1/hosts/joincluster', { name, ...extra });
 };
 
 export const discoverHosts = () => {

@@ -248,7 +248,7 @@ body {
 }
 
 .app-sidebar {
-    transition: transform .25s ease;
+    transition: transform .25s ease, width .25s ease;
 }
 
 .main-content-shell {
@@ -276,14 +276,19 @@ body {
         display: none;
     }
 
+    /* Collapsed on desktop = a narrow icon rail, NOT a hidden pane. The pane
+       used to be pushed off-screen with translateX(-100%), which is why it
+       vanished completely; now it stays put at RAIL_W and the content takes
+       back only the width the rail no longer needs. */
     body.sidebar-collapse .app-sidebar {
-        transform: translateX(-100%);
+        width: 72px;
+        transform: none;
     }
 
     body.sidebar-collapse .main-content-shell {
-        flex-basis: 100%;
-        max-width: 100%;
-        margin-left: 0 !important;
+        flex-basis: calc(100% - 72px);
+        max-width: calc(100% - 72px);
+        margin-left: 72px !important;
     }
 }
 

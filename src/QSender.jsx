@@ -26,8 +26,13 @@ import {
 } from './api/volumes';
 import { fetchPoolsInfo } from './api/pools';
 import { fetchPartnerList } from './api/partners';
+import { ListSearch, filterRows, SortTh, useSort, sortRows, dateKey } from './components/Common/ListSearch';
 
 const QSender = () => {
+    const { sort: perSort, toggle: perToggle } = useSort();
+    const { sort: sentSort, toggle: sentToggle } = useSort();
+    const [periodQuery, setPeriodQuery] = React.useState('');
+    const [sentQuery, setSentQuery] = React.useState('');
     // Selection state
     const [pools, setPools] = useState([]);
     const [volumes, setVolumes] = useState([]);
@@ -437,22 +442,22 @@ const QSender = () => {
                                     </span>
                                 </div>
 
+                                <ListSearch id="searchperiodQuery" value={periodQuery} onChange={setPeriodQuery} />
                                 <div className="overflow-x-auto">
                                     <table className="min-w-[900px] w-full text-left">
                                         <thead className="bg-surface-muted">
                                             <tr className="border-b border-border">
-                                                <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">ID / Frequency</th>
-                                                <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Volume</th>
-                                                <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Receiver</th>
-                                                <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Details</th>
-                                                <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Actions</th>
+                                                <SortTh sortKey="id" sort={perSort} onToggle={perToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">ID / Frequency</SortTh>
+                                                <SortTh sortKey="vol" sort={perSort} onToggle={perToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Volume</SortTh>
+                                                <SortTh sortKey="rec" sort={perSort} onToggle={perToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Receiver</SortTh>
+                                                <SortTh sortKey="det" sort={perSort} onToggle={perToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Details</SortTh>
+                                                <th className="px-2.5 py-1.5 text-right text-[11px] font-semibold uppercase tracking-wide text-gray-500">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-border">
-                                            {['Minutelyperiod', 'Hourlyperiod', 'Weeklyperiod'].flatMap(type =>
-                                                snapshotsInfo[type].filter(p => p.receiver !== 'NoReceiver').map((period, idx) => (
+                                            {sortRows(filterRows(['Minutelyperiod', 'Hourlyperiod', 'Weeklyperiod'].flatMap(type => snapshotsInfo[type].filter(p => p.receiver !== 'NoReceiver')), periodQuery), perSort, { id: (p) => p.id, vol: (p) => p.volume, rec: (p) => p.receiver, det: (p) => `${p.keep || ''} ${p.every || ''}` }).map((period, idx) => (
                                                     <tr key={period.id} className="group transition-colors hover:bg-gray-50/60">
-                                                        <td className="px-5 py-4">
+                                                        <td className="px-2.5 py-1">
                                                             <div className="flex flex-col">
                                                                 <span className="text-xs font-semibold text-gray-700">{period.id}</span>
                                                                 <span className="text-xs font-medium uppercase tracking-wide text-brand-500">
@@ -460,15 +465,15 @@ const QSender = () => {
                                                                 </span>
                                                             </div>
                                                         </td>
-                                                        <td className="px-5 py-4">
+                                                        <td className="px-2.5 py-1">
                                                             <span className="text-sm text-gray-700">{period.volume.split('_')[0]}</span>
                                                         </td>
-                                                        <td className="px-5 py-4">
+                                                        <td className="px-2.5 py-1">
                                                             <span className="inline-flex items-center rounded-sm border border-brand-100 bg-brand-50 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-brand-700">
                                                                 {period.receiver}
                                                             </span>
                                                         </td>
-                                                        <td className="px-5 py-4">
+                                                        <td className="px-2.5 py-1">
                                                             <div className="flex flex-col">
                                                                 <span className="text-sm text-gray-600">
                                                                     {period.stime ? `${period.every} @ ${period.stime}` : period.sminute !== undefined ? `Every ${period.every}h (Min: ${period.sminute})` : `Every ${period.every}m`}
@@ -476,11 +481,11 @@ const QSender = () => {
                                                                 <span className="text-xs font-medium uppercase tracking-wide text-gray-500">Keep: {period.keep}</span>
                                                             </div>
                                                         </td>
-                                                        <td className="px-5 py-4 text-right">
+                                                        <td className="px-2.5 py-1 text-right">
                                                             <button
                                                                 onClick={() => handleDelete(period.id, 'schedule')}
                                                                 disabled={actionLoading === `delete-${period.id}`}
-                                                                className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600"
+                                                                className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600"
                                                             >
                                                                 {actionLoading === `delete-${period.id}` ? (
                                                                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-danger-100 border-t-danger-600" />
@@ -488,8 +493,7 @@ const QSender = () => {
                                                             </button>
                                                         </td>
                                                     </tr>
-                                                ))
-                                            )}
+                                            ))}
                                             {[...snapshotsInfo.Minutelyperiod, ...snapshotsInfo.Hourlyperiod, ...snapshotsInfo.Weeklyperiod].filter(p => p.receiver !== 'NoReceiver').length === 0 && (
                                                 <tr>
                                                     <td colSpan="5" className="px-5 py-14 text-center">
@@ -502,6 +506,9 @@ const QSender = () => {
                                             )}
                                         </tbody>
                                     </table>
+                                {periodQuery.trim() && ['Minutelyperiod', 'Hourlyperiod', 'Weeklyperiod'].flatMap(type => filterRows(snapshotsInfo[type].filter(p => p.receiver !== 'NoReceiver'), periodQuery)).length === 0 && (
+                                    <div className="py-6 text-center text-sm text-gray-500">No rows match the search</div>
+                                )}
                                 </div>
                             </div>
 
@@ -519,55 +526,56 @@ const QSender = () => {
                                     </span>
                                 </div>
 
+                                <ListSearch id="searchsentQuery" value={sentQuery} onChange={setSentQuery} />
                                 <div className="overflow-x-auto">
                                     <table className="min-w-[980px] w-full text-left">
                                         <thead className="bg-surface-muted">
                                             <tr className="border-b border-border">
-                                                <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Timestamp</th>
-                                                <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Volume / Target</th>
-                                                <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Alias</th>
-                                                <th className="px-5 py-3 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Resource</th>
-                                                <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Actions</th>
+                                                <SortTh sortKey="time" sort={sentSort} onToggle={sentToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Timestamp</SortTh>
+                                                <SortTh sortKey="vol" sort={sentSort} onToggle={sentToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Volume / Target</SortTh>
+                                                <SortTh sortKey="alias" sort={sentSort} onToggle={sentToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Alias</SortTh>
+                                                <SortTh sortKey="res" sort={sentSort} onToggle={sentToggle} className="px-2.5 py-1.5 text-center text-[11px] font-semibold uppercase tracking-wide text-gray-500">Resource</SortTh>
+                                                <th className="px-2.5 py-1.5 text-right text-[11px] font-semibold uppercase tracking-wide text-gray-500">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-border">
-                                            {snapshotsInfo.allsnaps.filter(s => s.partnerR && s.partnerR !== 'NoReceiver').slice(0, 10).map((snap, idx) => (
+                                            {sortRows(filterRows(snapshotsInfo.allsnaps.filter(s => s.partnerR && s.partnerR !== 'NoReceiver'), sentQuery), sentSort, { time: (s) => dateKey(s.date, s.time), vol: (s) => s.volume.split('_')[0], alias: (s) => s.name, res: (s) => s.partnerR }).slice(0, 10).map((snap, idx) => (
                                                 <tr key={idx} className="group transition-colors hover:bg-gray-50/60">
-                                                    <td className="px-5 py-4">
+                                                    <td className="px-2.5 py-1">
                                                         <div className="flex flex-col">
                                                             <span className="text-xs font-semibold text-gray-700">{snap.date}</span>
                                                             <span className="text-xs text-gray-500">{snap.time}</span>
                                                         </div>
                                                     </td>
-                                                    <td className="px-5 py-4">
+                                                    <td className="px-2.5 py-1">
                                                         <div className="flex flex-col">
                                                             <span className="text-sm font-medium text-gray-700 truncate max-w-[150px]">{snap.volume.split('_')[0]}</span>
                                                             <span className="text-xs font-medium uppercase tracking-wide text-brand-500">→ {snap.partnerR.split('_')[0]}</span>
                                                         </div>
                                                     </td>
-                                                    <td className="px-5 py-4">
+                                                    <td className="px-2.5 py-1">
                                                         <span className="inline-block max-w-[150px] truncate text-sm text-brand-600">
                                                             {snap.name.split('.')[0]}
                                                         </span>
                                                     </td>
-                                                    <td className="px-5 py-4 text-center">
+                                                    <td className="px-2.5 py-1 text-center">
                                                         <div className="flex flex-col items-center">
                                                             <span className="text-xs font-medium uppercase text-gray-500">{snap.used} MB</span>
                                                             <span className="text-xs font-medium text-success-600">{snap.refcompressratio}x Ratio</span>
                                                         </div>
                                                     </td>
-                                                    <td className="px-5 py-4 text-right">
+                                                    <td className="px-2.5 py-1 text-right">
                                                         <div className="flex items-center justify-end gap-2">
                                                             <button
                                                                 onClick={() => handleRollback(snap.name)}
-                                                                className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-brand-100 hover:bg-brand-50 hover:text-brand-600"
+                                                                className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-brand-100 hover:bg-brand-50 hover:text-brand-600"
                                                                 title="Rollback volume"
                                                             >
                                                                 <RotateCcw size={14} />
                                                             </button>
                                                             <button
                                                                 onClick={() => handleDelete(snap.name, 'snapshot')}
-                                                                className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600"
+                                                                className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600"
                                                                 title="Delete snapshot"
                                                             >
                                                                 <Trash2 size={14} />
@@ -588,6 +596,9 @@ const QSender = () => {
                                             )}
                                         </tbody>
                                     </table>
+                                {sentQuery.trim() && filterRows(snapshotsInfo.allsnaps.filter(s => s.partnerR && s.partnerR !== 'NoReceiver'), sentQuery).length === 0 && snapshotsInfo.allsnaps.length > 0 && (
+                                    <div className="py-6 text-center text-sm text-gray-500">No rows match the search</div>
+                                )}
                                 </div>
                             </div>
                         </div>
