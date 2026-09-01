@@ -117,7 +117,7 @@ const QServicePerformance = () => {
                                     Active Pulse
                                 </div>
                                 <a
-                                    href="http://10.11.11.250:4000"
+                                    href={`http://${window.location.hostname}:4000`}
                                     target="_blank"
                                     rel="noreferrer"
                                     className="inline-flex h-10 items-center gap-2 rounded-md border border-border bg-surface px-4 text-sm font-semibold text-gray-700 shadow-xs transition-colors hover:bg-gray-50 hover:text-brand-600"
@@ -215,3 +215,4 @@ const QServicePerformance = () => {
 };
 
 export default QServicePerformance;
+
