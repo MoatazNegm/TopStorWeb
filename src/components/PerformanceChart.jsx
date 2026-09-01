@@ -17,8 +17,8 @@ const PerformanceChart = ({ title, icon, data, color }) => {
     const avg = (safeData.reduce((a, b) => a + b, 0) / safeData.length).toFixed(1);
 
     return (
-        <div className="relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-surface p-5 shadow-sm transition-shadow hover:shadow-md">
-            <div className="mb-5 flex items-center justify-between">
+        <div className="relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-surface p-3 shadow-sm transition-shadow hover:shadow-md">
+            <div className="mb-2 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                     <div className="flex h-9 w-9 items-center justify-center rounded-md bg-surface-muted text-brand-600">
                         {icon}
@@ -31,7 +31,7 @@ const PerformanceChart = ({ title, icon, data, color }) => {
                 </div>
             </div>
 
-            <div className="relative flex min-h-[160px] flex-1 items-end">
+            <div className="relative flex min-h-[90px] flex-1 items-end">
                 <svg viewBox="0 0 300 100" className="w-full h-full preserve-3d" preserveAspectRatio="none">
                     <defs>
                         <linearGradient id={`grad-${color}`} x1="0%" y1="0%" x2="0%" y2="100%">
@@ -44,15 +44,15 @@ const PerformanceChart = ({ title, icon, data, color }) => {
                 </svg>
             </div>
 
-            <div className="mt-5 flex items-end justify-between border-t border-border pt-4">
+            <div className="mt-2 flex items-end justify-between border-t border-border pt-2">
                 <div className="flex items-center gap-6">
                     <div>
-                        <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">Peak Load</p>
+                        <p className="mb-0 text-xs font-semibold uppercase tracking-wide text-gray-500">Peak Load</p>
                         <p className="text-lg font-semibold text-gray-800">{peak} <span className="ml-1 text-xs font-medium text-gray-500">Units</span></p>
                     </div>
                     <div className="h-8 w-px bg-border" />
                     <div>
-                        <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">Average</p>
+                        <p className="mb-0 text-xs font-semibold uppercase tracking-wide text-gray-500">Average</p>
                         <p className="text-lg font-semibold text-gray-800">{avg} <span className="ml-1 text-xs font-medium text-gray-500">%</span></p>
                     </div>
                 </div>

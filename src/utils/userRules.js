@@ -4,7 +4,7 @@
 
 export const USER_NAME_MIN = 3;
 export const USER_NAME_MAX = 32;
-export const USER_PASS_MIN = 3;
+export const USER_PASS_MIN = 4;
 export const USER_PASS_MAX = 128;
 
 const RESERVED = new Set([

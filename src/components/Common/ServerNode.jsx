@@ -46,7 +46,7 @@ const ServerNode = ({ name, ip, state = 'up', selected = false, className = '', 
         <button
             onClick={onClick}
             className={`
-                group flex min-h-[48px] w-fit min-w-[150px] items-center gap-2 rounded-lg border px-2.5 py-2 text-left
+                group flex min-h-[48px] w-full min-w-0 items-center gap-2 rounded-lg border px-2.5 py-2 text-left
                 ${selected ? 'border-brand-500 bg-brand-50/40 ring-4 ring-brand-100' : 'border-border bg-surface hover:border-border-strong hover:bg-gray-50'}
                 transition-colors
                 ${className}
@@ -58,13 +58,13 @@ const ServerNode = ({ name, ip, state = 'up', selected = false, className = '', 
 
             <span className="min-w-0 flex-1">
                 <span className="flex items-center gap-1.5">
-                    <span className="min-w-0 truncate text-sm font-semibold text-gray-800">{name}</span>
+                    <span className="min-w-0 flex-1 truncate text-xs font-semibold text-gray-800">{name}</span>
                     <span className="flex flex-shrink-0 items-center gap-1" title={currentConfig.label}>
                         <span className={`h-2 w-2 rounded-full ${currentConfig.dot}`}></span>
-                        <span className={`text-[11px] font-medium ${currentConfig.labelClass}`}>{currentConfig.label}</span>
+                        <span className={`text-[10px] font-medium ${currentConfig.labelClass}`}>{currentConfig.label}</span>
                     </span>
                 </span>
-                <span className="block whitespace-nowrap font-mono text-xs text-gray-500">{ip}</span>
+                <span className="block whitespace-nowrap font-mono text-[11px] text-gray-500">{ip}</span>
             </span>
         </button>
     );

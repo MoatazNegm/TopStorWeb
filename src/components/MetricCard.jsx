@@ -13,11 +13,11 @@ const MetricCard = ({ title, value, unit, icon, color, trend, trendValue }) => {
     const bgToken = accentColor.split(' ')[0];
 
     return (
-        <div className="group relative overflow-hidden rounded-lg border border-border bg-surface p-5 shadow-sm transition-shadow hover:shadow-md">
+        <div className="group relative overflow-hidden rounded-lg border border-border bg-surface px-4 py-3 shadow-sm transition-shadow hover:shadow-md">
             <div className={`absolute -right-5 -top-5 h-24 w-24 rounded-full opacity-10 blur-2xl ${bgToken}`} />
 
-            <div className="mb-4 flex items-start justify-between">
-                <div className={`flex h-11 w-11 items-center justify-center rounded-md border ${accentColor}`}>
+            <div className="mb-2 flex items-start justify-between">
+                <div className={`flex h-8 w-8 items-center justify-center rounded-md border ${accentColor}`}>
                     {icon}
                 </div>
                 {trend && (
@@ -28,15 +28,15 @@ const MetricCard = ({ title, value, unit, icon, color, trend, trendValue }) => {
                 )}
             </div>
 
-            <div className="space-y-1.5">
+            <div className="space-y-0.5">
                 <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500">{title}</h3>
                 <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-semibold tracking-tight text-gray-900">{value}</span>
+                    <span className="text-2xl font-semibold tracking-tight text-gray-900">{value}</span>
                     <span className="text-sm font-medium text-gray-500">{unit}</span>
                 </div>
             </div>
 
-            <div className="mt-5 h-1 w-full overflow-hidden rounded-full bg-gray-100">
+            <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-gray-100">
                 <div className={`h-full w-2/3 rounded-full ${bgToken}`} />
             </div>
         </div>

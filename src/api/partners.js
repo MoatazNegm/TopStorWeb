@@ -13,3 +13,8 @@ export const deletePartner = (name) => {
     // name is the alias
     return api.post('api/v1/partners/partnerdel', { name });
 };
+
+export const fetchFreePort = () => {
+    // Backend picks a random free port in 3001-8000 (replies { port }).
+    return api.get('api/v1/partners/freeport');
+};

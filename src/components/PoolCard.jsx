@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronDown, Database, MemoryStick, Plus } from 'lucide-react';
+import { ChevronDown, Database, Plus } from 'lucide-react';
 import DiskIcon from './DiskIcon';
 import Button from './Common/Button';
 
@@ -11,15 +11,14 @@ const PoolCard = ({
     newRaidOptions,
     onAddDisks,
     onDeletePool,
-    onDiskAction,
-    markedCacheDisks = [],
-    onUpdateCache
+    onDiskAction
 }) => {
     const [deleteStep, setDeleteStep] = useState(0); // 0: Idle, 1: Delete?, 2: Really?, 3: Confirm
     const [selectedRedundancy, setSelectedRedundancy] = useState(null);
     const [selectedSize, setSelectedSize] = useState(null);
     const [selectedDiskId, setSelectedDiskId] = useState(null);
     const [isExpansionOpen, setIsExpansionOpen] = useState(false);
+    const [open, setOpen] = useState(false); // card is collapsed until the header is clicked
 
     const { available, used, dedup, raids = [], volumes = [] } = data;
     const totalSize = (parseFloat(available) + parseFloat(used)).toFixed(2);
@@ -51,16 +50,6 @@ const PoolCard = ({
         redundancyText = redundancyText + balanced;
     }
 
-    // A cache (L2ARC) vdev shows up as its own raid entry, named "cache_<poolname>"
-    const cacheRaidId = raids.find(r => r.split('_')[0] === 'cache');
-    const currentCacheDiskIds = cacheRaidId ? (allRaids[cacheRaidId]?.disks || []) : [];
-    const pendingCacheDiskIds = markedCacheDisks.filter(id => !currentCacheDiskIds.includes(id));
-
-    const handleUpdateCacheClick = () => {
-        if (pendingCacheDiskIds.length === 0 || !onUpdateCache) return;
-        onUpdateCache(poolName);
-    };
-
     const handleAdd = () => {
         if (!selectedRedundancy || !selectedSize) return;
         onAddDisks(poolName, selectedRedundancy, selectedSize);
@@ -75,8 +64,16 @@ const PoolCard = ({
 
     return (
         <div className="mb-4 overflow-hidden rounded-lg border border-border bg-surface p-5 shadow-sm">
-            <div className="mb-4 flex flex-col items-start justify-between gap-4 border-b border-border pb-4 md:flex-row md:items-center">
+            <div
+                role="button"
+                tabIndex={0}
+                aria-expanded={open}
+                onClick={() => setOpen(o => !o)}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(o => !o); } }}
+                className={`flex cursor-pointer flex-col items-start justify-between gap-4 md:flex-row md:items-center ${open ? 'mb-4 border-b border-border pb-4' : ''}`}
+            >
                 <div className="flex items-center gap-4">
+                    <ChevronDown size={18} className={`flex-shrink-0 text-gray-400 transition-transform ${open ? '' : '-rotate-90'}`} />
                     <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-50 text-brand-600">
                         <Database size={18} />
                     </div>
@@ -103,8 +100,9 @@ const PoolCard = ({
                 </div>
             </div>
 
+            {open && (<>
             {/* Raid Groups Grid */}
-            <div className="mb-5 grid grid-cols-1 gap-4 xl:grid-cols-2">
+            <div className="mb-4 grid grid-cols-1 gap-3 xl:grid-cols-2">
                 {raids.map(raidId => {
                     const raidDisks = allRaids[raidId]?.disks || [];
                     // Filter out dm-* virtual placeholder devices — they are not real disks to render
@@ -118,12 +116,12 @@ const PoolCard = ({
                     const raidHasMissing = missingCount > 0;
 
                     return (
-                        <div key={raidId} className={`relative rounded-lg border bg-surface-muted p-5 ${raidHasMissing ? 'border-danger-200' : 'border-border'}`}>
-                            <div className="flex items-center justify-between mb-4">
+                        <div key={raidId} className={`relative rounded-lg border bg-surface-muted p-2.5 ${raidHasMissing ? 'border-danger-200' : 'border-border'}`}>
+                            <div className="flex items-center justify-between mb-1.5">
                                 <span className={`text-xs font-semibold uppercase tracking-wide ${raidHasMissing ? 'text-danger-600' : 'text-gray-500'}`}>{raidId.split('_')[0]}</span>
                                 <div className={`h-2.5 w-2.5 rounded-full ${raidHasMissing ? 'bg-danger-500' : 'bg-success-500'}`}></div>
                             </div>
-                            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-4 2xl:grid-cols-6">
+                            <div className="flex flex-wrap gap-1">
                                 {realDisks.map(diskId => (
                                     <DiskIcon
                                         key={diskId}
@@ -137,7 +135,7 @@ const PoolCard = ({
                                     />
                                 ))}
                                 {Array.from({ length: missingCount }).map((_, i) => (
-                                    <div key={`missing-${i}`} className="flex flex-col items-center rounded-md border border-danger-200 bg-danger-50 p-3">
+                                    <div key={`missing-${i}`} className="flex flex-col items-center rounded-md border border-danger-200 bg-danger-50 p-1.5">
                                         <img src="img/invaliddisk.png" alt="missing disk" className="h-20 w-16 object-contain opacity-50" />
                                         <span className="mt-1 text-xs font-semibold uppercase tracking-wide text-danger-600">missing</span>
                                         <span className="text-xs font-semibold leading-none text-danger-400">-</span>
@@ -147,41 +145,6 @@ const PoolCard = ({
                         </div>
                     );
                 })}
-            </div>
-
-            {/* Cache Management Section */}
-            <div className="mb-5 rounded-lg border border-border bg-surface-muted p-5">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex items-center gap-3">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-surface text-warning-600 shadow-xs">
-                            <MemoryStick size={14} />
-                        </div>
-                        <div>
-                            <h4 className="text-sm font-semibold text-gray-800">Cache (L2ARC)</h4>
-                            <p className="mt-0.5 text-xs text-gray-500">
-                                {currentCacheDiskIds.length > 0
-                                    ? `Using ${currentCacheDiskIds.map(id => id.slice(-5)).join(', ')}`
-                                    : 'No cache device attached'}
-                            </p>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                        {pendingCacheDiskIds.length > 0 ? (
-                            <Button
-                                onClick={handleUpdateCacheClick}
-                                variant="secondary"
-                                size="sm"
-                                className="border-warning-100 text-warning-700 hover:bg-warning-50"
-                            >
-                                Update Cache to {pendingCacheDiskIds.map(id => id.slice(-5)).join(', ')}
-                            </Button>
-                        ) : (
-                            <span className="text-xs text-gray-400">
-                                Right-click a disk above to mark it, then update here
-                            </span>
-                        )}
-                    </div>
-                </div>
             </div>
 
             {/* Capacity Management Section */}
@@ -308,6 +271,7 @@ const PoolCard = ({
                                 <Button
                                     onClick={() => setDeleteStep(1)}
                                     variant="ghost"
+                                    data-wizard-id="pool-decommission-btn"
                                     className="px-4 text-danger-600 hover:bg-danger-50 hover:text-danger-700"
                                 >
                                     Decommission Pool
@@ -317,7 +281,7 @@ const PoolCard = ({
                                 <>
                                     <span className="flex items-center text-xs font-semibold uppercase tracking-wide text-danger-600">Really delete?</span>
                                     <Button onClick={() => setDeleteStep(0)} variant="secondary" size="sm">Cancel</Button>
-                                    <Button onClick={() => setDeleteStep(2)} variant="danger" size="sm">Delete</Button>
+                                    <Button onClick={() => setDeleteStep(2)} variant="danger" size="sm" data-wizard-id="pool-decommission-confirm1-btn">Delete</Button>
                                 </>
                             )}
                             {deleteStep === 2 && (
@@ -328,6 +292,7 @@ const PoolCard = ({
                                         onClick={() => { setDeleteStep(0); onDeletePool(poolName); }}
                                         variant="danger"
                                         size="sm"
+                                        data-wizard-id="pool-decommission-confirm2-btn"
                                     >
                                         Confirm Destruction
                                     </Button>
@@ -337,6 +302,7 @@ const PoolCard = ({
                     )}
                 </div>
             </div>
+            </>)}
         </div>
     );
 };

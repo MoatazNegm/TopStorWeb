@@ -12,6 +12,7 @@ import QIscsi from './QIscsi';
 import QSnapshots from './QSnapshots';
 import QUserPrivileges from './QUserPrivileges';
 import QUpdates from './QUpdates';
+import QApiKeys from './QApiKeys';
 import QDisks from './QDisks';
 import QPartners from './QPartners';
 import QSender from './QSender';
@@ -20,6 +21,8 @@ import QLogin from './QLogin';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import NotificationPoller from './components/NotificationPoller';
+import AppVersion from './components/AppVersion';
+import TestWizard from './testWizard/TestWizard';
 import { validateToken } from './api/auth';
 import { fetchUserList } from './api/users';
 
@@ -99,6 +102,7 @@ function App() {
             else if (hash === '#/volumes/snapshots') setView('snapshots');
             else if (hash === '#/settings/privileges') setView('privileges');
             else if (hash === '#/settings/updates') setView('updates');
+            else if (hash === '#/settings/apikeys') setView('apikeys');
             else if (hash === '#/pools/diskgroups') setView('diskgroups');
             else if (hash === '#/replication/partners') setView('partners');
             else if (hash === '#/replication/sender') setView('sender');
@@ -139,6 +143,7 @@ function App() {
                 return 'Volumes';
             case 'privileges':
             case 'updates':
+            case 'apikeys':
                 return 'Settings';
             case 'diskgroups':
                 return 'Pools';
@@ -195,6 +200,7 @@ function App() {
                     {view === 'snapshots' && hasPriv('SnapShots') && <QSnapshots />}
                     {view === 'privileges' && hasPriv('UserPrivilegesch') && <QUserPrivileges />}
                     {view === 'updates' && hasPriv('Uploadch') && <QUpdates />}
+                    {view === 'apikeys' && hasPriv('UserPrivilegesch') && <QApiKeys />}
                     {view === 'diskgroups' && hasPriv('DiskGroups') && <QDisks />}
                     {view === 'partners' && hasPriv('Partners') && <QPartners />}
                     {view === 'sender' && hasPriv('Senders') && <QSender />}
@@ -218,8 +224,10 @@ function App() {
                             </div>
                         </div>
                     </footer>
+                    <div className="px-4 pb-3 text-right text-[11px] text-gray-500 select-none"><AppVersion /></div>
                 </main>
                 </div>
+            <TestWizard />
         </div>
     );
 }

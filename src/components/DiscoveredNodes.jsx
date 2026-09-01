@@ -143,15 +143,15 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                 <>
                     {/* Nodes Grid */}
                     <div className="p-3 bg-gray-50/50 border-b border-gray-100 animate-in fade-in slide-in-from-top-2 duration-300">
-                        <div className="flex flex-wrap gap-3" id="hostspossible">
+                        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3" id="hostspossible">
                             {hosts.length === 0 ? (
                                 <div className="col-span-full text-center text-sm text-gray-400 py-6">
                                     No discovered nodes. Click <strong>discovery</strong> to scan.
                                 </div>
-                            ) : hosts.map(host => {
+                            ) : hosts.map((host, hostIdx) => {
                                 const hostName = host.name || host.alias;
                                 return (
-                                    <div key={hostName}>
+                                    <div key={hostName} data-wizard-id={hostIdx === 0 ? 'discovered-node-tile' : undefined}>
                                         <ServerNode
                                             name={nodeLabel(host, allHosts)}
                                             ip={host.ip || host.ipaddr}

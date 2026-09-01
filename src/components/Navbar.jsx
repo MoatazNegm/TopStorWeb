@@ -1,7 +1,25 @@
 import React, { useState } from 'react';
 import { Bell, ChevronRight, ClipboardList, Key, LogOut, Maximize2, Menu, X } from 'lucide-react';
 import { changePassword } from '../api/users';
+import { syncNow } from '../api/nodes';
+import { fetchLogs } from '../api/logs';
 import { fetchCommandLog } from '../api/commandlog';
+import { setLogSev, matchesLogSev } from '../logFilter';
+
+// the sign next to the bell.  Always the same element (the poller writes its text into #syncStatus); it only acts as a
+// button (click = sync now) while the nodes are not in sync
+const SyncSign = ({ active, onClick, disabled, led, text }) => (
+    <button
+        type="button"
+        onClick={active ? onClick : undefined}
+        disabled={active && disabled}
+        title={active ? 'Click to sync now' : undefined}
+        className={`hidden items-center gap-2 whitespace-nowrap rounded-full border border-border bg-surface-muted px-3 py-1.5 sm:flex ${active ? 'cursor-pointer hover:border-danger-500 hover:bg-danger-50 disabled:opacity-60' : 'cursor-default'}`}
+    >
+        <span className={`h-2 w-2 flex-shrink-0 rounded-full ${led}`}></span>
+        <div id="syncStatus" className="whitespace-nowrap text-xs font-medium leading-tight text-gray-600">{text}</div>
+    </button>
+);
 
 const Navbar = ({ sectionTitle }) => {
     const [notifOpen, setNotifOpen] = useState(false);
@@ -19,6 +37,21 @@ const Navbar = ({ sectionTitle }) => {
     const [logLoading, setLogLoading] = useState(false);
     const [logError, setLogError] = useState(null);
 
+    const handleOpenLogModal = async () => {
+        setUserMenuOpen(false);
+        setLogModalOpen(true);
+        setLogLoading(true);
+        setLogError(null);
+        try {
+            const res = await fetchCommandLog();
+            setCommandLog(res.data?.commands || []);
+        } catch (e) {
+            setLogError('Failed to load command log');
+        } finally {
+            setLogLoading(false);
+        }
+    };
+
     React.useEffect(() => {
         const el = document.getElementById('syncStatus');
         if (!el) return;
@@ -30,6 +63,46 @@ const Navbar = ({ sectionTitle }) => {
     }, []);
 
     const isInSync = !syncStatus.toLowerCase().includes('not in sync');
+    const isSingle = syncStatus.toLowerCase().includes('single node');
+    const [syncing, setSyncing] = useState(false);
+    const [dayCounts, setDayCounts] = useState({ warnings: 0, errors: 0, logonfails: 0 });
+
+    // summary of the system event log: same rows (api/v1/info/logs) and same severity rule (matchesLogSev) as the System Logs page,
+    // so the number on a bell entry is exactly the number of rows the page shows after the click
+    React.useEffect(() => {
+        let alive = true;
+        const load = () => {
+            fetchLogs().then((res) => {
+                const rows = (res && res.data && res.data.alllogs) || [];
+                if (alive) {
+                    setDayCounts({
+                        warnings: rows.filter((l) => matchesLogSev(l, 'warning')).length,
+                        errors: rows.filter((l) => matchesLogSev(l, 'error')).length,
+                        logonfails: rows.filter((l) => matchesLogSev(l, 'failedlogon')).length,
+                    });
+                }
+            }).catch(() => {});
+        };
+        load();
+        const timer = setInterval(load, 5000);
+        return () => { alive = false; clearInterval(timer); };
+    }, []);
+    const dayTotal = dayCounts.warnings + dayCounts.errors + dayCounts.logonfails;
+
+    // 'Nodes Not in Sync' is a button: it asks the cluster to sync now
+    const handleSyncNow = async () => {
+        if (syncing) return;
+        setSyncing(true);
+        const toast = (type, body) => window.dispatchEvent(new CustomEvent('app-toast', { detail: { type, title: 'Sync', body } }));
+        try {
+            await syncNow();
+            toast('info', 'Sync requested, the nodes are syncing now.');
+        } catch (e) {
+            toast('error', 'The sync request failed.');
+        } finally {
+            setTimeout(() => setSyncing(false), 3000);
+        }
+    };
 
     const validatePasswords = (p, np) => {
         if (p === np && np.length >= 3) {
@@ -68,21 +141,6 @@ const Navbar = ({ sectionTitle }) => {
             setPassErrColor('text-red-500');
         } finally {
             setSaving(false);
-        }
-    };
-
-    const handleOpenLogModal = async () => {
-        setUserMenuOpen(false);
-        setLogModalOpen(true);
-        setLogLoading(true);
-        setLogError(null);
-        try {
-            const res = await fetchCommandLog();
-            setCommandLog(res.data?.commands || []);
-        } catch (e) {
-            setLogError('Failed to load command log');
-        } finally {
-            setLogLoading(false);
         }
     };
 
@@ -137,12 +195,13 @@ const Navbar = ({ sectionTitle }) => {
                 </div>
 
                 <div className="flex items-center gap-1.5 sm:gap-2">
-                    <div className="hidden items-center gap-2 rounded-full border border-border bg-surface-muted px-3 py-1.5 sm:flex">
-                        <span className={`h-2 w-2 flex-shrink-0 rounded-full ${isInSync ? 'bg-success-500' : 'bg-danger-500'}`}></span>
-                        <div id="syncStatus" className="text-xs font-medium leading-tight text-gray-600">
-                            {syncStatus}
-                        </div>
-                    </div>
+                    <SyncSign
+                        active={!isInSync && !isSingle}
+                        onClick={handleSyncNow}
+                        disabled={syncing}
+                        led={isSingle ? 'bg-brand-500' : isInSync ? 'bg-success-500' : 'bg-danger-500'}
+                        text={syncStatus}
+                    />
 
                     <div className="relative">
                         <button
@@ -154,23 +213,25 @@ const Navbar = ({ sectionTitle }) => {
                             className="relative flex h-9 w-9 items-center justify-center rounded-md text-gray-500 hover:bg-gray-100 hover:text-brand-600"
                         >
                             <Bell className="h-[18px] w-[18px]" />
-                            <span className="absolute right-1.5 top-1.5 inline-flex h-2.5 w-2.5 rounded-full bg-danger-500 text-[8px] text-white" id="tot"></span>
+                            {dayTotal > 0 && (
+                                <span className="absolute -right-0.5 -top-0.5 inline-flex min-w-[16px] items-center justify-center rounded-full bg-danger-500 px-1 text-[10px] font-semibold leading-4 text-white" id="tot">{dayTotal > 99 ? '99+' : dayTotal}</span>
+                            )}
                         </button>
 
                         {notifOpen && (
                             <div className="absolute right-0 mt-2 w-72 overflow-hidden rounded-xl border border-border bg-surface shadow-lg">
-                                <div className="border-b border-border bg-surface-muted px-4 py-3 text-sm font-semibold text-gray-700">Notifications (7 days)</div>
-                                <a href="#/logs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setNotifOpen(false)}>
+                                <div className="border-b border-border bg-surface-muted px-4 py-3 text-sm font-semibold text-gray-700">Notifications</div>
+                                <a href="#/logs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" onClick={() => { setLogSev('warning'); setNotifOpen(false); }}>
                                     <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-warning-50 text-warning-600">!</span>
-                                    <span><strong id="warns">0</strong> Warnings</span>
+                                    <span><strong id="warns">{dayCounts.warnings}</strong> Warnings</span>
                                 </a>
-                                <a href="#/logs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setNotifOpen(false)}>
+                                <a href="#/logs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" onClick={() => { setLogSev('error'); setNotifOpen(false); }}>
                                     <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-danger-50 text-danger-600">x</span>
-                                    <span><strong id="errs">0</strong> System Errors</span>
+                                    <span><strong id="errs">{dayCounts.errors}</strong> System Errors</span>
                                 </a>
-                                <a href="#/logs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setNotifOpen(false)}>
+                                <a href="#/logs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" onClick={() => { setLogSev('failedlogon'); setNotifOpen(false); }}>
                                     <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-50 text-brand-600">i</span>
-                                    <span><strong id="logonfails">0</strong> Auth Failures</span>
+                                    <span><strong id="logonfails">{dayCounts.logonfails}</strong> Auth Failures</span>
                                 </a>
                             </div>
                         )}
@@ -313,7 +374,7 @@ const Navbar = ({ sectionTitle }) => {
                                         <th className="py-2 text-xs font-semibold uppercase tracking-wide">Shell Commands Executed</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-border">
+                                <tbody className="divide-y border-border">
                                     {commandLog.map((cmd, index) => (
                                         <tr key={`${cmd.ts}-${index}`}>
                                             <td className="whitespace-nowrap py-2.5 pr-3 align-top">
@@ -324,6 +385,11 @@ const Navbar = ({ sectionTitle }) => {
                                                 <span className="rounded-sm border border-border bg-surface-muted px-2 py-1 font-mono text-xs text-gray-600">
                                                     {cmd.endpoint}
                                                 </span>
+                                                {cmd.params && Object.keys(cmd.params).length > 0 && (
+                                                    <div className="mt-1 max-w-xs break-all font-mono text-[11px] text-gray-400">
+                                                        {JSON.stringify(cmd.params)}
+                                                    </div>
+                                                )}
                                             </td>
                                             <td className="py-2.5 align-top">
                                                 {cmd.commands && cmd.commands.length > 0 ? (

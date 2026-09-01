@@ -31,7 +31,7 @@ const DiskIcon = ({
 
     return (
         <div
-            className={`group relative flex cursor-pointer flex-col items-center rounded-md border transition-colors ${isLarge ? 'p-3' : 'p-2'} ${isCache ? 'border-warning-200 bg-warning-50' :
+            className={`group relative flex cursor-pointer flex-col items-center rounded-md border transition-colors ${isLarge ? 'min-w-[76px] p-1.5' : 'p-1'} ${isCache ? 'border-warning-200 bg-warning-50' :
                 isSelected ? 'border-brand-200 bg-brand-50' :
                     'border-transparent hover:bg-gray-50/60'
                 }`}
@@ -45,11 +45,11 @@ const DiskIcon = ({
                 </div>
             )}
 
-            <div className="relative">
+            <div className="relative flex-shrink-0">
                 <img
                     src={`img/${getDiskImage()}`}
                     alt="disk"
-                    className={`${isLarge ? 'h-20 w-16' : 'h-10 w-10'} object-contain transition-all ${isSelected || isCache ? 'scale-110' : ''
+                    className={`${isLarge ? 'h-20 w-16 min-w-[4rem]' : 'h-10 w-10'} object-contain transition-all ${isSelected || isCache ? 'scale-110' : ''
                         } ${silvering ? 'animate-pulse' : ''}`}
                 />
             </div>
@@ -60,6 +60,11 @@ const DiskIcon = ({
             <span className="text-xs font-semibold leading-none text-gray-800">
                 {parseFloat(size).toFixed(1)}GB
             </span>
+            {data.host && (
+                <span className="max-w-full truncate text-[10px] leading-tight text-gray-400" title={`Owner node: ${data.host}`}>
+                    {data.host}
+                </span>
+            )}
 
             {showActions && isSelected && (
                 <div className="absolute -bottom-11 left-1/2 z-20 flex -translate-x-1/2 gap-1 rounded-md border border-border bg-surface p-1 shadow-lg animate-in zoom-in-95 duration-75">

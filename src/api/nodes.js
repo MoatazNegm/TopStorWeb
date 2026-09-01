@@ -57,3 +57,8 @@ export const getAllHostConfigs = async () => {
 export const updateDiscoveredNode = (data) => {
     return api.post('api/v1/hosts/config', data);
 };
+
+export const syncNow = () => {
+    // leader asks every ready node to apply the pending sync requests now (the same step the nodes run in a loop)
+    return api.post('api/v1/hosts/syncnow');
+};

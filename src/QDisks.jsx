@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { AlertCircle, HardDrive, Info, MemoryStick, Plus, RefreshCw } from 'lucide-react';
-import { fetchDgsInfo, createPool, addDisksToPool, deletePool, actionOnDisk, saveCacheSpares, deleteCacheSpares, updateCache } from './api/pools';
+import { AlertCircle, ChevronDown, HardDrive, Info, MemoryStick, Plus, RefreshCw } from 'lucide-react';
+import { fetchDgsInfo, createPool, addDisksToPool, deletePool, actionOnDisk, saveCacheSpares, deleteCacheSpares } from './api/pools';
 import PoolCard from './components/PoolCard';
 import Button from './components/Common/Button';
 import DiskIcon from './components/DiskIcon';
@@ -19,6 +19,7 @@ const QDisks = () => {
     const [creatingSize, setCreatingSize] = useState(null);
     const [includeCache, setIncludeCache] = useState(false);
     const [selectedCacheSpares, setSelectedCacheSpares] = useState([]);
+    const [createOpen, setCreateOpen] = useState(null); // null = default (open)
 
     const loadData = useCallback(async () => {
         try {
@@ -135,16 +136,7 @@ const QDisks = () => {
         );
     };
 
-    const handleUpdateCache = async (poolName) => {
-        if (cacheDisks.length === 0) return;
-        try {
-            await updateCache({ pool: poolName, cache: cacheDisks, user: 'mezo' });
-            setCacheDisks([]);
-            loadData();
-        } catch (err) {
-            setError("Failed to update pool cache");
-        }
-    };
+    const isCreateOpen = createOpen === null ? true : createOpen; // New Pool starts open, pools start closed
 
     const availableDiskIds = dgsData.raids.free?.disks || [];
     const availableDisksByNode = availableDiskIds.reduce((groups, diskId) => {
@@ -192,18 +184,26 @@ const QDisks = () => {
 
                         <div className="grid grid-cols-1 gap-8">
                             {/* Create New Pool Card */}
-                            <div className="rounded-lg border border-border bg-surface p-6 shadow-sm">
-                                <div className="flex items-center gap-3 mb-6">
+                            <div className="rounded-lg border border-border bg-surface p-5 shadow-sm">
+                                <div
+                                    role="button"
+                                    tabIndex={0}
+                                    aria-expanded={isCreateOpen}
+                                    onClick={() => setCreateOpen(!isCreateOpen)}
+                                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setCreateOpen(!isCreateOpen); } }}
+                                    className={`flex cursor-pointer items-center gap-3 ${isCreateOpen ? 'mb-6' : ''}`}
+                                >
+                                    <ChevronDown size={18} className={`flex-shrink-0 text-gray-400 transition-transform ${isCreateOpen ? '' : '-rotate-90'}`} />
                                     <div className="flex h-9 w-9 items-center justify-center rounded-md bg-brand-50 text-brand-600">
                                         <Plus size={14} />
                                     </div>
-                                    <h3 className="text-base font-semibold text-gray-800">Create New Pool</h3>
+                                    <h3 className="text-base font-semibold text-gray-800">New Pool</h3>
                                 </div>
 
-                                <div className="space-y-8">
+                                {isCreateOpen && <div className="space-y-8">
                                     <div>
                                         <label className="ml-1 mb-3 block text-xs font-semibold uppercase tracking-wide text-gray-500">Available Disks by Node</label>
-                                        <div className="rounded-lg border border-border bg-surface-muted p-6">
+                                        <div data-wizard-id="qdisks-disk-grid" className="rounded-lg border border-border bg-surface-muted p-6">
                                             <div className="max-h-[360px] space-y-5 overflow-y-auto pr-2 custom-scrollbar">
                                                 {Object.entries(availableDisksByNode).sort(([a], [b]) => a.localeCompare(b)).map(([node, diskIds]) => (
                                                     <section key={node} className="rounded-lg border border-border bg-surface p-4">
@@ -273,7 +273,7 @@ const QDisks = () => {
 
                                     <div>
                                         <label className="ml-1 mb-3 block text-xs font-semibold uppercase tracking-wide text-gray-500">Available Pool Configurations</label>
-                                        <div className="flex max-h-[420px] min-h-[240px] flex-col overflow-hidden rounded-lg border border-border bg-surface">
+                                        <div data-wizard-id="qdisks-redundancy-table" className="flex max-h-[420px] min-h-[240px] flex-col overflow-hidden rounded-lg border border-border bg-surface">
                                             <div className="overflow-y-auto flex-1 custom-scrollbar">
                                                 <table className="w-full text-left border-collapse">
                                                     <thead className="sticky top-0 z-10 bg-surface-muted">
@@ -352,6 +352,7 @@ const QDisks = () => {
                                             </div>
                                             <div className="flex justify-end border-t border-border bg-surface-muted p-4">
                                                 <Button
+                                                    id="createPoolBtn"
                                                     onClick={handleCreatePool}
                                                     disabled={!creatingRedundancy || !creatingSize}
                                                     variant="primary"
@@ -362,7 +363,8 @@ const QDisks = () => {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>}
+                            </div>
 
                                 {/* Existing Pools — "pree" is the internal cache-spare pool, hidden like legacy */}
                                 {Object.entries(dgsData.pools).filter(([name]) => !name.includes('pree')).map(([poolName, pool]) => (
@@ -376,11 +378,8 @@ const QDisks = () => {
                                         onAddDisks={handleAddDisks}
                                         onDeletePool={handleDeletePool}
                                         onDiskAction={handleDiskAction}
-                                        markedCacheDisks={cacheDisks}
-                                        onUpdateCache={handleUpdateCache}
                                     />
                                 ))}
-                            </div>
 
                             {/* Spare Cache Disks — mirrors legacy #cachepools section */}
                             {dgsData.raids.cache_pree?.disks?.length > 0 && (

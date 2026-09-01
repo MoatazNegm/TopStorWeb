@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import { fetchGroupList, fetchUserOptions, addGroup, deleteGroup, updateGroupUsers } from './api/groups';
-import Button from './components/Common/Button';
 import AddGroupForm from './components/AddGroupForm';
 import GroupList from './components/GroupList';
 
@@ -20,7 +19,8 @@ const QGroups = () => {
                 fetchUserOptions()
             ]);
 
-            if (groupRes.data?.allgroups) setGroups(groupRes.data.allgroups);
+            // Everyone holds every user, always: the backend keeps it, it is not shown or edited here
+            if (groupRes.data?.allgroups) setGroups(groupRes.data.allgroups.filter((g) => g.name !== 'Everyone'));
             if (userRes.data?.results) setUsers(userRes.data.results);
 
         } catch (err) {
@@ -107,9 +107,6 @@ const QGroups = () => {
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Groups</h1>
                                 <p className="mt-1 text-sm text-gray-500">Manage system groups, permissions, and directory memberships</p>
                             </div>
-                            <Button onClick={loadData} variant="secondary" icon={<RefreshCw size={15} />}>
-                                Sync Now
-                            </Button>
                         </div>
 
                         <div className="mt-6 space-y-6">

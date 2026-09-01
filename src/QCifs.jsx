@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { AlertTriangle, FolderPlus, RefreshCw } from 'lucide-react';
+import { AlertTriangle, FolderPlus } from 'lucide-react';
 import { fetchVolumesInfo, fetchGroupList, createVolume, updateVolume, deleteVolume, fetchVolumeStats } from './api/volumes';
 import { fetchPoolsInfo } from './api/pools';
 import Button from './components/Common/Button';
 import Input from './components/Common/Input';
 import { ipError } from './components/Common/NetFields';
 import Dropdown from './components/Common/Dropdown';
+import { pickGroups } from './components/Common/groupPick';
+import { ipCollision } from './components/Common/ipCheck';
 import CifsList from './components/CifsList';
-import VolumeInsights from './components/VolumeInsights';
+import { PoolCapacityPanel, ProvisionHint, EfficiencyOptions, useCapacity } from './components/Common/Capacity';
 
 const QCifs = () => {
     const [volumes, setVolumes] = useState([]);
@@ -16,6 +18,7 @@ const QCifs = () => {
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { stats: capStats, volumes: allVolumes, hosts: allHosts, reload: reloadCapacity } = useCapacity();
 
     // Form state
     const [formData, setFormData] = useState({
@@ -25,6 +28,8 @@ const QCifs = () => {
         size: 1,
         ipaddress: '',
         Subnet: 24,
+        compression: true,
+        dedup: true,
         groups: [],
         // Domain specific
         domain: '',
@@ -37,6 +42,10 @@ const QCifs = () => {
         workname: '',
         wrkactive: true
     });
+
+    // the address must not collide with a node, a NFS share, a home, an iSCSI LUN or a CIFS share of another domain / workgroup;
+    // it is checked again as soon as the serving or the domain name changes
+    const ipMsg = ipCollision(formData.ipaddress, { kind: 'CIFS', domain: formData.serving === 'domain' ? (formData.domain.trim() || '?') : '' }, { hosts: allHosts, volumes: allVolumes });
 
     const loadData = useCallback(async () => {
         try {
@@ -67,7 +76,12 @@ const QCifs = () => {
 
     const handleCreate = async (e) => {
         e.preventDefault();
-        if (ipError(formData.ipaddress)) return;
+        // the button's onClick runs this handler instead of the form submit, so the required fields of the form are checked here
+        const form = e.currentTarget.form || e.currentTarget;
+        if (form.reportValidity && !form.reportValidity()) return;
+        if (formData.pool === '' || !pools[formData.pool]) { setError('Select a storage pool first'); return; }
+        setError(null);
+        if (ipError(formData.ipaddress) || ipMsg) return;
         try {
             const poolObj = pools[formData.pool];
             const isDomain = formData.serving === 'domain';
@@ -79,6 +93,8 @@ const QCifs = () => {
                 Myname: 'mezo',
                 size: `${formData.size}G`,
                 owner: poolObj.owner,
+                compression: formData.compression ? 'on' : 'off',
+                dedup: formData.dedup ? 'on' : 'off',
                 ...(isDomain ? {
                     type: 'CIFSdom',
                     active: formData.domactive ? 'active' : 'false',
@@ -103,49 +119,48 @@ const QCifs = () => {
                 groups: []
             });
             loadData();
+            reloadCapacity();
         } catch (err) {
             setError("Failed to create volume");
         }
     };
 
-    const handleUpdate = async (volName, values) => {
+    // the list collects the edits (address, groups, deletion); Submit sends them, one call per changed volume
+    const handleSubmit = async (pending) => {
+        const names = Object.keys(pending);
+        const removing = names.filter((n) => pending[n].remove);
+        if (removing.length > 0 && !window.confirm(`Delete ${removing.length} volume${removing.length === 1 ? '' : 's'}: ${removing.map((n) => n.split('_')[0]).join(', ')}?`)) return false;
         try {
-            await updateVolume({
-                volume: volName,
-                type: 'CIFS',
-                ...values
-            });
+            for (const name of names) {
+                const p = pending[name];
+                if (p.remove) {
+                    await deleteVolume({ name, type: 'CIFS', user: 'mezo' });
+                } else {
+                    await updateVolume({
+                        volume: name,
+                        type: 'CIFS',
+                        ...(p.address !== undefined ? { ipaddress: p.address, Subnet: p.subnet } : {}),
+                        ...(p.groups !== undefined ? { groups: p.groups } : {}),
+                    });
+                }
+            }
             loadData();
+            reloadCapacity();
+            return true;
         } catch (err) {
-            setError("Failed to update volume");
-        }
-    };
-
-    const handleDelete = async (volName) => {
-        if (!window.confirm(`Are you sure you want to delete volume ${volName}?`)) return;
-        try {
-            await deleteVolume({ name: volName, type: 'CIFS', user: 'mezo' });
-            loadData();
-        } catch (err) {
-            setError("Failed to delete volume");
+            setError("Failed to apply the changes");
+            return false;
         }
     };
 
     return (
-                <div className="p-5">
-                    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+                <div>
+                    <div className="rounded-none border border-border bg-surface p-2 shadow-sm">
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                             <div>
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">CIFS Volumes</h1>
                                 <p className="mt-1 text-sm text-gray-500">Windows-compatible network share administration</p>
                             </div>
-                            <Button
-                                onClick={loadData}
-                                variant="secondary"
-                                icon={<RefreshCw size={15} className={loading ? 'animate-spin' : ''} />}
-                            >
-                                Sync Now
-                            </Button>
                         </div>
 
                         {error && (
@@ -156,8 +171,8 @@ const QCifs = () => {
                         )}
 
                         <div className="mt-6 space-y-6">
-                            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                                <div className="rounded-lg border border-border bg-surface p-5 shadow-sm">
+                            <div className="grid grid-cols-1 gap-2 lg:grid-cols-3">
+                                <div className="rounded-lg border border-border bg-surface p-2 shadow-sm lg:col-span-2">
                                     <div className="mb-5 flex items-center gap-3">
                                         <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-50 text-brand-600">
                                             <FolderPlus size={16} />
@@ -166,8 +181,8 @@ const QCifs = () => {
                                     </div>
 
                                     <form onSubmit={handleCreate} className="space-y-5">
-                                    <div className="grid grid-cols-6 gap-6">
-                                        <div className="col-span-2">
+                                    <div className="flex flex-wrap items-end gap-4">
+                                        <div className="w-32">
                                             <Dropdown
                                                 label="Serving"
                                                 options={[
@@ -178,7 +193,7 @@ const QCifs = () => {
                                                 onChange={(val) => setFormData({ ...formData, serving: val })}
                                             />
                                         </div>
-                                        <div className="col-span-2">
+                                        <div className="w-40">
                                             <Dropdown
                                                 label="Storage Pool"
                                                 options={pools.map((p, idx) => ({ value: idx, label: p.text }))}
@@ -187,7 +202,7 @@ const QCifs = () => {
                                                 onChange={(val) => setFormData({ ...formData, pool: val })}
                                             />
                                         </div>
-                                        <div className="col-span-2">
+                                        <div className="min-w-[10rem] flex-1">
                                             <Input
                                                 label="Volume Name"
                                                 required
@@ -196,17 +211,31 @@ const QCifs = () => {
                                                 onChange={(e) => setFormData({ ...formData, name: e.target.value, workname: 'cifs-' + e.target.value })}
                                             />
                                         </div>
+                                        <div className="w-24">
+                                            <Input
+                                                label="Size (GB)"
+                                                type="number"
+                                                min="1"
+                                                max="999999"
+                                                required
+                                                value={formData.size}
+                                                onChange={(e) => setFormData({ ...formData, size: e.target.value.slice(0, 6) })}
+                                            />
+                                        </div>
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-6">
-                                        <Input
-                                            label="IP Address"
-                                            kind="ip"
-                                            required
-                                            value={formData.ipaddress}
-                                            onChange={(e) => setFormData({ ...formData, ipaddress: e.target.value })}
-                                        />
-                                        <div className="grid grid-cols-2 gap-4">
+                                    <div className="flex flex-wrap items-start gap-4">
+                                        <div className="w-44">
+                                            <Input
+                                                label="IP Address"
+                                                kind="ip"
+                                                required
+                                                error={ipMsg}
+                                                value={formData.ipaddress}
+                                                onChange={(e) => setFormData({ ...formData, ipaddress: e.target.value })}
+                                            />
+                                        </div>
+                                        <div className="w-20">
                                             <Input
                                                 label="Subnet"
                                                 kind="subnet"
@@ -214,16 +243,12 @@ const QCifs = () => {
                                                 value={formData.Subnet}
                                                 onChange={(e) => setFormData({ ...formData, Subnet: e.target.value })}
                                             />
-                                            <Input
-                                                label="Size (GB)"
-                                                type="number"
-                                                min="1"
-                                                required
-                                                value={formData.size}
-                                                onChange={(e) => setFormData({ ...formData, size: e.target.value })}
-                                            />
+                                        </div>
+                                        <div className="pt-7">
+                                            <EfficiencyOptions stacked compression={formData.compression} dedup={formData.dedup} onChange={(v) => setFormData({ ...formData, ...v })} />
                                         </div>
                                     </div>
+                                    <ProvisionHint stat={capStats[pools[formData.pool]?.text]} size={formData.size} />
 
                                     {formData.serving === 'domain' ? (
                                         <>
@@ -303,7 +328,7 @@ const QCifs = () => {
                                             options={groups.map(g => ({ value: g.text, label: g.text }))}
                                             value={formData.groups}
                                             placeholder="Select groups"
-                                            onChange={(val) => setFormData({ ...formData, groups: val })}
+                                            onChange={(val) => setFormData({ ...formData, groups: pickGroups(formData.groups, val, (g) => g === 'Everyone') })}
                                         />
                                     </div>
 
@@ -312,7 +337,7 @@ const QCifs = () => {
                                             type="submit"
                                             className="w-full sm:w-auto"
                                             onClick={handleCreate}
-                                            disabled={!!ipError(formData.ipaddress)}
+                                            disabled={!!ipError(formData.ipaddress) || !!ipMsg}
                                         >
                                             Provision Volume
                                         </Button>
@@ -320,15 +345,14 @@ const QCifs = () => {
                                     </form>
                                 </div>
 
-                                <VolumeInsights volumes={volumes} />
+                                <PoolCapacityPanel stats={capStats} />
                             </div>
 
                             <div className="w-full">
                                 <CifsList
                                     volumes={volumes}
                                     groups={groups}
-                                    onUpdate={handleUpdate}
-                                    onDelete={handleDelete}
+                                    onSubmit={handleSubmit}
                                 />
                             </div>
                         </div>

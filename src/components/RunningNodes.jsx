@@ -656,11 +656,11 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                 <div className="animate-in fade-in slide-in-from-top-2 duration-300">
                     {/* Nodes Grid */}
                     <div className="p-3 bg-gray-50/50 border-b border-gray-100">
-                        <div className="flex flex-wrap gap-3" id="hostsready">
-                            {hosts.map(host => {
+                        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3" id="hostsready">
+                            {hosts.map((host, hostIdx) => {
                                 const hostName = host.name || host.alias;
                                 return (
-                                    <div key={hostName}>
+                                    <div key={hostName} data-wizard-id={hostIdx === 0 ? 'node-tile' : undefined}>
                                         <ServerNode
                                             name={nodeLabel(host, allHosts)}
                                             ip={host.ip || host.ipaddr}

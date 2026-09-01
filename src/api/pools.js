@@ -37,8 +37,3 @@ export const deleteCacheSpares = (data) => {
     // Expected: { cache_disks, user }
     return api.post('api/v1/pools/delcachespares', data);
 };
-
-export const updateCache = (data) => {
-    // Expected: { pool, cache, user }
-    return api.post('api/v1/pools/updatecache', data);
-};

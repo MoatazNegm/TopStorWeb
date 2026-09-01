@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { AlertTriangle, FolderPlus, RefreshCw } from 'lucide-react';
+import { AlertTriangle, FolderPlus } from 'lucide-react';
 import { fetchVolumesInfo, fetchGroupList, createVolume, updateVolume, deleteVolume, fetchVolumeStats } from './api/volumes';
 import { fetchPoolsInfo } from './api/pools';
 import Button from './components/Common/Button';
 import Input from './components/Common/Input';
 import { ipError } from './components/Common/NetFields';
 import Dropdown from './components/Common/Dropdown';
+import { pickGroups } from './components/Common/groupPick';
+import { ipCollision } from './components/Common/ipCheck';
 import NfsList from './components/NfsList';
-import VolumeInsights from './components/VolumeInsights';
+import { PoolCapacityPanel, ProvisionHint, EfficiencyOptions, useCapacity } from './components/Common/Capacity';
 
 const QNfs = () => {
     const [volumes, setVolumes] = useState([]);
@@ -16,6 +18,7 @@ const QNfs = () => {
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { stats: capStats, volumes: allVolumes, hosts: allHosts, reload: reloadCapacity } = useCapacity();
 
     // Form state
     const [formData, setFormData] = useState({
@@ -24,6 +27,8 @@ const QNfs = () => {
         size: 1,
         ipaddress: '',
         Subnet: 24,
+        compression: true,
+        dedup: true,
         groups: [],
         rootname: 'root',
         rootid: 0,
@@ -31,6 +36,9 @@ const QNfs = () => {
         groupid: 0,
         active: true
     });
+
+    // a NFS share shares its address with nothing: not with a node, a CIFS share, a home, an iSCSI LUN or another NFS share
+    const ipMsg = ipCollision(formData.ipaddress, { kind: 'NFS' }, { hosts: allHosts, volumes: allVolumes });
 
     const loadData = useCallback(async () => {
         try {
@@ -61,7 +69,12 @@ const QNfs = () => {
 
     const handleCreate = async (e) => {
         e.preventDefault();
-        if (ipError(formData.ipaddress)) return;
+        // the button's onClick runs this handler instead of the form submit, so the required fields of the form are checked here
+        const form = e.currentTarget.form || e.currentTarget;
+        if (form.reportValidity && !form.reportValidity()) return;
+        if (formData.pool === '' || !pools[formData.pool]) { setError('Select a storage pool first'); return; }
+        setError(null);
+        if (ipError(formData.ipaddress) || ipMsg) return;
         try {
             const poolObj = pools[formData.pool];
             const payload = {
@@ -74,6 +87,8 @@ const QNfs = () => {
                 Myname: 'mezo',
                 size: `${formData.size}G`,
                 owner: poolObj.owner,
+                compression: formData.compression ? 'on' : 'off',
+                dedup: formData.dedup ? 'on' : 'off',
                 rootname: formData.rootname,
                 rootid: formData.rootid,
                 groupname: formData.groupname,
@@ -95,40 +110,42 @@ const QNfs = () => {
         }
     };
 
-    const handleUpdate = async (volName, values) => {
+    // the list collects the edits (address, groups, deletion); Submit sends them, one call per changed volume
+    const handleSubmit = async (pending) => {
+        const names = Object.keys(pending);
+        const removing = names.filter((n) => pending[n].remove);
+        if (removing.length > 0 && !window.confirm(`Delete ${removing.length} volume${removing.length === 1 ? '' : 's'}: ${removing.map((n) => n.split('_')[0]).join(', ')}?`)) return false;
         try {
-            await updateVolume({
-                volume: volName,
-                type: 'NFS',
-                ...values
-            });
+            for (const name of names) {
+                const p = pending[name];
+                if (p.remove) {
+                    await deleteVolume({ name, type: 'NFS', user: 'mezo' });
+                } else {
+                    await updateVolume({
+                        volume: name,
+                        type: 'NFS',
+                        ...(p.address !== undefined ? { ipaddress: p.address, Subnet: p.subnet } : {}),
+                        ...(p.groups !== undefined ? { groups: p.groups } : {}),
+                    });
+                }
+            }
             loadData();
+            reloadCapacity();
+            return true;
         } catch (err) {
-            setError("Failed to update volume");
-        }
-    };
-
-    const handleDelete = async (volName) => {
-        if (!window.confirm(`Are you sure you want to delete volume ${volName}?`)) return;
-        try {
-            await deleteVolume({ name: volName, type: 'NFS', user: 'mezo' });
-            loadData();
-        } catch (err) {
-            setError("Failed to delete volume");
+            setError("Failed to apply the changes");
+            return false;
         }
     };
 
     return (
-                <div className="p-5">
-                    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+                <div>
+                    <div className="rounded-none border border-border bg-surface p-2 shadow-sm">
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                             <div>
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">NFS Volumes</h1>
                                 <p className="mt-1 text-sm text-gray-500">Unix-compatible network share administration</p>
                             </div>
-                            <Button onClick={loadData} variant="secondary" icon={<RefreshCw size={15} className={loading ? 'animate-spin' : ''} />}>
-                                Sync Now
-                            </Button>
                         </div>
 
                         {error && (
@@ -139,8 +156,8 @@ const QNfs = () => {
                         )}
 
                         <div className="mt-6 space-y-6">
-                            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                                <div className="rounded-lg border border-border bg-surface p-5 shadow-sm">
+                            <div className="grid grid-cols-1 gap-2 lg:grid-cols-3">
+                                <div className="rounded-lg border border-border bg-surface p-2 shadow-sm lg:col-span-2">
                                     <div className="mb-5 flex items-center gap-3">
                                         <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-50 text-brand-600">
                                             <FolderPlus size={16} />
@@ -149,67 +166,57 @@ const QNfs = () => {
                                     </div>
 
                                 <form onSubmit={handleCreate} className="space-y-5">
-                                    <div className="grid grid-cols-2 gap-6">
-                                        <Dropdown
-                                            label="Storage Pool"
-                                            options={pools.map((p, idx) => ({ value: idx, label: p.text }))}
-                                            value={formData.pool}
-                                            placeholder="Select pool"
-                                            onChange={(val) => setFormData({ ...formData, pool: val })}
-                                        />
-                                        <Input
-                                            label="Volume Name"
-                                            required
-                                            placeholder="Share name"
-                                            value={formData.name}
-                                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        />
-                                    </div>
-
-                                    <div className="grid grid-cols-2 gap-6">
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <Input
-                                                label="Root Name"
-                                                required
-                                                value={formData.rootname}
-                                                onChange={(e) => setFormData({ ...formData, rootname: e.target.value })}
-                                            />
-                                            <Input
-                                                label="Root ID"
-                                                type="number"
-                                                min="0"
-                                                required
-                                                value={formData.rootid}
-                                                onChange={(e) => setFormData({ ...formData, rootid: e.target.value })}
+                                    <div className="flex flex-wrap items-end gap-4">
+                                        <div className="w-40">
+                                            <Dropdown
+                                                label="Storage Pool"
+                                                options={pools.map((p, idx) => ({ value: idx, label: p.text }))}
+                                                value={formData.pool}
+                                                placeholder="Select pool"
+                                                onChange={(val) => setFormData({ ...formData, pool: val })}
                                             />
                                         </div>
-                                        <div className="grid grid-cols-2 gap-4">
+                                        <div className="min-w-[10rem] flex-1">
                                             <Input
-                                                label="Group Name"
+                                                label="Volume Name"
                                                 required
-                                                value={formData.groupname}
-                                                onChange={(e) => setFormData({ ...formData, groupname: e.target.value })}
+                                                placeholder="Share name"
+                                                value={formData.name}
+                                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                             />
+                                        </div>
+                                        <div className="w-24">
                                             <Input
-                                                label="Group ID"
+                                                label="Size (GB)"
                                                 type="number"
-                                                min="0"
+                                                min="1"
+                                                max="999999"
                                                 required
-                                                value={formData.groupid}
-                                                onChange={(e) => setFormData({ ...formData, groupid: e.target.value })}
+                                                value={formData.size}
+                                                onChange={(e) => setFormData({ ...formData, size: e.target.value.slice(0, 6) })}
                                             />
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-6">
-                                        <Input
-                                            label="IP Address"
-                                            kind="ip"
-                                            required
-                                            value={formData.ipaddress}
-                                            onChange={(e) => setFormData({ ...formData, ipaddress: e.target.value })}
-                                        />
-                                        <div className="grid grid-cols-3 gap-4">
+                                    <div className="grid grid-cols-[1fr_5rem_1fr_5rem] gap-4">
+                                        <Input label="Root Name" required value={formData.rootname} onChange={(e) => setFormData({ ...formData, rootname: e.target.value })} />
+                                        <Input label="Root ID" type="number" min="0" required value={formData.rootid} onChange={(e) => setFormData({ ...formData, rootid: e.target.value })} />
+                                        <Input label="Group Name" required value={formData.groupname} onChange={(e) => setFormData({ ...formData, groupname: e.target.value })} />
+                                        <Input label="Group ID" type="number" min="0" required value={formData.groupid} onChange={(e) => setFormData({ ...formData, groupid: e.target.value })} />
+                                    </div>
+
+                                    <div className="flex flex-wrap items-start gap-4">
+                                        <div className="w-44">
+                                            <Input
+                                                label="IP Address"
+                                                kind="ip"
+                                                required
+                                                error={ipMsg}
+                                                value={formData.ipaddress}
+                                                onChange={(e) => setFormData({ ...formData, ipaddress: e.target.value })}
+                                            />
+                                        </div>
+                                        <div className="w-20">
                                             <Input
                                                 label="Subnet"
                                                 kind="subnet"
@@ -217,25 +224,21 @@ const QNfs = () => {
                                                 value={formData.Subnet}
                                                 onChange={(e) => setFormData({ ...formData, Subnet: e.target.value })}
                                             />
-                                            <Input
-                                                label="Size (GB)"
-                                                type="number"
-                                                min="1"
-                                                required
-                                                value={formData.size}
-                                                onChange={(e) => setFormData({ ...formData, size: e.target.value })}
-                                            />
-                                            <div className="flex flex-col items-center justify-end pb-3">
-                                                <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-gray-500">Active</label>
+                                        </div>
+                                        <div className="flex flex-col gap-1.5 pt-6">
+                                            <label className="flex cursor-pointer items-center whitespace-nowrap text-sm text-gray-700">
                                                 <input
                                                     type="checkbox"
-                                                    className="h-5 w-5 rounded border-border text-brand-600 focus:ring-brand-100"
+                                                    className="mr-2 h-4 w-4 flex-shrink-0 rounded border-border text-brand-600 focus:ring-brand-100"
                                                     checked={formData.active}
                                                     onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
                                                 />
-                                            </div>
+                                                Active
+                                            </label>
+                                            <EfficiencyOptions stacked compression={formData.compression} dedup={formData.dedup} onChange={(v) => setFormData({ ...formData, ...v })} />
                                         </div>
                                     </div>
+                                    <ProvisionHint stat={capStats[pools[formData.pool]?.text]} size={formData.size} />
 
                                     <div>
                                         <Dropdown
@@ -244,7 +247,7 @@ const QNfs = () => {
                                             options={groups.map(g => ({ value: g.text, label: g.text }))}
                                             value={formData.groups}
                                             placeholder="Select groups"
-                                            onChange={(val) => setFormData({ ...formData, groups: val })}
+                                            onChange={(val) => setFormData({ ...formData, groups: pickGroups(formData.groups, val, (g) => g === 'Everyone') })}
                                         />
                                     </div>
 
@@ -253,7 +256,7 @@ const QNfs = () => {
                                             type="submit"
                                             className="w-full sm:w-auto"
                                             onClick={handleCreate}
-                                            disabled={!!ipError(formData.ipaddress)}
+                                            disabled={!!ipError(formData.ipaddress) || !!ipMsg}
                                         >
                                             Provision Volume
                                         </Button>
@@ -261,15 +264,14 @@ const QNfs = () => {
                                 </form>
                                 </div>
 
-                                <VolumeInsights volumes={volumes} />
+                                <PoolCapacityPanel stats={capStats} />
                             </div>
 
                             <div className="w-full">
                                 <NfsList
                                     volumes={volumes}
                                     groups={groups}
-                                    onUpdate={handleUpdate}
-                                    onDelete={handleDelete}
+                                    onSubmit={handleSubmit}
                                 />
                             </div>
                         </div>

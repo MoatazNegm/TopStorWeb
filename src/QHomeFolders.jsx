@@ -7,7 +7,8 @@ import Input from './components/Common/Input';
 import { ipError } from './components/Common/NetFields';
 import Dropdown from './components/Common/Dropdown';
 import HomeFoldersList from './components/HomeFoldersList';
-import VolumeInsights from './components/VolumeInsights';
+import { ipCollision } from './components/Common/ipCheck';
+import { PoolCapacityPanel, ProvisionHint, EfficiencyOptions, useCapacity } from './components/Common/Capacity';
 
 const QHomeFolders = () => {
     const [volumes, setVolumes] = useState([]);
@@ -16,6 +17,7 @@ const QHomeFolders = () => {
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { stats: capStats, volumes: allVolumes, hosts: allHosts, reload: reloadCapacity } = useCapacity();
 
     // Form state
     const [formData, setFormData] = useState({
@@ -24,7 +26,12 @@ const QHomeFolders = () => {
         size: 1,
         ipaddress: '',
         Subnet: 24,
+        compression: true,
+        dedup: true,
     });
+
+    // a home folder may share its address with other home folders only
+    const ipMsg = ipCollision(formData.ipaddress, { kind: 'HOME' }, { hosts: allHosts, volumes: allVolumes });
 
     const loadData = useCallback(async () => {
         try {
@@ -55,13 +62,15 @@ const QHomeFolders = () => {
 
     const handleCreate = async (e) => {
         e.preventDefault();
-        if (ipError(formData.ipaddress)) return;
+        if (ipError(formData.ipaddress) || ipMsg) return;
         try {
             const poolObj = pools[formData.pool];
             const userObj = users[formData.userIndex];
             const payload = {
                 type: 'HOME',
                 pool: poolObj.text,
+                compression: formData.compression ? 'on' : 'off',
+                dedup: formData.dedup ? 'on' : 'off',
                 name: userObj.text,
                 ipaddress: formData.ipaddress,
                 Subnet: formData.Subnet,
@@ -78,40 +87,48 @@ const QHomeFolders = () => {
                 userIndex: '',
                 size: 1,
                 ipaddress: '',
-                Subnet: 24
+                Subnet: 24,
+                compression: formData.compression,
+                dedup: formData.dedup
             });
             loadData();
+            reloadCapacity();
         } catch (err) {
             setError("Failed to create home folder");
         }
     };
 
-    const handleUpdate = async (volName, values) => {
+    // the list collects the edits (address, groups, deletion); Submit sends them, one call per changed volume
+    const handleSubmit = async (pending) => {
+        const names = Object.keys(pending);
+        const removing = names.filter((n) => pending[n].remove);
+        if (removing.length > 0 && !window.confirm(`Delete ${removing.length} volume${removing.length === 1 ? '' : 's'}: ${removing.map((n) => n.split('_')[0]).join(', ')}?`)) return false;
         try {
-            await updateVolume({
-                volume: volName,
-                type: 'HOME',
-                ...values
-            });
+            for (const name of names) {
+                const p = pending[name];
+                if (p.remove) {
+                    await deleteVolume({ name, type: 'HOME', user: 'mezo' });
+                } else {
+                    await updateVolume({
+                        volume: name,
+                        type: 'HOME',
+                        ...(p.address !== undefined ? { ipaddress: p.address, Subnet: p.subnet } : {}),
+                        ...(p.groups !== undefined ? { groups: p.groups } : {}),
+                    });
+                }
+            }
             loadData();
+            reloadCapacity();
+            return true;
         } catch (err) {
-            setError("Failed to update volume");
-        }
-    };
-
-    const handleDelete = async (volName) => {
-        if (!window.confirm(`Are you sure you want to delete home folder for ${volName.split('_')[0]}?`)) return;
-        try {
-            await deleteVolume({ name: volName, type: 'HOME', user: 'mezo' });
-            loadData();
-        } catch (err) {
-            setError("Failed to delete volume");
+            setError("Failed to apply the changes");
+            return false;
         }
     };
 
     return (
-                <div className="content-header px-4">
-                    <div className="container-fluid">
+                <div>
+                    <div className="rounded-none border border-border bg-surface p-2 shadow-sm">
                         <div className="flex justify-between items-center mb-8">
                             <div>
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Home Folders Management</h1>
@@ -136,9 +153,9 @@ const QHomeFolders = () => {
                         )}
 
                         {/* First Row: Form + Insights */}
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 mb-8">
                             {/* Creation Form */}
-                            <div className="rounded-lg border border-border bg-surface p-6 shadow-sm">
+                            <div className="rounded-lg border border-border bg-surface p-2 shadow-sm lg:col-span-2">
                                 <div className="flex items-center gap-3 mb-8">
                                     <div className="flex h-9 w-9 items-center justify-center rounded-md bg-brand-50 text-brand-600">
                                         <Plus size={14} />
@@ -146,52 +163,64 @@ const QHomeFolders = () => {
                                     <h3 className="text-base font-semibold text-gray-800">Provision New Home Folder</h3>
                                 </div>
 
-                                <form onSubmit={handleCreate} className="space-y-6">
-                                    <div className="grid grid-cols-2 gap-6">
-                                        <Dropdown
-                                            label="Storage Pool"
-                                            options={pools.map((p, idx) => ({ value: idx, label: p.text }))}
-                                            value={formData.pool}
-                                            placeholder="Select Pool..."
-                                            onChange={(val) => setFormData({ ...formData, pool: val })}
-                                        />
-                                        <Dropdown
-                                            label="Assign To User"
-                                            options={users.map((u, idx) => ({ value: idx, label: u.text }))}
-                                            value={formData.userIndex}
-                                            placeholder="Select User..."
-                                            onChange={(val) => setFormData({ ...formData, userIndex: val })}
-                                        />
-                                    </div>
-
-                                    <div className="grid grid-cols-3 gap-6">
-                                        <Input
-                                            label="Size (GB)"
-                                            type="number"
-                                            min="1"
-                                            required
-                                            value={formData.size}
-                                            onChange={(e) => setFormData({ ...formData, size: e.target.value })}
-                                        />
-                                        <div className="col-span-2">
-                                            <div className="grid grid-cols-2 gap-4">
-                                                <Input
-                                                    label="IP Address"
-                                            kind="ip"
-                                                    required
-                                                    value={formData.ipaddress}
-                                                    onChange={(e) => setFormData({ ...formData, ipaddress: e.target.value })}
-                                                />
-                                                <Input
-                                                    label="Subnet"
-                                                kind="subnet"
-                                                    required
-                                                    value={formData.Subnet}
-                                                    onChange={(e) => setFormData({ ...formData, Subnet: e.target.value })}
-                                                />
-                                            </div>
+                                <form onSubmit={handleCreate} className="space-y-5">
+                                    <div className="flex flex-wrap items-end gap-4">
+                                        <div className="w-40">
+                                            <Dropdown
+                                                label="Storage Pool"
+                                                options={pools.map((p, idx) => ({ value: idx, label: p.text }))}
+                                                value={formData.pool}
+                                                placeholder="Select pool"
+                                                onChange={(val) => setFormData({ ...formData, pool: val })}
+                                            />
+                                        </div>
+                                        <div className="min-w-[10rem] flex-1">
+                                            <Dropdown
+                                                label="Assign To User"
+                                                options={users.map((u, idx) => ({ value: idx, label: u.text }))}
+                                                value={formData.userIndex}
+                                                placeholder="Select user"
+                                                onChange={(val) => setFormData({ ...formData, userIndex: val })}
+                                            />
+                                        </div>
+                                        <div className="w-24">
+                                            <Input
+                                                label="Size (GB)"
+                                                type="number"
+                                                min="1"
+                                                max="999999"
+                                                required
+                                                value={formData.size}
+                                                onChange={(e) => setFormData({ ...formData, size: e.target.value.slice(0, 6) })}
+                                            />
                                         </div>
                                     </div>
+
+                                    <div className="flex flex-wrap items-start gap-4">
+                                        <div className="w-44">
+                                            <Input
+                                                label="IP Address"
+                                                kind="ip"
+                                                required
+                                                error={ipMsg}
+                                                value={formData.ipaddress}
+                                                onChange={(e) => setFormData({ ...formData, ipaddress: e.target.value })}
+                                            />
+                                        </div>
+                                        <div className="w-20">
+                                            <Input
+                                                label="Subnet"
+                                                kind="subnet"
+                                                required
+                                                value={formData.Subnet}
+                                                onChange={(e) => setFormData({ ...formData, Subnet: e.target.value })}
+                                            />
+                                        </div>
+                                        <div className="pt-7">
+                                            <EfficiencyOptions stacked compression={formData.compression} dedup={formData.dedup} onChange={(v) => setFormData({ ...formData, ...v })} />
+                                        </div>
+                                    </div>
+                                    <ProvisionHint stat={capStats[pools[formData.pool]?.text]} size={formData.size} />
 
                                     <div className="flex justify-end pt-4">
                                         <Button
@@ -199,7 +228,7 @@ const QHomeFolders = () => {
                                             variant="primary"
                                             className="px-6"
                                             onClick={handleCreate}
-                                            disabled={!!ipError(formData.ipaddress)}
+                                            disabled={!!ipError(formData.ipaddress) || !!ipMsg}
                                         >
                                             Create Home Folder
                                         </Button>
@@ -207,15 +236,14 @@ const QHomeFolders = () => {
                                 </form>
                             </div>
 
-                            <VolumeInsights volumes={volumes} />
+                            <PoolCapacityPanel stats={capStats} />
                         </div>
 
                         {/* Second Row: List */}
                         <div className="w-full">
                             <HomeFoldersList
                                 volumes={volumes}
-                                onUpdate={handleUpdate}
-                                onDelete={handleDelete}
+                                    onSubmit={handleSubmit}
                             />
                         </div>
                     </div>
