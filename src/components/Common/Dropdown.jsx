@@ -119,7 +119,7 @@ const Dropdown = ({ options, value, onChange, placeholder, disabled, className =
 
                 {isOpen && (
                     <div className="absolute top-full left-0 z-[100] mt-2 w-full overflow-hidden rounded-md border border-border bg-surface shadow-lg">
-                        <div className="max-h-60 overflow-y-auto no-scrollbar">
+                        <div className="max-h-80 overflow-y-auto no-scrollbar">
                             {options.length === 0 ? (
                                 <div className="px-4 py-3 text-sm text-gray-500">No options available</div>
                             ) : (
@@ -133,8 +133,8 @@ const Dropdown = ({ options, value, onChange, placeholder, disabled, className =
                                                 : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
                                         }`}
                                     >
-                                        <div className="flex items-center gap-3">
-                                            <span>{opt.label}</span>
+                                        <div className="flex min-w-0 items-center gap-3">
+                                            <span className="truncate whitespace-nowrap">{opt.label}</span>
                                         </div>
                                         {isSelected(opt.value) && <Check size={14} />}
                                     </div>
@@ -158,3 +158,4 @@ const Dropdown = ({ options, value, onChange, placeholder, disabled, className =
 };
 
 export default Dropdown;
+

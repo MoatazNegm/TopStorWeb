@@ -171,8 +171,8 @@ const Sidebar = ({ hasPriv }) => {
               <button
                 type="button"
                 onClick={() => toggleSection(menu.label)}
-                className={`flex w-full items-center gap-3 rounded-md px-2.5 py-2 text-sm font-medium transition-colors ${
-                  sectionActive ? 'text-brand-700' : 'text-gray-700 hover:bg-gray-50'
+                 className={`flex w-full items-center gap-3 rounded-md px-2.5 py-2 text-sm font-medium transition-colors ${
+                  sectionActive ? 'text-brand-700 bg-brand-50' : 'text-gray-700 hover:bg-gray-50'
                 }`}
               >
                 <Icon className={`h-[18px] w-[18px] ${sectionActive ? 'text-brand-600' : 'text-gray-400'}`} />
@@ -194,9 +194,9 @@ const Sidebar = ({ hasPriv }) => {
                         <a
                           href={subItem.href}
                           onClick={closeMobileSidebar}
-                          className={`flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors ${
+                           className={`flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors ${
                             active
-                              ? 'bg-brand-600 font-medium text-white'
+                              ? '!bg-brand-600 font-medium text-white'
                               : 'text-gray-600 hover:bg-gray-50 hover:text-brand-600'
                           }`}
                         >
@@ -217,5 +217,6 @@ const Sidebar = ({ hasPriv }) => {
 };
 
 export default Sidebar;
+
 
 

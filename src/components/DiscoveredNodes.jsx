@@ -18,22 +18,31 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
     // Fix #16: Get the selected host object directly from the array. The old code used `allhosts['possible'][index]`.
     // The name may not perfectly match the alias initially depending on the UI state, but `hosts` array contains the source of truth for possible hosts.
     const selectedHostIndex = selectedHostName ? hosts.findIndex(h => (h.name === selectedHostName || h.alias === selectedHostName)) : -1;
-    const selectedHostListItem = selectedHostIndex !== -1 ? hosts[selectedHostIndex] : null;
 
-    useEffect(() => {
-        if (selectedHostListItem) {
-            const initialFormState = {
-                alias: selectedHostListItem.alias || selectedHostListItem.name || '',
-                ipaddr: selectedHostListItem.ipaddr || selectedHostListItem.ip || '',
-                ipaddrsubnet: selectedHostListItem.ipaddrsubnet || 24,
-                port: selectedHostListItem.port || 'Port'
-            };
-            setFormData(initialFormState);
-            setOriginalData({
-                alias: initialFormState.alias,
-                ipaddr: initialFormState.ipaddr,
-                ipaddrsubnet: initialFormState.ipaddrsubnet
-            });
+    const selectedHostKey = selectedHostName || '';
+
+    const selectedHostListItem = React.useMemo(() => {
+        if (!selectedHostKey) return null;
+        return hosts.find(h => (h.name === selectedHostKey || h.alias === selectedHostKey)) || null;
+    }, [hosts, selectedHostKey]);
+
+    React.useEffect(() => {
+        if (selectedHostKey) {
+            const host = hosts.find(h => (h.name === selectedHostKey || h.alias === selectedHostKey));
+            if (host) {
+                const initialFormState = {
+                    alias: host.alias || host.name || '',
+                    ipaddr: host.ipaddr || host.ip || '',
+                    ipaddrsubnet: host.ipaddrsubnet || 24,
+                    port: host.port || 'Port'
+                };
+                setFormData(initialFormState);
+                    setOriginalData({
+                        alias: initialFormState.alias,
+                        ipaddr: initialFormState.ipaddr,
+                        ipaddrsubnet: initialFormState.ipaddrsubnet
+                    });
+            }
         } else {
             setFormData({
                 alias: '',
@@ -43,7 +52,7 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
             });
             setOriginalData({ alias: '', ipaddr: '', ipaddrsubnet: 24 });
         }
-    }, [selectedHostListItem]);
+    }, [selectedHostKey]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -258,3 +267,4 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
 };
 
 export default DiscoveredNodes;
+

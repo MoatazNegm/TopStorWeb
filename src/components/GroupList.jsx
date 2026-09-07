@@ -70,11 +70,15 @@ const GroupRow = ({ group, allUsers, onUpdateMembers, onDelete }) => {
 
     const usersKey = React.useMemo(() => [...initialMembers].sort().join(','), [initialMembers]);
 
+    const prevUsersKey = React.useRef(usersKey);
+
     React.useEffect(() => {
-        setSelectedUsers(initialMembers);
-        setHasChanges(false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [usersKey]);
+        if (prevUsersKey.current !== usersKey) {
+            prevUsersKey.current = usersKey;
+            setSelectedUsers(initialMembers);
+            setHasChanges(false);
+        }
+    }, [usersKey, initialMembers]);
 
     const handleUserChange = (values) => {
         setSelectedUsers(values);
@@ -137,3 +141,4 @@ const GroupRow = ({ group, allUsers, onUpdateMembers, onDelete }) => {
 };
 
 export default GroupList;
+

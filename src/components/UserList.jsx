@@ -80,10 +80,15 @@ const UserRow = ({ user, allGroups, onUpdateGroups, onChangePassword, onDelete }
 
     const groupsKey = React.useMemo(() => [...originalGroups].sort().join(','), [originalGroups]);
 
+    const prevGroupsKey = React.useRef(groupsKey);
+
     React.useEffect(() => {
-        setSelectedGroups(originalGroups);
-        setHasChanges(false);
-    }, [groupsKey]);
+        if (prevGroupsKey.current !== groupsKey) {
+            prevGroupsKey.current = groupsKey;
+            setSelectedGroups(originalGroups);
+            setHasChanges(false);
+        }
+    }, [groupsKey, originalGroups]);
 
     const handleGroupChange = (values) => {
         const normalized = Array.isArray(values) ? values : [];
@@ -169,3 +174,4 @@ const UserRow = ({ user, allGroups, onUpdateGroups, onChangePassword, onDelete }
 };
 
 export default UserList;
+

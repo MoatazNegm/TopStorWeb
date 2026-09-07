@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AlertCircle, KeyRound, RefreshCw, X } from 'lucide-react';
 import { fetchUserList, fetchGroupList, addUser, deleteUser, updateUserGroups, changePassword } from './api/users';
 import { fetchPoolsInfo } from './api/pools';
@@ -12,6 +12,8 @@ const QUsers = () => {
     const [pools, setPools] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const firstLoadRef = useRef(true);
+    const pollTimer = useRef(null);
 
     const [passwordModal, setPasswordModal] = useState({
         isOpen: false,
@@ -32,14 +34,22 @@ const QUsers = () => {
             console.error('Failed to load users data', err);
             setError('Failed to sync with server');
         } finally {
-            setLoading(false);
+            if (firstLoadRef.current) {
+                firstLoadRef.current = false;
+                setLoading(false);
+            }
+            pollTimer.current = setTimeout(loadData, 5000);
         }
     }, []);
 
     useEffect(() => {
         loadData();
-        const interval = setInterval(loadData, 5000);
-        return () => clearInterval(interval);
+        return () => {
+            if (pollTimer.current) {
+                clearTimeout(pollTimer.current);
+                pollTimer.current = null;
+            }
+        };
     }, [loadData]);
 
     const handleAddUser = async (userData) => {
@@ -216,3 +226,4 @@ const QUsers = () => {
 };
 
 export default QUsers;
+

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
 import { fetchGroupList, fetchUserOptions, addGroup, deleteGroup, updateGroupUsers } from './api/groups';
 import Button from './components/Common/Button';
@@ -10,6 +10,8 @@ const QGroups = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const firstLoadRef = useRef(true);
+    const pollTimer = useRef(null);
 
     const loadData = useCallback(async () => {
         try {
@@ -25,14 +27,22 @@ const QGroups = () => {
             console.error("Failed to load groups data", err);
             setError("Failed to sync with server");
         } finally {
-            setLoading(false);
+            if (firstLoadRef.current) {
+                firstLoadRef.current = false;
+                setLoading(false);
+            }
+            pollTimer.current = setTimeout(loadData, 2000);
         }
     }, []);
 
     useEffect(() => {
         loadData();
-        const interval = setInterval(loadData, 2000); // Polling every 2s to match legacy
-        return () => clearInterval(interval);
+        return () => {
+            if (pollTimer.current) {
+                clearTimeout(pollTimer.current);
+                pollTimer.current = null;
+            }
+        };
     }, [loadData]);
 
     const handleAddGroup = async (groupData) => {
@@ -108,3 +118,4 @@ const QGroups = () => {
 };
 
 export default QGroups;
+

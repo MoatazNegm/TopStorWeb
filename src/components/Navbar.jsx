@@ -12,6 +12,19 @@ const Navbar = ({ sectionTitle }) => {
     const [passErrColor, setPassErrColor] = useState('text-gray-400');
     const [saveDisabled, setSaveDisabled] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [syncStatus, setSyncStatus] = useState('Getting Status...');
+
+    React.useEffect(() => {
+        const el = document.getElementById('syncStatus');
+        if (!el) return;
+        const observer = new MutationObserver(() => {
+            setSyncStatus(el.textContent || '');
+        });
+        observer.observe(el, { characterData: true, childList: true, subtree: true });
+        return () => observer.disconnect();
+    }, []);
+
+    const isInSync = !syncStatus.toLowerCase().includes('not in sync');
 
     const validatePasswords = (p, np) => {
         if (p === np && np.length >= 3) {
@@ -105,9 +118,9 @@ const Navbar = ({ sectionTitle }) => {
 
                 <div className="flex items-center gap-1.5 sm:gap-2">
                     <div className="hidden items-center gap-2 rounded-full border border-border bg-surface-muted px-3 py-1.5 sm:flex">
-                        <span className="h-2 w-2 flex-shrink-0 rounded-full bg-success-500"></span>
+                        <span className={`h-2 w-2 flex-shrink-0 rounded-full ${isInSync ? 'bg-success-500' : 'bg-danger-500'}`}></span>
                         <div id="syncStatus" className="text-xs font-medium leading-tight text-gray-600">
-                            Getting Status...
+                            {syncStatus}
                         </div>
                     </div>
 
@@ -248,3 +261,4 @@ const Navbar = ({ sectionTitle }) => {
 };
 
 export default Navbar;
+

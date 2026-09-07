@@ -13,6 +13,8 @@ const QNodes = () => {
     const [error, setError] = useState(null);
 
     const isMounted = useRef(true);
+    const firstLoad = useRef(true);
+    const pollTimer = useRef(null);
 
     const loadData = useCallback(async () => {
         if (!isMounted.current) return;
@@ -37,8 +39,11 @@ const QNodes = () => {
             }
         } finally {
             if (isMounted.current) {
-                setLoading(false);
-                setTimeout(loadData, 5000);
+                if (firstLoad.current) {
+                    firstLoad.current = false;
+                    setLoading(false);
+                }
+                pollTimer.current = setTimeout(loadData, 5000);
             }
         }
     }, []);
@@ -49,6 +54,10 @@ const QNodes = () => {
 
         return () => {
             isMounted.current = false;
+            if (pollTimer.current) {
+                clearTimeout(pollTimer.current);
+                pollTimer.current = null;
+            }
         };
     }, [loadData]);
 
@@ -139,3 +148,4 @@ const QNodes = () => {
 };
 
 export default QNodes;
+

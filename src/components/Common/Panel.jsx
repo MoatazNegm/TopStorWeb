@@ -22,9 +22,9 @@ const Panel = ({
   };
 
   return (
-    <section className={`overflow-hidden rounded-lg border border-border bg-surface shadow-sm ${className}`}>
+    <section className={`rounded-lg border border-border bg-surface shadow-sm ${className}`}>
       <div
-        className={`flex items-center justify-between gap-4 border-b border-border px-5 py-4 ${
+        className={`overflow-hidden flex items-center justify-between gap-4 border-b border-border px-5 py-4 ${
           collapsible ? 'cursor-pointer hover:bg-gray-50/60 transition-colors' : ''
         }`}
         onClick={handleToggle}
@@ -56,3 +56,4 @@ const Panel = ({
 };
 
 export default Panel;
+
