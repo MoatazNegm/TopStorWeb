@@ -27,15 +27,15 @@ const UserList = ({ users, groups, onUpdateGroups, onChangePassword, onDelete })
             }
         >
             <div className="overflow-x-auto">
-                <table className="min-w-[720px] w-full text-left">
+                <table className="min-w-[600px] w-full text-left">
                     <thead>
                         <tr className="border-b border-border bg-surface-muted">
-                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">User Identity</th>
-                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Storage Target</th>
-                            <th className="px-5 py-3 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Quota</th>
-                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Group Assignments</th>
-                            <th className="px-5 py-3 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Security</th>
-                            <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Actions</th>
+                            <th className="px-3 py-2.5 text-xs font-semibold uppercase tracking-wide text-gray-500">User Identity</th>
+                            <th className="px-3 py-2.5 text-xs font-semibold uppercase tracking-wide text-gray-500">Storage Target</th>
+                            <th className="px-3 py-2.5 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Quota</th>
+                            <th className="px-3 py-2.5 text-xs font-semibold uppercase tracking-wide text-gray-500">Group Assignments</th>
+                            <th className="px-3 py-2.5 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Security</th>
+                            <th className="px-3 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
@@ -78,6 +78,13 @@ const UserRow = ({ user, allGroups, onUpdateGroups, onChangePassword, onDelete }
     const [selectedGroups, setSelectedGroups] = React.useState(originalGroups);
     const [hasChanges, setHasChanges] = React.useState(false);
 
+    // Volsize comes from the API as e.g. "100G"; strip any unit suffix and show "<n>GB"
+    const quotaDisplay = React.useMemo(() => {
+        const raw = String(user.Volsize ?? user.size ?? '').trim();
+        const num = raw.replace(/[^\d.]/g, '');
+        return `${num || '0'}GB`;
+    }, [user.Volsize, user.size]);
+
     const groupsKey = React.useMemo(() => [...originalGroups].sort().join(','), [originalGroups]);
 
     const prevGroupsKey = React.useRef(groupsKey);
@@ -108,7 +115,7 @@ const UserRow = ({ user, allGroups, onUpdateGroups, onChangePassword, onDelete }
 
     return (
         <tr className="hover:bg-gray-50/60 transition-colors">
-            <td className="px-5 py-4">
+            <td className="px-3 py-3">
                 <div className="flex items-center gap-3">
                     <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-50 text-sm font-semibold text-brand-600">
                         {user.name?.[0]?.toUpperCase() || 'U'}
@@ -116,18 +123,18 @@ const UserRow = ({ user, allGroups, onUpdateGroups, onChangePassword, onDelete }
                     <span className="font-medium text-gray-800">{user.name}</span>
                 </div>
             </td>
-            <td className="px-5 py-4">
+            <td className="px-3 py-3">
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                     <span className="h-2 w-2 rounded-full bg-gray-300"></span>
                     <span>{user.Volpool || user.pool || 'N/A'}</span>
                 </div>
             </td>
-            <td className="px-5 py-4 text-center">
+            <td className="px-3 py-3 text-center">
                 <span className="inline-flex rounded-sm border border-border bg-surface-muted px-2.5 py-1 text-xs font-medium text-gray-700">
-                    {user.Volsize || user.size || '0'} GB
+                    {quotaDisplay}
                 </span>
             </td>
-            <td className="px-5 py-4 min-w-[300px]">
+            <td className="px-3 py-3 min-w-[180px]">
                 <div className="flex items-center gap-2">
                     <div className="flex-1">
                         <Dropdown
@@ -150,7 +157,7 @@ const UserRow = ({ user, allGroups, onUpdateGroups, onChangePassword, onDelete }
                     )}
                 </div>
             </td>
-            <td className="px-5 py-4 text-center">
+            <td className="px-3 py-3 text-center">
                 <button
                     type="button"
                     onClick={() => onChangePassword(user.name)}
@@ -160,7 +167,7 @@ const UserRow = ({ user, allGroups, onUpdateGroups, onChangePassword, onDelete }
                     Reset
                 </button>
             </td>
-            <td className="px-5 py-4 text-right">
+            <td className="px-3 py-3 text-right">
                 <button
                     type="button"
                     onClick={() => onDelete(user.name)}
