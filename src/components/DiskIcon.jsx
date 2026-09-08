@@ -8,12 +8,14 @@ const DiskIcon = ({
     onClick,
     onContextMenu,
     showActions = false,
-    onAction
+    onAction,
+    displaySize = 'default'
 }) => {
     const { status, size, name, changeop } = data;
     const shortDisk = diskId.slice(-5);
     const isOnline = status.includes('ONLINE') || status.includes('free') || status.includes('cache') || (status.includes('NA') && data.raid?.includes('stripe'));
     const silvering = data.silvering !== 'no';
+    const isLarge = displaySize === 'large';
 
     const getDiskImage = () => {
         if (isOnline) return 'disk-image.png';
@@ -29,11 +31,11 @@ const DiskIcon = ({
 
     return (
         <div
-            className={`group relative flex cursor-pointer flex-col items-center rounded-md border p-2 transition-colors ${isCache ? 'border-warning-200 bg-warning-50' :
+            className={`group relative flex cursor-pointer flex-col items-center rounded-md border transition-colors ${isLarge ? 'p-3' : 'p-2'} ${isCache ? 'border-warning-200 bg-warning-50' :
                 isSelected ? 'border-brand-200 bg-brand-50' :
                     'border-transparent hover:bg-gray-50/60'
                 }`}
-            onClick={() => onClick(diskId)}
+            onClick={onClick ? () => onClick(diskId) : undefined}
             onContextMenu={handleContextMenu}
             title={`${diskId}\nStatus: ${status}\nOP: ${changeop}`}
         >
@@ -47,7 +49,7 @@ const DiskIcon = ({
                 <img
                     src={`img/${getDiskImage()}`}
                     alt="disk"
-                    className={`w-10 h-10 object-contain transition-all ${isSelected || isCache ? 'scale-110' : ''
+                    className={`${isLarge ? 'h-20 w-16' : 'h-10 w-10'} object-contain transition-all ${isSelected || isCache ? 'scale-110' : ''
                         } ${silvering ? 'animate-pulse' : ''}`}
                 />
             </div>
@@ -80,3 +82,4 @@ const DiskIcon = ({
 };
 
 export default DiskIcon;
+
