@@ -14,7 +14,6 @@ const QDisks = () => {
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [selectedDisks, setSelectedDisks] = useState([]);
     const [cacheDisks, setCacheDisks] = useState([]);
     const [creatingRedundancy, setCreatingRedundancy] = useState(null);
     const [creatingSize, setCreatingSize] = useState(null);
@@ -40,43 +39,25 @@ const QDisks = () => {
         return () => clearInterval(interval);
     }, [loadData]);
 
-    const handleDiskClick = (diskId) => {
-        if (selectedDisks.includes(diskId)) {
-            setSelectedDisks(selectedDisks.filter(id => id !== diskId));
-            setCacheDisks(cacheDisks.filter(id => id !== diskId));
-        } else {
-            setSelectedDisks([...selectedDisks, diskId]);
-        }
-        setCreatingRedundancy(null);
-        setCreatingSize(null);
-    };
-
     const handleDiskRightClick = (diskId) => {
-        if (cacheDisks.includes(diskId)) {
-            setCacheDisks(cacheDisks.filter(id => id !== diskId));
-        } else {
-            if (!selectedDisks.includes(diskId)) {
-                setSelectedDisks([...selectedDisks, diskId]);
-            }
-            setCacheDisks([...cacheDisks, diskId]);
-        }
-        setCreatingRedundancy(null);
-        setCreatingSize(null);
+        setCacheDisks(current =>
+            current.includes(diskId)
+                ? current.filter(id => id !== diskId)
+                : [...current, diskId]
+        );
     };
 
     const handleCreatePool = async () => {
         if (!creatingRedundancy || !creatingSize) return;
         try {
-            const dataDisks = selectedDisks.filter(id => !cacheDisks.includes(id));
             await createPool({
                 redundancy: creatingRedundancy,
                 useable: creatingSize,
-                disks: dataDisks,
+                disks: [],
                 cache: cacheDisks,
                 cache_bool: includeCache,
                 user: 'mezo'
             });
-            setSelectedDisks([]);
             setCacheDisks([]);
             setCreatingRedundancy(null);
             setCreatingSize(null);
@@ -130,7 +111,6 @@ const QDisks = () => {
         if (cacheDisks.length === 0) return;
         try {
             await saveCacheSpares({ cache_disks: cacheDisks, user: 'mezo' });
-            setSelectedDisks([]);
             setCacheDisks([]);
             loadData();
         } catch (err) {
@@ -153,6 +133,24 @@ const QDisks = () => {
         setSelectedCacheSpares(prev =>
             prev.includes(diskId) ? prev.filter(id => id !== diskId) : [...prev, diskId]
         );
+    };
+
+    const availableDiskIds = dgsData.raids.free?.disks || [];
+    const availableDisksByNode = availableDiskIds.reduce((groups, diskId) => {
+        const node = dgsData.disks[diskId]?.host || 'Unknown node';
+        if (!groups[node]) groups[node] = [];
+        groups[node].push(diskId);
+        return groups;
+    }, {});
+
+    const getOptionDetails = (type, option) => {
+        if (type !== 'single') return option;
+
+        const diskIds = Array.isArray(option) ? option : [];
+        return {
+            diskcount: 1,
+            hosts: [...new Set(diskIds.map(diskId => dgsData.disks[diskId]?.host).filter(Boolean))]
+        };
     };
 
     return (
@@ -191,56 +189,64 @@ const QDisks = () => {
                                     <h3 className="text-base font-semibold text-gray-800">Create New Pool</h3>
                                 </div>
 
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                <div className="space-y-8">
                                     <div>
-                                        <label className="ml-1 mb-3 block text-xs font-semibold uppercase tracking-wide text-gray-500">Select Physical Resources</label>
-                                        <div className="flex h-[320px] flex-col justify-between rounded-lg border border-border bg-surface-muted p-6">
-                                            <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar mb-4">
-                                                <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-5 gap-4">
-                                                    {dgsData.raids.free?.disks.map(diskId => (
-                                                        <DiskIcon
-                                                            key={diskId}
-                                                            diskId={diskId}
-                                                            data={dgsData.disks[diskId]}
-                                                            isSelected={selectedDisks.includes(diskId)}
-                                                            isCache={cacheDisks.includes(diskId)}
-                                                            onClick={handleDiskClick}
-                                                            onContextMenu={handleDiskRightClick}
-                                                        />
-                                                    ))}
-                                                    {(!dgsData.raids.free?.disks || dgsData.raids.free.disks.length === 0) && (
-                                                        <div className="col-span-full py-12 text-center">
-                                                            <HardDrive size={40} className="mx-auto mb-4 text-gray-300" />
-                                                            <p className="text-sm font-medium text-gray-500">No available disks found</p>
+                                        <label className="ml-1 mb-3 block text-xs font-semibold uppercase tracking-wide text-gray-500">Available Disks by Node</label>
+                                        <div className="rounded-lg border border-border bg-surface-muted p-6">
+                                            <div className="max-h-[360px] space-y-5 overflow-y-auto pr-2 custom-scrollbar">
+                                                {Object.entries(availableDisksByNode).sort(([a], [b]) => a.localeCompare(b)).map(([node, diskIds]) => (
+                                                    <section key={node} className="rounded-lg border border-border bg-surface p-4">
+                                                        <div className="mb-4 flex items-center justify-between">
+                                                            <h4 className="text-sm font-semibold text-gray-800">{node}</h4>
+                                                            <span className="rounded-full bg-brand-50 px-2.5 py-1 text-xs font-semibold text-brand-700">
+                                                                {diskIds.length} {diskIds.length === 1 ? 'disk' : 'disks'}
+                                                            </span>
                                                         </div>
-                                                    )}
-                                                </div>
+                                                        <div className="grid grid-cols-3 gap-4 sm:grid-cols-5 lg:grid-cols-8 xl:grid-cols-10">
+                                                            {diskIds.map(diskId => (
+                                                                <DiskIcon
+                                                                    key={diskId}
+                                                                    diskId={diskId}
+                                                                    data={dgsData.disks[diskId]}
+                                                                    isCache={cacheDisks.includes(diskId)}
+                                                                    onContextMenu={handleDiskRightClick}
+                                                                />
+                                                            ))}
+                                                        </div>
+                                                    </section>
+                                                ))}
+                                                {availableDiskIds.length === 0 && (
+                                                    <div className="py-12 text-center">
+                                                        <HardDrive size={40} className="mx-auto mb-4 text-gray-300" />
+                                                        <p className="text-sm font-medium text-gray-500">No available disks found</p>
+                                                    </div>
+                                                )}
                                             </div>
-                                            <div className="mt-6 flex items-center justify-between rounded-md border border-border bg-surface px-5 py-3.5">
+                                            <div className="mt-5 flex flex-col gap-4 rounded-md border border-border bg-surface px-5 py-3.5 sm:flex-row sm:items-center sm:justify-between">
                                                 <div className="flex gap-6">
                                                     <div>
-                                                        <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">Data</p>
-                                                        <p className="text-sm font-semibold text-gray-800">{selectedDisks.length - cacheDisks.length}</p>
+                                                        <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">Available</p>
+                                                        <p className="text-sm font-semibold text-gray-800">{availableDiskIds.length}</p>
                                                     </div>
                                                     <div>
-                                                        <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">Cache</p>
+                                                        <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">Marked Cache</p>
                                                         <p className="text-sm font-semibold text-warning-600">{cacheDisks.length}</p>
                                                     </div>
                                                 </div>
-                                                <div className="flex flex-col items-end gap-2">
+                                                <div className="flex items-center gap-4">
                                                     <div className="flex items-center gap-2">
-                                                        <input 
-                                                            type="checkbox" 
-                                                            id="includeCache" 
-                                                            checked={includeCache} 
+                                                        <input
+                                                            type="checkbox"
+                                                            id="includeCache"
+                                                            checked={includeCache}
                                                             onChange={(e) => setIncludeCache(e.target.checked)}
                                                             className="h-3 w-3 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
                                                         />
-                                                        <label htmlFor="includeCache" className="cursor-pointer text-xs font-medium text-gray-600">Include cache</label>
+                                                        <label htmlFor="includeCache" className="cursor-pointer text-xs font-medium text-gray-600">Include marked cache in pool</label>
                                                     </div>
                                                     <Button
                                                         onClick={handleSaveCache}
-                                                        disabled={cacheDisks.length === 0 || selectedDisks.length !== cacheDisks.length}
+                                                        disabled={cacheDisks.length === 0}
                                                         variant="secondary"
                                                         className="h-9 border-warning-100 text-warning-700 hover:bg-warning-50 hover:text-warning-700"
                                                     >
@@ -250,94 +256,93 @@ const QDisks = () => {
                                             </div>
                                         </div>
                                         <p className="mt-3 text-center text-xs text-gray-500">
-                                            <Info size={12} className="mr-1 inline-block" /> Hint: Right-click a selected disk to mark as Cache
+                                            <Info size={12} className="mr-1 inline-block" /> Right-click an available disk to mark or unmark it as cache
                                         </p>
                                     </div>
 
                                     <div>
-                                        <label className="ml-1 mb-3 block text-xs font-semibold uppercase tracking-wide text-gray-500">Redundancy Configuration</label>
-                                        <div className="flex h-[320px] flex-col overflow-hidden rounded-lg border border-border bg-surface">
+                                        <label className="ml-1 mb-3 block text-xs font-semibold uppercase tracking-wide text-gray-500">Available Pool Configurations</label>
+                                        <div className="flex max-h-[420px] min-h-[240px] flex-col overflow-hidden rounded-lg border border-border bg-surface">
                                             <div className="overflow-y-auto flex-1 custom-scrollbar">
                                                 <table className="w-full text-left border-collapse">
                                                     <thead className="sticky top-0 z-10 bg-surface-muted">
                                                         <tr>
                                                             <th className="border-b border-border px-5 py-3 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Select</th>
-                                                            <th className="border-b border-border px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Efficiency</th>
+                                                            <th className="border-b border-border px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Configuration</th>
+                                                            <th className="border-b border-border px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Disks</th>
+                                                            <th className="border-b border-border px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Eligible Nodes</th>
                                                             <th className="border-b border-border px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Usable (Est)</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody className="divide-y divide-border">
-                                                        {(() => {
-                                                            const dataDiskCount = selectedDisks.length - cacheDisks.length;
-                                                            return Object.entries(dgsData.newraid).map(([type, options]) => {
-                                                                // Filter options within this type to only those matching the data disk count
-                                                                const filteredOptions = Object.entries(options).filter(([_, details]) =>
-                                                                    details.diskcount === dataDiskCount
-                                                                );
+                                                        {Object.entries(dgsData.newraid).map(([type, options]) => {
+                                                            const optionEntries = Object.entries(options);
+                                                            const visibleOptions = type === 'volset'
+                                                                ? optionEntries.filter(([, option]) => getOptionDetails(type, option).diskcount !== 1)
+                                                                : optionEntries;
+                                                            if (visibleOptions.length === 0) return null;
 
-                                                                if (filteredOptions.length === 0) return null;
+                                                            const selectedOption = creatingRedundancy === type
+                                                                ? visibleOptions.find(([size]) => size === creatingSize) || visibleOptions[0]
+                                                                : visibleOptions[0];
+                                                            const details = getOptionDetails(type, selectedOption[1]);
+                                                            const eligibleNodes = [...new Set([
+                                                                ...(details.hosts || []),
+                                                                ...(details.othershosts || [])
+                                                            ])];
 
-                                                                return (
-                                                                     <tr
-                                                                         key={type}
-                                                                         onClick={() => handleRedundancySelect(type, filteredOptions[0][0])}
-                                                                         className={`cursor-pointer transition-colors group ${creatingRedundancy === type ? 'bg-brand-50/60' : 'hover:bg-brand-50/40'}`}
-                                                                     >
-                                                                         <td className="px-5 py-3.5">
-                                                                             <input
-                                                                                 type="radio"
-                                                                                 name="newraid"
-                                                                                 checked={creatingRedundancy === type}
-                                                                                 readOnly
-                                                                                 className="h-4 w-4 cursor-pointer border-gray-300 text-brand-600 transition-all pointer-events-none focus:ring-0"
-                                                                             />
-                                                                         </td>
-                                                                         <td className="px-5 py-3.5">
-                                                                             <div className="flex flex-col">
-                                                                                 <span className="text-sm font-semibold text-gray-800">{type.toUpperCase()}</span>
-                                                                                 <span className="text-xs text-gray-500">
-                                                                                     {type === 'single' && 'No redundancy. Data is stored on a single disk.'}
-                                                                                     {type === 'mirror' && 'High availability. Data is duplicated across disks.'}
-                                                                                     {type === 'raid5' && 'Single parity. Performance and safety balance.'}
-                                                                                     {type === 'raid6' && 'Dual parity. Protection against two failures.'}
-                                                                                     {type === 'stripe' && 'Performance only. Multi-disk striping, zero parity.'}
-                                                                                 </span>
-                                                                                 {(type === 'stripe' || type === 'single') && (
-                                                                                     <span className="mt-0.5 text-xs font-semibold uppercase text-warning-700">
-                                                                                         ⚠️ No Redundancy
-                                                                                     </span>
-                                                                                 )}
-                                                                             </div>
-                                                                         </td>
-                                                                         <td className="px-5 py-3.5">
-                                                                             {filteredOptions.length > 1 && creatingRedundancy === type ? (
-                                                                                 <select
-                                                                                     value={creatingSize}
-                                                                                     onChange={(e) => setCreatingSize(e.target.value)}
-                                                                                     onClick={(e) => e.stopPropagation()}
-                                                                                     className="rounded-md border border-border bg-surface px-3 py-1.5 text-xs font-medium text-brand-600 outline-none focus:ring-4 focus:ring-brand-100"
-                                                                                 >
-                                                                                     {filteredOptions.map(([size]) => (
-                                                                                         <option key={size} value={size}>{parseFloat(size).toFixed(2)} GB</option>
-                                                                                     ))}
-                                                                                 </select>
-                                                                             ) : (
-                                                                                 <span className={`rounded-sm px-2.5 py-1 text-xs font-medium transition-colors ${creatingRedundancy === type ? 'bg-surface text-brand-700' : 'bg-brand-50 text-brand-600'}`}>
-                                                                                     {parseFloat(filteredOptions[0][0]).toFixed(2)} GB
-                                                                                 </span>
-                                                                             )}
-                                                                         </td>
-                                                                     </tr>
-                                                                 );
-                                                            });
-                                                        })()}
+                                                            return (
+                                                                <tr
+                                                                    key={type}
+                                                                    onClick={() => handleRedundancySelect(type, visibleOptions[0][0])}
+                                                                    className={`cursor-pointer transition-colors group ${creatingRedundancy === type ? 'bg-brand-50/60' : 'hover:bg-brand-50/40'}`}
+                                                                >
+                                                                    <td className="px-5 py-3.5 text-center">
+                                                                        <input
+                                                                            type="radio"
+                                                                            name="newraid"
+                                                                            checked={creatingRedundancy === type}
+                                                                            readOnly
+                                                                            className="h-4 w-4 cursor-pointer border-gray-300 text-brand-600 transition-all pointer-events-none focus:ring-0"
+                                                                        />
+                                                                    </td>
+                                                                    <td className="px-5 py-3.5">
+                                                                        <div className="flex flex-col">
+                                                                            <span className="text-sm font-semibold text-gray-800">{type.toUpperCase()}</span>
+                                                                            {(type === 'volset' || type === 'single') && (
+                                                                                <span className="mt-0.5 text-xs font-semibold uppercase text-warning-700">No redundancy</span>
+                                                                            )}
+                                                                        </div>
+                                                                    </td>
+                                                                    <td className="px-5 py-3.5 text-sm font-medium text-gray-700">{details.diskcount || '-'}</td>
+                                                                    <td className="px-5 py-3.5 text-xs font-medium text-gray-500">
+                                                                        {eligibleNodes.length > 0 ? eligibleNodes.join(', ') : 'Any available node'}
+                                                                    </td>
+                                                                    <td className="px-5 py-3.5">
+                                                                        <select
+                                                                            value={creatingRedundancy === type ? creatingSize : visibleOptions[0][0]}
+                                                                            onChange={(e) => {
+                                                                                setCreatingRedundancy(type);
+                                                                                setCreatingSize(e.target.value);
+                                                                            }}
+                                                                            onClick={(e) => e.stopPropagation()}
+                                                                            className="rounded-md border border-border bg-surface px-3 py-1.5 text-xs font-medium text-brand-600 outline-none focus:ring-4 focus:ring-brand-100"
+                                                                        >
+                                                                            {visibleOptions.map(([size]) => (
+                                                                                <option key={size} value={size}>{parseFloat(size).toFixed(2)} GB</option>
+                                                                            ))}
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+                                                            );
+                                                        })}
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            <div className="mt-10 flex justify-end">
+                                            <div className="flex justify-end border-t border-border bg-surface-muted p-4">
                                                 <Button
                                                     onClick={handleCreatePool}
-                                                    disabled={!creatingRedundancy || (selectedDisks.length - cacheDisks.length === 0)}
+                                                    disabled={!creatingRedundancy || !creatingSize}
                                                     variant="primary"
                                                     className="px-6"
                                                 >
@@ -401,3 +406,4 @@ const QDisks = () => {
 };
 
 export default QDisks;
+

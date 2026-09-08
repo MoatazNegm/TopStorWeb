@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Database, Plus } from 'lucide-react';
+import { ChevronDown, Database, Plus } from 'lucide-react';
 import DiskIcon from './DiskIcon';
 import Button from './Common/Button';
 
@@ -17,6 +17,7 @@ const PoolCard = ({
     const [selectedRedundancy, setSelectedRedundancy] = useState(null);
     const [selectedSize, setSelectedSize] = useState(null);
     const [selectedDiskId, setSelectedDiskId] = useState(null);
+    const [isExpansionOpen, setIsExpansionOpen] = useState(false);
 
     const { available, used, dedup, raids = [], volumes = [] } = data;
     const totalSize = (parseFloat(available) + parseFloat(used)).toFixed(2);
@@ -91,7 +92,7 @@ const PoolCard = ({
             </div>
 
             {/* Raid Groups Grid */}
-            <div className="mb-5 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="mb-5 grid grid-cols-1 gap-4 xl:grid-cols-2">
                 {raids.map(raidId => {
                     const raidDisks = allRaids[raidId]?.disks || [];
                     // Filter out dm-* virtual placeholder devices — they are not real disks to render
@@ -110,7 +111,7 @@ const PoolCard = ({
                                 <span className={`text-xs font-semibold uppercase tracking-wide ${raidHasMissing ? 'text-danger-600' : 'text-gray-500'}`}>{raidId.split('_')[0]}</span>
                                 <div className={`h-2.5 w-2.5 rounded-full ${raidHasMissing ? 'bg-danger-500' : 'bg-success-500'}`}></div>
                             </div>
-                            <div className="grid grid-cols-4 sm:grid-cols-5 gap-3">
+                            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-4 2xl:grid-cols-6">
                                 {realDisks.map(diskId => (
                                     <DiskIcon
                                         key={diskId}
@@ -119,12 +120,13 @@ const PoolCard = ({
                                         isSelected={selectedDiskId === diskId}
                                         onClick={() => setSelectedDiskId(prev => prev === diskId ? null : diskId)}
                                         showActions={true}
+                                        displaySize="large"
                                         onAction={(action) => onDiskAction(diskId, action)}
                                     />
                                 ))}
                                 {Array.from({ length: missingCount }).map((_, i) => (
-                                    <div key={`missing-${i}`} className="flex flex-col items-center rounded-md border border-danger-200 bg-danger-50 p-2">
-                                        <img src="img/invaliddisk.png" alt="missing disk" className="w-10 h-10 object-contain opacity-50" />
+                                    <div key={`missing-${i}`} className="flex flex-col items-center rounded-md border border-danger-200 bg-danger-50 p-3">
+                                        <img src="img/invaliddisk.png" alt="missing disk" className="h-20 w-16 object-contain opacity-50" />
                                         <span className="mt-1 text-xs font-semibold uppercase tracking-wide text-danger-600">missing</span>
                                         <span className="text-xs font-semibold leading-none text-danger-400">-</span>
                                     </div>
@@ -136,31 +138,47 @@ const PoolCard = ({
             </div>
 
             {/* Capacity Management Section */}
-            <div className="rounded-lg border border-border bg-surface-muted p-5">
-                <div className="flex items-center gap-3 mb-4">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-surface text-brand-600 shadow-xs">
-                        <Plus size={12} />
+            <div className="overflow-hidden rounded-lg border border-border bg-surface-muted">
+                <button
+                    type="button"
+                    onClick={() => setIsExpansionOpen(current => !current)}
+                    aria-expanded={isExpansionOpen}
+                    className="flex w-full items-center justify-between gap-3 p-5 text-left transition-colors hover:bg-gray-50/60"
+                >
+                    <div className="flex items-center gap-3">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-surface text-brand-600 shadow-xs">
+                            <Plus size={12} />
+                        </div>
+                        <div>
+                            <h4 className="text-sm font-semibold text-gray-800">Expansion Options</h4>
+                            <p className="mt-0.5 text-xs text-gray-500">Add a compatible disk group to this pool</p>
+                        </div>
                     </div>
-                    <h4 className="text-sm font-semibold text-gray-800">Expansion Options</h4>
-                </div>
+                    <ChevronDown
+                        size={18}
+                        className={`text-gray-400 transition-transform ${isExpansionOpen ? 'rotate-180' : ''}`}
+                    />
+                </button>
 
-                <div className="overflow-x-auto">
-                    <table className="w-full">
-                        <thead>
-                            <tr className="border-b border-border text-left">
-                                <th className="px-4 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Select</th>
-                                <th className="px-4 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Configuration</th>
-                                <th className="px-4 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">New Total Size</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-border">
-                            {Object.entries(newRaidOptions).map(([type, options]) => {
+                {isExpansionOpen && (
+                    <div className="border-t border-border p-5">
+                        <div className="overflow-x-auto">
+                            <table className="w-full">
+                                <thead>
+                                    <tr className="border-b border-border text-left">
+                                        <th className="px-4 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Select</th>
+                                        <th className="px-4 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Configuration</th>
+                                        <th className="px-4 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">New Total Size</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-border">
+                                    {Object.entries(newRaidOptions).map(([type, options]) => {
                                 if (Object.keys(options).length === 0) return null;
                                 
                                 // Legacy Visibility Logic:
                                 // If it's a RAID pool, hide 'volset' (stripe).
                                 // If it's NOT a RAID pool (e.g. stripe), hide RAID options.
-                                if (isRaid && type === 'volset') return null;
+                                if (isRaid && (type === 'volset' || type === 'single')) return null;
                                 if (!isRaid && type !== 'volset') return null;
 
                                 const sizes = Object.keys(options);
@@ -209,21 +227,23 @@ const PoolCard = ({
                                         </td>
                                     </tr>
                                 );
-                            })}
-                        </tbody>
-                    </table>
-                </div>
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
 
-                <div className="flex justify-end mt-8">
-                    <Button
-                        onClick={handleAdd}
-                        disabled={!selectedRedundancy || !selectedSize}
-                        variant="primary"
-                        className="px-6"
-                    >
-                        Add to Pool
-                    </Button>
-                </div>
+                        <div className="flex justify-end mt-8">
+                            <Button
+                                onClick={handleAdd}
+                                disabled={!selectedRedundancy || !selectedSize}
+                                variant="primary"
+                                className="px-6"
+                            >
+                                Add to Pool
+                            </Button>
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Deletion Safety Flow — matches legacy: block deletion when pool has volumes */}
@@ -275,3 +295,4 @@ const PoolCard = ({
 };
 
 export default PoolCard;
+
