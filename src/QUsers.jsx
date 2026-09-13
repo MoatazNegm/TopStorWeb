@@ -6,6 +6,10 @@ import Button from './components/Common/Button';
 import AddUserForm from './components/AddUserForm';
 import UserList from './components/UserList';
 
+// Optimistic "creating" entries that never get resolved by the server
+// (e.g. duplicate name) are dropped after this delay.
+const PENDING_TTL_MS = 60_000;
+
 const QUsers = () => {
     const [users, setUsers] = useState([]);
     const [groups, setGroups] = useState([]);
@@ -14,6 +18,10 @@ const QUsers = () => {
     const [error, setError] = useState(null);
     const firstLoadRef = useRef(true);
     const pollTimer = useRef(null);
+    // Names that have been observed in the real list at least once. Once a name
+    // is here, the optimistic "creating" entry for that name can never come back,
+    // even if a stale poll response temporarily drops the real entry.
+    const seenUserNamesRef = useRef(new Set());
 
     const [passwordModal, setPasswordModal] = useState({
         isOpen: false,
@@ -26,7 +34,20 @@ const QUsers = () => {
         try {
             const [userRes, groupRes, poolRes] = await Promise.all([fetchUserList(), fetchGroupList(), fetchPoolsInfo()]);
 
-            if (userRes.data?.allusers) setUsers(userRes.data.allusers);
+            if (userRes.data?.allusers) {
+                const realUsers = userRes.data.allusers;
+                // Mark every name currently visible in the real list as
+                // "resolved", so a stale response from a parallel poll chain
+                // can never resurrect an already-resolved pending entry.
+                realUsers.forEach((u) => seenUserNamesRef.current.add(u.name));
+
+                setUsers((prev) => {
+                    const stillPending = prev.filter(
+                        (u) => u._isPending && !seenUserNamesRef.current.has(u.name)
+                    );
+                    return [...stillPending, ...realUsers];
+                });
+            }
             if (groupRes.data?.results) setGroups(groupRes.data.results);
             if (poolRes.data?.results) setPools(poolRes.data.results);
 
@@ -38,6 +59,10 @@ const QUsers = () => {
                 firstLoadRef.current = false;
                 setLoading(false);
             }
+            // Cancel any existing timer so only one polling chain stays alive.
+            // Without this, handleAddUser's await loadData() creates a second
+            // concurrent chain whose out-of-order responses can flicker the UI.
+            if (pollTimer.current) clearTimeout(pollTimer.current);
             pollTimer.current = setTimeout(loadData, 5000);
         }
     }, []);
@@ -52,12 +77,58 @@ const QUsers = () => {
         };
     }, [loadData]);
 
+    // Periodically prune pending entries that the backend never picked up.
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const now = Date.now();
+            setUsers((prev) => {
+                const filtered = prev.filter(
+                    (u) =>
+                        !u._isPending ||
+                        !u._pendingSince ||
+                        now - u._pendingSince <= PENDING_TTL_MS
+                );
+                // Return same reference when nothing changed to avoid re-renders.
+                return filtered.length === prev.length ? prev : filtered;
+            });
+        }, 5000);
+        return () => clearInterval(interval);
+    }, []);
+
     const handleAddUser = async (userData) => {
+        const tempId = `pending-user-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+        const groupIds = (userData.groups || '')
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean);
+
+        const pendingUser = {
+            id: tempId,
+            name: userData.name,
+            Volpool: userData.Volpool,
+            pool: userData.Volpool,
+            Volsize: userData.Volsize,
+            size: userData.Volsize,
+            groups: groupIds,
+            status: 'creating',
+            _isPending: true,
+            _pendingSince: Date.now(),
+        };
+
+        // Show the row immediately so the user has feedback before the
+        // backend's async postchange / etcd write completes.
+        setUsers((prev) => [pendingUser, ...prev]);
+
         try {
             await addUser(userData);
+            // Kick an immediate refresh so the real entry shows up faster
+            // than the next 5 s poll tick.
             await loadData();
         } catch (err) {
             console.error('Add user failed', err);
+            // Allow a retry with the same name after a transient failure
+            seenUserNamesRef.current.delete(userData.name);
+            setUsers((prev) => prev.filter((u) => u.id !== tempId));
         }
     };
 
@@ -65,6 +136,8 @@ const QUsers = () => {
         if (!window.confirm(`Are you sure you want to delete user ${name}?`)) return;
         try {
             await deleteUser(name);
+            // Clear the resolved flag so the same name can be re-created
+            seenUserNamesRef.current.delete(name);
             await loadData();
         } catch (err) {
             console.error('Delete user failed', err);

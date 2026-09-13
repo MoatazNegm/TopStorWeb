@@ -14,3 +14,14 @@ dist_react/
 *.tar
 *.tar.gz
 *.zip
+
+# Editor / IDE swap & backup
+*.swp
+*.swo
+*.bak
+*.bak.*
+*.tmp
+*.orig
+*.rej
+.idea/
+.vscode/

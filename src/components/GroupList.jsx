@@ -1,5 +1,5 @@
 import React from 'react';
-import { Check, Trash2, Users, UserX } from 'lucide-react';
+import { Check, Loader2, Trash2, Users, UserX } from 'lucide-react';
 import Dropdown from './Common/Dropdown';
 import Button from './Common/Button';
 import Panel from './Common/Panel';
@@ -14,18 +14,19 @@ const GroupList = ({ groups, users, onUpdateMembers, onDelete }) => {
             footer={<p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Directory Services</p>}
         >
             <div className="overflow-x-auto">
-                <table className="min-w-[760px] w-full text-left">
+                <table className="min-w-[820px] w-full text-left">
                     <thead className="bg-surface-muted">
                         <tr className="border-b border-border">
                             <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Group Name</th>
                             <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Members</th>
+                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Status</th>
                             <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
                         {groups.map((group) => (
                             <GroupRow
-                                key={group.name}
+                                key={group.id ?? group.name}
                                 group={group}
                                 allUsers={users}
                                 onUpdateMembers={onUpdateMembers}
@@ -34,7 +35,7 @@ const GroupList = ({ groups, users, onUpdateMembers, onDelete }) => {
                         ))}
                         {groups.length === 0 && (
                             <tr>
-                                <td colSpan="3" className="py-12 text-center text-gray-500">
+                                <td colSpan="4" className="py-12 text-center text-gray-500">
                                     <div className="flex flex-col items-center gap-3">
                                         <span className="flex h-12 w-12 items-center justify-center rounded-full bg-surface-muted text-gray-400">
                                             <UserX size={20} />
@@ -55,6 +56,23 @@ const GroupList = ({ groups, users, onUpdateMembers, onDelete }) => {
                 </div>
             </div>
         </Panel>
+    );
+};
+
+const StatusBadge = ({ status }) => {
+    if (status === 'creating') {
+        return (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-warning-100 bg-warning-50 px-2.5 py-1 text-xs font-medium text-warning-700">
+                <Loader2 size={12} className="animate-spin" />
+                Creating
+            </span>
+        );
+    }
+    return (
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-success-100 bg-success-50 px-2.5 py-1 text-xs font-medium text-success-700">
+            <span className="h-1.5 w-1.5 rounded-full bg-success-500" />
+            Active
+        </span>
     );
 };
 
@@ -92,13 +110,20 @@ const GroupRow = ({ group, allUsers, onUpdateMembers, onDelete }) => {
     };
 
     const isEveryoneGroup = group.name === 'Everyone';
+    const isCreating = group.status === 'creating';
     const initial = group.name?.charAt(0)?.toUpperCase() || 'G';
 
     return (
-        <tr className="transition-colors hover:bg-gray-50/60">
+        <tr className={`transition-colors hover:bg-gray-50/60 ${isCreating ? 'bg-warning-50/40' : ''}`}>
             <td className="px-5 py-4">
                 <div className="flex items-center gap-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-surface-muted text-xs font-semibold text-brand-600">
+                    <div
+                        className={`flex h-8 w-8 items-center justify-center rounded-full border text-xs font-semibold ${
+                            isCreating
+                                ? 'border-warning-100 bg-warning-50 text-warning-700'
+                                : 'border-border bg-surface-muted text-brand-600'
+                        }`}
+                    >
                         {initial}
                     </div>
                     <span className="text-sm font-semibold text-gray-800">{group.name}</span>
@@ -112,26 +137,29 @@ const GroupRow = ({ group, allUsers, onUpdateMembers, onDelete }) => {
                             options={allUsers.map(user => ({ value: String(user.id), label: user.text }))}
                             value={selectedUsers}
                             onChange={handleUserChange}
-                            disabled={isEveryoneGroup}
+                            disabled={isEveryoneGroup || isCreating}
                             placeholder="Select users"
                         />
                     </div>
-                    {hasChanges && (
+                    {hasChanges && !isCreating && (
                         <Button onClick={handleUpdate} size="sm" icon={<Check size={14} />}>
                             Apply
                         </Button>
                     )}
                 </div>
             </td>
+            <td className="px-5 py-4">
+                <StatusBadge status={group.status} />
+            </td>
             <td className="px-5 py-4 text-right">
                 <button
                     onClick={() => onDelete(group.name)}
                     className={`inline-flex h-9 w-9 items-center justify-center rounded-md border transition-colors ${
-                        isEveryoneGroup
+                        isEveryoneGroup || isCreating
                             ? 'cursor-not-allowed border-border bg-gray-100 text-gray-300'
                             : 'border-border bg-surface text-gray-500 hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600'
                     }`}
-                    disabled={isEveryoneGroup}
+                    disabled={isEveryoneGroup || isCreating}
                 >
                     <Trash2 size={15} />
                 </button>
