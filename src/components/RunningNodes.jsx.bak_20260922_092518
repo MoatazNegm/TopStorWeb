@@ -105,18 +105,6 @@ const resolveTimezoneValue = (tzStr) => {
     return matchedOption ? matchedOption.timeZoneId : '-1';
 };
 
-// The backend uses several different sentinel strings for "this was never
-// configured" (etcd's own not-found marker '_1', plus placeholder-looking
-// values like '1.X.X.X' or 'xxx.xxx.xxx.xxx'). Normalize all of them to a
-// single human-readable "not set" instead of leaking the raw sentinel.
-const NOT_SET_SENTINELS = ['_1', '-1', '1.x.x.x', 'xxx.xxx.xxx.xxx', 'not set'];
-const displayValue = (val) => {
-    if (val === null || val === undefined) return 'not set';
-    const str = String(val).trim();
-    if (!str || NOT_SET_SENTINELS.includes(str.toLowerCase())) return 'not set';
-    return str;
-};
-
 const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }) => {
     const [formData, setFormData] = useState({
         alias: '',
@@ -331,27 +319,23 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         // Initialize the editable form from the selected host once.
         // Keep live refreshes from wiping in-progress edits.
         const newFormData = {
-            // An unnamed node ("_1", "_2", ...) is left blank so the field shows the
-            // default name as a placeholder instead of submitting the sentinel back.
-            alias: /^_\d+$/.test(String(host.alias || '').trim()) ? '' : (host.alias || host.name || ''),
-            // Address fields start blank and show the applied value as a placeholder,
-            // so the box reads as "type a new value" rather than an editable copy.
-            ipaddr: '',
+            alias: host.alias || host.name || '',
+            ipaddr: host.ipaddr || host.ip || '',
             ipaddrsubnet: host.ipaddrsubnet || 24,
             nmports: normalizePortList(host.nmports),
             cmports: normalizePortList(host.cmports),
             dports: normalizePortList(host.dports || host.dataport),
             iports: normalizePortList(host.iports),
-            cluster: '',
+            cluster: hostClusterParts[0] || '',
             mgmtSub: hostClusterSubnet,
             tz: resolveTimezoneValue(host.tz),
             tzCity: '',
             tzLabel: '',
-            ntp: '',
-            ntpName: '',
-            gw: '',
-            dnsname: '',
-            dnssearch: '',
+            ntp: host.ntp || '',
+            ntpName: host.ntpName || '',
+            gw: host.gw || '',
+            dnsname: host.dnsname || '',
+            dnssearch: host.dnssearch || '',
             configured: host.configured === 'no'
         };
 
@@ -604,13 +588,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
 
     const displayTZ = (tzStr) => {
         const decoded = decodeTimezoneLabel(tzStr);
-        return decoded || 'not set';
-    };
-
-    // The backend stores "_1", "_2", ... as the placeholder alias for an unnamed node.
-    const displayName = (alias) => {
-        const val = String(alias || '').trim();
-        return /^_\d+$/.test(val) ? `Node${val}` : val;
+        return decoded || 'not set yet';
     };
 
     return (
@@ -678,231 +656,242 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                 </div>
                             </div>
 
-                            {/* Node Name + Node Address + Data Ports + Cluster Address + Time Zone + NTP Server + DNS Server + Search + Gateway — one shared 3-column grid so every row's field widths line up */}
-                            <div className="grid grid-cols-[auto_auto_1fr] gap-x-6 gap-y-6 items-start">
-                            <div className="space-y-2 w-fit">
-                                <div className="flex items-center justify-between gap-3">
-                                    <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">Node Name</label>
-                                    <span id="cBoxName" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide truncate max-w-[11rem]">{selectedHost ? displayName(hostConfig?.alias) : 'select a node...'}</span>
-                                </div>
-                                <div className="flex flex-wrap items-center gap-3">
+                            {/* Node Name */}
+                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                                <label className="lg:col-span-3 text-sm font-semibold text-gray-700">Node Name</label>
+                                <div className="lg:col-span-4">
                                     <input
                                         type="text"
-                                        className="w-56 px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
+                                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
                                         id="BoxName"
                                         name="alias"
                                         value={formData.alias}
                                         onChange={handleChange}
                                         disabled={!selectedHost}
-                                        placeholder={(selectedHost && displayName(hostConfig?.alias)) || 'Node Name'}
+                                        placeholder="Node Name"
                                     />
+                                </div>
+                                <div className="lg:col-span-5 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono text-center lg:text-left truncate">
+                                    <span id="cBoxName">{selectedHost ? (selectedHost.alias || '') : 'select a node...'}</span>
                                 </div>
                             </div>
 
                             {/* Node Address */}
-                            <div className="flex flex-nowrap items-start gap-3 col-span-2">
-                                <div className="space-y-2 w-fit">
-                                    <div className="flex items-center justify-between gap-3">
-                                        <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">Node Address</label>
-                                        <span id="cIPAddress" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide truncate max-w-[11rem]">{selectedHost ? (hostConfig?.ipaddr ? `${displayValue(hostConfig.ipaddr)}/${hostConfig.ipaddrsubnet || '24'}` : 'not set') : 'select a node...'}</span>
+                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                                <label className="lg:col-span-3 text-sm font-semibold text-gray-700">Node Address</label>
+                                <div className="lg:col-span-9">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="flex gap-2">
+                                            <input
+                                                type="text"
+                                                placeholder="xxx.xxx.xxx.xxx"
+                                                className="flex-1 min-w-0 px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 ipaddress runningnodes"
+                                                id="IPAddress"
+                                                name="ipaddr"
+                                                value={formData.ipaddr}
+                                                onChange={handleChange}
+                                                disabled={!selectedHost}
+                                            />
+                                            <input
+                                                type="number"
+                                                min="8" max="32" step="8"
+                                                className="w-20 px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
+                                                id="ipaddrsubnet"
+                                                name="ipaddrsubnet"
+                                                value={formData.ipaddrsubnet}
+                                                onChange={handleChange}
+                                                disabled={!selectedHost}
+                                            />
+                                        </div>
+                                        <div className="flex gap-4 items-center">
+                                            <div className="flex-1">
+                                                <select ref={nmportsRef} className="select2 multiple w-full runningnodes" multiple="multiple" id="nmports" name="nmports" data-placeholder="Select ports" disabled={!selectedHost}>
+                                                </select>
+                                            </div>
+                                            <div className="px-3 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                                <span id="bNode">{bondInfo.bNode}</span>
+                                            </div>
+                                            <div className="flex-1 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                                <span id="cIPAddress">{selectedHost ? `${selectedHost.ipaddr || ''}/${selectedHost.ipaddrsubnet || '24'}` : 'select a node...'}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="flex items-center gap-2 flex-nowrap">
+                                </div>
+                            </div>
+
+                            {/* Cluster Address */}
+                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                                <label className="lg:col-span-3 text-sm font-semibold text-gray-700">Cluster Address</label>
+                                <div className="lg:col-span-9">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="flex gap-2">
+                                            <input
+                                                type="text"
+                                                placeholder="xxx.xxx.xxx.xxx"
+                                                className="flex-1 min-w-0 px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 ipaddress runningnodes"
+                                                id="Mgmt"
+                                                name="cluster"
+                                                value={formData.cluster}
+                                                onChange={handleChange}
+                                                disabled={!selectedHost}
+                                            />
+                                            <input
+                                                type="number"
+                                                min="8" max="32" step="8"
+                                                className="w-20 px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
+                                                id="MgmtSub"
+                                                name="mgmtSub"
+                                                value={formData.mgmtSub}
+                                                onChange={handleChange}
+                                                disabled={!selectedHost}
+                                            />
+                                        </div>
+                                        <div className="flex gap-4 items-center">
+                                            <div className="flex-1">
+                                                <select ref={cmportsRef} className="select2 multiple w-full runningnodes" multiple="multiple" id="cmports" name="cmports" data-placeholder="Select ports" disabled={!selectedHost}>
+                                                </select>
+                                            </div>
+                                            <div className="px-3 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                                <span id="bCluster">{bondInfo.bCluster}</span>
+                                            </div>
+                                            <div className="flex-1 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                                <span id="cMgmt">{selectedHost ? (selectedHost.cluster || '') : 'select a node...'}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Data Ports */}
+                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                                <label className="lg:col-span-3 text-sm font-semibold text-gray-700">Data Ports</label>
+                                <div className="lg:col-span-4">
+                                    <select ref={dportsRef} className="select2 multiple w-full runningnodes" multiple="multiple" id="dports" name="dports" data-placeholder="Select ports" disabled={!selectedHost}>
+                                    </select>
+                                </div>
+                                <div className="px-3 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                    <span id="bData">{bondInfo.bData}</span>
+                                </div>
+                                <div className="lg:col-span-4 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                    <span id="dataPorts">{selectedHost ? (parsePortDisplay(selectedHost.dports || selectedHost.dataport) || 'not set') : 'select a node...'}</span>
+                                </div>
+                            </div>
+
+                            {/* Internet Ports */}
+                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                                <label className="lg:col-span-3 text-sm font-semibold text-gray-700">Internet Ports</label>
+                                <div className="lg:col-span-4">
+                                    <select ref={iportsRef} className="select2 multiple w-full runningnodes" multiple="multiple" id="iports" name="iports" data-placeholder="Select ports" disabled={!selectedHost}>
+                                    </select>
+                                </div>
+                                <div className="px-3 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                    <span id="bInternet">{bondInfo.bInternet}</span>
+                                </div>
+                                <div className="lg:col-span-4 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                    <span id="internetPorts">{selectedHost ? (parsePortDisplay(selectedHost.iports) || 'not set') : 'select a node...'}</span>
+                                </div>
+                            </div>
+
+                            {/* Time Zone */}
+                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                                <label className="lg:col-span-3 text-sm font-semibold text-gray-700">Time Zone</label>
+                                <div className="lg:col-span-4">
+                                    <select ref={tzRef} className="select2 w-full runningnodes" id="TZ" name="tz" disabled={!selectedHost}>
+                                        {TIMEZONE_OPTIONS.map(opt => (
+                                            <option
+                                                key={opt.timeZoneId}
+                                                value={opt.timeZoneId}
+                                                data-city={opt.city}
+                                                data-gmt={opt.value}
+                                            >
+                                                {opt.label}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="lg:col-span-5 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                    <span id="cTZ">{selectedHost ? displayTZ(selectedHost.tz) : 'select a node...'}</span>
+                                </div>
+                            </div>
+
+                            {/* NTP Server */}
+                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                                <label className="lg:col-span-3 text-sm font-semibold text-gray-700">NTP Server</label>
+                                <div className="lg:col-span-6">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <input
                                             type="text"
-                                            placeholder={(selectedHost && displayValue(hostConfig?.ipaddr || hostConfig?.ip)) || 'not set'}
-                                            className="w-36 shrink-0 px-2 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
-                                            id="IPAddress"
-                                            name="ipaddr"
-                                            value={formData.ipaddr}
+                                            placeholder="xxx.xxx.xxx.xxx"
+                                            className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 ipaddress runningnodes"
+                                            id="NTP"
+                                            name="ntp"
+                                            value={formData.ntp}
                                             onChange={handleChange}
                                             disabled={!selectedHost}
                                         />
-                                        <input
-                                            type="number"
-                                            min="8" max="32" step="8"
-                                            className="w-16 shrink-0 px-2 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
-                                            id="ipaddrsubnet"
-                                            name="ipaddrsubnet"
-                                            value={formData.ipaddrsubnet}
-                                            onChange={handleChange}
-                                            disabled={!selectedHost}
-                                        />
+                                        <div className="flex items-center gap-2">
+                                            <label className="text-sm text-gray-500 whitespace-nowrap">Name</label>
+                                            <input
+                                                type="text"
+                                                placeholder="NTP Name"
+                                                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
+                                                id="NTPname"
+                                                name="ntpName"
+                                                value={formData.ntpName}
+                                                onChange={handleChange}
+                                                disabled={!selectedHost}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="space-y-2 w-fit">
-                                    <div className="flex items-center justify-end gap-3">
-                                        <span id="bNode" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide whitespace-nowrap shrink-0">{bondInfo.bNode}</span>
-                                    </div>
-                                    <div className="w-72 shrink-0">
-                                        <select ref={nmportsRef} className="select2 multiple w-full runningnodes" multiple="multiple" id="nmports" name="nmports" data-placeholder="Select ports" disabled={!selectedHost}>
-                                        </select>
-                                    </div>
+                                <div className="lg:col-span-3 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                    <span id="cNTP">{selectedHost ? (selectedHost.ntp || 'select a node...') : 'select a node...'}</span>
                                 </div>
                             </div>
 
-                            <div className="space-y-2 w-fit">
-                                <div className="flex items-center justify-between gap-3">
-                                    <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">Data Ports</label>
-                                    <span className="flex items-center gap-2 min-w-0">
-                                        <span id="dataPorts" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide truncate max-w-[11rem]">{selectedHost ? (parsePortDisplay(selectedHost.dports || selectedHost.dataport) || 'not set') : 'select a node...'}</span>
-                                        <span id="bData" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide whitespace-nowrap shrink-0">{bondInfo.bData}</span>
-                                    </span>
-                                </div>
-                                <div className="flex flex-wrap items-center gap-3">
-                                    <div className="w-56">
-                                        <select ref={dportsRef} className="select2 multiple w-full runningnodes" multiple="multiple" id="dports" name="dports" data-placeholder="Select ports" disabled={!selectedHost}>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="flex flex-nowrap items-start gap-3 col-span-2">
-                                <div className="space-y-2 w-fit">
-                                    <div className="flex items-center justify-between gap-3">
-                                        <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">Cluster Address</label>
-                                        <span id="cMgmt" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide truncate max-w-[11rem]">{selectedHost ? displayValue(hostConfig?.cluster) : 'select a node...'}</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 flex-nowrap">
+                            {/* DNS Server */}
+                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                                <label className="lg:col-span-3 text-sm font-semibold text-gray-700">DNS Server</label>
+                                <div className="lg:col-span-6">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <input
                                             type="text"
-                                            placeholder={(selectedHost && displayValue(String(hostConfig?.cluster || '').split('/')[0])) || 'not set'}
-                                            className="w-36 shrink-0 px-2 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
-                                            id="Mgmt"
-                                            name="cluster"
-                                            value={formData.cluster}
+                                            placeholder="xxx.xxx.xxx.xxx"
+                                            className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 ipaddress runningnodes"
+                                            id="DNSname"
+                                            name="dnsname"
+                                            value={formData.dnsname}
                                             onChange={handleChange}
                                             disabled={!selectedHost}
                                         />
-                                        <input
-                                            type="number"
-                                            min="8" max="32" step="8"
-                                            className="w-16 shrink-0 px-2 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
-                                            id="MgmtSub"
-                                            name="mgmtSub"
-                                            value={formData.mgmtSub}
-                                            onChange={handleChange}
-                                            disabled={!selectedHost}
-                                        />
+                                        <div className="flex items-center gap-2">
+                                            <label className="text-sm text-gray-500 whitespace-nowrap">Search</label>
+                                            <input
+                                                type="text"
+                                                placeholder="Domain Name"
+                                                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
+                                                id="DNSsearch"
+                                                name="dnssearch"
+                                                value={formData.dnssearch}
+                                                onChange={handleChange}
+                                                disabled={!selectedHost}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="space-y-2 w-fit">
-                                    <div className="flex items-center justify-end gap-3">
-                                        <span id="bCluster" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide whitespace-nowrap shrink-0">{bondInfo.bCluster}</span>
-                                    </div>
-                                    <div className="w-72 shrink-0">
-                                        <select ref={cmportsRef} className="select2 multiple w-full runningnodes" multiple="multiple" id="cmports" name="cmports" data-placeholder="Select ports" disabled={!selectedHost}>
-                                        </select>
-                                    </div>
+                                <div className="lg:col-span-3 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                    <span id="cDNS">{selectedHost ? `${selectedHost.dnsname || ''}/${selectedHost.dnssearch || ''}` : 'select a node...'}</span>
                                 </div>
                             </div>
 
-                            <div className="space-y-2 w-fit">
-                                <div className="flex items-center justify-between gap-3">
-                                    <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">Time Zone</label>
-                                    <span id="cTZ" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide truncate max-w-[11rem]">{selectedHost ? displayTZ(hostConfig?.tz) : 'select a node...'}</span>
-                                </div>
-                                <div className="flex items-center gap-2 flex-nowrap">
-                                    <div className="w-56 shrink-0">
-                                        <select ref={tzRef} className="select2 w-full runningnodes" id="TZ" name="tz" disabled={!selectedHost}>
-                                            {TIMEZONE_OPTIONS.map(opt => (
-                                                <option
-                                                    key={opt.timeZoneId}
-                                                    value={opt.timeZoneId}
-                                                    data-city={opt.city}
-                                                    data-gmt={opt.value}
-                                                >
-                                                    {opt.label}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="flex flex-nowrap items-start gap-3 col-span-2">
-                                <div className="space-y-2 w-fit">
-                                    <div className="flex items-center justify-between gap-3">
-                                        <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">NTP Server</label>
-                                        <span id="cNTP" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide truncate max-w-[11rem]">{selectedHost ? displayValue(hostConfig?.ntp) : 'select a node...'}</span>
-                                    </div>
+                            {/* Gateway */}
+                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                                <label className="lg:col-span-3 text-sm font-semibold text-gray-700">Gateway/router</label>
+                                <div className="lg:col-span-4">
                                     <input
                                         type="text"
-                                        placeholder={(selectedHost && displayValue(hostConfig?.ntp)) || 'not set'}
-                                        className="w-56 px-2 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
-                                        id="NTP"
-                                        name="ntp"
-                                        value={formData.ntp}
-                                        onChange={handleChange}
-                                        disabled={!selectedHost}
-                                    />
-                                </div>
-                                <div className="space-y-2 w-fit">
-                                    <div className="flex items-center justify-between gap-3">
-                                        <label className="text-xs text-gray-500 whitespace-nowrap">Name</label>
-                                        <span id="cNTPName" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide truncate max-w-[11rem]">{selectedHost ? displayValue(hostConfig?.ntpName) : 'select a node...'}</span>
-                                    </div>
-                                    <input
-                                        type="text"
-                                        placeholder={(selectedHost && displayValue(hostConfig?.ntpName)) || 'not set'}
-                                        className="w-56 px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
-                                        id="NTPname"
-                                        name="ntpName"
-                                        value={formData.ntpName}
-                                        onChange={handleChange}
-                                        disabled={!selectedHost}
-                                    />
-                                </div>
-                            </div>
-
-                            {/* DNS Server + Search + Gateway/router */}
-                            <div className="space-y-2 w-fit">
-                                <div className="flex items-center justify-between gap-3">
-                                    <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">DNS Server</label>
-                                    <span id="cDNS" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide truncate max-w-[11rem]">{selectedHost ? displayValue(hostConfig?.dnsname) : 'select a node...'}</span>
-                                </div>
-                                <div className="flex flex-wrap items-center gap-3">
-                                    <input
-                                        type="text"
-                                        placeholder={(selectedHost && displayValue(hostConfig?.dnsname)) || 'not set'}
-                                        className="w-56 px-2 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
-                                        id="DNSname"
-                                        name="dnsname"
-                                        value={formData.dnsname}
-                                        onChange={handleChange}
-                                        disabled={!selectedHost}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="space-y-2 w-fit">
-                                <div className="flex items-center justify-between gap-3">
-                                    <label className="text-xs text-gray-500 whitespace-nowrap">Search</label>
-                                    <span id="cDNSSearch" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide truncate max-w-[11rem]">{selectedHost ? displayValue(hostConfig?.dnssearch) : 'select a node...'}</span>
-                                </div>
-                                <div className="flex flex-wrap items-center gap-3">
-                                    <input
-                                        type="text"
-                                        placeholder={(selectedHost && displayValue(hostConfig?.dnssearch)) || 'not set'}
-                                        className="w-56 px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
-                                        id="DNSsearch"
-                                        name="dnssearch"
-                                        value={formData.dnssearch}
-                                        onChange={handleChange}
-                                        disabled={!selectedHost}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="space-y-2 w-fit -ml-3">
-                                <div className="flex items-center justify-between gap-3">
-                                    <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">Gateway/router</label>
-                                    <span id="cGW" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide truncate max-w-[11rem]">{selectedHost ? displayValue(hostConfig?.gw) : 'select a node...'}</span>
-                                </div>
-                                <div className="flex flex-wrap items-center gap-3">
-                                    <input
-                                        type="text"
-                                        placeholder={(selectedHost && displayValue(hostConfig?.gw)) || 'not set'}
-                                        className="w-56 px-2 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
+                                        placeholder="xxx.xxx.xxx.xxx"
+                                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 ipaddress runningnodes"
                                         id="GW"
                                         name="gw"
                                         value={formData.gw}
@@ -910,7 +899,9 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                         disabled={!selectedHost}
                                     />
                                 </div>
-                            </div>
+                                <div className="lg:col-span-5 px-4 py-2 bg-gray-100 rounded-lg text-sm text-gray-600 font-mono truncate">
+                                    <span id="cGW">{selectedHost ? (selectedHost.gw || '') : 'select a node...'}</span>
+                                </div>
                             </div>
 
                             {/* Actions */}
