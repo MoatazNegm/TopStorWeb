@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Bell, ChevronRight, Key, LogOut, Maximize2, Menu, X } from 'lucide-react';
+import { Bell, ChevronRight, ClipboardList, Key, LogOut, Maximize2, Menu, X } from 'lucide-react';
 import { changePassword } from '../api/users';
+import { fetchCommandLog } from '../api/commandlog';
 
 const Navbar = ({ sectionTitle }) => {
     const [notifOpen, setNotifOpen] = useState(false);
@@ -13,6 +14,10 @@ const Navbar = ({ sectionTitle }) => {
     const [saveDisabled, setSaveDisabled] = useState(true);
     const [saving, setSaving] = useState(false);
     const [syncStatus, setSyncStatus] = useState('Getting Status...');
+    const [logModalOpen, setLogModalOpen] = useState(false);
+    const [commandLog, setCommandLog] = useState([]);
+    const [logLoading, setLogLoading] = useState(false);
+    const [logError, setLogError] = useState(null);
 
     React.useEffect(() => {
         const el = document.getElementById('syncStatus');
@@ -63,6 +68,21 @@ const Navbar = ({ sectionTitle }) => {
             setPassErrColor('text-red-500');
         } finally {
             setSaving(false);
+        }
+    };
+
+    const handleOpenLogModal = async () => {
+        setUserMenuOpen(false);
+        setLogModalOpen(true);
+        setLogLoading(true);
+        setLogError(null);
+        try {
+            const res = await fetchCommandLog();
+            setCommandLog(res.data?.commands || []);
+        } catch (e) {
+            setLogError('Failed to load command log');
+        } finally {
+            setLogLoading(false);
         }
     };
 
@@ -202,6 +222,14 @@ const Navbar = ({ sectionTitle }) => {
                                     <Key className="h-4 w-4" />
                                     Change Password
                                 </button>
+                                <button
+                                    id="cmdlog"
+                                    onClick={handleOpenLogModal}
+                                    className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-700"
+                                >
+                                    <ClipboardList className="h-4 w-4" />
+                                    Logs
+                                </button>
                             </div>
                         )}
                     </div>
@@ -252,6 +280,69 @@ const Navbar = ({ sectionTitle }) => {
                         >
                             {saving ? 'Saving...' : 'Save'}
                         </button>
+                    </div>
+                </div>
+            </div>
+        )}
+
+        {logModalOpen && (
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-900/40 p-4 backdrop-blur-sm">
+                <div className="w-full max-w-4xl overflow-hidden rounded-xl border border-border bg-surface shadow-xl">
+                    <div className="flex items-center justify-between border-b border-border px-5 py-4">
+                        <h4 className="text-base font-semibold text-gray-800">Command Log</h4>
+                        <button onClick={() => setLogModalOpen(false)} className="flex h-8 w-8 items-center justify-center rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600">
+                            <X className="h-[18px] w-[18px]" />
+                        </button>
+                    </div>
+                    <div className="max-h-[60vh] overflow-y-auto p-5">
+                        {logError && (
+                            <p className="mb-3 text-sm font-medium text-danger-600">{logError}</p>
+                        )}
+                        {logLoading && (
+                            <p className="text-sm text-gray-500">Loading command history...</p>
+                        )}
+                        {!logLoading && !logError && commandLog.length === 0 && (
+                            <p className="text-sm text-gray-500">No commands recorded yet.</p>
+                        )}
+                        {!logLoading && commandLog.length > 0 && (
+                            <table className="min-w-full text-left text-sm">
+                                <thead>
+                                    <tr className="border-b border-border text-gray-500">
+                                        <th className="py-2 pr-3 text-xs font-semibold uppercase tracking-wide">Time</th>
+                                        <th className="py-2 pr-3 text-xs font-semibold uppercase tracking-wide">API Call</th>
+                                        <th className="py-2 text-xs font-semibold uppercase tracking-wide">Shell Commands Executed</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-border">
+                                    {commandLog.map((cmd, index) => (
+                                        <tr key={`${cmd.ts}-${index}`}>
+                                            <td className="whitespace-nowrap py-2.5 pr-3 align-top">
+                                                <div className="text-xs font-medium text-gray-700">{cmd.date}</div>
+                                                <div className="text-xs text-gray-400">{cmd.time}</div>
+                                            </td>
+                                            <td className="py-2.5 pr-3 align-top">
+                                                <span className="rounded-sm border border-border bg-surface-muted px-2 py-1 font-mono text-xs text-gray-600">
+                                                    {cmd.endpoint}
+                                                </span>
+                                            </td>
+                                            <td className="py-2.5 align-top">
+                                                {cmd.commands && cmd.commands.length > 0 ? (
+                                                    <div className="space-y-1">
+                                                        {cmd.commands.map((line, i) => (
+                                                            <div key={i} className="rounded-sm bg-gray-900 px-2 py-1 font-mono text-[11px] leading-relaxed text-gray-100 break-all">
+                                                                $ {line}
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-xs text-gray-400">(no shell commands)</span>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
                     </div>
                 </div>
             </div>
