@@ -31,7 +31,7 @@ const DiskIcon = ({
 
     return (
         <div
-            className={`group relative flex cursor-pointer flex-col items-center rounded-md border transition-colors ${isLarge ? 'w-20 p-3' : 'w-14 p-2'} ${isCache ? 'border-warning-200 bg-warning-50' :
+            className={`group relative flex cursor-pointer flex-col items-center rounded-md border transition-colors ${isLarge ? 'p-3' : 'p-2'} ${isCache ? 'border-warning-200 bg-warning-50' :
                 isSelected ? 'border-brand-200 bg-brand-50' :
                     'border-transparent hover:bg-gray-50/60'
                 }`}

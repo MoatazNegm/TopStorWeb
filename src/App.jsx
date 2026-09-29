@@ -20,6 +20,7 @@ import QLogin from './QLogin';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import NotificationPoller from './components/NotificationPoller';
+import TestWizard from './testWizard/TestWizard';
 import { validateToken } from './api/auth';
 import { fetchUserList } from './api/users';
 
@@ -170,6 +171,7 @@ function App() {
     }
 
     return (
+        <>
         <div className="min-h-screen bg-canvas">
             <NotificationPoller />
             <div className="flex min-h-screen">
@@ -221,6 +223,9 @@ function App() {
                 </main>
                 </div>
         </div>
+
+        <TestWizard />
+        </>
     );
 }
 

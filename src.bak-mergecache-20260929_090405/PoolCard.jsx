@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Database, MemoryStick, Plus } from 'lucide-react';
+import { Database, Plus } from 'lucide-react';
 import DiskIcon from './DiskIcon';
 import Button from './Common/Button';
 
@@ -11,14 +11,12 @@ const PoolCard = ({
     newRaidOptions,
     onAddDisks,
     onDeletePool,
-    onDiskAction,
-    onUpdateCache
+    onDiskAction
 }) => {
     const [deleteStep, setDeleteStep] = useState(0); // 0: Idle, 1: Delete?, 2: Really?, 3: Confirm
     const [selectedRedundancy, setSelectedRedundancy] = useState(null);
     const [selectedSize, setSelectedSize] = useState(null);
     const [selectedDiskId, setSelectedDiskId] = useState(null);
-    const [isUpdatingCache, setIsUpdatingCache] = useState(false);
 
     const { available, used, dedup, raids = [], volumes = [] } = data;
     const totalSize = (parseFloat(available) + parseFloat(used)).toFixed(2);
@@ -49,20 +47,6 @@ const PoolCard = ({
         }
         redundancyText = redundancyText + balanced;
     }
-
-    // A cache (L2ARC) vdev shows up as its own raid entry, named "cache_<poolname>"
-    const cacheRaidId = raids.find(r => r.split('_')[0] === 'cache');
-    const currentCacheDiskIds = cacheRaidId ? (allRaids[cacheRaidId]?.disks || []) : [];
-
-    const handleUpdateCacheClick = async () => {
-        if (!onUpdateCache || isUpdatingCache) return;
-        setIsUpdatingCache(true);
-        try {
-            await onUpdateCache(poolName);
-        } finally {
-            setIsUpdatingCache(false);
-        }
-    };
 
     const handleAdd = () => {
         if (!selectedRedundancy || !selectedSize) return;
@@ -149,34 +133,6 @@ const PoolCard = ({
                         </div>
                     );
                 })}
-            </div>
-
-            {/* Cache Management Section */}
-            <div className="mb-4 rounded-lg border border-border bg-surface-muted p-4">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex items-center gap-2">
-                        <div className="flex h-7 w-7 items-center justify-center rounded-md border border-border bg-surface text-warning-600 shadow-xs">
-                            <MemoryStick size={12} />
-                        </div>
-                        <div>
-                            <h4 className="text-sm font-semibold text-gray-800">Cache (L2ARC)</h4>
-                            <p className="mt-0.5 text-xs text-gray-500">
-                                {currentCacheDiskIds.length > 0
-                                    ? `Using ${currentCacheDiskIds.map(id => id.slice(-5)).join(', ')}`
-                                    : 'No cache device attached'}
-                            </p>
-                        </div>
-                    </div>
-                    <Button
-                        onClick={handleUpdateCacheClick}
-                        disabled={isUpdatingCache}
-                        variant="secondary"
-                        size="sm"
-                        className="border-warning-100 text-warning-700 hover:bg-warning-50"
-                    >
-                        {isUpdatingCache ? 'Updating…' : 'Update Cache'}
-                    </Button>
-                </div>
             </div>
 
             {/* Capacity Management Section */}
