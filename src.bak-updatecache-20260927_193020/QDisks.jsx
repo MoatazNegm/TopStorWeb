@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { AlertCircle, HardDrive, Info, MemoryStick, Plus, RefreshCw } from 'lucide-react';
-import { fetchDgsInfo, createPool, addDisksToPool, deletePool, actionOnDisk, saveCacheSpares, deleteCacheSpares, updateCache } from './api/pools';
+import { fetchDgsInfo, createPool, addDisksToPool, deletePool, actionOnDisk, saveCacheSpares, deleteCacheSpares } from './api/pools';
 import PoolCard from './components/PoolCard';
 import Button from './components/Common/Button';
 import DiskIcon from './components/DiskIcon';
@@ -133,17 +133,6 @@ const QDisks = () => {
         setSelectedCacheSpares(prev =>
             prev.includes(diskId) ? prev.filter(id => id !== diskId) : [...prev, diskId]
         );
-    };
-
-    const handleUpdateCache = async (poolName) => {
-        if (cacheDisks.length === 0) return;
-        try {
-            await updateCache({ pool: poolName, cache: cacheDisks, user: 'mezo' });
-            setCacheDisks([]);
-            loadData();
-        } catch (err) {
-            setError("Failed to update pool cache");
-        }
     };
 
     const availableDiskIds = dgsData.raids.free?.disks || [];
@@ -376,8 +365,6 @@ const QDisks = () => {
                                         onAddDisks={handleAddDisks}
                                         onDeletePool={handleDeletePool}
                                         onDiskAction={handleDiskAction}
-                                        markedCacheDisks={cacheDisks}
-                                        onUpdateCache={handleUpdateCache}
                                     />
                                 ))}
                             </div>
