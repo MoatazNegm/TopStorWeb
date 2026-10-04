@@ -133,9 +133,9 @@ const Sidebar = ({ hasPriv }) => {
 
   return (
     <aside className="app-sidebar fixed left-0 top-0 z-50 flex h-screen w-[260px] flex-col border-r border-border bg-surface">
-      <div className="flex h-16 flex-shrink-0 items-center justify-between gap-2 border-b border-border px-4">
+      <div className="flex h-24 flex-shrink-0 items-center justify-between gap-2 border-b border-border px-4">
         <a href="#/nodes" className="flex items-center gap-2" onClick={closeMobileSidebar}>
-          <img src="/dist/img/Quickstor logo.png" alt="QuickStor" className="h-8 w-auto object-contain" />
+          <img src="/dist/img/Quickstor logo.png" alt="QuickStor" className="h-20 w-auto object-contain" />
         </a>
         <button
           type="button"
