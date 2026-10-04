@@ -17,6 +17,28 @@ import {
 const Sidebar = ({ hasPriv }) => {
   const [pathname, setPathname] = useState(window.location.hash || window.location.pathname);
   const [expanded, setExpanded] = useState(null);
+  const [collapsed, setCollapsed] = useState(false);
+
+  // The class is what the stylesheet keys off to narrow the rail and hand the
+  // space back to the page, so the DOM and the CSS have to stay in step. The
+  // cleanup matters too: leaving the class behind would narrow the pane again
+  // after the sidebar is gone.
+  useEffect(() => {
+    document.body.classList.toggle('sidebar-collapse', collapsed);
+    return () => document.body.classList.remove('sidebar-collapse');
+  }, [collapsed]);
+
+  // Collapsing is a desktop-only affordance (the button is lg:flex). If the
+  // window is resized down into the mobile range the pane becomes a drawer, so
+  // drop the rail rather than leaving an icon-only drawer behind.
+  useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 1024px)');
+    const onChange = (event) => {
+      if (!event.matches) setCollapsed(false);
+    };
+    desktop.addEventListener('change', onChange);
+    return () => desktop.removeEventListener('change', onChange);
+  }, []);
 
   useEffect(() => {
     const handleLocationChange = () => setPathname(window.location.hash || window.location.pathname);
@@ -124,8 +146,16 @@ const Sidebar = ({ hasPriv }) => {
   };
 
   const toggleDesktopCollapse = () => {
-    document.body.classList.toggle('sidebar-collapse');
+    setCollapsed((prev) => !prev);
   };
+
+  // Minimized there is no room for an accordion, so the rail shows every leaf
+  // page as a flat icon. Same pages, same order, same privilege filtering --
+  // only the labels and the disclosure arrows are dropped.
+  const railGroups = useMemo(
+    () => filteredMenuItems.map((menu) => menu.subItems),
+    [filteredMenuItems]
+  );
 
   const closeMobileSidebar = () => {
     document.body.classList.remove('sidebar-mobile-open');
@@ -133,85 +163,128 @@ const Sidebar = ({ hasPriv }) => {
 
   return (
     <aside className="app-sidebar fixed left-0 top-0 z-50 flex h-screen w-[260px] flex-col border-r border-border bg-surface">
-      <div className="flex h-24 flex-shrink-0 items-center justify-between gap-2 border-b border-border px-4">
-        <a href="#/nodes" className="flex items-center gap-2" onClick={closeMobileSidebar}>
-          <img src="/dist/img/Quickstor logo.png" alt="QuickStor" className="h-20 w-auto object-contain" />
+      <div
+        className={`flex h-24 flex-shrink-0 flex-col items-center border-b border-border ${
+          collapsed ? 'justify-center gap-1 px-2' : 'justify-between gap-2 px-4'
+        }`}
+      >
+        <a href="#/nodes" className="flex items-center" onClick={closeMobileSidebar} title="QuickStor">
+          {collapsed ? (
+            <img src="dist/img/Quickstor icon.png" alt="QuickStor" className="h-12 w-auto object-contain" />
+          ) : (
+            <img src="/dist/img/Quickstor logo.png" alt="QuickStor" className="h-20 w-auto object-contain" />
+          )}
         </a>
         <button
           type="button"
           onClick={toggleDesktopCollapse}
-          className="hidden h-8 w-8 items-center justify-center rounded-md text-gray-400 hover:bg-gray-100 hover:text-brand-600 lg:flex"
-          title="Collapse sidebar"
+          className="hidden h-8 w-8 flex-shrink-0 items-center justify-center rounded-md text-gray-400 hover:bg-gray-100 hover:text-brand-600 lg:flex"
+          title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          aria-expanded={!collapsed}
         >
-          <ChevronDown className="h-[18px] w-[18px] rotate-90" />
+          <ChevronDown className={`h-[18px] w-[18px] ${collapsed ? '-rotate-90' : 'rotate-90'}`} />
         </button>
       </div>
 
-      <div className="flex-shrink-0 px-3 pt-3">
-        <div className="relative">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-[15px] w-[15px] -translate-y-1/2 text-gray-400" />
-          <input
-            type="search"
-            placeholder="Search menu..."
-            className="w-full rounded-md border border-border bg-surface-muted py-2 pl-9 pr-3 text-sm text-gray-700 placeholder:text-gray-400 outline-none focus:border-brand-500 focus:bg-surface focus:ring-4 focus:ring-brand-100"
-          />
+      {!collapsed && (
+        <div className="flex-shrink-0 px-3 pt-3">
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-[15px] w-[15px] -translate-y-1/2 text-gray-400" />
+            <input
+              type="search"
+              placeholder="Search menu..."
+              className="w-full rounded-md border border-border bg-surface-muted py-2 pl-9 pr-3 text-sm text-gray-700 placeholder:text-gray-400 outline-none focus:border-brand-500 focus:bg-surface focus:ring-4 focus:ring-brand-100"
+            />
+          </div>
         </div>
-      </div>
+      )}
 
-      <nav className="flex-1 overflow-y-auto px-3 py-3">
-        <div className="px-2 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-gray-400">Main menu</div>
-
-        {filteredMenuItems.map((menu) => {
-          const Icon = menu.icon;
-          const expandedSection = isExpanded(menu.label);
-          const sectionActive = menu.label === activeParent;
-
-          return (
-            <div key={menu.label} className="mb-1">
-              <button
-                type="button"
-                onClick={() => toggleSection(menu.label)}
-                 className={`flex w-full items-center gap-3 rounded-md px-2.5 py-2 text-sm font-medium transition-colors ${
-                  sectionActive ? 'text-brand-700 bg-brand-50' : 'text-gray-700 hover:bg-gray-50'
-                }`}
-              >
-                <Icon className={`h-[18px] w-[18px] ${sectionActive ? 'text-brand-600' : 'text-gray-400'}`} />
-                <span className="flex-1 text-left">{menu.label}</span>
-                <ChevronDown
-                  className={`h-[15px] w-[15px] text-gray-400 transition-transform ${
-                    expandedSection ? '' : '-rotate-90'
-                  }`}
-                />
-              </button>
-
-              {expandedSection && (
-                <ul className="mb-1 ml-3.5 mt-0.5 flex flex-col gap-0.5 border-l border-border pl-3">
-                  {menu.subItems.map((subItem) => {
-                    const SubIcon = subItem.icon;
-                    const active = isItemActive(subItem.href);
-                    return (
-                      <li key={subItem.label}>
-                        <a
-                          href={subItem.href}
-                          onClick={closeMobileSidebar}
-                           className={`flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors ${
-                            active
-                              ? '!bg-brand-600 font-medium text-white'
-                              : 'text-gray-600 hover:bg-gray-50 hover:text-brand-600'
-                          }`}
-                        >
-                          <SubIcon className={`h-[15px] w-[15px] ${active ? 'text-white' : 'text-gray-400'}`} />
-                          {subItem.label}
-                        </a>
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
+      {collapsed ? (
+        <nav className="flex-1 overflow-y-auto px-2 py-3" aria-label="Main menu, icons only">
+          {railGroups.map((subItems, groupIndex) => (
+            <div
+              key={railGroups[groupIndex][0]?.href || groupIndex}
+              className={groupIndex === 0 ? '' : 'mt-2 border-t border-border pt-2'}
+            >
+              {subItems.map((subItem) => {
+                const SubIcon = subItem.icon;
+                const active = isItemActive(subItem.href);
+                return (
+                  <a
+                    key={subItem.href}
+                    href={subItem.href}
+                    onClick={closeMobileSidebar}
+                    title={subItem.label}
+                    aria-label={subItem.label}
+                    aria-current={active ? 'page' : undefined}
+                    className={`mb-1 flex h-10 w-full items-center justify-center rounded-md transition-colors ${
+                      active ? 'bg-brand-600 text-white' : 'text-gray-500 hover:bg-gray-50 hover:text-brand-600'
+                    }`}
+                  >
+                    <SubIcon className="h-[19px] w-[19px]" />
+                  </a>
+                );
+              })}
             </div>
-          );
-        })}
-      </nav>
+          ))}
+        </nav>
+      ) : (
+        <nav className="flex-1 overflow-y-auto px-3 py-3" aria-label="Main menu">
+          <div className="px-2 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-gray-400">Main menu</div>
+
+          {filteredMenuItems.map((menu) => {
+            const Icon = menu.icon;
+            const expandedSection = isExpanded(menu.label);
+            const sectionActive = menu.label === activeParent;
+
+            return (
+              <div key={menu.label} className="mb-1">
+                <button
+                  type="button"
+                  onClick={() => toggleSection(menu.label)}
+                   className={`flex w-full items-center gap-3 rounded-md px-2.5 py-2 text-sm font-medium transition-colors ${
+                    sectionActive ? 'text-brand-700 bg-brand-50' : 'text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  <Icon className={`h-[18px] w-[18px] ${sectionActive ? 'text-brand-600' : 'text-gray-400'}`} />
+                  <span className="flex-1 text-left">{menu.label}</span>
+                  <ChevronDown
+                    className={`h-[15px] w-[15px] text-gray-400 transition-transform ${
+                      expandedSection ? '' : '-rotate-90'
+                    }`}
+                  />
+                </button>
+
+                {expandedSection && (
+                  <ul className="mb-1 ml-3.5 mt-0.5 flex flex-col gap-0.5 border-l border-border pl-3">
+                    {menu.subItems.map((subItem) => {
+                      const SubIcon = subItem.icon;
+                      const active = isItemActive(subItem.href);
+                      return (
+                        <li key={subItem.label}>
+                          <a
+                            href={subItem.href}
+                            onClick={closeMobileSidebar}
+                             className={`flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors ${
+                              active
+                                ? '!bg-brand-600 font-medium text-white'
+                                : 'text-gray-600 hover:bg-gray-50 hover:text-brand-600'
+                            }`}
+                          >
+                            <SubIcon className={`h-[15px] w-[15px] ${active ? 'text-white' : 'text-gray-400'}`} />
+                            {subItem.label}
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </div>
+            );
+          })}
+        </nav>
+      )}
     </aside>
   );
 };
