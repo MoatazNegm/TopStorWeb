@@ -214,10 +214,10 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                                 <div className="col-span-full text-center text-sm text-gray-400 py-6">
                                     No discovered nodes. Click <strong>discovery</strong> to scan.
                                 </div>
-                            ) : hosts.map(host => {
+                            ) : hosts.map((host, hostIdx) => {
                                 const hostName = host.name || host.alias;
                                 return (
-                                    <div key={hostName}>
+                                    <div key={hostName} data-wizard-id={hostIdx === 0 ? 'discovered-node-tile' : undefined}>
                                         <ServerNode
                                             name={hostName}
                                             ip={host.ip || host.ipaddr}

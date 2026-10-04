@@ -50,10 +50,6 @@ const QDisks = () => {
     const handleCreatePool = async () => {
         if (!creatingRedundancy || !creatingSize) return;
         try {
-            // No data disks are picked by hand - the backend's smart
-            // selection chooses them automatically for the requested
-            // redundancy type and size; only the cache disk (if any) is
-            // ever manually marked.
             await createPool({
                 redundancy: creatingRedundancy,
                 useable: creatingSize,
@@ -140,17 +136,23 @@ const QDisks = () => {
     };
 
     const handleUpdateCache = async (poolName) => {
+        if (cacheDisks.length === 0) return;
         try {
-            // No disk to pass — the backend auto-selects the smallest free
-            // disk under 10GB that's local to this pool's owner node.
-            await updateCache({ pool: poolName, user: 'mezo' });
+            await updateCache({ pool: poolName, cache: cacheDisks, user: 'mezo' });
+            setCacheDisks([]);
             loadData();
         } catch (err) {
-            setError(err.response?.data?.message || "Failed to update pool cache");
+            setError("Failed to update pool cache");
         }
     };
 
     const availableDiskIds = dgsData.raids.free?.disks || [];
+    const availableDisksByNode = availableDiskIds.reduce((groups, diskId) => {
+        const node = dgsData.disks[diskId]?.host || 'Unknown node';
+        if (!groups[node]) groups[node] = [];
+        groups[node].push(diskId);
+        return groups;
+    }, {});
 
     const getOptionDetails = (type, option) => {
         if (type !== 'single') return option;
@@ -200,26 +202,36 @@ const QDisks = () => {
 
                                 <div className="space-y-8">
                                     <div>
-                                        <label className="ml-1 mb-3 block text-xs font-semibold uppercase tracking-wide text-gray-500">Available Disks</label>
-                                        <div data-wizard-id="qdisks-disk-grid" className="rounded-lg border border-border bg-surface-muted p-6">
-                                            <div className="max-h-[320px] overflow-y-auto pr-2 custom-scrollbar mb-4">
-                                                <div className="flex flex-wrap gap-2">
-                                                    {availableDiskIds.map(diskId => (
-                                                        <DiskIcon
-                                                            key={diskId}
-                                                            diskId={diskId}
-                                                            data={dgsData.disks[diskId]}
-                                                            isCache={cacheDisks.includes(diskId)}
-                                                            onContextMenu={handleDiskRightClick}
-                                                        />
-                                                    ))}
-                                                    {availableDiskIds.length === 0 && (
-                                                        <div className="col-span-full py-12 text-center">
-                                                            <HardDrive size={40} className="mx-auto mb-4 text-gray-300" />
-                                                            <p className="text-sm font-medium text-gray-500">No available disks found</p>
+                                        <label className="ml-1 mb-3 block text-xs font-semibold uppercase tracking-wide text-gray-500">Available Disks by Node</label>
+                                        <div className="rounded-lg border border-border bg-surface-muted p-6">
+                                            <div className="max-h-[360px] space-y-5 overflow-y-auto pr-2 custom-scrollbar">
+                                                {Object.entries(availableDisksByNode).sort(([a], [b]) => a.localeCompare(b)).map(([node, diskIds]) => (
+                                                    <section key={node} className="rounded-lg border border-border bg-surface p-4">
+                                                        <div className="mb-4 flex items-center justify-between">
+                                                            <h4 className="text-sm font-semibold text-gray-800">{node}</h4>
+                                                            <span className="rounded-full bg-brand-50 px-2.5 py-1 text-xs font-semibold text-brand-700">
+                                                                {diskIds.length} {diskIds.length === 1 ? 'disk' : 'disks'}
+                                                            </span>
                                                         </div>
-                                                    )}
-                                                </div>
+                                                        <div className="grid grid-cols-3 gap-4 sm:grid-cols-5 lg:grid-cols-8 xl:grid-cols-10">
+                                                            {diskIds.map(diskId => (
+                                                                <DiskIcon
+                                                                    key={diskId}
+                                                                    diskId={diskId}
+                                                                    data={dgsData.disks[diskId]}
+                                                                    isCache={cacheDisks.includes(diskId)}
+                                                                    onContextMenu={handleDiskRightClick}
+                                                                />
+                                                            ))}
+                                                        </div>
+                                                    </section>
+                                                ))}
+                                                {availableDiskIds.length === 0 && (
+                                                    <div className="py-12 text-center">
+                                                        <HardDrive size={40} className="mx-auto mb-4 text-gray-300" />
+                                                        <p className="text-sm font-medium text-gray-500">No available disks found</p>
+                                                    </div>
+                                                )}
                                             </div>
                                             <div className="mt-5 flex flex-col gap-4 rounded-md border border-border bg-surface px-5 py-3.5 sm:flex-row sm:items-center sm:justify-between">
                                                 <div className="flex gap-6">
@@ -260,8 +272,8 @@ const QDisks = () => {
                                     </div>
 
                                     <div>
-                                        <label className="ml-1 mb-3 block text-xs font-semibold uppercase tracking-wide text-gray-500">Redundancy Configuration</label>
-                                        <div data-wizard-id="qdisks-redundancy-table" className="flex max-h-[420px] min-h-[240px] flex-col overflow-hidden rounded-lg border border-border bg-surface">
+                                        <label className="ml-1 mb-3 block text-xs font-semibold uppercase tracking-wide text-gray-500">Available Pool Configurations</label>
+                                        <div className="flex max-h-[420px] min-h-[240px] flex-col overflow-hidden rounded-lg border border-border bg-surface">
                                             <div className="overflow-y-auto flex-1 custom-scrollbar">
                                                 <table className="w-full text-left border-collapse">
                                                     <thead className="sticky top-0 z-10 bg-surface-muted">
@@ -340,7 +352,6 @@ const QDisks = () => {
                                             </div>
                                             <div className="flex justify-end border-t border-border bg-surface-muted p-4">
                                                 <Button
-                                                    id="createPoolBtn"
                                                     onClick={handleCreatePool}
                                                     disabled={!creatingRedundancy || !creatingSize}
                                                     variant="primary"
@@ -365,6 +376,7 @@ const QDisks = () => {
                                         onAddDisks={handleAddDisks}
                                         onDeletePool={handleDeletePool}
                                         onDiskAction={handleDiskAction}
+                                        markedCacheDisks={cacheDisks}
                                         onUpdateCache={handleUpdateCache}
                                     />
                                 ))}
@@ -407,3 +419,4 @@ const QDisks = () => {
 };
 
 export default QDisks;
+

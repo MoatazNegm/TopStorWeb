@@ -324,6 +324,11 @@ const Navbar = ({ sectionTitle }) => {
                                                 <span className="rounded-sm border border-border bg-surface-muted px-2 py-1 font-mono text-xs text-gray-600">
                                                     {cmd.endpoint}
                                                 </span>
+                                                {cmd.params && Object.keys(cmd.params).length > 0 && (
+                                                    <div className="mt-1 max-w-xs break-all font-mono text-[11px] text-gray-400">
+                                                        {JSON.stringify(cmd.params)}
+                                                    </div>
+                                                )}
                                             </td>
                                             <td className="py-2.5 align-top">
                                                 {cmd.commands && cmd.commands.length > 0 ? (
