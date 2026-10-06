@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="author" content="Mezobuntu1310" />
+		<title>QuickStor(disks)</title>
+		<link  rel="stylesheet" href="css/normalize.css" type="text/css">
+		<link rel="stylesheet" href="Bootstrap/css/bootstrap.min.css" type="text/css">
+		<link rel="stylesheet" href="Bootstrap/css/bootstrap-theme.min.css" type="text/css">
+		<link rel="stylesheet" href="jquery/jquery.minicolors.css">
+		<link rel="stylesheet" href="css/style.css" type="text/css">
+	</head>
+	<body class=" ">
+
+	<div class="config_body">
+<!------------  NAV Bar --------------->
+		<div class="container-fluid ">
+			<div class="row">
+				<div class="img-logo ">
+					<div class="col-sm-3">
+						<a class="pull-left logoimg" href="#">
+							<img src="img/logo2.png" height="200" width="200" class="img-responsive"> 
+						</a>
+					</div>
+					<div class="col-sm-6">
+						<h1 class="text-center maintext config_logo_no_background_no_border" ><strong>	<?php eho "PHP Flex Storage"; ?></strong></h1>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="">
+					<div class=" col-sm-1 leftPane">
+						<ul class="nav nav-pills nav-stacked config_leftPane_no_textcolor" >
+							<li ><a href="accounts.html" ><br>Accounts</a></li>
+							<li><a href="status.html"  ><br>Status</a></li>
+							<li><a href="Protocol.html" ><br>Protocol</a></li>
+							<li><a href="replication.html" ><br>replication</a></li>
+							<li><a href="Pools.html"  ><br>Pools</a></li>
+							<li class="active"><a href="config.html"  ><br>config</a></li>
+						</ul>
+					</div>
+					<div class="col-sm-11 rightPane ">
+						<ul class="">
+							<li><a href="#" class="ADa"><h4 id="AD"><span>Active Directory</span></h4></a></li>
+							<li><a href="#" class="UnLina"><h4 id="UnLin"><span>Unix/Linux users</span></h4></a></li>
+							<li><a href="#" class="Futurea"><h4 id="Future"><span> .........Future</span></h4></a></li>
+						</ul>
+
+						<div class="row AD">
+							<div class=" col-sm-offset-1 col-sm-10">
+								
+									<div class="box " >
+										<div class="row">
+											<h2 class="confTitle  ">Active Directory</h2>
+										</div>									
+										<form class="form-horizontal " role="form">
+											<div class="row">
+												<div class="  col-sm-4 ">
+													<div class=" form-group row">
+														<label   class="col-sm-5 control-label config_label_No_background_No_border" >Domain/Workgroup</label>
+														<div class=" col-sm-6">
+															<input type="text" id="DomWork" class="form-control config_input" value="sample"  >
+														</div>
+													</div>
+													<div class=" form-group row ">
+														<label  class="col-sm-5 control-label config_label_No_background_No_border" id="Adminlabel">Administrator</label>
+														<div class=" col-sm-6">
+															<input type="text" id="Admin" class="form-control config_input" value="sample" >
+														</div>
+													</div>
+													<div class=" form-group row ">
+														<label   class="col-sm-5 control-label config_label_No_background_No_border"  id="Passlabel">Passwored</label>
+														<div class=" col-sm-6">
+															<input type="password" id="Pass" class="form-control config_input" value="****">
+														</div>
+													</div>
+												</div>
+												<div class="  col-sm-2">
+													<div class="form-group row">
+														<label  for="type" class="control-label col-sm-3 ">Type</label>
+														<div class="col-sm-9">
+															<select id="type"  class="form-control">
+																<option value="Domain" selected >Domain</option>
+																<option value="Workgroup"  >Workgroup</option>
+															</select>
+														</div>
+													</div>
+													<div class="form-group row">
+														<div class="row">
+															<button type="button" class="btn btn-default col-sm-offset-3 col-sm-7 submitb" data-toggle="tooltip" data-placement="top" title="submit values">Submit</button>
+														</div>
+													</div>
+												</div>
+												<div class=" col-sm-6">
+													<div class=" form-group row">
+														<div class=" col-sm-12">
+															<textarea class="form-control" rows="3"></textarea>
+														</div>
+														<div class="row">
+															<button type="button" class="btn btn-default col-sm-offset-3 col-sm-7 finish" data-toggle="tooltip" data-placement="bottom" title="close window">Finish</button>
+														</div>
+													</div>
+												</div>
+											</div>
+											
+											
+										 
+										</form>
+										
+									</div>				
+							</div>
+						</div>
+						
+						<div class="row UnLin">
+							<div class=" col-sm-offset-1 col-sm-10">
+								
+									<div class="box ">
+										<div class="row">
+											<h2 class="configTitle"></h2>
+										</div>									
+										<form class="form-horizontal " role="form">
+											<div class="row">
+												<div class="  col-sm-4 ">
+													<div class=" form-group row">
+														<label  for="User" class="col-sm-5 control-label">User</label>
+														<div class=" col-sm-6">
+															<input type="text" id="User" class="form-control " placeholder="user name">
+														</div>
+													</div>
+													<div class=" form-group row ">
+														<label  for="UserList" class="col-sm-5 control-label"></label>
+														<div class=" col-sm-6">
+															<select multiple size""3"" id="UserList" class="form-control " ><option>user1</option><option>user2</option><option>user3</option>
+														</div>
+													</div>
+													<div class=" form-group row ">
+														<label  for="UserPass" class="col-sm-5 control-label">Passwored</label>
+														<div class=" col-sm-6">
+															<input type="password" id="UserPass" class="form-control " placeholder="user password">
+														</div>
+													</div>
+												</div>
+												<div class="  col-sm-2">
+													<div class="form-group row">
+														<button type="button" class="btn btn-default  col-sm-10 adduser"  data-toggle="tooltip" data-placement="top" title="add user">Add User</button>
+													</div>
+													<div class="form-group row">
+														<div class="row">
+															<button type="button" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="remove user">Remove User</button>
+														</div>
+													</div>
+												</div>
+												<div class=" col-sm-6">
+													<div class=" form-group row">
+														<div class=" col-sm-12">
+															<textarea class="form-control" rows="3"></textarea>
+														</div>
+														<div class="row">
+															<button type="button" class="btn btn-default col-sm-offset-3 col-sm-7 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
+														</div>
+													</div>
+												</div>
+											</div>
+											
+											
+										 
+										</form>
+										
+									</div>				
+							</div>
+						</div>
+						
+						<div class="row Future">
+							<div class=" col-sm-offset-1 col-sm-10">
+								
+									<div class="box ">
+										<div class="row">
+											<h2 class="configTitle"></h2>
+										</div>									
+										<form class="form-horizontal " role="form">
+											<div class="row">
+												<div class="  col-sm-4 ">
+													<div class=" form-group row">
+														<label  for="User" class="col-sm-5 control-label">User</label>
+														<div class=" col-sm-6">
+															<input type="text" id="User" class="form-control " placeholder="user name">
+														</div>
+													</div>
+													<div class=" form-group row ">
+														<label  for="UserList" class="col-sm-5 control-label"></label>
+														<div class=" col-sm-6">
+															<textarea rows="3" id="UserList" class="form-control " ></textarea>
+														</div>
+													</div>
+													<div class=" form-group row ">
+														<label  for="UserPass" class="col-sm-5 control-label">Passwored</label>
+														<div class=" col-sm-6">
+															<input type="password" id="UserPass" class="form-control " placeholder="user password">
+														</div>
+													</div>
+												</div>
+												<div class="  col-sm-2">
+													<div class="form-group row">
+														<button type="button" class="btn btn-default  col-sm-10 adduser"  data-toggle="tooltip" data-placement="top" title="add user">Add User</button>
+													</div>
+													<div class="form-group row">
+														<div class="row">
+															<button type="button" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="remove user">Remove User</button>
+														</div>
+													</div>
+												</div>
+												<div class=" col-sm-6">
+													<div class=" form-group row">
+														<div class=" col-sm-12">
+															<textarea class="form-control" rows="3"></textarea>
+														</div>
+														<div class="row">
+															<button type="button" class="btn btn-default col-sm-offset-3 col-sm-7 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
+														</div>
+													</div>
+												</div>
+											</div>
+											
+											
+										 
+										</form>
+										
+									</div>				
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			
+		</div>
+			
+		<div class="row">
+			<footer class="footer"> Errors
+			</footer>
+		</div>
+	</div>
+	</div>	
+		<div id="modalcontainer" >
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<form class="form-horizontal " role="form">
+											<div class="row">
+												<div class="   ">
+													<div id="minicolor" class="  ">
+														<div class=" col-sm-4 textcolor">
+															<label  for="textcolor" class=" control-label">Text</label>
+															<input type="hidden" id="textcolor" class="form-control minicolors2  " data-inline="false" value="#ffffff">
+														</div>
+													</div>
+													<div class="   ">
+														<div class=" col-sm-4 background">
+															<label  for="background" class=" control-label" >Background color</label>
+															<input type="hidden" id="background" class="form-control minicolors2  " data-inline="false" value="#ffffff">
+														</div>
+													</div>
+													<div class="  ">
+														<div class=" col-sm-4 frame">
+															<label  for="frame" class=" control-label">frame</label>
+															<input type="hidden" id="frame" class="form-control minicolors2 " placeholder="Admin password" value="#ffffff">
+														</div>
+													</div>
+												</div>
+											</div>
+											
+											<div class="row">
+											<div id="samplebox"> sample box</div>
+											</div>
+											
+										 
+										</form>
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary">Save changes</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="jquery/jquery.js"></script>
+		<script src="jquery-ui/jquery-ui.js"></script>
+		<script src="jquery/jquery.datetimepicker.js"></script>
+		<script src="Bootstrap/js/bootstrap.min.js"></script>
+		<script src="jquery/jquery.minicolors.js"></script>
+		<script src="jquery/Colour.js"></script>
+		
+	
+		<script>
+			
+			function colorToHex(color) {
+				if (color==null) { return '#ffffff';}
+				if (!color.match(/rgb/g)) { return "#ffffff"; }
+				if (color.substr(0, 1) === '#') {
+						return color;
+				}
+				
+				var digits = /(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color);
+				
+				var red = parseInt(digits[2]);
+				var green = parseInt(digits[3]);
+				var blue = parseInt(digits[4]);
+
+				var rgb = blue | (green << 8) | (red << 16);
+				return digits[1] + '#' + rgb.toString(16);
+			};
+			var config = 1;
+			$('.demo').each( function() {
+                //
+                // Dear reader, it's actually very easy to initialize MiniColors. For example:
+                //
+                //  $(selector).minicolors();
+                //
+                // The way I've done it below is just for the demo, so don't get confused
+                // by it. Also, data- attributes aren't supported at this time...they're
+                // only used for this demo.
+                //
+				$(this).minicolors({
+					control: $(this).attr('data-control') || 'hue',
+					defaultValue: $(this).attr('data-defaultValue') || '',
+					inline: $(this).attr('data-inline') === 'true',
+					letterCase: $(this).attr('data-letterCase') || 'lowercase',
+					opacity: $(this).attr('data-opacity'),
+					position: $(this).attr('data-position') || 'bottom left',
+	//				change: function(hex, opacity) {
+	//					if( !hex ) return;
+	//					if( opacity ) hex += ', ' + opacity;
+	//					try {
+	//						console.log(hex);
+	//					} catch(e) {}
+	//				},
+					theme: 'bootstrap'
+				});
+
+      });
+	//		$(".minicolors2").minicolors({ theme: 'bootstrap'});
+			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();
+			$("#AD").click(function (){ 
+				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".AD").show(); };});
+			$("#UnLin").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".UnLin").show();};});
+			$("#Future").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/future.png')").text("Future"); $(".Future").show();};});
+			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
+			
+			
+			$("[class*='config']").click(function (e) {
+				e.stopPropagation();
+				var title = $(this).attr("class").split(' ').pop();
+				$("#myModalLabel").text(title);
+				
+				$("#samplebox").css("color", $(this).css("color"));
+				$("#samplebox").css("background-color", $(this).css("background-color"));
+				$("#samplebox").css("border-color", $(this).css("border-color"));
+				console.log($(this).attr("class"));
+			//	console.log("B=" + $(this).css("background-color") +";" + colorToHex($(this).css("background-color").match(/rgb/g))+ ", F:" + $(this).css("color") + ", bor=" + $(this).css("border-color")+";" + colorToHex($(this).css("background-color").match(/rgb/g)));
+				$("#textcolor").minicolors("value", colorToHex($(this).css("color")) ); 
+				
+				
+				$("#frame").attr("value", colorToHex($(this).css("border-color")) );
+				if($("#myModalLabel").text().match(/background/g)) { 
+					$("#background").prop("disabled",true); console.log("back is disabled");
+					//$("#background").minicolors("value", "#ffffff");
+				} else { 
+					$("#background").prop("disabled",false);console.log("back is enabled");
+					$("#background").minicolors("value", colorToHex($(this).css("background-color")) );
+				};
+				if($("#myModalLabel").text().match(/textcolor/g)) { 
+					$("#textcolor").prop("disabled",true); 
+					//$("#background").minicolors("value", "#ffffff");
+				} else { 
+					$("#textcolor").prop("disabled",false);
+					$("#textolor").minicolors("value", colorToHex($(this).css("color")) );
+				};
+				if($("#myModalLabel").text().match(/border/g)) { 
+					$("#frame").prop("disabled",true); 
+					//$("#background").minicolors("value", "#ffffff");
+				} else { 
+					$("#frame").prop("disabled",false);
+					$("#frame").minicolors("value", colorToHex($(this).css("border-color")) );
+				};
+
+				$("#myModal").modal("show");
+			});
+			
+			$("#modalcontainer").draggable();
+			$("#textcolor.minicolors2").minicolors({
+				theme: 'bootstrap',
+				
+				change: function(hex, opacity) {
+				 
+				 $("#samplebox").css("color", hex);
+				 var title = $("#myModalLabel").text();
+				 $("."+title).css("color", hex);
+				console.log($("#samplebox").css("color"), " for " + title);
+				console.log($("."+title).css("color"));
+				}
+				 
+			});
+			$("#background.minicolors2").minicolors({
+				theme: 'bootstrap',
+				
+				change: function(hex, opacity) {
+					var title = $("#myModalLabel").text();
+						$("#samplebox").css("background-color", hex);
+						$("."+title).css("background-color", hex);
+					
+	//			console.log($("#myModalLabel").text().match(/back/g));
+	//			console.log("...."+hex + "....." + opacity);
+				}
+				 
+			});
+			$("#frame.minicolors2").minicolors({
+				theme: 'bootstrap',
+				
+				change: function(hex, opacity) {
+				 $("#samplebox").css("border-color", hex);
+				 var title = $("#myModalLabel").text();
+				 $("."+title).css("border-color", hex);
+	//			console.log($("#samplebox").css("color"));
+	//			console.log("...."+hex + "....." + opacity);
+				}
+				 
+			});
+			
+		</script>
+	
+	</body>
+
+</html>

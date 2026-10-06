@@ -1,0 +1,1 @@
+[{"stamp":"host","class":"_","name":"pool","onlyname":"father","creation":"05/26/21","time":"00:00","sender":"receiver"}]

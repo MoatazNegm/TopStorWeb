@@ -1,0 +1,68 @@
+@font-face {
+    font-family: dosisbold;
+    src: url('Dosis-Bold.woff2') format('woff2'),
+         url('Dosis-Bold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: dosismedium;
+    src: url('Dosis-Medium.woff2') format('woff2'),
+         url('Dosis-Medium.woff') format('woff');
+    font-weight: bold; 
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: dosissemibold;
+    src: url('Dosis-SemiBold.woff2') format('woff2'),
+         url('Dosis-SemiBold.woff') format('woff');
+    font-weight: normal; 
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: dosisextralight;
+    src: url('dosis-variablefont_wght-webfont.woff2') format('woff2'),
+         url('dosis-variablefont_wght-webfont.woff') format('woff');
+    font-weight: bold; 
+    font-style: normal;
+
+}
+.boldit, h1 {
+ font-family: dosisbold, sans-serif;
+font-weight: bold;
+font-style:normal;
+font-size: xx-large;
+}
+.headtitle {
+ font-size: x-large;
+ padding-top: 1rem;
+}
+.mosttext, body {
+ font-family: dosismedium, sans-serif;
+font-weight: normal;
+font-style:normal;
+font-size: large;
+}
+.alerttitle {
+ font-family: dosisbold, sans-serif;
+ font-weight: normal;
+ font-style: normal;
+ font-size: medium;
+}
+.btn-add {
+ background-color: #2939C6;
+ color: white;
+ opacity: 1;
+}
+.cardshead {
+ font-family: dosissemibold, sans-serif;
+ font-weight: normal;
+ font-style: normal;
+ font-size: x-large; 
+}

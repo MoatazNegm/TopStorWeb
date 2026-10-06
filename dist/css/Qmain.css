@@ -1,0 +1,138 @@
+.SelectedFree {
+	border: solid green;
+}
+.SelectedFreered {
+	border: solid red;
+}
+.SelectedFreewhite {
+	border: solid white;
+}
+.imgstyle {
+	height: 4.3rem;
+	width: 3.3rem;
+	margin-top: 0.2rem;
+}
+.psize {
+	font-weight: bold;
+	color: darkblue;
+	margin-top: -2.5rem;
+	margin-left: -0.55rem;
+	margin-bottom: 1.1rem;
+	text-align: center;
+	width: 4.4rem;
+}
+.ptext {
+	text-align: center;
+	width: 4.4rem;
+	margin-bottom: 0.4rem;
+	margin-left: -0.5rem;
+	font-size: 0.8rem;
+	line-height: 0.3rem;
+}
+
+.pimage {
+	text-align: center;
+	width: 4.4rem;
+	margin-bottom: 0;
+	margin-left: -0.5rem;
+	font-size: 0.8rem;
+	line-height: 0.9em;
+}
+select.btn-mini {
+	height: auto;
+	line-height: 14px;
+}
+
+/* this is optional (see below) */
+select.btn {
+	font-weight: bold;
+	padding: 0px;
+	-webkit-appearance: button;
+	-moz-appearance: button;
+	appearance: button;
+	padding-right: 16px;
+}
+
+select.btn-mini + .caret {
+	font-weight: bold;
+	padding: 0px;
+	margin-left: -20px;
+	margin-top: 9px;
+}
+@keyframes blinking {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+.silvering {
+	animation-name: blinking;
+	animation-duration: 2s; 
+	animation-iteration-count: infinite;
+}
+.blink-bg{
+		color: #fff;
+		padding: 10px;
+		display: inline-block;
+		border-radius: 5px;
+		animation: blinkingBackground 2s infinite;
+	}
+	@keyframes blinkingBackground{
+		0%		{ background-color: #10c018;}
+		25%		{ background-color: #1056c0;}
+		50%		{ background-color: #ef0a1a;}
+		75%		{ background-color: #254878;}
+		100%	        { background-color: #04a1d5;}
+	}
+.isDisabled {
+  color: currentColor;
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
+}
+
+.hostform
+{
+       padding: 0 3rem;
+}
+
+.hostform label{
+       margin: auto 0;
+}
+
+#UserList.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+#UserList.thead-dark th {
+    background-color: #2939C6;
+    color: white;
+}
+#UserListth1 {
+	width:15% !important;
+}
+#UserListth2 {
+	width:15% !important;
+}
+#UserListth3 {
+	width:6% !important;
+}
+#UserListth4 {
+	width:45% !important;
+}
+#UserListth5 {
+	width:10% !important;
+}
+#UserListth6 {
+	width:5% !important;
+}
+#UserListth7 {
+	width:4%  !important;
+}
+#UserListbody {
+        color:#2939C6;
+} 

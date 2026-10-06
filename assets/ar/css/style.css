@@ -1,0 +1,491 @@
+/*-----Typography-----*/
+.navbar-text {
+	font-weight: bold;
+	text-align: right;
+	margin: 0;
+}
+/*----Navbar ----*/
+.navbar {
+	background: lightgrey;
+}
+/*-----Logos&Icons-----*/
+.maintext {
+	color: blue;
+	font-size: 3rem;
+	
+}
+
+body {
+	background: -webkit-linear-gradient(#D3D3D3, #B2BEB5, #D3D3D3); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(#D3D3D3, #B2BEB5, #D3D3D3); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(#D3D3D3, #B2BEB5, #D3D3D3); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(#6E7F80, #B2BEB5, #6E7F80); /* Standard syntax (must be last) */
+	z-index: -100;
+}
+.container-fluid {
+ margin: 2px 3%;
+}
+.img-logo {
+	padding: .3% 3%; 
+/*border-bottom: #B2BEB5 3px groove; */
+}
+.rightPane,
+.leftPane {
+	border: 5px ridge;
+	height: 43rem; 
+	
+
+
+
+}
+.rightPane {
+	background-color: #3e4146; /* Old browsers */
+	
+
+}
+.leftPane {
+	background-color: lightgrey;
+
+	padding:1px;
+	text-align: center;
+	
+}
+.nav-tabs {
+	background-color: green;
+	
+	
+}
+ul.nav-stacked li {
+	  list-style:none;
+    margin:0;
+    padding:0;
+    height: 7rem;
+
+    
+}
+
+ul.nav-stacked li a {
+	background-image:url('../../img/accounts2.png');
+    background-repeat: no-repeat;
+    background-size: 3rem 2rem;
+	background-position: center .8rem;
+	text-align: center;
+}
+ul.nav-stacked li:nth-child(2) a{
+	background-image:url('../../img/status.png');
+}
+ul.nav-stacked li:nth-child(3) a{
+	background-image:url('../../img/protocol.png');
+}
+ul.nav-stacked li:nth-child(4) a{
+	background-image:url('../../img/replication.png');
+}
+ul.nav-stacked li:nth-child(5) a{
+	background-image:url('../../img/diskconfig.png');
+}
+ul.nav-stacked li:nth-child(6) a{
+	background-image:url('../../img/configuration.png');
+}
+.rightPane a {
+	display: inline-block;
+	
+}
+.rightPane h4 {
+/*	background-image:url('../img/future.png'); */
+	width: 15rem;
+	height: 6rem;
+	position: relative;
+	background-size: 5rem 3rem;
+	margin: 2rem;
+	
+}
+
+h4 span {
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	
+	text-align: center;
+}
+.rightPane ul li {
+	display: inline;
+}
+.rightPane ul li a{
+    background-repeat: no-repeat;
+    background-size: 4rem 4rem;
+	background-position: center .8rem;
+}
+.rightPane ul li a:hover {
+	-ms-transform:scale(1.2); /* IE 9 */
+	-webkit-transform:scale(1.2); /* Chrome, Safari, Opera */
+	transform:scale(1.2); /* Standard syntax */
+}
+.Proxya {
+	background-image:url('../../img/Proxy.png');
+}
+.ADa {
+	background-image:url('../../img/AD.png');
+}
+.UnLina {
+	background-image:url('../../img/linux.png');
+}
+.Futurea {
+	background-image:url('../../img/future.png');
+}
+.SSa {
+	background-image:url('../../img/SS.png');
+}
+.Logsa {
+	background-image:url('../../img/logs.png');
+}
+.CIFSa {
+	background-image:url('../../img/cifs.png');
+}
+.NFSa {
+	background-image:url('../../img/nfs.png');
+}
+.ISCSIa {
+	background-image:url('../../img/iscsi2.png');
+}
+.DiskGroupa {
+	background-image:url('../../img/diskconfigs.png');
+}
+.SnapShotsa {
+	background-image:url('../../img/snapshot.png');
+}
+.UserPrivilegesa {
+	background-image:url('../../img/Priv.png');
+}
+.Uploada {
+	background-image:url('../../img/Uploadfirmware.png');
+}
+.Colourizea {
+	background-image:url('../../img/colourize.png');
+}
+.Partnersa {
+	background-image:url('../../img/Partners.png');
+}
+
+.Replicatea {
+	background-image:url('../../img/receivers.png');
+}
+.Sendersa {
+	background-image:url('../../img/senders.png');
+}
+
+.modal {
+	position: relative;
+	left : -10%;
+	top: -10%;
+	overflow:hidden;
+
+}	
+.box {
+	
+	border : #B2BEB5 3px solid;
+/*	
+	background-image:url('../img/future.png');
+	background-repeat:no-repeat;
+	background-position:left top;
+	background-size: 4rem 4rem;
+*/	background: #797e86;
+	padding: 2px;
+	margin: -1rem;
+}
+.box2 {
+	
+	margin-top:-4rem;
+	margin-left: -1rem;
+	margin-bottom: -5rem;
+	height: 25rem; 
+	padding: 0;
+}
+h2 {
+	margin:0 0 1.5rem 0;
+	background-image:url('../../img/future.png');
+	background-repeat:no-repeat;
+	background-position:1.2rem top;
+	background-size: 4rem 4rem;
+	color: #145014;
+
+	
+}
+
+.form-control {background-color: lightgrey;}
+.submitb {
+		margin-top: 4.7rem;
+}
+.finish {
+	margin-top: .44rem;
+}
+.configTitle {
+	text-align: center;
+	height: 4rem;
+}
+.boxoffields { 
+	
+	border : white 1px solid;
+}
+.boxoffields2 {
+	/*border	:	white 1px solid;*/
+	margin-left : 0.8rem;
+}
+.boxoffields3 {
+	/*border	:	white 1px solid;*/
+	padding-right : -20rem;
+}
+.boxoffields span {
+	position: absolute;
+
+	margin: -1.2rem 0 0 0 ;
+	background: #797e86;
+	
+}
+.footer {
+   position:fixed;
+   right: 3px;
+   left: 3px;
+   bottom:0;
+   border: #B2BEB5 3px groove;
+   height: 3rem;
+   background:#999;
+}
+
+.demo-container {
+	box-sizing: border-box;
+	
+	width: 45rem;
+	height: 10.5rem;
+/*	width: 850px;
+	height: 450px;
+	padding: 20px 15px 15px 15px;
+	margin: 15px auto 30px auto;
+	border: 1px solid #ddd;
+	background: #fff;
+	background: linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -o-linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -ms-linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -moz-linear-gradient(#f6f6f6 0, #fff 50px);
+	background: -webkit-linear-gradient(#f6f6f6 0, #fff 50px);
+	box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+	-o-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-ms-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	-webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	*/
+}
+
+.demo-placeholder {
+	padding: 0px;
+	width: 100%; 
+	height: 100%;
+	font-size: 14px;
+	line-height: 1.2em;
+	margin: 0px ;
+}
+.logswrapper {
+	padding:0;
+}
+#logsarea {
+	height: 10rem;
+	width: 100%;
+	margin: 1rem -1rem 0 0 ;
+}
+
+.labels {
+	text-align: right;
+}
+.addiqn, .remiqn {
+	margin-left:-2rem;
+}
+.addclient, .remclient {
+	margin-left:-.5rem;
+}
+.middlemargin {
+		margin-top: 2rem;
+}
+#runningdik1{
+	background-image:url('../../img/disks.png');
+	background-repeat: no-repeat;
+  background-size: 4rem 9rem;
+	background-position: center .8rem;
+	text-align: center;
+	height: 9rem;
+}
+
+
+#raidtabl td, #raidtabl tr {
+
+	margin: 0.03rem;
+	vertical-align:middle;
+	
+}
+.radiocontrol, .table {
+	margin: 0.01rem;
+	padding: 0;
+}
+#emptydiv {
+	height: 4.32rem;
+}
+.separator {
+	margin-left: 2rem;
+}
+.separatortop {
+	margin-top: .5rem;
+}
+.NNmodal-dialog, #modalcontainer {
+			position: fixed;
+			left: 50%;
+			top : -2% ;
+			width: 20	rem ;
+} 
+#samplebox {
+	position: relative;
+	left: 38%;
+	margin-top: 2rem;
+	width : 15rem;
+	height: 3rem;
+	border: solid 2px;
+	color: red;
+	background-color: green;
+	}
+.modal-backdrop.in {
+  filter: alpha(opacity=0);
+  opacity: 0;
+}
+.config_body { z-index:98;}
+.config_continer { z-index:-96;}
+input, select { padding: -5;   margin: -5; }
+.dropdown-menu { min-width: 100px; max-height: 100px}
+.bootstrap-timepicker-widget table td a { padding : 1px 0;}
+.fonting , label { 
+	font-size: 1.2rem;
+	}
+.fonting {
+	margin-bottom: -0.2rem;
+
+	}
+.margins {
+margin-left: 1.4rem;
+}
+.spacer { margin-top : 2.5rem;}
+.spacer2 { margin-top : 0.5rem;}
+.spacer3 { margin-top : 3.3rem;}
+.spacer4 { margin-top : 0.05rem;}
+.notnow { display: none;}
+.boxize { border : #B2BEB5 3px solid; }
+
+#vollist { 
+	background-color: white;
+ }
+
+.spacer-sm { margin-top : .5rem;}
+.table { table-layout:fixed;  text-align: center;}
+.table th,.centry { text-align: center;}
+.table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  }
+
+.scrolled { 
+		
+    height: 13rem;
+    padding-right: 1px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.highlight { background-color: blue; }
+#chartNFS, .chart { height: 20rem;   width:40rem;
+							margin-left: -7.2rem;
+							margin-bottom: -15rem;
+							margin-top: -2.4rem;
+}
+
+td { font-size : 1.3rem;}
+.datepicker {z-index: 1151 !important ;}
+ table {z-index:1150 !important;
+						background: white;}
+.panel-heading { padding: 1px;}
+.panel-body { padding: 5px; 
+							margin-right: 15px;
+			}
+.jqplot-target { z-index:1150 !important;}
+.jqplot-title { color: #131D1D;}
+.jqplot-axis { color: #2E2E4D;}
+.bootstrap-timepicker-widget {z-index: 1153 !important ;}
+#logoff, #userpass { color: #131D1D; text-decoration: underline;}
+#userlog { margin-top: 3.4rem;}
+#submitdiskgroup, #deletePool { margin-top: 1rem;}
+p.Priv { font-size : 1.1rem; 
+						display: inline;
+				
+				}
+input.checkboxy {  margin-top: 0.2rem;
+				display: inline;
+			}
+input.checkboxyar { 
+				margin-top: 0 px;
+				margin-bottom: 0 px;
+				display: inline;
+			}
+
+.upload-drop-zone { height: 30rem; border-width: 2px ; margin-bottom: 1rem; }
+.upload-drop-zone { width: 80%; color: #ccc; border-style: dashed; border-color: #ccc; line-height: 3rem; text-align: center } 
+.upload-drop-zone.drop { color: #222; border-color: #222; }
+.progress { padding: 0px; margin-bottom: 0px; }
+.h3msg { margin-top: 0px; margin-bottom: 0.3rem; font-size: 2.3rem;}
+#Logdetails { margin-left: 0.5rem;}
+.panel-body { padding-top: 0.2rem;}
+td { padding: 0.1rem;}
+.popover{
+    max-width:800px;
+   
+}
+#Replicatestatus {
+	width: 94%;
+	margin-left: 1.4rem;
+}
+#DeleteSnapshot {
+	margin-left: 1rem;
+}
+#SnapshotCreate {
+	margin-top: 0.3rem;
+}
+#Replicatefinish
+{
+	margin-top: 0.5rem;
+}
+#partnerc
+{
+ margin-left: 2rem;
+}
+#prox.checkbox, .partnc {
+ padding-top: 0px;
+ padding-left: 0px;
+}
+#prox.checkbox label{
+ padding-left: 0px;
+}
+#Proxy {
+ margin-top: 1.8rem;
+}
+.bootstrap-timepicker-widget.dropdown-menu.open {
+	top: 1px;
+	width: 10%;
+}
+
+#Volumnamedetails {
+margin-left: 0.2 rem;
+}
+#Volumnamedetails .panel-body .row div {
+
+border-left: 10px solid transparent;
+border-color: transparent;
+}
+#lang {
+	margin-right: 1rem;
+	color: darkred; 
+}
+#lang a { color : darkred; }

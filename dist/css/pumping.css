@@ -1,0 +1,134 @@
+/* #heart {
+	stroke: url(#radialGradient);
+} */
+/* html,
+body {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+} */
+
+#Loading {
+	display: flex;
+	height: 100vh;
+	width: 100vw;
+	align-items: center;
+	justify-content: center;
+	animation: 1.5s ease 0s infinite pulse;
+}
+
+.wrapper-index {
+	z-index: 1;
+}
+
+.no_scroll_overlay {
+	overflow: hidden;
+}
+
+#pumping {
+	height: 100%;
+	animation: 1.5s ease 0s infinite beat;
+}
+
+/*MEDIA QUERIES*/
+@media (min-width: 1200px) {
+	#pumping {
+		max-width: 50rem;
+		max-height: 15rem;
+		width: auto;
+		height: auto;
+	}
+}
+
+@media (min-width: 992px) {
+	#pumping {
+		max-width: 45rem;
+		max-height: 12rem;
+		width: auto;
+		height: auto;
+	}
+}
+
+@media (min-width: 768px) {
+	#pumping {
+		max-width: 40rem;
+		max-height: 9rem;
+		width: auto;
+		height: auto;
+	}
+}
+
+@media (max-width: 768px) {
+	#pumping {
+		max-width: 35rem;
+		max-height: 7rem;
+		width: auto;
+		height: auto;
+	}
+}
+
+@keyframes beat {
+	0%,
+	50%,
+	100% {
+		transform: scale(1, 1);
+	}
+	30%,
+	80% {
+		transform: scale(0.92, 0.95);
+	}
+}
+
+/* @keyframes pulse {
+	0%,
+	50%,
+	100% {
+		background: #fff;
+	}
+	30%,
+	80% {
+		background: #fff;
+	}
+} */
+
+#Loading {
+	margin-bottom: 0;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+#overlay-container {
+	height: 100vh;
+	width: 100vw;
+}
+
+#Minutelytable th {
+	width: auto !important;
+}
+
+#Hourlytable th {
+	width: auto !important;
+}
+
+.bootstrap-datetimepicker-widget {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0;
+	padding: 0;
+	min-width: 7.5rem;
+}
+
+.bootstrap-datetimepicker-widget .list-unstyled {
+	margin: 0;
+}
+
+.timepicker .timepicker-picker .table-condensed tr:nth-child(2) td:nth-child(odd) {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

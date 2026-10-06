@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+	<?php include "header.html"; ?>
+	<body>
+			
+<!------------  NAV Bar --------------->
+		<div class="container-fluid">
+			<div class="row">
+				<div class="img-logo ">
+					<div class="col-sm-3">
+						<a class="pull-left logoimg" href="#">
+							<img src="img/logo2.png" height="200" width="200" class="img-responsive"> 
+						</a>
+					</div>
+					<div class="col-sm-6">
+						<h1 class="text-center maintext"><strong>Flex Storage</strong></h1>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="">
+					<div class=" col-sm-1 leftPane">
+						<ul class="nav nav-pills nav-stacked">
+							<li ><a href="accounts.html" ><br>Accounts</a></li>
+							<li class="active"><a href="status.html"  ><br>Status</a></li>
+							<li><a href="Protocol.html" ><br>Protocol</a></li>
+							<li><a href="replication.html" ><br>replication</a></li>
+							<li><a href="Pools.html"  ><br>Pools</a></li>
+							<li><a href="config.html"  ><br>config</a></li>
+						</ul>
+					</div>
+					<div class="col-sm-11 rightPane">
+						<ul>
+							<li><a href="#" class="SSa"><h4 id="SS"><span>Services Status</span></h4></a></li>
+							<li><a href="#" class="Logsa"><h4 id="Logs"><span>Logs</span></h4></a></li>
+						</ul>
+						<div class="row SS">
+							<div class=" col-sm-offset-1 col-sm-10">
+								<div class="box ">
+									<div class="row">
+										<h2 class="configTitle"></h2>
+									</div>									
+									<div class="row">
+										<form class="form " role="form">
+											<div class=" boxoffields col-sm-offset-1 col-sm-2">
+												<span>Show Traffic</span>
+												<div class="checkbox">
+														<label>
+														<input type="checkbox"  value="CIFS">CIF
+														</label>
+												</div>
+												<div class="checkbox">
+														<label>
+															<input type="checkbox"  value="NFS">NFS
+														</label>
+												</div>
+												<div class="checkbox">
+														<label>
+															<input type="checkbox"  value="ISCSI">ISCSI
+														</label>
+												</div>
+											</div>
+											<div class= "col-sm-offset-1 col-sm-7 ">
+												<div class=" boxoffields ">
+													<span>Traffic chart</span>
+													<div class="demo-container">
+														<div id="placeholder" class="demo-placeholder"></div>
+													</div>
+												</div>
+												<div class="row"><button type="button" class="btn btn-default col-sm-offset-2 col-sm-8 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
+												</div>														
+											</div>
+										</form>
+									</div>	
+								</div>				
+							</div>
+						</div>
+						<div class="row Logs">
+							<div class=" col-sm-offset-1 col-sm-10">
+								<div class="box ">
+									<div class="row">
+										<h2 class="configTitle"></h2>
+									</div>									
+									<div class="row">
+										<form class="form " role="form">
+											<div class=" boxoffields col-sm-offset-1 col-sm-2">
+												<span>Logs</span>
+												<div class="checkbox">
+														<label>
+														<input type="checkbox"  value="info">INfo
+														</label>
+												</div>
+												<div class="checkbox">
+														<label>
+															<input type="checkbox"  value="Warning">Warning
+														</label>
+												</div>
+												<div class="checkbox">
+														<label>
+															<input type="checkbox"  value="Error">Error
+														</label>
+												</div>
+											</div>
+											<div class= "col-sm-offset-1 col-sm-7 ">
+												<div class=" boxoffields logswrapper">
+													<span>Log</span>
+													<textarea id="logsarea" class="form-group"></textarea>
+												</div>
+												<div class="row"><button type="button" class="btn btn-default col-sm-offset-2 col-sm-8 finish"  data-toggle="tooltip" data-placement="top" title="close window">Finish</button>
+												</div>																
+											</div>												
+										</form>
+									</div>	
+								</div>				
+							</div>
+					
+
+						
+					</div>
+				</div>
+			</div>
+			
+		</div>
+			
+		<div class="row">
+			<footer class="footer"> Errors
+			</footer>
+		</div>
+
+		<script src="jquery/jquery.js"></script>
+		<script src="jquery-ui/jquery-ui.js"></script>
+		<script src="jquery/jquery.datetimepicker.js"></script>
+		<script src="Bootstrap/js/bootstrap.min.js"></script>
+		<script>
+			var config = 1;
+			$(".SS").hide(); $(".Logs").hide(); 
+			$("#SS").click(function (){ 
+				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/SS.png')").text("Service Status"); $(".SS").show(); };});
+			$("#Logs").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/logs.png')").text("Logs"); $(".Logs").show();};});
+			$(".finish").click(function (){ config = 1; $(".SS").hide(); $(".Logs").hide();});
+						
+			var d1 = [];
+			for (var i = 0; i < 14; i += 0.5) {
+				d1.push([i, Math.sin(i)]);
+			};
+			
+			$.plot("#placeholder", [{
+			data: d1,
+			lines: { show: true, fill: false }
+		}]);
+
+	
+			
+		</script>
+
+	</body>
+
+</html>

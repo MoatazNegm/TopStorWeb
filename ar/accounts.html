@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+	<?php include "header.html"; ?>
+	<body>
+
+		
+<!------------  NAV Bar --------------->
+		<div class="container-fluid">
+			<div class="row">
+				<div class="img-logo ">
+					<div class="col-sm-3">
+						<a class="pull-left logoimg" href="#">
+							<img src="img/logo2.png" height="200" width="200" class="img-responsive"> 
+						</a>
+					</div>
+					<div class="col-sm-6">
+						<h1 class="text-center maintext"><strong>Flex Storage</strong></h1>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="">
+					<div ><?php $men = 1; include "menu.php"; ?> 
+					</div>
+					<div class="col-sm-11 rightPane">
+						<ul>
+							<li><a href="#" class="ADa"><h4 id="AD"><span>التوصيل بالوندوز</span></h4></a></li>
+							<li><a href="#" class="UnLina"><h4 id="UnLin"><span>المتصلين بالخزنة</span></h4></a></li>
+							<li><a href="#" class="Futurea"><h4 id="Future"><span>توصيف الخزنة</span></h4></a></li>
+						</ul>
+
+						<div class="row AD">
+							<div class=" col-sm-offset-1 col-sm-10">
+								
+									<div class="box ">
+										<div class="row">
+											<h2 class="configTitle">التوصيل بالوندوز</h2>
+										</div>									
+										<form class="form-horizontal " role="form">
+											<div class="row">
+												<div class="  col-sm-4 ">
+													<div class=" form-group row">
+														<label  for="DomWork" class="col-sm-5 control-label">المجال/مجموعة العمل</label>
+														<div class=" col-sm-6">
+															<input type="text" id="DomWork" class="form-control " placeholder="Dom/workgroup">
+														</div>
+													</div>
+													<div class=" form-group row ">
+														<label  for="Admin" class="col-sm-5 control-label">المدير</label>
+														<div class=" col-sm-6">
+															<input type="text" id="Admin" class="form-control " placeholder="Admin name">
+														</div>
+													</div>
+													<div class=" form-group row ">
+														<label  for="Pass" class="col-sm-5 control-label">كلمة السر</label>
+														<div class=" col-sm-6">
+															<input type="password" id="Pass" class="form-control " placeholder="Admin password">
+														</div>
+													</div>
+												</div>
+												<div class="  col-sm-2">
+													<div class="form-group row">
+														<label  for="type" class="control-label col-sm-3 ">النوع</label>
+														<div class="col-sm-9">
+															<select id="type"  class="form-control">
+																<option value="Domain" selected >المجال</option>
+																<option value="Workgroup"  >مجموعة عمل</option>
+															</select>
+														</div>
+													</div>
+													<div class="form-group row">
+														<div class="row">
+															<button type="button" class="btn btn-default col-sm-offset-3 col-sm-7 submitb" data-toggle="tooltip" data-placement="top" title="submit values">إدخال</button>
+														</div>
+													</div>
+												</div>
+												<div class=" col-sm-6">
+													<div class=" form-group row">
+														<div class=" col-sm-12">
+															<textarea class="form-control" rows="3"></textarea>
+														</div>
+														<div class="row">
+															<button type="button" class="btn btn-default col-sm-offset-3 col-sm-7 finish" data-toggle="tooltip" data-placement="bottom" title="close window">انتهاء</button>
+														</div>
+													</div>
+												</div>
+											</div>
+											
+											
+										 
+										</form>
+										
+									</div>				
+							</div>
+						</div>
+						
+						<div class="row UnLin">
+							<div class=" col-sm-offset-1 col-sm-10">
+								
+									<div class="box ">
+										<div class="row">
+											<h2 class="configTitle"></h2>
+										</div>									
+										<form class="form-horizontal " role="form">
+											<div class="row">
+												<div class="  col-sm-4 ">
+													<div class=" form-group row">
+														<label  for="User" class="col-sm-5 control-label">مستخدم</label>
+														<div class=" col-sm-6">
+															<input type="text" id="User" class="form-control " placeholder="user name">
+														</div>
+													</div>
+													<div class=" form-group row ">
+														<label  for="UserList" class="col-sm-5 control-label"></label>
+														<div class=" col-sm-6">
+															<select multiple size""3"" id="UserList" class="form-control " ><option>user1</option><option>user2</option><option>user3</option>
+														</div>
+													</div>
+													<div class=" form-group row ">
+														<label  for="UserPass" class="col-sm-5 control-label">كلمة السر</label>
+														<div class=" col-sm-6">
+															<input type="password" id="UserPass" class="form-control " placeholder="user password">
+														</div>
+													</div>
+												</div>
+												<div class="  col-sm-2">
+													<div class="form-group row">
+														<button type="button" class="btn btn-default  col-sm-10 adduser"  data-toggle="tooltip" data-placement="top" title="add user">إضافة مستخدم</button>
+													</div>
+													<div class="form-group row">
+														<div class="row">
+															<button type="button" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="remove user">إزالة مستخدم</button>
+														</div>
+													</div>
+												</div>
+												<div class=" col-sm-6">
+													<div class=" form-group row">
+														<div class=" col-sm-12">
+															<textarea class="form-control" rows="3"></textarea>
+														</div>
+														<div class="row">
+															<button type="button" class="btn btn-default col-sm-offset-3 col-sm-7 finish"  data-toggle="tooltip" data-placement="top" title="close window">انتهاء</button>
+														</div>
+													</div>
+												</div>
+											</div>
+											
+											
+										 
+										</form>
+										
+									</div>				
+							</div>
+						</div>
+						
+						<div class="row Future">
+							<div class=" col-sm-offset-1 col-sm-10">
+								
+									<div class="box ">
+										<div class="row">
+											<h2 class="configTitle"></h2>
+										</div>									
+										<form class="form-horizontal " role="form">
+											<div class="row">
+												<div class="  col-sm-4 ">
+													<div class=" form-group row">
+														<label  for="User" class="col-sm-5 control-label">مستخدم</label>
+														<div class=" col-sm-6">
+															<input type="text" id="User" class="form-control " placeholder="user name">
+														</div>
+													</div>
+													<div class=" form-group row ">
+														<label  for="UserList" class="col-sm-5 control-label"></label>
+														<div class=" col-sm-6">
+															<textarea rows="3" id="UserList" class="form-control " ></textarea>
+														</div>
+													</div>
+													<div class=" form-group row ">
+														<label  for="UserPass" class="col-sm-5 control-label">كلمة السر</label>
+														<div class=" col-sm-6">
+															<input type="password" id="UserPass" class="form-control " placeholder="user password">
+														</div>
+													</div>
+												</div>
+												<div class="  col-sm-2">
+													<div class="form-group row">
+														<button type="button" class="btn btn-default  col-sm-10 adduser"  data-toggle="tooltip" data-placement="top" title="add user">إضافة مستخدم</button>
+													</div>
+													<div class="form-group row">
+														<div class="row">
+															<button type="button" class="btn btn-default  col-sm-10 "  data-toggle="tooltip" data-placement="top" title="remove user">إزالة مستخدم</button>
+														</div>
+													</div>
+												</div>
+												<div class=" col-sm-6">
+													<div class=" form-group row">
+														<div class=" col-sm-12">
+															<textarea class="form-control" rows="3"></textarea>
+														</div>
+														<div class="row">
+															<button type="button" class="btn btn-default col-sm-offset-3 col-sm-7 finish"  data-toggle="tooltip" data-placement="top" title="close window">إنتهاء</button>
+														</div>
+													</div>
+												</div>
+											</div>
+											
+											
+										 
+										</form>
+										
+									</div>				
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			
+		</div>
+			
+		<div class="row">
+			<footer class="footer"> مشاكل
+			</footer>
+		</div>
+
+		<script src="../jquery/jquery.js"></script>
+		<script src="../jquery-ui/jquery-ui.js"></script>
+		<script src="../jquery/jquery.datetimepicker.js"></script>
+		<script src="../Bootstrap/js/bootstrap.min.js"></script>
+		<script>
+			var config = 1;
+			$(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();
+			$("#AD").click(function (){ 
+				if(config == 1 ) { config= 0; $("h2").css("background-image","url('img/AD.png')").text("Active Directory"); $(".AD").show(); };});
+			$("#UnLin").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/linux.png')").text("Linux/Unix"); $(".UnLin").show();};});
+			$("#Future").click(function (){ if(config== 1){ config = 0; $("h2").css("background-image","url('img/future.png')").text("Future"); $(".Future").show();};});
+			$(".finish").click(function (){ config = 1; $(".AD").hide(); $(".UnLin").hide(); $(".Future").hide();});
+			
+		</script>
+
+	</body>
+
+</html>

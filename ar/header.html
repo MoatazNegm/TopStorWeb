@@ -1,0 +1,70 @@
+
+<?php session_start(); 
+ if( $_REQUEST["idd"] != session_id() || $_SESSION["user"]=="") {  header('Location:/ar/Login.php');}
+ 
+?>
+<script src="../js/jquery.js"></script>
+
+<script src="../js/bootstrap.min.js"></script>
+<script src="js/bootstrap-arabic.min.js" ></script>
+<script src="../js/dropzone.js"></script>
+
+<script src="InitColor.js"></script>
+<script>
+$(document).ready(function() {
+	RestoreLastSettings();
+	$("#userpass").click(function (){   
+			$("#idduserpass").val("<?php  echo session_id() ?>");
+			$("#userpassform").submit();
+	
+	});
+});
+</script>
+<head>
+		
+		<meta Content="text/html"; charset="utf-8" >
+		<meta name="author" content="Mezobuntu1310">
+		<title>QuickStor</title>
+		<link  rel="stylesheet" href="../css/normalize.css" type="text/css">
+		<link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css">
+		<link rel="stylesheet" href="../css/bootstrap-theme.min.css" type="text/css">
+		<link rel="stylesheet" href="../css/jquery.minicolors.css">
+		<link rel="stylesheet" href="../css/jquery.jqplot.css">
+		<link rel="stylesheet" href="../css/datepicker3.css" type="text/css">
+		<link rel="stylesheet" href="../css/bootstrap-timepicker.min.css" type="text/css">
+		<link rel="stylesheet" href="css/bootstrap-arabic.min.css">
+		<link rel="stylesheet" href="css/bootstrap-arabic-theme.min.css">
+		
+		<link rel="stylesheet" href="css/style.css" type="text/css">
+	</head>
+<?php session_start(); ?>
+<body >
+	<form  id="userpassform" type="hidden" method="post" action="userpass.php">
+			<input type="hidden" id="idduserpass" name="idd">
+				<input type="hidden" value="Submit">
+		</form>	
+	<div class="colorize" id="body" Data-tag="#body,html" Data-id="body" Data-textcolor="no" Data-background="yes" Data-border="no" Data-backtrans=true >
+
+<!------------  NAV Bar --------------->
+		<div class="container-fluid">
+			<div class="row " id="caption" >
+				<div class="img-logo ">
+					<div class="col-sm-3">
+						<a class="pull-left logoimg" href="#">
+							<img src="../img/logo2.png" height="200" width="200" class="img-responsive"> 
+						</a>
+					</div>
+					<div class="col-sm-6">
+						<h1 class="text-center maintext colorize" id="Title" Data-tag="#Title" Data-id="Title" Data-textcolor="yes" Data-background="no" Data-border="no" ><strong>الخزنة</strong></h1>
+					</div>
+					<div class="col-sm-offset-11">
+						<h5 class="text-center colorize " id="userlog" Data-tag="#userlog" Data-id="userlog" Data-textcolor="yes" Data-background="no" Data-border="no" ><a id="userpass" href="#">المستخدم:<?php echo $_SESSION["user"];?></a>&nbsp&nbsp&nbsp<a id="logoff" href="Login.php">خروج</a></h5>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="">
+					<?php  include "menu.php"; ?> 
+					<div class="col-sm-11 rightPane" id="rightPane" Data-tag="#rightPane" Data-id="rightPane" Data-textcolor="yes" Data-background="yes" Data-border="yes">
+						<ul>
+

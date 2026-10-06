@@ -1,0 +1,38 @@
+#syncStatus {
+    font-size: x-small;
+    text-transform: uppercase;
+}
+
+#syncStatus span {
+    font-size: small;
+}
+
+#syncStatus.in-sync span {
+    color: green;
+}
+
+#syncStatus.not-in-sync span {
+    color: red;
+    animation: flash 1s infinite;
+}
+
+.temp-in-sync {
+    color: green;
+}
+
+.temp-not-in-sync {
+    color: red;
+    animation: flash 1s infinite;
+}
+
+@keyframes flash {
+    0% {
+      opacity: 1; /* Fully visible */
+    }
+    50% {
+      opacity: 0; /* Invisible */
+    }
+    100% {
+      opacity: 1; /* Fully visible again */
+    }
+  }
