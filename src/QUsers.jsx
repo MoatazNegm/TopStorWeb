@@ -54,10 +54,18 @@ const QUsers = () => {
 
     const handleAddUser = async (userData) => {
         try {
-            await addUser(userData);
+            const res = await addUser(userData);
+            // the backend applies the same rules as the form; if it still refuses, say why
+            const status = res?.data?.adduser || '';
+            if (status.startsWith('rejected')) {
+                setError(`User ${userData.name} was not created: ${status.replace(/^rejected:\s*/, '')}.`);
+            } else {
+                setError(null);
+            }
             await loadData();
         } catch (err) {
             console.error('Add user failed', err);
+            setError('The user could not be created: no answer from the server.');
         }
     };
 
@@ -130,7 +138,7 @@ const QUsers = () => {
                             <div className="rounded-lg border border-border bg-surface px-4 py-6 text-sm text-gray-500">Loading users...</div>
                         ) : (
                             <>
-                                <AddUserForm pools={pools} groups={groups} onAdd={handleAddUser} />
+                                <AddUserForm pools={pools} groups={groups} users={users} onAdd={handleAddUser} />
                                 <UserList
                                     users={users}
                                     groups={groups}

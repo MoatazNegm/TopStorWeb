@@ -14,11 +14,12 @@ import Button from './Common/Button';
 import Input from './Common/Input';
 import Dropdown from './Common/Dropdown';
 import Panel from './Common/Panel';
+import { validateUserName, validatePassword } from '../utils/userRules';
 
 const isValidIP = (ip) =>
     /^(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)$/.test(ip);
 
-const AddUserForm = ({ pools, groups, onAdd }) => {
+const AddUserForm = ({ pools, groups, users = [], onAdd }) => {
     const [formData, setFormData] = useState({
         Tenant: 'Cluster',
         User: '',
@@ -34,8 +35,15 @@ const AddUserForm = ({ pools, groups, onAdd }) => {
         setFormData(prev => ({ ...prev, [id]: value }));
     };
 
+    // The same rules as the backend (TopStor/uservalid.py).  A message is shown as soon as the field has content,
+    // and nothing is sent while a rule is broken.
+    const nameError = validateUserName(formData.User, users.map((user) => user.name));
+    const passError = validatePassword(formData.UserPass);
+    const canSubmit = !nameError && !passError;
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!canSubmit) return;
         const data = {
             name: formData.User,
             Volpool: formData.UserVol,
@@ -48,8 +56,6 @@ const AddUserForm = ({ pools, groups, onAdd }) => {
         };
         onAdd(data);
     };
-
-    const canSubmit = formData.User.length > 2 && formData.UserPass.length > 2;
 
     const ipError =
         formData.HomeAddress && !isValidIP(formData.HomeAddress)
@@ -99,11 +105,12 @@ const AddUserForm = ({ pools, groups, onAdd }) => {
                 <div className="grid min-w-0 grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                     <Input
                         label="User Name"
-                        placeholder="e.g. john_doe"
+                        placeholder="e.g. john-doe"
                         id="User"
                         value={formData.User}
                         onChange={(event) => handleChange('User', event.target.value)}
                         icon={<User size={16} />}
+                        error={formData.User ? nameError : ''}
                     />
 
                     <Input
@@ -114,6 +121,7 @@ const AddUserForm = ({ pools, groups, onAdd }) => {
                         value={formData.UserPass}
                         onChange={(event) => handleChange('UserPass', event.target.value)}
                         icon={<Key size={16} />}
+                        error={formData.UserPass ? passError : ''}
                     />
 
                     <Dropdown

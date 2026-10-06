@@ -87,6 +87,9 @@ Unlin1019: Problem occurred while adding user :
 Unlin1020:2: : from :: Problem occurred while adding user :
 Unlin1120:2: : from :: Problem occurred while adding group :
 Unlin1021uu:1: : from :: User : already exists
+Unlin1027nm:2: : from :: User : cannot be created as the name must be 3 to 32 letters, digits or - and start with a letter
+Unlin1027rs:2: : from :: User : cannot be created as the name is reserved for the system
+Unlin1027pw:2: : from :: User : cannot be created as the password is empty or not valid (3 characters or more, without blanks, quotes, back slashes, * ? [ ])
 Unlin1021gg:1: : from :: Group : already exists
 Unlin1021vv:1: : from :: Volume : already exists
 Unlin1021uv:1: : from :: User : cannot be created as there is a volume with same name
