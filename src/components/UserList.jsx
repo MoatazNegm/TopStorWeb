@@ -1,5 +1,5 @@
 import React from 'react';
-import { KeyRound, RotateCcw, Search, Shield, Trash2, UserX, Users, X } from 'lucide-react';
+import { Check, KeyRound, RotateCcw, Search, Shield, Trash2, UserX, Users, X } from 'lucide-react';
 import Dropdown from './Common/Dropdown';
 import Panel from './Common/Panel';
 import SubmitBar from './Common/SubmitBar';
@@ -306,6 +306,20 @@ const RevertButton = ({ onClick, title = 'Cancel this change' }) => (
     </button>
 );
 
+// the small square ok: leaves the edit shape; the changed value stays in the field with the original shown above it
+const OkButton = ({ onClick, disabled = false }) => (
+    <button
+        type="button"
+        onMouseDown={(event) => event.preventDefault()}
+        onClick={onClick}
+        disabled={disabled}
+        title={disabled ? 'Enter a valid value first' : 'Done editing this field (the change is submitted with Submit changes)'}
+        className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-sm border border-success-100 bg-success-50 text-success-600 transition-colors hover:bg-success-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+    >
+        <Check size={11} />
+    </button>
+);
+
 const useEditSession = (editing, column, onEditState) => {
     React.useEffect(() => {
         if (!editing) return undefined;
@@ -342,15 +356,22 @@ const AddressCell = ({ user, pend, onStage, onRevert, applyTo = 0, onEditState }
     const revert = () => { onRevert(['address', 'subnet']); setEditing(false); };
 
     if (!editing) {
+        const valueButton = (
+            <button type="button" onClick={start} disabled={locked}
+                title={!hasHome(user) ? 'No home storage' : changed ? `Changed from ${address || 'not set'}; not applied until submitted` : 'Click to edit the address'}
+                className={`block min-w-0 flex-1 truncate rounded px-1 py-0.5 text-left font-mono text-xs ${
+                    locked ? 'cursor-default text-gray-300' : changed ? 'bg-warning-50 text-warning-700 hover:bg-warning-100' : 'text-gray-700 hover:bg-gray-100'}`}>
+                {!hasHome(user) ? '—' : shownAddress ? `${shownAddress}/${shownSubnet}` : <span className="text-gray-400">not set</span>}
+            </button>
+        );
+        if (!changed || locked) return <div className="flex items-center gap-1">{valueButton}</div>;
         return (
-            <div className="flex items-center gap-1">
-                <button type="button" onClick={start} disabled={locked}
-                    title={!hasHome(user) ? 'No home storage' : changed ? `Changed from ${address || 'not set'}; not applied until submitted` : 'Click to edit the address'}
-                    className={`block min-w-0 flex-1 truncate rounded px-1 py-0.5 text-left font-mono text-xs ${
-                        locked ? 'cursor-default text-gray-300' : changed ? 'bg-warning-50 text-warning-700 hover:bg-warning-100' : 'text-gray-700 hover:bg-gray-100'}`}>
-                    {!hasHome(user) ? '—' : shownAddress ? `${shownAddress}/${shownSubnet}` : <span className="text-gray-400">not set</span>}
-                </button>
-                {changed && !locked && <RevertButton onClick={revert} />}
+            <div>
+                <CurrentValue>{address ? `${address}/${subnet}` : 'not set'}</CurrentValue>
+                <div className="flex items-center gap-1">
+                    {valueButton}
+                    <RevertButton onClick={revert} />
+                </div>
             </div>
         );
     }
@@ -370,6 +391,7 @@ const AddressCell = ({ user, pend, onStage, onRevert, applyTo = 0, onEditState }
                     onChange={(event) => { setDraftSubnet(event.target.value); apply(draft, event.target.value); }}
                     className="h-6 w-12 rounded border border-border bg-surface px-1 text-xs outline-none focus:border-brand-500"
                 />
+                <OkButton onClick={() => setEditing(false)} disabled={draft.trim() === '' || Boolean(ipError(draft))} />
                 <RevertButton onClick={revert} />
             </div>
         </div>
@@ -395,15 +417,22 @@ const QuotaCell = ({ user, pend, onStage, onRevert, applyTo = 0, onEditState }) 
     const revert = () => { onRevert(['quota']); setEditing(false); };
 
     if (!editing) {
+        const valueButton = (
+            <button type="button" onClick={start} disabled={locked}
+                title={!hasHome(user) ? 'No home storage' : changed ? `Changed from ${quota}; not applied until submitted` : 'Click to edit the quota'}
+                className={`inline-flex min-w-[2.5rem] justify-center rounded-sm border px-2 py-0.5 text-xs font-medium ${
+                    locked ? 'cursor-default border-border bg-surface-muted text-gray-300' : changed ? 'border-warning-100 bg-warning-50 text-warning-700' : 'border-border bg-surface-muted text-gray-700 hover:border-brand-500'}`}>
+                {!hasHome(user) ? '—' : shown}
+            </button>
+        );
+        if (!changed || locked) return <div className="flex items-center justify-center gap-1">{valueButton}</div>;
         return (
-            <div className="flex items-center justify-center gap-1">
-                <button type="button" onClick={start} disabled={locked}
-                    title={!hasHome(user) ? 'No home storage' : changed ? `Changed from ${quota}; not applied until submitted` : 'Click to edit the quota'}
-                    className={`inline-flex min-w-[2.5rem] justify-center rounded-sm border px-2 py-0.5 text-xs font-medium ${
-                        locked ? 'cursor-default border-border bg-surface-muted text-gray-300' : changed ? 'border-warning-100 bg-warning-50 text-warning-700' : 'border-border bg-surface-muted text-gray-700 hover:border-brand-500'}`}>
-                    {!hasHome(user) ? '—' : shown}
-                </button>
-                {changed && !locked && <RevertButton onClick={revert} />}
+            <div className="inline-block text-left">
+                <CurrentValue>{quota}</CurrentValue>
+                <div className="flex items-center gap-1">
+                    {valueButton}
+                    <RevertButton onClick={revert} />
+                </div>
             </div>
         );
     }
@@ -420,6 +449,7 @@ const QuotaCell = ({ user, pend, onStage, onRevert, applyTo = 0, onEditState }) 
                     onChange={(event) => change(event.target.value.replace(/\D/g, '').slice(0, 5))}
                     className="h-6 w-14 rounded border border-border bg-surface px-1.5 text-center text-xs outline-none focus:border-brand-500"
                 />
+                <OkButton onClick={() => setEditing(false)} disabled={!/^\d{1,5}$/.test(draft)} />
                 <RevertButton onClick={revert} />
             </div>
         </div>
@@ -473,6 +503,9 @@ const UserRow = ({ user, allGroups, pend, onStage, onRevert, onChangePassword, i
                 <QuotaCell user={user} pend={pend} onStage={onStage} onRevert={onRevert} applyTo={applyTo} onEditState={onEditState} />
             </td>
             <td className="px-2.5 py-1">
+                {pend.groups !== undefined && !removed && (
+                    <CurrentValue>{userGroupNames(user, allGroups).join(', ') || 'no groups'}</CurrentValue>
+                )}
                 <div className="flex items-center gap-1.5">
                     <div className={`min-w-0 flex-1 ${pend.groups !== undefined ? 'rounded ring-1 ring-warning-100' : ''}`}>
                         <Dropdown

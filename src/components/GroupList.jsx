@@ -127,6 +127,11 @@ const GroupRow = ({ group, allUsers, pend, onStage, onRevert }) => {
                 <span className={`text-sm font-semibold ${removed ? 'text-gray-400 line-through' : 'text-gray-800'}`}>{group.name}</span>
             </td>
             <td className="min-w-[300px] px-2.5 py-1">
+                {pend.members !== undefined && !removed && (
+                    <div className="mb-0.5 whitespace-nowrap text-[9px] font-medium leading-none text-success-600" title="current value">
+                        {initialMembers.map((id) => { const match = allUsers.find((u) => String(u.id) === id); return match ? match.text : id; }).join(', ') || 'no members'}
+                    </div>
+                )}
                 <div className="flex items-center gap-1.5">
                     <div className={`min-w-0 flex-1 ${pend.members !== undefined ? 'rounded ring-1 ring-warning-100' : ''}`}>
                         <Dropdown
