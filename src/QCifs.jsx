@@ -4,6 +4,7 @@ import { fetchVolumesInfo, fetchGroupList, createVolume, updateVolume, deleteVol
 import { fetchPoolsInfo } from './api/pools';
 import Button from './components/Common/Button';
 import Input from './components/Common/Input';
+import { ipError } from './components/Common/NetFields';
 import Dropdown from './components/Common/Dropdown';
 import CifsList from './components/CifsList';
 import VolumeInsights from './components/VolumeInsights';
@@ -66,6 +67,7 @@ const QCifs = () => {
 
     const handleCreate = async (e) => {
         e.preventDefault();
+        if (ipError(formData.ipaddress)) return;
         try {
             const poolObj = pools[formData.pool];
             const isDomain = formData.serving === 'domain';
@@ -199,16 +201,15 @@ const QCifs = () => {
                                     <div className="grid grid-cols-2 gap-6">
                                         <Input
                                             label="IP Address"
+                                            kind="ip"
                                             required
-                                            placeholder="192.168.1.10"
                                             value={formData.ipaddress}
                                             onChange={(e) => setFormData({ ...formData, ipaddress: e.target.value })}
                                         />
                                         <div className="grid grid-cols-2 gap-4">
                                             <Input
                                                 label="Subnet"
-                                                type="number"
-                                                min="8" max="32" step="8"
+                                                kind="subnet"
                                                 required
                                                 value={formData.Subnet}
                                                 onChange={(e) => setFormData({ ...formData, Subnet: e.target.value })}
@@ -311,6 +312,7 @@ const QCifs = () => {
                                             type="submit"
                                             className="w-full sm:w-auto"
                                             onClick={handleCreate}
+                                            disabled={!!ipError(formData.ipaddress)}
                                         >
                                             Provision Volume
                                         </Button>

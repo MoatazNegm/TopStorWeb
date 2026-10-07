@@ -10,6 +10,17 @@ import { Server } from 'lucide-react';
  * @property {function} [onClick] - Optional click handler
  */
 
+/**
+ * The label of a node box: its alias when one is set, otherwise the host name.
+ * An alias that is empty or "_1" (etcd's "not found") counts as not set.
+ */
+export const nodeLabel = (host, allHosts) => {
+    const hostName = typeof host === 'object' ? (host.name || host.alias) : host;
+    const full = (allHosts && allHosts[hostName]) || (typeof host === 'object' ? host : {});
+    const alias = (typeof full.alias === 'string' ? full.alias : (typeof host === 'object' && typeof host.alias === 'string' ? host.alias : '')).trim();
+    return alias && alias !== '_1' && alias !== hostName ? alias : hostName;
+};
+
 const ServerNode = ({ name, ip, state = 'up', selected = false, className = '', onClick }) => {
     const config = {
         up: {
@@ -35,24 +46,25 @@ const ServerNode = ({ name, ip, state = 'up', selected = false, className = '', 
         <button
             onClick={onClick}
             className={`
-                group flex min-h-[60px] w-full items-center gap-3 rounded-lg border px-3.5 py-3 text-left
+                group flex min-h-[48px] w-fit min-w-[150px] items-center gap-2 rounded-lg border px-2.5 py-2 text-left
                 ${selected ? 'border-brand-500 bg-brand-50/40 ring-4 ring-brand-100' : 'border-border bg-surface hover:border-border-strong hover:bg-gray-50'}
                 transition-colors
                 ${className}
             `}
         >
-            <span className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md ${selected ? 'bg-brand-100 text-brand-600' : 'bg-gray-100 text-gray-500'}`}>
+            <span className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md ${selected ? 'bg-brand-100 text-brand-600' : 'bg-gray-100 text-gray-500'}`}>
                 <Server size={18} />
             </span>
 
             <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-semibold text-gray-800">{name}</span>
-                <span className="block truncate font-mono text-xs text-gray-500">{ip}</span>
-            </span>
-
-            <span className="flex flex-shrink-0 items-center gap-1.5">
-                <span className={`h-2 w-2 rounded-full ${currentConfig.dot}`}></span>
-                <span className={`hidden text-[11px] font-medium sm:inline ${currentConfig.labelClass}`}>{currentConfig.label}</span>
+                <span className="flex items-center gap-1.5">
+                    <span className="min-w-0 truncate text-sm font-semibold text-gray-800">{name}</span>
+                    <span className="flex flex-shrink-0 items-center gap-1" title={currentConfig.label}>
+                        <span className={`h-2 w-2 rounded-full ${currentConfig.dot}`}></span>
+                        <span className={`text-[11px] font-medium ${currentConfig.labelClass}`}>{currentConfig.label}</span>
+                    </span>
+                </span>
+                <span className="block whitespace-nowrap font-mono text-xs text-gray-500">{ip}</span>
             </span>
         </button>
     );

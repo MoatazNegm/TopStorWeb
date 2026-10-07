@@ -33,3 +33,10 @@ export const updateUserPrivileges = (username, auths) => {
     // auths is a comma-separated string of "id-checked" values
     return api.post('api/v1/users/usersauth', { tochange: username, auths });
 };
+
+export const changeUserHome = (name, fields) => {
+    // Quota and address restriction of a user's home folder. The backend route is added in a separate flow; the contract:
+    //   POST api/v1/users/userhomechange  { name, tenant, Volsize?: '<GB>', HomeAddress?: 'a.b.c.d', HomeSubnet?: '8|16|24|32' }
+    // Only users that have a home folder (a pool other than NoHome) are sent.
+    return api.post('api/v1/users/userhomechange', { name, tenant: 'Cluster', ...fields });
+};

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AlertCircle, KeyRound, RefreshCw, X } from 'lucide-react';
-import { fetchUserList, fetchGroupList, addUser, deleteUser, updateUserGroups, changePassword } from './api/users';
+import { fetchUserList, fetchGroupList, addUser, deleteUser, updateUserGroups, changePassword, changeUserHome } from './api/users';
 import { fetchPoolsInfo } from './api/pools';
 import Button from './components/Common/Button';
 import AddUserForm from './components/AddUserForm';
@@ -10,6 +10,8 @@ const QUsers = () => {
     const [users, setUsers] = useState([]);
     const [groups, setGroups] = useState([]);
     const [pools, setPools] = useState([]);
+    // address / quota submitted from the list, shown until the list is loaded again
+    const [localEdits, setLocalEdits] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const firstLoadRef = useRef(true);
@@ -51,6 +53,86 @@ const QUsers = () => {
             }
         };
     }, [loadData]);
+
+    // A change for several users is a queue of single requests through the API, one after the other.
+    const [queueStatus, setQueueStatus] = useState('');
+    const runQueue = async (label, names, action) => {
+        let done = 0;
+        let skipped = 0;
+        const failed = [];
+        for (const name of names) {
+            setQueueStatus(`${label}: ${done + skipped + failed.length + 1} of ${names.length} (${name})`);
+            try {
+                const outcome = await action(name);
+                if (outcome === 'skipped') skipped += 1; else done += 1;
+            } catch (err) {
+                console.error(`${label} failed for ${name}`, err);
+                failed.push(name);
+            }
+        }
+        await loadData();
+        setQueueStatus(`${label}: ${done} done${skipped ? `, ${skipped} skipped (no home folder)` : ''}${failed.length ? `, ${failed.length} failed (${failed.join(', ')})` : ''}`);
+        setTimeout(() => setQueueStatus(''), 8000);
+    };
+
+    // Submit of the users list: one request per changed user, one after the other.
+    //   deletion         -> the delete call (the other changes of that user are dropped)
+    //   groups           -> the group-change call
+    //   address / quota  -> changeUserHome (api/v1/users/userhomechange, backend added separately); only users with a home folder
+    const handleSubmitChanges = async (pending) => {
+        const names = Object.keys(pending);
+        if (names.length === 0) return true;
+        const removing = names.filter((name) => pending[name].remove);
+        if (removing.length > 0 && !window.confirm(`Delete ${removing.length} user${removing.length === 1 ? '' : 's'}: ${removing.join(', ')}?`)) return false;
+        await runQueue('Submitting', names, async (name) => {
+            const change = pending[name];
+            if (change.remove) {
+                await deleteUser(name);
+                return 'done';
+            }
+            const user = users.find((u) => u.name === name);
+            let applied = false;
+            let skipped = false;
+            if (change.groups !== undefined) {
+                await updateUserGroups(name, change.groups);
+                applied = true;
+            }
+            if (change.address !== undefined || change.quota !== undefined) {
+                if (!user || (user.Volpool || user.pool) === 'NoHome') {
+                    skipped = true;
+                } else {
+                    const fields = {};
+                    if (change.address !== undefined) { fields.HomeAddress = change.address; fields.HomeSubnet = change.subnet; }
+                    if (change.quota !== undefined) fields.Volsize = change.quota;
+                    await changeUserHome(name, fields);
+                    handleUpdateUser(name, fields); // shown at once; the next load of the list brings the server's value
+                    applied = true;
+                }
+            }
+            return applied || !skipped ? 'done' : 'skipped';
+        });
+        return true;
+    };
+
+    // what was submitted for address/quota is shown at once; it is dropped as soon as the server's data for that user changes
+    const handleUpdateUser = (name, changes) => {
+        const serverUser = users.find((u) => u.name === name);
+        setLocalEdits((prev) => ({
+            ...prev,
+            [name]: { fields: { ...(prev[name]?.fields || {}), ...changes }, base: prev[name]?.base || JSON.stringify(serverUser) },
+        }));
+    };
+    useEffect(() => {
+        setLocalEdits((prev) => {
+            const names = Object.keys(prev).filter((name) => {
+                const serverUser = users.find((u) => u.name === name);
+                return serverUser && JSON.stringify(serverUser) === prev[name].base;
+            });
+            return names.length === Object.keys(prev).length ? prev : Object.fromEntries(names.map((n) => [n, prev[n]]));
+        });
+    }, [users]);
+
+
 
     const handleAddUser = async (userData) => {
         try {
@@ -140,11 +222,11 @@ const QUsers = () => {
                             <>
                                 <AddUserForm pools={pools} groups={groups} users={users} onAdd={handleAddUser} />
                                 <UserList
-                                    users={users}
+                                    users={users.map((user) => (localEdits[user.name] ? { ...user, ...localEdits[user.name].fields } : user))}
                                     groups={groups}
-                                    onUpdateGroups={handleUpdateGroups}
                                     onChangePassword={handleOpenPasswordModal}
-                                    onDelete={handleDeleteUser}
+                                    onSubmit={handleSubmitChanges}
+                                    queueStatus={queueStatus}
                                 />
                             </>
                         )}

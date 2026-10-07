@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { configHost, getHostConfig, getAllHostConfigs } from '../api/nodes';
-import ServerNode from './Common/ServerNode';
+import ServerNode, { nodeLabel } from './Common/ServerNode';
+import { IpInput, SubnetInput, ipError } from './Common/NetFields';
 import Button from './Common/Button';
 import { ChevronDown } from 'lucide-react';
 
@@ -437,6 +438,12 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         }
     };
 
+    // any of the address fields holds something that is not a valid address -> Update stays disabled
+    const hasNetError = [
+        ipError(formData.ipaddr), ipError(formData.cluster), ipError(formData.gw),
+        ipError(formData.ntp, { allowHost: true }), ipError(formData.dnsname, { allowHost: true }), ipError(formData.dnssearch, { allowHost: true }),
+    ].some(Boolean);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!selectedHost || !hostConfig) {
@@ -470,6 +477,15 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
         const actGw = readField('#GW', formData.gw);
         const actDnsname = readField('#DNSname', formData.dnsname);
         const actDnssearch = readField('#DNSsearch', formData.dnssearch);
+
+        const netProblem = [
+            ipError(actIpaddr), ipError(actCluster), ipError(actGw),
+            ipError(actNtp, { allowHost: true }), ipError(actDnsname, { allowHost: true }), ipError(actDnssearch, { allowHost: true }),
+        ].find(Boolean);
+        if (netProblem) {
+            console.warn('Submit aborted:', netProblem);
+            return;
+        }
 
         const currentNmports = $ ? ($('#nmports').val() || []) : formData.nmports;
         const currentCmports = $ ? ($('#cmports').val() || []) : formData.cmports;
@@ -639,14 +655,14 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
             {isExpanded && (
                 <div className="animate-in fade-in slide-in-from-top-2 duration-300">
                     {/* Nodes Grid */}
-                    <div className="p-6 bg-gray-50/50 border-b border-gray-100">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="hostsready">
+                    <div className="p-3 bg-gray-50/50 border-b border-gray-100">
+                        <div className="flex flex-wrap gap-3" id="hostsready">
                             {hosts.map(host => {
                                 const hostName = host.name || host.alias;
                                 return (
                                     <div key={hostName}>
                                         <ServerNode
-                                            name={hostName}
+                                            name={nodeLabel(host, allHosts)}
                                             ip={host.ip || host.ipaddr}
                                             state="up"
                                             onClick={() => onSelect(hostName)}
@@ -661,22 +677,6 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                     {/* Config Form */}
                     <div className="p-6" id="runninghosts">
                         <form onSubmit={handleSubmit} className="space-y-6 hostform">
-
-                            {/* Join Cluster Switch */}
-                            <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
-                                <label className="text-sm font-medium text-gray-700">Ready to join an existing cluster</label>
-                                <div className="flex items-center">
-                                    <input
-                                        type="checkbox"
-                                        className="w-5 h-5 text-emerald-600 rounded focus:ring-emerald-500 border-gray-300 transition runningnodes"
-                                        id="customSwitch1"
-                                        name="configured"
-                                        checked={formData.configured}
-                                        onChange={handleChange}
-                                        disabled={!selectedHost}
-                                    />
-                                </div>
-                            </div>
 
                             {/* Node Name + Node Address + Data Ports + Cluster Address + Time Zone + NTP Server + DNS Server + Search + Gateway — one shared 3-column grid so every row's field widths line up */}
                             <div className="grid grid-cols-[auto_auto_1fr] gap-x-6 gap-y-6 items-start">
@@ -707,9 +707,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                         <span id="cIPAddress" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide truncate max-w-[11rem]">{selectedHost ? (hostConfig?.ipaddr ? `${displayValue(hostConfig.ipaddr)}/${hostConfig.ipaddrsubnet || '24'}` : 'not set') : 'select a node...'}</span>
                                     </div>
                                     <div className="flex items-center gap-2 flex-nowrap">
-                                        <input
-                                            type="text"
-                                            placeholder={(selectedHost && displayValue(hostConfig?.ipaddr || hostConfig?.ip)) || 'not set'}
+                                        <IpInput
                                             className="w-36 shrink-0 px-2 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
                                             id="IPAddress"
                                             name="ipaddr"
@@ -717,9 +715,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                             onChange={handleChange}
                                             disabled={!selectedHost}
                                         />
-                                        <input
-                                            type="number"
-                                            min="8" max="32" step="8"
+                                        <SubnetInput
                                             className="w-16 shrink-0 px-2 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
                                             id="ipaddrsubnet"
                                             name="ipaddrsubnet"
@@ -763,9 +759,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                         <span id="cMgmt" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide truncate max-w-[11rem]">{selectedHost ? displayValue(hostConfig?.cluster) : 'select a node...'}</span>
                                     </div>
                                     <div className="flex items-center gap-2 flex-nowrap">
-                                        <input
-                                            type="text"
-                                            placeholder={(selectedHost && displayValue(String(hostConfig?.cluster || '').split('/')[0])) || 'not set'}
+                                        <IpInput
                                             className="w-36 shrink-0 px-2 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
                                             id="Mgmt"
                                             name="cluster"
@@ -773,9 +767,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                             onChange={handleChange}
                                             disabled={!selectedHost}
                                         />
-                                        <input
-                                            type="number"
-                                            min="8" max="32" step="8"
+                                        <SubnetInput
                                             className="w-16 shrink-0 px-2 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
                                             id="MgmtSub"
                                             name="mgmtSub"
@@ -825,8 +817,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                         <label className="text-sm font-semibold text-gray-700 whitespace-nowrap">NTP Server</label>
                                         <span id="cNTP" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide truncate max-w-[11rem]">{selectedHost ? displayValue(hostConfig?.ntp) : 'select a node...'}</span>
                                     </div>
-                                    <input
-                                        type="text"
+                                    <IpInput allowHost center={false}
                                         placeholder={(selectedHost && displayValue(hostConfig?.ntp)) || 'not set'}
                                         className="w-56 px-2 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
                                         id="NTP"
@@ -861,8 +852,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                     <span id="cDNS" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide truncate max-w-[11rem]">{selectedHost ? displayValue(hostConfig?.dnsname) : 'select a node...'}</span>
                                 </div>
                                 <div className="flex flex-wrap items-center gap-3">
-                                    <input
-                                        type="text"
+                                    <IpInput allowHost center={false}
                                         placeholder={(selectedHost && displayValue(hostConfig?.dnsname)) || 'not set'}
                                         className="w-56 px-2 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
                                         id="DNSname"
@@ -880,8 +870,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                     <span id="cDNSSearch" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide truncate max-w-[11rem]">{selectedHost ? displayValue(hostConfig?.dnssearch) : 'select a node...'}</span>
                                 </div>
                                 <div className="flex flex-wrap items-center gap-3">
-                                    <input
-                                        type="text"
+                                    <IpInput allowHost center={false}
                                         placeholder={(selectedHost && displayValue(hostConfig?.dnssearch)) || 'not set'}
                                         className="w-56 px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
                                         id="DNSsearch"
@@ -899,9 +888,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                     <span id="cGW" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide truncate max-w-[11rem]">{selectedHost ? displayValue(hostConfig?.gw) : 'select a node...'}</span>
                                 </div>
                                 <div className="flex flex-wrap items-center gap-3">
-                                    <input
-                                        type="text"
-                                        placeholder={(selectedHost && displayValue(hostConfig?.gw)) || 'not set'}
+                                    <IpInput
                                         className="w-56 px-2 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
                                         id="GW"
                                         name="gw"
@@ -918,7 +905,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                 <Button
                                     type="submit"
                                     id="readysubmit"
-                                    disabled={!selectedHost}
+                                    disabled={!selectedHost || hasNetError}
                                     bgColor="bg-emerald-600"
                                     onClick={handleSubmit}
                                 >

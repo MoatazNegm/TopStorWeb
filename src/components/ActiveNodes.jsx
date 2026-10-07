@@ -1,21 +1,33 @@
-import React, { useState } from 'react';
-import { evacuateHost } from '../api/nodes';
-import ServerNode from './Common/ServerNode';
+import React, { useState, useEffect } from 'react';
+import { evacuateHost, configHost } from '../api/nodes';
+import ServerNode, { nodeLabel } from './Common/ServerNode';
 import Button from './Common/Button';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, AlertTriangle } from 'lucide-react';
 
 const ActiveNodes = ({ hosts, allHosts, lostHosts, selectedHostName, onSelect, readyHostsCount, possibleHostsCount, onRefresh }) => {
     const [isExpanded, setIsExpanded] = useState(true);
+    // Double check for the destructive action: pressing Evacuate only arms it, the confirm button then does it.
+    const [armed, setArmed] = useState(false);
     const selectedHost = allHosts ? allHosts[selectedHostName] : null;
 
-    // Fix #14: Call onRefresh after evacuate
-    const handleEvacuate = async () => {
+    const handleEvacuate = () => {
+        if (!selectedHostName) return;
+        setArmed(true);
+    };
+
+    // Eject the selected node, reset it and make it ready to join a new cluster. It uses the same two calls as before:
+    // evacuate (eject) and hosts/config with configured=no (what the "ready to join" check box did through Update Node).
+    const handleEjectReset = async () => {
         if (!selectedHostName) return;
         try {
             await evacuateHost(selectedHostName);
+            const index = hosts.findIndex(h => (typeof h === 'object' ? h.name : h) === selectedHostName);
+            await configHost({ configured: 'no', id: index, user: 'mezo', name: selectedHostName });
             if (onRefresh) onRefresh();
         } catch (e) {
-            console.error("Evacuation failed", e);
+            console.error("Eject and reset failed", e);
+        } finally {
+            setArmed(false);
         }
     };
 
@@ -36,6 +48,8 @@ const ActiveNodes = ({ hosts, allHosts, lostHosts, selectedHostName, onSelect, r
     }
     const canEvacuate = selectedHostName && canEvac;
 
+    useEffect(() => { setArmed(false); }, [selectedHostName, canEvacuate]);
+
     return (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 relative">
             <div className="absolute top-0 bottom-0 left-0 w-1 bg-rose-500"></div>
@@ -55,8 +69,8 @@ const ActiveNodes = ({ hosts, allHosts, lostHosts, selectedHostName, onSelect, r
             {isExpanded && (
                 <div className="animate-in fade-in slide-in-from-top-2 duration-300">
                     {/* Nodes Grid */}
-                    <div className="p-6 bg-gray-50/50 border-b border-gray-100">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="hostsactive">
+                    <div className="p-3 bg-gray-50/50 border-b border-gray-100">
+                        <div className="flex flex-wrap gap-3" id="hostsactive">
                             {hosts.map(host => {
                                 const hostName = typeof host === 'object' ? host.name : host;
                                 const isLost = lostHosts && (
@@ -69,7 +83,7 @@ const ActiveNodes = ({ hosts, allHosts, lostHosts, selectedHostName, onSelect, r
                                 return (
                                     <div key={hostName}>
                                         <ServerNode
-                                            name={hostName}
+                                            name={nodeLabel(host, allHosts)}
                                             ip={displayIp}
                                             state={isLost ? 'down' : 'up'}
                                             onClick={() => onSelect(hostName)}
@@ -82,16 +96,46 @@ const ActiveNodes = ({ hosts, allHosts, lostHosts, selectedHostName, onSelect, r
                     </div>
 
                     {/* Actions */}
-                    <div className="p-6">
-                        <Button
-                            type="button"
-                            id="activesubmit"
-                            onClick={handleEvacuate}
-                            disabled={!canEvacuate}
-                            bgColor="bg-rose-500"
-                        >
-                            Evacuate Node
-                        </Button>
+                    <div className="p-6 flex flex-wrap items-center justify-between gap-3">
+                        {/* Evacuate and Cancel have exactly the same size and place; Cancel (blue) replaces Evacuate once it was pressed */}
+                        {armed ? (
+                            <Button
+                                type="button"
+                                id="evacuatecancel"
+                                onClick={() => setArmed(false)}
+                                variant="primary"
+                                className="w-44"
+                            >
+                                Cancel
+                            </Button>
+                        ) : (
+                            <Button
+                                type="button"
+                                id="activesubmit"
+                                onClick={handleEvacuate}
+                                disabled={!canEvacuate}
+                                bgColor="bg-rose-500"
+                                className="w-44"
+                            >
+                                Evacuate Node
+                            </Button>
+                        )}
+                        {/* Only while Evacuate can be pressed: first a serious notice, after Evacuate was pressed the same place is the confirm button */}
+                        {canEvacuate && (armed ? (
+                            <Button
+                                type="button"
+                                id="ejectreset"
+                                onClick={handleEjectReset}
+                                bgColor="bg-rose-500"
+                            >
+                                Eject, reset and be ready to join a new cluster
+                            </Button>
+                        ) : (
+                            <p id="ejectresetnotice" className="flex items-center gap-2 text-sm font-semibold text-danger-700">
+                                <AlertTriangle size={16} className="flex-shrink-0" />
+                                Eject, reset and be ready to join a new cluster
+                            </p>
+                        ))}
                     </div>
                 </div>
             )}

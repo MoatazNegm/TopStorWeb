@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { joinCluster } from '../api/nodes';
-import ServerNode from './Common/ServerNode';
+import ServerNode, { nodeLabel } from './Common/ServerNode';
+import { IpInput, SubnetInput, ipError } from './Common/NetFields';
 import Button from './Common/Button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
@@ -76,8 +77,11 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
     // One call does it all: alias / node ip typed in the form travel with the join request, the
     // primary puts them (and the cluster address) in the node's tojoin key, the node acknowledges
     // and restarts with them. No separate config call and no waiting for the node to change its IP.
+    // an address that is typed but not valid keeps Join disabled
+    const hasNetError = Boolean(ipError(formData.ipaddr));
+
     const handleJoin = async () => {
-        if (!selectedHostName || !selectedHostListItem) return;
+        if (!selectedHostName || !selectedHostListItem || hasNetError) return;
         setIsJoining(true);
         setJoinStatus('');
         setJoinResult('');
@@ -138,8 +142,8 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
             {isExpanded && (
                 <>
                     {/* Nodes Grid */}
-                    <div className="p-6 bg-gray-50/50 border-b border-gray-100 animate-in fade-in slide-in-from-top-2 duration-300">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="hostspossible">
+                    <div className="p-3 bg-gray-50/50 border-b border-gray-100 animate-in fade-in slide-in-from-top-2 duration-300">
+                        <div className="flex flex-wrap gap-3" id="hostspossible">
                             {hosts.length === 0 ? (
                                 <div className="col-span-full text-center text-sm text-gray-400 py-6">
                                     No discovered nodes. Click <strong>discovery</strong> to scan.
@@ -149,7 +153,7 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                                 return (
                                     <div key={hostName}>
                                         <ServerNode
-                                            name={hostName}
+                                            name={nodeLabel(host, allHosts)}
                                             ip={host.ip || host.ipaddr}
                                             state="discovered"
                                             onClick={() => onSelect(hostName)}
@@ -188,9 +192,7 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                                     <div className="flex flex-col sm:flex-row gap-4">
                                         {/* IP Input */}
                                         <div className="flex-1">
-                                            <input
-                                                type="text"
-                                                placeholder="xxx.xxx.xxx.xxx"
+                                            <IpInput wrapperClassName="block w-full"
                                                 className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 discoverednodes"
                                                 id="DiscoveredIPAddress"
                                                 name="ipaddr"
@@ -215,11 +217,7 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                                         {/* Subnet */}
                                         <div className="flex items-center gap-3 sm:w-40">
                                             <label className="text-sm font-medium text-gray-600 whitespace-nowrap">Subnet</label>
-                                            <input
-                                                type="number"
-                                                min="8"
-                                                max="32"
-                                                step="8"
+                                            <SubnetInput
                                                 className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 discoverednodes"
                                                 id="Discoveredipaddrsubnet"
                                                 name="ipaddrsubnet"
@@ -238,7 +236,7 @@ const DiscoveredNodes = ({ hosts, allHosts, selectedHostName, onSelect, onDiscov
                                     type="button"
                                     id="updateAndJoinBtn"
                                     onClick={handleJoin}
-                                    disabled={!selectedHostListItem || isJoining}
+                                    disabled={!selectedHostListItem || isJoining || hasNetError}
                                     bgColor="bg-blue-600"
                                 >
                                     {btnText}

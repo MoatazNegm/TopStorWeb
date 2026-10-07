@@ -7,7 +7,7 @@ const normalizeToArray = (value) => {
     return [value];
 };
 
-const Dropdown = ({ options, value, onChange, placeholder, disabled, className = "", isMulti = false, label }) => {
+const Dropdown = ({ options, value, onChange, placeholder, disabled, className = "", isMulti = false, label, compact = false }) => {
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef(null);
 
@@ -63,7 +63,7 @@ const Dropdown = ({ options, value, onChange, placeholder, disabled, className =
     };
 
     return (
-        <div className={`min-w-0 space-y-1.5 ${className}`} ref={containerRef}>
+        <div className={`min-w-0 ${compact ? 'space-y-0' : 'space-y-1.5'} ${className}`} ref={containerRef}>
             {label && (
                 <label className="block text-sm font-medium text-gray-700">
                     {label}
@@ -72,11 +72,11 @@ const Dropdown = ({ options, value, onChange, placeholder, disabled, className =
             <div className="relative">
                 <div
                     onClick={() => !disabled && setIsOpen(!isOpen)}
-                    className={`flex min-h-10 w-full min-w-0 items-center justify-between gap-2 rounded-md border bg-surface px-3 py-2 text-sm text-gray-700 transition-colors ${
+                    className={`flex ${compact ? 'min-h-7 px-2 py-0.5' : 'min-h-10 px-3 py-2'} w-full min-w-0 items-center justify-between gap-2 rounded-md border bg-surface text-sm text-gray-700 transition-colors ${
                         isOpen ? 'border-brand-500 ring-4 ring-brand-100' : 'border-border hover:border-border-strong'
                     } ${disabled ? 'cursor-not-allowed bg-gray-50 text-gray-400' : 'cursor-pointer'}`}
                 >
-                    <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5">
+                    <div className={`flex min-w-0 flex-1 flex-wrap items-center ${compact ? 'gap-1' : 'gap-1.5'}`}>
                         {isMulti && selectedMultiValues.length > 0 ? (
                             selectedMultiValues.map((selected) => {
                                 const opt = options.find((item) => String(item.value) === String(selected));
@@ -127,7 +127,7 @@ const Dropdown = ({ options, value, onChange, placeholder, disabled, className =
                                     <div
                                         key={opt.value}
                                         onClick={() => handleSelect(opt.value)}
-                                        className={`flex cursor-pointer items-center justify-between px-4 py-2.5 text-sm transition-colors ${
+                                        className={`flex cursor-pointer items-center justify-between px-4 ${compact ? 'py-1.5' : 'py-2.5'} text-sm transition-colors ${
                                             isSelected(opt.value)
                                                 ? 'bg-brand-50 text-brand-700'
                                                 : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'

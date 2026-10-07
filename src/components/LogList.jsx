@@ -10,8 +10,12 @@ import {
     XCircle,
 } from 'lucide-react';
 import Panel from './Common/Panel';
+import { ListSearch, useRowFilter, SortTh, useSort, sortRows, dateKey } from './Common/ListSearch';
 
 const LogList = ({ logs }) => {
+    const { query, setQuery, visible, filtering } = useRowFilter(logs);
+    const { sort, toggle } = useSort();
+    const sorted = sortRows(visible, sort, { time: (l) => dateKey(l.date, l.time), who: (l) => `${l.user || ''} ${l.host || ''}`, msg: (l) => l.msgbody, sev: (l) => l.type, code: (l) => l.msgcode });
     return (
         <Panel
             icon={<ClipboardList size={17} />}
@@ -28,26 +32,27 @@ const LogList = ({ logs }) => {
                 </div>
             }
         >
-            <div className="border-b border-border bg-surface-muted px-5 py-3">
+            <div className="border-b border-border bg-surface-muted px-2.5 py-1.5">
                 <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-gray-600">
                     <span className="h-2 w-2 rounded-full bg-brand-500" />
                     {logs.length} Total Events
                 </div>
             </div>
 
+            <ListSearch id="listsearch" value={query} onChange={setQuery} count={visible.length} total={logs.length} />
             <div className="overflow-x-auto">
                 <table className="min-w-[880px] w-full text-left">
                     <thead className="bg-surface-muted">
                         <tr className="border-b border-border">
-                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Timestamp</th>
-                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Identity</th>
-                            <th className="px-5 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Event Details</th>
-                            <th className="px-5 py-3 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Severity</th>
-                            <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Code</th>
+                            <SortTh sortKey="time" sort={sort} onToggle={toggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Timestamp</SortTh>
+                            <SortTh sortKey="who" sort={sort} onToggle={toggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Identity</SortTh>
+                            <SortTh sortKey="msg" sort={sort} onToggle={toggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Event Details</SortTh>
+                            <SortTh sortKey="sev" sort={sort} onToggle={toggle} className="px-2.5 py-1.5 text-center text-[11px] font-semibold uppercase tracking-wide text-gray-500">Severity</SortTh>
+                            <SortTh sortKey="code" sort={sort} onToggle={toggle} className="px-2.5 py-1.5 text-right text-[11px] font-semibold uppercase tracking-wide text-gray-500">Code</SortTh>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
-                        {logs.map((log, index) => (
+                        {sorted.map((log, index) => (
                             <LogRow key={`${log.date}-${log.time}-${index}`} log={log} />
                         ))}
                         {logs.length === 0 && (
@@ -64,6 +69,9 @@ const LogList = ({ logs }) => {
                         )}
                     </tbody>
                 </table>
+                {filtering && visible.length === 0 && logs.length > 0 && (
+                    <div className="py-6 text-center text-sm text-gray-500">No rows match the search</div>
+                )}
             </div>
         </Panel>
     );
@@ -103,13 +111,13 @@ const LogRow = ({ log }) => {
 
     return (
         <tr className={`${styles.row} transition-colors`}>
-            <td className="whitespace-nowrap px-5 py-4">
+            <td className="whitespace-nowrap px-2.5 py-1">
                 <div className="flex flex-col">
                     <span className="text-sm font-semibold text-gray-800">{log.date}</span>
                     <span className="text-xs font-medium text-gray-500">{log.time}</span>
                 </div>
             </td>
-            <td className="whitespace-nowrap px-5 py-4">
+            <td className="whitespace-nowrap px-2.5 py-1">
                 <div className="flex flex-col">
                     <div className="flex items-center gap-2">
                         <UserCircle size={13} className="text-gray-400" />
@@ -121,18 +129,18 @@ const LogRow = ({ log }) => {
                     </div>
                 </div>
             </td>
-            <td className="px-5 py-4">
+            <td className="px-2.5 py-1">
                 <p className="max-w-xl text-sm text-gray-700">
                     {log.msgbody}
                 </p>
             </td>
-            <td className="px-5 py-4 text-center">
+            <td className="px-2.5 py-1 text-center">
                 <span className={`inline-flex items-center gap-1.5 rounded-sm border px-3 py-1 text-xs font-semibold uppercase tracking-wide ${styles.bg} ${styles.text} ${styles.border}`}>
                     {styles.icon}
                     {log.type}
                 </span>
             </td>
-            <td className="px-5 py-4 text-right">
+            <td className="px-2.5 py-1 text-right">
                 <span className="rounded-sm border border-border bg-surface-muted px-2 py-1 font-mono text-xs font-semibold text-gray-500">
                     {log.msgcode}
                 </span>
