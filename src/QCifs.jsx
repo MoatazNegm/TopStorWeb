@@ -144,8 +144,8 @@ const QCifs = () => {
     };
 
     return (
-                <div className="p-3">
-                    <div className="rounded-xl border border-border bg-surface p-4 shadow-sm">
+                <div>
+                    <div className="rounded-none border border-border bg-surface p-4 shadow-sm">
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                             <div>
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">CIFS Volumes</h1>

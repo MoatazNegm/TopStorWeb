@@ -123,8 +123,8 @@ const QHomeFolders = () => {
     };
 
     return (
-                <div className="content-header px-4">
-                    <div className="container-fluid">
+                <div>
+                    <div className="rounded-none border border-border bg-surface p-4 shadow-sm">
                         <div className="flex justify-between items-center mb-8">
                             <div>
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Home Folders Management</h1>
