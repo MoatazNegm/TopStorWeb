@@ -128,7 +128,7 @@ const QHomeFolders = () => {
 
     return (
                 <div>
-                    <div className="rounded-none border border-border bg-surface p-4 shadow-sm">
+                    <div className="rounded-none border border-border bg-surface p-2 shadow-sm">
                         <div className="flex justify-between items-center mb-8">
                             <div>
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Home Folders Management</h1>
@@ -153,9 +153,9 @@ const QHomeFolders = () => {
                         )}
 
                         {/* First Row: Form + Insights */}
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 mb-8">
                             {/* Creation Form */}
-                            <div className="rounded-lg border border-border bg-surface p-6 shadow-sm lg:col-span-2">
+                            <div className="rounded-lg border border-border bg-surface p-2 shadow-sm lg:col-span-2">
                                 <div className="flex items-center gap-3 mb-8">
                                     <div className="flex h-9 w-9 items-center justify-center rounded-md bg-brand-50 text-brand-600">
                                         <Plus size={14} />

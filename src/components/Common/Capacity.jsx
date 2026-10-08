@@ -146,7 +146,7 @@ export const PoolCapacityPanel = ({ stats, className = '' }) => {
     const rows = Object.values(stats || {});
     const total = rows.reduce((a, s) => ({ usable: a.usable + s.usable, used: a.used + s.used, prov: a.prov + s.provisioned }), { usable: 0, used: 0, prov: 0 });
     return (
-        <div className={`flex flex-col rounded-lg border border-border bg-surface p-5 shadow-sm ${className}`}>
+        <div className={`flex flex-col rounded-lg border border-border bg-surface p-2 shadow-sm ${className}`}>
             <div className="mb-4 flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-50 text-brand-600"><Database size={16} /></div>
                 <div className="min-w-0 flex-1">
