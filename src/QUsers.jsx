@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { AlertCircle, KeyRound, RefreshCw, X } from 'lucide-react';
+import { AlertCircle, KeyRound, X } from 'lucide-react';
 import { fetchUserList, fetchGroupList, addUser, deleteUser, updateUserGroups, changePassword, changeUserHome } from './api/users';
 import { fetchPoolsInfo } from './api/pools';
-import Button from './components/Common/Button';
 import AddUserForm from './components/AddUserForm';
 import UserList from './components/UserList';
 
@@ -28,8 +27,14 @@ const QUsers = () => {
         try {
             const [userRes, groupRes, poolRes] = await Promise.all([fetchUserList(), fetchGroupList(), fetchPoolsInfo()]);
 
-            if (userRes.data?.allusers) setUsers(userRes.data.allusers);
-            if (groupRes.data?.results) setGroups(groupRes.data.results);
+            // the group Everyone holds every user, always (the backend keeps it): it is neither shown nor editable here
+            const everyoneIds = (groupRes.data?.results || []).filter((g) => g.text === 'Everyone').map((g) => String(g.id));
+            if (userRes.data?.allusers) {
+                setUsers(userRes.data.allusers.map((u) => Array.isArray(u.groups)
+                    ? { ...u, groups: u.groups.filter((id) => !everyoneIds.includes(String(id))) }
+                    : u));
+            }
+            if (groupRes.data?.results) setGroups(groupRes.data.results.filter((g) => g.text !== 'Everyone'));
             if (poolRes.data?.results) setPools(poolRes.data.results);
 
         } catch (err) {
@@ -201,9 +206,6 @@ const QUsers = () => {
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">User Management</h1>
                                 <p className="mt-1 text-sm text-gray-500">Manage system accounts, permissions, and storage quotas</p>
                             </div>
-                            <Button onClick={loadData} variant="secondary" icon={<RefreshCw size={15} />}>
-                                    Sync Now
-                                </Button>
                         </div>
                     </div>
                 </div>

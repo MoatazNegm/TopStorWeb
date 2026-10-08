@@ -1,19 +1,36 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { AlertTriangle } from 'lucide-react';
 import { fetchLogs } from './api/logs';
-import Button from './components/Common/Button';
+import { fetchAllHostsInfo } from './api/nodes';
 import LogList from './components/LogList';
 
 const QLogs = () => {
     const [logs, setLogs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const aliasesRef = useRef({});
+    const aliasesAt = useRef(0);
 
     const loadData = useCallback(async () => {
         try {
             const res = await fetchLogs();
             if (res.data?.alllogs) {
-                setLogs(res.data.alllogs);
+                // node names are shown as their alias; a node without alias ('' or etcd's '_1') keeps its name
+                let aliases = aliasesRef.current;
+                try {
+                    if (Date.now() - aliasesAt.current < 30000) throw new Error('aliases are fresh');   // allinfo at most every 30 s
+                    aliasesAt.current = Date.now();
+                    const hosts = await fetchAllHostsInfo();
+                    const all = hosts.data?.all;
+                    if (all && typeof all === 'object') {
+                        aliases = Object.fromEntries(Object.entries(all).map(([h, v]) => [h, typeof v?.alias === 'string' ? v.alias.trim() : '']));
+                        aliasesRef.current = aliases;
+                    }
+                } catch (e) { /* keep the aliases already known */ }
+                setLogs(res.data.alllogs.map((l) => {
+                    const a = aliases[l.host];
+                    return a && a !== '_1' ? { ...l, host: a } : l;
+                }));
             }
         } catch (err) {
             console.error("Failed to load logs", err);
@@ -37,9 +54,6 @@ const QLogs = () => {
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">System Logs</h1>
                                 <p className="mt-1 text-sm text-gray-500">System-wide event tracking and audit oversight</p>
                             </div>
-                            <Button onClick={loadData} variant="secondary" icon={<RefreshCw size={15} />}>
-                                Sync Now
-                            </Button>
                         </div>
 
                         <div className="mt-6 space-y-6">

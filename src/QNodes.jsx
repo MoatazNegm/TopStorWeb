@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import { fetchAllHostsInfo, discoverHosts } from './api/nodes';
-import Button from './components/Common/Button';
 import RunningNodes from './components/RunningNodes';
 import DiscoveredNodes from './components/DiscoveredNodes';
 import ActiveNodes from './components/ActiveNodes';
@@ -97,9 +96,6 @@ const QNodes = () => {
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Node Status</h1>
                                 <p className="mt-1 text-sm text-gray-500">Monitor cluster nodes, configure networking, and manage membership</p>
                             </div>
-                            <Button onClick={refreshData} variant="secondary" icon={<RefreshCw size={15} />}>
-                                Sync Now
-                            </Button>
                         </div>
 
                         <div className="mt-6 space-y-6">

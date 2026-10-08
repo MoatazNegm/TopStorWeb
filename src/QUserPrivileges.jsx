@@ -140,9 +140,6 @@ const QUserPrivileges = () => {
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">User Privileges</h1>
                                 <p className="mt-1 text-sm text-gray-500">Define precise administrative access for system operators</p>
                             </div>
-                            <Button onClick={() => loadUsers()} variant="secondary" icon={<RefreshCw size={15} />}>
-                                Sync Now
-                            </Button>
                         </div>
 
                         <div className="mt-6 rounded-lg border border-border bg-surface p-5">

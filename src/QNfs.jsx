@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { AlertTriangle, FolderPlus, RefreshCw } from 'lucide-react';
+import { AlertTriangle, FolderPlus } from 'lucide-react';
 import { fetchVolumesInfo, fetchGroupList, createVolume, updateVolume, deleteVolume, fetchVolumeStats } from './api/volumes';
 import { fetchPoolsInfo } from './api/pools';
 import Button from './components/Common/Button';
@@ -126,9 +126,6 @@ const QNfs = () => {
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">NFS Volumes</h1>
                                 <p className="mt-1 text-sm text-gray-500">Unix-compatible network share administration</p>
                             </div>
-                            <Button onClick={loadData} variant="secondary" icon={<RefreshCw size={15} className={loading ? 'animate-spin' : ''} />}>
-                                Sync Now
-                            </Button>
                         </div>
 
                         {error && (

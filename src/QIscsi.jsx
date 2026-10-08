@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { AlertTriangle, FolderPlus, RefreshCw } from 'lucide-react';
+import { AlertTriangle, FolderPlus } from 'lucide-react';
 import { fetchVolumesInfo, createVolume, updateVolume, deleteVolume, fetchVolumeStats } from './api/volumes';
 import { fetchPoolsInfo } from './api/pools';
 import Button from './components/Common/Button';
@@ -119,9 +119,6 @@ const QIscsi = () => {
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">iSCSI LUNs</h1>
                                 <p className="mt-1 text-sm text-gray-500">Enterprise block-level storage administration</p>
                             </div>
-                            <Button onClick={loadData} variant="secondary" icon={<RefreshCw size={15} className={loading ? 'animate-spin' : ''} />}>
-                                Sync Now
-                            </Button>
                         </div>
 
                         {error && (

@@ -1,18 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-    AlertTriangle,
-    CheckCircle2,
-    RefreshCw,
-    PlusCircle,
-    Trash2,
-    RotateCcw,
-    Clock,
-    Calendar,
-    Zap,
-    Database,
-    HardDrive,
-    Server
-} from 'lucide-react';
+import { AlertTriangle, CheckCircle2, PlusCircle, Trash2, RotateCcw, Clock, Calendar, Zap, Database, HardDrive, Server } from 'lucide-react';
 import Button from './components/Common/Button';
 import Input from './components/Common/Input';
 import Dropdown from './components/Common/Dropdown';
@@ -242,13 +229,6 @@ const QSender = () => {
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Replication Schedule</h1>
                                 <p className="mt-1 text-sm text-gray-500">Configure automated snapshot replication and data security</p>
                             </div>
-                            <Button
-                                onClick={() => loadSnapshots()}
-                                variant="secondary"
-                                icon={<RefreshCw size={15} className={loading ? 'animate-spin' : ''} />}
-                            >
-                                Sync Now
-                            </Button>
                         </div>
 
                         {message.text && (

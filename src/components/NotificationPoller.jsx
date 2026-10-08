@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import Toast from './Toast';
 import { fetchNotification } from '../api/notifications';
+import { fetchAllHostsInfo } from '../api/nodes';
 
 const TOAST_CONFIG = {
     info: { position: 'bottom-right', duration: 4000 },
@@ -37,23 +38,55 @@ const NotificationPoller = () => {
             title: toast?.title || 'System',
             subtitle: toast?.subtitle,
             body: toast?.body || '',
+            code: toast?.code,
             duration: toast?.duration || defaults.duration,
             position: toast?.position || defaults.position,
         }]);
     }, []);
 
+    // number of ActivePartners (hosts/allinfo -> active), refreshed every 3rd poll; null until the first answer
+    const activeCount = useRef(null);
+    const pollCount = useRef(0);
+    const lastInsync = useRef('yes');
+    const aliases = useRef({});   // host name -> alias, from hosts/allinfo
+
+    // one line only: a single node shows 'Single node' (blue led in the Navbar), a cluster shows its sync state
     const updateSyncStatus = (isInsync) => {
         const el = document.getElementById('syncStatus');
         if (!el) return;
-        if (isInsync === 'yes') {
-            el.innerHTML = 'Cluster <br><span>in Sync</span>';
-            el.classList.remove('not-in-sync');
+        lastInsync.current = isInsync;
+        el.classList.remove('in-sync', 'not-in-sync', 'single-node');
+        if (activeCount.current === 1) {
+            el.textContent = 'Single node';
+            el.classList.add('single-node');
+        } else if (isInsync === 'yes') {
+            el.textContent = 'Cluster in Sync';
             el.classList.add('in-sync');
         } else {
-            el.innerHTML = 'Nodes <br><span>Not in Sync</span>';
-            el.classList.remove('in-sync');
+            el.textContent = 'Nodes Not in Sync';
             el.classList.add('not-in-sync');
         }
+    };
+
+    // the alias of the node, or its name when the alias is empty or '_1' (etcd's 'not found')
+    const nodeAlias = (host) => {
+        const a = aliases.current[host];
+        return a && a !== '_1' ? a : (host || 'System');
+    };
+
+    const refreshActiveCount = async () => {
+        try {
+            const res = await fetchAllHostsInfo();
+            const all = res?.data?.all;
+            if (all && typeof all === 'object') {
+                aliases.current = Object.fromEntries(Object.entries(all).map(([h, v]) => [h, typeof v?.alias === 'string' ? v.alias.trim() : '']));
+            }
+            if (Array.isArray(res?.data?.active)) {
+                const changed = activeCount.current !== res.data.active.length;
+                activeCount.current = res.data.active.length;
+                if (changed) updateSyncStatus(lastInsync.current);
+            }
+        } catch (e) { /* keep the previous count */ }
     };
 
     const updateTasksTable = (requests) => {
@@ -84,6 +117,7 @@ const NotificationPoller = () => {
             const notif = res.data;
             if (!notif || !notif.response || notif.response === 'baduser') return;
 
+            if (pollCount.current++ % 3 === 0) await refreshActiveCount();
             if (notif.isinsync !== undefined) updateSyncStatus(notif.isinsync);
             if (notif.requests) updateTasksTable(notif.requests);
 
@@ -95,9 +129,10 @@ const NotificationPoller = () => {
 
             addToast({
                 type: notif.type,
-                title: notif.host || 'System',
+                title: nodeAlias(notif.host),
                 subtitle: notif.user,
                 body: notif.msgbody,
+                code: notif.msgcode,
             });
         } catch {
             // Silent — don't flood UI on transient network errors

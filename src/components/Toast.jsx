@@ -22,7 +22,7 @@ const THEME = {
     },
 };
 
-const Toast = ({ id, type, title, subtitle, body, duration, onDismiss }) => {
+const Toast = ({ id, type, title, subtitle, body, code, duration, onDismiss }) => {
     const [visible, setVisible] = useState(true);
     const [progressStarted, setProgressStarted] = useState(false);
     const theme = THEME[type] || THEME.info;
@@ -51,30 +51,27 @@ const Toast = ({ id, type, title, subtitle, body, duration, onDismiss }) => {
     return (
         <div
             className={`
-                w-80 rounded-lg border border-border border-l-4 bg-surface shadow-sm ${theme.border}
+                w-72 rounded-md border border-border border-l-4 bg-surface shadow-sm ${theme.border}
                 overflow-hidden transition-all duration-300
                 ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'}
             `}
         >
-            <div className="px-4 pt-3 pb-2.5">
-                <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-start gap-2.5 min-w-0">
-                        <Icon size={14} className={`${theme.iconColor} mt-0.5 flex-shrink-0`} />
-                        <div className="min-w-0">
-                            <p className="truncate text-sm font-semibold leading-tight text-gray-800">{title}</p>
-                            {subtitle && (
-                                <p className="mt-0.5 truncate text-xs font-medium uppercase tracking-wide text-gray-500">{subtitle}</p>
-                            )}
-                        </div>
-                    </div>
-                    <button
-                        onClick={dismiss}
-                        className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-sm text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
-                    >
-                        <X size={12} />
-                    </button>
+            <div className="flex items-start gap-2 px-2.5 py-1.5">
+                <Icon size={12} className={`${theme.iconColor} mt-[3px] flex-shrink-0`} />
+                <div className="min-w-0 flex-1">
+                    <p className="flex items-baseline gap-1.5 truncate text-xs leading-tight">
+                        <span className="truncate font-semibold text-gray-800">{title}</span>
+                        {subtitle && <span className="flex-shrink-0 text-[11px] text-gray-500">· {subtitle}</span>}
+                    </p>
+                    <p className="text-xs leading-snug text-gray-600">{body}</p>
+                    {code && <p className="font-mono text-[9px] leading-none text-gray-400">{code}</p>}
                 </div>
-                <p className="mt-2 pl-[22px] text-sm leading-relaxed text-gray-600">{body}</p>
+                <button
+                    onClick={dismiss}
+                    className="flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-sm text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
+                >
+                    <X size={10} />
+                </button>
             </div>
 
             {/* Progress bar — CSS transition shrinks from 100% → 0% over duration */}

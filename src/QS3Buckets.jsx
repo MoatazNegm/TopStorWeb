@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { AlertTriangle, Cloud, FolderPlus, Link as LinkIcon, RefreshCw, Share2 } from 'lucide-react';
+import { AlertTriangle, Cloud, FolderPlus, Link as LinkIcon, Share2 } from 'lucide-react';
 import { fetchVolumesInfo, fetchGroupList, createVolume, updateVolume, deleteVolume, fetchVolumeStats } from './api/volumes';
 import { fetchPoolsInfo } from './api/pools';
 import Button from './components/Common/Button';
@@ -228,9 +228,6 @@ const QS3Buckets = () => {
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">S3 Buckets</h1>
                                 <p className="mt-1 text-sm text-gray-500">MinIO-backed object storage bucket administration</p>
                             </div>
-                            <Button onClick={loadData} variant="secondary" icon={<RefreshCw size={15} className={loading ? 'animate-spin' : ''} />}>
-                                Sync Now
-                            </Button>
                         </div>
 
                         {error && (

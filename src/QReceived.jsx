@@ -1,18 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-    AlertTriangle,
-    CheckCircle2,
-    RefreshCw,
-    Trash2,
-    RotateCcw,
-    Database,
-    HardDrive,
-    Server,
-    Clock,
-    Zap,
-    Filter
-} from 'lucide-react';
-import Button from './components/Common/Button';
+import { AlertTriangle, CheckCircle2, Trash2, RotateCcw, Database, HardDrive, Server, Clock, Zap, Filter } from 'lucide-react';
 import Dropdown from './components/Common/Dropdown';
 import {
     fetchSnapshotsInfo,
@@ -161,13 +148,6 @@ const QReceived = () => {
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Received Snapshots</h1>
                                 <p className="mt-1 text-sm text-gray-500">Manage and restore snapshots replicated from remote partners</p>
                             </div>
-                            <Button
-                                onClick={() => loadSnapshots()}
-                                variant="secondary"
-                                icon={<RefreshCw size={15} className={loading ? 'animate-spin' : ''} />}
-                            >
-                                Sync Now
-                            </Button>
                         </div>
 
                         {message.text && (

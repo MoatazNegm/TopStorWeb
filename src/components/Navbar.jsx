@@ -1,6 +1,22 @@
 import React, { useState } from 'react';
 import { Bell, ChevronRight, Key, LogOut, Maximize2, Menu, X } from 'lucide-react';
 import { changePassword } from '../api/users';
+import { syncNow } from '../api/nodes';
+
+// the sign next to the bell.  Always the same element (the poller writes its text into #syncStatus); it only acts as a
+// button (click = sync now) while the nodes are not in sync
+const SyncSign = ({ active, onClick, disabled, led, text }) => (
+    <button
+        type="button"
+        onClick={active ? onClick : undefined}
+        disabled={active && disabled}
+        title={active ? 'Click to sync now' : undefined}
+        className={`hidden items-center gap-2 whitespace-nowrap rounded-full border border-border bg-surface-muted px-3 py-1.5 sm:flex ${active ? 'cursor-pointer hover:border-danger-500 hover:bg-danger-50 disabled:opacity-60' : 'cursor-default'}`}
+    >
+        <span className={`h-2 w-2 flex-shrink-0 rounded-full ${led}`}></span>
+        <div id="syncStatus" className="whitespace-nowrap text-xs font-medium leading-tight text-gray-600">{text}</div>
+    </button>
+);
 
 const Navbar = ({ sectionTitle }) => {
     const [notifOpen, setNotifOpen] = useState(false);
@@ -25,6 +41,23 @@ const Navbar = ({ sectionTitle }) => {
     }, []);
 
     const isInSync = !syncStatus.toLowerCase().includes('not in sync');
+    const isSingle = syncStatus.toLowerCase().includes('single node');
+    const [syncing, setSyncing] = useState(false);
+
+    // 'Nodes Not in Sync' is a button: it asks the cluster to sync now
+    const handleSyncNow = async () => {
+        if (syncing) return;
+        setSyncing(true);
+        const toast = (type, body) => window.dispatchEvent(new CustomEvent('app-toast', { detail: { type, title: 'Sync', body } }));
+        try {
+            await syncNow();
+            toast('info', 'Sync requested, the nodes are syncing now.');
+        } catch (e) {
+            toast('error', 'The sync request failed.');
+        } finally {
+            setTimeout(() => setSyncing(false), 3000);
+        }
+    };
 
     const validatePasswords = (p, np) => {
         if (p === np && np.length >= 3) {
@@ -117,12 +150,13 @@ const Navbar = ({ sectionTitle }) => {
                 </div>
 
                 <div className="flex items-center gap-1.5 sm:gap-2">
-                    <div className="hidden items-center gap-2 rounded-full border border-border bg-surface-muted px-3 py-1.5 sm:flex">
-                        <span className={`h-2 w-2 flex-shrink-0 rounded-full ${isInSync ? 'bg-success-500' : 'bg-danger-500'}`}></span>
-                        <div id="syncStatus" className="text-xs font-medium leading-tight text-gray-600">
-                            {syncStatus}
-                        </div>
-                    </div>
+                    <SyncSign
+                        active={!isInSync && !isSingle}
+                        onClick={handleSyncNow}
+                        disabled={syncing}
+                        led={isSingle ? 'bg-brand-500' : isInSync ? 'bg-success-500' : 'bg-danger-500'}
+                        text={syncStatus}
+                    />
 
                     <div className="relative">
                         <button

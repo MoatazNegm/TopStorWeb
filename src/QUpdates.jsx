@@ -84,9 +84,6 @@ const QUpdates = () => {
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Software Updates</h1>
                                 <p className="mt-1 text-sm text-gray-500">Manage system versions and acquire new update packages</p>
                             </div>
-                            <Button onClick={() => loadVersions()} variant="secondary" icon={<RefreshCw size={15} />}>
-                                Sync Now
-                            </Button>
                         </div>
 
                         {message.text && (

@@ -3,7 +3,7 @@ import { fetchPartnerList, addPartner, deletePartner } from './api/partners';
 import Button from './components/Common/Button';
 import Input from './components/Common/Input';
 import Dropdown from './components/Common/Dropdown';
-import { AlertTriangle, CheckCircle2, Globe, HandHelping, Hash, Key, PlusCircle, RefreshCw, Trash2, Users } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Globe, HandHelping, Hash, Key, PlusCircle, Trash2, Users } from 'lucide-react';
 import { ListSearch, filterRows, SortTh, useSort, sortRows, dateKey } from './components/Common/ListSearch';
 
 const QPartners = () => {
@@ -115,13 +115,6 @@ const QPartners = () => {
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Partner Ecosystem</h1>
                                 <p className="mt-1 text-sm text-gray-500">Manage replication partners and secure communication channels</p>
                             </div>
-                            <Button
-                                onClick={() => loadPartners()}
-                                variant="secondary"
-                                icon={<RefreshCw size={15} className={loading ? 'animate-spin' : ''} />}
-                            >
-                                Sync Now
-                            </Button>
                         </div>
 
                         {message.text && (
