@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { AlertTriangle, Database, Info } from 'lucide-react';
 import { fetchDgsInfo } from '../../api/pools';
 import { fetchAllVolumesInfo } from '../../api/volumes';
+import { fetchAllHostsInfo } from '../../api/nodes';
 
 /*
  * Capacity display shared by the CIFS, NFS and Home pages.
@@ -116,13 +117,20 @@ export const poolStats = (pools, volumes) => {
     return out;
 };
 
-// pools (dgsinfo) and all volumes (every protocol), refreshed together
+// pools (dgsinfo), all volumes (every protocol) and the addresses of the nodes, refreshed together
 export const useCapacity = (intervalMs = 10000) => {
-    const [state, setState] = useState({ pools: {}, volumes: [] });
+    const [state, setState] = useState({ pools: {}, volumes: [], hosts: [] });
     const load = useCallback(async () => {
         try {
-            const [p, v] = await Promise.all([fetchDgsInfo(), fetchAllVolumesInfo()]);
-            setState({ pools: p.data?.pools || {}, volumes: v.data?.allvolumes || [] });
+            const [p, v, h] = await Promise.all([fetchDgsInfo(), fetchAllVolumesInfo(), fetchAllHostsInfo().catch(() => ({ data: {} }))]);
+            const hosts = [];
+            const all = h.data?.all || {};
+            Object.entries(all).forEach(([name, info]) => {
+                if (info?.ipaddr) hosts.push({ name, ip: info.ipaddr });
+                if (info?.cluster) hosts.push({ name: 'cluster', ip: info.cluster });
+            });
+            (h.data?.active || []).forEach((a) => { if (a?.ip) hosts.push({ name: a.name, ip: a.ip }); });
+            setState({ pools: p.data?.pools || {}, volumes: v.data?.allvolumes || [], hosts });
         } catch (e) { /* the page keeps what it had */ }
     }, []);
     useEffect(() => {
@@ -130,7 +138,7 @@ export const useCapacity = (intervalMs = 10000) => {
         const t = setInterval(load, intervalMs);
         return () => clearInterval(t);
     }, [load, intervalMs]);
-    return { stats: poolStats(state.pools, state.volumes), reload: load };
+    return { stats: poolStats(state.pools, state.volumes), volumes: state.volumes, hosts: state.hosts, reload: load };
 };
 
 // the card beside the "New Volume" form: one line per pool
@@ -217,16 +225,16 @@ export const ProvisionHint = ({ stat, size }) => {
     );
 };
 
-// compression and deduplication of a new volume: both on, the user may switch either off
-export const EfficiencyOptions = ({ compression, dedup, onChange }) => (
+// compression and deduplication of a new volume: both on, the user may switch either off (stacked = two lines, no title)
+export const EfficiencyOptions = ({ compression, dedup, onChange, stacked = false }) => (
     <div>
-        <span className="mb-2 block text-xs font-semibold uppercase tracking-wide text-gray-500">Data efficiency</span>
-        <div className="flex flex-wrap gap-x-6 gap-y-2">
-            <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-700">
+        {!stacked && <span className="mb-2 block text-xs font-semibold uppercase tracking-wide text-gray-500">Data efficiency</span>}
+        <div className={stacked ? 'flex flex-col gap-1.5' : 'flex flex-wrap gap-x-6 gap-y-2'}>
+            <label className="flex cursor-pointer items-center whitespace-nowrap text-sm text-gray-700">
                 <input type="checkbox" className="mr-2 h-4 w-4 flex-shrink-0 rounded border-border text-brand-600 focus:ring-brand-100" checked={compression} onChange={(e) => onChange({ compression: e.target.checked })} />
-                Compression <span className="text-xs text-gray-400">(LZ4)</span>
+                Compression <span className="ml-1 text-xs text-gray-400">(LZ4)</span>
             </label>
-            <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-700">
+            <label className="flex cursor-pointer items-center whitespace-nowrap text-sm text-gray-700">
                 <input type="checkbox" className="mr-2 h-4 w-4 flex-shrink-0 rounded border-border text-brand-600 focus:ring-brand-100" checked={dedup} onChange={(e) => onChange({ dedup: e.target.checked })} />
                 Deduplication
             </label>

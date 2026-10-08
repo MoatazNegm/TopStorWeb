@@ -7,6 +7,7 @@ import Input from './components/Common/Input';
 import { ipError } from './components/Common/NetFields';
 import Dropdown from './components/Common/Dropdown';
 import { pickGroups } from './components/Common/groupPick';
+import { ipCollision } from './components/Common/ipCheck';
 import CifsList from './components/CifsList';
 import { PoolCapacityPanel, ProvisionHint, EfficiencyOptions, useCapacity } from './components/Common/Capacity';
 
@@ -17,7 +18,7 @@ const QCifs = () => {
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { stats: capStats, reload: reloadCapacity } = useCapacity();
+    const { stats: capStats, volumes: allVolumes, hosts: allHosts, reload: reloadCapacity } = useCapacity();
 
     // Form state
     const [formData, setFormData] = useState({
@@ -41,6 +42,10 @@ const QCifs = () => {
         workname: '',
         wrkactive: true
     });
+
+    // the address must not collide with a node, a NFS share, a home, an iSCSI LUN or a CIFS share of another domain / workgroup;
+    // it is checked again as soon as the serving or the domain name changes
+    const ipMsg = ipCollision(formData.ipaddress, { kind: 'CIFS', domain: formData.serving === 'domain' ? (formData.domain.trim() || '?') : '' }, { hosts: allHosts, volumes: allVolumes });
 
     const loadData = useCallback(async () => {
         try {
@@ -71,7 +76,7 @@ const QCifs = () => {
 
     const handleCreate = async (e) => {
         e.preventDefault();
-        if (ipError(formData.ipaddress)) return;
+        if (ipError(formData.ipaddress) || ipMsg) return;
         try {
             const poolObj = pools[formData.pool];
             const isDomain = formData.serving === 'domain';
@@ -171,8 +176,8 @@ const QCifs = () => {
                                     </div>
 
                                     <form onSubmit={handleCreate} className="space-y-5">
-                                    <div className="grid grid-cols-6 gap-6">
-                                        <div className="col-span-2">
+                                    <div className="flex flex-wrap items-end gap-4">
+                                        <div className="w-32">
                                             <Dropdown
                                                 label="Serving"
                                                 options={[
@@ -183,7 +188,7 @@ const QCifs = () => {
                                                 onChange={(val) => setFormData({ ...formData, serving: val })}
                                             />
                                         </div>
-                                        <div className="col-span-2">
+                                        <div className="w-40">
                                             <Dropdown
                                                 label="Storage Pool"
                                                 options={pools.map((p, idx) => ({ value: idx, label: p.text }))}
@@ -192,7 +197,7 @@ const QCifs = () => {
                                                 onChange={(val) => setFormData({ ...formData, pool: val })}
                                             />
                                         </div>
-                                        <div className="col-span-2">
+                                        <div className="min-w-[10rem] flex-1">
                                             <Input
                                                 label="Volume Name"
                                                 required
@@ -201,17 +206,31 @@ const QCifs = () => {
                                                 onChange={(e) => setFormData({ ...formData, name: e.target.value, workname: 'cifs-' + e.target.value })}
                                             />
                                         </div>
+                                        <div className="w-24">
+                                            <Input
+                                                label="Size (GB)"
+                                                type="number"
+                                                min="1"
+                                                max="999999"
+                                                required
+                                                value={formData.size}
+                                                onChange={(e) => setFormData({ ...formData, size: e.target.value.slice(0, 6) })}
+                                            />
+                                        </div>
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-6">
-                                        <Input
-                                            label="IP Address"
-                                            kind="ip"
-                                            required
-                                            value={formData.ipaddress}
-                                            onChange={(e) => setFormData({ ...formData, ipaddress: e.target.value })}
-                                        />
-                                        <div className="grid grid-cols-2 gap-4">
+                                    <div className="flex flex-wrap items-start gap-4">
+                                        <div className="w-44">
+                                            <Input
+                                                label="IP Address"
+                                                kind="ip"
+                                                required
+                                                error={ipMsg}
+                                                value={formData.ipaddress}
+                                                onChange={(e) => setFormData({ ...formData, ipaddress: e.target.value })}
+                                            />
+                                        </div>
+                                        <div className="w-20">
                                             <Input
                                                 label="Subnet"
                                                 kind="subnet"
@@ -219,22 +238,12 @@ const QCifs = () => {
                                                 value={formData.Subnet}
                                                 onChange={(e) => setFormData({ ...formData, Subnet: e.target.value })}
                                             />
-                                            <Input
-                                                label="Size (GB)"
-                                                type="number"
-                                                min="1"
-                                                required
-                                                value={formData.size}
-                                                onChange={(e) => setFormData({ ...formData, size: e.target.value })}
-                                            />
+                                        </div>
+                                        <div className="pt-7">
+                                            <EfficiencyOptions stacked compression={formData.compression} dedup={formData.dedup} onChange={(v) => setFormData({ ...formData, ...v })} />
                                         </div>
                                     </div>
-
-                
-                                    <div className="grid grid-cols-1 gap-4 rounded-md border border-border bg-surface-muted/60 p-3 sm:grid-cols-2">
-                                        <ProvisionHint stat={capStats[pools[formData.pool]?.text]} size={formData.size} />
-                                        <EfficiencyOptions compression={formData.compression} dedup={formData.dedup} onChange={(v) => setFormData({ ...formData, ...v })} />
-                                    </div>
+                                    <ProvisionHint stat={capStats[pools[formData.pool]?.text]} size={formData.size} />
 
                                     {formData.serving === 'domain' ? (
                                         <>
@@ -323,7 +332,7 @@ const QCifs = () => {
                                             type="submit"
                                             className="w-full sm:w-auto"
                                             onClick={handleCreate}
-                                            disabled={!!ipError(formData.ipaddress)}
+                                            disabled={!!ipError(formData.ipaddress) || !!ipMsg}
                                         >
                                             Provision Volume
                                         </Button>

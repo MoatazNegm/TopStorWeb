@@ -7,6 +7,7 @@ import Input from './components/Common/Input';
 import { ipError } from './components/Common/NetFields';
 import Dropdown from './components/Common/Dropdown';
 import { pickGroups } from './components/Common/groupPick';
+import { ipCollision } from './components/Common/ipCheck';
 import NfsList from './components/NfsList';
 import { PoolCapacityPanel, ProvisionHint, EfficiencyOptions, useCapacity } from './components/Common/Capacity';
 
@@ -17,7 +18,7 @@ const QNfs = () => {
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { stats: capStats, reload: reloadCapacity } = useCapacity();
+    const { stats: capStats, volumes: allVolumes, hosts: allHosts, reload: reloadCapacity } = useCapacity();
 
     // Form state
     const [formData, setFormData] = useState({
@@ -35,6 +36,9 @@ const QNfs = () => {
         groupid: 0,
         active: true
     });
+
+    // a NFS share shares its address with nothing: not with a node, a CIFS share, a home, an iSCSI LUN or another NFS share
+    const ipMsg = ipCollision(formData.ipaddress, { kind: 'NFS' }, { hosts: allHosts, volumes: allVolumes });
 
     const loadData = useCallback(async () => {
         try {
@@ -65,7 +69,7 @@ const QNfs = () => {
 
     const handleCreate = async (e) => {
         e.preventDefault();
-        if (ipError(formData.ipaddress)) return;
+        if (ipError(formData.ipaddress) || ipMsg) return;
         try {
             const poolObj = pools[formData.pool];
             const payload = {
@@ -157,67 +161,57 @@ const QNfs = () => {
                                     </div>
 
                                 <form onSubmit={handleCreate} className="space-y-5">
-                                    <div className="grid grid-cols-2 gap-6">
-                                        <Dropdown
-                                            label="Storage Pool"
-                                            options={pools.map((p, idx) => ({ value: idx, label: p.text }))}
-                                            value={formData.pool}
-                                            placeholder="Select pool"
-                                            onChange={(val) => setFormData({ ...formData, pool: val })}
-                                        />
-                                        <Input
-                                            label="Volume Name"
-                                            required
-                                            placeholder="Share name"
-                                            value={formData.name}
-                                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        />
-                                    </div>
-
-                                    <div className="grid grid-cols-2 gap-6">
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <Input
-                                                label="Root Name"
-                                                required
-                                                value={formData.rootname}
-                                                onChange={(e) => setFormData({ ...formData, rootname: e.target.value })}
-                                            />
-                                            <Input
-                                                label="Root ID"
-                                                type="number"
-                                                min="0"
-                                                required
-                                                value={formData.rootid}
-                                                onChange={(e) => setFormData({ ...formData, rootid: e.target.value })}
+                                    <div className="flex flex-wrap items-end gap-4">
+                                        <div className="w-40">
+                                            <Dropdown
+                                                label="Storage Pool"
+                                                options={pools.map((p, idx) => ({ value: idx, label: p.text }))}
+                                                value={formData.pool}
+                                                placeholder="Select pool"
+                                                onChange={(val) => setFormData({ ...formData, pool: val })}
                                             />
                                         </div>
-                                        <div className="grid grid-cols-2 gap-4">
+                                        <div className="min-w-[10rem] flex-1">
                                             <Input
-                                                label="Group Name"
+                                                label="Volume Name"
                                                 required
-                                                value={formData.groupname}
-                                                onChange={(e) => setFormData({ ...formData, groupname: e.target.value })}
+                                                placeholder="Share name"
+                                                value={formData.name}
+                                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                             />
+                                        </div>
+                                        <div className="w-24">
                                             <Input
-                                                label="Group ID"
+                                                label="Size (GB)"
                                                 type="number"
-                                                min="0"
+                                                min="1"
+                                                max="999999"
                                                 required
-                                                value={formData.groupid}
-                                                onChange={(e) => setFormData({ ...formData, groupid: e.target.value })}
+                                                value={formData.size}
+                                                onChange={(e) => setFormData({ ...formData, size: e.target.value.slice(0, 6) })}
                                             />
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-6">
-                                        <Input
-                                            label="IP Address"
-                                            kind="ip"
-                                            required
-                                            value={formData.ipaddress}
-                                            onChange={(e) => setFormData({ ...formData, ipaddress: e.target.value })}
-                                        />
-                                        <div className="grid grid-cols-3 gap-4">
+                                    <div className="grid grid-cols-[1fr_5rem_1fr_5rem] gap-4">
+                                        <Input label="Root Name" required value={formData.rootname} onChange={(e) => setFormData({ ...formData, rootname: e.target.value })} />
+                                        <Input label="Root ID" type="number" min="0" required value={formData.rootid} onChange={(e) => setFormData({ ...formData, rootid: e.target.value })} />
+                                        <Input label="Group Name" required value={formData.groupname} onChange={(e) => setFormData({ ...formData, groupname: e.target.value })} />
+                                        <Input label="Group ID" type="number" min="0" required value={formData.groupid} onChange={(e) => setFormData({ ...formData, groupid: e.target.value })} />
+                                    </div>
+
+                                    <div className="flex flex-wrap items-start gap-4">
+                                        <div className="w-44">
+                                            <Input
+                                                label="IP Address"
+                                                kind="ip"
+                                                required
+                                                error={ipMsg}
+                                                value={formData.ipaddress}
+                                                onChange={(e) => setFormData({ ...formData, ipaddress: e.target.value })}
+                                            />
+                                        </div>
+                                        <div className="w-20">
                                             <Input
                                                 label="Subnet"
                                                 kind="subnet"
@@ -225,30 +219,21 @@ const QNfs = () => {
                                                 value={formData.Subnet}
                                                 onChange={(e) => setFormData({ ...formData, Subnet: e.target.value })}
                                             />
-                                            <Input
-                                                label="Size (GB)"
-                                                type="number"
-                                                min="1"
-                                                required
-                                                value={formData.size}
-                                                onChange={(e) => setFormData({ ...formData, size: e.target.value })}
-                                            />
-                                            <div className="flex flex-col items-center justify-end pb-3">
-                                                <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-gray-500">Active</label>
+                                        </div>
+                                        <div className="flex flex-col gap-1.5 pt-6">
+                                            <label className="flex cursor-pointer items-center whitespace-nowrap text-sm text-gray-700">
                                                 <input
                                                     type="checkbox"
-                                                    className="h-5 w-5 rounded border-border text-brand-600 focus:ring-brand-100"
+                                                    className="mr-2 h-4 w-4 flex-shrink-0 rounded border-border text-brand-600 focus:ring-brand-100"
                                                     checked={formData.active}
                                                     onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
                                                 />
-                                            </div>
+                                                Active
+                                            </label>
+                                            <EfficiencyOptions stacked compression={formData.compression} dedup={formData.dedup} onChange={(v) => setFormData({ ...formData, ...v })} />
                                         </div>
                                     </div>
-
-                                    <div className="grid grid-cols-1 gap-4 rounded-md border border-border bg-surface-muted/60 p-3 sm:grid-cols-2">
-                                        <ProvisionHint stat={capStats[pools[formData.pool]?.text]} size={formData.size} />
-                                        <EfficiencyOptions compression={formData.compression} dedup={formData.dedup} onChange={(v) => setFormData({ ...formData, ...v })} />
-                                    </div>
+                                    <ProvisionHint stat={capStats[pools[formData.pool]?.text]} size={formData.size} />
 
                                     <div>
                                         <Dropdown
@@ -266,7 +251,7 @@ const QNfs = () => {
                                             type="submit"
                                             className="w-full sm:w-auto"
                                             onClick={handleCreate}
-                                            disabled={!!ipError(formData.ipaddress)}
+                                            disabled={!!ipError(formData.ipaddress) || !!ipMsg}
                                         >
                                             Provision Volume
                                         </Button>
