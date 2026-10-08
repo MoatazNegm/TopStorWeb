@@ -114,26 +114,31 @@ const QCifs = () => {
         }
     };
 
-    const handleUpdate = async (volName, values) => {
+    // the list collects the edits (address, groups, deletion); Submit sends them, one call per changed volume
+    const handleSubmit = async (pending) => {
+        const names = Object.keys(pending);
+        const removing = names.filter((n) => pending[n].remove);
+        if (removing.length > 0 && !window.confirm(`Delete ${removing.length} volume${removing.length === 1 ? '' : 's'}: ${removing.map((n) => n.split('_')[0]).join(', ')}?`)) return false;
         try {
-            await updateVolume({
-                volume: volName,
-                type: 'CIFS',
-                ...values
-            });
+            for (const name of names) {
+                const p = pending[name];
+                if (p.remove) {
+                    await deleteVolume({ name, type: 'CIFS', user: 'mezo' });
+                } else {
+                    await updateVolume({
+                        volume: name,
+                        type: 'CIFS',
+                        ...(p.address !== undefined ? { ipaddress: p.address, Subnet: p.subnet } : {}),
+                        ...(p.groups !== undefined ? { groups: p.groups } : {}),
+                    });
+                }
+            }
             loadData();
+            reloadCapacity();
+            return true;
         } catch (err) {
-            setError("Failed to update volume");
-        }
-    };
-
-    const handleDelete = async (volName) => {
-        if (!window.confirm(`Are you sure you want to delete volume ${volName}?`)) return;
-        try {
-            await deleteVolume({ name: volName, type: 'CIFS', user: 'mezo' });
-            loadData();
-        } catch (err) {
-            setError("Failed to delete volume");
+            setError("Failed to apply the changes");
+            return false;
         }
     };
 
@@ -332,8 +337,7 @@ const QCifs = () => {
                                 <CifsList
                                     volumes={volumes}
                                     groups={groups}
-                                    onUpdate={handleUpdate}
-                                    onDelete={handleDelete}
+                                    onSubmit={handleSubmit}
                                 />
                             </div>
                         </div>

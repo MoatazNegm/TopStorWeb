@@ -3,6 +3,7 @@ import { Check, KeyRound, RotateCcw, Search, Shield, Trash2, UserX, Users, X } f
 import Dropdown from './Common/Dropdown';
 import Panel from './Common/Panel';
 import SubmitBar from './Common/SubmitBar';
+import { CurrentValue, RevertButton, OkButton, closeOnLeave } from './Common/PendingEdit';
 import { SortTh, useSort, sortRows } from './Common/ListSearch';
 import { IpInput, SubnetInput, ipError, DEFAULT_SUBNET } from './Common/NetFields';
 
@@ -285,41 +286,6 @@ const UserList = ({ users, groups, onChangePassword, onSubmit, queueStatus }) =>
     );
 };
 
-// "current value" shown very small and green above a field that is being edited
-const CurrentValue = ({ children, applyTo = 0 }) => (
-    <div className="mb-0.5 whitespace-nowrap text-[9px] font-medium leading-none text-success-600" title="current value">
-        {children}
-        {applyTo > 1 && <span className="ml-1.5 text-warning-700">applies to {applyTo} users</span>}
-    </div>
-);
-
-// the small square x: takes back the change of this one field
-const RevertButton = ({ onClick, title = 'Cancel this change' }) => (
-    <button
-        type="button"
-        onMouseDown={(event) => event.preventDefault()}
-        onClick={onClick}
-        title={title}
-        className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-sm border border-border bg-surface text-gray-500 transition-colors hover:bg-gray-100"
-    >
-        <X size={11} />
-    </button>
-);
-
-// the small square ok: leaves the edit shape; the changed value stays in the field with the original shown above it
-const OkButton = ({ onClick, disabled = false }) => (
-    <button
-        type="button"
-        onMouseDown={(event) => event.preventDefault()}
-        onClick={onClick}
-        disabled={disabled}
-        title={disabled ? 'Enter a valid value first' : 'Done editing this field (the change is submitted with Submit changes)'}
-        className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-sm border border-success-100 bg-success-50 text-success-600 transition-colors hover:bg-success-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
-    >
-        <Check size={11} />
-    </button>
-);
-
 const useEditSession = (editing, column, onEditState) => {
     React.useEffect(() => {
         if (!editing) return undefined;
@@ -327,10 +293,6 @@ const useEditSession = (editing, column, onEditState) => {
         return () => onEditState(column, -1);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [editing]);
-};
-
-const closeOnLeave = (close) => (event) => {
-    if (!event.currentTarget.contains(event.relatedTarget)) close();
 };
 
 // Address: shown as text; a click turns it into an edit field (address + subnet) with the current value above it.
