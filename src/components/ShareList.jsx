@@ -6,6 +6,7 @@ import SubmitBar from './Common/SubmitBar';
 import { CurrentValue, OkButton, RevertButton, closeOnLeave } from './Common/PendingEdit';
 import { IpInput, SubnetInput, ipError, DEFAULT_SUBNET } from './Common/NetFields';
 import { ListSearch, useRowFilter, SortTh, useSort, sortRows } from './Common/ListSearch';
+import { pickGroups } from './Common/groupPick';
 import { CapacityBar, EfficiencyCell, fmtGB, poolLabel, volumeNumbers } from './Common/Capacity';
 
 /**
@@ -108,7 +109,8 @@ const GroupsCell = ({ vol, groups, pend, onStage, onRevert }) => {
     const sorted = (arr) => [...arr].sort().join(',');
 
     const change = (values) => {
-        const normalized = (Array.isArray(values) ? values : []).map(String);
+        const isEveryone = (id) => (groups.find((x) => String(x.id) === String(id)) || {}).text === 'Everyone';
+        const normalized = pickGroups(shown, (Array.isArray(values) ? values : []).map(String), isEveryone);
         if (sorted(normalized) === sorted(original)) {
             onRevert(['groups', 'groupIds']);
             return;

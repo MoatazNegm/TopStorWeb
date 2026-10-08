@@ -6,6 +6,7 @@ import Button from './components/Common/Button';
 import Input from './components/Common/Input';
 import { ipError } from './components/Common/NetFields';
 import Dropdown from './components/Common/Dropdown';
+import { pickGroups } from './components/Common/groupPick';
 import NfsList from './components/NfsList';
 import { PoolCapacityPanel, ProvisionHint, EfficiencyOptions, useCapacity } from './components/Common/Capacity';
 
@@ -256,7 +257,7 @@ const QNfs = () => {
                                             options={groups.map(g => ({ value: g.text, label: g.text }))}
                                             value={formData.groups}
                                             placeholder="Select groups"
-                                            onChange={(val) => setFormData({ ...formData, groups: val })}
+                                            onChange={(val) => setFormData({ ...formData, groups: pickGroups(formData.groups, val, (g) => g === 'Everyone') })}
                                         />
                                     </div>
 
