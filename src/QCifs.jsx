@@ -144,8 +144,8 @@ const QCifs = () => {
     };
 
     return (
-                <div className="p-5">
-                    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+                <div className="p-3">
+                    <div className="rounded-xl border border-border bg-surface p-4 shadow-sm">
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                             <div>
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">CIFS Volumes</h1>
@@ -161,8 +161,8 @@ const QCifs = () => {
                         )}
 
                         <div className="mt-6 space-y-6">
-                            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                                <div className="rounded-lg border border-border bg-surface p-5 shadow-sm">
+                            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                                <div className="rounded-lg border border-border bg-surface p-5 shadow-sm lg:col-span-2">
                                     <div className="mb-5 flex items-center gap-3">
                                         <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-50 text-brand-600">
                                             <FolderPlus size={16} />

@@ -7,7 +7,7 @@ import { CurrentValue, OkButton, RevertButton, closeOnLeave } from './Common/Pen
 import { IpInput, SubnetInput, ipError, DEFAULT_SUBNET } from './Common/NetFields';
 import { ListSearch, useRowFilter, SortTh, useSort, sortRows } from './Common/ListSearch';
 import { pickGroups } from './Common/groupPick';
-import { CapacityBar, EfficiencyCell, fmtGB, poolLabel, volumeNumbers } from './Common/Capacity';
+import { CapacityBar, EfficiencyCell, fmtNum, poolLabel, volumeNumbers } from './Common/Capacity';
 
 /**
  * The list of the CIFS, NFS and home folder volumes. Same way of editing as the users list: nothing is sent at once.
@@ -205,9 +205,9 @@ const ShareList = ({ volumes, groups = [], onSubmit, queueStatus, title, subtitl
                         <tr className="border-b border-border">
                             <SortTh sortKey="name" sort={sort} onToggle={toggle} className={th}>Volume</SortTh>
                             <SortTh sortKey="pool" sort={sort} onToggle={toggle} className={th}>Pool</SortTh>
-                            <SortTh sortKey="cap" sort={sort} onToggle={toggle} className={th}>Capacity</SortTh>
-                            <SortTh sortKey="free" sort={sort} onToggle={toggle} className={th}>Free</SortTh>
-                            <SortTh sortKey="snaps" sort={sort} onToggle={toggle} className={th}>Snapshots</SortTh>
+                            <SortTh sortKey="cap" sort={sort} onToggle={toggle} className={th}>Capacity (GB)</SortTh>
+                            <SortTh sortKey="free" sort={sort} onToggle={toggle} className={th}>Free (GB)</SortTh>
+                            <SortTh sortKey="snaps" sort={sort} onToggle={toggle} className={th}>Snapshots (GB)</SortTh>
                             <SortTh sortKey="comp" sort={sort} onToggle={toggle} className={th}>Efficiency</SortTh>
                             <SortTh sortKey="ip" sort={sort} onToggle={toggle} className={th}>Access</SortTh>
                             {showGroups && <SortTh sortKey="groups" sort={sort} onToggle={toggle} className={`${th} min-w-[210px]`}>Groups</SortTh>}
@@ -232,8 +232,8 @@ const ShareList = ({ volumes, groups = [], onSubmit, queueStatus, title, subtitl
                                         <span className="text-xs font-medium text-gray-600">{poolLabel(vol.pool)}</span>
                                     </td>
                                     <td className="px-2.5 py-1"><CapacityBar vol={vol} /></td>
-                                    <td className="px-2.5 py-1 text-sm text-gray-700">{fmtGB(volumeNumbers(vol).free)}</td>
-                                    <td className="px-2.5 py-1 text-sm text-gray-700">{fmtGB((parseFloat(vol.usedbysnapshots) || 0) / 1024)}</td>
+                                    <td className="px-2.5 py-1 text-sm text-gray-700">{fmtNum(volumeNumbers(vol).free)}</td>
+                                    <td className="px-2.5 py-1 text-sm text-gray-700">{fmtNum((parseFloat(vol.usedbysnapshots) || 0) / 1024)}</td>
                                     <td className="px-2.5 py-1"><EfficiencyCell vol={vol} /></td>
                                     <td className="px-2.5 py-1">
                                         <AddressCell vol={vol} pend={pend} onStage={(c) => stage(vol.name, c)} onRevert={(k) => unstage(vol.name, k)} />

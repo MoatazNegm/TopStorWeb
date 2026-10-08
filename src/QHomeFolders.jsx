@@ -149,9 +149,9 @@ const QHomeFolders = () => {
                         )}
 
                         {/* First Row: Form + Insights */}
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                             {/* Creation Form */}
-                            <div className="rounded-lg border border-border bg-surface p-6 shadow-sm">
+                            <div className="rounded-lg border border-border bg-surface p-6 shadow-sm lg:col-span-2">
                                 <div className="flex items-center gap-3 mb-8">
                                     <div className="flex h-9 w-9 items-center justify-center rounded-md bg-brand-50 text-brand-600">
                                         <Plus size={14} />

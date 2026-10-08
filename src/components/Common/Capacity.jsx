@@ -25,6 +25,14 @@ export const fmtGB = (gb) => {
     return `${Math.round(n * 1024)} MB`;
 };
 
+// a size as a plain number of GB (the unit is in the header of the column)
+export const fmtNum = (gb) => {
+    const n = num(gb);
+    if (n >= 100) return String(Math.round(n));
+    if (n >= 1) return n.toFixed(1);
+    return n.toFixed(2);
+};
+
 export const poolLabel = (pool = '') => String(pool).split('p')[2] || pool;
 
 // capacity numbers of one volume (all in GB)
@@ -56,8 +64,8 @@ export const CapacityBar = ({ vol }) => {
     return (
         <div className="min-w-[170px]" title={title}>
             <div className="flex items-baseline justify-between gap-2 text-xs">
-                <span className={`font-semibold ${levelText(c.pct)}`}>{fmtGB(c.used)}</span>
-                <span className="text-gray-500">of {c.unlimited ? 'no limit' : fmtGB(c.limit)}</span>
+                <span className={`font-semibold ${levelText(c.pct)}`}>{fmtNum(c.used)}</span>
+                <span className="text-gray-500">of {c.unlimited ? 'no limit' : fmtNum(c.limit)}</span>
                 <span className={`font-mono text-[11px] ${levelText(c.pct)}`}>{c.pct.toFixed(0)}%</span>
             </div>
             <div className="mt-1 flex h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
@@ -126,21 +134,22 @@ export const useCapacity = (intervalMs = 10000) => {
 };
 
 // the card beside the "New Volume" form: one line per pool
-export const PoolCapacityPanel = ({ stats }) => {
+export const PoolCapacityPanel = ({ stats, className = '' }) => {
     const rows = Object.values(stats || {});
     const total = rows.reduce((a, s) => ({ usable: a.usable + s.usable, used: a.used + s.used, prov: a.prov + s.provisioned }), { usable: 0, used: 0, prov: 0 });
     return (
-        <div className="flex flex-col rounded-lg border border-border bg-surface p-5 shadow-sm">
+        <div className={`flex flex-col rounded-lg border border-border bg-surface p-5 shadow-sm ${className}`}>
             <div className="mb-4 flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-50 text-brand-600"><Database size={16} /></div>
                 <div className="min-w-0 flex-1">
-                    <h3 className="text-base font-semibold text-gray-800">Pool Capacity</h3>
+                    <h3 className="whitespace-nowrap text-base font-semibold text-gray-800">Pool Capacity</h3>
                     <p className="text-xs text-gray-500">Real usage and thin provisioning per pool</p>
                 </div>
-                <div className="text-right text-xs text-gray-500">
-                    <div><span className="font-semibold text-gray-800">{fmtGB(total.used)}</span> used of {fmtGB(total.usable)}</div>
-                    <div>{fmtGB(total.prov)} provisioned</div>
-                </div>
+            </div>
+
+            <div className="-mt-1 mb-4 flex flex-wrap items-baseline gap-x-4 text-xs text-gray-500">
+                <span><span className="font-semibold text-gray-800">{fmtGB(total.used)}</span> used of {fmtGB(total.usable)}</span>
+                <span>{fmtGB(total.prov)} provisioned</span>
             </div>
 
             <div className="space-y-4">
