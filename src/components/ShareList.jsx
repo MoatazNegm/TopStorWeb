@@ -36,7 +36,7 @@ const volGroupIds = (vol, groups) => {
 const groupNames = (ids, groups) => ids.map((id) => (groups.find((x) => String(x.id) === String(id)) || {}).text || id);
 
 const countPending = (pending) =>
-    Object.values(pending).reduce((n, p) => n + (p.remove ? 1 : 0) + (p.address !== undefined ? 1 : 0) + (p.groups !== undefined ? 1 : 0), 0);
+    Object.values(pending).reduce((n, p) => n + (p.remove ? 1 : 0) + (p.address !== undefined ? 1 : 0) + (p.groups !== undefined ? 1 : 0) + (p.port !== undefined ? 1 : 0) + (p.initiators !== undefined ? 1 : 0), 0);
 
 // Address: text; a click turns it into an edit field (address + subnet) with the current value above it.
 const AddressCell = ({ vol, pend, onStage, onRevert }) => {
@@ -142,7 +142,137 @@ const GroupsCell = ({ vol, groups, pend, onStage, onRevert }) => {
     );
 };
 
-const ShareList = ({ volumes, groups = [], onSubmit, queueStatus, title, subtitle, count, emptyText, icon: Icon = HardDrive, showGroups = true }) => {
+// iSCSI: address and portal port (no subnet), same click-to-edit as the address of a share
+const PortalCell = ({ vol, pend, onStage, onRevert }) => {
+    const address = volAddress(vol);
+    const port = String(vol.portalport || '3260');
+    const shownAddress = pend.address !== undefined ? pend.address : address;
+    const shownPort = pend.port !== undefined ? String(pend.port) : port;
+    const changed = pend.address !== undefined || pend.port !== undefined;
+    const [editing, setEditing] = React.useState(false);
+    const [draft, setDraft] = React.useState(shownAddress);
+    const [draftPort, setDraftPort] = React.useState(shownPort);
+    const locked = Boolean(pend.remove);
+    const portOk = (v) => /^\d{4,5}$/.test(v) && Number(v) >= 1024 && Number(v) <= 65535;
+
+    const start = () => { setDraft(shownAddress); setDraftPort(shownPort); setEditing(true); };
+    const apply = (nextAddress, nextPort) => {
+        const value = nextAddress.trim();
+        if (value === address && String(nextPort) === port) onRevert(['address', 'port']);
+        else if (value !== '' && !ipError(value) && portOk(String(nextPort))) onStage({ address: value, port: String(nextPort) });
+    };
+    const revert = () => { onRevert(['address', 'port']); setEditing(false); };
+
+    if (!editing) {
+        const valueButton = (
+            <button type="button" onClick={start} disabled={locked}
+                title={changed ? `Changed from ${address}:${port}; not applied until submitted` : 'Click to edit the address and port'}
+                className={`block min-w-0 flex-1 truncate rounded px-1 py-0.5 text-left font-mono text-xs ${
+                    locked ? 'cursor-default text-gray-300' : changed ? 'bg-warning-50 text-warning-700 hover:bg-warning-100' : 'text-gray-700 hover:bg-gray-100'}`}>
+                {shownAddress}<span className="text-gray-400">:{shownPort}</span>
+            </button>
+        );
+        if (!changed || locked) return <div className="flex items-center gap-1">{valueButton}</div>;
+        return (
+            <div>
+                <CurrentValue>{address}:{port}</CurrentValue>
+                <div className="flex items-center gap-1">
+                    {valueButton}
+                    <RevertButton onClick={revert} />
+                </div>
+            </div>
+        );
+    }
+    return (
+        <div onBlur={closeOnLeave(() => setEditing(false))}>
+            <CurrentValue>{address}:{port}</CurrentValue>
+            <div className="flex items-center gap-1">
+                <IpInput
+                    autoFocus
+                    value={draft}
+                    onChange={(event) => { setDraft(event.target.value); apply(event.target.value, draftPort); }}
+                    className="h-6 w-32 rounded border border-border bg-surface px-1.5 font-mono text-xs outline-none focus:border-brand-500"
+                />
+                <input
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={5}
+                    value={draftPort}
+                    onChange={(event) => { const v = event.target.value.replace(/\D/g, '').slice(0, 5); setDraftPort(v); apply(draft, v); }}
+                    className="h-6 w-14 rounded border border-border bg-surface px-1 text-center text-xs outline-none focus:border-brand-500"
+                    title="Port 1024 - 65535"
+                />
+                <OkButton onClick={() => setEditing(false)} disabled={draft.trim() === '' || Boolean(ipError(draft)) || !portOk(draftPort)} />
+                <RevertButton onClick={revert} />
+            </div>
+        </div>
+    );
+};
+
+// iSCSI: the initiators (IQNs) that may use the LUN; a click opens a small text area (space, comma or new line between IQNs)
+const iqnList = (text) => String(text || '').split(/[\s,]+/).filter(Boolean);
+const InitiatorsCell = ({ vol, pend, onStage, onRevert }) => {
+    const original = iqnList(vol.initiators);
+    const shown = pend.initiators !== undefined ? iqnList(pend.initiators) : original;
+    const changed = pend.initiators !== undefined;
+    const [editing, setEditing] = React.useState(false);
+    const [draft, setDraft] = React.useState('');
+    const locked = Boolean(pend.remove);
+
+    const start = () => { setDraft(shown.join('\n')); setEditing(true); };
+    const change = (text) => {
+        setDraft(text);
+        const list = iqnList(text);
+        if (list.join(',') === original.join(',')) onRevert(['initiators']);
+        else onStage({ initiators: list.join(',') || 'This_lun_is_not_mapped' });
+    };
+    const revert = () => { onRevert(['initiators']); setEditing(false); };
+    const originalText = original.join(', ') || 'none';
+
+    if (!editing) {
+        const chips = (
+            <button type="button" onClick={start} disabled={locked} title={changed ? 'Changed; not applied until submitted' : 'Click to edit the initiators'}
+                className={`flex min-w-0 flex-1 flex-wrap gap-1 rounded px-1 py-0.5 text-left ${locked ? 'cursor-default' : changed ? 'bg-warning-50 hover:bg-warning-100' : 'hover:bg-gray-100'}`}>
+                {shown.length === 0 && <span className="text-xs text-gray-400">not mapped</span>}
+                {shown.map((iqn) => (
+                    <span key={iqn} className="max-w-[16rem] truncate rounded-sm border border-border bg-surface-muted px-2 py-0.5 text-xs font-medium text-gray-500" title={iqn}>{iqn}</span>
+                ))}
+            </button>
+        );
+        if (!changed || locked) return <div className="flex items-center gap-1">{chips}</div>;
+        return (
+            <div>
+                <CurrentValue>{originalText}</CurrentValue>
+                <div className="flex items-center gap-1">
+                    {chips}
+                    <RevertButton onClick={revert} />
+                </div>
+            </div>
+        );
+    }
+    return (
+        <div onBlur={closeOnLeave(() => setEditing(false))}>
+            <CurrentValue>{originalText}</CurrentValue>
+            <div className="flex items-start gap-1">
+                <textarea
+                    autoFocus
+                    rows={2}
+                    value={draft}
+                    onChange={(event) => change(event.target.value)}
+                    placeholder="iqn.1993-08.org.debian:01:..."
+                    className="min-h-[2.5rem] w-64 rounded border border-border bg-surface px-1.5 py-1 text-xs outline-none focus:border-brand-500"
+                />
+                <div className="flex flex-col gap-1">
+                    <OkButton onClick={() => setEditing(false)} />
+                    <RevertButton onClick={revert} />
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const ShareList = ({ volumes, groups = [], onSubmit, queueStatus, title, subtitle, count, emptyText, icon: Icon = HardDrive, showGroups = true, variant = 'share' }) => {
+    const iscsi = variant === 'iscsi';
     const { query, setQuery, visible, filtering } = useRowFilter(volumes);
     const { sort, toggle } = useSort();
     const [pending, setPending] = React.useState({});
@@ -175,6 +305,7 @@ const ShareList = ({ volumes, groups = [], onSubmit, queueStatus, title, subtitl
         snaps: (v) => parseFloat(v.usedbysnapshots) || 0,
         comp: (v) => parseFloat(v.refcompressratio) || 0,
         ip: (v) => (pending[v.name]?.address !== undefined ? pending[v.name].address : v.ipaddress),
+        init: (v) => String(v.initiators || ''),
         groups: (v) => groupNames(volGroupIds(v, groups), groups).join(' '),
     });
 
@@ -187,7 +318,7 @@ const ShareList = ({ volumes, groups = [], onSubmit, queueStatus, title, subtitl
     };
 
     const th = 'px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500';
-    const cols = showGroups ? 9 : 8;
+    const cols = showGroups || iscsi ? 9 : 8;
 
     return (
         <Panel icon={<Icon size={17} />} title={title} subtitle={subtitle} bodyClass="p-0">
@@ -203,13 +334,14 @@ const ShareList = ({ volumes, groups = [], onSubmit, queueStatus, title, subtitl
                 <table className="min-w-[1050px] w-full text-left">
                     <thead className="bg-surface-muted">
                         <tr className="border-b border-border">
-                            <SortTh sortKey="name" sort={sort} onToggle={toggle} className={th}>Volume</SortTh>
+                            <SortTh sortKey="name" sort={sort} onToggle={toggle} className={th}>{iscsi ? 'LUN / Target' : 'Volume'}</SortTh>
                             <SortTh sortKey="pool" sort={sort} onToggle={toggle} className={th}>Pool</SortTh>
                             <SortTh sortKey="cap" sort={sort} onToggle={toggle} className={th}>Capacity (GB)</SortTh>
                             <SortTh sortKey="free" sort={sort} onToggle={toggle} className={th}>Free (GB)</SortTh>
                             <SortTh sortKey="snaps" sort={sort} onToggle={toggle} className={th}>Snapshots (GB)</SortTh>
                             <SortTh sortKey="comp" sort={sort} onToggle={toggle} className={th}>Efficiency</SortTh>
-                            <SortTh sortKey="ip" sort={sort} onToggle={toggle} className={th}>Access</SortTh>
+                            <SortTh sortKey="ip" sort={sort} onToggle={toggle} className={th}>{iscsi ? 'IP:Port' : 'Access'}</SortTh>
+                            {iscsi && <SortTh sortKey="init" sort={sort} onToggle={toggle} className={`${th} min-w-[220px]`}>Allowed Initiators</SortTh>}
                             {showGroups && <SortTh sortKey="groups" sort={sort} onToggle={toggle} className={`${th} min-w-[210px]`}>Groups</SortTh>}
                             <th className={`${th} text-right`}>Actions</th>
                         </tr>
@@ -236,8 +368,15 @@ const ShareList = ({ volumes, groups = [], onSubmit, queueStatus, title, subtitl
                                     <td className="px-2.5 py-1 text-sm text-gray-700">{fmtNum((parseFloat(vol.usedbysnapshots) || 0) / 1024)}</td>
                                     <td className="px-2.5 py-1"><EfficiencyCell vol={vol} /></td>
                                     <td className="px-2.5 py-1">
-                                        <AddressCell vol={vol} pend={pend} onStage={(c) => stage(vol.name, c)} onRevert={(k) => unstage(vol.name, k)} />
+                                        {iscsi
+                                            ? <PortalCell vol={vol} pend={pend} onStage={(c) => stage(vol.name, c)} onRevert={(k) => unstage(vol.name, k)} />
+                                            : <AddressCell vol={vol} pend={pend} onStage={(c) => stage(vol.name, c)} onRevert={(k) => unstage(vol.name, k)} />}
                                     </td>
+                                    {iscsi && (
+                                        <td className="px-2.5 py-1">
+                                            <InitiatorsCell vol={vol} pend={pend} onStage={(c) => stage(vol.name, c)} onRevert={(k) => unstage(vol.name, k)} />
+                                        </td>
+                                    )}
                                     {showGroups && (
                                         <td className="px-2.5 py-1">
                                             <GroupsCell vol={vol} groups={groups} pend={pend} onStage={(c) => stage(vol.name, c)} onRevert={(k) => unstage(vol.name, k)} />
@@ -248,7 +387,7 @@ const ShareList = ({ volumes, groups = [], onSubmit, queueStatus, title, subtitl
                                             <button
                                                 type="button"
                                                 onClick={() => unstage(vol.name, ['remove'])}
-                                                title="Keep this volume (take back the deletion)"
+                                                title={iscsi ? "Keep this LUN (take back the deletion)" : "Keep this volume (take back the deletion)"}
                                                 className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-danger-100 bg-danger-50 text-danger-600 transition-colors hover:bg-danger-100"
                                             >
                                                 <RotateCcw size={14} />
@@ -257,7 +396,7 @@ const ShareList = ({ volumes, groups = [], onSubmit, queueStatus, title, subtitl
                                             <button
                                                 type="button"
                                                 onClick={() => stage(vol.name, { remove: true })}
-                                                title="Delete this volume"
+                                                title={iscsi ? "Delete this LUN" : "Delete this volume"}
                                                 className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-gray-50 text-gray-400 transition-colors hover:border hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600"
                                             >
                                                 <Trash2 size={14} />

@@ -38,6 +38,13 @@ export const poolLabel = (pool = '') => String(pool).split('p')[2] || pool;
 
 // capacity numbers of one volume (all in GB)
 export const volumeNumbers = (vol) => {
+    if (vol.prot === 'ISCSI') {
+        // a LUN (zvol) reserves its whole size: the size is the limit, what has been written to it (referenced, MB) is the use
+        const limit = num(vol.quota) > 0 ? num(vol.quota) : num(vol.used);
+        const used = Math.min(num(vol.referenced) / 1024, limit);
+        const snaps = Math.min(num(vol.usedbysnapshots) / 1024, used);
+        return { used, quota: limit, limit, free: Math.max(limit - used, 0), snaps, pct: limit > 0 ? Math.min((used / limit) * 100, 100) : 0, data: Math.max(used - snaps, 0), unlimited: false };
+    }
     const used = num(vol.used);
     const quota = num(vol.quota);
     const avail = num(vol.available);
@@ -206,7 +213,7 @@ export const PoolCapacityPanel = ({ stats, className = '' }) => {
 };
 
 // under the Size field of the create forms
-export const ProvisionHint = ({ stat, size }) => {
+export const ProvisionHint = ({ stat, size, thick = false }) => {
     const gb = num(size);
     if (!stat) return <p className="text-[11px] text-gray-400">Choose a pool to see its free space.</p>;
     const after = stat.provisioned + gb;
@@ -218,8 +225,9 @@ export const ProvisionHint = ({ stat, size }) => {
                 Pool {poolLabel(stat.name)}: <span className="font-medium text-gray-700">{fmtGB(stat.free)} free</span> of {fmtGB(stat.usable)} ·
                 {' '}{fmtGB(stat.provisioned)} already provisioned → {fmtGB(after)} with this volume
             </p>
-            {overFree && <p className="text-brand-700">Larger than the free space: allowed, the volume is thin and only what it stores counts.</p>}
-            {overPool && !overFree && <p className="text-brand-700">The pool will be over-provisioned ({(after / stat.usable).toFixed(2)}×), only real usage counts.</p>}
+            {thick && overFree && <p className="font-medium text-danger-600">A LUN reserves its whole size: it needs {fmtGB(gb)} free in the pool.</p>}
+            {!thick && overFree && <p className="text-brand-700">Larger than the free space: allowed, the volume is thin and only what it stores counts.</p>}
+            {!thick && overPool && !overFree && <p className="text-brand-700">The pool will be over-provisioned ({(after / stat.usable).toFixed(2)}×), only real usage counts.</p>}
             {stat.realPct >= 90 && <p className="font-medium text-danger-600">This pool is above 90% of its real capacity.</p>}
         </div>
     );

@@ -1,20 +1,21 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { AlertTriangle, FolderPlus } from 'lucide-react';
-import { fetchVolumesInfo, createVolume, updateVolume, deleteVolume, fetchVolumeStats } from './api/volumes';
+import { fetchVolumesInfo, createVolume, updateVolume, deleteVolume } from './api/volumes';
 import { fetchPoolsInfo } from './api/pools';
 import Button from './components/Common/Button';
 import Input from './components/Common/Input';
 import { ipError } from './components/Common/NetFields';
 import Dropdown from './components/Common/Dropdown';
 import IscsiList from './components/IscsiList';
-import VolumeInsights from './components/VolumeInsights';
+import { PoolCapacityPanel, ProvisionHint, useCapacity } from './components/Common/Capacity';
+import { ipCollision } from './components/Common/ipCheck';
 
 const QIscsi = () => {
     const [volumes, setVolumes] = useState([]);
     const [pools, setPools] = useState([]);
-    const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { stats: capStats, volumes: allVolumes, hosts: allHosts, reload: reloadCapacity } = useCapacity();
 
     // Form state
     const [formData, setFormData] = useState({
@@ -28,17 +29,18 @@ const QIscsi = () => {
         active: true,
     });
 
+    // the address may be shared with other LUNs only (one portal), never with a node, a share or a home folder
+    const ipMsg = ipCollision(formData.ipaddress, { kind: 'ISCSI' }, { hosts: allHosts, volumes: allVolumes });
+
     const loadData = useCallback(async () => {
         try {
-            const [volsRes, poolsRes, statsRes] = await Promise.all([
+            const [volsRes, poolsRes] = await Promise.all([
                 fetchVolumesInfo('ISCSI'),
                 fetchPoolsInfo(),
-                fetchVolumeStats().catch(() => ({ data: {} }))
             ]);
 
             setVolumes(volsRes.data.allvolumes || []);
             setPools(poolsRes.data.results || []);
-            setStats(statsRes.data);
         } catch (err) {
             console.error("Failed to load iSCSI data", err);
             setError("Failed to synchronize with volumes API");
@@ -55,7 +57,7 @@ const QIscsi = () => {
 
     const handleCreate = async (e) => {
         e.preventDefault();
-        if (ipError(formData.ipaddress)) return;
+        if (ipError(formData.ipaddress) || ipMsg) return;
         try {
             const poolObj = pools[formData.poolIndex];
             const initiatorStr = formData.initiators.trim().replaceAll('\n', ',').replaceAll(' ', ',').replaceAll(/,{2,}/g, ',');
@@ -83,37 +85,44 @@ const QIscsi = () => {
                 active: true,
             });
             loadData();
+            reloadCapacity();
         } catch (err) {
             setError("Failed to create iSCSI volume");
         }
     };
 
-    const handleUpdate = async (volName, values) => {
+    // the list collects the edits (address and port, initiators, deletion); Submit sends them, one call per changed LUN
+    const handleSubmit = async (pending) => {
+        const names = Object.keys(pending);
+        const removing = names.filter((n) => pending[n].remove);
+        if (removing.length > 0 && !window.confirm(`Delete ${removing.length} LUN${removing.length === 1 ? '' : 's'}: ${removing.map((n) => n.split('_')[0]).join(', ')}?`)) return false;
         try {
-            await updateVolume({
-                volume: volName,
-                type: 'ISCSI',
-                ...values
-            });
+            for (const name of names) {
+                const p = pending[name];
+                if (p.remove) {
+                    await deleteVolume({ name, type: 'ISCSI', user: 'mezo' });
+                } else {
+                    await updateVolume({
+                        volume: name,
+                        type: 'ISCSI',
+                        ...(p.address !== undefined ? { ipaddress: p.address } : {}),
+                        ...(p.port !== undefined ? { portalport: p.port } : {}),
+                        ...(p.initiators !== undefined ? { initiators: p.initiators } : {}),
+                    });
+                }
+            }
             loadData();
+            reloadCapacity();
+            return true;
         } catch (err) {
-            setError("Failed to update volume");
-        }
-    };
-
-    const handleDelete = async (volName) => {
-        if (!window.confirm(`Are you sure you want to delete LUN ${volName.split('_')[0]}?`)) return;
-        try {
-            await deleteVolume({ name: volName, type: 'ISCSI', user: 'mezo' });
-            loadData();
-        } catch (err) {
-            setError("Failed to delete volume");
+            setError("Failed to apply the changes");
+            return false;
         }
     };
 
     return (
-                <div className="p-5">
-                    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+                <div>
+                    <div className="rounded-none border border-border bg-surface p-2 shadow-sm">
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                             <div>
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">iSCSI LUNs</h1>
@@ -129,8 +138,8 @@ const QIscsi = () => {
                         )}
 
                         <div className="mt-6 space-y-6">
-                            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                                <div className="rounded-lg border border-border bg-surface p-5 shadow-sm">
+                            <div className="grid grid-cols-1 gap-2 lg:grid-cols-3">
+                                <div className="rounded-lg border border-border bg-surface p-2 shadow-sm lg:col-span-2">
                                     <div className="mb-5 flex items-center gap-3">
                                         <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-50 text-brand-600">
                                             <FolderPlus size={16} />
@@ -138,75 +147,84 @@ const QIscsi = () => {
                                         <h3 className="text-base font-semibold text-gray-800">Provision Block Device</h3>
                                     </div>
 
-                                <form onSubmit={handleCreate} className="space-y-5">
-                                    <div className="grid grid-cols-2 gap-6">
-                                        <Dropdown
-                                            label="Storage Pool"
-                                            options={pools.map((p, idx) => ({ value: idx, label: p.text }))}
-                                            value={formData.poolIndex}
-                                            placeholder="Select pool"
-                                            onChange={(val) => setFormData({ ...formData, poolIndex: val })}
-                                        />
-                                        <Input
-                                            label="LUN Name"
-                                            required
-                                            placeholder="LUN-01"
-                                            value={formData.name}
-                                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        />
-                                    </div>
+                                    <form onSubmit={handleCreate} className="space-y-5">
+                                        <div className="flex flex-wrap items-end gap-4">
+                                            <div className="w-40">
+                                                <Dropdown
+                                                    label="Storage Pool"
+                                                    options={pools.map((p, idx) => ({ value: idx, label: p.text }))}
+                                                    value={formData.poolIndex}
+                                                    placeholder="Select pool"
+                                                    onChange={(val) => setFormData({ ...formData, poolIndex: val })}
+                                                />
+                                            </div>
+                                            <div className="min-w-[10rem] flex-1">
+                                                <Input
+                                                    label="LUN Name"
+                                                    required
+                                                    placeholder="LUN-01"
+                                                    value={formData.name}
+                                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                                />
+                                            </div>
+                                            <div className="w-24">
+                                                <Input
+                                                    label="Size (GB)"
+                                                    type="number"
+                                                    min="1"
+                                                    max="999999"
+                                                    required
+                                                    value={formData.size}
+                                                    onChange={(e) => setFormData({ ...formData, size: e.target.value.slice(0, 6) })}
+                                                />
+                                            </div>
+                                        </div>
 
-                                    <div className="grid grid-cols-3 gap-6">
-                                        <div className="col-span-2">
-                                            <div className="grid grid-cols-2 gap-4">
+                                        <div className="flex flex-wrap items-start gap-4">
+                                            <div className="w-44">
                                                 <Input
                                                     label="IP Address"
-                                            kind="ip"
+                                                    kind="ip"
                                                     required
+                                                    error={ipMsg}
                                                     value={formData.ipaddress}
                                                     onChange={(e) => setFormData({ ...formData, ipaddress: e.target.value })}
                                                 />
+                                            </div>
+                                            <div className="w-20">
                                                 <Input
                                                     label="Subnet"
-                                                kind="subnet"
+                                                    kind="subnet"
                                                     required
                                                     value={formData.Subnet}
                                                     onChange={(e) => setFormData({ ...formData, Subnet: e.target.value })}
                                                 />
                                             </div>
-                                        </div>
-                                        <Input
-                                            label="Port"
-                                            type="number"
-                                            min="1024" max="65535"
-                                            required
-                                            value={formData.portalport}
-                                            onChange={(e) => setFormData({ ...formData, portalport: e.target.value })}
-                                        />
-                                    </div>
-
-                                    <div className="grid grid-cols-4 gap-6">
-                                        <div className="flex flex-col gap-3">
-                                            <Input
-                                                label="Size (GB)"
-                                                type="number"
-                                                min="1"
-                                                required
-                                                value={formData.size}
-                                                onChange={(e) => setFormData({ ...formData, size: e.target.value })}
-                                            />
-                                            <div className="flex items-center gap-2 pt-1">
-                                                <input
-                                                    type="checkbox"
-                                                    id="iscsiActive"
-                                                    className="h-4 w-4 rounded border-border text-brand-600 focus:ring-brand-100"
-                                                    checked={formData.active}
-                                                    onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
+                                            <div className="w-24">
+                                                <Input
+                                                    label="Port"
+                                                    type="number"
+                                                    min="1024" max="65535"
+                                                    required
+                                                    value={formData.portalport}
+                                                    onChange={(e) => setFormData({ ...formData, portalport: e.target.value })}
                                                 />
-                                                <label htmlFor="iscsiActive" className="text-xs font-semibold text-gray-600 cursor-pointer">Active</label>
+                                            </div>
+                                            <div className="pt-8">
+                                                <label className="flex cursor-pointer items-center whitespace-nowrap text-sm text-gray-700">
+                                                    <input
+                                                        type="checkbox"
+                                                        className="mr-2 h-4 w-4 flex-shrink-0 rounded border-border text-brand-600 focus:ring-brand-100"
+                                                        checked={formData.active}
+                                                        onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
+                                                    />
+                                                    Active
+                                                </label>
                                             </div>
                                         </div>
-                                        <div className="col-span-3 text-gray-800">
+                                        <ProvisionHint thick stat={capStats[pools[formData.poolIndex]?.text]} size={formData.size} />
+
+                                        <div className="text-gray-800">
                                             <Input
                                                 label="Initiators IQN"
                                                 isTextArea
@@ -217,29 +235,27 @@ const QIscsi = () => {
                                             />
                                             <span className="ml-1 mt-1 block text-xs font-medium text-gray-500">Add IQNs separated by space, comma, or newline.</span>
                                         </div>
-                                    </div>
 
-                                    <div className="flex justify-end pt-2">
-                                        <Button
-                                            type="submit"
-                                            className="w-full sm:w-auto"
-                                            onClick={handleCreate}
-                                            disabled={!!ipError(formData.ipaddress)}
-                                        >
-                                            Create iSCSI Target
-                                        </Button>
-                                    </div>
-                                </form>
+                                        <div className="flex justify-end pt-2">
+                                            <Button
+                                                type="submit"
+                                                className="w-full sm:w-auto"
+                                                onClick={handleCreate}
+                                                disabled={!!ipError(formData.ipaddress) || !!ipMsg}
+                                            >
+                                                Create iSCSI Target
+                                            </Button>
+                                        </div>
+                                    </form>
                                 </div>
 
-                                <VolumeInsights volumes={volumes} />
+                                <PoolCapacityPanel stats={capStats} />
                             </div>
 
                             <div className="w-full">
                                 <IscsiList
                                     volumes={volumes}
-                                    onUpdate={handleUpdate}
-                                    onDelete={handleDelete}
+                                    onSubmit={handleSubmit}
                                 />
                             </div>
                         </div>

@@ -4,7 +4,7 @@
 //  - NFS shares share no address with anything,
 //  - a CIFS share may share an address only with CIFS shares of the same context: the workgroup, or the same domain
 //    (one share container serves one workgroup or one domain), never with a NFS, home or iSCSI volume,
-//  - a home folder only with other home folders.
+//  - a home folder only with other home folders, an iSCSI LUN only with other LUNs (one portal).
 // volume.prot tells the kind: 'CIFS' (workgroup), 'CIFS_<domain>', 'HOME', 'NFS', 'ISCSI'.
 export const volumeContext = (vol) => {
     const prot = String(vol.prot || '');
@@ -13,7 +13,7 @@ export const volumeContext = (vol) => {
     return { kind: prot, domain: '' };
 };
 
-// ctx: { kind: 'CIFS' | 'NFS' | 'HOME', domain: '' for a workgroup }
+// ctx: { kind: 'CIFS' | 'NFS' | 'HOME' | 'ISCSI', domain: '' for a workgroup }
 export const ipCollision = (ip, ctx, { hosts = [], volumes = [] }) => {
     const value = String(ip || '').trim();
     if (!value) return '';
@@ -29,6 +29,7 @@ export const ipCollision = (ip, ctx, { hosts = [], volumes = [] }) => {
             return other.domain ? `Used by CIFS volume ${name} of domain ${other.domain}` : `Used by CIFS volume ${name} of a workgroup`;
         }
         if (ctx.kind === 'HOME' && other.kind === 'HOME') continue;
+        if (ctx.kind === 'ISCSI' && other.kind === 'ISCSI') continue;
         const label = other.kind === 'ISCSI' ? 'iSCSI LUN' : other.kind === 'HOME' ? 'home folder' : `${other.kind} volume`;
         return `Used by ${label} ${name}`;
     }
