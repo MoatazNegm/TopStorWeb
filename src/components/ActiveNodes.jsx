@@ -70,7 +70,7 @@ const ActiveNodes = ({ hosts, allHosts, lostHosts, selectedHostName, onSelect, r
                 <div className="animate-in fade-in slide-in-from-top-2 duration-300">
                     {/* Nodes Grid */}
                     <div className="p-3 bg-gray-50/50 border-b border-gray-100">
-                        <div className="flex flex-wrap gap-3" id="hostsactive">
+                        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3" id="hostsactive">
                             {hosts.map(host => {
                                 const hostName = typeof host === 'object' ? host.name : host;
                                 const isLost = lostHosts && (

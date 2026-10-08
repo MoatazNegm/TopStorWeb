@@ -656,7 +656,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                 <div className="animate-in fade-in slide-in-from-top-2 duration-300">
                     {/* Nodes Grid */}
                     <div className="p-3 bg-gray-50/50 border-b border-gray-100">
-                        <div className="flex flex-wrap gap-3" id="hostsready">
+                        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3" id="hostsready">
                             {hosts.map(host => {
                                 const hostName = host.name || host.alias;
                                 return (
