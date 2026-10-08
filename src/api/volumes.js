@@ -4,6 +4,10 @@ export const fetchVolumesInfo = (type) => {
     return api.get(`api/v1/volumes/${type}/volumesinfo`);
 };
 
+export const fetchAllVolumesInfo = () => {
+    return api.get('api/v1/volumes/volumesinfo');
+};
+
 export const fetchGroupList = () => {
     return api.get('api/v1/volumes/grouplist');
 };

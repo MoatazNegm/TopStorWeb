@@ -7,7 +7,7 @@ import Input from './components/Common/Input';
 import { ipError } from './components/Common/NetFields';
 import Dropdown from './components/Common/Dropdown';
 import HomeFoldersList from './components/HomeFoldersList';
-import VolumeInsights from './components/VolumeInsights';
+import { PoolCapacityPanel, ProvisionHint, EfficiencyOptions, useCapacity } from './components/Common/Capacity';
 
 const QHomeFolders = () => {
     const [volumes, setVolumes] = useState([]);
@@ -16,6 +16,7 @@ const QHomeFolders = () => {
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { stats: capStats, reload: reloadCapacity } = useCapacity();
 
     // Form state
     const [formData, setFormData] = useState({
@@ -24,6 +25,8 @@ const QHomeFolders = () => {
         size: 1,
         ipaddress: '',
         Subnet: 24,
+        compression: true,
+        dedup: true,
     });
 
     const loadData = useCallback(async () => {
@@ -62,6 +65,8 @@ const QHomeFolders = () => {
             const payload = {
                 type: 'HOME',
                 pool: poolObj.text,
+                compression: formData.compression ? 'on' : 'off',
+                dedup: formData.dedup ? 'on' : 'off',
                 name: userObj.text,
                 ipaddress: formData.ipaddress,
                 Subnet: formData.Subnet,
@@ -78,9 +83,12 @@ const QHomeFolders = () => {
                 userIndex: '',
                 size: 1,
                 ipaddress: '',
-                Subnet: 24
+                Subnet: 24,
+                compression: formData.compression,
+                dedup: formData.dedup
             });
             loadData();
+            reloadCapacity();
         } catch (err) {
             setError("Failed to create home folder");
         }
@@ -193,6 +201,11 @@ const QHomeFolders = () => {
                                         </div>
                                     </div>
 
+                                    <div className="grid grid-cols-1 gap-4 rounded-md border border-border bg-surface-muted/60 p-3 sm:grid-cols-2">
+                                        <ProvisionHint stat={capStats[pools[formData.pool]?.text]} size={formData.size} />
+                                        <EfficiencyOptions compression={formData.compression} dedup={formData.dedup} onChange={(v) => setFormData({ ...formData, ...v })} />
+                                    </div>
+
                                     <div className="flex justify-end pt-4">
                                         <Button
                                             type="submit"
@@ -207,7 +220,7 @@ const QHomeFolders = () => {
                                 </form>
                             </div>
 
-                            <VolumeInsights volumes={volumes} />
+                            <PoolCapacityPanel stats={capStats} />
                         </div>
 
                         {/* Second Row: List */}

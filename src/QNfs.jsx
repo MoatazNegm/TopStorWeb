@@ -7,7 +7,7 @@ import Input from './components/Common/Input';
 import { ipError } from './components/Common/NetFields';
 import Dropdown from './components/Common/Dropdown';
 import NfsList from './components/NfsList';
-import VolumeInsights from './components/VolumeInsights';
+import { PoolCapacityPanel, ProvisionHint, EfficiencyOptions, useCapacity } from './components/Common/Capacity';
 
 const QNfs = () => {
     const [volumes, setVolumes] = useState([]);
@@ -16,6 +16,7 @@ const QNfs = () => {
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { stats: capStats, reload: reloadCapacity } = useCapacity();
 
     // Form state
     const [formData, setFormData] = useState({
@@ -24,6 +25,8 @@ const QNfs = () => {
         size: 1,
         ipaddress: '',
         Subnet: 24,
+        compression: true,
+        dedup: true,
         groups: [],
         rootname: 'root',
         rootid: 0,
@@ -74,6 +77,8 @@ const QNfs = () => {
                 Myname: 'mezo',
                 size: `${formData.size}G`,
                 owner: poolObj.owner,
+                compression: formData.compression ? 'on' : 'off',
+                dedup: formData.dedup ? 'on' : 'off',
                 rootname: formData.rootname,
                 rootid: formData.rootid,
                 groupname: formData.groupname,
@@ -234,6 +239,11 @@ const QNfs = () => {
                                         </div>
                                     </div>
 
+                                    <div className="grid grid-cols-1 gap-4 rounded-md border border-border bg-surface-muted/60 p-3 sm:grid-cols-2">
+                                        <ProvisionHint stat={capStats[pools[formData.pool]?.text]} size={formData.size} />
+                                        <EfficiencyOptions compression={formData.compression} dedup={formData.dedup} onChange={(v) => setFormData({ ...formData, ...v })} />
+                                    </div>
+
                                     <div>
                                         <Dropdown
                                             label="Allowed Groups"
@@ -258,7 +268,7 @@ const QNfs = () => {
                                 </form>
                                 </div>
 
-                                <VolumeInsights volumes={volumes} />
+                                <PoolCapacityPanel stats={capStats} />
                             </div>
 
                             <div className="w-full">
