@@ -57,6 +57,11 @@ const QIscsi = () => {
 
     const handleCreate = async (e) => {
         e.preventDefault();
+        // the button's onClick runs this handler instead of the form submit, so the required fields of the form are checked here
+        const form = e.currentTarget.form || e.currentTarget;
+        if (form.reportValidity && !form.reportValidity()) return;
+        if (formData.poolIndex === '' || !pools[formData.poolIndex]) { setError('Select a storage pool first'); return; }
+        setError(null);
         if (ipError(formData.ipaddress) || ipMsg) return;
         try {
             const poolObj = pools[formData.poolIndex];
