@@ -1,4 +1,3 @@
-import AppVersion from './components/AppVersion';
 import React, { useState } from 'react';
 import { login } from './api/auth';
 import { User, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
@@ -166,7 +165,6 @@ const QLogin = ({ onLoginSuccess }) => {
                 </div>
 
                 <p className="mt-8 text-xs text-gray-400 font-medium">
-                    <AppVersion className="mr-3" />
                     &copy; {new Date().getFullYear()} QuickStor Systems Inc. All rights reserved.
                 </p>
             </div>
