@@ -4,13 +4,16 @@ import { fetchPrometheusQuery, fetchServiceSummary, pingHeartbeat } from './api/
 import MetricCard from './components/MetricCard';
 import PerformanceChart from './components/PerformanceChart';
 import Button from './components/Common/Button';
-import { fetchPartnerList } from './api/partners';
+import { fetchAllHostsInfo } from './api/nodes';
 
-const partnerReady = (p) => {
-    const v = p.ready ?? p.status ?? p.state;
-    if (v === undefined || v === null || v === '') return true;
-    if (typeof v === 'boolean') return v;
-    return /^(ready|active|up|online|ok|true|connected|healthy)$/i.test(String(v));
+// Same source and rule as the Nodes view (QNodes/ActiveNodes): members = hostsInfo.active, off = hostsInfo.lost
+const hostName = (h) => (h && typeof h === 'object' ? h.name : h);
+const countNodes = (info) => {
+    const active = Array.isArray(info?.active) ? info.active : [];
+    const lost = (Array.isArray(info?.lost) ? info.lost : []).map(hostName);
+    const total = active.length;
+    const off = active.filter((h) => lost.includes(hostName(h))).length;
+    return { total, ready: total - off };
 };
 
 const PartnersTorus = ({ total, ready }) => {
@@ -120,10 +123,8 @@ const QServicePerformance = () => {
             if (isMounted.current) setSummary(res.data);
         }).catch(() => {});
 
-        const loadPartners = () => fetchPartnerList().then(res => {
-            const list = res.data?.allpartners || [];
-            const arr = Array.isArray(list) ? list : Object.values(list);
-            if (isMounted.current) setPartnerStats({ total: arr.length, ready: arr.filter(partnerReady).length });
+        const loadPartners = () => fetchAllHostsInfo().then(res => {
+            if (isMounted.current && res.data) setPartnerStats(countNodes(res.data));
         }).catch(() => {});
         loadPartners();
         const partnerInterval = setInterval(loadPartners, 5000);

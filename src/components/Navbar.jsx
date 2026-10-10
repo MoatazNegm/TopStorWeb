@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Bell, ChevronRight, Key, LogOut, Maximize2, Menu, X } from 'lucide-react';
 import { changePassword } from '../api/users';
 import { syncNow } from '../api/nodes';
-import { fetchOneDayLog } from '../api/logs';
-import { setLogSev } from '../logFilter';
+import { fetchLogs } from '../api/logs';
+import { setLogSev, matchesLogSev } from '../logFilter';
 
 // the sign next to the bell.  Always the same element (the poller writes its text into #syncStatus); it only acts as a
 // button (click = sync now) while the nodes are not in sync
@@ -47,23 +47,24 @@ const Navbar = ({ sectionTitle }) => {
     const [syncing, setSyncing] = useState(false);
     const [dayCounts, setDayCounts] = useState({ warnings: 0, errors: 0, logonfails: 0 });
 
-    // summary of the last days of the system event log: refreshed every 10 s and whenever the bell is opened
+    // summary of the system event log: same rows (api/v1/info/logs) and same severity rule (matchesLogSev) as the System Logs page,
+    // so the number on a bell entry is exactly the number of rows the page shows after the click
     React.useEffect(() => {
         let alive = true;
         const load = () => {
-            fetchOneDayLog().then((res) => {
-                const d = (res && res.data) || {};
+            fetchLogs().then((res) => {
+                const rows = (res && res.data && res.data.alllogs) || [];
                 if (alive) {
                     setDayCounts({
-                        warnings: (d.warning || []).length,
-                        errors: (d.error || []).length,
-                        logonfails: (d.failedlogon || []).length,
+                        warnings: rows.filter((l) => matchesLogSev(l, 'warning')).length,
+                        errors: rows.filter((l) => matchesLogSev(l, 'error')).length,
+                        logonfails: rows.filter((l) => matchesLogSev(l, 'failedlogon')).length,
                     });
                 }
             }).catch(() => {});
         };
         load();
-        const timer = setInterval(load, 10000);
+        const timer = setInterval(load, 5000);
         return () => { alive = false; clearInterval(timer); };
     }, []);
     const dayTotal = dayCounts.warnings + dayCounts.errors + dayCounts.logonfails;
@@ -199,7 +200,7 @@ const Navbar = ({ sectionTitle }) => {
 
                         {notifOpen && (
                             <div className="absolute right-0 mt-2 w-72 overflow-hidden rounded-xl border border-border bg-surface shadow-lg">
-                                <div className="border-b border-border bg-surface-muted px-4 py-3 text-sm font-semibold text-gray-700">Notifications (7 days)</div>
+                                <div className="border-b border-border bg-surface-muted px-4 py-3 text-sm font-semibold text-gray-700">Notifications</div>
                                 <a href="#/logs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" onClick={() => { setLogSev('warning'); setNotifOpen(false); }}>
                                     <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-warning-50 text-warning-600">!</span>
                                     <span><strong id="warns">{dayCounts.warnings}</strong> Warnings</span>
