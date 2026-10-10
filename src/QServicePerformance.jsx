@@ -4,11 +4,43 @@ import { fetchPrometheusQuery, fetchServiceSummary, pingHeartbeat } from './api/
 import MetricCard from './components/MetricCard';
 import PerformanceChart from './components/PerformanceChart';
 import Button from './components/Common/Button';
+import { fetchPartnerList } from './api/partners';
+
+const partnerReady = (p) => {
+    const v = p.ready ?? p.status ?? p.state;
+    if (v === undefined || v === null || v === '') return true;
+    if (typeof v === 'boolean') return v;
+    return /^(ready|active|up|online|ok|true|connected|healthy)$/i.test(String(v));
+};
+
+const PartnersTorus = ({ total, ready }) => {
+    const r = 15.9155, c = 2 * Math.PI * r;
+    const frac = total > 0 ? ready / total : 1;
+    const all = frac >= 1;
+    const green = '#1F9D6B';
+    const bad = ready === 0 && total > 0 ? '#DC2626' : '#F59E0B';
+    return (
+        <div className="flex items-center gap-3 rounded-lg border border-border bg-surface px-4 py-2 shadow-sm" id="runningpartners">
+            <svg viewBox="0 0 36 36" className="h-14 w-14 -rotate-90">
+                <circle cx="18" cy="18" r={r} fill="none" stroke={all ? green : bad} strokeOpacity={all ? 1 : 0.35} strokeWidth="4.5" />
+                {!all && <circle cx="18" cy="18" r={r} fill="none" stroke={green} strokeWidth="4.5" strokeDasharray={`${c * frac} ${c}`} strokeLinecap="butt" />}
+            </svg>
+            <div>
+                <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500">Running Partners</h3>
+                <div className="flex items-baseline gap-1.5">
+                    <span className="text-xl font-semibold text-gray-900">{ready}/{total}</span>
+                    <span className="text-xs font-medium text-gray-500">ready</span>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 const QServicePerformance = () => {
     const [summary, setSummary] = useState({ users: 0, groups: 0, pools: 0, volumes: { cifs: 0, nfs: 0, iscsi: 0 } });
     const [metrics, setMetrics] = useState({ cpu: [], mem: [], io: [], arc: [] });
     const [liveStats, setLiveStats] = useState({ arcSizeGB: 0, arcHitRate: 0, zvolLatency: 0 });
+    const [partnerStats, setPartnerStats] = useState({ total: 0, ready: 0 });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -88,6 +120,14 @@ const QServicePerformance = () => {
             if (isMounted.current) setSummary(res.data);
         }).catch(() => {});
 
+        const loadPartners = () => fetchPartnerList().then(res => {
+            const list = res.data?.allpartners || [];
+            const arr = Array.isArray(list) ? list : Object.values(list);
+            if (isMounted.current) setPartnerStats({ total: arr.length, ready: arr.filter(partnerReady).length });
+        }).catch(() => {});
+        loadPartners();
+        const partnerInterval = setInterval(loadPartners, 5000);
+
         setMetrics({
             cpu: Array(30).fill(0), mem: Array(30).fill(0), io: Array(30).fill(0), arc: Array(30).fill(0)
         });
@@ -100,22 +140,23 @@ const QServicePerformance = () => {
         return () => {
             isMounted.current = false;
             clearInterval(heartbeatInterval);
+            clearInterval(partnerInterval);
         };
     }, [loadData]);
 
     return (
                 <div className="p-5">
-                    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+                    <div className="rounded-xl border border-border bg-surface p-4 shadow-sm">
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                             <div>
-                                <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Service Performance</h1>
-                                <p className="mt-1 text-sm text-gray-500">Real-time ZFS heuristics and cluster orchestration vitals</p>
+                                <h1 className="text-xl font-semibold tracking-tight text-gray-900">Service Performance</h1>
                             </div>
                             <div className="flex items-center gap-3">
                                 <div className="inline-flex h-10 items-center gap-2 rounded-md border border-border bg-surface-muted px-3 text-xs font-semibold uppercase tracking-wide text-gray-500">
                                     <span className="h-2 w-2 rounded-full bg-success-500" />
                                     Active Pulse
                                 </div>
+                                <PartnersTorus total={partnerStats.total} ready={partnerStats.ready} />
                                 <a
                                     href={`https://${window.location.hostname}:4000`}
                                     target="_blank"
@@ -128,7 +169,7 @@ const QServicePerformance = () => {
                             </div>
                         </div>
 
-                        <div className="mt-6 space-y-6">
+                        <div className="mt-3 space-y-3">
                             {error && (
                                 <div className="flex items-center gap-2 rounded-lg border border-danger-100 bg-danger-50 px-4 py-3 text-sm font-medium text-danger-600">
                                     <AlertTriangle size={16} />
@@ -142,7 +183,7 @@ const QServicePerformance = () => {
                                 </div>
                             )}
 
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+                        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
                             <MetricCard
                                 title="Cluster Identity"
                                 value={`${summary.users}`}
@@ -165,7 +206,7 @@ const QServicePerformance = () => {
                                 color="info"
                             />
                             <MetricCard
-                                title="ZFS ARC Cache"
+                                title="Cache"
                                 value={liveStats.arcHitRate}
                                 unit="Hit Ratio %"
                                 icon={<Zap size={18} />}
@@ -173,7 +214,7 @@ const QServicePerformance = () => {
                             />
                         </div>
 
-                        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                        <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
                             <PerformanceChart
                                 title="Storage Throughput (MB/s)"
                                 icon={<Activity size={17} />}
@@ -188,7 +229,7 @@ const QServicePerformance = () => {
                             />
                         </div>
 
-                        <div className="rounded-lg border border-border bg-surface-muted p-5">
+                        <div className="rounded-lg border border-border bg-surface-muted p-3">
                             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                 <div>
                                     <h4 className="text-base font-semibold text-gray-800">Heuristic Optimization</h4>
