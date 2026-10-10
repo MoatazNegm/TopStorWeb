@@ -1,3 +1,4 @@
+import AppVersion from './components/AppVersion';
 import React, { useState } from 'react';
 import { login } from './api/auth';
 import { User, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
@@ -94,6 +95,7 @@ const QLogin = ({ onLoginSuccess }) => {
                     <div className="flex items-center justify-center mb-2">
                         <img src="dist/img/Quickstor logo.png" alt="QuickStor" className="h-20 w-auto object-contain" />
                     </div>
+                    <div className="text-center leading-none"><AppVersion className="text-[9px] text-gray-400" /></div>
                 </div>
 
                 <div className="login-card p-8">

@@ -20,6 +20,7 @@ import QLogin from './QLogin';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import NotificationPoller from './components/NotificationPoller';
+import AppVersion from './components/AppVersion';
 import { validateToken } from './api/auth';
 import { fetchUserList } from './api/users';
 
@@ -220,6 +221,7 @@ function App() {
                     </footer>
                 </main>
                 </div>
+            <AppVersion className="fixed bottom-1 right-2 z-40 text-[10px] text-gray-400 select-none pointer-events-none" />
         </div>
     );
 }
