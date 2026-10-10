@@ -36,5 +36,5 @@ export default function AppVersion({ className = '' }) {
     }, []);
 
     if (!ver) return null;
-    return <span className={className} title="App version">v{ver}</span>;
+    return <span className={className} title="App version">Version {ver}</span>;
 }

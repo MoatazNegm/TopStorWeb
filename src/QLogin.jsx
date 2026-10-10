@@ -95,7 +95,6 @@ const QLogin = ({ onLoginSuccess }) => {
                     <div className="flex items-center justify-center mb-2">
                         <img src="dist/img/Quickstor logo.png" alt="QuickStor" className="h-20 w-auto object-contain" />
                     </div>
-                    <div className="text-center leading-none"><AppVersion className="text-[9px] text-gray-400" /></div>
                 </div>
 
                 <div className="login-card p-8">
@@ -167,6 +166,7 @@ const QLogin = ({ onLoginSuccess }) => {
                 </div>
 
                 <p className="mt-8 text-xs text-gray-400 font-medium">
+                    <AppVersion className="mr-3" />
                     &copy; {new Date().getFullYear()} QuickStor Systems Inc. All rights reserved.
                 </p>
             </div>

@@ -219,9 +219,9 @@ function App() {
                             </div>
                         </div>
                     </footer>
+                    <div className="px-4 pb-3 text-right text-[11px] text-gray-500 select-none"><AppVersion /></div>
                 </main>
                 </div>
-            <AppVersion className="fixed bottom-1 right-2 z-40 text-[10px] text-gray-400 select-none pointer-events-none" />
         </div>
     );
 }
