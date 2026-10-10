@@ -3,6 +3,7 @@ import { Bell, ChevronRight, Key, LogOut, Maximize2, Menu, X } from 'lucide-reac
 import { changePassword } from '../api/users';
 import { syncNow } from '../api/nodes';
 import { fetchOneDayLog } from '../api/logs';
+import { setLogSev } from '../logFilter';
 
 // the sign next to the bell.  Always the same element (the poller writes its text into #syncStatus); it only acts as a
 // button (click = sync now) while the nodes are not in sync
@@ -199,15 +200,15 @@ const Navbar = ({ sectionTitle }) => {
                         {notifOpen && (
                             <div className="absolute right-0 mt-2 w-72 overflow-hidden rounded-xl border border-border bg-surface shadow-lg">
                                 <div className="border-b border-border bg-surface-muted px-4 py-3 text-sm font-semibold text-gray-700">Notifications (7 days)</div>
-                                <a href="#/logs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setNotifOpen(false)}>
+                                <a href="#/logs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" onClick={() => { setLogSev('warning'); setNotifOpen(false); }}>
                                     <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-warning-50 text-warning-600">!</span>
                                     <span><strong id="warns">{dayCounts.warnings}</strong> Warnings</span>
                                 </a>
-                                <a href="#/logs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setNotifOpen(false)}>
+                                <a href="#/logs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" onClick={() => { setLogSev('error'); setNotifOpen(false); }}>
                                     <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-danger-50 text-danger-600">x</span>
                                     <span><strong id="errs">{dayCounts.errors}</strong> System Errors</span>
                                 </a>
-                                <a href="#/logs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setNotifOpen(false)}>
+                                <a href="#/logs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" onClick={() => { setLogSev('failedlogon'); setNotifOpen(false); }}>
                                     <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-50 text-brand-600">i</span>
                                     <span><strong id="logonfails">{dayCounts.logonfails}</strong> Auth Failures</span>
                                 </a>

@@ -9,13 +9,15 @@ import {
     UserCircle,
     XCircle,
 } from 'lucide-react';
+import { logSeverity, matchesLogSev, LOGSEV_LABEL } from '../logFilter';
 import Panel from './Common/Panel';
 import { ListSearch, useRowFilter, SortTh, useSort, sortRows, dateKey } from './Common/ListSearch';
 
-const LogList = ({ logs }) => {
+const LogList = ({ logs: allLogs, sev = '', onClearSev }) => {
+    const logs = React.useMemo(() => allLogs.filter((l) => matchesLogSev(l, sev)), [allLogs, sev]);
     const { query, setQuery, visible, filtering } = useRowFilter(logs);
     const { sort, toggle } = useSort();
-    const sorted = sortRows(visible, sort, { time: (l) => dateKey(l.date, l.time), who: (l) => `${l.user || ''} ${l.host || ''}`, msg: (l) => l.msgbody, sev: (l) => l.type, code: (l) => l.msgcode });
+    const sorted = sortRows(visible, sort, { time: (l) => dateKey(l.date, l.time), who: (l) => `${l.user || ''} ${l.host || ''}`, msg: (l) => l.msgbody, sev: (l) => logSeverity(l), code: (l) => l.msgcode });
     return (
         <Panel
             icon={<ClipboardList size={17} />}
@@ -35,8 +37,13 @@ const LogList = ({ logs }) => {
             <div className="border-b border-border bg-surface-muted px-2.5 py-1.5">
                 <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-gray-600">
                     <span className="h-2 w-2 rounded-full bg-brand-500" />
-                    {logs.length} Total Events
+                    {logs.length} {sev ? LOGSEV_LABEL[sev] : 'Total Events'}
                 </div>
+                {sev && (
+                    <button id="clearsev" type="button" onClick={onClearSev} className="ml-2 inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1 text-xs font-semibold text-brand-600 hover:bg-gray-50">
+                        Showing only {LOGSEV_LABEL[sev]} &times; clear filter
+                    </button>
+                )}
             </div>
 
             <ListSearch id="listsearch" value={query} onChange={setQuery} count={visible.length} total={logs.length} />
@@ -102,12 +109,13 @@ const LogRow = ({ log }) => {
                     text: 'text-info-600',
                     border: 'border-info-100',
                     icon: <Info size={12} />,
-                    row: 'hover:bg-gray-50/60'
+                    row: 'bg-info-50/40 hover:bg-info-50/60'
                 };
         }
     };
 
-    const styles = getSeverityStyles(log.type);
+    const sevName = logSeverity(log);
+    const styles = getSeverityStyles(sevName);
 
     return (
         <tr className={`${styles.row} transition-colors`}>
@@ -130,14 +138,14 @@ const LogRow = ({ log }) => {
                 </div>
             </td>
             <td className="px-2.5 py-1">
-                <p className="max-w-xl text-sm text-gray-700">
+                <p className={`max-w-xl text-sm font-medium ${styles.text}`}>
                     {log.msgbody}
                 </p>
             </td>
             <td className="px-2.5 py-1 text-center">
                 <span className={`inline-flex items-center gap-1.5 rounded-sm border px-3 py-1 text-xs font-semibold uppercase tracking-wide ${styles.bg} ${styles.text} ${styles.border}`}>
                     {styles.icon}
-                    {log.type}
+                    {sevName}
                 </span>
             </td>
             <td className="px-2.5 py-1 text-right">
