@@ -1,14 +1,15 @@
 import React from 'react';
 import api from '../api/volumes';
 
-const KEY = 'qs_app_version';
+const KEY = 'qs_app_version_full';
 
-// cversion looks like "QSD5.286-f40cc2f1": show the last 6 figures of the commit
+// cversion looks like "QSD5.286-f40cc2f1": show "QSD5.286-0cc2f1" (branch + last 6 figures of the commit)
 const shortVersion = (cv) => {
     const s = String(cv || '').trim();
     if (!s) return '';
-    const hash = s.includes('-') ? s.split('-').pop() : s;
-    return hash.slice(-6);
+    const i = s.lastIndexOf('-');
+    if (i < 0) return s;
+    return s.slice(0, i) + '-' + s.slice(i + 1).slice(-6);
 };
 
 const cached = () => {
@@ -36,5 +37,5 @@ export default function AppVersion({ className = '' }) {
     }, []);
 
     if (!ver) return null;
-    return <span className={className} title="App version">Version {ver}</span>;
+    return <span className={className} title="App version">{ver}</span>;
 }
