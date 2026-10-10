@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Bell, ChevronRight, Key, LogOut, Maximize2, Menu, X } from 'lucide-react';
 import { changePassword } from '../api/users';
 import { syncNow } from '../api/nodes';
+import { fetchOneDayLog } from '../api/logs';
 
 // the sign next to the bell.  Always the same element (the poller writes its text into #syncStatus); it only acts as a
 // button (click = sync now) while the nodes are not in sync
@@ -43,6 +44,28 @@ const Navbar = ({ sectionTitle }) => {
     const isInSync = !syncStatus.toLowerCase().includes('not in sync');
     const isSingle = syncStatus.toLowerCase().includes('single node');
     const [syncing, setSyncing] = useState(false);
+    const [dayCounts, setDayCounts] = useState({ warnings: 0, errors: 0, logonfails: 0 });
+
+    // summary of the last days of the system event log: refreshed every 10 s and whenever the bell is opened
+    React.useEffect(() => {
+        let alive = true;
+        const load = () => {
+            fetchOneDayLog().then((res) => {
+                const d = (res && res.data) || {};
+                if (alive) {
+                    setDayCounts({
+                        warnings: (d.warning || []).length,
+                        errors: (d.error || []).length,
+                        logonfails: (d.failedlogon || []).length,
+                    });
+                }
+            }).catch(() => {});
+        };
+        load();
+        const timer = setInterval(load, 10000);
+        return () => { alive = false; clearInterval(timer); };
+    }, []);
+    const dayTotal = dayCounts.warnings + dayCounts.errors + dayCounts.logonfails;
 
     // 'Nodes Not in Sync' is a button: it asks the cluster to sync now
     const handleSyncNow = async () => {
@@ -168,7 +191,9 @@ const Navbar = ({ sectionTitle }) => {
                             className="relative flex h-9 w-9 items-center justify-center rounded-md text-gray-500 hover:bg-gray-100 hover:text-brand-600"
                         >
                             <Bell className="h-[18px] w-[18px]" />
-                            <span className="absolute right-1.5 top-1.5 inline-flex h-2.5 w-2.5 rounded-full bg-danger-500 text-[8px] text-white" id="tot"></span>
+                            {dayTotal > 0 && (
+                                <span className="absolute -right-0.5 -top-0.5 inline-flex min-w-[16px] items-center justify-center rounded-full bg-danger-500 px-1 text-[10px] font-semibold leading-4 text-white" id="tot">{dayTotal > 99 ? '99+' : dayTotal}</span>
+                            )}
                         </button>
 
                         {notifOpen && (
@@ -176,15 +201,15 @@ const Navbar = ({ sectionTitle }) => {
                                 <div className="border-b border-border bg-surface-muted px-4 py-3 text-sm font-semibold text-gray-700">Notifications (7 days)</div>
                                 <a href="#/logs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setNotifOpen(false)}>
                                     <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-warning-50 text-warning-600">!</span>
-                                    <span><strong id="warns">0</strong> Warnings</span>
+                                    <span><strong id="warns">{dayCounts.warnings}</strong> Warnings</span>
                                 </a>
                                 <a href="#/logs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setNotifOpen(false)}>
                                     <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-danger-50 text-danger-600">x</span>
-                                    <span><strong id="errs">0</strong> System Errors</span>
+                                    <span><strong id="errs">{dayCounts.errors}</strong> System Errors</span>
                                 </a>
                                 <a href="#/logs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setNotifOpen(false)}>
                                     <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-50 text-brand-600">i</span>
-                                    <span><strong id="logonfails">0</strong> Auth Failures</span>
+                                    <span><strong id="logonfails">{dayCounts.logonfails}</strong> Auth Failures</span>
                                 </a>
                             </div>
                         )}
