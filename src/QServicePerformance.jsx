@@ -152,10 +152,6 @@ const QServicePerformance = () => {
                                 <h1 className="text-xl font-semibold tracking-tight text-gray-900">Service Performance</h1>
                             </div>
                             <div className="flex items-center gap-3">
-                                <div className="inline-flex h-10 items-center gap-2 rounded-md border border-border bg-surface-muted px-3 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                                    <span className="h-2 w-2 rounded-full bg-success-500" />
-                                    Active Pulse
-                                </div>
                                 <PartnersTorus total={partnerStats.total} ready={partnerStats.ready} />
                                 <a
                                     href={`https://${window.location.hostname}:4000`}
