@@ -22,7 +22,7 @@ const THEME = {
     },
 };
 
-const Toast = ({ id, type, title, subtitle, body, code, duration, onDismiss }) => {
+const Toast = ({ id, type, title, subtitle, body, code, stamp, duration, onDismiss }) => {
     const [visible, setVisible] = useState(true);
     const [progressStarted, setProgressStarted] = useState(false);
     const theme = THEME[type] || THEME.info;
@@ -59,6 +59,7 @@ const Toast = ({ id, type, title, subtitle, body, code, duration, onDismiss }) =
             <div className="flex items-start gap-2 px-2.5 py-1.5">
                 <Icon size={12} className={`${theme.iconColor} mt-[3px] flex-shrink-0`} />
                 <div className="min-w-0 flex-1">
+                    {stamp && <p className="text-[9px] leading-none text-gray-400 mb-0.5">{stamp}</p>}
                     <p className="flex items-baseline gap-1.5 truncate text-xs leading-tight">
                         <span className="truncate font-semibold text-gray-800">{title}</span>
                         {subtitle && <span className="flex-shrink-0 text-[11px] text-gray-500">· {subtitle}</span>}

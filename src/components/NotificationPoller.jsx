@@ -39,6 +39,7 @@ const NotificationPoller = () => {
             subtitle: toast?.subtitle,
             body: toast?.body || '',
             code: toast?.code,
+            stamp: toast?.stamp,
             duration: toast?.duration || defaults.duration,
             position: toast?.position || defaults.position,
         }]);
@@ -133,6 +134,7 @@ const NotificationPoller = () => {
                 subtitle: notif.user,
                 body: notif.msgbody,
                 code: notif.msgcode,
+                stamp: [notif.date, notif.time].filter(Boolean).join(' '),
             });
         } catch {
             // Silent — don't flood UI on transient network errors
