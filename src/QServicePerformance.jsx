@@ -3,7 +3,7 @@ import { Activity, AlertTriangle, CheckCircle, Cpu, Database, ExternalLink, Fold
 import { fetchPrometheusQuery, fetchPrometheusRange, fetchServiceSummary } from './api/performance';
 import MetricCard from './components/MetricCard';
 import { fetchAllHostsInfo } from './api/nodes';
-import { sampleRange, sampleTop, samplePools, isPromAnswer } from './performanceSample';
+import { sampleRange, sampleTop, samplePools, sampleVols, isPromAnswer } from './performanceSample';
 
 // Same source and rule as the Nodes view (QNodes/ActiveNodes): members = hostsInfo.active, off = hostsInfo.lost
 const hostName = (h) => (h && typeof h === 'object' ? h.name : h);
@@ -71,6 +71,8 @@ const IQ = {
     // inventory counters written by the backend into node_exporter's textfile collector (topstor_volumes{type},
     // topstor_users, topstor_groups); until they exist the page keeps using the etcd summary endpoint
     inv: 'max by (__name__, type) ({__name__=~"topstor_(volumes|users|groups)"})',
+    // per volume (every dataset below the pool root): bandwidth MB/s and IOPS, read and write, over the last minute
+    vol: ['nread', 'nwritten', 'reads', 'writes'].map((m) => `sum by (dataset) (rate(node_zfs_zpool_dataset_${m}{instance=~".*:9100",dataset=~".+/.+"}[1m]))${m.startsWith('n') ? ' / 1048576' : ''}`),
     top: `topk(5, sum by (dataset) (rate(node_zfs_zpool_dataset_nread${NODE}[1m]) + rate(node_zfs_zpool_dataset_nwritten${NODE}[1m]))) / 1048576`,
 };
 
@@ -178,11 +180,11 @@ const QServicePerformance = () => {
             // Prometheus unreachable (no proxy route / request failed) -> sample data, flagged on the page
             const safe = (p) => p.catch(() => null);
             let ranges = await Promise.all(keys.map((k) => safe(fetchPrometheusRange(RQ[k], start, end, step))));
-            let inst = await Promise.all([safe(fetchPrometheusQuery(IQ.top)), safe(fetchPrometheusQuery(IQ.pools)), safe(fetchPrometheusQuery(IQ.inv))]);
+            let inst = await Promise.all([safe(fetchPrometheusQuery(IQ.top)), safe(fetchPrometheusQuery(IQ.pools)), safe(fetchPrometheusQuery(IQ.inv)), ...IQ.vol.map((q) => safe(fetchPrometheusQuery(q)))]);
             const live = ranges.some(isPromAnswer);
             if (!live) {
                 ranges = keys.map((k) => sampleRange(k, start, end, step));
-                inst = [sampleTop(), samplePools(), null];
+                inst = [sampleTop(), samplePools(), null, ...sampleVols()];
             }
             if (isMounted.current) setSample(!live);
             if (!isMounted.current) return;
@@ -198,7 +200,17 @@ const QServicePerformance = () => {
                 const n = r.metric.__name__ === 'topstor_volumes' ? `vol_${r.metric.type}` : String(r.metric.__name__ || '').replace('topstor_', '');
                 inv[n] = num(r.value?.[1]);
             });
-            setData({ s, pools, top, inv, at: Date.now() });
+            const vmap = {};
+            ['rbw', 'wbw', 'rio', 'wio'].forEach((k, i) => {
+                (inst[3 + i]?.data?.data?.result || []).forEach((r) => {
+                    const d = r.metric.dataset;
+                    vmap[d] = vmap[d] || { dataset: d, rbw: 0, wbw: 0, rio: 0, wio: 0 };
+                    vmap[d][k] = num(r.value?.[1]) || 0;
+                });
+            });
+            const vols = Object.values(vmap).map((v) => ({ ...v, bw: v.rbw + v.wbw, io: v.rio + v.wio }))
+                .sort((a, b) => b.bw - a.bw || b.io - a.io);
+            setData({ s, pools, top, inv, vols, at: Date.now() });
             setError(null);
         } catch (err) {
             if (err.code !== 'ERR_CANCELED' && err.message !== 'Request aborted') {
@@ -364,6 +376,38 @@ const QServicePerformance = () => {
                                 <MetricCard title="NFS Volumes" value={`${cnt('vol_nfs', summary.volumes?.nfs)}`} unit="Created" icon={<Share2 size={18} />} color="success" />
                                 <MetricCard title="iSCSI Volumes" value={`${cnt('vol_iscsi', summary.volumes?.iscsi)}`} unit="Created" icon={<Database size={18} />} color="info" />
                                 <MetricCard title="Groups" value={`${cnt('groups', summary.groups)}`} unit="Defined" icon={<Users size={18} />} color="warning" />
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4" id="volio">
+                                <MetricCard title="Volume Bandwidth" value={fmt((data?.vols || []).reduce((a, v) => a + v.bw, 0), 1)} unit="MB/s all volumes" icon={<Gauge size={18} />} color="brand" />
+                                <MetricCard title="Volume IOPS" value={fmt((data?.vols || []).reduce((a, v) => a + v.io, 0), 0)} unit="ops/s all volumes" icon={<Activity size={18} />} color="success" />
+                                <MetricCard title="Busiest Volume" value={(data?.vols || [])[0] && (data.vols[0].bw > 0 || data.vols[0].io > 0) ? data.vols[0].dataset.split('/').slice(1).join('/') : '-'}
+                                    unit={(data?.vols || [])[0] ? `${fmt(data.vols[0].bw, 1)} MB/s - ${fmt(data.vols[0].io, 0)} IOPS` : ''} icon={<HardDrive size={18} />} color="warning" />
+                                <MetricCard title="Active Volumes" value={`${(data?.vols || []).filter((v) => v.bw > 0 || v.io > 0).length}`} unit={`of ${(data?.vols || []).length} with I/O`} icon={<Layers size={18} />} color="info" />
+                            </div>
+
+                            <div className="rounded-lg border border-border bg-surface p-3" id="volumetable">
+                                <h4 className="mb-2 text-sm font-semibold text-gray-800">I/O per Volume</h4>
+                                {(data?.vols || []).length === 0 ? (
+                                    <p className="text-xs text-gray-400">No volumes reported by Prometheus.</p>
+                                ) : (
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full text-left text-xs">
+                                            <thead className="text-gray-500">
+                                                <tr><th className="py-1 pr-3">Volume</th><th className="px-2 text-right">Read MB/s</th><th className="px-2 text-right">Write MB/s</th><th className="px-2 text-right">Read IOPS</th><th className="px-2 text-right">Write IOPS</th></tr>
+                                            </thead>
+                                            <tbody>
+                                                {data.vols.slice(0, 12).map((v) => (
+                                                    <tr key={v.dataset} className="border-t border-border text-gray-700">
+                                                        <td className="max-w-[260px] truncate py-1 pr-3" title={v.dataset}>{v.dataset}</td>
+                                                        <td className="px-2 text-right">{fmt(v.rbw, 2)}</td><td className="px-2 text-right">{fmt(v.wbw, 2)}</td>
+                                                        <td className="px-2 text-right">{fmt(v.rio, 0)}</td><td className="px-2 text-right">{fmt(v.wio, 0)}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
                             </div>
 
                             <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">

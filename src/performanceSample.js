@@ -47,3 +47,10 @@ export const samplePools = () => ({
 
 // a Prometheus answer: an object with data.data.result (an HTML page from a missing proxy route is not one)
 export const isPromAnswer = (res) => Array.isArray(res?.data?.data?.result);
+
+const VOLS = [['finance', 38.4, 4.1, 2400, 640], ['backup', 3.2, 18.5, 120, 900], ['vm01', 9.8, 3.1, 1500, 700], ['home', 2.9, 1.3, 260, 110], ['media', 1.0, 0.1, 40, 4]];
+const vec = (i) => ({
+    data: { data: { result: VOLS.map((v) => ({ metric: { dataset: `pdhcp45229467/${v[0]}` }, value: [Date.now() / 1000, String(v[1 + i] * (0.9 + 0.2 * Math.random()))] })) } },
+});
+// order: read MB/s, write MB/s, read IOPS, write IOPS (same as IQ.vol)
+export const sampleVols = () => [vec(0), vec(1), vec(2), vec(3)];
