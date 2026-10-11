@@ -3,11 +3,13 @@ import { AlertTriangle } from 'lucide-react';
 import { fetchLogs } from './api/logs';
 import { fetchAllHostsInfo } from './api/nodes';
 import LogList from './components/LogList';
+import { getLogSev, setLogSev, onLogSev } from './logFilter';
 
 const QLogs = () => {
     const [logs, setLogs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [sev, setSev] = useState(getLogSev());
     const aliasesRef = useRef({});
     const aliasesAt = useRef(0);
 
@@ -40,6 +42,8 @@ const QLogs = () => {
         }
     }, []);
 
+    useEffect(() => onLogSev(() => setSev(getLogSev())), []);
+
     useEffect(() => {
         loadData();
         const interval = setInterval(loadData, 2000); // Poll every 2s to match legacy Qlogs.js
@@ -70,7 +74,7 @@ const QLogs = () => {
                             </div>
                         )}
 
-                        <LogList logs={logs} />
+                        <LogList logs={logs} sev={sev} onClearSev={() => setLogSev('')} />
                         </div>
                     </div>
                 </div>

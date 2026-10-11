@@ -38,3 +38,8 @@ export const fetchServiceSummary = () => {
     // Fetches live etcd inventory counts
     return api.get('api/v1/info/summary');
 };
+
+export const fetchPrometheusRange = (query, start, end, step) => {
+    // UI-side helper: one query_range call returns a whole window, so the page polls once per scrape interval
+    return api.get('prometheus/api/v1/query_range', { params: { query, start, end, step } });
+};
