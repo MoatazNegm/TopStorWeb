@@ -657,10 +657,10 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                     {/* Nodes Grid */}
                     <div className="p-3 bg-gray-50/50 border-b border-gray-100">
                         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3" id="hostsready">
-                            {hosts.map(host => {
+                            {hosts.map((host, hostIdx) => {
                                 const hostName = host.name || host.alias;
                                 return (
-                                    <div key={hostName}>
+                                    <div key={hostName} data-wizard-id={hostIdx === 0 ? 'node-tile' : undefined}>
                                         <ServerNode
                                             name={nodeLabel(host, allHosts)}
                                             ip={host.ip || host.ipaddr}

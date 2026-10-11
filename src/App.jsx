@@ -21,6 +21,7 @@ import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import NotificationPoller from './components/NotificationPoller';
 import AppVersion from './components/AppVersion';
+import TestWizard from './testWizard/TestWizard';
 import { validateToken } from './api/auth';
 import { fetchUserList } from './api/users';
 
@@ -222,6 +223,7 @@ function App() {
                     <div className="px-4 pb-3 text-right text-[11px] text-gray-500 select-none"><AppVersion /></div>
                 </main>
                 </div>
+            <TestWizard />
         </div>
     );
 }
