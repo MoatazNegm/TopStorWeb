@@ -11,12 +11,13 @@ const SHAPE = {
 const wave = (t, base, amp, period, phase) => Math.max(0, base + amp * Math.sin((2 * Math.PI * (t + phase)) / period)
     + amp * 0.35 * Math.sin((2 * Math.PI * (t + phase)) / (period / 3.7)));
 
-export const sampleRange = (key, start, end, step) => {
+export const sampleRange = (key, start, end, step, instances) => {
+    const INST = instances && instances.length ? instances : INSTANCES;
     const [base, amp, period] = SHAPE[key] || [10, 3, 600];
-    const result = INSTANCES.map((instance, i) => {
+    const result = INST.map((instance, i) => {
         const values = [];
         for (let t = start; t <= end; t += step) {
-            let v = wave(t, base * (i ? 0.85 : 1), amp, period, i * 137);
+            let v = wave(t, base * (1 - 0.06 * (i % 4)), amp, period, i * 137);
             if (key === 'mem' || key === 'busy' || key === 'cpu' || key === 'hit') v = Math.min(99, v);
             values.push([t, String(v)]);
         }
@@ -35,10 +36,10 @@ export const sampleTop = () => ({
     },
 });
 
-export const samplePools = () => ({
+export const samplePools = (instances) => ({
     data: {
         data: {
-            result: INSTANCES.map((instance) => ({
+            result: (instances && instances.length ? instances : INSTANCES).map((instance) => ({
                 metric: { instance, job: 'node', zpool: 'pdhcp45229467', state: 'online' }, value: [Date.now() / 1000, '1'],
             })),
         },

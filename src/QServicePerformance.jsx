@@ -102,6 +102,7 @@ const lastOf = (pts) => (pts && pts.length ? pts[pts.length - 1][1] : null);
 const fmt = (v, d = 1) => (v === null || v === undefined ? '-' : Number(v).toFixed(d));
 
 const SeriesChart = ({ title, icon, unit, lines, fixedMax }) => {
+    const [hv, setHv] = useState(null);
     const W = 300, H = 100;
     const all = lines.flatMap((l) => l.points.map((p) => p[1]));
     const max = fixedMax || Math.max(1e-9, ...all) * 1.15;
@@ -113,6 +114,23 @@ const SeriesChart = ({ title, icon, unit, lines, fixedMax }) => {
         return `${i ? 'L' : 'M'}${x.toFixed(1)},${y.toFixed(1)}`;
     }).join(' ');
     const empty = all.length === 0;
+    const onMove = (e) => {
+        if (empty) return;
+        const r = e.currentTarget.getBoundingClientRect();
+        setHv(Math.min(1, Math.max(0, (e.clientX - r.left) / Math.max(1, r.width))));
+    };
+    // value of every line at the hovered time (nearest sample)
+    const tip = hv === null || empty ? null : (() => {
+        const t = t0 + hv * (t1 - t0);
+        return {
+            t,
+            rows: lines.map((l) => {
+                let best = null; let bd = Infinity;
+                l.points.forEach((p) => { const d = Math.abs(p[0] - t); if (d < bd) { bd = d; best = p; } });
+                return { name: l.name, color: l.color, v: best ? best[1] : null };
+            }),
+        };
+    })();
     return (
         <div className="flex h-full flex-col overflow-hidden rounded-lg border border-border bg-surface p-3 shadow-sm">
             <div className="mb-2 flex items-center justify-between">
@@ -122,7 +140,7 @@ const SeriesChart = ({ title, icon, unit, lines, fixedMax }) => {
                 </div>
                 <span className="text-xs font-medium text-gray-500">{unit}</span>
             </div>
-            <div className="relative min-h-[100px] flex-1">
+            <div className="relative min-h-[100px] flex-1" onMouseMove={onMove} onMouseLeave={() => setHv(null)}>
                 {empty ? (
                     <div className="flex h-full items-center justify-center text-xs text-gray-400">No data</div>
                 ) : (
@@ -137,6 +155,23 @@ const SeriesChart = ({ title, icon, unit, lines, fixedMax }) => {
                             ))}
                         </svg>
                         <span className="absolute left-1 top-0 text-[10px] text-gray-400">{fmt(max, max < 10 ? 1 : 0)}</span>
+                        {tip && (
+                            <>
+                                <div className="pointer-events-none absolute bottom-0 top-0 w-px bg-gray-400" style={{ left: `${hv * 100}%` }} />
+                                <div className="pointer-events-none absolute top-1 z-10 whitespace-nowrap rounded border border-border bg-surface px-2 py-1 text-[11px] shadow-md"
+                                    style={hv > 0.6 ? { right: `${(1 - hv) * 100 + 1}%` } : { left: `${hv * 100 + 1}%` }}>
+                                    <div className="font-medium text-gray-500">
+                                        {new Date(tip.t * 1000).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                                    </div>
+                                    {tip.rows.map((r) => (
+                                        <div key={r.name} className="flex items-center gap-1.5 text-gray-700">
+                                            <span className="h-2 w-2 rounded-full" style={{ background: r.color }} />
+                                            {r.name} <strong>{fmt(r.v, 2)}</strong> {unit}
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
+                        )}
                     </>
                 )}
             </div>
@@ -146,6 +181,59 @@ const SeriesChart = ({ title, icon, unit, lines, fixedMax }) => {
                         <span className="h-2 w-2 rounded-full" style={{ background: l.color }} />
                         {l.name}
                         <strong className="text-gray-800">{fmt(lastOf(l.points))}</strong>
+                    </span>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+// grouped vertical bars: x axis = volume names, one bar per series; hovering a group shows the numbers
+const BarsChart = ({ title, icon, unit, groups, series }) => {
+    const max = Math.max(1e-9, ...groups.flatMap((g) => g.values)) * 1.15;
+    return (
+        <div className="flex h-full flex-col overflow-hidden rounded-lg border border-border bg-surface p-3 shadow-sm">
+            <div className="mb-2 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-md bg-surface-muted text-brand-600">{icon}</div>
+                    <h3 className="text-sm font-semibold text-gray-800">{title}</h3>
+                </div>
+                <span className="text-xs font-medium text-gray-500">{unit}</span>
+            </div>
+            {groups.length === 0 ? (
+                <div className="flex h-[180px] items-center justify-center text-xs text-gray-400">No volumes</div>
+            ) : (
+                <div className="relative flex h-[200px] items-stretch gap-1.5 border-b border-border pb-0 pt-2">
+                    <span className="absolute left-0 top-0 text-[10px] text-gray-400">{fmt(max, max < 10 ? 1 : 0)}</span>
+                    {groups.map((g) => (
+                        <div key={g.label} className="group relative flex min-w-0 flex-1 flex-col justify-end">
+                            <div className="flex h-[150px] items-end justify-center gap-0.5">
+                                {g.values.map((v, i) => (
+                                    <div key={series[i].name} className="w-full max-w-[22px] rounded-t transition-opacity group-hover:opacity-80"
+                                        style={{ height: `${Math.max(1, (v / max) * 100)}%`, background: series[i].color }} />
+                                ))}
+                            </div>
+                            <div className="mt-1 h-[34px] overflow-hidden text-center text-[10px] leading-tight text-gray-600" title={g.label}>
+                                <span className="block truncate">{g.label}</span>
+                                <span className="block truncate text-gray-400">{g.sub}</span>
+                            </div>
+                            <div className="pointer-events-none absolute bottom-[40px] left-1/2 z-10 hidden -translate-x-1/2 whitespace-nowrap rounded border border-border bg-surface px-2 py-1 text-[11px] shadow-md group-hover:block">
+                                <div className="font-medium text-gray-800">{g.label}{g.sub ? ` (${g.sub})` : ''}</div>
+                                {g.values.map((v, i) => (
+                                    <div key={series[i].name} className="flex items-center gap-1.5 text-gray-700">
+                                        <span className="h-2 w-2 rounded-full" style={{ background: series[i].color }} />
+                                        {series[i].name} <strong>{fmt(v, unit === 'ops/s' ? 0 : 2)}</strong> {unit}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+            <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-600">
+                {series.map((x) => (
+                    <span key={x.name} className="inline-flex items-center gap-1.5">
+                        <span className="h-2 w-2 rounded-full" style={{ background: x.color }} />{x.name}
                     </span>
                 ))}
             </div>
@@ -166,6 +254,7 @@ const QServicePerformance = () => {
     const [sample, setSample] = useState(false);
     const [volMeta, setVolMeta] = useState([]);
     const volMetaRef = useRef([]);
+    const readyRef = useRef([]);
 
     const isMounted = useRef(true);
     const rangeRef = useRef(rangeId);
@@ -186,8 +275,9 @@ const QServicePerformance = () => {
             let inst = await Promise.all([safe(fetchPrometheusQuery(IQ.top)), safe(fetchPrometheusQuery(IQ.pools)), safe(fetchPrometheusQuery(IQ.inv)), ...IQ.vol.map((q) => safe(fetchPrometheusQuery(q)))]);
             const live = ranges.some(isPromAnswer);
             if (!live) {
-                ranges = keys.map((k) => sampleRange(k, start, end, step));
-                inst = [sampleTop(), samplePools(), null, ...sampleVols(volMetaRef.current)];
+                const insts = readyRef.current.map((n) => `${n.ip}:9100`);
+                ranges = keys.map((k) => sampleRange(k, start, end, step, insts));
+                inst = [sampleTop(), samplePools(insts), null, ...sampleVols(volMetaRef.current)];
             }
             if (isMounted.current) setSample(!live);
             if (!isMounted.current) return;
@@ -258,6 +348,11 @@ const QServicePerformance = () => {
         const loadPartners = () => fetchAllHostsInfo().then(res => {
             if (isMounted.current && res.data) {
                 setPartnerStats(countNodes(res.data));
+                // ready nodes (members minus lost) feed the sample data, so the per-node lines match the Running Partners count
+                const lostNames = (Array.isArray(res.data.lost) ? res.data.lost : []).map(hostName);
+                readyRef.current = (Array.isArray(res.data.active) ? res.data.active : [])
+                    .filter((h) => h && typeof h === 'object' && h.ip && !lostNames.includes(h.name))
+                    .map((h) => ({ name: h.name, ip: h.ip }));
                 // ip -> host name for the per-node table (same response, no extra request)
                 const m = {};
                 (Array.isArray(res.data.active) ? res.data.active : []).forEach((h) => {
@@ -419,28 +514,19 @@ const QServicePerformance = () => {
                                     unit={`MB/s - ${fmt((data?.vols || []).find((v) => v.prot === 'HOME')?.io ?? 0, 0)} IOPS - ${(data?.vols || []).find((v) => v.prot === 'HOME')?.count || 0} folders`} icon={<Users size={18} />} color="info" />
                             </div>
 
-                            <div className="rounded-lg border border-border bg-surface p-3" id="volumetable">
-                                <h4 className="mb-2 text-sm font-semibold text-gray-800">I/O per Volume</h4>
-                                {(data?.vols || []).length === 0 ? (
-                                    <p className="text-xs text-gray-400">No volumes reported by Prometheus.</p>
-                                ) : (
-                                    <div className="overflow-x-auto">
-                                        <table className="w-full text-left text-xs">
-                                            <thead className="text-gray-500">
-                                                <tr><th className="py-1 pr-3">Volume</th><th className="px-2">Type</th><th className="px-2 text-right">Read MB/s</th><th className="px-2 text-right">Write MB/s</th><th className="px-2 text-right">Read IOPS</th><th className="px-2 text-right">Write IOPS</th></tr>
-                                            </thead>
-                                            <tbody>
-                                                {data.vols.slice(0, 12).map((v) => (
-                                                    <tr key={v.dataset} className="border-t border-border text-gray-700">
-                                                        <td className="max-w-[260px] truncate py-1 pr-3" title={v.dataset}>{v.name}</td><td className="px-2">{v.prot}</td>
-                                                        <td className="px-2 text-right">{fmt(v.rbw, 2)}</td><td className="px-2 text-right">{fmt(v.wbw, 2)}</td>
-                                                        <td className="px-2 text-right">{fmt(v.rio, 0)}</td><td className="px-2 text-right">{fmt(v.wio, 0)}</td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                )}
+                            <div className="grid grid-cols-1 gap-3 lg:grid-cols-2" id="volumecharts">
+                                <BarsChart
+                                    title="IOPS per Volume" unit="ops/s" icon={<Activity size={16} />}
+                                    series={[{ name: 'IOPS', color: '#6366F1' }]}
+                                    groups={[...(data?.vols || [])].sort((x, y) => y.io - x.io).slice(0, 12)
+                                        .map((v) => ({ label: v.name, sub: v.prot === 'HOME' ? `${v.count} folders` : v.prot, values: [v.io] }))}
+                                />
+                                <BarsChart
+                                    title="Bandwidth per Volume" unit="MB/s" icon={<Gauge size={16} />}
+                                    series={[{ name: 'Read', color: '#1F9D6B' }, { name: 'Write', color: '#F59E0B' }]}
+                                    groups={[...(data?.vols || [])].sort((x, y) => y.bw - x.bw).slice(0, 12)
+                                        .map((v) => ({ label: v.name, sub: v.prot === 'HOME' ? `${v.count} folders` : v.prot, values: [v.rbw, v.wbw] }))}
+                                />
                             </div>
 
                             <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
