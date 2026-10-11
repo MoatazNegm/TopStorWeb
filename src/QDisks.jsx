@@ -192,7 +192,7 @@ const QDisks = () => {
                                 <div className="space-y-8">
                                     <div>
                                         <label className="ml-1 mb-3 block text-xs font-semibold uppercase tracking-wide text-gray-500">Available Disks by Node</label>
-                                        <div className="rounded-lg border border-border bg-surface-muted p-6">
+                                        <div data-wizard-id="qdisks-disk-grid" className="rounded-lg border border-border bg-surface-muted p-6">
                                             <div className="max-h-[360px] space-y-5 overflow-y-auto pr-2 custom-scrollbar">
                                                 {Object.entries(availableDisksByNode).sort(([a], [b]) => a.localeCompare(b)).map(([node, diskIds]) => (
                                                     <section key={node} className="rounded-lg border border-border bg-surface p-4">
@@ -262,7 +262,7 @@ const QDisks = () => {
 
                                     <div>
                                         <label className="ml-1 mb-3 block text-xs font-semibold uppercase tracking-wide text-gray-500">Available Pool Configurations</label>
-                                        <div className="flex max-h-[420px] min-h-[240px] flex-col overflow-hidden rounded-lg border border-border bg-surface">
+                                        <div data-wizard-id="qdisks-redundancy-table" className="flex max-h-[420px] min-h-[240px] flex-col overflow-hidden rounded-lg border border-border bg-surface">
                                             <div className="overflow-y-auto flex-1 custom-scrollbar">
                                                 <table className="w-full text-left border-collapse">
                                                     <thead className="sticky top-0 z-10 bg-surface-muted">
@@ -341,6 +341,7 @@ const QDisks = () => {
                                             </div>
                                             <div className="flex justify-end border-t border-border bg-surface-muted p-4">
                                                 <Button
+                                                    id="createPoolBtn"
                                                     onClick={handleCreatePool}
                                                     disabled={!creatingRedundancy || !creatingSize}
                                                     variant="primary"

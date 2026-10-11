@@ -261,6 +261,7 @@ const PoolCard = ({
                                 <Button
                                     onClick={() => setDeleteStep(1)}
                                     variant="ghost"
+                                    data-wizard-id="pool-decommission-btn"
                                     className="px-4 text-danger-600 hover:bg-danger-50 hover:text-danger-700"
                                 >
                                     Decommission Pool
@@ -270,7 +271,7 @@ const PoolCard = ({
                                 <>
                                     <span className="flex items-center text-xs font-semibold uppercase tracking-wide text-danger-600">Really delete?</span>
                                     <Button onClick={() => setDeleteStep(0)} variant="secondary" size="sm">Cancel</Button>
-                                    <Button onClick={() => setDeleteStep(2)} variant="danger" size="sm">Delete</Button>
+                                    <Button onClick={() => setDeleteStep(2)} variant="danger" size="sm" data-wizard-id="pool-decommission-confirm1-btn">Delete</Button>
                                 </>
                             )}
                             {deleteStep === 2 && (
@@ -281,6 +282,7 @@ const PoolCard = ({
                                         onClick={() => { setDeleteStep(0); onDeletePool(poolName); }}
                                         variant="danger"
                                         size="sm"
+                                        data-wizard-id="pool-decommission-confirm2-btn"
                                     >
                                         Confirm Destruction
                                     </Button>
