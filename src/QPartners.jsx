@@ -106,13 +106,20 @@ const QPartners = () => {
         setMessage({ text: '', type: '' });
 
         try {
-            await addPartner({
+            const res = await addPartner({
                 ip: formData.address,
                 pass: formData.ppass,
                 port: formData.port,
                 type: formData.type,
                 alias: formData.alias
             });
+            // The backend refuses a used / out-of-range port with HTTP 200 and the plain text 'select another port'.
+            const body = typeof res?.data === 'string' ? res.data : (res?.data?.response || '');
+            if (/another port/i.test(String(body))) {
+                setPortError('Select another port');
+                setMessage({ text: 'Select another port', type: 'error' });
+                return;
+            }
             setMessage({ text: 'Partner added successfully', type: 'success' });
             setFormData({
                 type: 'Sender',
