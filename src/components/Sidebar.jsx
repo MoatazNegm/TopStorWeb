@@ -1,16 +1,32 @@
 import React, { useEffect, useMemo, useState } from 'react';
+// One icon per menu entry -- groups and pages alike -- so the collapsed rail
+// never shows the same glyph twice.
 import {
-  Activity,
+  ArchiveRestore,
+  Cable,
+  CalendarClock,
+  Camera,
   ChevronDown,
-  Copy,
+  CircleArrowUp,
   Database,
+  FolderOpen,
+  Gauge,
+  Handshake,
   HardDrive,
+  House,
+  KeySquare,
   Layers,
-  RadioTower,
+  MonitorCheck,
+  Network,
+  Package,
+  Repeat,
+  ScrollText,
   Search,
   Server,
   Settings,
-  UserPlus,
+  ShieldCheck,
+  SlidersHorizontal,
+  User,
   Users,
 } from 'lucide-react';
 
@@ -54,40 +70,40 @@ const Sidebar = ({ hasPriv }) => {
     () => [
       {
         label: 'System configuration',
-        icon: Settings,
+        icon: SlidersHorizontal,
         subItems: [
-          { label: 'Users', icon: UserPlus, href: '#/users' },
+          { label: 'Users', icon: User, href: '#/users' },
           { label: 'Groups', icon: Users, href: '#/groups' },
           { label: 'Nodes', icon: Server, href: '#/nodes' },
         ],
       },
       {
         label: 'System Status',
-        icon: Activity,
+        icon: MonitorCheck,
         subItems: [
-          { label: 'Logs', icon: Activity, href: '#/logs' },
-          { label: 'Service Performance', icon: Activity, href: '#/performance' },
+          { label: 'Logs', icon: ScrollText, href: '#/logs' },
+          { label: 'Service Performance', icon: Gauge, href: '#/performance' },
         ],
       },
       {
         label: 'Volumes',
         icon: HardDrive,
         subItems: [
-          { label: 'CIFS', icon: Server, href: '#/volumes/cifs' },
-          { label: 'NFS', icon: Server, href: '#/volumes/nfs' },
-          { label: 'S3 Buckets', icon: Database, href: '#/volumes/s3' },
-          { label: 'Home Folders', icon: Users, href: '#/volumes/home' },
-          { label: 'ISCSI LUNs', icon: Database, href: '#/volumes/iscsi' },
-          { label: 'Snapshots', icon: Copy, href: '#/volumes/snapshots' },
+          { label: 'CIFS', icon: FolderOpen, href: '#/volumes/cifs' },
+          { label: 'NFS', icon: Network, href: '#/volumes/nfs' },
+          { label: 'S3 Buckets', icon: Package, href: '#/volumes/s3' },
+          { label: 'Home Folders', icon: House, href: '#/volumes/home' },
+          { label: 'ISCSI LUNs', icon: Cable, href: '#/volumes/iscsi' },
+          { label: 'Snapshots', icon: Camera, href: '#/volumes/snapshots' },
         ],
       },
       {
         label: 'Replication',
-        icon: Copy,
+        icon: Repeat,
         subItems: [
-          { label: 'Partner', icon: Users, href: '#/replication/partners' },
-          { label: 'Sender Schedule', icon: RadioTower, href: '#/replication/sender' },
-          { label: 'Received Snapshots', icon: Copy, href: '#/replication/received' },
+          { label: 'Partner', icon: Handshake, href: '#/replication/partners' },
+          { label: 'Sender Schedule', icon: CalendarClock, href: '#/replication/sender' },
+          { label: 'Received Snapshots', icon: ArchiveRestore, href: '#/replication/received' },
         ],
       },
       {
@@ -99,8 +115,9 @@ const Sidebar = ({ hasPriv }) => {
         label: 'Settings',
         icon: Settings,
         subItems: [
-          { label: 'User Privileges', icon: Users, href: '#/settings/privileges' },
-          { label: 'Updates', icon: Activity, href: '#/settings/updates' },
+          { label: 'User Privileges', icon: ShieldCheck, href: '#/settings/privileges' },
+          { label: 'API Keys', icon: KeySquare, href: '#/settings/apikeys' },
+          { label: 'Updates', icon: CircleArrowUp, href: '#/settings/updates' },
         ],
       },
     ],
@@ -128,6 +145,7 @@ const Sidebar = ({ hasPriv }) => {
         if (label === 'Received Snapshots') return hasPriv('Replication');
         if (label === 'Disk Groups') return hasPriv('DiskGroups');
         if (label === 'User Privileges') return hasPriv('UserPrivilegesch');
+        if (label === 'API Keys') return hasPriv('UserPrivilegesch');
         if (label === 'Updates') return hasPriv('Uploadch');
         return true;
       })
@@ -219,7 +237,9 @@ const Sidebar = ({ hasPriv }) => {
                     aria-label={subItem.label}
                     aria-current={active ? 'page' : undefined}
                     className={`mb-1 flex h-10 w-full items-center justify-center rounded-md transition-colors ${
-                      active ? 'bg-brand-600 text-white' : 'text-gray-500 hover:bg-gray-50 hover:text-brand-600'
+                      active
+                        ? '!bg-brand-600 !text-white shadow-sm'
+                        : 'text-gray-500 hover:bg-gray-50 hover:text-brand-600'
                     }`}
                   >
                     <SubIcon className="h-[19px] w-[19px]" />

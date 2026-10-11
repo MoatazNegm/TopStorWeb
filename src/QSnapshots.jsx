@@ -202,9 +202,9 @@ const QSnapshots = () => {
                         </div>
 
                         {/* Main Creation Card */}
-                        <div className="mb-8 overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
+                        <div className="mb-8 rounded-lg border border-border bg-surface shadow-sm">
                             {/* Tab Headers */}
-                            <div className="flex border-b border-gray-50 bg-gray-50/30">
+                            <div className="flex rounded-t-lg border-b border-gray-50 bg-gray-50/30">
                                 {tabs.map(tab => (
                                     <button
                                         key={tab}

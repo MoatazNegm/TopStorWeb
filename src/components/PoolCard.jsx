@@ -18,6 +18,7 @@ const PoolCard = ({
     const [selectedSize, setSelectedSize] = useState(null);
     const [selectedDiskId, setSelectedDiskId] = useState(null);
     const [isExpansionOpen, setIsExpansionOpen] = useState(false);
+    const [open, setOpen] = useState(false); // card is collapsed until the header is clicked
 
     const { available, used, dedup, raids = [], volumes = [] } = data;
     const totalSize = (parseFloat(available) + parseFloat(used)).toFixed(2);
@@ -63,8 +64,16 @@ const PoolCard = ({
 
     return (
         <div className="mb-4 overflow-hidden rounded-lg border border-border bg-surface p-5 shadow-sm">
-            <div className="mb-4 flex flex-col items-start justify-between gap-4 border-b border-border pb-4 md:flex-row md:items-center">
+            <div
+                role="button"
+                tabIndex={0}
+                aria-expanded={open}
+                onClick={() => setOpen(o => !o)}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(o => !o); } }}
+                className={`flex cursor-pointer flex-col items-start justify-between gap-4 md:flex-row md:items-center ${open ? 'mb-4 border-b border-border pb-4' : ''}`}
+            >
                 <div className="flex items-center gap-4">
+                    <ChevronDown size={18} className={`flex-shrink-0 text-gray-400 transition-transform ${open ? '' : '-rotate-90'}`} />
                     <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-50 text-brand-600">
                         <Database size={18} />
                     </div>
@@ -91,8 +100,9 @@ const PoolCard = ({
                 </div>
             </div>
 
+            {open && (<>
             {/* Raid Groups Grid */}
-            <div className="mb-5 grid grid-cols-1 gap-4 xl:grid-cols-2">
+            <div className="mb-4 grid grid-cols-1 gap-3 xl:grid-cols-2">
                 {raids.map(raidId => {
                     const raidDisks = allRaids[raidId]?.disks || [];
                     // Filter out dm-* virtual placeholder devices — they are not real disks to render
@@ -106,12 +116,12 @@ const PoolCard = ({
                     const raidHasMissing = missingCount > 0;
 
                     return (
-                        <div key={raidId} className={`relative rounded-lg border bg-surface-muted p-5 ${raidHasMissing ? 'border-danger-200' : 'border-border'}`}>
-                            <div className="flex items-center justify-between mb-4">
+                        <div key={raidId} className={`relative rounded-lg border bg-surface-muted p-2.5 ${raidHasMissing ? 'border-danger-200' : 'border-border'}`}>
+                            <div className="flex items-center justify-between mb-1.5">
                                 <span className={`text-xs font-semibold uppercase tracking-wide ${raidHasMissing ? 'text-danger-600' : 'text-gray-500'}`}>{raidId.split('_')[0]}</span>
                                 <div className={`h-2.5 w-2.5 rounded-full ${raidHasMissing ? 'bg-danger-500' : 'bg-success-500'}`}></div>
                             </div>
-                            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-4 2xl:grid-cols-6">
+                            <div className="flex flex-wrap gap-1">
                                 {realDisks.map(diskId => (
                                     <DiskIcon
                                         key={diskId}
@@ -125,7 +135,7 @@ const PoolCard = ({
                                     />
                                 ))}
                                 {Array.from({ length: missingCount }).map((_, i) => (
-                                    <div key={`missing-${i}`} className="flex flex-col items-center rounded-md border border-danger-200 bg-danger-50 p-3">
+                                    <div key={`missing-${i}`} className="flex flex-col items-center rounded-md border border-danger-200 bg-danger-50 p-1.5">
                                         <img src="img/invaliddisk.png" alt="missing disk" className="h-20 w-16 object-contain opacity-50" />
                                         <span className="mt-1 text-xs font-semibold uppercase tracking-wide text-danger-600">missing</span>
                                         <span className="text-xs font-semibold leading-none text-danger-400">-</span>
@@ -292,6 +302,7 @@ const PoolCard = ({
                     )}
                 </div>
             </div>
+            </>)}
         </div>
     );
 };

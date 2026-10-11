@@ -12,6 +12,7 @@ import QIscsi from './QIscsi';
 import QSnapshots from './QSnapshots';
 import QUserPrivileges from './QUserPrivileges';
 import QUpdates from './QUpdates';
+import QApiKeys from './QApiKeys';
 import QDisks from './QDisks';
 import QPartners from './QPartners';
 import QSender from './QSender';
@@ -101,6 +102,7 @@ function App() {
             else if (hash === '#/volumes/snapshots') setView('snapshots');
             else if (hash === '#/settings/privileges') setView('privileges');
             else if (hash === '#/settings/updates') setView('updates');
+            else if (hash === '#/settings/apikeys') setView('apikeys');
             else if (hash === '#/pools/diskgroups') setView('diskgroups');
             else if (hash === '#/replication/partners') setView('partners');
             else if (hash === '#/replication/sender') setView('sender');
@@ -141,6 +143,7 @@ function App() {
                 return 'Volumes';
             case 'privileges':
             case 'updates':
+            case 'apikeys':
                 return 'Settings';
             case 'diskgroups':
                 return 'Pools';
@@ -197,6 +200,7 @@ function App() {
                     {view === 'snapshots' && hasPriv('SnapShots') && <QSnapshots />}
                     {view === 'privileges' && hasPriv('UserPrivilegesch') && <QUserPrivileges />}
                     {view === 'updates' && hasPriv('Uploadch') && <QUpdates />}
+                    {view === 'apikeys' && hasPriv('UserPrivilegesch') && <QApiKeys />}
                     {view === 'diskgroups' && hasPriv('DiskGroups') && <QDisks />}
                     {view === 'partners' && hasPriv('Partners') && <QPartners />}
                     {view === 'sender' && hasPriv('Senders') && <QSender />}

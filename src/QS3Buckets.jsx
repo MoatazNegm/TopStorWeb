@@ -6,7 +6,6 @@ import Button from './components/Common/Button';
 import Input from './components/Common/Input';
 import Dropdown from './components/Common/Dropdown';
 import S3BucketsList from './components/S3BucketsList';
-import VolumeInsights from './components/VolumeInsights';
 
 const QS3Buckets = () => {
     const [volumes, setVolumes] = useState([]);
@@ -238,7 +237,7 @@ const QS3Buckets = () => {
                         )}
 
                         <div className="mt-6 space-y-6">
-                            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                            <div className="grid grid-cols-1 gap-6">
                                 <div className="rounded-lg border border-border bg-surface p-5 shadow-sm">
                                     <div className="mb-5 flex items-center gap-3">
                                         <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-50 text-brand-600">
@@ -351,7 +350,6 @@ const QS3Buckets = () => {
                                 </form>
                             </div>
 
-                            <VolumeInsights volumes={volumes} stats={stats} />
                             </div>
 
                             <div className="w-full">

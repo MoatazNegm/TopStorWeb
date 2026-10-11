@@ -1,587 +1,423 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { AlertTriangle, CheckCircle2, PlusCircle, Trash2, RotateCcw, Clock, Calendar, Zap, Database, HardDrive, Server } from 'lucide-react';
-import Button from './components/Common/Button';
-import Input from './components/Common/Input';
-import Dropdown from './components/Common/Dropdown';
+import { AlertCircle, RefreshCw } from 'lucide-react';
 import {
     fetchSnapshotsInfo,
+    fetchVolumeList,
     createSnapshot,
     deleteSnapshot,
     rollbackSnapshot,
-    deleteSnapshotPeriod,
-    fetchVolumeList
+    deleteSnapshotPeriod
 } from './api/volumes';
 import { fetchPoolsInfo } from './api/pools';
 import { fetchPartnerList } from './api/partners';
-import { ListSearch, filterRows, SortTh, useSort, sortRows, dateKey } from './components/Common/ListSearch';
+import Button from './components/Common/Button';
+import Input from './components/Common/Input';
+import Dropdown from './components/Common/Dropdown';
+import SnapshotList from './components/SnapshotList';
+import SnapshotPeriodsList from './components/SnapshotPeriodsList';
+import CustomTimePicker from './components/CustomTimePicker';
+
+// Same layout as the Snapshots view; the differences are the Target Receiver
+// in the selection bar and that every list shows replication items only.
+const isReplicated = (receiver) => !!receiver && !['NoReceiver', 'no', 'No', 'none'].includes(receiver);
+const periodReplicated = (p) => isReplicated(p.receiver);
+const snapReplicated = (s) => isReplicated(s.partnerR);
 
 const QSender = () => {
-    const { sort: perSort, toggle: perToggle } = useSort();
-    const { sort: sentSort, toggle: sentToggle } = useSort();
-    const [periodQuery, setPeriodQuery] = React.useState('');
-    const [sentQuery, setSentQuery] = React.useState('');
-    // Selection state
     const [pools, setPools] = useState([]);
     const [volumes, setVolumes] = useState([]);
-    const [partners, setPartners] = useState([]);
+    const [receivers, setReceivers] = useState([]);
+    const [snapshots, setSnapshots] = useState({ Once: [], Minutely: [], Hourly: [], Weekly: [], allsnaps: [] });
+    const [periods, setPeriods] = useState({ Minutelyperiod: [], Hourlyperiod: [], Weeklyperiod: [] });
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [activeTab, setActiveTab] = useState('Once');
 
-    const [selectedPool, setSelectedPool] = useState('');
-    const [selectedVolume, setSelectedVolume] = useState('');
-    const [selectedReceiver, setSelectedReceiver] = useState('');
+    // Selection state
+    const [selection, setSelection] = useState({ pool: '', volume: '', receiver: '' });
 
-    // Data state
-    const [snapshotsInfo, setSnapshotsInfo] = useState({
-        once: [],
-        allsnaps: [],
-        Minutelyperiod: [],
-        Hourlyperiod: [],
-        Weeklyperiod: []
+    // Individual tab form states
+    const [forms, setForms] = useState({
+        Once: { name: '' },
+        Minutely: { every: 10, keep: 5 },
+        Hourly: { sminute: 0, every: 1, keep: 1 },
+        Weekly: { stime: '11:50 PM', sday: 'Sat', keep: 1 }
     });
 
-    // UI state
-    const [activeTab, setActiveTab] = useState('Once');
-    const [loading, setLoading] = useState(true);
-    const [actionLoading, setActionLoading] = useState(null);
-    const [message, setMessage] = useState({ text: '', type: '' });
-
-    // Form states
-    const [onceName, setOnceName] = useState('');
-    const [minutelyEvery, setMinutelyEvery] = useState(1);
-    const [minutelyKeep, setMinutelyKeep] = useState(4);
-    const [hourlyEvery, setHourlyEvery] = useState(1);
-    const [hourlyMinute, setHourlyMinute] = useState(0);
-    const [hourlyKeep, setHourlyKeep] = useState(4);
-    const [weeklyDay, setWeeklyDay] = useState('Sat');
-    const [weeklyTime, setWeeklyTime] = useState('00:00');
-    const [weeklyKeep, setWeeklyKeep] = useState(4);
-
-    const loadInitialData = useCallback(async () => {
+    const loadData = useCallback(async () => {
         try {
-            const [poolsRes, partnersRes] = await Promise.all([
+            const [poolsRes, volsRes, snapsRes, partnersRes] = await Promise.all([
                 fetchPoolsInfo(),
+                fetchVolumeList(),
+                fetchSnapshotsInfo(),
                 fetchPartnerList()
             ]);
 
-            const poolOptions = Object.entries(poolsRes.data.results || {}).map(([id, p]) => ({
-                value: id,
-                label: p.text,
-                owner: p.owner
-            }));
-            setPools(poolOptions);
+            setPools(poolsRes.data.results || []);
+            setVolumes(volsRes.data || []);
 
-            const partnerOptions = Object.entries(partnersRes.data.allpartners || {}).map(([id, p]) => ({
-                value: id,
-                label: p.alias.split('_')[0],
-                alias: p.alias,
-                type: p.type
-            })).filter(p => p.type.toLowerCase().includes('ceiver'));
-            setPartners(partnerOptions);
+            // Only partners that receive (type Receiver) can be a target.
+            const partners = Object.values(partnersRes.data.allpartners || {});
+            setReceivers(partners.filter(p => String(p.type).toLowerCase().includes('ceiver')));
 
-        } catch (err) {
-            console.error("Failed to load initial data", err);
-            setMessage({ text: 'Failed to load system configuration.', type: 'error' });
-        }
-    }, []);
-
-    const loadVolumes = useCallback(async (poolId) => {
-        if (!poolId) {
-            setVolumes([]);
-            return;
-        }
-        try {
-            const res = await fetchVolumeList();
-            const poolLabel = pools.find(p => p.value === poolId)?.label;
-            const filteredVolumes = (res.data || []).filter(v => v.pool === poolLabel).map(v => ({
-                value: v.id,
-                label: v.text,
-                fullname: v.fullname
-            }));
-            setVolumes(filteredVolumes);
-        } catch (err) {
-            console.error("Failed to load volumes", err);
-        }
-    }, [pools]);
-
-    const loadSnapshots = useCallback(async (isSilent = false) => {
-        if (!isSilent) setLoading(true);
-        try {
-            const res = await fetchSnapshotsInfo();
-            setSnapshotsInfo({
-                once: res.data.once || [],
-                allsnaps: res.data.allsnaps || [],
-                Minutelyperiod: res.data.Minutelyperiod || [],
-                Hourlyperiod: res.data.Hourlyperiod || [],
-                Weeklyperiod: res.data.Weeklyperiod || []
+            const snapsData = snapsRes.data;
+            setSnapshots({
+                Once: (snapsData.Once || []).filter(snapReplicated),
+                Minutely: (snapsData.Minutely || []).filter(snapReplicated),
+                Hourly: (snapsData.Hourly || []).filter(snapReplicated),
+                Weekly: (snapsData.Weekly || []).filter(snapReplicated),
+                allsnaps: (snapsData.allsnaps || []).filter(snapReplicated)
+            });
+            setPeriods({
+                Minutelyperiod: (snapsData.Minutelyperiod || []).filter(periodReplicated),
+                Hourlyperiod: (snapsData.Hourlyperiod || []).filter(periodReplicated),
+                Weeklyperiod: (snapsData.Weeklyperiod || []).filter(periodReplicated)
             });
         } catch (err) {
-            console.error("Failed to load snapshots", err);
-            if (!isSilent) setMessage({ text: 'Failed to synchronize snapshot data.', type: 'error' });
+            console.error("Failed to load replication data", err);
+            setError("Failed to synchronize with snapshots API");
         } finally {
-            if (!isSilent) setLoading(false);
+            setLoading(false);
         }
     }, []);
 
     useEffect(() => {
-        loadInitialData();
-        loadSnapshots();
-        const interval = setInterval(() => loadSnapshots(true), 5000);
+        loadData();
+        const interval = setInterval(loadData, 5000);
         return () => clearInterval(interval);
-    }, [loadInitialData, loadSnapshots]);
+    }, [loadData]);
 
-    useEffect(() => {
-        loadVolumes(selectedPool);
-    }, [selectedPool, loadVolumes]);
+    const filteredVolumes = selection.pool === ''
+        ? []
+        : volumes.filter(v => pools[selection.pool] && v.pool === pools[selection.pool].text);
+
+    const hasVolume = selection.volume !== '';
+    const ready = hasVolume && selection.receiver !== '';
 
     const handleCreate = async (e) => {
-        if (e) e.preventDefault();
-        if (!selectedPool || !selectedVolume || !selectedReceiver) return;
-
-        const poolObj = pools.find(p => p.value === selectedPool);
-        const volObj = volumes.find(v => v.value === selectedVolume);
-        const receiverAlias = partners.find(p => p.value === selectedReceiver)?.alias;
-
-        let payload = {
-            snapsel: activeTab,
-            pool: poolObj.label,
-            volume: volObj.fullname,
-            receiver: receiverAlias,
-            owner: poolObj.owner
-        };
-
-        if (activeTab === 'Once') {
-            payload.name = onceName || `${volObj.label}_manual`;
-        } else if (activeTab === 'Minutely') {
-            payload.every = minutelyEvery;
-            payload.keep = minutelyKeep;
-        } else if (activeTab === 'Hourly') {
-            payload.every = hourlyEvery;
-            payload.sminute = hourlyMinute;
-            payload.keep = hourlyKeep;
-        } else if (activeTab === 'Weekly') {
-            payload.stime = weeklyTime;
-            payload.every = weeklyDay;
-            payload.keep = weeklyKeep;
+        e.preventDefault();
+        if (!ready) {
+            setError("Please select a volume and a target receiver first");
+            return;
         }
 
-        setActionLoading('create');
-        setMessage({ text: '', type: '' });
-
         try {
+            const poolObj = pools[selection.pool];
+            const volObj = volumes.find(v => v.id === selection.volume);
+
+            const payload = {
+                snapsel: activeTab,
+                pool: poolObj.text,
+                volume: volObj.fullname,
+                receiver: selection.receiver,
+                owner: poolObj.owner,
+                ...forms[activeTab]
+            };
+
+            if (activeTab === 'Weekly') {
+                payload.every = forms.Weekly.sday;
+                const timeMatch = forms.Weekly.stime.match(/(\d+):(\d+)\s*(AM|PM)/i);
+                if (timeMatch) {
+                    let h = parseInt(timeMatch[1]);
+                    const m = timeMatch[2];
+                    const p = timeMatch[3].toUpperCase();
+                    if (p === 'PM' && h !== 12) h += 12;
+                    if (p === 'AM' && h === 12) h = 0;
+                    payload.stime = `${String(h).padStart(2, '0')}:${m}`;
+                }
+            }
+
             await createSnapshot(payload);
-            setMessage({ text: `Schedule "${activeTab}" established successfully`, type: 'success' });
-            setOnceName('');
-            loadSnapshots(true);
+            setError(null);
+
+            if (activeTab === 'Once') setForms(prev => ({ ...prev, Once: { name: '' } }));
+            loadData();
         } catch (err) {
-            console.error("Failed to create", err);
-            setMessage({ text: 'Failed to establish schedule', type: 'error' });
-        } finally {
-            setActionLoading(null);
+            setError("Failed to create replication snapshot/schedule");
         }
     };
 
-    const handleDelete = async (id, type) => {
-        if (!window.confirm(`Are you sure you want to remove this ${type}?`)) return;
-        setActionLoading(`delete-${id}`);
+    const handleSnapshotDelete = async (name) => {
+        if (!window.confirm(`Delete snapshot ${name}?`)) return;
         try {
-            if (type === 'snapshot') {
-                await deleteSnapshot(id);
-            } else {
-                await deleteSnapshotPeriod(id);
-            }
-            setMessage({ text: `${type} removed successfully`, type: 'success' });
-            loadSnapshots(true);
+            await deleteSnapshot(name);
+            loadData();
         } catch (err) {
-            console.error(`Failed to delete`, err);
-            setMessage({ text: `Failed to remove ${type}`, type: 'error' });
-        } finally {
-            setActionLoading(null);
+            setError("Failed to delete snapshot");
         }
     };
 
     const handleRollback = async (name) => {
-        if (!window.confirm("Perform rollback? This will restore the volume to this snapshot state.")) return;
-        setActionLoading(`rollback-${name}`);
+        if (!window.confirm(`Rollback volume to snapshot ${name}? THIS CANNOT BE UNDONE.`)) return;
         try {
             await rollbackSnapshot(name);
-            setMessage({ text: 'Rollback initiated successfully', type: 'success' });
-            loadSnapshots(true);
+            loadData();
         } catch (err) {
-            console.error("Rollback failed", err);
-            setMessage({ text: 'Rollback failed', type: 'error' });
-        } finally {
-            setActionLoading(null);
+            setError("Failed to rollback volume");
         }
     };
 
-    if (loading && snapshotsInfo.allsnaps.length === 0) {
-        return (
-            <div className="flex min-h-[400px] items-center justify-center">
-                <div className="h-10 w-10 animate-spin rounded-full border-2 border-brand-200 border-t-brand-600" />
-            </div>
-        );
-    }
+    const handlePeriodDelete = async (id) => {
+        if (!window.confirm(`Stop this replication schedule?`)) return;
+        try {
+            await deleteSnapshotPeriod(id);
+            loadData();
+        } catch (err) {
+            setError("Failed to delete schedule period");
+        }
+    };
+
+    const tabs = ['Once', 'Minutely', 'Hourly', 'Weekly'];
 
     return (
-                <div className="p-5">
-                    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
-                        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div className="content-header px-4">
+                    <div className="container-fluid">
+                        <div className="flex justify-between items-center mb-8">
                             <div>
                                 <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Replication Schedule</h1>
-                                <p className="mt-1 text-sm text-gray-500">Configure automated snapshot replication and data security</p>
+                                <p className="text-lg text-gray-500 font-medium tracking-tight">Send snapshots of a volume to a receiver partner, once or on a schedule</p>
+                            </div>
+                            <div className="flex gap-3">
+                                <Button
+                                    onClick={loadData}
+                                    variant="secondary"
+                                    size="icon"
+                                    className="h-10 w-10"
+                                    icon={<RefreshCw size={16} className={loading ? 'animate-spin' : ''} />}
+                                />
                             </div>
                         </div>
 
-                        {message.text && (
-                            <div className={`mt-6 flex items-center gap-2 rounded-lg border px-4 py-3 text-sm font-medium ${message.type === 'success' ? 'border-success-100 bg-success-50 text-success-600' : 'border-danger-100 bg-danger-50 text-danger-600'}`}>
-                                {message.type === 'success' ? <CheckCircle2 size={15} /> : <AlertTriangle size={15} />}
-                                {message.text}
+                        {error && (
+                            <div className="mb-6 flex items-center gap-3 rounded-xl border border-danger-100 bg-danger-50 p-4 text-sm font-medium text-danger-700">
+                                <AlertCircle size={16} />
+                                {error}
                             </div>
                         )}
 
-                        <div className="mt-6 space-y-6">
-                            <div className="rounded-lg border border-border bg-surface p-5 shadow-sm">
-                                <div className="mb-5 flex items-center gap-3">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-50 text-brand-600">
-                                        <Clock size={17} />
-                                    </div>
-                                    <h3 className="text-base font-semibold text-gray-800">Provision New Sender</h3>
-                                </div>
-
-                                <form onSubmit={handleCreate} className="space-y-4">
-                                    {/* Source Selection Row */}
-                                    <div className="flex flex-col gap-4">
-                                        <Dropdown
-                                            label="Source Pool"
-                                            options={pools}
-                                            value={selectedPool}
-                                            onChange={setSelectedPool}
-                                            placeholder="Select Pool"
-                                            icon={<Database size={16} />}
-                                        />
-                                        <Dropdown
-                                            label="Source Volume"
-                                            options={volumes}
-                                            value={selectedVolume}
-                                            onChange={setSelectedVolume}
-                                            placeholder="Select Volume"
-                                            disabled={!selectedPool}
-                                            icon={<HardDrive size={16} />}
-                                        />
-                                        <Dropdown
-                                            label="Target Receiver"
-                                            options={partners}
-                                            value={selectedReceiver}
-                                            onChange={setSelectedReceiver}
-                                            placeholder="Select Receiver"
-                                            disabled={!selectedVolume}
-                                            icon={<Server size={16} />}
-                                        />
-                                    </div>
-
-                                    {/* Tabbed Interface */}
-                                    <div className="mt-8 overflow-hidden rounded-lg border border-border bg-surface-muted/30">
-                                        <div className="flex border-b border-border bg-surface">
-                                            {[
-                                                { id: 'Once', icon: <Zap size={14} />, label: 'Once' },
-                                                { id: 'Minutely', icon: <Clock size={14} />, label: 'Minutely' },
-                                                { id: 'Hourly', icon: <Clock size={14} />, label: 'Hourly' },
-                                                { id: 'Weekly', icon: <Calendar size={14} />, label: 'Weekly' }
-                                            ].map(tab => (
-                                                <button
-                                                    key={tab.id}
-                                                    type="button"
-                                                    onClick={() => setActiveTab(tab.id)}
-                                                        className={`flex flex-1 items-center justify-center gap-2 py-3 text-xs font-semibold uppercase tracking-wide transition-colors ${activeTab === tab.id
-                                                            ? 'border-b-2 border-brand-600 bg-surface text-brand-600'
-                                                            : 'text-gray-500 hover:bg-surface hover:text-gray-700'
-                                                        }`}
-                                                >
-                                                    {tab.icon}
-                                                    {tab.label}
-                                                </button>
-                                            ))}
-                                        </div>
-
-                                        <div className="space-y-6 bg-surface p-5">
-                                            {activeTab === 'Once' && (
-                                                <Input
-                                                    label="Snapshot Alias"
-                                                    value={onceName}
-                                                    onChange={(e) => setOnceName(e.target.value)}
-                                                    placeholder="e.g. initial_seed"
-                                                    icon={<Zap size={16} />}
-                                                />
-                                            )}
-
-                                            {activeTab === 'Minutely' && (
-                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                                    <Input
-                                                        label="Frequency (Minutes)"
-                                                        type="number"
-                                                        value={minutelyEvery}
-                                                        onChange={(e) => setMinutelyEvery(e.target.value)}
-                                                        min="1"
-                                                        max="59"
-                                                    />
-                                                    <Input
-                                                        label="Retention Count"
-                                                        type="number"
-                                                        value={minutelyKeep}
-                                                        onChange={(e) => setMinutelyKeep(e.target.value)}
-                                                        min="1"
-                                                    />
-                                                </div>
-                                            )}
-
-                                            {activeTab === 'Hourly' && (
-                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                                    <Input
-                                                        label="Every (Hours)"
-                                                        type="number"
-                                                        value={hourlyEvery}
-                                                        onChange={(e) => setHourlyEvery(e.target.value)}
-                                                        min="1"
-                                                        max="23"
-                                                    />
-                                                    <Input
-                                                        label="At Minute"
-                                                        type="number"
-                                                        value={hourlyMinute}
-                                                        onChange={(e) => setHourlyMinute(e.target.value)}
-                                                        min="0"
-                                                        max="59"
-                                                    />
-                                                    <Input
-                                                        label="Retention Count"
-                                                        type="number"
-                                                        value={hourlyKeep}
-                                                        onChange={(e) => setHourlyKeep(e.target.value)}
-                                                        min="1"
-                                                    />
-                                                </div>
-                                            )}
-
-                                            {activeTab === 'Weekly' && (
-                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                                    <Dropdown
-                                                        label="Day"
-                                                        options={[
-                                                            { value: 'Sat', label: 'Saturday' },
-                                                            { value: 'Sun', label: 'Sunday' },
-                                                            { value: 'Mon', label: 'Monday' },
-                                                            { value: 'Tue', label: 'Tuesday' },
-                                                            { value: 'Wed', label: 'Wednesday' },
-                                                            { value: 'Thu', label: 'Thursday' },
-                                                            { value: 'Fri', label: 'Friday' }
-                                                        ]}
-                                                        value={weeklyDay}
-                                                        onChange={setWeeklyDay}
-                                                    />
-                                                    <Input
-                                                        label="At Time"
-                                                        type="time"
-                                                        value={weeklyTime}
-                                                        onChange={(e) => setWeeklyTime(e.target.value)}
-                                                    />
-                                                    <Input
-                                                        label="Retention Count"
-                                                        type="number"
-                                                        value={weeklyKeep}
-                                                        onChange={(e) => setWeeklyKeep(e.target.value)}
-                                                        min="1"
-                                                    />
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    <div className="pt-6 border-t border-gray-50 overflow-visible">
-                                        <Button
-                                            type="submit"
-                                            className="w-full sm:w-auto"
-                                            disabled={!selectedPool || !selectedVolume || !selectedReceiver || actionLoading === 'create'}
-                                            icon={<PlusCircle size={16} />}
-                                        >
-                                            {actionLoading === 'create' ? 'Processing...' : 'Authorize Schedule'}
-                                        </Button>
-                                    </div>
-                                </form>
+                        {/* Top Selection Bar */}
+                        <div className="mb-8 flex flex-wrap items-center gap-6 rounded-lg border border-border bg-surface p-6 shadow-sm">
+                            <div className="flex-1 min-w-[200px]">
+                                <Dropdown
+                                    label="Source Pool"
+                                    options={pools.map((p, idx) => ({ value: idx, label: p.text }))}
+                                    value={selection.pool}
+                                    placeholder="Select Pool..."
+                                    onChange={(val) => setSelection({ ...selection, pool: val, volume: '' })}
+                                />
                             </div>
-
-                            <div className="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
-                                <div className="flex items-center justify-between gap-4 border-b border-border px-5 py-4">
-                                    <div className="flex items-center gap-3">
-                                        <span className="flex h-9 w-9 items-center justify-center rounded-md bg-brand-50 text-brand-600">
-                                            <Calendar size={16} />
-                                        </span>
-                                        <h3 className="text-base font-semibold text-gray-800">Active Schedules</h3>
-                                    </div>
-                                    <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-muted px-3 py-1 text-xs font-medium text-gray-600">
-                                        <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
-                                        {[...snapshotsInfo.Minutelyperiod, ...snapshotsInfo.Hourlyperiod, ...snapshotsInfo.Weeklyperiod].filter(p => p.receiver !== 'NoReceiver').length} Active
-                                    </span>
-                                </div>
-
-                                <ListSearch id="searchperiodQuery" value={periodQuery} onChange={setPeriodQuery} />
-                                <div className="overflow-x-auto">
-                                    <table className="min-w-[900px] w-full text-left">
-                                        <thead className="bg-surface-muted">
-                                            <tr className="border-b border-border">
-                                                <SortTh sortKey="id" sort={perSort} onToggle={perToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">ID / Frequency</SortTh>
-                                                <SortTh sortKey="vol" sort={perSort} onToggle={perToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Volume</SortTh>
-                                                <SortTh sortKey="rec" sort={perSort} onToggle={perToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Receiver</SortTh>
-                                                <SortTh sortKey="det" sort={perSort} onToggle={perToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Details</SortTh>
-                                                <th className="px-2.5 py-1.5 text-right text-[11px] font-semibold uppercase tracking-wide text-gray-500">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-border">
-                                            {sortRows(filterRows(['Minutelyperiod', 'Hourlyperiod', 'Weeklyperiod'].flatMap(type => snapshotsInfo[type].filter(p => p.receiver !== 'NoReceiver')), periodQuery), perSort, { id: (p) => p.id, vol: (p) => p.volume, rec: (p) => p.receiver, det: (p) => `${p.keep || ''} ${p.every || ''}` }).map((period, idx) => (
-                                                    <tr key={period.id} className="group transition-colors hover:bg-gray-50/60">
-                                                        <td className="px-2.5 py-1">
-                                                            <div className="flex flex-col">
-                                                                <span className="text-xs font-semibold text-gray-700">{period.id}</span>
-                                                                <span className="text-xs font-medium uppercase tracking-wide text-brand-500">
-                                                                    {period.id.startsWith('M') ? 'Minutely' : period.id.startsWith('H') ? 'Hourly' : 'Weekly'}
-                                                                </span>
-                                                            </div>
-                                                        </td>
-                                                        <td className="px-2.5 py-1">
-                                                            <span className="text-sm text-gray-700">{period.volume.split('_')[0]}</span>
-                                                        </td>
-                                                        <td className="px-2.5 py-1">
-                                                            <span className="inline-flex items-center rounded-sm border border-brand-100 bg-brand-50 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-brand-700">
-                                                                {period.receiver}
-                                                            </span>
-                                                        </td>
-                                                        <td className="px-2.5 py-1">
-                                                            <div className="flex flex-col">
-                                                                <span className="text-sm text-gray-600">
-                                                                    {period.stime ? `${period.every} @ ${period.stime}` : period.sminute !== undefined ? `Every ${period.every}h (Min: ${period.sminute})` : `Every ${period.every}m`}
-                                                                </span>
-                                                                <span className="text-xs font-medium uppercase tracking-wide text-gray-500">Keep: {period.keep}</span>
-                                                            </div>
-                                                        </td>
-                                                        <td className="px-2.5 py-1 text-right">
-                                                            <button
-                                                                onClick={() => handleDelete(period.id, 'schedule')}
-                                                                disabled={actionLoading === `delete-${period.id}`}
-                                                                className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600"
-                                                            >
-                                                                {actionLoading === `delete-${period.id}` ? (
-                                                                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-danger-100 border-t-danger-600" />
-                                                                ) : <Trash2 size={14} />}
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                            ))}
-                                            {[...snapshotsInfo.Minutelyperiod, ...snapshotsInfo.Hourlyperiod, ...snapshotsInfo.Weeklyperiod].filter(p => p.receiver !== 'NoReceiver').length === 0 && (
-                                                <tr>
-                                                    <td colSpan="5" className="px-5 py-14 text-center">
-                                                        <div className="flex flex-col items-center gap-3 text-gray-400">
-                                                            <Clock size={20} />
-                                                            <p className="text-sm font-medium">No active schedules</p>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            )}
-                                        </tbody>
-                                    </table>
-                                {periodQuery.trim() && ['Minutelyperiod', 'Hourlyperiod', 'Weeklyperiod'].flatMap(type => filterRows(snapshotsInfo[type].filter(p => p.receiver !== 'NoReceiver'), periodQuery)).length === 0 && (
-                                    <div className="py-6 text-center text-sm text-gray-500">No rows match the search</div>
-                                )}
-                                </div>
+                            <div className="flex-1 min-w-[200px]">
+                                <Dropdown
+                                    label="Source Volume"
+                                    options={filteredVolumes.map(v => ({ value: v.id, label: v.text }))}
+                                    value={selection.volume}
+                                    disabled={selection.pool === ''}
+                                    placeholder="Select Volume..."
+                                    onChange={(val) => setSelection({ ...selection, volume: val })}
+                                />
                             </div>
-
-                            <div className="mb-2 overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
-                                <div className="flex items-center justify-between gap-4 border-b border-border px-5 py-4">
-                                    <div className="flex items-center gap-3">
-                                        <span className="flex h-9 w-9 items-center justify-center rounded-md bg-success-50 text-success-600">
-                                            <Zap size={16} />
-                                        </span>
-                                        <h3 className="text-base font-semibold text-gray-800">Recent Snapshots</h3>
-                                    </div>
-                                    <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-muted px-3 py-1 text-xs font-medium text-gray-600">
-                                        <span className="h-1.5 w-1.5 rounded-full bg-success-500" />
-                                        Latest 10
-                                    </span>
-                                </div>
-
-                                <ListSearch id="searchsentQuery" value={sentQuery} onChange={setSentQuery} />
-                                <div className="overflow-x-auto">
-                                    <table className="min-w-[980px] w-full text-left">
-                                        <thead className="bg-surface-muted">
-                                            <tr className="border-b border-border">
-                                                <SortTh sortKey="time" sort={sentSort} onToggle={sentToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Timestamp</SortTh>
-                                                <SortTh sortKey="vol" sort={sentSort} onToggle={sentToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Volume / Target</SortTh>
-                                                <SortTh sortKey="alias" sort={sentSort} onToggle={sentToggle} className="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500">Alias</SortTh>
-                                                <SortTh sortKey="res" sort={sentSort} onToggle={sentToggle} className="px-2.5 py-1.5 text-center text-[11px] font-semibold uppercase tracking-wide text-gray-500">Resource</SortTh>
-                                                <th className="px-2.5 py-1.5 text-right text-[11px] font-semibold uppercase tracking-wide text-gray-500">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-border">
-                                            {sortRows(filterRows(snapshotsInfo.allsnaps.filter(s => s.partnerR && s.partnerR !== 'NoReceiver'), sentQuery), sentSort, { time: (s) => dateKey(s.date, s.time), vol: (s) => s.volume.split('_')[0], alias: (s) => s.name, res: (s) => s.partnerR }).slice(0, 10).map((snap, idx) => (
-                                                <tr key={idx} className="group transition-colors hover:bg-gray-50/60">
-                                                    <td className="px-2.5 py-1">
-                                                        <div className="flex flex-col">
-                                                            <span className="text-xs font-semibold text-gray-700">{snap.date}</span>
-                                                            <span className="text-xs text-gray-500">{snap.time}</span>
-                                                        </div>
-                                                    </td>
-                                                    <td className="px-2.5 py-1">
-                                                        <div className="flex flex-col">
-                                                            <span className="text-sm font-medium text-gray-700 truncate max-w-[150px]">{snap.volume.split('_')[0]}</span>
-                                                            <span className="text-xs font-medium uppercase tracking-wide text-brand-500">→ {snap.partnerR.split('_')[0]}</span>
-                                                        </div>
-                                                    </td>
-                                                    <td className="px-2.5 py-1">
-                                                        <span className="inline-block max-w-[150px] truncate text-sm text-brand-600">
-                                                            {snap.name.split('.')[0]}
-                                                        </span>
-                                                    </td>
-                                                    <td className="px-2.5 py-1 text-center">
-                                                        <div className="flex flex-col items-center">
-                                                            <span className="text-xs font-medium uppercase text-gray-500">{snap.used} MB</span>
-                                                            <span className="text-xs font-medium text-success-600">{snap.refcompressratio}x Ratio</span>
-                                                        </div>
-                                                    </td>
-                                                    <td className="px-2.5 py-1 text-right">
-                                                        <div className="flex items-center justify-end gap-2">
-                                                            <button
-                                                                onClick={() => handleRollback(snap.name)}
-                                                                className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-brand-100 hover:bg-brand-50 hover:text-brand-600"
-                                                                title="Rollback volume"
-                                                            >
-                                                                <RotateCcw size={14} />
-                                                            </button>
-                                                            <button
-                                                                onClick={() => handleDelete(snap.name, 'snapshot')}
-                                                                className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-danger-100 hover:bg-danger-50 hover:text-danger-600"
-                                                                title="Delete snapshot"
-                                                            >
-                                                                <Trash2 size={14} />
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                            {snapshotsInfo.allsnaps.filter(s => s.partnerR && s.partnerR !== 'NoReceiver').length === 0 && (
-                                                <tr>
-                                                    <td colSpan="5" className="px-5 py-14 text-center">
-                                                        <div className="flex flex-col items-center gap-3 text-gray-400">
-                                                            <Zap size={20} />
-                                                            <p className="text-sm font-medium">No recent snapshots</p>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            )}
-                                        </tbody>
-                                    </table>
-                                {sentQuery.trim() && filterRows(snapshotsInfo.allsnaps.filter(s => s.partnerR && s.partnerR !== 'NoReceiver'), sentQuery).length === 0 && snapshotsInfo.allsnaps.length > 0 && (
-                                    <div className="py-6 text-center text-sm text-gray-500">No rows match the search</div>
-                                )}
-                                </div>
+                            <div className="flex-1 min-w-[200px]">
+                                <Dropdown
+                                    label="Target Receiver"
+                                    options={receivers.map(r => ({ value: r.alias, label: r.alias }))}
+                                    value={selection.receiver}
+                                    placeholder={receivers.length ? 'Select Receiver...' : 'No receiver partner'}
+                                    disabled={receivers.length === 0}
+                                    onChange={(val) => setSelection({ ...selection, receiver: val })}
+                                />
                             </div>
                         </div>
+
+                        {/* Main Creation Card */}
+                        <div className="mb-8 rounded-lg border border-border bg-surface shadow-sm">
+                            <div className="flex rounded-t-lg border-b border-gray-50 bg-gray-50/30">
+                                {tabs.map(tab => (
+                                    <button
+                                        key={tab}
+                                        type="button"
+                                        onClick={() => setActiveTab(tab)}
+                                        className={`flex-1 border-b-2 py-3 text-xs font-semibold uppercase tracking-wide transition-colors ${activeTab === tab
+                                            ? 'border-brand-600 bg-surface text-brand-700'
+                                            : 'border-transparent text-gray-500 hover:text-gray-700'
+                                            }`}
+                                    >
+                                        {tab}
+                                    </button>
+                                ))}
+                            </div>
+
+                            <div className="p-8">
+                                <form onSubmit={handleCreate} className="space-y-6">
+                                    {activeTab === 'Once' && (
+                                        <div className="flex items-end gap-6">
+                                            <div className="flex-1">
+                                                <Input
+                                                    label="Snapshot Name"
+                                                    required
+                                                    disabled={!ready}
+                                                    placeholder="Manual-Send-01..."
+                                                    value={forms.Once.name}
+                                                    onChange={(e) => setForms({ ...forms, Once: { name: e.target.value } })}
+                                                />
+                                            </div>
+                                            <Button
+                                                type="submit"
+                                                disabled={!ready || forms.Once.name.length < 3}
+                                                variant="primary"
+                                                className="px-6"
+                                                onClick={handleCreate}
+                                            >
+                                                Send Now
+                                            </Button>
+                                        </div>
+                                    )}
+
+                                    {activeTab === 'Minutely' && (
+                                        <div className="flex items-end gap-6">
+                                            <div className="w-32">
+                                                <Input
+                                                    label="Every (Mins)"
+                                                    type="number"
+                                                    min="1"
+                                                    max="59"
+                                                    value={forms.Minutely.every}
+                                                    onChange={(e) => setForms({ ...forms, Minutely: { ...forms.Minutely, every: e.target.value } })}
+                                                />
+                                            </div>
+                                            <div className="w-32">
+                                                <Input
+                                                    label="Keep (Snaps)"
+                                                    type="number"
+                                                    min="1"
+                                                    max="100"
+                                                    value={forms.Minutely.keep}
+                                                    onChange={(e) => setForms({ ...forms, Minutely: { ...forms.Minutely, keep: e.target.value } })}
+                                                />
+                                            </div>
+                                            <Button type="submit" disabled={!ready} variant="primary" className="px-6" onClick={handleCreate}>
+                                                Create Schedule
+                                            </Button>
+                                        </div>
+                                    )}
+
+                                    {activeTab === 'Hourly' && (
+                                        <div className="flex items-end gap-6 flex-wrap">
+                                            <div className="w-24">
+                                                <Input
+                                                    label="At Min"
+                                                    type="number"
+                                                    min="0"
+                                                    max="59"
+                                                    value={forms.Hourly.sminute}
+                                                    onChange={(e) => setForms({ ...forms, Hourly: { ...forms.Hourly, sminute: e.target.value } })}
+                                                />
+                                            </div>
+                                            <div className="w-32">
+                                                <Input
+                                                    label="Every (Hrs)"
+                                                    type="number"
+                                                    min="1"
+                                                    max="48"
+                                                    value={forms.Hourly.every}
+                                                    onChange={(e) => setForms({ ...forms, Hourly: { ...forms.Hourly, every: e.target.value } })}
+                                                />
+                                            </div>
+                                            <div className="w-32">
+                                                <Input
+                                                    label="Keep (Snaps)"
+                                                    type="number"
+                                                    min="1"
+                                                    max="100"
+                                                    value={forms.Hourly.keep}
+                                                    onChange={(e) => setForms({ ...forms, Hourly: { ...forms.Hourly, keep: e.target.value } })}
+                                                />
+                                            </div>
+                                            <Button type="submit" disabled={!ready} variant="primary" className="px-6" onClick={handleCreate}>
+                                                Create Schedule
+                                            </Button>
+                                        </div>
+                                    )}
+
+                                    {activeTab === 'Weekly' && (
+                                        <div className="flex items-end gap-6 flex-wrap">
+                                            <div className="w-48">
+                                                <label className="mb-1.5 ml-1 block text-sm font-medium text-gray-700">At Time</label>
+                                                <CustomTimePicker
+                                                    value={forms.Weekly.stime}
+                                                    disabled={!ready}
+                                                    onChange={(val) => setForms({ ...forms, Weekly: { ...forms.Weekly, stime: val } })}
+                                                />
+                                            </div>
+                                            <div className="w-48">
+                                                <Dropdown
+                                                    label="On Day"
+                                                    options={['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map(day => ({ value: day, label: day }))}
+                                                    value={forms.Weekly.sday}
+                                                    disabled={!ready}
+                                                    onChange={(val) => setForms({ ...forms, Weekly: { ...forms.Weekly, sday: val } })}
+                                                />
+                                            </div>
+                                            <div className="w-32">
+                                                <Input
+                                                    label="Keep"
+                                                    type="number"
+                                                    min="1"
+                                                    max="100"
+                                                    value={forms.Weekly.keep}
+                                                    onChange={(e) => setForms({ ...forms, Weekly: { ...forms.Weekly, keep: e.target.value } })}
+                                                />
+                                            </div>
+                                            <Button type="submit" disabled={!ready} variant="primary" className="px-6" onClick={handleCreate}>
+                                                Create Schedule
+                                            </Button>
+                                        </div>
+                                    )}
+                                </form>
+                            </div>
+                        </div>
+
+                        {/* List Area: replication items only */}
+                        <div className="space-y-8">
+                            {activeTab === 'Once' ? (
+                                <SnapshotList
+                                    snapshots={snapshots.Once}
+                                    onRollback={handleRollback}
+                                    onDelete={handleSnapshotDelete}
+                                    title="Manual Replication Snapshots"
+                                    subtitle="On-demand sends to a receiver"
+                                    showReceiver
+                                />
+                            ) : (
+                                <>
+                                    <SnapshotPeriodsList
+                                        periods={periods[`${activeTab}period`] || []}
+                                        onDelete={handlePeriodDelete}
+                                        type={activeTab}
+                                        title={`${activeTab} Replication Schedules`}
+                                        subtitle="Active sender schedules"
+                                        showReceiver
+                                    />
+                                    <SnapshotList
+                                        snapshots={snapshots[activeTab]}
+                                        onRollback={handleRollback}
+                                        onDelete={handleSnapshotDelete}
+                                        title={`${activeTab} Replicated Snapshots`}
+                                        subtitle={`Scheduled ${activeTab.toLowerCase()} sends`}
+                                        showReceiver
+                                    />
+                                </>
+                            )}
+
+                            <SnapshotList
+                                snapshots={snapshots.allsnaps}
+                                onRollback={handleRollback}
+                                onDelete={handleSnapshotDelete}
+                                title="Replication Snapshot History"
+                                subtitle="Every snapshot sent to a receiver"
+                                showReceiver
+                            />
+                        </div>
+
                     </div>
                 </div>
     );

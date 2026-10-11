@@ -1,10 +1,23 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { fetchPartnerList, addPartner, deletePartner } from './api/partners';
+import { fetchPartnerList, addPartner, deletePartner, fetchFreePort } from './api/partners';
 import Button from './components/Common/Button';
 import Input from './components/Common/Input';
 import Dropdown from './components/Common/Dropdown';
-import { AlertTriangle, CheckCircle2, Globe, HandHelping, Hash, Key, PlusCircle, Trash2, Users } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Globe, HandHelping, Hash, Key, KeyRound, PlusCircle, Shuffle, Trash2, Users } from 'lucide-react';
 import { ListSearch, filterRows, SortTh, useSort, sortRows, dateKey } from './components/Common/ListSearch';
+
+// Replication ports live in this window; the port field is a counter inside it.
+const PORT_MIN = 3001;
+const PORT_MAX = 8000;
+
+// A random access key for a Sender partner. crypto.getRandomValues, not
+// Math.random: it is a shared secret. 32 characters from a 62-letter alphabet.
+const makeAccessKey = () => {
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const bytes = new Uint8Array(32);
+    window.crypto.getRandomValues(bytes);
+    return Array.from(bytes, (b) => alphabet[b % alphabet.length]).join('');
+};
 
 const QPartners = () => {
     const { sort: partnerSort, toggle: partnerToggle } = useSort();
@@ -19,8 +32,11 @@ const QPartners = () => {
         address: '',
         alias: '',
         ppass: '',
-        port: '22'
+        port: String(PORT_MIN)
     });
+    const [portError, setPortError] = useState('');
+    const [portBusy, setPortBusy] = useState(false);
+    const [keyShown, setKeyShown] = useState(false);
 
     const loadPartners = useCallback(async (isInitial = false) => {
         try {
@@ -42,14 +58,45 @@ const QPartners = () => {
     }, [loadPartners]);
 
     const handleInputChange = (id, value) => {
+        if (id === 'port') setPortError('');
+        if (id === 'type' && value !== 'Sender') setKeyShown(false);
         setFormData(prev => ({ ...prev, [id]: value }));
     };
+
+    const portNumber = Number(formData.port);
+    const portValid = Number.isInteger(portNumber) && portNumber >= PORT_MIN && portNumber <= PORT_MAX;
 
     const canSubmit = (
         (formData.address.length > 6 || formData.alias.length > 2) &&
         formData.alias.length > 2 &&
-        formData.ppass.length > 2
+        formData.ppass.length > 2 &&
+        portValid
     );
+
+    // Ask the backend for a free port in PORT_MIN..PORT_MAX (it picks at random
+    // and checks that nothing listens on it). If the call is not there yet, fall
+    // back to a local pick and say so: the backend still checks at authorize time.
+    const handlePickPort = async () => {
+        setPortBusy(true);
+        setPortError('');
+        try {
+            const res = await fetchFreePort();
+            const port = Number(res?.data?.port ?? res?.data?.freeport ?? res?.data);
+            if (!Number.isInteger(port) || port < PORT_MIN || port > PORT_MAX) throw new Error('bad port reply');
+            handleInputChange('port', String(port));
+        } catch (err) {
+            const local = PORT_MIN + Math.floor(Math.random() * (PORT_MAX - PORT_MIN + 1));
+            handleInputChange('port', String(local));
+            setMessage({ text: `Suggested port ${local} (not checked by the node yet; it is verified when you authorize).`, type: 'error' });
+        } finally {
+            setPortBusy(false);
+        }
+    };
+
+    const handleGenerateKey = () => {
+        handleInputChange('ppass', makeAccessKey());
+        setKeyShown(true);
+    };
 
     const handleAddPartner = async (e) => {
         if (e) e.preventDefault();
@@ -72,12 +119,22 @@ const QPartners = () => {
                 address: '',
                 alias: '',
                 ppass: '',
-                port: '22'
+                port: String(PORT_MIN)
             });
+            setKeyShown(false);
             loadPartners();
         } catch (err) {
             console.error("Add failed", err);
-            setMessage({ text: 'Failed to add partner', type: 'error' });
+            // The backend answers 'select another port' when the port is taken.
+            const reply = typeof err?.response?.data === 'string'
+                ? err.response.data
+                : (err?.response?.data?.message || err?.response?.data?.response || '');
+            if (/another port/i.test(reply)) {
+                setPortError('Select another port');
+                setMessage({ text: 'Select another port', type: 'error' });
+            } else {
+                setMessage({ text: 'Failed to add partner', type: 'error' });
+            }
         } finally {
             setActionLoading(null);
         }
@@ -134,12 +191,14 @@ const QPartners = () => {
                                 </div>
 
                                 <form onSubmit={handleAddPartner} className="space-y-5">
+                                    {/* Compact fields: each one is as wide as the longest thing it holds. */}
+                                    <div className="flex flex-wrap items-end gap-x-5 gap-y-4">
                                         <Dropdown
                                             label="Partner Type"
+                                            className="w-36"
                                             options={[
                                                 { value: 'Sender', label: 'Sender' },
-                                                { value: 'Receiver', label: 'Receiver' },
-                                                { value: 'Dual way', label: 'Dual way' }
+                                                { value: 'Receiver', label: 'Receiver' }
                                             ]}
                                             value={formData.type}
                                             onChange={(val) => handleInputChange('type', val)}
@@ -148,7 +207,8 @@ const QPartners = () => {
                                         <Input
                                             label="Partner Alias"
                                             id="alias"
-                                            placeholder="e.g. branch_office"
+                                            className="w-60"
+                                            placeholder="e.g. node_1_flat_dr_dls"
                                             value={formData.alias}
                                             onChange={(e) => handleInputChange('alias', e.target.value)}
                                             icon={<Users size={16} />}
@@ -158,43 +218,77 @@ const QPartners = () => {
                                             label="Network Address (IP/DNS)"
                                             id="address"
                                             kind="hostip"
+                                            className="w-80"
                                             placeholder="xxx.xxx.xxx.xxx"
                                             value={formData.address}
                                             onChange={(e) => handleInputChange('address', e.target.value)}
                                             icon={<Globe size={16} />}
                                         />
 
-                                        <Input
-                                            label="Port"
-                                            id="port"
-                                            type="number"
-                                            placeholder="22"
-                                            value={formData.port}
-                                            onChange={(e) => handleInputChange('port', e.target.value)}
-                                            icon={<Hash size={16} />}
-                                        />
+                                        <div className="flex items-end gap-2">
+                                            <Input
+                                                label="Port"
+                                                id="port"
+                                                type="number"
+                                                min={PORT_MIN}
+                                                max={PORT_MAX}
+                                                step={1}
+                                                className="w-32"
+                                                placeholder={String(PORT_MIN)}
+                                                value={formData.port}
+                                                error={portError || (formData.port !== '' && !portValid ? `${PORT_MIN}-${PORT_MAX}` : '')}
+                                                onChange={(e) => handleInputChange('port', e.target.value)}
+                                                icon={<Hash size={16} />}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={handlePickPort}
+                                                disabled={portBusy}
+                                                title={`Pick a free port (${PORT_MIN}-${PORT_MAX})`}
+                                                aria-label="Pick a free port"
+                                                className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-border-strong hover:text-brand-600 disabled:cursor-not-allowed disabled:opacity-50"
+                                            >
+                                                <Shuffle size={16} />
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-end gap-2">
                                         <Input
                                             label="Access Key"
                                             id="ppass"
-                                            type="password"
+                                            type={keyShown ? 'text' : 'password'}
+                                            className="w-full max-w-lg"
                                             placeholder="••••••••"
                                             value={formData.ppass}
                                             onChange={(e) => handleInputChange('ppass', e.target.value)}
                                             icon={<Key size={16} />}
                                         />
-
-                                        <div className="pt-4 border-t border-gray-50">
-                                            <Button
-                                                type="submit"
-                                                className="w-full sm:w-auto"
-                                                disabled={!canSubmit || actionLoading === 'add'}
-                                                icon={<PlusCircle size={16} />}
-                                                onClick={handleAddPartner}
+                                        {formData.type === 'Sender' && (
+                                            <button
+                                                type="button"
+                                                onClick={handleGenerateKey}
+                                                title="Generate a random access key"
+                                                aria-label="Generate a random access key"
+                                                className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md border border-border bg-surface text-gray-500 transition-colors hover:border-border-strong hover:text-brand-600"
                                             >
-                                                {actionLoading === 'add' ? 'Establishing Relationship...' : 'Authorize Partner'}
-                                            </Button>
-                                        </div>
-                                    </form>
+                                                <KeyRound size={16} />
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    <div className="pt-4 border-t border-gray-50">
+                                        <Button
+                                            type="submit"
+                                            className="w-full sm:w-auto"
+                                            disabled={!canSubmit || actionLoading === 'add'}
+                                            icon={<PlusCircle size={16} />}
+                                            onClick={handleAddPartner}
+                                        >
+                                            {actionLoading === 'add' ? 'Establishing Relationship...' : 'Authorize Partner'}
+                                        </Button>
+                                    </div>
+                                </form>
                             </div>
 
                             <div className="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
@@ -243,9 +337,8 @@ const QPartners = () => {
                                                             </div>
                                                         </td>
                                                         <td className="px-2.5 py-1 text-center">
-                                                            <span className={`inline-flex rounded-sm border px-3 py-1 text-xs font-semibold uppercase tracking-wide ${partner.type === 'Dual way' ? 'border-brand-100 bg-brand-50 text-brand-700' :
-                                                                partner.type === 'Sender' ? 'border-info-100 bg-info-50 text-info-600' :
-                                                                    'border-success-100 bg-success-50 text-success-600'
+                                                            <span className={`inline-flex rounded-sm border px-3 py-1 text-xs font-semibold uppercase tracking-wide ${partner.type === 'Sender' ? 'border-info-100 bg-info-50 text-info-600' :
+                                                                'border-success-100 bg-success-50 text-success-600'
                                                                 }`}>
                                                                 {partner.type}
                                                             </span>
