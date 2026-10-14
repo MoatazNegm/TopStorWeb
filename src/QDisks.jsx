@@ -19,7 +19,7 @@ const QDisks = () => {
     const [creatingSize, setCreatingSize] = useState(null);
     const [includeCache, setIncludeCache] = useState(false);
     const [selectedCacheSpares, setSelectedCacheSpares] = useState([]);
-    const [createOpen, setCreateOpen] = useState(null); // null = default (open)
+    const [createOpen, setCreateOpen] = useState(null); // null = default (open only while no pool exists)
 
     const loadData = useCallback(async () => {
         try {
@@ -136,7 +136,8 @@ const QDisks = () => {
         );
     };
 
-    const isCreateOpen = createOpen === null ? true : createOpen; // New Pool starts open, pools start closed
+    const poolCount = Object.keys(dgsData.pools).filter(n => !n.includes('pree')).length;
+    const isCreateOpen = createOpen === null ? poolCount === 0 : createOpen;
 
     const availableDiskIds = dgsData.raids.free?.disks || [];
     const availableDisksByNode = availableDiskIds.reduce((groups, diskId) => {

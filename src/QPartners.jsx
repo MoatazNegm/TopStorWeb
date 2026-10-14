@@ -3,7 +3,7 @@ import { fetchPartnerList, addPartner, deletePartner, fetchFreePort } from './ap
 import Button from './components/Common/Button';
 import Input from './components/Common/Input';
 import Dropdown from './components/Common/Dropdown';
-import { AlertTriangle, CheckCircle2, Globe, HandHelping, Hash, Key, KeyRound, PlusCircle, Shuffle, Trash2, Users } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Globe, HandHelping, Key, KeyRound, PlusCircle, Shuffle, Trash2, Users } from 'lucide-react';
 import { ListSearch, filterRows, SortTh, useSort, sortRows, dateKey } from './components/Common/ListSearch';
 
 // Replication ports live in this window; the port field is a counter inside it.
@@ -225,7 +225,7 @@ const QPartners = () => {
                                             label="Network Address (IP/DNS)"
                                             id="address"
                                             kind="hostip"
-                                            className="w-80"
+                                            className="w-40"
                                             placeholder="xxx.xxx.xxx.xxx"
                                             value={formData.address}
                                             onChange={(e) => handleInputChange('address', e.target.value)}
@@ -240,12 +240,11 @@ const QPartners = () => {
                                                 min={PORT_MIN}
                                                 max={PORT_MAX}
                                                 step={1}
-                                                className="w-32"
+                                                className="w-16 [&_input]:[appearance:textfield] [&_input::-webkit-inner-spin-button]:appearance-none"
                                                 placeholder={String(PORT_MIN)}
                                                 value={formData.port}
                                                 error={portError || (formData.port !== '' && !portValid ? `${PORT_MIN}-${PORT_MAX}` : '')}
                                                 onChange={(e) => handleInputChange('port', e.target.value)}
-                                                icon={<Hash size={16} />}
                                             />
                                             <button
                                                 type="button"
