@@ -4,7 +4,7 @@
 
 export const USER_NAME_MIN = 3;
 export const USER_NAME_MAX = 32;
-export const USER_PASS_MIN = 4;
+export const USER_PASS_MIN = 3;
 export const USER_PASS_MAX = 128;
 
 const RESERVED = new Set([
@@ -31,7 +31,7 @@ export const validateUserName = (name, existingNames = []) => {
 export const validatePassword = (password) => {
     const value = password ?? '';
     if (value === '') return 'Enter a password.';
-    if (value.length < USER_PASS_MIN) return `The password needs at least ${USER_PASS_MIN} characters.`;
+    if (value.length < USER_PASS_MIN) return `The password must be ${USER_PASS_MIN} characters or more.`;
     if (value.length > USER_PASS_MAX) return `The password can have ${USER_PASS_MAX} characters at most.`;
     if (/\s/.test(value)) return 'The password must not contain blanks.';
     if (/['"`\\*?[\]]/.test(value)) return 'The password must not contain quotes, back slashes, * ? [ or ].';
