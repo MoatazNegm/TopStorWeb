@@ -37,6 +37,7 @@ const AddUserForm = ({ pools, groups, users = [], onAdd }) => {
     // and nothing is sent while a rule is broken.
     const nameError = validateUserName(formData.User, users.map((user) => user.name));
     const passError = validatePassword(formData.UserPass);
+    const addressError = ipError(formData.HomeAddress);
     const canSubmit = !nameError && !passError && !addressError;
 
     const handleSubmit = (e) => {
@@ -54,8 +55,6 @@ const AddUserForm = ({ pools, groups, users = [], onAdd }) => {
         };
         onAdd(data);
     };
-
-    const addressError = ipError(formData.HomeAddress);
 
     return (
         <Panel
