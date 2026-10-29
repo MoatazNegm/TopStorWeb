@@ -17,7 +17,7 @@ import Panel from './Common/Panel';
 import { validateUserName, validatePassword } from '../utils/userRules';
 import { ipError } from './Common/NetFields';
 
-const AddUserForm = ({ pools, groups, users = [], onAdd }) => {
+const AddUserForm = ({ pools, groups, users = [], usedAddresses = [], onAdd }) => {
     const [formData, setFormData] = useState({
         Tenant: 'Cluster',
         User: '',
@@ -37,7 +37,13 @@ const AddUserForm = ({ pools, groups, users = [], onAdd }) => {
     // and nothing is sent while a rule is broken.
     const nameError = validateUserName(formData.User, users.map((user) => user.name));
     const passError = validatePassword(formData.UserPass);
-    const addressError = ipError(formData.HomeAddress);
+    // QSD5.337: an address that a node, the cluster or another home user already holds is refused here with the reason
+    // (the API refuses it too: IPadduqfa).  Only checked while a home pool is chosen, as only then the address is used.
+    const typedAddress = String(formData.HomeAddress || '').trim();
+    const addressError = ipError(formData.HomeAddress)
+        || (formData.UserVol !== 'NoHome' && typedAddress && usedAddresses.includes(typedAddress)
+            ? `The IP address ${typedAddress} is already in use by a node, the cluster or another user.`
+            : '');
     const canSubmit = !nameError && !passError && !addressError;
 
     const handleSubmit = (e) => {
