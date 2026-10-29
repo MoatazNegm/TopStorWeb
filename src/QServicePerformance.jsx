@@ -437,7 +437,7 @@ const QServicePerformance = () => {
                                     ))}
                                 </div>
                             </div>
-                            <div className="flex items-center gap-3">
+                            <div className="flex flex-wrap items-center gap-3">
                                 <PartnersTorus total={partnerStats.total} ready={partnerStats.ready} />
                                 <a
                                     href={`https://${window.location.hostname}:4000`}
@@ -571,8 +571,8 @@ const QServicePerformance = () => {
                                 />
                             </div>
 
-                            <div className="grid grid-cols-1 gap-3 xl:grid-cols-3">
-                                <div className="overflow-x-auto rounded-lg border border-border bg-surface p-3 xl:col-span-2" id="perfnodes">
+                            <div className="grid grid-cols-[minmax(0,1fr)] gap-3 xl:grid-cols-3">
+                                <div className="min-w-0 overflow-x-auto rounded-lg border border-border bg-surface p-3 xl:col-span-2" id="perfnodes">
                                     <h4 className="mb-2 text-sm font-semibold text-gray-800">Nodes</h4>
                                     <table className="w-full text-left text-sm">
                                         <thead>

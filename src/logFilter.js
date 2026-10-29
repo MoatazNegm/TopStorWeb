@@ -19,7 +19,9 @@ export const onLogSev = (fn) => {
 
 // severity of a log row: importance (mock and backend rows), else the type column
 export const logSeverity = (l) => {
-    const s = String(l.importance || l.type || '').toLowerCase();
+    const imp = String(l.importance ?? '').toLowerCase();
+    // importance may be numeric ('1'/'2'); then the severity is in the type column
+    const s = imp && !/^\d+$/.test(imp) ? imp : String(l.type || '').toLowerCase();
     return s === 'error' || s === 'warning' ? s : 'info';
 };
 

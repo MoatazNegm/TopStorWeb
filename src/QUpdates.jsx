@@ -181,7 +181,7 @@ const QUpdates = () => {
                                         <p className="text-sm text-gray-500">Download updates from remote or local sources</p>
                                     </div>
                                 </div>
-                                <div className="inline-flex gap-2 rounded-full border border-border bg-surface-muted p-1">
+                                <div className="inline-flex max-w-full gap-2 overflow-x-auto rounded-full border border-border bg-surface-muted p-1">
                                     <button
                                         type="button"
                                         onClick={() => setDownloadMethod('url')}
