@@ -81,6 +81,8 @@ curl -sk "https://NODE:8443/api/v1/partners/partnerlist?token=$T"
 | `/volumes/snapshots/create` | `pool`, `volume`, `name`, `snapsel`, `receiver`, `owner` | create a snapshot / schedule |
 | `/volumes/snapshots/snaprollback`, `…/snapshotdel`, `…/perioddelete` | `name`, `owner` | roll back / delete / delete a schedule |
 
+iSCSI CHAP (QSD5.344): give `chapuser` and `chappas` together (user 1-64 of letters, digits, `. _ : @ -`; secret 12-64 of letters, digits, `. _ : + = , ~ -`, no blanks) or leave both out for no CHAP; anything else is refused with `invalid character in parameter: ...` or `chapuser and chappas must be given together` (log `ISCSIfa02`). CHAP is set on each initiator ACL of the LUN and the target then asks for it (one target per address: it asks while any initiator ACL of that address has CHAP). `volumes/config` without the two fields keeps the stored CHAP; both sent empty turns CHAP off. The secret is never shown again: answers and lists show `****`.
+
 ## 6. Users, groups, tenants
 
 | Call | Params | Purpose |
