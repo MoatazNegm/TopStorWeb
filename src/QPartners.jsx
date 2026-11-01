@@ -120,7 +120,14 @@ const QPartners = () => {
                 setMessage({ text: 'Select another port', type: 'error' });
                 return;
             }
-            setMessage({ text: 'Partner added successfully', type: 'success' });
+            // QSD5.345: a partner of this alias and type exists already (it used to be overwritten silently).
+            if (/alias already exists/i.test(String(body))) {
+                setMessage({ text: `A ${formData.type} partner named ${formData.alias} exists already: choose another alias or delete it first`, type: 'error' });
+                return;
+            }
+            // The add runs in the background: the partner is listed (the list reloads every 5 s) once its address answers as a TopStor cluster;
+            // otherwise the notifications show 'Failed adding partner' and nothing is stored.
+            setMessage({ text: 'Partner add sent: it is listed once the partner answers (see the notifications)', type: 'success' });
             setFormData({
                 type: 'Sender',
                 address: '',
@@ -139,6 +146,8 @@ const QPartners = () => {
             if (/another port/i.test(reply)) {
                 setPortError('Select another port');
                 setMessage({ text: 'Select another port', type: 'error' });
+            } else if (/alias already exists/i.test(reply)) {
+                setMessage({ text: `A ${formData.type} partner named ${formData.alias} exists already: choose another alias or delete it first`, type: 'error' });
             } else {
                 setMessage({ text: 'Failed to add partner', type: 'error' });
             }
