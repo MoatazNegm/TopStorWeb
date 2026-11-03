@@ -3,6 +3,7 @@ import { AlertTriangle, Database, Info } from 'lucide-react';
 import { fetchDgsInfo } from '../../api/pools';
 import { fetchAllVolumesInfo } from '../../api/volumes';
 import { fetchAllHostsInfo } from '../../api/nodes';
+import { bareIp } from './ipCheck';
 
 /*
  * Capacity display shared by the CIFS, NFS and Home pages.
@@ -133,10 +134,11 @@ export const useCapacity = (intervalMs = 10000) => {
             const hosts = [];
             const all = h.data?.all || {};
             Object.entries(all).forEach(([name, info]) => {
-                if (info?.ipaddr) hosts.push({ name, ip: info.ipaddr });
-                if (info?.cluster) hosts.push({ name: 'cluster', ip: info.cluster });
+                // QSD5.351: without the /prefix ("10.11.11.200/24" was never equal to a typed address)
+                if (info?.ipaddr) hosts.push({ name, ip: bareIp(info.ipaddr) });
+                if (info?.cluster) hosts.push({ name: 'cluster', ip: bareIp(info.cluster) });
             });
-            (h.data?.active || []).forEach((a) => { if (a?.ip) hosts.push({ name: a.name, ip: a.ip }); });
+            (h.data?.active || []).forEach((a) => { if (a?.ip) hosts.push({ name: a.name, ip: bareIp(a.ip) }); });
             setState({ pools: p.data?.pools || {}, volumes: v.data?.allvolumes || [], hosts });
         } catch (e) { /* the page keeps what it had */ }
     }, []);

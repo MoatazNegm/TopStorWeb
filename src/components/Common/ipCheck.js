@@ -13,15 +13,19 @@ export const volumeContext = (vol) => {
     return { kind: prot, domain: '' };
 };
 
+// QSD5.351: hosts/allinfo gives the cluster address with its prefix ("10.11.11.200/24"): every address is compared
+// without the /prefix, so the cluster address (and any address stored with a prefix) is flagged too.
+export const bareIp = (v) => String(v || '').trim().split('/')[0].trim();
+
 // ctx: { kind: 'CIFS' | 'NFS' | 'HOME' | 'ISCSI', domain: '' for a workgroup }
 export const ipCollision = (ip, ctx, { hosts = [], volumes = [] }) => {
-    const value = String(ip || '').trim();
+    const value = bareIp(ip);
     if (!value) return '';
-    const node = hosts.find((h) => h.ip === value);
+    const node = hosts.find((h) => bareIp(h.ip) === value);
     if (node) return node.name === 'cluster' ? 'This is the cluster address' : `This is the address of node ${node.name}`;
     const domain = String(ctx.domain || '').trim().toLowerCase();
     for (const vol of volumes) {
-        if (vol.ipaddress !== value) continue;
+        if (bareIp(vol.ipaddress) !== value) continue;
         const other = volumeContext(vol);
         const name = String(vol.name || '').split('_')[0];
         if (ctx.kind === 'CIFS' && other.kind === 'CIFS') {

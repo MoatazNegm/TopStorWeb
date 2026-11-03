@@ -39,10 +39,11 @@ const AddUserForm = ({ pools, groups, users = [], usedAddresses = [], onAdd }) =
     const passError = validatePassword(formData.UserPass);
     // QSD5.337: an address that a node, the cluster or another home user already holds is refused here with the reason
     // (the API refuses it too: IPadduqfa).  Only checked while a home pool is chosen, as only then the address is used.
-    const typedAddress = String(formData.HomeAddress || '').trim();
+    // QSD5.351: compared without a /prefix; usedAddresses also holds the cluster address and the volume addresses
+    const typedAddress = String(formData.HomeAddress || '').trim().split('/')[0];
     const addressError = ipError(formData.HomeAddress)
-        || (formData.UserVol !== 'NoHome' && typedAddress && usedAddresses.includes(typedAddress)
-            ? `The IP address ${typedAddress} is already in use by a node, the cluster or another user.`
+        || (formData.UserVol !== 'NoHome' && typedAddress && usedAddresses.map((a) => String(a).split('/')[0]).includes(typedAddress)
+            ? `The IP address ${typedAddress} is already in use by a node, the cluster, a volume or another user.`
             : '');
     const canSubmit = !nameError && !passError && !addressError;
 

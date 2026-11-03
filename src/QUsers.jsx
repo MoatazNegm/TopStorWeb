@@ -3,7 +3,9 @@ import { AlertCircle, KeyRound, X } from 'lucide-react';
 import { fetchUserList, fetchGroupList, addUser, deleteUser, updateUserGroups, changePassword, changeUserHome } from './api/users';
 import { fetchPoolsInfo } from './api/pools';
 import { fetchAllHostsInfo } from './api/nodes';
+import { fetchAllVolumesInfo } from './api/volumes';
 import AddUserForm from './components/AddUserForm';
+import { bareIp } from './components/Common/ipCheck';
 import UserList from './components/UserList';
 
 const QUsers = () => {
@@ -40,18 +42,27 @@ const QUsers = () => {
             if (groupRes.data?.results) setGroups(groupRes.data.results.filter((g) => g.text !== 'Everyone'));
             if (poolRes.data?.results) setPools(poolRes.data.results);
 
-            // addresses of the nodes and the cluster, for the Add User form (at most once a minute; a failure keeps the old list)
-            if (Date.now() - hostsAt.current > 60000) {
+            // addresses of the nodes, the cluster and the volumes, for the Add User form (at most every 15 s; a failure
+            // keeps the old list).  QSD5.351: hosts/allinfo gives the cluster as "10.11.11.200/24", the walk only took
+            // bare addresses, so the cluster address was missing; the volume addresses (NFS, CIFS, iSCSI) were not read.
+            if (Date.now() - hostsAt.current > 15000) {
                 hostsAt.current = Date.now();
                 try {
-                    const hosts = await fetchAllHostsInfo();
+                    const [hosts, vols] = await Promise.all([fetchAllHostsInfo(), fetchAllVolumesInfo().catch(() => ({ data: {} }))]);
                     const found = new Set();
                     const walk = (v) => {
-                        if (typeof v === 'string') { if (/^\d{1,3}(\.\d{1,3}){3}$/.test(v.trim())) found.add(v.trim()); }
+                        if (typeof v === 'string') {
+                            const a = v.trim().replace(/\/\d{1,2}$/, '');
+                            if (/^\d{1,3}(\.\d{1,3}){3}$/.test(a)) found.add(a);
+                        }
                         else if (Array.isArray(v)) v.forEach(walk);
                         else if (v && typeof v === 'object') Object.values(v).forEach(walk);
                     };
                     walk(hosts.data);
+                    (vols.data?.allvolumes || []).forEach((vol) => {
+                        const a = bareIp(vol?.ipaddress);
+                        if (/^\d{1,3}(\.\d{1,3}){3}$/.test(a) && a !== '256.256.256.256') found.add(a);
+                    });
                     setHostAddresses([...found]);
                 } catch (e) { /* keep the addresses already known */ }
             }
@@ -242,7 +253,7 @@ const QUsers = () => {
                         ) : (
                             <>
                                 <AddUserForm pools={pools} groups={groups} users={users} onAdd={handleAddUser}
-                                    usedAddresses={[...hostAddresses, ...users.map((u) => u.HomeAddress || u.ipaddress || u.address || '').filter((a) => /^\d/.test(a))]} />
+                                    usedAddresses={[...hostAddresses, ...users.map((u) => bareIp(u.HomeAddress || u.ipaddress || u.address || '')).filter((a) => /^\d/.test(a))]} />
                                 <UserList
                                     users={users.map((user) => (localEdits[user.name] ? { ...user, ...localEdits[user.name].fields } : user))}
                                     groups={groups}
