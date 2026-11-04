@@ -113,7 +113,7 @@ const QUsers = () => {
     // Submit of the users list: one request per changed user, one after the other.
     //   deletion         -> the delete call (the other changes of that user are dropped)
     //   groups           -> the group-change call
-    //   address / quota  -> changeUserHome (api/v1/users/userhomechange, backend added separately); only users with a home folder
+    //   address / quota  -> changeUserHome (api/v1/users/userhomechange, QSD5.352); only users with a home folder
     const handleSubmitChanges = async (pending) => {
         const names = Object.keys(pending);
         if (names.length === 0) return true;
@@ -139,7 +139,9 @@ const QUsers = () => {
                     const fields = {};
                     if (change.address !== undefined) { fields.HomeAddress = change.address; fields.HomeSubnet = change.subnet; }
                     if (change.quota !== undefined) fields.Volsize = change.quota;
-                    await changeUserHome(name, fields);
+                    const res = await changeUserHome(name, fields);
+                    // QSD5.352: the backend answers a refusal (no home, size, address in use, privilege) in 'error'
+                    if (res?.data?.error) throw new Error(res.data.error);
                     handleUpdateUser(name, fields); // shown at once; the next load of the list brings the server's value
                     applied = true;
                 }

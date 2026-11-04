@@ -35,7 +35,7 @@ export const updateUserPrivileges = (username, auths) => {
 };
 
 export const changeUserHome = (name, fields) => {
-    // Quota and address restriction of a user's home folder. The backend route is added in a separate flow; the contract:
+    // Quota and address restriction of a user's home folder (backend route since QSD5.352, fapi.py userhomechange):
     //   POST api/v1/users/userhomechange  { name, tenant, Volsize?: '<GB>', HomeAddress?: 'a.b.c.d', HomeSubnet?: '8|16|24|32' }
     // Only users that have a home folder (a pool other than NoHome) are sent.
     return api.post('api/v1/users/userhomechange', { name, tenant: 'Cluster', ...fields });

@@ -28,6 +28,22 @@ export const validateUserName = (name, existingNames = []) => {
     return '';
 };
 
+// QSD5.352 (QC 708): the rule for a new group, same as TopStor/uservalid.py check_new_group_name (the user name rule)
+export const validateGroupName = (name, existingNames = []) => {
+    const value = name ?? '';
+    if (value === '') return 'Enter a group name.';
+    if (value.length < USER_NAME_MIN) return `The group name needs at least ${USER_NAME_MIN} characters.`;
+    if (value.length > USER_NAME_MAX) return `The group name can have ${USER_NAME_MAX} characters at most.`;
+    if (!/^[A-Za-z][A-Za-z0-9-]*$/.test(value)) {
+        return 'Use letters, digits and - only, starting with a letter (no blanks, no underscore).';
+    }
+    if (RESERVED.has(value.toLowerCase()) || value.toLowerCase() === 'system' || value.toLowerCase().startsWith('systemd-')) {
+        return 'This name is reserved for the system.';
+    }
+    if (existingNames.includes(value)) return 'A group with this name already exists.';
+    return '';
+};
+
 export const validatePassword = (password) => {
     const value = password ?? '';
     if (value === '') return 'Enter a password.';
