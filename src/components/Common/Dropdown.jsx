@@ -70,8 +70,19 @@ const Dropdown = ({ options, value, onChange, placeholder, disabled, className =
                 </label>
             )}
             <div className="relative">
+                {/* keyboard: reachable with Tab like the native fields around it; Enter/Space open or close it, Escape closes it */}
                 <div
                     onClick={() => !disabled && setIsOpen(!isOpen)}
+                    tabIndex={disabled ? -1 : 0}
+                    role="button"
+                    aria-haspopup="listbox"
+                    aria-expanded={isOpen}
+                    aria-disabled={disabled || undefined}
+                    onKeyDown={(event) => {
+                        if (disabled || event.target !== event.currentTarget) return;
+                        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setIsOpen(!isOpen); }
+                        else if (event.key === 'Escape' && isOpen) { event.preventDefault(); setIsOpen(false); }
+                    }}
                     className={`flex ${compact ? 'min-h-7 px-2 py-0.5' : 'min-h-10 px-3 py-2'} w-full min-w-0 items-center justify-between gap-2 rounded-md border bg-surface text-sm text-gray-700 transition-colors ${
                         isOpen ? 'border-brand-500 ring-4 ring-brand-100' : 'border-border hover:border-border-strong'
                     } ${disabled ? 'cursor-not-allowed bg-gray-50 text-gray-400' : 'cursor-pointer'}`}
@@ -127,6 +138,13 @@ const Dropdown = ({ options, value, onChange, placeholder, disabled, className =
                                     <div
                                         key={opt.value}
                                         onClick={() => handleSelect(opt.value)}
+                                        tabIndex={0}
+                                        role="option"
+                                        aria-selected={isSelected(opt.value)}
+                                        onKeyDown={(event) => {
+                                            if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); handleSelect(opt.value); }
+                                            else if (event.key === 'Escape') { event.preventDefault(); setIsOpen(false); }
+                                        }}
                                         className={`flex cursor-pointer items-center justify-between px-4 ${compact ? 'py-1.5' : 'py-2.5'} text-sm transition-colors ${
                                             isSelected(opt.value)
                                                 ? 'bg-brand-50 text-brand-700'
