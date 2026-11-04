@@ -51,7 +51,7 @@ curl -sk "https://NODE:8443/api/v1/partners/partnerlist?token=$T"
 | `/software/versions` | – | available software versions |
 | `/software/setversion`, `/software/apply` | `version` | select / apply a version (needs the `Uploadch` privilege, else `{"error": "noprivilege"}`) |
 | `/software/update` | `source`, `version`, `location`, `username`, `password` | online update; replies `{"data": "<command>"}` (needs `Uploadch`) |
-| `/software/localFileUpdate` | multipart file upload | update from an uploaded file (needs `Uploadch`) |
+| `/software/localFileUpdate` | multipart file upload | update from an uploaded file (needs `Uploadch`; saved under its base name in `/TopStordata`, a name with nothing left gives `{"error": "badfilename"}`) |
 
 ## 4. Pools and disks
 
@@ -94,7 +94,7 @@ iSCSI CHAP (QSD5.344): give `chapuser` and `chappas` together (user 1-64 of lett
 | `/users/userdel` | `name`, `tenant` | delete |
 | `GET /users/userauths` | `username` | privileges of a user |
 | `/users/usersauth` | `tochange`, `auths` | set a user's privileges |
-| `/users/uploadUsers` | multipart file | bulk import |
+| `/users/uploadUsers` | multipart file | bulk import (needs the `Box_Users` privilege, else `{"error": "noprivilege"}`; saved under its base name in `/TopStordata`, else `{"error": "badfilename"}`) |
 | `GET /groups/grouplist`, `GET /groups/userlist` | – | groups / users with membership |
 | `/groups/UnixAddgroup` | `name`, `users` | add group |
 | `/groups/groupchange` | `name`, `users` | change members |
