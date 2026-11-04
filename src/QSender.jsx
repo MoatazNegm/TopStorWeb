@@ -16,12 +16,10 @@ import Dropdown from './components/Common/Dropdown';
 import SnapshotList from './components/SnapshotList';
 import SnapshotPeriodsList from './components/SnapshotPeriodsList';
 import CustomTimePicker from './components/CustomTimePicker';
+import { periodReplicated, snapReplicated } from './utils/replication';   // QSD5.352: shared rule, '-' is no receiver
 
 // Same layout as the Snapshots view; the differences are the Target Receiver
 // in the selection bar and that every list shows replication items only.
-const isReplicated = (receiver) => !!receiver && !['NoReceiver', 'no', 'No', 'none'].includes(receiver);
-const periodReplicated = (p) => isReplicated(p.receiver);
-const snapReplicated = (s) => isReplicated(s.partnerR);
 
 const QSender = () => {
     const [pools, setPools] = useState([]);

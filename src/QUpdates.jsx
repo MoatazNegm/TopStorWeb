@@ -25,6 +25,8 @@ const QUpdates = () => {
     const [selectedVersion, setSelectedVersion] = useState('');
     const [downloadPath, setDownloadPath] = useState('');
     const [downloadMethod, setDownloadMethod] = useState('url'); // 'url' | 'share'
+    const [shareUser, setShareUser] = useState('');      // QSD5.352: SMB share credentials
+    const [sharePass, setSharePass] = useState('');
     const [message, setMessage] = useState({ type: '', text: '' });
 
     const loadVersions = useCallback(async (isInitial = false) => {
@@ -66,11 +68,14 @@ const QUpdates = () => {
 
         setActionLoading('download');
         try {
-            await downloadSoftware({ method: downloadMethod, path: downloadPath });
+            await downloadSoftware({ method: downloadMethod, path: downloadPath, username: shareUser, password: sharePass });
             setMessage({ type: 'success', text: 'Download process started.' });
             setDownloadPath('');
+            setSharePass('');
         } catch (err) {
-            setMessage({ type: 'error', text: 'Failed to start download.' });
+            // a share path the page cannot read is explained; a refused call says so
+            const why = err?.response ? '' : (err?.message || '');
+            setMessage({ type: 'error', text: why ? `Failed to start download: ${why}` : 'Failed to start download.' });
         } finally {
             setActionLoading(null);
         }
@@ -203,13 +208,23 @@ const QUpdates = () => {
                                 <div className="md:col-span-3">
                                     <Input
                                         label={downloadMethod === 'url' ? 'Source URL (HTTP/HTTPS)' : 'Network Path (SMB/NFS)'}
-                                        placeholder={downloadMethod === 'url' ? "https://updates.quickstor.com/v2.4.tar.gz" : "\\\\storage\\updates\\v2.4.bin"}
+                                        placeholder={downloadMethod === 'url' ? "https://updates.quickstor.com/v2.4.tar.gz" : "\\\\storage\\updates\\v2.4.bin  or  storage:/updates/v2.4.bin"}
                                         value={downloadPath}
                                         onChange={(e) => setDownloadPath(e.target.value)}
                                         required
                                         icon={downloadMethod === 'url' ? <LinkIcon size={14} /> : <Share2 size={14} />}
                                     />
                                 </div>
+                                {downloadMethod === 'share' && /^(\\\\|\/\/)/.test(downloadPath.trim()) && (
+                                    <>
+                                        <div className="md:col-span-2">
+                                            <Input label="Share user (SMB)" value={shareUser} onChange={(e) => setShareUser(e.target.value)} required />
+                                        </div>
+                                        <div className="md:col-span-2">
+                                            <Input label="Share password (SMB)" type="password" value={sharePass} onChange={(e) => setSharePass(e.target.value)} required />
+                                        </div>
+                                    </>
+                                )}
                                 <div className="md:col-span-1">
                                     <Button
                                         type="submit"
