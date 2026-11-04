@@ -18,7 +18,7 @@ export const deleteUser = (name) => {
 };
 
 export const updateUserGroups = (name, groups) => {
-    // groups is a comma-separated string of group text names
+    // groups is a comma-separated string of group ids (users/grouplist 'id'); '' = no group. The API also accepts names.
     return api.post('api/v1/users/userchange', { name, groups, tenant: 'Cluster' });
 };
 

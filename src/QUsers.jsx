@@ -99,7 +99,8 @@ const QUsers = () => {
             let applied = false;
             let skipped = false;
             if (change.groups !== undefined) {
-                await updateUserGroups(name, change.groups);
+                // the group ids (users/grouplist 'id'), the same as AddUserForm sends; change.groups holds the names for display
+                await updateUserGroups(name, (change.groupIds || []).join(','));
                 applied = true;
             }
             if (change.address !== undefined || change.quota !== undefined) {
