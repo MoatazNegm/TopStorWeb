@@ -171,7 +171,7 @@ curl -sk "https://NODE:8443/api/v1/volumes/volumesinfo?token=$KEY"
 * Every use is recorded in the command log with the key name; failed attempts raise a warning
   notification. Keys do not expire by time: revoke them when the application is retired.
 * Calls a key can **never** make, even with `write`: everything under `/apikeys/`, user/group/tenant-user
-  changes, `users/usersauth` (privileges), `user/changepass`, `hosts/joincluster`, the `software/*`
+  changes, `users/usersauth` (privileges), `users/userhomechange` (home quota/address), `user/changepass`, `hosts/joincluster`, the `software/*`
   change calls, `login/renewtoken`, `logout`. They answer `{"response":"error","message":"not allowed for an API key"}`.
 * Brute force: 10 refused keys from one source address within 5 minutes lock that address out for
   5 minutes (every call with a key answers `baduser`; normal logins are not affected).

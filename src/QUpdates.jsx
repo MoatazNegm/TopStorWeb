@@ -68,7 +68,13 @@ const QUpdates = () => {
 
         setActionLoading('download');
         try {
-            await downloadSoftware({ method: downloadMethod, path: downloadPath, username: shareUser, password: sharePass });
+            const res = await downloadSoftware({ method: downloadMethod, path: downloadPath, username: shareUser, password: sharePass });
+            // QSD5.352 r2: a refusal (noprivilege, invalidsource) comes back as HTTP 200 with 'error'; it is not a start
+            if (res?.data?.error) {
+                const detail = res.data.message ? ` (${res.data.message})` : '';
+                setMessage({ type: 'error', text: `Download refused: ${res.data.error}${detail}` });
+                return;
+            }
             setMessage({ type: 'success', text: 'Download process started.' });
             setDownloadPath('');
             setSharePass('');
