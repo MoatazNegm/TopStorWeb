@@ -49,9 +49,9 @@ curl -sk "https://NODE:8443/api/v1/partners/partnerlist?token=$T"
 | `/hosts/getConfig` | `nodeName` | download that node's config file (file attachment) |
 | `/hosts/getAllConfig` | – | download all config files (zip attachment) |
 | `/software/versions` | – | available software versions |
-| `/software/setversion`, `/software/apply` | `version` | select / apply a version |
-| `/software/update` | `source`, `version`, `location`, `username`, `password` | online update; replies `{"data": "<command>"}` |
-| `/software/localFileUpdate` | multipart file upload | update from an uploaded file |
+| `/software/setversion`, `/software/apply` | `version` | select / apply a version (needs the `Uploadch` privilege, else `{"error": "noprivilege"}`) |
+| `/software/update` | `source`, `version`, `location`, `username`, `password` | online update; replies `{"data": "<command>"}` (needs `Uploadch`) |
+| `/software/localFileUpdate` | multipart file upload | update from an uploaded file (needs `Uploadch`) |
 
 ## 4. Pools and disks
 

@@ -53,8 +53,13 @@ const QUpdates = () => {
 
         setActionLoading('update');
         try {
-            await applySoftwareUpdate(selectedVersion);
-            setMessage({ type: 'success', text: `Update to ${selectedVersion} initiated successfully.` });
+            const res = await applySoftwareUpdate(selectedVersion);
+            // QSD5.352 r3 (validator N1): software/apply needs Uploadch; a refusal is shown, not "initiated successfully".
+            if (res && res.data && res.data.error) {
+                setMessage({ type: 'error', text: `Update refused: ${res.data.error}` });
+            } else {
+                setMessage({ type: 'success', text: `Update to ${selectedVersion} initiated successfully.` });
+            }
         } catch (err) {
             setMessage({ type: 'error', text: 'Failed to initiate update process.' });
         } finally {
