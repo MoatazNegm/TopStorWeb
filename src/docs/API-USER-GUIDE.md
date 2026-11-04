@@ -51,7 +51,7 @@ curl -sk "https://NODE:8443/api/v1/partners/partnerlist?token=$T"
 | `/software/versions` | – | available software versions |
 | `/software/setversion`, `/software/apply` | `version` | select / apply a version (needs the `Uploadch` privilege, else `{"error": "noprivilege"}`) |
 | `/software/update` | `source`, `version`, `location`, `username`, `password` | online update; replies `{"data": "<command>"}` (needs `Uploadch`) |
-| `/software/localFileUpdate` | multipart file upload | update from an uploaded file (needs `Uploadch`; saved under its base name in `/TopStordata`, a name with nothing left gives `{"error": "badfilename"}`) |
+| `/software/localFileUpdate` | multipart file upload | update from an uploaded file (needs `Uploadch`; saved under its base name in `/TopStordata/uploads`, a name with nothing left or a symlink there gives `{"error": "badfilename"}`) |
 
 ## 4. Pools and disks
 
@@ -91,15 +91,15 @@ iSCSI CHAP (QSD5.344): give `chapuser` and `chappas` together (user 1-64 of lett
 | `GET /users/grouplist` | `tenant` | groups for the user form |
 | `/users/UnixAddUser` | `name`, `Password`, `groups`, `Volpool`, `Volsize`, `HomeAddress`, `HomeSubnet`, `adduser` | add a user (with home volume) |
 | `/users/userchange` | `name`, `groups`, `tenant`, `owner` | change a user's groups |
-| `/users/userdel` | `name`, `tenant` | delete |
+| `/users/userdel` | `name`, `tenant` | delete (needs `Box_Users`, else `{"error": "noprivilege"}`, checked before the user is logged out; a `tenant` other than `Cluster` must be an NFS volume, else `{"error": "notnfs"}`) |
 | `GET /users/userauths` | `username` | privileges of a user |
 | `/users/usersauth` | `tochange`, `auths` | set a user's privileges |
-| `/users/uploadUsers` | multipart file | bulk import (needs the `Box_Users` privilege, else `{"error": "noprivilege"}`; saved under its base name in `/TopStordata`, else `{"error": "badfilename"}`) |
+| `/users/uploadUsers` | multipart file | bulk import (needs the `Box_Users` privilege, else `{"error": "noprivilege"}`; saved under its base name in `/TopStordata/uploads`, else `{"error": "badfilename"}`) |
 | `GET /groups/grouplist`, `GET /groups/userlist` | – | groups / users with membership |
 | `/groups/UnixAddgroup` | `name`, `users` | add group |
 | `/groups/groupchange` | `name`, `users` | change members |
 | `/groups/groupdel` | `name` | delete |
-| `/tenants/tenantinfo` | – | tenants; `/tenant/adduser` adds a user to a tenant |
+| `/tenants/tenantinfo` | – | tenants; `/tenant/adduser` adds a user to a tenant (an NFS volume; needs `Box_Users`, else `{"error": "noprivilege"}`; not NFS: `{"error": "notnfs"}`; the same for `/users/userchange` with a `tenant` other than `Cluster`) |
 
 ## 7. Replication partners
 
