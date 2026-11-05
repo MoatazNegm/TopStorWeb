@@ -72,7 +72,7 @@ curl -sk "https://NODE:8443/api/v1/partners/partnerlist?token=$T"
 |---|---|---|
 | `/volumes/volumesinfo`, `/volumes/{CIFS,NFS,ISCSI,HOME}/volumesinfo` | – | `{"allvolumes": [...]}` |
 | `/volumes/volumelist`, `/volumes/stats`, `/volumes/connections` | – | list / statistics / client connections |
-| `/volumes/create` | `type` (`CIFS`/`NFS`/`ISCSI`/`HOME`), `pool`, `name`, `size`, `owner`, `ipaddress`, `Subnet`, `groups`, `compression`, `dedup`, `active`; CIFS domain: `domname`,`domip`,`domsrv`,`domadmin`,`dompass`; iSCSI: `portalport`,`initiators`,`chapuser`,`chappas` | create a volume |
+| `/volumes/create` | `type` (`CIFS`/`NFS`/`ISCSI`/`HOME`), `pool`, `name`, `size`, `owner`, `ipaddress`, `Subnet`, `groups`, `compression`, `dedup`, `active`; CIFS domain: `domname`,`domip`,`domsrv`,`domadmin`,`dompass`; iSCSI: `portalport`,`initiators`,`chapuser`,`chappas` | create a volume; `HOME`: `name` is the user's name (an existing user without a home is allowed; a group or an existing volume of that name is refused), `active` is `active` (also `yes` or empty) or `disabled` (also `disable`, `no`), anything else answers `invalidstatus` |
 | `/volumes/config` | `volume`, `type`, `owner`, `ipaddress`, `groups`, `statusmount` (home folders), `portalport`, `initiators`, `chapuser`, `chappas` | change a volume |
 | `/volumes/volumeactive` | `name`, `active`, `owner` | activate / deactivate |
 | `/volumes/volumedel` | `name`, `type`, `owner` | delete |
