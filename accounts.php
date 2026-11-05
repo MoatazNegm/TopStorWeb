@@ -1054,7 +1054,7 @@ $.each(jvol,function(k,v){
      evgroup=allgroups[k]['prop'].split('/')[2]
      grpname=allgroups[k]['name'].replace('usersigroup/','')
      selected='';
-     if (evgroup.includes(username) > 0) {
+     if ((','+evgroup+',').includes(','+username+',')) {   // exact member name: q015a is not in "q015a1,xq015a"
       var selected='selected'
       cgrp[username].push(grpname)
      }
@@ -1089,7 +1089,7 @@ $.each(jvol,function(k,v){
     $.each(allusers, function(k,v){
      evuser=allusers[k]['name'].replace('usersinfo/','')
      selected='';
-     if (grpuserlist.includes(evuser) > 0) {
+     if ((','+grpuserlist+',').includes(','+evuser+',')) {   // exact member name
       var selected='selected'
       cuser[username].push(evuser)
      }
