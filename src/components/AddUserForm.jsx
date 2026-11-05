@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
     AlertCircle,
     Download,
@@ -17,7 +17,8 @@ import Panel from './Common/Panel';
 import { validateUserName, validatePassword } from '../utils/userRules';
 import { ipError } from './Common/NetFields';
 
-const AddUserForm = ({ pools, groups, users = [], onAdd }) => {
+const AddUserForm = ({ pools, groups, users = [], onAdd, onUpload }) => {
+    const fileRef = useRef(null);
     const [formData, setFormData] = useState({
         Tenant: 'Cluster',
         User: '',
@@ -39,6 +40,13 @@ const AddUserForm = ({ pools, groups, users = [], onAdd }) => {
     const passError = validatePassword(formData.UserPass);
     const addressError = ipError(formData.HomeAddress);
     const canSubmit = !nameError && !passError && !addressError;
+
+    // Import Template: pick a filled Template.xlsx and send it to the bulk upload
+    const handleFile = (e) => {
+        const file = e.target.files && e.target.files[0];
+        e.target.value = '';
+        if (file && onUpload) onUpload(file);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -67,8 +75,16 @@ const AddUserForm = ({ pools, groups, users = [], onAdd }) => {
             footer={
                 <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
                     <div className="flex flex-wrap items-center gap-2">
+                        <input
+                            ref={fileRef}
+                            type="file"
+                            accept=".xlsx,.xls"
+                            className="hidden"
+                            onChange={handleFile}
+                        />
                         <button
                             type="button"
+                            onClick={() => fileRef.current && fileRef.current.click()}
                             className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-3.5 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-brand-600"
                         >
                             <Upload size={15} />

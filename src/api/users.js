@@ -13,6 +13,15 @@ export const addUser = (userData) => {
     return api.post('api/v1/users/UnixAddUser', userData);
 };
 
+// Bulk addition from a filled Template.xlsx (columns name, Password, Volpool, Volsize, HomeAddress, HomeSubnet, groups).
+// The backend reads the multipart field "file" (TopStor fapi.py uploadUsers) and adds the users in the background:
+// Unlin1025 when the file is accepted, one message per row, Unlin1027 at the end.
+export const uploadUsers = (file) => {
+    const body = new FormData();
+    body.append('file', file);
+    return api.post('api/v1/users/uploadUsers', body);
+};
+
 export const deleteUser = (name) => {
     return api.post('api/v1/users/userdel', { name, tenant: 'Cluster' });
 };

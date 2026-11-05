@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AlertCircle, KeyRound, X } from 'lucide-react';
-import { fetchUserList, fetchGroupList, addUser, deleteUser, updateUserGroups, changePassword, changeUserHome } from './api/users';
+import { fetchUserList, fetchGroupList, addUser, uploadUsers, deleteUser, updateUserGroups, changePassword, changeUserHome } from './api/users';
 import { fetchPoolsInfo } from './api/pools';
 import AddUserForm from './components/AddUserForm';
 import UserList from './components/UserList';
@@ -157,6 +157,26 @@ const QUsers = () => {
         }
     };
 
+    // Bulk upload of a filled template: the backend answers at once and adds the users in the background
+    // (System Logs: Unlin1025 started, one line per row, Unlin1027 finished); the list poll shows them as they come.
+    const [uploadStatus, setUploadStatus] = useState('');
+    const handleUploadUsers = async (file) => {
+        try {
+            const res = await uploadUsers(file);
+            if (res?.data && typeof res.data === 'object' && res.data.data) {
+                setError(null);
+                setUploadStatus(`${file.name} uploaded: adding users started. Each row is reported in System Logs.`);
+                setTimeout(() => setUploadStatus(''), 15000);
+            } else {
+                setError(`${file.name} was not accepted: ${typeof res?.data === 'string' ? res.data : 'no users file'}`);
+            }
+            await loadData();
+        } catch (err) {
+            console.error('Upload users failed', err);
+            setError(`${file.name} could not be uploaded: no answer from the server.`);
+        }
+    };
+
     const handleDeleteUser = async (name) => {
         if (!window.confirm(`Are you sure you want to delete user ${name}?`)) return;
         try {
@@ -219,11 +239,17 @@ const QUsers = () => {
                             </div>
                         )}
 
+                        {uploadStatus && (
+                            <div className="rounded-lg border border-border bg-surface px-4 py-3 text-sm font-medium text-gray-600">
+                                {uploadStatus}
+                            </div>
+                        )}
+
                         {loading ? (
                             <div className="rounded-lg border border-border bg-surface px-4 py-6 text-sm text-gray-500">Loading users...</div>
                         ) : (
                             <>
-                                <AddUserForm pools={pools} groups={groups} users={users} onAdd={handleAddUser} />
+                                <AddUserForm pools={pools} groups={groups} users={users} onAdd={handleAddUser} onUpload={handleUploadUsers} />
                                 <UserList
                                     users={users.map((user) => (localEdits[user.name] ? { ...user, ...localEdits[user.name].fields } : user))}
                                     groups={groups}
