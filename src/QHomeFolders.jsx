@@ -78,7 +78,8 @@ const QHomeFolders = () => {
                 Myname: 'mezo',
                 size: `${formData.size}G`,
                 owner: poolObj.owner,
-                active: 'Yes',
+                // QSD5.352 r9 (prover D4): 'Yes' was written as the share status and the home was never served
+                active: 'active',
             };
 
             await createVolume(payload);
