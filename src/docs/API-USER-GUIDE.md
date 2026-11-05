@@ -73,7 +73,7 @@ curl -sk "https://NODE:8443/api/v1/partners/partnerlist?token=$T"
 | `/volumes/volumesinfo`, `/volumes/{CIFS,NFS,ISCSI,HOME}/volumesinfo` | – | `{"allvolumes": [...]}` |
 | `/volumes/volumelist`, `/volumes/stats`, `/volumes/connections` | – | list / statistics / client connections |
 | `/volumes/create` | `type` (`CIFS`/`NFS`/`ISCSI`/`HOME`), `pool`, `name`, `size`, `owner`, `ipaddress`, `Subnet`, `groups`, `compression`, `dedup`, `active`; CIFS domain: `domname`,`domip`,`domsrv`,`domadmin`,`dompass`; iSCSI: `portalport`,`initiators`,`chapuser`,`chappas` | create a volume |
-| `/volumes/config` | `volume`, `type`, `owner`, `ipaddress`, `groups`, `portalport`, `initiators`, `chapuser`, `chappas` | change a volume |
+| `/volumes/config` | `volume`, `type`, `owner`, `ipaddress`, `groups`, `statusmount` (home folders), `portalport`, `initiators`, `chapuser`, `chappas` | change a volume |
 | `/volumes/volumeactive` | `name`, `active`, `owner` | activate / deactivate |
 | `/volumes/volumedel` | `name`, `type`, `owner` | delete |
 | `/volumes/grouplist` | – | groups usable by a volume |
@@ -82,6 +82,8 @@ curl -sk "https://NODE:8443/api/v1/partners/partnerlist?token=$T"
 | `/volumes/snapshots/snaprollback`, `…/snapshotdel`, `…/perioddelete` | `name`, `owner` | roll back / delete / delete a schedule |
 
 iSCSI CHAP (QSD5.344): give `chapuser` and `chappas` together (user 1-64 of letters, digits, `. _ : @ -`; secret 12-64 of letters, digits, `. _ : + = , ~ -`, no blanks) or leave both out for no CHAP; anything else is refused with `invalid character in parameter: ...` or `chapuser and chappas must be given together` (log `ISCSIfa02`). CHAP is set on each initiator ACL of the LUN and the target then asks for it (one target per address: it asks while any initiator ACL of that address has CHAP). `volumes/config` without the two fields keeps the stored CHAP; both sent empty turns CHAP off. The secret is never shown again: answers and lists show `****`.
+
+Home folder status (QSD5.352 r8): `volumes/config` for a home takes `statusmount` = `active` or `disabled` (`disable` and any letter case are taken as these); any other value is refused with `invalidstatus` and nothing changes. Without the field the stored status is kept.
 
 ## 6. Users, groups, tenants
 
