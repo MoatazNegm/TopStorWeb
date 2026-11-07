@@ -73,13 +73,15 @@ curl -sk "https://NODE:8443/api/v1/partners/partnerlist?token=$T"
 | `/volumes/volumesinfo`, `/volumes/{CIFS,NFS,ISCSI,HOME}/volumesinfo` | – | `{"allvolumes": [...]}` |
 | `/volumes/volumelist`, `/volumes/stats`, `/volumes/connections` | – | list / statistics / client connections |
 | `/volumes/create` | `type` (`CIFS`/`NFS`/`ISCSI`/`HOME`), `pool`, `name`, `size`, `owner`, `ipaddress`, `Subnet`, `groups`, `compression`, `dedup`, `active`; CIFS domain: `domname`,`domip`,`domsrv`,`domadmin`,`dompass`; iSCSI: `portalport`,`initiators`,`chapuser`,`chappas` | create a volume; `HOME`: `name` is the user's name (an existing user without a home is allowed; a group or an existing volume of that name is refused), `active` is `active` (also `yes` or empty) or `disabled` (also `disable`, `no`), anything else answers `invalidstatus` |
-| `/volumes/config` | `volume`, `type`, `owner`, `ipaddress`, `groups`, `statusmount` (home folders), `portalport`, `initiators`, `chapuser`, `chappas` | change a volume |
+| `/volumes/config` | `volume`, `type`, `owner`, `ipaddress`, `groups`, `statusmount` (home folders), `portalport`, `initiators`, `chapuser`, `chappas`; NFS / CIFS: `quota` (or `size`) | change a volume; `quota` = the new size in GB (`2`, `2G`, `1.5`; QSD5.352 r10), refused with `error: invalidsize` (log `VolQfa01`), set on the pool owner (`VolQsu01`, or `VolQfa01` when zfs refuses, e.g. below the used space) |
 | `/volumes/volumeactive` | `name`, `active`, `owner` | activate / deactivate |
 | `/volumes/volumedel` | `name`, `type`, `owner` | delete |
 | `/volumes/grouplist` | – | groups usable by a volume |
 | `/volumes/snapshots/snapshotsinfo` | – | `{allsnaps, Once, Hourly, Weekly, …}` |
 | `/volumes/snapshots/create` | `pool`, `volume`, `name`, `snapsel`, `receiver`, `owner` | create a snapshot / schedule |
 | `/volumes/snapshots/snaprollback`, `…/snapshotdel`, `…/perioddelete` | `name`, `owner` | roll back / delete / delete a schedule |
+
+iSCSI portal port (QSD5.352 r10): `portalport` must be 1024-65535 on `volumes/create` and `volumes/config`, else `{"response":"error","error":"invalidport","message":"portalport must be a number from 1024 to 65535"}` (log `ISCSIfa04`); a port change removes the old portal of the address unless another LUN there uses it.
 
 iSCSI CHAP (QSD5.344): give `chapuser` and `chappas` together (user 1-64 of letters, digits, `. _ : @ -`; secret 12-64 of letters, digits, `. _ : + = , ~ -`, no blanks) or leave both out for no CHAP; anything else is refused with `invalid character in parameter: ...` or `chapuser and chappas must be given together` (log `ISCSIfa02`). CHAP is set on each initiator ACL of the LUN and the target then asks for it (one target per address: it asks while any initiator ACL of that address has CHAP). `volumes/config` without the two fields keeps the stored CHAP; both sent empty turns CHAP off. The secret is never shown again: answers and lists show `****`.
 
@@ -98,7 +100,7 @@ Home folder status (QSD5.352 r8): `volumes/config` for a home takes `statusmount
 | `/users/usersauth` | `tochange`, `auths` | set a user's privileges |
 | `/users/uploadUsers` | multipart file | bulk import (needs the `Box_Users` privilege, else `{"error": "noprivilege"}`; saved under its base name in `/TopStordata/uploads`, else `{"error": "badfilename"}`) |
 | `GET /groups/grouplist`, `GET /groups/userlist` | – | groups / users with membership |
-| `/groups/UnixAddgroup` | `name`, `users` | add group |
+| `/groups/UnixAddgroup` | `name`, `users` | add group; `users` = user ids (as `users/userlist` numbers them) or names, comma separated, unknown entries dropped, none = `NoUser` (QSD5.352 r10; `groups/groupchange` the same) |
 | `/groups/groupchange` | `name`, `users` | change members |
 | `/groups/groupdel` | `name` | delete |
 | `/tenants/tenantinfo` | – | tenants; `/tenant/adduser` adds a user to a tenant (an NFS volume; needs `Box_Users`, else `{"error": "noprivilege"}`; not NFS: `{"error": "notnfs"}`; the same for `/users/userchange` with a `tenant` other than `Cluster`) |

@@ -5,11 +5,15 @@
 //  - a CIFS share may share an address only with CIFS shares of the same context: the workgroup, or the same domain
 //    (one share container serves one workgroup or one domain), never with a NFS, home or iSCSI volume,
 //  - a home folder only with other home folders, an iSCSI LUN only with other LUNs (one portal).
-// volume.prot tells the kind: 'CIFS' (workgroup), 'CIFS_<domain>', 'HOME', 'NFS', 'ISCSI'.
+// volume.prot tells the kind: 'CIFS' (workgroup), 'CIFS_<domain>', 'HOME' / 'HOMEE' (home folder), 'NFS', 'ISCSI'.
 export const volumeContext = (vol) => {
     const prot = String(vol.prot || '');
     if (prot.startsWith('CIFS_')) return { kind: 'CIFS', domain: prot.slice(5).toLowerCase() };
     if (prot.startsWith('CIFS')) return { kind: 'CIFS', domain: '' };
+    // QSD5.352 r10 (QC 655): a home folder in the volume list carries prot 'HOMEE' (the HOME rule below never matched it):
+    // the Home Folders form refused an address already used by another home ("Used by HOMEE volume ..."), which the
+    // backend allows (homes share one container per address)
+    if (prot === 'HOME' || prot === 'HOMEE') return { kind: 'HOME', domain: '' };
     return { kind: prot, domain: '' };
 };
 
