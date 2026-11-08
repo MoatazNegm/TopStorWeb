@@ -127,6 +127,8 @@ const NotificationPoller = () => {
             if (notif.time === lastNotif.current.time && notif.msgcode === lastNotif.current.msgcode) return;
 
             lastNotif.current = { time: notif.time, msgcode: notif.msgcode };
+            // pages that wait for a backend result (e.g. QDisks pool delete -> DGfa*) listen to this
+            window.dispatchEvent(new CustomEvent('app-notification', { detail: notif }));
 
             addToast({
                 type: notif.type,

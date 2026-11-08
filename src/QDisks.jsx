@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AlertCircle, ChevronDown, HardDrive, Info, MemoryStick, Plus, RefreshCw } from 'lucide-react';
 import { fetchDgsInfo, createPool, addDisksToPool, deletePool, actionOnDisk, saveCacheSpares, deleteCacheSpares } from './api/pools';
 import PoolCard from './components/PoolCard';
 import Button from './components/Common/Button';
 import DiskIcon from './components/DiskIcon';
+
+const DELETE_TIMEOUT_MS = 120000; // a pool still listed this long after its delete request shows again with an error
 
 const QDisks = () => {
     const [dgsData, setDgsData] = useState({
@@ -20,11 +22,36 @@ const QDisks = () => {
     const [includeCache, setIncludeCache] = useState(false);
     const [selectedCacheSpares, setSelectedCacheSpares] = useState([]);
     const [createOpen, setCreateOpen] = useState(null); // null = default (open)
+    // pool deletes in flight: { poolName: start ms }. The backend deletes async (RabbitMQ, ~20 s) and dgsinfo keeps listing
+    // the pool meanwhile, so every loadData/poll result is filtered through this until the server stops listing the pool.
+    const pendingDeletes = useRef({});
+    const [deleteError, setDeleteError] = useState(null); // { pool, msg }: a failed or timed-out delete, kept past the 5 s poll
+
+    // drop pools pending deletion from a dgsinfo reply; release a pool once the server no longer lists it, or after the timeout
+    const filterPendingDeletes = (data) => {
+        const pending = pendingDeletes.current;
+        const listed = data?.pools || {};
+        setDeleteError(cur => (cur && !(cur.pool in listed) ? null : cur));
+        if (Object.keys(pending).length === 0) return data;
+        const pools = { ...listed };
+        const now = Date.now();
+        Object.entries(pending).forEach(([name, since]) => {
+            if (!(name in pools)) {
+                delete pending[name];
+            } else if (now - since > DELETE_TIMEOUT_MS) {
+                delete pending[name];
+                setDeleteError({ pool: name, msg: `Pool ${name} is still present ${DELETE_TIMEOUT_MS / 1000} s after the delete request; the delete did not complete` });
+            } else {
+                delete pools[name];
+            }
+        });
+        return { ...data, pools };
+    };
 
     const loadData = useCallback(async () => {
         try {
             const res = await fetchDgsInfo();
-            setDgsData(res.data);
+            setDgsData(filterPendingDeletes(res.data));
             setError(null);
         } catch (err) {
             console.error("Failed to load Disk Groups", err);
@@ -82,19 +109,42 @@ const QDisks = () => {
         }
     };
 
+    // put a pool back after a failed delete: stop filtering it and reload (the server still lists it)
+    const restorePool = (pool, msg) => {
+        delete pendingDeletes.current[pool];
+        setDeleteError({ pool, msg });
+        loadData();
+    };
+
+    // a DGfa* (failed) notification naming a pool pending deletion puts its card back
+    useEffect(() => {
+        const onNotification = (event) => {
+            const n = event?.detail;
+            if (!n || !/^DGfa/.test(n.msgcode || '')) return;
+            const body = String(n.msgbody || '');
+            Object.keys(pendingDeletes.current).forEach(pool => {
+                if (body.split(/[\s.:,]+/).includes(pool)) restorePool(pool, body);
+            });
+        };
+        window.addEventListener('app-notification', onNotification);
+        return () => window.removeEventListener('app-notification', onNotification);
+    }, [loadData]);
+
     const handleDeletePool = async (pool) => {
+        // Optimistic: remove at once and keep it out of every loadData/poll result until the server stops listing it
+        // (backend deletion is async via RabbitMQ; dgsinfo lists the pool for ~20 s more).
+        pendingDeletes.current[pool] = Date.now();
+        setDeleteError(null);
+        setDgsData(prev => {
+            const pools = { ...prev.pools };
+            delete pools[pool];
+            return { ...prev, pools };
+        });
         try {
             await deletePool({ pool, user: 'mezo' });
-            // Optimistic: remove immediately — backend deletion is async via RabbitMQ,
-            // so loadData() right after would return stale data (1s cache still warm).
-            setDgsData(prev => {
-                const pools = { ...prev.pools };
-                delete pools[pool];
-                return { ...prev, pools };
-            });
             loadData();
         } catch (err) {
-            setError("Failed to decommission pool");
+            restorePool(pool, `Failed to decommission pool ${pool}`);
         }
     };
 
@@ -179,6 +229,12 @@ const QDisks = () => {
                             <div className="mb-8 flex items-center gap-3 rounded-xl border border-danger-100 bg-danger-50 p-4 text-sm font-medium text-danger-700 animate-in fade-in slide-in-from-top-4">
                                 <AlertCircle size={16} />
                                 {error}
+                            </div>
+                        )}
+                        {deleteError && (
+                            <div className="mb-8 flex items-center gap-3 rounded-xl border border-danger-100 bg-danger-50 p-4 text-sm font-medium text-danger-700 animate-in fade-in slide-in-from-top-4">
+                                <AlertCircle size={16} />
+                                {deleteError.msg}
                             </div>
                         )}
 
