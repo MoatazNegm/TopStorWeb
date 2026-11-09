@@ -17,9 +17,12 @@ export const onLogSev = (fn) => {
     return () => window.removeEventListener(EVT, fn);
 };
 
-// severity of a log row: importance (mock and backend rows), else the type column
+// severity of a log row: the type column holds the name (backend rows: type "warning"/"error"/"info", importance a number
+// string "0"/"1"/"2"); importance only when it is itself a name (mock rows). Same rule as the toasts (NotificationPoller: notif.type).
+const SEV_NAMES = ['error', 'warning', 'info'];
+const sevName = (v) => { const s = String(v ?? '').trim().toLowerCase(); return SEV_NAMES.includes(s) ? s : ''; };
 export const logSeverity = (l) => {
-    const s = String(l.importance || l.type || '').toLowerCase();
+    const s = sevName(l?.type) || sevName(l?.importance);
     return s === 'error' || s === 'warning' ? s : 'info';
 };
 
