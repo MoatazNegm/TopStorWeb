@@ -17,7 +17,8 @@ export const volumeContext = (vol) => {
 export const ipCollision = (ip, ctx, { hosts = [], volumes = [] }) => {
     const value = String(ip || '').trim();
     if (!value) return '';
-    const node = hosts.find((h) => h.ip === value);
+    // hosts/allinfo gives the cluster address with its prefix (10.11.11.249/24): compare the address part only (test 641 step 1)
+    const node = hosts.find((h) => String(h.ip || '').split('/')[0].trim() === value);
     if (node) return node.name === 'cluster' ? 'This is the cluster address' : `This is the address of node ${node.name}`;
     const domain = String(ctx.domain || '').trim().toLowerCase();
     for (const vol of volumes) {
