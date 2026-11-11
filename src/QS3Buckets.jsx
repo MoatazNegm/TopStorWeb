@@ -4,6 +4,7 @@ import { fetchVolumesInfo, fetchGroupList, createVolume, updateVolume, deleteVol
 import { fetchPoolsInfo } from './api/pools';
 import Button from './components/Common/Button';
 import Input from './components/Common/Input';
+import { volumeNameError } from './utils/volumeRules';
 import Dropdown from './components/Common/Dropdown';
 import S3BucketsList from './components/S3BucketsList';
 
@@ -89,6 +90,11 @@ const QS3Buckets = () => {
         const bucketName = formData.name.trim();
         const accessKey = formData.accesskey.trim();
         const secretKey = formData.secretkey.trim();
+
+        if (volumeNameError(bucketName)) {
+            setError(volumeNameError(bucketName));
+            return;
+        }
 
         if (!poolObj) {
             setError('Select a storage pool before provisioning the bucket.');
@@ -184,7 +190,7 @@ const QS3Buckets = () => {
 
             return;
         } catch (err) {
-            const message = err?.response?.data?.error || err?.response?.data?.message || err?.message || 'Failed to create S3 bucket volume';
+            const message = err?.response?.data?.message || err?.response?.data?.error || err?.message || 'Failed to create S3 bucket volume';
             setError(message);
             showToast({
                 type: 'error',
@@ -260,6 +266,7 @@ const QS3Buckets = () => {
                                             required
                                             placeholder="bucket-name"
                                             value={formData.name}
+                                            error={volumeNameError(formData.name.trim())}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                         />
                                     </div>
@@ -342,7 +349,7 @@ const QS3Buckets = () => {
                                         <Button
                                             type="submit"
                                             className="w-full sm:w-auto"
-                                            disabled={submitting}
+                                            disabled={submitting || !!volumeNameError(formData.name.trim())}
                                         >
                                             {submitting ? 'Provisioning...' : 'Provision Bucket'}
                                         </Button>

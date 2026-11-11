@@ -4,6 +4,7 @@ import { fetchVolumesInfo, fetchGroupList, createVolume, updateVolume, deleteVol
 import { fetchPoolsInfo } from './api/pools';
 import Button from './components/Common/Button';
 import Input from './components/Common/Input';
+import { volumeNameError } from './utils/volumeRules';
 import { ipError } from './components/Common/NetFields';
 import Dropdown from './components/Common/Dropdown';
 import { pickGroups } from './components/Common/groupPick';
@@ -72,6 +73,7 @@ const QNfs = () => {
         // the button's onClick runs this handler instead of the form submit, so the required fields of the form are checked here
         const form = e.currentTarget.form || e.currentTarget;
         if (form.reportValidity && !form.reportValidity()) return;
+        if (volumeNameError(formData.name)) return;
         if (formData.pool === '' || !pools[formData.pool]) { setError('Select a storage pool first'); return; }
         setError(null);
         if (ipError(formData.ipaddress) || ipMsg) return;
@@ -106,7 +108,7 @@ const QNfs = () => {
             });
             loadData();
         } catch (err) {
-            setError("Failed to create volume");
+            setError(err?.response?.data?.message || "Failed to create volume");
         }
     };
 
@@ -182,6 +184,7 @@ const QNfs = () => {
                                                 required
                                                 placeholder="Share name"
                                                 value={formData.name}
+                                                error={volumeNameError(formData.name)}
                                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                             />
                                         </div>
@@ -256,7 +259,7 @@ const QNfs = () => {
                                             type="submit"
                                             className="w-full sm:w-auto"
                                             onClick={handleCreate}
-                                            disabled={!!ipError(formData.ipaddress) || !!ipMsg}
+                                            disabled={!!ipError(formData.ipaddress) || !!ipMsg || !!volumeNameError(formData.name)}
                                         >
                                             Provision Volume
                                         </Button>

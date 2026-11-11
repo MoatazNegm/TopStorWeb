@@ -94,7 +94,7 @@ const QHomeFolders = () => {
             loadData();
             reloadCapacity();
         } catch (err) {
-            setError("Failed to create home folder");
+            setError(err?.response?.data?.message || "Failed to create home folder");
         }
     };
 
