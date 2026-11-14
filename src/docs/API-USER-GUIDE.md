@@ -72,8 +72,8 @@ curl -sk "https://NODE:8443/api/v1/partners/partnerlist?token=$T"
 |---|---|---|
 | `/volumes/volumesinfo`, `/volumes/{CIFS,NFS,ISCSI,HOME}/volumesinfo` | – | `{"allvolumes": [...]}` |
 | `/volumes/volumelist`, `/volumes/stats`, `/volumes/connections` | – | list / statistics / client connections |
-| `/volumes/create` | `type` (`CIFS`/`NFS`/`ISCSI`/`HOME`), `pool`, `name`, `size`, `owner`, `ipaddress`, `Subnet`, `groups`, `compression`, `dedup`, `active`; CIFS domain: `domname`,`domip`,`domsrv`,`domadmin`,`dompass`; iSCSI: `portalport`,`initiators`,`chapuser`,`chappas` | create a volume |
-| `/volumes/config` | `volume`, `type`, `owner`, `ipaddress`, `groups`, `portalport`, `initiators`, `chapuser`, `chappas` | change a volume |
+| `/volumes/create` | `type` (`CIFS`/`NFS`/`ISCSI`/`HOME`), `pool`, `name`, `size`, `owner`, `ipaddress`, `Subnet`, `groups`, `compression`, `dedup`, `active`; CIFS domain: `domname`,`domip`,`domsrv`,`domadmin`,`dompass`; iSCSI: `portalport`,`initiators`, CHAP `chapuser` (1-64 of letters, digits, `._:-`) with `chappas` (12-16 of letters, digits, `._:@!-`), or neither for no CHAP; a bad one is HTTP 400 `invalid character ...`; `chappas` is shown as `***` | create a volume |
+| `/volumes/config` | `volume`, `type`, `owner`, `ipaddress`, `groups`, `portalport`, `initiators`, `chapuser`, `chappas` (iSCSI CHAP, same rules; not sent = unchanged, `chapuser=nochap` removes it) | change a volume |
 | `/volumes/volumeactive` | `name`, `active`, `owner` | activate / deactivate |
 | `/volumes/volumedel` | `name`, `type`, `owner` | delete |
 | `/volumes/grouplist` | – | groups usable by a volume |
