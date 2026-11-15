@@ -612,6 +612,10 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                 onRefresh();
             } catch (err) {
                 console.error("Failed to update node", err);
+                // show the API refusal (e.g. "alias already in use: <alias>", "invalid character in parameter: alias")
+                window.dispatchEvent(new CustomEvent('app-toast', {
+                    detail: { type: 'error', title: 'Node', body: err?.response?.data?.message || 'Failed to update node' }
+                }));
             }
         } else {
             console.log("No changes detected; nothing sent.");
