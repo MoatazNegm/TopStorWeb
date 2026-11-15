@@ -67,6 +67,7 @@ const CustomTimePicker = ({ value, onChange, disabled }) => {
                         <div className="mb-3 px-2 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Hour</div>
                         {hours.map(h => (
                             <button
+                                type="button"
                                 key={h}
                                 onClick={() => updateTime({ ...time, hour: h })}
                                 className={`w-full py-2 px-3 rounded-xl text-sm font-bold transition-all mb-1 ${time.hour === h ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50'
@@ -82,6 +83,7 @@ const CustomTimePicker = ({ value, onChange, disabled }) => {
                         <div className="mb-3 px-2 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Min</div>
                         {minutes.map(m => (
                             <button
+                                type="button"
                                 key={m}
                                 onClick={() => updateTime({ ...time, minute: m })}
                                 className={`w-full py-2 px-3 rounded-xl text-sm font-bold transition-all mb-1 ${time.minute === m ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50'
@@ -97,6 +99,7 @@ const CustomTimePicker = ({ value, onChange, disabled }) => {
                         <div className="mb-3 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Period</div>
                         {periods.map(p => (
                             <button
+                                type="button"
                                 key={p}
                                 onClick={() => updateTime({ ...time, period: p })}
                                 className={`w-full py-2 px-3 rounded-xl text-sm font-bold transition-all mb-1 ${time.period === p ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50'
@@ -107,6 +110,7 @@ const CustomTimePicker = ({ value, onChange, disabled }) => {
                         ))}
 
                         <button
+                            type="button"
                             onClick={() => setIsOpen(false)}
                             className="mt-4 w-full rounded-md bg-gray-900 py-2.5 text-xs font-semibold uppercase tracking-wide text-white transition-colors hover:bg-black"
                         >
