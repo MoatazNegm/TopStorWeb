@@ -78,7 +78,7 @@ curl -sk "https://NODE:8443/api/v1/partners/partnerlist?token=$T"
 | `/volumes/volumedel` | `name`, `type`, `owner` | delete |
 | `/volumes/grouplist` | – | groups usable by a volume |
 | `/volumes/snapshots/snapshotsinfo` | – | `{allsnaps, Once, Hourly, Weekly, …}` |
-| `/volumes/snapshots/create` | `pool`, `volume`, `name`, `snapsel`, `receiver`, `owner` | create a snapshot / schedule |
+| `/volumes/snapshots/create` | `snapsel` (Once, Minutely, Hourly, Weekly), `owner`, `pool`, `volume`; Once: `name`; Minutely: `every`, `keep`; Hourly: `sminute` (0-59), `every`, `keep`; Weekly: `stime` (HH:MM), `every` (the day, e.g. Sat), `keep`; optional `receiver` | create a snapshot / schedule; a bad call is refused with HTTP 400 and a `message` (e.g. `missing parameter: name`) |
 | `/volumes/snapshots/snaprollback`, `…/snapshotdel`, `…/perioddelete` | `name`, `owner` | roll back / delete / delete a schedule |
 
 ## 6. Users, groups, tenants

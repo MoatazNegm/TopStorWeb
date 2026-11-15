@@ -133,7 +133,7 @@ const QSender = () => {
             if (activeTab === 'Once') setForms(prev => ({ ...prev, Once: { name: '' } }));
             loadData();
         } catch (err) {
-            setError("Failed to create replication snapshot/schedule");
+            setError(err.response?.data?.message || "Failed to create replication snapshot/schedule");
         }
     };
 
