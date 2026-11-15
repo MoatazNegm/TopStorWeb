@@ -117,7 +117,7 @@ const QSnapshots = () => {
             if (activeTab === 'Once') setForms(prev => ({ ...prev, Once: { name: '' } }));
             loadData();
         } catch (err) {
-            setError("Failed to create snapshot/period");
+            setError(err.response?.data?.message || "Failed to create snapshot/period");
         }
     };
 
