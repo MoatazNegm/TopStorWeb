@@ -8,6 +8,8 @@ import { volumeNameError } from './utils/volumeRules';
 import Dropdown from './components/Common/Dropdown';
 import S3BucketsList from './components/S3BucketsList';
 
+const SYNC_ERROR = 'Failed to synchronize with buckets API';
+
 const QS3Buckets = () => {
     const [volumes, setVolumes] = useState([]);
     const [pools, setPools] = useState([]);
@@ -36,24 +38,32 @@ const QS3Buckets = () => {
 
     const loadData = useCallback(async () => {
         try {
-            setError(null);
-            const [volsRes, poolsRes, groupsRes, statsRes] = await Promise.all([
+            // each source on its own: one failed call no longer leaves the pool and group dropdowns empty (test 657 QX-058)
+            const [volsRes, poolsRes, groupsRes, statsRes] = await Promise.allSettled([
                 fetchVolumesInfo('S3'),
                 fetchPoolsInfo(),
                 fetchGroupList(),
-                fetchVolumeStats().catch(() => ({ data: {} }))
+                fetchVolumeStats()
             ]);
 
-            const loadedVolumes = volsRes.data.allvolumes || [];
-            setVolumes(loadedVolumes);
-            setPools(poolsRes.data.results || []);
-            setGroups(groupsRes.data.results || []);
-            setStats(statsRes.data);
+            const loadedVolumes = volsRes.status === 'fulfilled' ? (volsRes.value.data.allvolumes || []) : [];
+            if (volsRes.status === 'fulfilled') setVolumes(loadedVolumes);
+            if (poolsRes.status === 'fulfilled') setPools(poolsRes.value.data.results || []);
+            if (groupsRes.status === 'fulfilled') setGroups(groupsRes.value.data.results || []);
+            setStats(statsRes.status === 'fulfilled' ? statsRes.value.data : {});
+
+            const failed = [volsRes, poolsRes, groupsRes].find((res) => res.status === 'rejected');
+            if (failed) {
+                console.error('Failed to load S3 bucket data', failed.reason);
+                setError(SYNC_ERROR);
+            } else {
+                setError((prev) => (prev === SYNC_ERROR ? null : prev));
+            }
 
             return loadedVolumes;
         } catch (err) {
             console.error('Failed to load S3 bucket data', err);
-            setError('Failed to synchronize with buckets API');
+            setError(SYNC_ERROR);
             return [];
         } finally {
             setLoading(false);
@@ -252,7 +262,7 @@ const QS3Buckets = () => {
                                         <h3 className="text-base font-semibold text-gray-800">New Bucket Volume</h3>
                                     </div>
 
-                                <form onSubmit={handleCreate} className="space-y-5">
+                                <form onSubmit={handleCreate} noValidate className="space-y-5">
                                     <div className="grid grid-cols-2 gap-6">
                                         <Dropdown
                                             label="Storage Pool"
