@@ -45,7 +45,7 @@ const NotificationPoller = () => {
         }]);
     }, []);
 
-    // number of ActivePartners (hosts/allinfo -> active), refreshed every 3rd poll; null until the first answer
+    // number of live ActivePartners (hosts/allinfo -> active minus lost), refreshed every 3rd poll; null until the first answer
     const activeCount = useRef(null);
     const pollCount = useRef(0);
     const lastInsync = useRef('yes');
@@ -83,8 +83,12 @@ const NotificationPoller = () => {
                 aliases.current = Object.fromEntries(Object.entries(all).map(([h, v]) => [h, typeof v?.alias === 'string' ? v.alias.trim() : '']));
             }
             if (Array.isArray(res?.data?.active)) {
-                const changed = activeCount.current !== res.data.active.length;
-                activeCount.current = res.data.active.length;
+                // live partners: an ActivePartner that is down (no ready/ key, listed in 'lost') does not count,
+                // so a stopped peer turns the sign blue 'Single node'
+                const lost = new Set((Array.isArray(res.data.lost) ? res.data.lost : []).map((h) => h?.name));
+                const live = res.data.active.filter((h) => !lost.has(h?.name)).length;
+                const changed = activeCount.current !== live;
+                activeCount.current = live;
                 if (changed) updateSyncStatus(lastInsync.current);
             }
         } catch (e) { /* keep the previous count */ }
