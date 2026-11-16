@@ -245,6 +245,8 @@ const sevColor = { ok: 'border-success-100 bg-success-50 text-success-600', warn
 
 const QServicePerformance = () => {
     const [summary, setSummary] = useState({ users: 0, groups: 0, pools: 0, volumes: { cifs: 0, nfs: 0, iscsi: 0 } });
+    // the pool count shown is the registry's (info/summary), as the other identity cards; Prometheus only until it answers
+    const summaryLoaded = useRef(false);
     const [data, setData] = useState(null);
     const [rangeId, setRangeId] = useState('1h');
     const [partnerStats, setPartnerStats] = useState({ total: 0, ready: 0 });
@@ -283,9 +285,13 @@ const QServicePerformance = () => {
             if (!isMounted.current) return;
             const s = {};
             keys.forEach((k, i) => { s[k] = toSeries(ranges[i]); });
-            const pools = (inst[1]?.data?.data?.result || []).map((r) => ({
-                pool: r.metric.zpool, state: String(r.metric.state || '').toLowerCase(), instance: r.metric.instance,
-            }));
+            // node_exporter also reports ZFS pseudo-pools such as '$import' (a pool being imported/probed, test 675 step 7:
+            // "3 Pools" and a false "Pool not healthy" for a while): only real pool names count
+            const pools = (inst[1]?.data?.data?.result || [])
+                .filter((r) => r.metric.zpool && !String(r.metric.zpool).startsWith('$'))
+                .map((r) => ({
+                    pool: r.metric.zpool, state: String(r.metric.state || '').toLowerCase(), instance: r.metric.instance,
+                }));
             const top = (inst[0]?.data?.data?.result || []).map((r) => ({ dataset: r.metric.dataset, mbs: num(r.value?.[1]) }))
                 .filter((d) => d.mbs !== null && d.mbs > 0);
             const inv = {};
@@ -342,7 +348,7 @@ const QServicePerformance = () => {
         isMounted.current = true;
 
         fetchServiceSummary().then(res => {
-            if (isMounted.current) setSummary(res.data);
+            if (isMounted.current) { summaryLoaded.current = true; setSummary(res.data); }
         }).catch(() => {});
 
         const loadPartners = () => fetchAllHostsInfo().then(res => {
@@ -483,7 +489,7 @@ const QServicePerformance = () => {
                                 <MetricCard title="Cluster Identity" value={`${cnt('users', summary.users)}`} unit="Users Active" icon={<Users size={18} />} color="brand" />
                                 <MetricCard
                                     title="Storage Fabric"
-                                    value={`${poolCount || summary.pools}`}
+                                    value={`${summaryLoaded.current && Number.isFinite(Number(summary.pools)) ? Number(summary.pools) : poolCount}`}
                                     unit="Pools"
                                     icon={<Layers size={18} />}
                                     color={poolsBad.length ? 'warning' : 'success'}
