@@ -836,8 +836,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
                                         <label className="text-xs text-gray-500 whitespace-nowrap">Name</label>
                                         <span id="cNTPName" className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wide truncate max-w-[11rem]">{selectedHost ? displayValue(hostConfig?.ntpName) : 'select a node...'}</span>
                                     </div>
-                                    <input
-                                        type="text"
+                                    <IpInput allowHost center={false}
                                         placeholder={(selectedHost && displayValue(hostConfig?.ntpName)) || 'not set'}
                                         className="w-56 px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all outline-none text-gray-700 disabled:bg-gray-50 disabled:text-gray-400 runningnodes"
                                         id="NTPname"
