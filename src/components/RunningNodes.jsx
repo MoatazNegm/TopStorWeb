@@ -441,7 +441,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
     // any of the address fields holds something that is not a valid address -> Update stays disabled
     const hasNetError = [
         ipError(formData.ipaddr), ipError(formData.cluster), ipError(formData.gw),
-        ipError(formData.ntp, { allowHost: true }), ipError(formData.dnsname, { allowHost: true }), ipError(formData.dnssearch, { allowHost: true }),
+        ipError(formData.ntp, { allowHost: true }), ipError(formData.ntpName, { allowHost: true }), ipError(formData.dnsname, { allowHost: true }), ipError(formData.dnssearch, { allowHost: true }),
     ].some(Boolean);
 
     const handleSubmit = async (e) => {
@@ -480,7 +480,7 @@ const RunningNodes = ({ hosts, allHosts, selectedHostName, onSelect, onRefresh }
 
         const netProblem = [
             ipError(actIpaddr), ipError(actCluster), ipError(actGw),
-            ipError(actNtp, { allowHost: true }), ipError(actDnsname, { allowHost: true }), ipError(actDnssearch, { allowHost: true }),
+            ipError(actNtp, { allowHost: true }), ipError(actNtpName, { allowHost: true }), ipError(actDnsname, { allowHost: true }), ipError(actDnssearch, { allowHost: true }),
         ].find(Boolean);
         if (netProblem) {
             console.warn('Submit aborted:', netProblem);

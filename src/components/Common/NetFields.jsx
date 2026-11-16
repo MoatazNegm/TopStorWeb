@@ -4,7 +4,7 @@ import React from 'react';
  * Shared network-field helpers.
  *  - IP fields   : placeholder xxx.xxx.xxx.xxx, text centred, validated as an IPv4 address.
  *  - host fields : (NTP server, DNS server, search ...) may hold a name; the IPv4 check runs only while the
- *                  value consists of digits and dots, as soon as there is a letter it does not run.
+ *                  value consists of digits and dots; with a letter each entry must be an IPv4 address or a valid host name.
  *  - subnet      : whole number of 8, 16, 24 or 32 (the only valid values here), default 24.
  */
 export const IP_PLACEHOLDER = 'xxx.xxx.xxx.xxx';
@@ -17,11 +17,23 @@ export const isValidIPv4 = (value) => {
     return parts.every((p) => /^\d{1,3}$/.test(p) && Number(p) <= 255);
 };
 
+/** RFC 1123 host name: dot separated labels of 1-63 letters, digits or '-', no '-' at either end of a label; not all digits. */
+export const isValidHostname = (value) => {
+    const v = String(value).trim().replace(/\.$/, '');
+    if (v === '' || v.length > 253 || /^[0-9.]+$/.test(v)) return false;
+    return v.split('.').every((l) => /^[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?$/.test(l));
+};
+
 /** '' when fine (or when the check does not apply), otherwise the message to show. */
 export const ipError = (value, { allowHost = false } = {}) => {
     const v = String(value ?? '').trim();
     if (v === '' || v === '_1') return '';
-    if (allowHost && !/^[0-9.]+$/.test(v)) return '';
+    if (allowHost && !/^[0-9.]+$/.test(v)) {
+        // a name (test 672 step 3: 'ntp..bad' was accepted): every entry (space or comma separated) must be an IPv4 address
+        // or a host name of labels 1-63 letters/digits/'-' (not at the start or end of a label), at most 253 characters
+        const bad = v.split(/[\s,]+/).filter(Boolean).find((e) => !(isValidIPv4(e) || isValidHostname(e)));
+        return bad === undefined ? '' : 'Invalid address or host name: ' + bad;
+    }
     return isValidIPv4(v) ? '' : 'Invalid IP address: use xxx.xxx.xxx.xxx with each part from 0 to 255';
 };
 
