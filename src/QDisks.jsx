@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AlertCircle, ChevronDown, HardDrive, Info, MemoryStick, Plus, RefreshCw } from 'lucide-react';
 import { fetchDgsInfo, createPool, addDisksToPool, deletePool, actionOnDisk, saveCacheSpares, deleteCacheSpares } from './api/pools';
 import PoolCard from './components/PoolCard';
@@ -21,10 +21,26 @@ const QDisks = () => {
     const [selectedCacheSpares, setSelectedCacheSpares] = useState([]);
     const [createOpen, setCreateOpen] = useState(null); // null = default (open only while no pool exists)
 
+    // QSD5.352 fix21 (QC 632 step 4, verdict-6127): pools whose decommission was accepted stay hidden until pools/dgsinfo
+    // stops listing them.  The destroy runs async (DGdestroyPool, ~50 s on a healthy node, minutes on a busy one) and dgsinfo
+    // keeps the pool until putzpool runs at its end, so the one-shot optimistic removal was undone by the next 5 s poll and the
+    // card (with a live "Decommission Pool" button) came back.  Safety limit: 10 min, then the backend's answer counts again.
+    const deletingPools = useRef({});
     const loadData = useCallback(async () => {
         try {
             const res = await fetchDgsInfo();
-            setDgsData(res.data);
+            const data = res.data || {};
+            const listed = data.pools || {};
+            const now = Date.now();
+            for (const name of Object.keys(deletingPools.current)) {
+                if (!(name in listed) || now - deletingPools.current[name] > 600000) delete deletingPools.current[name];
+            }
+            if (Object.keys(deletingPools.current).length > 0) {
+                const pools = { ...listed };
+                for (const name of Object.keys(deletingPools.current)) delete pools[name];
+                data.pools = pools;
+            }
+            setDgsData(data);
             setError(null);
         } catch (err) {
             console.error("Failed to load Disk Groups", err);
@@ -84,7 +100,13 @@ const QDisks = () => {
 
     const handleDeletePool = async (pool) => {
         try {
-            await deletePool({ pool, user: 'mezo' });
+            const res = await deletePool({ pool, user: 'mezo' });
+            if (res?.data?.error) {           // refused (e.g. poolhasvolumes): the pool stays
+                setError(`Pool ${pool} was not deleted: ${res.data.error}`);
+                loadData();
+                return;
+            }
+            deletingPools.current[pool] = Date.now();   // fix21: keep it hidden until dgsinfo drops it
             // Optimistic: remove immediately — backend deletion is async via RabbitMQ,
             // so loadData() right after would return stale data (1s cache still warm).
             setDgsData(prev => {
