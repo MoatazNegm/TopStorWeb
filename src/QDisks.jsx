@@ -99,24 +99,27 @@ const QDisks = () => {
     };
 
     const handleDeletePool = async (pool) => {
+        // fix21b: hide the card at once (before the call answers: on a busy leader the answer takes many seconds) and keep it
+        // hidden until dgsinfo drops the pool; a refused or failed call shows the card again.
+        deletingPools.current[pool] = Date.now();
+        setDgsData(prev => {
+            const pools = { ...prev.pools };
+            delete pools[pool];
+            return { ...prev, pools };
+        });
         try {
             const res = await deletePool({ pool, user: 'mezo' });
             if (res?.data?.error) {           // refused (e.g. poolhasvolumes): the pool stays
+                delete deletingPools.current[pool];
                 setError(`Pool ${pool} was not deleted: ${res.data.error}`);
                 loadData();
                 return;
             }
-            deletingPools.current[pool] = Date.now();   // fix21: keep it hidden until dgsinfo drops it
-            // Optimistic: remove immediately — backend deletion is async via RabbitMQ,
-            // so loadData() right after would return stale data (1s cache still warm).
-            setDgsData(prev => {
-                const pools = { ...prev.pools };
-                delete pools[pool];
-                return { ...prev, pools };
-            });
             loadData();
         } catch (err) {
+            delete deletingPools.current[pool];
             setError("Failed to decommission pool");
+            loadData();
         }
     };
 
