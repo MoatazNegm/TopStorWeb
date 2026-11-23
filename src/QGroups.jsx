@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { fetchGroupList, fetchUserOptions, addGroup, deleteGroup, updateGroupUsers } from './api/groups';
+import { validateGroupName } from './utils/userRules';
 import AddGroupForm from './components/AddGroupForm';
 import GroupList from './components/GroupList';
 
@@ -46,8 +47,19 @@ const QGroups = () => {
     }, [loadData]);
 
     const handleAddGroup = async (groupData) => {
+        // QSD5.352 (QC 708): the group name rule of the backend is checked before the call, and a refusal is shown
+        const why = validateGroupName((groupData?.name ?? '').replace(/\s/g, ''), groups.map((g) => g.name));
+        if (why) {
+            setError(`Group ${groupData?.name ?? ''} was not created: ${why}`);
+            return;
+        }
         try {
-            await addGroup(groupData);
+            const res = await addGroup(groupData);
+            if (res?.data?.error) {
+                setError(`Group ${groupData.name} was not created: ${res.data.message || res.data.error}.`);
+            } else {
+                setError(null);
+            }
             await loadData();
         } catch (e) {
             console.error("Add group failed", e);

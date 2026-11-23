@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Bell, ChevronRight, ClipboardList, Key, LogOut, Maximize2, Menu, X } from 'lucide-react';
 import { changePassword } from '../api/users';
+import { logout } from '../api/auth';
 import { syncNow } from '../api/nodes';
 import { fetchLogs } from '../api/logs';
 import { fetchCommandLog } from '../api/commandlog';
@@ -144,6 +145,23 @@ const Navbar = ({ sectionTitle }) => {
         }
     };
 
+    // QSD5.344: Logout ends the server session too (QC test 700): the token is removed on the server (api/v1/logout)
+    // before the browser forgets it, so a copied token no longer works.  The browser logs out also when the call fails.
+    const handleLogout = async () => {
+        const token = localStorage.getItem('token');
+        setUserMenuOpen(false);
+        if (token && token !== '0') {
+            try {
+                await logout(token);
+            } catch (e) {
+                // server not reachable: the local logout still happens
+            }
+        }
+        localStorage.removeItem('token');
+        localStorage.setItem('token', '0');
+        window.dispatchEvent(new Event('storage'));
+    };
+
     const handleFullscreen = () => {
         if (!document.fullscreenElement) {
             document.documentElement.requestFullscreen?.();
@@ -265,11 +283,7 @@ const Navbar = ({ sectionTitle }) => {
                         {userMenuOpen && (
                             <div className="absolute right-0 mt-2 w-52 overflow-hidden rounded-xl border border-border bg-surface p-1.5 shadow-lg">
                                 <button
-                                    onClick={() => {
-                                        localStorage.removeItem('token');
-                                        localStorage.setItem('token', '0');
-                                        window.dispatchEvent(new Event('storage'));
-                                    }}
+                                    onClick={handleLogout}
                                     className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm text-gray-700 hover:bg-danger-50 hover:text-danger-700"
                                 >
                                     <LogOut className="h-4 w-4" />

@@ -15,6 +15,7 @@ import Dropdown from './components/Common/Dropdown';
 import SnapshotList from './components/SnapshotList';
 import SnapshotPeriodsList from './components/SnapshotPeriodsList';
 import CustomTimePicker from './components/CustomTimePicker';
+import { snapReplicated, periodReplicated } from './utils/replication';
 
 const QSnapshots = () => {
     const [pools, setPools] = useState([]);
@@ -48,17 +49,20 @@ const QSnapshots = () => {
             setVolumes(volsRes.data || []);
 
             const snapsData = snapsRes.data;
+            // QSD5.352 (QC 695): replication snapshots and schedules belong to the Sender Schedule page only
+            const local = (s) => !snapReplicated(s);
+            const localPeriod = (p) => !periodReplicated(p);
             setSnapshots({
-                Once: snapsData.Once || [],
-                Minutely: snapsData.Minutely || [],
-                Hourly: snapsData.Hourly || [],
-                Weekly: snapsData.Weekly || [],
-                allsnaps: snapsData.allsnaps || []
+                Once: (snapsData.Once || []).filter(local),
+                Minutely: (snapsData.Minutely || []).filter(local),
+                Hourly: (snapsData.Hourly || []).filter(local),
+                Weekly: (snapsData.Weekly || []).filter(local),
+                allsnaps: (snapsData.allsnaps || []).filter(local)
             });
             setPeriods({
-                Minutelyperiod: snapsData.Minutelyperiod || [],
-                Hourlyperiod: snapsData.Hourlyperiod || [],
-                Weeklyperiod: snapsData.Weeklyperiod || []
+                Minutelyperiod: (snapsData.Minutelyperiod || []).filter(localPeriod),
+                Hourlyperiod: (snapsData.Hourlyperiod || []).filter(localPeriod),
+                Weeklyperiod: (snapsData.Weeklyperiod || []).filter(localPeriod)
             });
         } catch (err) {
             console.error("Failed to load snapshots data", err);

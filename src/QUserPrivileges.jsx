@@ -64,7 +64,8 @@ const QUserPrivileges = () => {
     const loadUsers = useCallback(async (isInitial = false) => {
         try {
             const res = await fetchUserList();
-            const users = res.data.allusers || [];
+            // admin is a superuser with every permission, so it is not assignable
+            const users = (res.data.allusers || []).filter(u => String(u.name).toLowerCase() !== 'admin');
 
             // Check for changes before updating state to avoid re-renders
             if (JSON.stringify(users.map(u => ({ n: u.name, p: u.priv }))) !==

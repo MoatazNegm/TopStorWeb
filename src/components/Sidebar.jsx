@@ -34,6 +34,7 @@ const Sidebar = ({ hasPriv }) => {
   const [pathname, setPathname] = useState(window.location.hash || window.location.pathname);
   const [expanded, setExpanded] = useState(null);
   const [collapsed, setCollapsed] = useState(false);
+  const [query, setQuery] = useState('');
 
   // The class is what the stylesheet keys off to narrow the rail and hand the
   // space back to the page, so the DOM and the CSS have to stay in step. The
@@ -154,10 +155,58 @@ const Sidebar = ({ hasPriv }) => {
 
   const isItemActive = (href) => pathname === href;
 
+  // Menu search: typing narrows the menu to the matching pages (label, group
+  // name or an alias) and opens their groups. A single match is opened at
+  // once, Enter opens the first match, Esc clears the box.
+  const searchAliases = {
+    '#/users': 'user account password',
+    '#/groups': 'group',
+    '#/nodes': 'node cluster server home dashboard',
+    '#/logs': 'log event message audit',
+    '#/performance': 'performance chart metric service',
+    '#/volumes/cifs': 'cifs smb samba windows share domain',
+    '#/volumes/nfs': 'nfs export share',
+    '#/volumes/s3': 's3 bucket object',
+    '#/volumes/home': 'home folder',
+    '#/volumes/iscsi': 'iscsi lun target',
+    '#/volumes/snapshots': 'snapshot schedule',
+    '#/replication/partners': 'partner replication',
+    '#/replication/sender': 'sender schedule replication',
+    '#/replication/received': 'received snapshot replication',
+    '#/pools/diskgroups': 'disk group pool raid mirror',
+    '#/settings/privileges': 'privilege permission role',
+    '#/settings/apikeys': 'api key token',
+    '#/settings/updates': 'update upgrade software',
+  };
+  const searchTerm = query.trim().toLowerCase();
+  const matchesSearch = (menu, subItem) => {
+    const haystack = `${subItem.label} ${menu.label} ${searchAliases[subItem.href] || ''}`.toLowerCase();
+    return searchTerm.split(/\s+/).every((word) => haystack.includes(word));
+  };
+  const visibleMenuItems = useMemo(() => {
+    if (!searchTerm) return filteredMenuItems;
+    return filteredMenuItems
+      .map((menu) => ({ ...menu, subItems: menu.subItems.filter((subItem) => matchesSearch(menu, subItem)) }))
+      .filter((menu) => menu.subItems.length > 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filteredMenuItems, searchTerm]);
+  const searchMatches = useMemo(
+    () => (searchTerm ? visibleMenuItems.flatMap((menu) => menu.subItems) : []),
+    [visibleMenuItems, searchTerm]
+  );
+
+  const goTo = (href) => {
+    if (href && window.location.hash !== href) window.location.hash = href;
+  };
+
+  useEffect(() => {
+    if (searchTerm.length >= 2 && searchMatches.length === 1) goTo(searchMatches[0].href);
+  }, [searchTerm, searchMatches]);
+
   const activeParent =
     filteredMenuItems.find((menu) => menu.subItems.some((item) => isItemActive(item.href)))?.label || null;
 
-  const isExpanded = (label) => label === activeParent || label === expanded;
+  const isExpanded = (label) => !!searchTerm || label === activeParent || label === expanded;
 
   const toggleSection = (label) => {
     setExpanded((prev) => (prev === label ? null : label));
@@ -211,6 +260,17 @@ const Sidebar = ({ hasPriv }) => {
             <Search className="pointer-events-none absolute left-3 top-1/2 h-[15px] w-[15px] -translate-y-1/2 text-gray-400" />
             <input
               type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' && searchMatches.length > 0) {
+                  goTo(searchMatches[0].href);
+                  closeMobileSidebar();
+                } else if (event.key === 'Escape') {
+                  setQuery('');
+                }
+              }}
+              aria-label="Search menu"
               placeholder="Search menu..."
               className="w-full rounded-md border border-border bg-surface-muted py-2 pl-9 pr-3 text-sm text-gray-700 placeholder:text-gray-400 outline-none focus:border-brand-500 focus:bg-surface focus:ring-4 focus:ring-brand-100"
             />
@@ -253,7 +313,11 @@ const Sidebar = ({ hasPriv }) => {
         <nav className="flex-1 overflow-y-auto px-3 py-3" aria-label="Main menu">
           <div className="px-2 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-gray-400">Main menu</div>
 
-          {filteredMenuItems.map((menu) => {
+          {searchTerm && visibleMenuItems.length === 0 && (
+            <div className="px-2.5 py-3 text-sm text-gray-400">No menu entry matches "{query.trim()}"</div>
+          )}
+
+          {visibleMenuItems.map((menu) => {
             const Icon = menu.icon;
             const expandedSection = isExpanded(menu.label);
             const sectionActive = menu.label === activeParent;

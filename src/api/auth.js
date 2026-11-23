@@ -8,8 +8,10 @@ export const login = (user, pass) => {
 };
 
 export const logout = (token) => {
+    // a short timeout: the browser logout must not hang on a node that does not answer
     return api.get('api/v1/logout', {
-        params: { token }
+        params: { token },
+        timeout: 5000
     });
 };
 

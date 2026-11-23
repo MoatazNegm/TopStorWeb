@@ -5,7 +5,8 @@ import PoolCard from './components/PoolCard';
 import Button from './components/Common/Button';
 import DiskIcon from './components/DiskIcon';
 
-const DELETE_TIMEOUT_MS = 120000; // a pool still listed this long after its delete request shows again with an error
+// merge M+A: 10 min (M fix21, QC 632: the destroy takes ~50 s on a healthy node and minutes on a busy one; A had 120 s)
+const DELETE_TIMEOUT_MS = 600000; // a pool still listed this long after its delete request shows again with an error
 
 const QDisks = () => {
     const [dgsData, setDgsData] = useState({
@@ -21,7 +22,7 @@ const QDisks = () => {
     const [creatingSize, setCreatingSize] = useState(null);
     const [includeCache, setIncludeCache] = useState(false);
     const [selectedCacheSpares, setSelectedCacheSpares] = useState([]);
-    const [createOpen, setCreateOpen] = useState(null); // null = default (open)
+    const [createOpen, setCreateOpen] = useState(null); // null = default (open only while no pool exists)
     // pool deletes in flight: { poolName: start ms }. The backend deletes async (RabbitMQ, ~20 s) and dgsinfo keeps listing
     // the pool meanwhile, so every loadData/poll result is filtered through this until the server stops listing the pool.
     const pendingDeletes = useRef({});
@@ -141,7 +142,11 @@ const QDisks = () => {
             return { ...prev, pools };
         });
         try {
-            await deletePool({ pool, user: 'mezo' });
+            const res = await deletePool({ pool, user: 'mezo' });
+            if (res?.data?.error) {           // refused (e.g. poolhasvolumes): the pool stays (M), shown again with the reason
+                restorePool(pool, `Pool ${pool} was not deleted: ${res.data.error}`);
+                return;
+            }
             loadData();
         } catch (err) {
             restorePool(pool, `Failed to decommission pool ${pool}`);
@@ -186,7 +191,8 @@ const QDisks = () => {
         );
     };
 
-    const isCreateOpen = createOpen === null ? true : createOpen; // New Pool starts open, pools start closed
+    const poolCount = Object.keys(dgsData.pools).filter(n => !n.includes('pree')).length;
+    const isCreateOpen = createOpen === null ? poolCount === 0 : createOpen;
 
     const availableDiskIds = dgsData.raids.free?.disks || [];
     const availableDisksByNode = availableDiskIds.reduce((groups, diskId) => {

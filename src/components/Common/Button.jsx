@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const mapLegacyVariant = (bgColor = '') => {
     const val = String(bgColor).toLowerCase();
@@ -36,6 +36,20 @@ const Button = ({
     children,
     ...props
 }) => {
+    // A handler that returns a promise keeps the button locked until it settles,
+    // so a slow request cannot be started a second time by another click.
+    const [pending, setPending] = useState(false);
+    const alive = useRef(true);
+    useEffect(() => () => { alive.current = false; }, []);
+    const guardedClick = (event) => {
+        if (pending) return;
+        const result = onClick ? onClick(event) : undefined;
+        if (result && typeof result.then === 'function') {
+            setPending(true);
+            const done = () => { if (alive.current) setPending(false); };
+            result.then(done, done);
+        }
+    };
     const effectiveVariant = variant || mapLegacyVariant(bgColor);
     const variantClasses = variantClassMap[effectiveVariant] || variantClassMap.primary;
     const sizeClasses = sizeClassMap[size] || sizeClassMap.md;
@@ -52,12 +66,12 @@ const Button = ({
     return (
         <button
             type={type}
-            onClick={onClick}
-            disabled={disabled}
+            onClick={guardedClick}
+            disabled={disabled || pending}
             className={[
                 'inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-colors outline-none',
                 sizeClasses,
-                disabled
+                (disabled || pending)
                     ? 'cursor-not-allowed border border-border bg-gray-100 text-gray-400 opacity-60'
                     : variantClasses,
                 className,

@@ -49,9 +49,9 @@ curl -sk "https://NODE:8443/api/v1/partners/partnerlist?token=$T"
 | `/hosts/getConfig` | `nodeName` | download that node's config file (file attachment) |
 | `/hosts/getAllConfig` | – | download all config files (zip attachment) |
 | `/software/versions` | – | available software versions |
-| `/software/setversion`, `/software/apply` | `version` | select / apply a version |
-| `/software/update` | `source`, `version`, `location`, `username`, `password` | online update; replies `{"data": "<command>"}` |
-| `/software/localFileUpdate` | multipart file upload | update from an uploaded file |
+| `/software/setversion`, `/software/apply` | `version` | select / apply a version (needs the `Uploadch` privilege, else `{"error": "noprivilege"}`) |
+| `/software/update` | `source`, `version`, `location`, `username`, `password` | online update; replies `{"data": "<command>"}` (needs `Uploadch`) |
+| `/software/localFileUpdate` | multipart file upload | update from an uploaded file (needs `Uploadch`; saved under its base name in `/TopStordata/uploads`, a name with nothing left or a symlink there gives `{"error": "badfilename"}`) |
 
 ## 4. Pools and disks
 
@@ -72,14 +72,18 @@ curl -sk "https://NODE:8443/api/v1/partners/partnerlist?token=$T"
 |---|---|---|
 | `/volumes/volumesinfo`, `/volumes/{CIFS,NFS,ISCSI,HOME}/volumesinfo` | – | `{"allvolumes": [...]}` |
 | `/volumes/volumelist`, `/volumes/stats`, `/volumes/connections` | – | list / statistics / client connections |
-| `/volumes/create` | `type` (`CIFS`/`NFS`/`ISCSI`/`HOME`), `pool`, `name`, `size`, `owner`, `ipaddress`, `Subnet`, `groups`, `compression`, `dedup`, `active`; CIFS domain: `domname`,`domip`,`domsrv`,`domadmin`,`dompass`; iSCSI: `portalport`,`initiators`, CHAP `chapuser` (1-64 of letters, digits, `._:-`) with `chappas` (12-16 of letters, digits, `._:@!-`), or neither for no CHAP; a bad one is HTTP 400 `invalid character ...`; `chappas` is shown as `***` | create a volume |
-| `/volumes/config` | `volume`, `type`, `owner`, `ipaddress`, `groups`, `portalport`, `initiators`, `chapuser`, `chappas` (iSCSI CHAP, same rules; not sent = unchanged, `chapuser=nochap` removes it) | change a volume |
+| `/volumes/create` | `type` (`CIFS`/`NFS`/`ISCSI`/`HOME`), `pool`, `name`, `size`, `owner`, `ipaddress`, `Subnet`, `groups`, `compression`, `dedup`, `active`; CIFS domain: `domname`,`domip`,`domsrv`,`domadmin`,`dompass`; iSCSI: `portalport`,`initiators`, CHAP `chapuser` (1-64 of letters, digits, `._:-`) with `chappas` (12-16 of letters, digits, `._:@!-`), or neither for no CHAP; a bad one is HTTP 400 `invalid character ...`; `chappas` is shown as `***` | create a volume; `HOME`: `name` is the user's name (an existing user without a home is allowed; a group or an existing volume of that name is refused), `active` is `active` (also `yes` or empty) or `disabled` (also `disable`, `no`), anything else answers `invalidstatus` |
+| `/volumes/config` | `volume`, `type`, `owner`, `ipaddress`, `groups`, `statusmount` (home folders), `portalport`, `initiators`, `chapuser`, `chappas` (iSCSI CHAP, same rules; not sent = unchanged, `chapuser=nochap` removes it) | change a volume |
 | `/volumes/volumeactive` | `name`, `active`, `owner` | activate / deactivate |
 | `/volumes/volumedel` | `name`, `type`, `owner` | delete |
 | `/volumes/grouplist` | – | groups usable by a volume |
 | `/volumes/snapshots/snapshotsinfo` | – | `{allsnaps, Once, Hourly, Weekly, …}` |
 | `/volumes/snapshots/create` | `snapsel` (Once, Minutely, Hourly, Weekly), `owner`, `pool`, `volume`; Once: `name`; Minutely: `every`, `keep`; Hourly: `sminute` (0-59), `every`, `keep`; Weekly: `stime` (HH:MM), `every` (the day, e.g. Sat), `keep`; optional `receiver` | create a snapshot / schedule; a bad call is refused with HTTP 400 and a `message` (e.g. `missing parameter: name`) |
 | `/volumes/snapshots/snaprollback`, `…/snapshotdel`, `…/perioddelete` | `name`, `owner` | roll back / delete / delete a schedule |
+
+iSCSI CHAP (QSD5.344): give `chapuser` and `chappas` together (user 1-64 of letters, digits, `. _ : @ -`; secret 12-64 of letters, digits, `. _ : + = , ~ -`, no blanks) or leave both out for no CHAP; anything else is refused with `invalid character in parameter: ...` or `chapuser and chappas must be given together` (log `ISCSIfa02`). CHAP is set on each initiator ACL of the LUN and the target then asks for it (one target per address: it asks while any initiator ACL of that address has CHAP). `volumes/config` without the two fields keeps the stored CHAP; both sent empty turns CHAP off. The secret is never shown again: answers and lists show `****`.
+
+Home folder status (QSD5.352 r8): `volumes/config` for a home takes `statusmount` = `active` or `disabled` (`disable` and any letter case are taken as these); any other value is refused with `invalidstatus` and nothing changes. Without the field the stored status is kept.
 
 ## 6. Users, groups, tenants
 
@@ -89,15 +93,15 @@ curl -sk "https://NODE:8443/api/v1/partners/partnerlist?token=$T"
 | `GET /users/grouplist` | `tenant` | groups for the user form |
 | `/users/UnixAddUser` | `name`, `Password`, `groups`, `Volpool`, `Volsize`, `HomeAddress`, `HomeSubnet`, `adduser` | add a user (with home volume) |
 | `/users/userchange` | `name`, `groups`, `tenant`, `owner` | change a user's groups |
-| `/users/userdel` | `name`, `tenant` | delete |
+| `/users/userdel` | `name`, `tenant` | delete (needs `Box_Users`, else `{"error": "noprivilege"}`, checked before the user is logged out; a `tenant` other than `Cluster` must be an NFS volume, else `{"error": "notnfs"}`) |
 | `GET /users/userauths` | `username` | privileges of a user |
 | `/users/usersauth` | `tochange`, `auths` | set a user's privileges |
-| `/users/uploadUsers` | multipart file | bulk import |
+| `/users/uploadUsers` | multipart file | bulk import (needs the `Box_Users` privilege, else `{"error": "noprivilege"}`; saved under its base name in `/TopStordata/uploads`, else `{"error": "badfilename"}`) |
 | `GET /groups/grouplist`, `GET /groups/userlist` | – | groups / users with membership |
 | `/groups/UnixAddgroup` | `name`, `users` | add group |
 | `/groups/groupchange` | `name`, `users` | change members |
 | `/groups/groupdel` | `name` | delete |
-| `/tenants/tenantinfo` | – | tenants; `/tenant/adduser` adds a user to a tenant |
+| `/tenants/tenantinfo` | – | tenants; `/tenant/adduser` adds a user to a tenant (an NFS volume; needs `Box_Users`, else `{"error": "noprivilege"}`; not NFS: `{"error": "notnfs"}`; the same for `/users/userchange` with a `tenant` other than `Cluster`) |
 
 ## 7. Replication partners
 
@@ -169,7 +173,7 @@ curl -sk "https://NODE:8443/api/v1/volumes/volumesinfo?token=$KEY"
 * Every use is recorded in the command log with the key name; failed attempts raise a warning
   notification. Keys do not expire by time: revoke them when the application is retired.
 * Calls a key can **never** make, even with `write`: everything under `/apikeys/`, user/group/tenant-user
-  changes, `users/usersauth` (privileges), `user/changepass`, `hosts/joincluster`, the `software/*`
+  changes, `users/usersauth` (privileges), `users/userhomechange` (home quota/address), `user/changepass`, `hosts/joincluster`, the `software/*`
   change calls, `login/renewtoken`, `logout`. They answer `{"response":"error","message":"not allowed for an API key"}`.
 * Brute force: 10 refused keys from one source address within 5 minutes lock that address out for
   5 minutes (every call with a key answers `baduser`; normal logins are not affected).

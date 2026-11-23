@@ -108,7 +108,7 @@ const UserList = ({ users, groups, onChangePassword, onSubmit, queueStatus }) =>
         name: (user) => user.name,
         target: (user) => user.Volpool || user.pool,
         address: (user) => (pending[user.name]?.address !== undefined ? pending[user.name].address : userAddress(user)),
-        quota: (user) => (pending[user.name]?.quota !== undefined ? pending[user.name].quota : user.Volsize || user.size),
+        quota: (user) => (pending[user.name]?.quota !== undefined ? pending[user.name].quota : hasHome(user) ? user.Volsize || user.size : ''),
         groups: (user) => userGroupNames(user, groups).join(' '),
     });
     const allShownSelected = sortedUsers.length > 0 && sortedUsers.every((user) => selected.includes(user.name));

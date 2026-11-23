@@ -41,6 +41,8 @@ const PoolCard = ({
                 balanced = ", missing disks";
                 break;
             }
+            // QSD5.352 (QC 712): cache / log / spare devices hold no data copy; where they sit does not make the pool unbalanced
+            if (/^(cache|logs?|spares?)(_|$)/.test(raidId)) continue;
             if (raidData?.raidrank?.[0] < 0) {
                 redundancyColor = "text-amber-500";
                 balanced = ", not balanced";

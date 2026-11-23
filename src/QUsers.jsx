@@ -2,13 +2,18 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AlertCircle, KeyRound, X } from 'lucide-react';
 import { fetchUserList, fetchGroupList, addUser, uploadUsers, deleteUser, updateUserGroups, changePassword, changeUserHome } from './api/users';
 import { fetchPoolsInfo } from './api/pools';
+import { fetchAllHostsInfo } from './api/nodes';
+import { fetchAllVolumesInfo } from './api/volumes';
 import AddUserForm from './components/AddUserForm';
+import { bareIp } from './components/Common/ipCheck';
 import UserList from './components/UserList';
 
 const QUsers = () => {
     const [users, setUsers] = useState([]);
     const [groups, setGroups] = useState([]);
     const [pools, setPools] = useState([]);
+    const [hostAddresses, setHostAddresses] = useState([]);
+    const hostsAt = useRef(0);
     // address / quota submitted from the list, shown until the list is loaded again
     const [localEdits, setLocalEdits] = useState({});
     const [loading, setLoading] = useState(true);
@@ -36,6 +41,31 @@ const QUsers = () => {
             }
             if (groupRes.data?.results) setGroups(groupRes.data.results.filter((g) => g.text !== 'Everyone'));
             if (poolRes.data?.results) setPools(poolRes.data.results);
+
+            // addresses of the nodes, the cluster and the volumes, for the Add User form (at most every 15 s; a failure
+            // keeps the old list).  QSD5.351: hosts/allinfo gives the cluster as "10.11.11.200/24", the walk only took
+            // bare addresses, so the cluster address was missing; the volume addresses (NFS, CIFS, iSCSI) were not read.
+            if (Date.now() - hostsAt.current > 15000) {
+                hostsAt.current = Date.now();
+                try {
+                    const [hosts, vols] = await Promise.all([fetchAllHostsInfo(), fetchAllVolumesInfo().catch(() => ({ data: {} }))]);
+                    const found = new Set();
+                    const walk = (v) => {
+                        if (typeof v === 'string') {
+                            const a = v.trim().replace(/\/\d{1,2}$/, '');
+                            if (/^\d{1,3}(\.\d{1,3}){3}$/.test(a)) found.add(a);
+                        }
+                        else if (Array.isArray(v)) v.forEach(walk);
+                        else if (v && typeof v === 'object') Object.values(v).forEach(walk);
+                    };
+                    walk(hosts.data);
+                    (vols.data?.allvolumes || []).forEach((vol) => {
+                        const a = bareIp(vol?.ipaddress);
+                        if (/^\d{1,3}(\.\d{1,3}){3}$/.test(a) && a !== '256.256.256.256') found.add(a);
+                    });
+                    setHostAddresses([...found]);
+                } catch (e) { /* keep the addresses already known */ }
+            }
 
         } catch (err) {
             console.error('Failed to load users data', err);
@@ -83,7 +113,7 @@ const QUsers = () => {
     // Submit of the users list: one request per changed user, one after the other.
     //   deletion         -> the delete call (the other changes of that user are dropped)
     //   groups           -> the group-change call
-    //   address / quota  -> changeUserHome (api/v1/users/userhomechange, backend added separately); only users with a home folder
+    //   address / quota  -> changeUserHome (api/v1/users/userhomechange, QSD5.352); only users with a home folder
     const handleSubmitChanges = async (pending) => {
         const names = Object.keys(pending);
         if (names.length === 0) return true;
@@ -110,7 +140,9 @@ const QUsers = () => {
                     const fields = {};
                     if (change.address !== undefined) { fields.HomeAddress = change.address; fields.HomeSubnet = change.subnet; }
                     if (change.quota !== undefined) fields.Volsize = change.quota;
-                    await changeUserHome(name, fields);
+                    const res = await changeUserHome(name, fields);
+                    // QSD5.352: the backend answers a refusal (no home, size, address in use, privilege) in 'error'
+                    if (res?.data?.error) throw new Error(res.data.error);
                     handleUpdateUser(name, fields); // shown at once; the next load of the list brings the server's value
                     applied = true;
                 }
@@ -249,7 +281,8 @@ const QUsers = () => {
                             <div className="rounded-lg border border-border bg-surface px-4 py-6 text-sm text-gray-500">Loading users...</div>
                         ) : (
                             <>
-                                <AddUserForm pools={pools} groups={groups} users={users} onAdd={handleAddUser} onUpload={handleUploadUsers} />
+                                <AddUserForm pools={pools} groups={groups} users={users} onAdd={handleAddUser} onUpload={handleUploadUsers}
+                                    usedAddresses={[...hostAddresses, ...users.map((u) => bareIp(u.HomeAddress || u.ipaddress || u.address || '')).filter((a) => /^\d/.test(a))]} />
                                 <UserList
                                     users={users.map((user) => (localEdits[user.name] ? { ...user, ...localEdits[user.name].fields } : user))}
                                     groups={groups}

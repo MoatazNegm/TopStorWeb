@@ -10,6 +10,38 @@ const normalizeToArray = (value) => {
 const Dropdown = ({ options, value, onChange, placeholder, disabled, className = "", isMulti = false, label, compact = false }) => {
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef(null);
+    const [activeIndex, setActiveIndex] = useState(-1);
+
+    const handleKeyDown = (event) => {
+        if (disabled) return;
+        const key = event.key;
+        if (!isOpen) {
+            if (key === 'Enter' || key === ' ' || key === 'ArrowDown' || key === 'ArrowUp') {
+                event.preventDefault();
+                const idx = options.findIndex((o) => isSelected(o.value));
+                setActiveIndex(idx >= 0 ? idx : 0);
+                setIsOpen(true);
+            }
+            return;
+        }
+        if (key === 'Escape') {
+            event.preventDefault();
+            event.stopPropagation();
+            if (event.nativeEvent && event.nativeEvent.stopImmediatePropagation) event.nativeEvent.stopImmediatePropagation();
+            setIsOpen(false);
+        } else if (key === 'ArrowDown') {
+            event.preventDefault();
+            setActiveIndex((i) => Math.min(options.length - 1, i + 1));
+        } else if (key === 'ArrowUp') {
+            event.preventDefault();
+            setActiveIndex((i) => Math.max(0, i - 1));
+        } else if (key === 'Enter' || key === ' ') {
+            event.preventDefault();
+            if (options[activeIndex]) handleSelect(options[activeIndex].value);
+        } else if (key === 'Tab') {
+            setIsOpen(false);
+        }
+    };
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -73,16 +105,16 @@ const Dropdown = ({ options, value, onChange, placeholder, disabled, className =
                 {/* keyboard: reachable with Tab like the native fields around it; Enter/Space open or close it, Escape closes it */}
                 <div
                     onClick={() => !disabled && setIsOpen(!isOpen)}
+                    onKeyDown={(event) => {
+                        // keys typed in an element inside the button are not the dropdown's (A); M's handler otherwise
+                        if (event.target !== event.currentTarget) return;
+                        handleKeyDown(event);
+                    }}
                     tabIndex={disabled ? -1 : 0}
-                    role="button"
+                    role="combobox"
                     aria-haspopup="listbox"
                     aria-expanded={isOpen}
-                    aria-disabled={disabled || undefined}
-                    onKeyDown={(event) => {
-                        if (disabled || event.target !== event.currentTarget) return;
-                        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setIsOpen(!isOpen); }
-                        else if (event.key === 'Escape' && isOpen) { event.preventDefault(); setIsOpen(false); }
-                    }}
+                    aria-disabled={disabled ? true : undefined}
                     className={`flex ${compact ? 'min-h-7 px-2 py-0.5' : 'min-h-10 px-3 py-2'} w-full min-w-0 items-center justify-between gap-2 rounded-md border bg-surface text-sm text-gray-700 transition-colors ${
                         isOpen ? 'border-brand-500 ring-4 ring-brand-100' : 'border-border hover:border-border-strong'
                     } ${disabled ? 'cursor-not-allowed bg-gray-50 text-gray-400' : 'cursor-pointer'}`}
@@ -130,13 +162,16 @@ const Dropdown = ({ options, value, onChange, placeholder, disabled, className =
 
                 {isOpen && (
                     <div className="absolute top-full left-0 z-[100] mt-2 w-full overflow-hidden rounded-md border border-border bg-surface shadow-lg">
-                        <div className="max-h-80 overflow-y-auto no-scrollbar">
+                        <div className="max-h-80 overflow-y-auto no-scrollbar" role="listbox" aria-multiselectable={isMulti || undefined}>
                             {options.length === 0 ? (
                                 <div className="px-4 py-3 text-sm text-gray-500">No options available</div>
                             ) : (
-                                options.map((opt) => (
+                                options.map((opt, optIndex) => (
                                     <div
                                         key={opt.value}
+                                        role="option"
+                                        aria-selected={isSelected(opt.value)}
+                                        ref={(el) => { if (el && optIndex === activeIndex && el.scrollIntoView) el.scrollIntoView({ block: 'nearest' }); }}
                                         onClick={() => handleSelect(opt.value)}
                                         tabIndex={0}
                                         role="option"
@@ -149,7 +184,7 @@ const Dropdown = ({ options, value, onChange, placeholder, disabled, className =
                                             isSelected(opt.value)
                                                 ? 'bg-brand-50 text-brand-700'
                                                 : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
-                                        }`}
+                                        } ${optIndex === activeIndex ? 'bg-gray-100' : ''}`}
                                     >
                                         <div className="flex min-w-0 items-center gap-3">
                                             <span className="truncate whitespace-nowrap">{opt.label}</span>
